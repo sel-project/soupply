@@ -1,7 +1,7 @@
 {
 
 	"__game": "Minecraft: Pocket Edition",
-	"__protocol": 90,
+	"__protocol": 83,
 	"__website": "https://github.com/sel-project/sel-utils",
 	
 	"constants": {
@@ -10,9 +10,7 @@
 			"ok": 0,
 			"client_outdated": 1,
 			"server_outdated": 2,
-			"spawned": 3,
-			"invalid_tenant": 4,
-			"edition_mismatch": 5
+			"spawned": 3
 		},
 		
 		"text": {
@@ -97,9 +95,8 @@
 			"allow_pvm": 4,
 			"allow_mvp": 8,
 			"auto_jump": 32,
-			"allow_flight": 64,
+			"allow_flight": 128,
 			"no_clip": 256,
-			"flying": 1024
 		},
 		
 		"full_chunk_data": {

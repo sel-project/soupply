@@ -1,0 +1,96 @@
+{
+	
+	"__game": "Minecraft",
+	"__protocol": 210,
+	"__website": "https://github.com/sel-project/sel-utils",
+	
+	"types": {
+		
+		"byte": 0,
+		"varint": 1,
+		"float": 2,
+		"string": 3,
+		"chat": 4,
+		"slot": 5,
+		"bool": 6,
+		"rotation": 7,
+		"position": 8,
+		"optional_position": 9,
+		"direction": 10,
+		"optional_uuid": 11,
+		"block": 12
+		
+	},
+	
+	"metadatas": {
+		
+		"on_fire": {
+			"type": "byte",
+			"id": 0,
+			"mask": 1
+		},
+		
+		"crouched": {
+			"type": "byte",
+			"id": 0,
+			"mask": 2
+		},
+		
+		"sprinting": {
+			"type": "byte",
+			"id": 0,
+			"mask": 8
+		},
+		
+		"consuming": {
+			"type": "byte",
+			"id": 0,
+			"mask": 16
+		},
+		
+		"invisible": {
+			"type": "byte",
+			"id": 0,
+			"mask": 32
+		},
+		
+		"glowing": {
+			"type": "byte",
+			"id": 0,
+			"mask": 64
+		},
+		
+		"flying_elytra": {
+			"type": "byte",
+			"id": 0,
+			"mask": 128
+		},
+		
+		"air": {
+			"type": "varint",
+			"id": 1
+		},
+		
+		"custom_name": {
+			"type": "string",
+			"id": 2
+		},
+		
+		"custom_name_visible": {
+			"type": "bool",
+			"id": 3
+		},
+		
+		"silent": {
+			"type": "bool",
+			"id": 4
+		},
+		
+		"no_gravity": {
+			"type": "bool",
+			"id": 5
+		}
+		
+	}
+	
+}
