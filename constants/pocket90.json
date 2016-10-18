@@ -95,9 +95,26 @@
 			"remove": 1
 		},
 		
-		"animate": {
-			
+		"adventure_settings": {
+			"immutable_world": 1,
+			"allow_pvp": 2,
+			"allow_pvm": 4,
+			"allow_mvp": 8,
+			"auto_jump": 32,
+			"allow_flight": 64,
+			"no_clip": 256,
+			"flying": 1024
 		},
+		
+		"full_chunk_data": {
+			"colums": 0,
+			"layers": 1
+		},
+		
+		"player_list": {
+			"add": 0,
+			"remove": 1
+		}
 	
 	}
 	
