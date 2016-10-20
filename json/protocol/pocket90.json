@@ -1,0 +1,1222 @@
+{
+
+	"__game": "Minecraft: Pocket Edition",
+	"__protocol": 90,
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"encoding": {
+
+		"endianness": {
+
+			"*": "big-endian",
+			"triad": "little-endian",
+			"float": "little-endian",
+			"nbt": "little-endian"
+
+		},
+
+		"id": "ubyte",
+
+		"array_length": "varuint",
+
+		"types": {
+
+			"remaining_bytes": {
+				"type": "array",
+				"base": "ubyte",
+				"length": false
+			},
+
+			"magic": {
+				"type": "array",
+				"base": "ubyte",
+				"length": 16
+			},
+
+			"string": "char[]",
+
+			"short_string": {
+				"type": "array",
+				"base": "char",
+				"array_length": "ushort"
+			},
+
+			"address": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "version",
+						"type": "bool"
+					},
+					{
+						"name": "ip_bytes",
+						"type": "remaining_bytes",
+						"__comment": "4 bytes for ipv6, 6 for ipv6. Every byte is xor-ed with 255"
+					},
+					{
+						"name": "port",
+						"type": "ushort"
+					}
+				]
+			},
+
+			"entity_id": "varuint",
+
+			"uuid": {
+				"type": "array",
+				"base": "ubyte",
+				"length": 16
+			},
+
+			"slot": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "id",
+						"type": "varint"
+					},
+					{
+						"name": "meta_and_count",
+						"when": "id>0",
+						"type": "varint"
+					},
+					{
+						"name": "nbt_length",
+						"when": "id>0",
+						"type": "ushort",
+						"endianness": "little-endian"
+					},
+					{
+						"name": "nbt_data",
+						"when": "nbt_length>0",
+						"type": "nbt"
+					}
+				]
+			},
+
+			"attribute": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "min",
+						"type": "float"
+					},
+					{
+						"name": "max",
+						"type": "float"
+					},
+					{
+						"name": "value",
+						"type": "float"
+					},
+					{
+						"name": "value",
+						"type": "float"
+					},
+					{
+						"name": "name",
+						"type": "string"
+					}
+				]
+			}
+
+		}
+
+	},
+
+	"packets": {
+
+		"status": {
+
+			"ping": {
+				"id": 1,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "ping",
+						"type": "long"
+					},
+					{
+						"name": "magic_numbers",
+						"type": "magic"
+					}
+				]
+			},
+
+			"pong": {
+				"id": 28,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "ping",
+						"type": "long"
+					},
+					{
+						"name": "pong",
+						"type": "long"
+					},
+					{
+						"name": "magic_numbers",
+						"type": "magic"
+					},
+					{
+						"name": "status",
+						"type": "short_string"
+					}
+				]
+			}
+
+		},
+
+		"login": {
+
+			"open_connection_request_1": {
+				"id": 5,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "magic_numbers",
+						"type": "magic"
+					},
+					{
+						"name": "mtu",
+						"type": "remaining_bytes"
+					}
+				]
+			},
+
+			"open_connection_response_1": {
+				"id": 6,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "magic_numbers",
+						"type": "magic"
+					},
+					{
+						"name": "server_id",
+						"type": "long"
+					},
+					{
+						"name": "security",
+						"type": "bool"
+					},
+					{
+						"name": "mtu_length",
+						"type": "ushort"
+					}
+				]
+			},
+
+			"open_connection_request_2": {
+				"id": 7,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "magic_numbers",
+						"type": "magic"
+					},
+					{
+						"name": "server_address",
+						"type": "address"
+					},
+					{
+						"name": "mtu_length",
+						"type": "ushort"
+					},
+					{
+						"name": "client_id",
+						"type": "long"
+					}
+				]
+			},
+
+			"open_connection_response_2": {
+				"id": 8,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "magic_numbers",
+						"type": "magic"
+					},
+					{
+						"name": "server_id",
+						"type": "long"
+					},
+					{
+						"name": "server_address",
+						"type": "address"
+					},
+					{
+						"name": "mtu_length",
+						"type": "ushort"
+					},
+					{
+						"name": "security",
+						"type": "bool"
+					}
+				]
+			},
+
+			"client_connect": {
+				"id": 9,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "client_id",
+						"type": "long"
+					},
+					{
+						"name": "ping",
+						"type": "long"
+					}
+				]
+			},
+
+			"server_handshake": {
+				"id": 16,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "client_address",
+						"type": "address"
+					},
+					{
+						"name": "mtu_length",
+						"type": "ushort"
+					},
+					{
+						"name": "system_addresses",
+						"type": {
+							"type": "array",
+							"base": "address",
+							"length": 10
+						}
+					},
+					{
+						"name": "ping",
+						"type": "long"
+					},
+					{
+						"name": "pong",
+						"type": "long"
+					}
+				]
+			},
+
+			"client_handshake": {
+				"id": 19,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "client_address",
+						"type": "address"
+					},
+					{
+						"name": "system_addresses",
+						"type": {
+							"type": "array",
+							"base": "address",
+							"length": 10
+						}
+					},
+					{
+						"name": "ping",
+						"type": "long"
+					},
+					{
+						"name": "pong",
+						"type": "long"
+					}
+				]
+			}
+
+		},
+
+		"connection": {
+
+			"ping": {
+				"id": 0,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "time",
+						"type": "long"
+					}
+				]
+			},
+
+			"pong": {
+				"id": 3,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "time",
+						"type": "long"
+					}
+				]
+			},
+
+			"encapsulated": {
+				"id": [128, 132, 136, 140],
+				"default_id": 132,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "count",
+						"type": "triad"
+					},
+					{
+						"name": "encapsulated_data",
+						"type": "encapsulation"
+					}
+				]
+			}
+
+		},
+
+		"play": {
+
+			"login": {
+				"id": 1,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "protocol",
+						"type": "uint"
+					},
+					{
+						"name": "education_edition",
+						"type": "bool"
+					},
+					{
+						"name": "body",
+						"type": "string"
+					}
+				]
+			},
+
+			"play_status": {
+				"id": 2,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "status",
+						"type": "uint"
+					}
+				]
+			},
+
+			"encryption_request": {
+				"id": 3,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "key",
+						"type": "short_string"
+					},
+					{
+						"name": "verification",
+						"type": "short_string"
+					}
+				]
+			},
+
+			"encryption_response": {
+				"id": 4,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": []
+			},
+
+			"disconnect": {
+				"id": 5,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hide_disconnection_screen",
+						"type": "bool"
+					},
+					{
+						"name": "message",
+						"type": "string"
+					}
+				]
+			},
+
+			"batch": {
+				"id": 6,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "compressed_packets",
+						"type": "string"
+					}
+				]
+			},
+
+			"resource_packs_info": null,
+
+			"resource_pack_stack": null,
+
+			"resource_pack_client_response": null,
+
+			"text": {
+				"id": 10,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "type",
+						"type": "ubyte"
+					},
+					{
+						"name": "messages",
+						"type": {
+							"type": "array",
+							"base": "string",
+							"length": 2
+						}
+					}
+				]
+			},
+
+			"set_time": {
+				"id": 11,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "time",
+						"type": "varint"
+					},
+					{
+						"name": "do_daylight_cycle",
+						"type": "bool"
+					}
+				]
+			},
+
+			"start_game": {
+				"id": 12,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "runtime_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "yaw",
+						"type": "float"
+					},
+					{
+						"name": "pitch",
+						"type": "float"
+					},
+					{
+						"name": "seed",
+						"type": "varint"
+					},
+					{
+						"name": "dimension",
+						"type": "varint"
+					},
+					{
+						"name": "generator",
+						"type": "varint"
+					},
+					{
+						"name": "world_gamemode",
+						"type": "varint"
+					},
+					{
+						"name": "difficulty",
+						"type": "varuint"
+					},
+					{
+						"name": "spawn_position",
+						"type": "varint{xyz}"
+					},
+					{
+						"name": "loaded_in_creative",
+						"type": "bool"
+					},
+					{
+						"name": "time",
+						"type": "varint"
+					},
+					{
+						"name": "education_mode",
+						"type": "bool"
+					},
+					{
+						"name": "rain_level",
+						"type": "float"
+					},
+					{
+						"name": "lighting_level",
+						"type": "float"
+					},
+					{
+						"name": "cheats_enabled",
+						"type": "bool"
+					},
+					{
+						"name": "texture_required",
+						"type": "bool"
+					},
+					{
+						"name": "server_vendor",
+						"type": "string"
+					},
+					{
+						"name": "world_name",
+						"type": "string"
+					}
+				]
+			},
+
+			"add_player": {
+				"id": 13,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "player_uuid",
+						"type": "uuid"
+					},
+					{
+						"name": "username",
+						"type": "string"
+					},
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "runtime_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "motion",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "yaw",
+						"type": "float"
+					},
+					{
+						"name": "head_yaw",
+						"type": "float"
+					},
+					{
+						"name": "pitch",
+						"type": "float"
+					},
+					{
+						"name": "held_item",
+						"type": "slot"
+					},
+					{
+						"name": "metadata",
+						"type": "metadata"
+					}
+				]
+			},
+
+			"add_entity": {
+				"id": 14,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "runtime_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "type",
+						"type": "varuint"
+					},
+					{
+						"name": "position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "yaw",
+						"type": "float"
+					},
+					{
+						"name": "pitch",
+						"type": "float"
+					},
+					{
+						"name": "attributes",
+						"type": "attribute[]"
+					},
+					{
+						"name": "metadata",
+						"type": "metadata"
+					},
+					{
+						"name": "links",
+						"type": "entity_id[]"
+					}
+				]
+			},
+
+			"remove_entity": {
+				"id": 15,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					}
+				]
+			},
+
+			"add_item_entity": {
+				"id": 16,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "runtime_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "item",
+						"type": "slot"
+					},
+					{
+						"name": "position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "motion",
+						"type": "float{xyz}"
+					}
+				]
+			},
+
+			"add_hanging_entity": {
+				"id": 17,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "runtime_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "position",
+						"type": "varint{xyz}"
+					},
+					{
+						"name": "unknown",
+						"type": "varint"
+					}
+				]
+			},
+
+			"take_item_entity": {
+				"id": 18,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "entity_picked",
+						"type": "entity_id"
+					},
+					{
+						"name": "collector",
+						"type": "entity_id"
+					}
+				]
+			},
+
+			"move_entity": {
+				"id": 19,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "pitch",
+						"type": "byte"
+					},
+					{
+						"name": "head_yaw",
+						"type": "ubyte"
+					},
+					{
+						"name": "yaw",
+						"type": "ubyte"
+					}
+				]
+			},
+
+			"move_player": {
+				"id": 20,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "yaw",
+						"type": "float"
+					},
+					{
+						"name": "head_yaw",
+						"type": "float"
+					},
+					{
+						"name": "pitch",
+						"type": "float"
+					},
+					{
+						"name": "mode",
+						"type": "ubyte"
+					},
+					{
+						"name": "on_ground",
+						"type": "bool"
+					}
+				]
+			},
+
+			"rider_jump": {
+				"id": 21,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "rider",
+						"type": "entity_id"
+					}
+				]
+			},
+
+			"remove_block": {
+				"id": 22,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "position",
+						"type": "varint{xyz}"
+					}
+				]
+			},
+
+			"update_block": {
+				"id": 23,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "position",
+						"type": "varint{xyz}"
+					},
+					{
+						"name": "block",
+						"type": "varuint"
+					},
+					{
+						"name": "flags_and_meta",
+						"type": "varuint"
+					}
+				]
+			},
+
+			"add_painting": {
+				"id": 24,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "runtime_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "position",
+						"type": "varint{xyz}"
+					},
+					{
+						"name": "direction",
+						"type": "varint"
+					},
+					{
+						"name": "title",
+						"type": "string"
+					}
+				]
+			},
+
+			"explode": {
+				"id": 25,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "radius",
+						"type": "float"
+					},
+					{
+						"name": "destroyed_blocks",
+						"type": "varint{xyz}"
+					}
+				]
+			},
+
+			"level_sound_event": {
+				"id": 26,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "sound",
+						"type": "ubtye"
+					},
+					{
+						"name": "position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "volume",
+						"type": "varuint"
+					},
+					{
+						"name": "pitch",
+						"type": "varint"
+					},
+					{
+						"name": "unknown",
+						"type": "bool"
+					}
+				]
+			},
+
+			"level_event": {
+				"id": 27,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "event_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "data",
+						"type": "varint"
+					}
+				]
+			},
+
+			"block_event": {
+				"id": 28,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "position",
+						"type": "varint{xyz}"
+					},
+					{
+						"name": "data",
+						"type": {
+							"type": "array",
+							"base": "varint",
+							"length": 2
+						}
+					}
+				]
+			},
+
+
+			"entity_event": {
+				"id": 29,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "event_id",
+						"type": "ubtye"
+					},
+					{
+						"name": "unknown",
+						"type": "varint"
+					}
+				]
+			},
+
+			"mob_effect": {
+				"id": 30,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "event_id",
+						"type": "ubyte"
+					},
+					{
+						"name": "effect",
+						"type": "varint"
+					},
+					{
+						"name": "amplifier",
+						"type": "varint"
+					},
+					{
+						"name": "particles",
+						"type": "bool"
+					},
+					{
+						"name": "duration",
+						"type": "varint"
+					}
+				]
+			},
+
+			"update_attributes": {
+				"id": 31,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "attributes",
+						"type": "attribute[]"
+					}
+				]
+			},
+
+			"mob_equipment": {
+				"id": 32,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "item",
+						"type": "slot"
+					},
+					{
+						"name": "slot",
+						"type": "ubyte"
+					},
+					{
+						"name": "selected_slot",
+						"type": "ubyte"
+					},
+					{
+						"name": "unknown",
+						"type": "ubyte"
+					}
+				]
+			},
+
+			"mob_armor_equipment": {
+				"id": 33,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "helmet",
+						"type": "slot"
+					},
+					{
+						"name": "chestplate",
+						"type": "slot"
+					},
+					{
+						"name": "leggings",
+						"type": "slot"
+					},
+					{
+						"name": "boots",
+						"type": "slot"
+					}
+				]
+			},
+
+			"interact": {
+				"id": 34,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "action",
+						"type": "ubtye"
+					},
+					{
+						"name": "target",
+						"type": "entity_id"
+					}
+				]
+			},
+
+			"use_item": {
+				"id": 35,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "block_position",
+						"type": "varint{xyz}"
+					},
+					{
+						"name": "face",
+						"type": "varint"
+					},
+					{
+						"name": "face_position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "player_position",
+						"type": "float{xyz}"
+					},
+					{
+						"name": "slot",
+						"type": "varint"
+					},
+					{
+						"name": "item",
+						"type": "slot"
+					}
+				]
+			},
+
+			"player_action": {
+				"id": 36,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "action",
+						"type": "varint"
+					},
+					{
+						"name": "position",
+						"type": "varint{xyz}"
+					},
+					{
+						"name": "face",
+						"type": "varint"
+					}
+				]
+			},
+
+			"hurt_armor": {
+				"id": 37,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "health",
+						"type": "varint"
+					}
+				]
+			}
+
+		}
+
+	}
+
+}

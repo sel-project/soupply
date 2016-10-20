@@ -1,7 +1,7 @@
 {
 
 	"__game": "Minecraft: Pocket Edition",
-	"__protocol": 81,
+	"__protocol": 82,
 	"__website": "https://github.com/sel-project/sel-utils",
 	
 	"constants": {
@@ -96,7 +96,7 @@
 			"allow_mvp": 8,
 			"auto_jump": 32,
 			"allow_flight": 128,
-			"no_clip": 256,
+			"no_clip": 256
 		},
 		
 		"full_chunk_data": {
