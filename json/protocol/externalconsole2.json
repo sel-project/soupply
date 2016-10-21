@@ -1,24 +1,14 @@
 {
 
 	"__software": "External Console",
-	"__protocol": 1,
+	"__protocol": 2,
 	"__website": "https://github.com/sel-project/sel-utils",
 
 	"encoding": {
 
 		"id": "ubyte",
 
-		"array_length": "uint",
-		
-		"types": {
-		
-			"string": {
-				"type": "array",
-				"base": "char",
-				"array_length": "ushort"
-			}
-		
-		}
+		"array_length": "uint"
 
 	},
 
@@ -62,6 +52,10 @@
 					{
 						"name": "api",
 						"type": "uint"
+					},
+					{
+						"name": "connected_nodes",
+						"type": "string[]"
 					}
 				]
 			}
@@ -98,14 +92,38 @@
 
 		"play": {
 
-			"console_messages": {
+			"console_message": {
 				"id": 3,
 				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "node",
+						"type": "string"
+					},
+					{
+						"name": "timestamp",
+						"type": "ulong"
+					},
+					{
+						"name": "logger",
+						"type": "string"
+					},
+					{
+						"name": "message",
+						"type": "string"
+					}
+				]
+			},
+
+			"command": {
+				"id": 4,
+				"clientbound": false,
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "messages",
-						"type": "string[]"
+						"name": "command",
+						"type": "string"
 					}
 				]
 			},
@@ -143,11 +161,11 @@
 					},
 					{
 						"name": "upload",
-						"type": "ulong"
+						"type": "uint"
 					},
 					{
 						"name": "download",
-						"type": "ulong"
+						"type": "uint"
 					},
 					{
 						"name": "ram",
@@ -156,6 +174,22 @@
 					{
 						"name": "cpu",
 						"type": "float"
+					}
+				]
+			},
+
+			"update_nodes": {
+				"id": 6,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "action",
+						"type": "ubyte"
+					},
+					{
+						"name": "node_name",
+						"type": "string"
 					}
 				]
 			}

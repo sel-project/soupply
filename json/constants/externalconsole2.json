@@ -1,0 +1,18 @@
+{
+
+	"__software": "External Console",
+	"__protocol": 2,
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"constants": {
+
+		"update_nodes": {
+			"action": {
+				"remove": 0,
+				"add": 1
+			}
+		}
+
+	}
+
+}
