@@ -8,9 +8,12 @@ import std.string;
 
 void main(string[] args) {
 
+	if(exists("min")) rmdirRecurse("min");
+	mkdir("min");
+
 	foreach(string path ; dirEntries("", SpanMode.breadth)) {
-		if(path.isFile && path.endsWith(".json") && !path.endsWith(".min.json")) {
-			string dest = path[0..$-5] ~ ".min.json";
+		if(path.isFile && path.endsWith(".json") && !path.startsWith("min" ~ dirSeparator)) {
+			string dest = "min" ~ dirSeparator ~ path.replace(dirSeparator, ".");
 			auto file = read(path);
 			size_t size = file.length;
 			auto json = minimize(parseJSON(cast(string)file));

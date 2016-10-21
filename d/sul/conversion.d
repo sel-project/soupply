@@ -6,7 +6,7 @@ import std.string : toLower, toUpper;
 
 import sul.json;
 
-static const UtilsJSON(string type, string game, size_t protocol, bool min=true) = parseJSON(minimize(import(type ~ dirSeparator ~ game ~ to!string(protocol) ~ (min ? ".min" : "") ~ ".json")));
+static const UtilsJSON(string type, string game, size_t protocol, bool min=true) = parseJSON(minimize(import(type ~ "." ~ game ~ to!string(protocol) ~ ".json")));
 
 @property string toCamelCase(string str, bool cap=false) {
 	string ret = "";
