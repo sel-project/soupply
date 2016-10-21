@@ -33,8 +33,6 @@
 				"length": 16
 			},
 
-			"string": "char[]",
-
 			"short_string": {
 				"type": "array",
 				"base": "char",
@@ -51,7 +49,7 @@
 					{
 						"name": "ip_bytes",
 						"type": "remaining_bytes",
-						"__comment": "4 bytes for ipv6, 6 for ipv6. Every byte is xor-ed with 255"
+						"__comment": "4 bytes for ipv4, 6 for ipv6. Every byte is xor-ed with 255"
 					},
 					{
 						"name": "port",
@@ -61,12 +59,6 @@
 			},
 
 			"entity_id": "varuint",
-
-			"uuid": {
-				"type": "array",
-				"base": "ubyte",
-				"length": 16
-			},
 
 			"slot": {
 				"type": "struct",

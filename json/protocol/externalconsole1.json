@@ -1,0 +1,201 @@
+{
+
+	"__software": "External Console",
+	"__protocol": 1,
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"encoding": {
+
+		"id": "ubyte",
+
+		"array_length": "uint"
+
+	},
+
+	"packets": {
+
+		"login": {
+
+			"auth": {
+				"id": 1,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "password",
+						"type": "string"
+					},
+					{
+						"name": "commands_permission",
+						"type": "bool"
+					}
+				]
+			},
+
+			"welcome": {
+				"id": 1,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "accepted",
+						"type": "bool"
+					},
+					{
+						"name": "software",
+						"type": "string"
+					},
+					{
+						"name": "software_version",
+						"type": "string"
+					},
+					{
+						"name": "api",
+						"type": "uint"
+					},
+					{
+						"name": "connected_nodes",
+						"type": "string[]"
+					}
+				]
+			}
+
+		},
+
+		"status": {
+
+			"ping": {
+				"id": 2,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "ping",
+						"type": "ulong"
+					}
+				]
+			},
+
+			"pong": {
+				"id": 2,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "pong",
+						"type": "ulong"
+					}
+				]
+			}
+
+		},
+
+		"play": {
+
+			"console_message": {
+				"id": 3,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "node",
+						"type": "string"
+					},
+					{
+						"name": "timestamp",
+						"type": "ulong"
+					},
+					{
+						"name": "logger",
+						"type": "string"
+					},
+					{
+						"name": "message",
+						"type": "string"
+					}
+				]
+			},
+
+			"command": {
+				"id": 4,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "command",
+						"type": "string"
+					}
+				]
+			},
+
+			"permission_denied": {
+				"id": 4,
+				"clientbound": true,
+				"serverbound": false
+			},
+
+			"update_stats": {
+				"id": 5,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "server_name",
+						"type": "string"
+					},
+					{
+						"name": "online_players",
+						"type": "uint"
+					},
+					{
+						"name": "max_players",
+						"type": "uint"
+					},
+					{
+						"name": "uptime",
+						"type": "uint"
+					},
+					{
+						"name": "tps",
+						"type": "float"
+					},
+					{
+						"name": "upload",
+						"type": "uint"
+					},
+					{
+						"name": "download",
+						"type": "uint"
+					},
+					{
+						"name": "ram",
+						"type": "ulong"
+					},
+					{
+						"name": "cpu",
+						"type": "float"
+					}
+				]
+			},
+
+			"update_nodes": {
+				"id": 6,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "action",
+						"type": "ubyte"
+					},
+					{
+						"name": "node_name",
+						"type": "string"
+					}
+				]
+			}
+
+		}
+
+	}
+
+}
