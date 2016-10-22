@@ -58,7 +58,7 @@ enum SoftwareType {
 
 template Packets(string type, size_t protocol, SoftwareType software_type) {
 
-	mixin(packetsEnum(cast(JSONObject)UtilsJSON!("protocol", type, protocol, false), software_type == SoftwareType.client));
+	mixin(packetsEnum(cast(JSONObject)UtilsJSON!("protocol", type, protocol), software_type == SoftwareType.client));
 
 }
 
@@ -78,11 +78,11 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 	if("packets" in json && json["packets"].type == JsonType.object) {
 		foreach(string group_name, const(JSON) group; cast(JSONObject)json["packets"]) {
 			if(group.type == JsonType.object) {
-				ret ~= "static const struct " ~ toCamelCase(group_name, true) ~ "{";
+				ret ~= "static const struct " ~ toPascalCase(group_name) ~ "{";
 				foreach(string packet_name, const(JSON) packet; cast(JSONObject)group) {
 					if(packet.type == JsonType.object) {
 						JSONObject o = cast(JSONObject)packet;
-						ret ~= "alias " ~ toCamelCase(packet_name, true) ~ "=Packet!(" ~ id_type ~ "," ~ to!string((cast(JSONInteger)o["id"]).value) ~ ",";
+						ret ~= "alias " ~ toPascalCase(packet_name) ~ "=Packet!(" ~ id_type ~ "," ~ to!string((cast(JSONInteger)o["id"]).value) ~ ",";
 						ret ~= to!string((cast(JSONBoolean)o["clientbound"]) && !is_client) ~ "," ~ to!string((cast(JSONBoolean)o["serverbound"]) && is_client) ~ "," ~ array_length; 
 						if("fields" in o && o["fields"].type == JsonType.array) {
 							string[] f;

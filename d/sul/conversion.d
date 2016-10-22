@@ -6,9 +6,15 @@ import std.string : toLower, toUpper;
 
 import sul.json;
 
-static const UtilsJSON(string type, string game, size_t protocol, bool min=true) = parseJSON(minimize(import(type ~ "." ~ game ~ to!string(protocol) ~ ".json")));
+template File(string type, string game, size_t protocol) {
+	immutable name = type ~ "." ~ game ~ to!string(protocol) ~ ".json";
+	static assert(__traits(compiles, import(name)), "Cannot find file '" ~ name ~ "'. Run 'sel update utils' to update or install sel-utils");
+	enum File = import(name);
+}
 
-@property string toCamelCase(string str, bool cap=false) {
+static const UtilsJSON(string type, string game, size_t protocol) = parseJSON(minimize(File!(type, game, protocol)));
+
+@property string toCamelCase(string str) {
 	string ret = "";
 	bool next_up = false;
 	foreach(char c ; str.toLower.dup) {
@@ -21,5 +27,10 @@ static const UtilsJSON(string type, string game, size_t protocol, bool min=true)
 			ret ~= c;
 		}
 	}
-	return cap && ret.length > 0 ? toUpper(ret[0..1]) ~ ret[1..$] : ret;
+	return ret;
+}
+
+@property string toPascalCase(string str) {
+	string camel = toCamelCase(str);
+	return camel.length > 0 ? toUpper(camel[0..1]) ~ camel[1..$] : "";
 }
