@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2016 SEL
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ * 
+ */
 module sul.constants;
 
 import std.conv : to;
@@ -5,9 +19,9 @@ import std.conv : to;
 import sul.conversion;
 import sul.json;
 
-template Constants(string type, size_t protocol) {
+template Constants(string game, size_t protocol) {
 
-	mixin(constantsEnum(cast(JSONObject)UtilsJSON!("constants", type, protocol)));
+	mixin(constantsEnum(cast(JSONObject)UtilsJSON!("constants", game, protocol)));
 
 }
 

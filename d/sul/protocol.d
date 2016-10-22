@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2016 SEL
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ * 
+ */
 module sul.protocol;
 
 import std.conv : to;
@@ -56,9 +70,9 @@ enum SoftwareType {
 
 }
 
-template Packets(string type, size_t protocol, SoftwareType software_type) {
+template Packets(string game, size_t protocol, SoftwareType software_type) {
 
-	mixin(packetsEnum(cast(JSONObject)UtilsJSON!("protocol", type, protocol), software_type == SoftwareType.client));
+	mixin(packetsEnum(cast(JSONObject)UtilsJSON!("protocol", game, protocol), software_type == SoftwareType.client));
 
 }
 

@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2016 SEL
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ * 
+ */
 module sul.conversion;
 
 import std.conv : to;
@@ -6,13 +20,25 @@ import std.string : toLower, toUpper;
 
 import sul.json;
 
-template File(string type, string game, size_t protocol) {
+/**
+ * Reads a compile-time file or assserts with an helpful message.
+ * The file readed should be in the format {type}.{game}{protocol}.json
+ * and the content should be a minified JSON.
+ */
+template file(string type, string game, size_t protocol) {
 	immutable name = type ~ "." ~ game ~ to!string(protocol) ~ ".json";
-	static assert(__traits(compiles, import(name)), "Cannot find file '" ~ name ~ "'. Run 'sel update utils' to update or install sel-utils");
-	enum File = import(name);
+	static if(__traits(compiles, import(name))) {
+		enum file = import(name);
+	} else {
+		static assert(0, "Cannot find file '" ~ name ~ "'. Run 'sel update utils' to update or install sel-utils");
+	}
 }
 
-static const UtilsJSON(string type, string game, size_t protocol) = parseJSON(minimize(File!(type, game, protocol)));
+/**
+ * Reads a compile-time minified JSON file and parses it into
+ * a constants JSON object.
+ */
+static const UtilsJSON(string type, string game, size_t protocol) = parseJSON(file!(type, game, protocol));
 
 @property string toCamelCase(string str) {
 	string ret = "";

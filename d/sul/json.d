@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2016 SEL
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ * 
+ */
 module sul.json;
 
 import std.conv : ConvException, to;
@@ -39,6 +53,8 @@ public string minimize(string input) {
 }
 
 public const(JSON) parseJSON(string json) {
+
+	if(json == "null") return null;
 	
 	if(json.length >= 2 && json[0] == '{' && json[$-1] == '}') {
 		
@@ -93,7 +109,7 @@ public const(JSON) parseJSON(string json) {
 	
 	try {
 		
-		return new JSONInteger(json.to!long);
+		return new JSONInteger(json.to!ptrdiff_t);
 		
 	} catch(ConvException) {}
 	
@@ -108,7 +124,8 @@ public const(JSON) parseJSON(string json) {
 		return new JSONBoolean(json == "true");
 
 	}
-	
+
+	//TODO throw exception
 	return null;
 	
 }
@@ -192,7 +209,7 @@ alias JSONArray = JSONOf!(const(JSON)[], JsonType.array);
 
 alias JSONString = JSONOf!(string, JsonType.string);
 
-alias JSONInteger = JSONOf!(long, JsonType.integer);
+alias JSONInteger = JSONOf!(ptrdiff_t, JsonType.integer);
 
 alias JSONFloating = JSONOf!(double, JsonType.floating);
 
@@ -233,7 +250,7 @@ class JSONObject : JSONArray {
 
 }
 
-private ptrdiff_t index(T)(T search, T[] array) {
+private @safe ptrdiff_t index(T)(T search, T[] array) {
 	foreach(size_t i, T v; array) {
 		if(search == v) return i;
 	}
