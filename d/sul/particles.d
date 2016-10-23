@@ -24,5 +24,13 @@ template Particles(string game, size_t protocol) {
 }
 
 private string particlesEnum(JSONObject json) {
-	return "enum Particles {}";
+	string ret = "enum Particles : size_t{";
+	if("particles" in json && json["particles"].type == JsonType.object) {
+		foreach(string particle_name, const(JSON) particle; cast(JSONObject)json["particles"]) {
+			if(particle.type == JsonType.integer) {
+				ret ~= toCamelCase(particle_name) ~ "=" ~ to!string((cast(JSONInteger)particle).value) ~ ",";
+			}
+		}
+	}
+	return ret ~ "}";
 }
