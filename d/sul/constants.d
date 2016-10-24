@@ -27,7 +27,7 @@ template Constants(string game, size_t protocol) {
 
 // Constants.PacketName.fieldName.fieldValue
 private @property string constantsEnum(JSONObject json) {
-	string ret = "const struct Constants {";
+	string ret = "const struct Constants{";
 	if("constants" in json && json["constants"].type == JsonType.object) {
 		foreach(string packet_name, const(JSON) value; cast(JSONObject)json["constants"]) {
 			if(value.type == JsonType.object) {

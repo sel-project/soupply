@@ -25,10 +25,14 @@ import sul.json;
  * The file readed should be in the format {type}.{game}{protocol}.json
  * and the content should be a minified JSON.
  */
-template file(string type, string game, size_t protocol) {
-	immutable name = type ~ "." ~ game ~ to!string(protocol) ~ ".json";
+alias file(string type, string game, size_t protocol) = fileImpl!(type ~ "." ~ game ~ to!string(protocol) ~ ".json");
+
+/// ditto
+alias file(string type) = fileImpl!(type ~ ".json");
+
+template fileImpl(string name) {
 	static if(__traits(compiles, import(name))) {
-		enum file = import(name);
+		enum fileImpl = import(name);
 	} else {
 		static assert(0, "Cannot find file '" ~ name ~ "'. Run 'sel update utils' to update or install sel-utils");
 	}

@@ -63,6 +63,29 @@ struct Packet(T, size_t pid, bool can_encode, bool can_decode, L, E...) {
 
 }
 
+mixin template SulEncoding(L array_length) {
+
+	//TODO functions for default types
+
+	void write(T)(T[] value, ref ubyte[] buffer) {
+		write!L(createId(value.length), buffer);
+		foreach(T t ; value) {
+			write!T(v, buffer);
+		}
+	}
+
+}
+
+template createId(T) {
+	static if(is(T == class)) {
+		T createId(size_t id){ return new T(id); }
+	} else static if(is(T == struct)) {
+		T createId(size_t id){ return T(id); }
+	} else {
+		T createId(size_t id){ return cast(T)id; }
+	}
+}
+
 enum SoftwareType {
 
 	client,
@@ -121,3 +144,94 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 	}
 	return ret ~ "}";
 }
+
+/*
+
+const struct Packets {
+
+	const static struct Types {
+	
+		static struct Slot {
+			varint id;
+			varint meta_count;
+			nbt nbt;
+		}
+
+	}
+
+	const static struct Encoding {
+
+		mixin SulEncoding("varint");
+
+	}
+
+	const static struct Status {
+
+		static struct Ping {
+	
+			enum packetId = cast(ubyte)1;
+
+			public Tuple!(long, "time") tuple;
+
+			public void decode(bool read_id=true)(ubyte[] buffer) {
+				static if(read_id) {
+					Encoding.read!ubyte(buffer);
+				}
+				this.time = Encoding.read!long(buffer);
+			}
+
+			alias tuple this;
+
+		}
+
+		static struct Pong {
+	
+			enum packetId = cast(ubyte)28;
+
+			public Tuple!(long, "time") tuple;
+
+			public ubyte[] encode(bool write_id=true)() {
+				ubyte[] buffer;
+				static if(write_id) {
+					Encoding.write!ubyte(packetId, buffer);
+				}
+				Encoding.write!long(this.time, buffer);
+				return buffer;
+			}
+
+			alias tuple this;
+
+		}
+
+	}
+
+	const static struct Play {
+	
+		static struct Login {
+	
+			enum packetId = cast(ubyte)1;
+
+			public Tuple!(uint, "protocol", uybte, "gameVersion", string, "body");
+
+			public void decode(bool read_id=true)(ubyte[] buffer) {
+				static if(read_id) {
+					Encoding.read!ubyte(buffer);
+				}
+				this.protocol = Encoding.read!uint(buffer);
+				this.gameVersion = Encoding.read!ubyte(buffer);
+				this.body = Encoding.read!string(buffer);
+			}
+
+			alias tuple this;
+
+		}
+
+	}
+
+}
+
+Packets.Status.Pong(21);
+
+Packets.Play.Login().decode([1, 0, 0, 0, 91]);
+
+*/

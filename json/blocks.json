@@ -1,0 +1,896 @@
+{
+
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"blocks": {
+
+		"stone": {
+			"sel": 1,
+			"pocket": 1,
+			"minecraft": 1,
+			"blast_resistance": 30,
+			"hardness": 1.5,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "cobblestone",
+				"silk_touch": "itself"
+			}
+		},
+
+		"granite": {
+			"sel": 2,
+			"pocket": [1, 1],
+			"minecraft": [1, 1],
+			"blast_resistance": 30,
+			"hardness": 1.5,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"polished_granite": {
+			"sel": 3,
+			"pocket": [1, 2],
+			"minecraft": [1, 2],
+			"blast_resistance": 30,
+			"hardness": 1.5,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"diorite": {
+			"sel": 4,
+			"pocket": [1, 3],
+			"minecraft": [1, 3],
+			"blast_resistance": 30,
+			"hardness": 1.5,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"polished_diorite": {
+			"sel": 5,
+			"pocket": [1, 4],
+			"minecraft": [1, 4],
+			"blast_resistance": 30,
+			"hardness": 1.5,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"andesite": {
+			"sel": 6,
+			"pocket": [1, 5],
+			"minecraft": [1, 5],
+			"blast_resistance": 30,
+			"hardness": 1.5,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"polished_andesite": {
+			"sel": 7,
+			"pocket": [1, 5],
+			"minecraft": [1, 6],
+			"blast_resistance": 30,
+			"hardness": 1.5,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"grass_block": {
+			"sel": 8,
+			"pocket": 2,
+			"minecraft": 2,
+			"blast_resistance": 3,
+			"hardness": 0.6,
+			"tool": "shovel",
+			"drops": {
+				"*": "dirt",
+				"silk_touch": "grass_block"
+			},
+			"spreading": {
+				"section": {
+					"x": 1,
+					"y": {
+						"top": 1,
+						"bottom": 2
+					},
+					"z": 1
+				},
+				"source_required_light": 9,
+				"target_required_light": 4,
+				"targets": ["dirt"],
+				"spread": "itself"
+			}
+		},
+
+		"dirt": {
+			"sel": 9,
+			"pocket": 3,
+			"minecraft": 3,
+			"blast_resistance": 2.5,
+			"hardness": 0.5,
+			"tool": "shovel",
+			"drops": "dirt"
+		},
+
+		"coarse_dirt": {
+			"sel": 10,
+			"pocket": null,
+			"minecraft": [3, 1],
+			"blast_resistance": 2.5,
+			"hardness": 0.5,
+			"tool": "shovel",
+			"drops": "coarse_dirt"
+		},
+
+		"podzol": {
+			"sel": 11,
+			"pocket": 243,
+			"minecraft": [3, 2],
+			"blast_resistance": 2.5,
+			"hardness": 0.5,
+			"tool": "shovel",
+			"drops": {
+				"*": "dirt",
+				"silk_touch": "podzol"
+			}
+		},
+
+		"cobblestone": {
+			"sel": 12,
+			"pocket": 4,
+			"minecraft": 4,
+			"blast_resistance": 30,
+			"hardness": 2,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "cobblestone"
+			}
+		},
+
+		"planks": {
+			"blast_resistance": 15,
+			"hardness": 2,
+			"flammable": true,
+			"tool": "axe",
+			"drops": "itself",
+			"blocks": {
+				"oak": {
+					"sel": 13,
+					"pocket": [5, 0],
+					"minecraft": [5, 0]
+				},
+				"spruce": {
+					"sel": 14,
+					"pocket": [5, 1],
+					"minecraft": [5, 1]
+				},
+				"birch": {
+					"sel": 15,
+					"pocket": [5, 2],
+					"minecraft": [5, 2]
+				},
+				"jungle": {
+					"sel": 16,
+					"pocket": [5, 3],
+					"minecraft": [5, 3]
+				},
+				"acacia": {
+					"sel": 16,
+					"pocket": [5, 4],
+					"minecraft": [5, 4]
+				},
+				"dark_oak": {
+					"sel": 17,
+					"pocket": [5, 5],
+					"minecraft": [5, 5]
+				}
+			}
+		},
+
+		"sapling": {
+			"drops": "itself",
+			"flammable": true,
+			"shape": null,
+			"blocks": {
+				"oak": {
+					"sel": 18,
+					"pocket": [6, 0],
+					"minecraft": [6, 0]
+				},
+				"spruce": {
+					"sel": 19,
+					"pocket": [6, 1],
+					"minecraft": [6, 1]
+				},
+				"birch": {
+					"sel": 20,
+					"pocket": [6, 2],
+					"minecraft": [6, 2]
+				},
+				"jungle": {
+					"sel": 21,
+					"pocket": [6, 3],
+					"minecraft": [6, 3]
+				},
+				"acacia": {
+					"sel": 22,
+					"pocket": [6, 4],
+					"minecraft": [6, 4]
+				},
+				"dark_oak": {
+					"sel": 23,
+					"pocket": [6, 5],
+					"minecraft": [6, 5]
+				}
+			}
+		},
+
+		"bedrock": {
+			"sel": 24,
+			"pocket": 7,
+			"minecraft": 7,
+			"indestructible": true
+		},
+
+		"water": {
+			"blast_resistance": 500,
+			"fluid": {
+
+			}
+		},
+
+		"lava": {},
+
+		"sand": {
+			"sel": 57,
+			"pocket": 12,
+			"minecraft": 12,
+			"blast_resistance": 2.5,
+			"hardness": 0.5,
+			"gravity": true,
+			"tool": "shovel",
+			"drops": "itself"
+		},
+
+		"red_sand": {
+			"sel": 58,
+			"pocket": [12, 1],
+			"minecraft": [12, 1],
+			"blast_resistance": 2.5,
+			"hardness": 0.5,
+			"gravity": true,
+			"tool": "shovel",
+			"drops": "itself"
+		},
+
+		"gravel": {
+			"sel": 59,
+			"pocket": 13,
+			"minecraft": 13,
+			"blast_resistance": 3,
+			"hardness": 0.6,
+			"gravity": true,
+			"tool": "shovel",
+			"drops": {
+				"*": [
+					{
+						"item": "itself",
+						"chance": [90, 86, 75, 0]
+					},
+					{
+						"item": "flint",
+						"chance": [10, 14, 25, 100]
+					}
+				],
+				"gravity": "itself"
+			}
+		},
+
+		"gold_ore": {
+			"sel": 60,
+			"pocket": 14,
+			"minecraft": 14,
+			"blast_resistance": 15,
+			"hardness": 3,
+			"tool": {
+				"type": "pickaxe",
+				"material": "iron"
+			},
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"iron_ore": {
+			"sel": 61,
+			"pocket": 15,
+			"minecraft": 15,
+			"blast_resistance": 30,
+			"hardness": 3,
+			"tool": {
+				"type": "pickaxe",
+				"material": "stone"
+			},
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"coal_ore": {
+			"sel": 62,
+			"pocket": 16,
+			"minecraft": 16,
+			"blast_resistance": 15,
+			"hardness": 3,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": {
+					"item": "coal",
+					"count": 1,
+					"fortune": 1,
+					"experience": {
+						"min": 0,
+						"max": 2
+					}
+				},
+				"silk_touch": "itself"
+			}
+		},
+
+		"wood": {
+			"blast_resistance": 10,
+			"hardness": 2,
+			"flammable": true,
+			"tool": "axe",
+			"blocks": {
+				"oak": {
+					"drops": "wood.oak",
+					"blocks": {
+						"up_down": {
+							"sel": 63,
+							"pocket": [17, 0],
+							"minecraft": [17, 0]
+						},
+						"east_west": {
+							"sel": 64,
+							"pocket": [17, 1],
+							"minecraft": [17, 1]
+						},
+						"north_south": {
+							"sel": 65,
+							"pocket": [17, 2],
+							"minecraft": [17, 2]
+						},
+						"bark": {
+							"sel": 66,
+							"pocket": [17, 3],
+							"minecraft": [17, 3]
+						}
+					}
+				},
+				"spruce": {
+					"drops": "wood.spruce",
+					"blocks": {
+						"up_down": {
+							"sel": 67,
+							"pocket": [17, 4],
+							"minecraft": [17, 5]
+						},
+						"east_west": {
+							"sel": 68,
+							"pocket": [17, 5],
+							"minecraft": [17, 5]
+						},
+						"north_south": {
+							"sel": 69,
+							"pocket": [17, 6],
+							"minecraft": [17, 6]
+						},
+						"bark": {
+							"sel": 70,
+							"pocket": [17, 7],
+							"minecraft": [17, 7]
+						}
+					}
+				},
+				"birch": {
+					"drops": "wood.birch",
+					"blocks": {
+						"up_down": {
+							"sel": 71,
+							"pocket": [17, 8],
+							"minecraft": [17, 8]
+						},
+						"east_west": {
+							"sel": 72,
+							"pocket": [17, 9],
+							"minecraft": [17, 9]
+						},
+						"north_south": {
+							"sel": 73,
+							"pocket": [17, 10],
+							"minecraft": [17, 10]
+						},
+						"bark": {
+							"sel": 74,
+							"pocket": [17, 11],
+							"minecraft": [17, 11]
+						}
+					}
+				},
+				"jungle": {
+					"drops": "wood.jungle",
+					"blocks": {
+						"up_down": {
+							"sel": 75,
+							"pocket": [17, 12],
+							"minecraft": [17, 12]
+						},
+						"east_west": {
+							"sel": 76,
+							"pocket": [17, 13],
+							"minecraft": [17, 13]
+						},
+						"north_south": {
+							"sel": 77,
+							"pocket": [17, 14],
+							"minecraft": [17, 14]
+						},
+						"bark": {
+							"sel": 78,
+							"pocket": [17, 15],
+							"minecraft": [17, 15]
+						}
+					}
+				},
+				"acacia": {
+					"drops": "wood.acacia",
+					"blocks": {
+						"up_down": {
+							"sel": 79,
+							"pocket": [162, 0],
+							"minecraft": [162, 0]
+						},
+						"east_west": {
+							"sel": 80,
+							"pocket": [162, 1],
+							"minecraft": [162, 1]
+						},
+						"north_south": {
+							"sel": 81,
+							"pocket": [162, 2],
+							"minecraft": [162, 2]
+						},
+						"bark": {
+							"sel": 82,
+							"pocket": [162, 3],
+							"minecraft": [162, 3]
+						}
+					}
+				},
+				"dark_oak": {
+					"drops": "wood.dark_oak",
+					"blocks": {
+						"up_down": {
+							"sel": 83,
+							"pocket": [162, 4],
+							"minecraft": [162, 4]
+						},
+						"east_west": {
+							"sel": 84,
+							"pocket": [162, 5],
+							"minecraft": [162, 5]
+						},
+						"north_south": {
+							"sel": 85,
+							"pocket": [162, 6],
+							"minecraft": [162, 6]
+						},
+						"bark": {
+							"sel": 86,
+							"pocket": [162, 7],
+							"minecraft": [162, 7]
+						}
+					}
+				}
+			}
+		},
+
+		"leaves": {
+			"blast_resistance": 1,
+			"flammable": true,
+			"tool": "shears",
+			"blocks": {
+				"oak": {
+					"drops": {
+						"shears": "leaves.oak",
+						"*silk_touch": "leaves.oak",
+						"*": [
+							{
+								"item": "sapling.oak",
+								"chance": [5, 6.25, 8.33, 10]
+							},
+							{
+								"item": "apple",
+								"chance": [0.5, 0.556, 0.625, 0.833]
+							}
+						]
+					},
+					"blocks": {
+						"default": {
+							"sel": 87,
+							"pocket": [18, 0],
+							"minecraft": [18, 0]
+						},
+						"no_decay": {
+							"sel": 88,
+							"pocket": [18, 4],
+							"minecraft": [18, 4]
+						},
+						"check_decay": {
+							"sel": 89,
+							"pocket": [18, 8],
+							"minecraft": [18, 8]
+						},
+						"no_decay_check_decay": {
+							"sel": 90,
+							"pocket": [18, 12],
+							"minecraft": [18, 12]
+						}
+					}
+				},
+				"spruce": {
+					"drops": {
+						"shears": "leaves.spruce",
+						"*silk_touch": "leaves.spruce",
+						"*": {
+							"item": "sapling.spruce",
+							"chance": [5, 6.25, 8.33, 10]
+						}
+					},
+					"blocks": {
+						"default": {
+							"sel": 91,
+							"pocket": [18, 1],
+							"minecraft": [18, 1]
+						},
+						"no_decay": {
+							"sel": 92,
+							"pocket": [18, 5],
+							"minecraft": [18, 5]
+						},
+						"check_decay": {
+							"sel": 93,
+							"pocket": [18, 9],
+							"minecraft": [18, 9]
+						},
+						"no_decay_check_decay": {
+							"sel": 94,
+							"pocket": [18, 13],
+							"minecraft": [18, 13]
+						}
+					}
+				},
+				"birch": {
+					"drops": {
+						"shears": "leaves.birch",
+						"*silk_touch": "leaves.birch",
+						"*": {
+							"item": "sapling.birch",
+							"chance": [5, 6.25, 8.33, 10]
+						}
+					},
+					"blocks": {
+						"default": {
+							"sel": 95,
+							"pocket": [18, 2],
+							"minecraft": [18, 2]
+						},
+						"no_decay": {
+							"sel": 96,
+							"pocket": [18, 6],
+							"minecraft": [18, 6]
+						},
+						"check_decay": {
+							"sel": 97,
+							"pocket": [18, 10],
+							"minecraft": [18, 10]
+						},
+						"no_decay_check_decay": {
+							"sel": 98,
+							"pocket": [18, 14],
+							"minecraft": [18, 14]
+						}
+					}
+				},
+				"jungle": {
+					"drops": {
+						"shears": "leaves.jungle",
+						"*silk_touch": "leaves.jungle",
+						"*": {
+							"item": "sapling.jungle",
+							"chance": [2.5, 2.78, 3.125, 4.17]
+						}
+					},
+					"blocks": {
+						"default": {
+							"sel": 99,
+							"pocket": [18, 3],
+							"minecraft": [18, 3]
+						},
+						"no_decay": {
+							"sel": 100,
+							"pocket": [18, 7],
+							"minecraft": [18, 7]
+						},
+						"check_decay": {
+							"sel": 101,
+							"pocket": [18, 11],
+							"minecraft": [18, 11]
+						},
+						"no_decay_check_decay": {
+							"sel": 102,
+							"pocket": [18, 15],
+							"minecraft": [18, 15]
+						}
+					}
+				},
+				"acacia": {
+					"drops": {
+						"shears": "leaves.acacia",
+						"*silk_touch": "leaves.acacia",
+						"*": {
+							"item": "sapling.acacia",
+							"chance": [5, 6.25, 8.33, 10]
+						}
+					},
+					"blocks": {
+						"default": {
+							"sel": 103,
+							"pocket": [161, 0],
+							"minecraft": [161, 0]
+						},
+						"no_decay": {
+							"sel": 104,
+							"pocket": [161, 4],
+							"minecraft": [161, 4]
+						},
+						"check_decay": {
+							"sel": 105,
+							"pocket": [161, 8],
+							"minecraft": [161, 8]
+						},
+						"no_decay_check_decay": {
+							"sel": 106,
+							"pocket": [161, 12],
+							"minecraft": [161, 12]
+						}
+					}
+				},
+				"dark_oak": {
+					"drops": {
+						"shears": "leaves.dark_oak",
+						"*silk_touch": "leaves.dark_oak",
+						"*": [
+							{
+								"item": "sapling.dark_oak",
+								"chance": [5, 6.25, 8.33, 10]
+							},
+							{
+								"item": "apple",
+								"chance": [0.5, 0.556, 0.625, 0.833]
+							}
+						]
+					},
+					"blocks": {
+						"default": {
+							"sel": 107,
+							"pocket": [161, 1],
+							"minecraft": [161, 1]
+						},
+						"no_decay": {
+							"sel": 108,
+							"pocket": [161, 5],
+							"minecraft": [161, 5]
+						},
+						"check_decay": {
+							"sel": 109,
+							"pocket": [161, 9],
+							"minecraft": [161, 9]
+						},
+						"no_decay_check_decay": {
+							"sel": 110,
+							"pocket": [161, 13],
+							"minecraft": [161, 13]
+						}
+					}
+				}
+			}
+		},
+
+		"sponge": {
+			"sel": 111,
+			"pocket": 19,
+			"minecraft": 19,
+			"blast_resistance": 3,
+			"hardness": 0.6,
+			"drops": "itself",
+			"absorbs": {
+				"block": "water",
+				"radius": 7,
+				"max": 65,
+				"becomes": "wet_sponge"
+			}
+		},
+
+		"wet_sponge": {
+			"sel": 112,
+			"pocket": [19, 1],
+			"minecraft": [19, 1],
+			"blast_resistance": 3,
+			"hardness": 0.6,
+			"drops": "itself"
+		},
+
+		"glass": {
+			"sel": 113,
+			"pocket": 20,
+			"minecraft": 20,
+			"transparent": true,
+			"blast_resistance": 1.5,
+			"hardness": 0.3,
+			"drops": {
+				"*silk_touch": "itself"
+			}
+		},
+
+		"lapis_lazuli_ore": {
+			"sel": 114,
+			"pocket": 21,
+			"minecraft": 21,
+			"blast_resistance": 15,
+			"hardness": 3,
+			"tool": {
+				"type": "pickaxe",
+				"material": "stone"
+			},
+			"drops": {
+				"pickaxe": {
+					"item": "lapis_lazuli",
+					"count": {
+						"min": 4,
+						"max": 8
+					},
+					"experience": {
+						"min": 2,
+						"max": 5
+					},
+					"fortune": {
+						"type": "multiply",
+						"amount": 1
+					}
+				},
+				"silk_touch": "itself"
+			}
+		},
+
+		"lapis_lazuli_block": {
+			"sel": 115,
+			"pocket": 21,
+			"minecraft": 21,
+			"blast_resistance": 15,
+			"hardness": 3,
+			"tool": {
+				"type": "pickaxe",
+				"material": "stone"
+			},
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"dispenser": {
+			"blast_resistance": 17.5,
+			"hardness": 3.5,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "itself"
+			},
+			"tile": "dispenser",
+			"blocks": {
+				"down": {
+					"sel": 116,
+					"pocket": [21, 0],
+					"minecraft": [21, 0]
+				},
+				"up": {
+					"sel": 117,
+					"pocket": [21, 1],
+					"minecraft": [21, 1]
+				},
+				"north": {
+					"sel": 118,
+					"pocket": [21, 2],
+					"minecraft": [21, 2]
+				},
+				"south": {
+					"sel": 119,
+					"pocket": [21, 3],
+					"minecraft": [21, 3]
+				},
+				"west": {
+					"sel": 120,
+					"pocket": [21, 4],
+					"minecraft": [21, 4]
+				},
+				"east": {
+					"sel": 121,
+					"pocket": [21, 5],
+					"minecraft": [21, 5]
+				}
+			}
+		},
+
+		"sandstone": {
+			"sel": 122,
+			"pocket": 23,
+			"minecraft": 23,
+			"blast_resistance": 4,
+			"hardness": 0.8,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"chiseled_sandstone": {
+			"sel": 123,
+			"pocket": [23, 1],
+			"minecraft": [23, 1],
+			"blast_resistance": 4,
+			"hardness": 0.8,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"smooth_sandstone": {
+			"sel": 124,
+			"pocket": [23, 2],
+			"minecraft": [23, 2],
+			"blast_resistance": 4,
+			"hardness": 0.8,
+			"tool": "pickaxe",
+			"drops": {
+				"pickaxe": "itself"
+			}
+		},
+
+		"note_block": {
+			"sel": 125,
+			"pocket": 24,
+			"minecraft": 24,
+			"blast_resistance": 4,
+			"hardness": 0.8,
+			"tool": "axe",
+			"drops": "itself"
+		}
+
+	}
+
+}
