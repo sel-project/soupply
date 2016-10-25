@@ -1,5 +1,9 @@
 {
 
+	"__games": [
+		"Minecraft",
+		"Minecraft: Pocket Edition"
+	],
 	"__website": "https://github.com/sel-project/sel-utils",
 
 	"blocks": {
@@ -790,8 +794,8 @@
 
 		"lapis_lazuli_block": {
 			"sel": 115,
-			"pocket": 21,
-			"minecraft": 21,
+			"pocket": 22,
+			"minecraft": 22,
 			"blast_resistance": 15,
 			"hardness": 3,
 			"tool": {
@@ -814,41 +818,41 @@
 			"blocks": {
 				"down": {
 					"sel": 116,
-					"pocket": [21, 0],
-					"minecraft": [21, 0]
+					"pocket": [23, 0],
+					"minecraft": [23, 0]
 				},
 				"up": {
 					"sel": 117,
-					"pocket": [21, 1],
-					"minecraft": [21, 1]
+					"pocket": [23, 1],
+					"minecraft": [23, 1]
 				},
 				"north": {
 					"sel": 118,
-					"pocket": [21, 2],
-					"minecraft": [21, 2]
+					"pocket": [23, 2],
+					"minecraft": [23, 2]
 				},
 				"south": {
 					"sel": 119,
-					"pocket": [21, 3],
-					"minecraft": [21, 3]
+					"pocket": [23, 3],
+					"minecraft": [23, 3]
 				},
 				"west": {
 					"sel": 120,
-					"pocket": [21, 4],
-					"minecraft": [21, 4]
+					"pocket": [23, 4],
+					"minecraft": [23, 4]
 				},
 				"east": {
 					"sel": 121,
-					"pocket": [21, 5],
-					"minecraft": [21, 5]
+					"pocket": [23, 5],
+					"minecraft": [23, 5]
 				}
 			}
 		},
 
 		"sandstone": {
 			"sel": 122,
-			"pocket": 23,
-			"minecraft": 23,
+			"pocket": 24,
+			"minecraft": 24,
 			"blast_resistance": 4,
 			"hardness": 0.8,
 			"tool": "pickaxe",
@@ -859,8 +863,8 @@
 
 		"chiseled_sandstone": {
 			"sel": 123,
-			"pocket": [23, 1],
-			"minecraft": [23, 1],
+			"pocket": [24, 1],
+			"minecraft": [24, 1],
 			"blast_resistance": 4,
 			"hardness": 0.8,
 			"tool": "pickaxe",
@@ -871,8 +875,8 @@
 
 		"smooth_sandstone": {
 			"sel": 124,
-			"pocket": [23, 2],
-			"minecraft": [23, 2],
+			"pocket": [24, 2],
+			"minecraft": [24, 2],
 			"blast_resistance": 4,
 			"hardness": 0.8,
 			"tool": "pickaxe",
@@ -883,12 +887,447 @@
 
 		"note_block": {
 			"sel": 125,
-			"pocket": 24,
-			"minecraft": 24,
+			"pocket": 25,
+			"minecraft": 25,
 			"blast_resistance": 4,
 			"hardness": 0.8,
 			"tool": "axe",
-			"drops": "itself"
+			"drops": "itself",
+			"tile": "note_block"
+		},
+
+		"bed": {
+			"blocks": {
+				"foot": {
+					"south": {
+						"sel": 126,
+						"pocket": [26, 0],
+						"minecraft": [26, 0]
+					},
+					"west": {
+						"sel": 127,
+						"pocket": [26, 1],
+						"minecraft": [26, 1]
+					},
+					"north": {
+						"sel": 128,
+						"pocket": [26, 2],
+						"minecraft": [26, 2]
+					},
+					"east": {
+						"sel": 129,
+						"pocket": [26, 3],
+						"minecraft": [26, 3]
+					}
+				},
+				"head": {
+					"south": {
+						"sel": 130,
+						"pocket": [26, 8],
+						"minecraft": [26, 8]
+					},
+					"west": {
+						"sel": 131,
+						"pocket": [26, 9],
+						"minecraft": [26, 9]
+					},
+					"north": {
+						"sel": 132,
+						"pocket": [26, 10],
+						"minecraft": [26, 10]
+					},
+					"east": {
+						"sel": 133,
+						"pocket": [26, 11],
+						"minecraft": [26, 11]
+					}
+				}
+			}
+		},
+
+		"powered_rail": {
+			"blocks": {
+				"north_south": {
+					"sel": 134,
+					"pocket": [27, 0],
+					"minecraft": [27, 0]
+				},
+				"west_east": {
+					"sel": 135,
+					"pocket": [27, 1],
+					"minecraft": [27, 1]
+				},
+				"ascending_east": {
+					"sel": 136,
+					"pocket": [27, 2],
+					"minecraft": [27, 2]
+				},
+				"ascending_west": {
+					"sel": 137,
+					"pocket": [27, 3],
+					"minecraft": [27, 3]
+				},
+				"ascending_north": {
+					"sel": 138,
+					"pocket": [27, 4],
+					"minecraft": [27, 4]
+				},
+				"ascending_south": {
+					"sel": 139,
+					"pocket": [27, 5],
+					"minecraft": [27, 5]
+				},
+				"active_north_south": {
+					"sel": 140,
+					"pocket": [27, 8],
+					"minecraft": [27, 8]
+				},
+				"active_west_east": {
+					"sel": 141,
+					"pocket": [27, 9],
+					"minecraft": [27, 9]
+				},
+				"active_ascending_west": {
+					"sel": 142,
+					"pocket": [27, 10],
+					"minecraft": [27, 10]
+				},
+				"active_ascending_north": {
+					"sel": 143,
+					"pocket": [27, 11],
+					"minecraft": [27, 11]
+				},
+				"active_ascending_south": {
+					"sel": 144,
+					"pocket": [27, 12],
+					"minecraft": [27, 12]
+				},
+				"active_ascending_east": {
+					"sel": 145,
+					"pocket": [27, 13],
+					"minecraft": [27, 13]
+				}
+			}
+		},
+
+		"detector_rail": {
+			"blocks": {
+				"north_south": {
+					"sel": 146,
+					"pocket": [28, 0],
+					"minecraft": [28, 0]
+				},
+				"west_east": {
+					"sel": 147,
+					"pocket": [28, 1],
+					"minecraft": [28, 1]
+				},
+				"ascending_east": {
+					"sel": 148,
+					"pocket": [28, 2],
+					"minecraft": [28, 2]
+				},
+				"ascending_west": {
+					"sel": 149,
+					"pocket": [28, 3],
+					"minecraft": [28, 3]
+				},
+				"ascending_north": {
+					"sel": 150,
+					"pocket": [28, 4],
+					"minecraft": [28, 4]
+				},
+				"ascending_south": {
+					"sel": 151,
+					"pocket": [28, 5],
+					"minecraft": [28, 5]
+				},
+				"active_north_south": {
+					"sel": 152,
+					"pocket": [28, 8],
+					"minecraft": [28, 8]
+				},
+				"active_west_east": {
+					"sel": 153,
+					"pocket": [28, 9],
+					"minecraft": [28, 9]
+				},
+				"active_ascending_west": {
+					"sel": 154,
+					"pocket": [28, 10],
+					"minecraft": [28, 10]
+				},
+				"active_ascending_north": {
+					"sel": 155,
+					"pocket": [28, 11],
+					"minecraft": [28, 11]
+				},
+				"active_ascending_south": {
+					"sel": 156,
+					"pocket": [28, 12],
+					"minecraft": [28, 12]
+				},
+				"active_ascending_east": {
+					"sel": 157,
+					"pocket": [28, 13],
+					"minecraft": [28, 13]
+				}
+			}
+		},
+
+		"sticky_piston": {
+			"blocks": {
+				"down": {
+					"sel": 158,
+					"pocket": [29, 0],
+					"minecraft": [29, 0]
+				},
+				"up": {
+					"sel": 159,
+					"pocket": [29, 1],
+					"minecraft": [29, 1]
+				},
+				"north": {
+					"sel": 160,
+					"pocket": [29, 2],
+					"minecraft": [29, 2]
+				},
+				"south": {
+					"sel": 161,
+					"pocket": [29, 3],
+					"minecraft": [29, 3]
+				},
+				"west": {
+					"sel": 162,
+					"pocket": [29, 4],
+					"minecraft": [29, 4]
+				},
+				"east": {
+					"sel": 163,
+					"pocket": [29, 5],
+					"minecraft": [29, 5]
+				},
+				"sided": {
+					"sel": 164,
+					"pocket": [29, 6],
+					"minecraft": [29, 6]
+				},
+				"extended_down": {
+					"sel": 165,
+					"pocket": [29, 8],
+					"minecraft": [29, 8]
+				},
+				"extended_up": {
+					"sel": 166,
+					"pocket": [29, 9],
+					"minecraft": [29, 9]
+				},
+				"extended_north": {
+					"sel": 167,
+					"pocket": [29, 10],
+					"minecraft": [29, 10]
+				},
+				"extended_south": {
+					"sel": 168,
+					"pocket": [29, 11],
+					"minecraft": [29, 11]
+				},
+				"extended_west": {
+					"sel": 169,
+					"pocket": [29, 12],
+					"minecraft": [29, 12]
+				},
+				"extended_east": {
+					"sel": 170,
+					"pocket": [29, 13],
+					"minecraft": [29, 13]
+				}
+			}
+		},
+
+		"cobweb": {
+			"sel": 171,
+			"pocket": 30,
+			"minecraft": 30
+		},
+
+		"dead_shrub": {
+			"sel": 172,
+			"pocket": null,
+			"minecraft": 31
+		},
+
+		"grass": {
+			"sel": 173,
+			"pocket": [31, 0],
+			"minecraft": [31, 1]
+		},
+
+		"fern": {
+			"sel": 174,
+			"pocket": [31, 2],
+			"minecraft": [31, 2]
+		},
+
+		"dead_bush": {
+			"sel": 175,
+			"pocket": 32,
+			"minecraft": 32
+		},
+
+		"piston": {
+			"blocks": {
+				"down": {
+					"sel": 176,
+					"pocket": [33, 0],
+					"minecraft": [33, 0]
+				},
+				"up": {
+					"sel": 177,
+					"pocket": [33, 1],
+					"minecraft": [33, 1]
+				},
+				"north": {
+					"sel": 178,
+					"pocket": [33, 2],
+					"minecraft": [33, 2]
+				},
+				"south": {
+					"sel": 179,
+					"pocket": [33, 3],
+					"minecraft": [33, 3]
+				},
+				"west": {
+					"sel": 180,
+					"pocket": [33, 4],
+					"minecraft": [33, 4]
+				},
+				"east": {
+					"sel": 181,
+					"pocket": [33, 5],
+					"minecraft": [33, 5]
+				},
+				"sided": {
+					"sel": 182,
+					"pocket": [33, 6],
+					"minecraft": [33, 6]
+				},
+				"extended_down": {
+					"sel": 183,
+					"pocket": [33, 8],
+					"minecraft": [33, 8]
+				},
+				"extended_up": {
+					"sel": 184,
+					"pocket": [33, 9],
+					"minecraft": [33, 9]
+				},
+				"extended_north": {
+					"sel": 185,
+					"pocket": [33, 10],
+					"minecraft": [33, 10]
+				},
+				"extended_south": {
+					"sel": 186,
+					"pocket": [33, 11],
+					"minecraft": [33, 11]
+				},
+				"extended_west": {
+					"sel": 187,
+					"pocket": [33, 12],
+					"minecraft": [33, 12]
+				},
+				"extended_east": {
+					"sel": 188,
+					"pocket": [33, 13],
+					"minecraft": [33, 13]
+				}
+			}
+		},
+
+		"wool": {
+			"blocks": {
+				"white": {
+					"sel": 189,
+					"pocket": [35, 0],
+					"minecraft": [35, 0]
+				},
+				"orange": {
+					"sel": 190,
+					"pocket": [35, 1],
+					"minecraft": [35, 1]
+				},
+				"magenta": {
+					"sel": 191,
+					"pocket": [35, 2],
+					"minecraft": [35, 2]
+				},
+				"light_blue": {
+					"sel": 192,
+					"pocket": [35, 3],
+					"minecraft": [35, 3]
+				},
+				"yellow": {
+					"sel": 193,
+					"pocket": [35, 4],
+					"minecraft": [35, 4]
+				},
+				"lime": {
+					"sel": 194,
+					"pocket": [35, 5],
+					"minecraft": [35, 5]
+				},
+				"pink": {
+					"sel": 195,
+					"pocket": [35, 6],
+					"minecraft": [35, 6]
+				},
+				"gray": {
+					"sel": 196,
+					"pocket": [35, 7],
+					"minecraft": [35, 7]
+				},
+				"light_gray": {
+					"sel": 197,
+					"pocket": [35, 8],
+					"minecraft": [35, 8]
+				},
+				"cyan": {
+					"sel": 198,
+					"pocket": [35, 9],
+					"minecraft": [35, 9]
+				},
+				"purple": {
+					"sel": 199,
+					"pocket": [35, 10],
+					"minecraft": [35, 10]
+				},
+				"blue": {
+					"sel": 200,
+					"pocket": [35, 11],
+					"minecraft": [35, 11]
+				},
+				"brown": {
+					"sel": 201,
+					"pocket": [35, 12],
+					"minecraft": [35, 12]
+				},
+				"green": {
+					"sel": 202,
+					"pocket": [35, 13],
+					"minecraft": [35, 13]
+				},
+				"red": {
+					"sel": 203,
+					"pocket": [35, 14],
+					"minecraft": [35, 15]
+				},
+				"black": {
+					"sel": 204,
+					"pocket": [35, 15],
+					"minecraft": [35, 15]
+				}
+			}
 		}
 
 	}

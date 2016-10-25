@@ -163,6 +163,13 @@ const struct Packets {
 
 		mixin SulEncoding("varint");
 
+		write(Types.Slot slot, ref ubyte[] buffer) {
+			write!varint(slot.id, buffer);
+			if(slot.id > 0) write!varint(slot.meta_count);
+			if(slot.id > 0) write!(ushort, Endian.littleEndian)(cast(ushort)slot.nbt.length, buffer);
+			if(slot.nbt.length > 0) write!nbt(slot.nbt, buffer);
+		}
+
 	}
 
 	const static struct Status {
