@@ -4,6 +4,7 @@
 		"Minecraft",
 		"Minecraft: Pocket Edition"
 	],
+	"__version": 1,
 	"__website": "https://github.com/sel-project/sel-utils",
 
 	"blocks": {
@@ -898,49 +899,45 @@
 
 		"bed": {
 			"blocks": {
-				"foot": {
-					"south": {
-						"sel": 126,
-						"pocket": [26, 0],
-						"minecraft": [26, 0]
-					},
-					"west": {
-						"sel": 127,
-						"pocket": [26, 1],
-						"minecraft": [26, 1]
-					},
-					"north": {
-						"sel": 128,
-						"pocket": [26, 2],
-						"minecraft": [26, 2]
-					},
-					"east": {
-						"sel": 129,
-						"pocket": [26, 3],
-						"minecraft": [26, 3]
-					}
+				"foot_south": {
+					"sel": 126,
+					"pocket": [26, 0],
+					"minecraft": [26, 0]
 				},
-				"head": {
-					"south": {
-						"sel": 130,
-						"pocket": [26, 8],
-						"minecraft": [26, 8]
-					},
-					"west": {
-						"sel": 131,
-						"pocket": [26, 9],
-						"minecraft": [26, 9]
-					},
-					"north": {
-						"sel": 132,
-						"pocket": [26, 10],
-						"minecraft": [26, 10]
-					},
-					"east": {
-						"sel": 133,
-						"pocket": [26, 11],
-						"minecraft": [26, 11]
-					}
+				"foot_west": {
+					"sel": 127,
+					"pocket": [26, 1],
+					"minecraft": [26, 1]
+				},
+				"foot_north": {
+					"sel": 128,
+					"pocket": [26, 2],
+					"minecraft": [26, 2]
+				},
+				"foot_east": {
+					"sel": 129,
+					"pocket": [26, 3],
+					"minecraft": [26, 3]
+				},
+				"head_south": {
+					"sel": 130,
+					"pocket": [26, 8],
+					"minecraft": [26, 8]
+				},
+				"head_west": {
+					"sel": 131,
+					"pocket": [26, 9],
+					"minecraft": [26, 9]
+				},
+				"head_north": {
+					"sel": 132,
+					"pocket": [26, 10],
+					"minecraft": [26, 10]
+				},
+				"head_east": {
+					"sel": 133,
+					"pocket": [26, 11],
+					"minecraft": [26, 11]
 				}
 			}
 		},

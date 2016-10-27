@@ -63,7 +63,7 @@ struct Packet(T, size_t pid, bool can_encode, bool can_decode, L, E...) {
 
 }
 
-mixin template SulEncoding(L array_length) {
+mixin template SulEncoding(L) {
 
 	//TODO functions for default types
 

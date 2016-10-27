@@ -80,7 +80,8 @@
 			"action": {
 				"right_click": 1,
 				"left_click": 2,
-				"leave_vehicle": 3
+				"leave_vehicle": 3,
+				"looking": 4
 			}
 		},
 		

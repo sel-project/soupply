@@ -110,7 +110,12 @@
 						"type": "string"
 					}
 				]
-			}
+			},
+
+			"metadata": [
+				"length",
+				"values"
+			]
 
 		}
 
