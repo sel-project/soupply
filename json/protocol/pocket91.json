@@ -49,6 +49,7 @@
 					{
 						"name": "ip_bytes",
 						"type": "remaining_bytes",
+						"mask": 255,
 						"__comment": "4 bytes for ipv4, 6 for ipv6. Every byte is xor-ed with 255"
 					},
 					{
@@ -58,7 +59,7 @@
 				]
 			},
 
-			"entity_id": "varuint",
+			"entity_id": "varlong",
 
 			"slot": {
 				"type": "struct",
@@ -113,8 +114,21 @@
 			},
 
 			"metadata": [
-				"length",
-				"values"
+				{
+					"property": "content",
+					"type": "metadata_value[]"
+				}
+			],
+
+			"metadata_content": [
+				{
+					"property": "id",
+					"type": "varuint"
+				},
+				{
+					"property": "type",
+					"type": "varuint"
+				}
 			]
 
 		}
@@ -942,7 +956,7 @@
 				"fields": [
 					{
 						"name": "sound",
-						"type": "ubtye"
+						"type": "ubyte"
 					},
 					{
 						"name": "position",
@@ -1015,7 +1029,7 @@
 					},
 					{
 						"name": "event_id",
-						"type": "ubtye"
+						"type": "ubyte"
 					},
 					{
 						"name": "unknown",
@@ -1135,7 +1149,7 @@
 				"fields": [
 					{
 						"name": "action",
-						"type": "ubtye"
+						"type": "ubyte"
 					},
 					{
 						"name": "target",

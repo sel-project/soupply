@@ -110,9 +110,9 @@
 		"adventure_settings": {
 			"flags": {
 				"immutable_world": 1,
-				"allow_pvp": 2,
-				"allow_pvm": 4,
-				"allow_mvp": 8,
+				"pvp_disabled": 2,
+				"pvm_disabled": 4,
+				"mvp_disabled": 8,
 				"auto_jump": 32,
 				"allow_flight": 128,
 				"no_clip": 256

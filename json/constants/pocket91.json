@@ -24,7 +24,8 @@
 				"translation": 2,
 				"popup": 3,
 				"tip": 4,
-				"system": 5
+				"system": 5,
+				"whisper": 6
 			}
 		},
 		
@@ -113,13 +114,21 @@
 		"adventure_settings": {
 			"flags": {
 				"immutable_world": 1,
-				"allow_pvp": 2,
-				"allow_pvm": 4,
-				"allow_mvp": 8,
+				"pvp_disabled": 2,
+				"pvm_disabled": 4,
+				"mvp_disabled": 8,
+				"evp_disabled": 16,
 				"auto_jump": 32,
 				"allow_flight": 64,
 				"no_clip": 256,
 				"flying": 1024
+			},
+			"permissions": {
+				"user": 0,
+				"operator": 1,
+				"host": 2,
+				"automation": 3,
+				"admin": 4
 			}
 		},
 		

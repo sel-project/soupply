@@ -20,48 +20,11 @@ import std.typecons : Tuple;
 
 import sul.conversion;
 import sul.json;
+import sul.types.special;
 
 // default types
 // bool, byte, ubyte, short, ushort, int, uint, long, ulong, float, double, char, wchar, dchar
-// triad, uuid
-
-struct Packet(T, size_t pid, bool can_encode, bool can_decode, L, E...) {
-
-	static if(is(T == class)) {
-		enum packetId = new T(pid);
-	} else static if(is(T == struct)) {
-		enum packetId = T(pid);
-	} else {
-		enum packetId = cast(T)pid;
-	}
-
-	public Tuple!E tuple;
-
-	public this(A...)(A args) {
-		this.tuple = Tuple!E(args);
-	}
-
-	alias tuple this;
-
-	static if(can_encode) {
-		public ubyte[] encode(bool write_id=true)() {
-			ubyte[] buffer;
-			static if(write_id) {
-
-			}
-			return buffer;
-		}
-	}
-
-	static if(can_decode) {
-		public void decode(bool read_id=true)(ubyte[] buffer) {
-			static if(read_id) {
-
-			}
-		}
-	}
-
-}
+// var..., special..., triad, uuid
 
 mixin template SulEncoding(L) {
 
@@ -104,11 +67,15 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 	string array_length = "uint";
 	if("encoding" in json && json["encoding"].type == JsonType.object) {
 		auto encoding = cast(JSONObject)json["encoding"];
+		//TODO endianness
 		if("id" in encoding && encoding["id"].type == JsonType.string) {
 			id_type = cast(JSONString)encoding["id"];
 		}
 		if("array_length" in json && json["array_length"].type == JsonType.string) {
 			array_length = cast(JSONString)json["array_length"];
+		}
+		if("types" in json && json["types"].type == JsonType.object) {
+
 		}
 	}
 	string ret = "const struct Packets{";
@@ -118,7 +85,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 				ret ~= "static const struct " ~ toPascalCase(group_name) ~ "{";
 				foreach(string packet_name, const(JSON) packet; cast(JSONObject)group) {
 					if(packet.type == JsonType.object) {
-						JSONObject o = cast(JSONObject)packet;
+						/*JSONObject o = cast(JSONObject)packet;
 						ret ~= "alias " ~ toPascalCase(packet_name) ~ "=Packet!(" ~ id_type ~ "," ~ to!string((cast(JSONInteger)o["id"]).value) ~ ",";
 						ret ~= to!string((cast(JSONBoolean)o["clientbound"]) && !is_client) ~ "," ~ to!string((cast(JSONBoolean)o["serverbound"]) && is_client) ~ "," ~ array_length; 
 						if("fields" in o && o["fields"].type == JsonType.array) {
@@ -135,7 +102,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 							}
 							ret ~= "," ~ f.join(",");
 						}
-						ret ~= ");";
+						ret ~= ");";*/
 					}
 				}
 				ret ~= "}";

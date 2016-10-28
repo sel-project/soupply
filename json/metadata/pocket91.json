@@ -13,7 +13,7 @@
 		"string": 4,
 		"slot": 5,
 		"int{xyz}": 6,
-		"long": 7,
+		"varlong": 7,
 		"float{xyz}": 8
 
 	},
@@ -22,6 +22,7 @@
 
 		"entity_flags": {
 			"type": "varint",
+			"default": 0,
 			"id": 0,
 			"flags": {
 				"on_fire": 0,
@@ -62,6 +63,7 @@
 
 		"variant": {
 			"type": "varint",
+			"default": 0,
 			"id": 2
 		},
 
@@ -72,17 +74,21 @@
 
 		"nametag": {
 			"type": "string",
+			"default": "",
 			"id": 4
 		},
 
 		"owner": {
-			"type": "long",
+			"type": "varlong",
+			"default": -1,
 			"id": 5
 		},
 
 		"air": {
 			"type": "short",
-			"id": 7
+			"default": 300,
+			"id": 7,
+			"always": true
 		},
 
 		"potion_color": {
@@ -96,12 +102,15 @@
 		},
 
 		"lead_holder": {
-			"type": "long",
-			"id": 38
+			"type": "varlong",
+			"default": -1,
+			"id": 38,
+			"always": true
 		},
 
 		"scale": {
 			"type": "float",
+			"default": 1,
 			"id": 39
 		},
 

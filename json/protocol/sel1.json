@@ -1,0 +1,495 @@
+{
+
+	"__software": "SEL hub-node communication",
+	"__protocol": 1,
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"encoding": {
+
+		"endianness": {
+			"*": "bigendian"
+		},
+
+		"id": "ubyte",
+
+		"array_length": "specialuint",
+
+		"types": {
+
+			"plugin": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "version",
+						"type": "string"
+					}
+				]
+			},
+
+			"address": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "is_ipv6",
+						"type": "bool"
+					},
+					{
+						"name": "v4_bytes",
+						"when": "is_ipv6==false",
+						"type": "ubyte[4]"
+					},
+					{
+						"name": "v6_bytes",
+						"when": "is_ipv6==true",
+						"type": "ubyte[16]"
+					},
+					{
+						"name": "port",
+						"type": "ushort"
+					}
+				]
+			},
+
+			"skin": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "is_empty",
+						"type": "bool"
+					},
+					{
+						"name": "name",
+						"when": "is_empty==false",
+						"type": "string"
+					},
+					{
+						"name": "data",
+						"when": "is_empty==false",
+						"type": "ubyte[]"
+					}
+				]
+			},
+
+			"logged_message": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "timestamp",
+						"type": "ulong"
+					},
+					{
+						"name": "logger",
+						"type": "string"
+					},
+					{
+						"name": "message",
+						"type": "string"
+					}
+				]
+			}
+
+		}
+
+	},
+
+	"packets": {
+
+		"login": {
+
+			"connection": {
+				"id": 1,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "protocol",
+						"type": "specialuint"
+					},
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "main_node",
+						"type": "bool"
+					}
+				]
+			},
+
+			"connection_response": {
+				"id": 2,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "protocol_accepted",
+						"type": "bool"
+					},
+					{
+						"name": "name_accepted",
+						"type": "bool"
+					}
+				]
+			},
+
+			"generic_info": {
+				"id": 11,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "online_mode",
+						"type": "bool"
+					},
+					{
+						"name": "display_name",
+						"type": "string"
+					},
+					{
+						"name": "language",
+						"type": "string"
+					},
+					{
+						"name": "accepted_language",
+						"type": "string[]"
+					},
+					{
+						"name": "web_port",
+						"type": "ushort"
+					},
+					{
+						"name": "json_data",
+						"type": "string"
+					}
+				]
+			},
+
+			"game_info": {
+				"id": 12,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "last",
+						"type": "bool"
+					},
+					{
+						"name": "game",
+						"type": "ubyte"
+					},
+					{
+						"name": "protocols",
+						"type": "specialuint[]"
+					},
+					{
+						"name": "motd",
+						"type": "string"
+					},
+					{
+						"name": "port",
+						"type": "ushort"
+					}
+				]
+			},
+
+			"ready": {
+				"id": 15,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "plugnis",
+						"type": "plugin[]"
+					}
+				]
+			}
+
+		},
+
+		"status": {
+
+			"status": {
+				"id": 13,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "online",
+						"type": "specialuint"
+					},
+					{
+						"name": "max",
+						"type": "specialuint"
+					}
+				]
+			},
+
+			"server_resource_usage": {
+				"id": 14,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "tps",
+						"type": "float"
+					},
+					{
+						"name": "ram_used",
+						"type": "ulong"
+					},
+					{
+						"name": "cpu_used",
+						"type": "float"
+					}
+				]
+			}
+
+		},
+
+		"play": {
+
+			"add_player": {
+				"id": 21,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "specialuint"
+					},
+					{
+						"name": "reason",
+						"type": "ubyte"
+					},
+					{
+						"name": "protocol",
+						"type": "specialuint"
+					},
+					{
+						"name": "username",
+						"type": "string"
+					},
+					{
+						"name": "display_name",
+						"type": "string"
+					},
+					{
+						"name": "address",
+						"type": "address"
+					},
+					{
+						"name": "game",
+						"type": "ubyte"
+					},
+					{
+						"name": "uuid",
+						"type": "uuid"
+					},
+					{
+						"name": "skin",
+						"type": "skin"
+					},
+					{
+						"name": "ping",
+						"type": "specialuint"
+					},
+					{
+						"name": "language",
+						"type": "string"
+					},
+					{
+						"name": "additional_data",
+						"type": "specialuint"
+					}
+				]
+			},
+
+			"disconnect_player": {
+				"id": 22,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "specialuint"
+					},
+					{
+						"name": "reason",
+						"type": "string"
+					},
+					{
+						"name": "translation",
+						"type": "bool"
+					}
+				]
+			},
+
+			"player_disconnected": {
+				"id": 23,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "specialuint"
+					},
+					{
+						"name": "reason",
+						"type": "ubyte"
+					}
+				]
+			},
+
+			"transfer_player": {
+				"id": 24,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "specialuint"
+					},
+					{
+						"name": "new_node",
+						"type": "string"
+					}
+				]
+			},
+
+			"update_player_language": {
+				"id": 25,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "specialuint"
+					},
+					{
+						"name": "language",
+						"type": "string"
+					}
+				]
+			},
+
+			"update_player_display_name": {
+				"id": 26,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "specialuint"
+					},
+					{
+						"name": "display_name",
+						"type": "string"
+					}
+				]
+			},
+
+			"game_packet": {
+				"id": 31,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "specialuint"
+					},
+					{
+						"name": "packet",
+						"type": {
+							"type": "array",
+							"base": "ubyte",
+							"length": false
+						}
+					}
+				]
+			},
+
+			"remote_command": {
+				"id": 32,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "origin",
+						"type": "ubyte"
+					},
+					{
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"name": "command",
+						"type": "string"
+					}
+				]
+			},
+
+			"update_player_ping": {
+				"id": 41,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "specialuint"
+					},
+					{
+						"name": "ping",
+						"type": "specialuint"
+					}
+				]
+			},
+
+			"update_player_packet_loss": {
+				"id": 42,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "specialuint"
+					},
+					{
+						"name": "packet_loss",
+						"type": "float"
+					}
+				]
+			},
+
+			"log": {
+				"id": 51,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "message",
+						"type": "logged_message"
+					}
+				]
+			},
+
+			"logs": {
+				"id": 52,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "messages",
+						"type": "logged_message[]"
+					}
+				]
+			}
+
+		}
+
+	}
+
+}
