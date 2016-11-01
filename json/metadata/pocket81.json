@@ -1,0 +1,102 @@
+{
+
+	"__game": "Minecraft: Pocket Edition",
+	"__protocol": 81,
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"types": {
+
+		"byte": 0,
+		"short": 1,
+		"int": 2,
+		"float": 3,
+		"string": 4,
+		"long": 8
+
+	},
+
+	"metadata": {
+
+		"entity_flags": {
+			"type": "byte",
+			"default": 0,
+			"id": 0,
+			"flags": {
+				"on_fire": 0,
+				"sneaking": 1,
+				"riding": 2,
+				"sprinting": 3,
+				"using_item": 4,
+				"invisible": 5
+			}
+		},
+
+		"air": {
+			"type": "short",
+			"default": 300,
+			"id": 1
+		},
+
+		"nametag": {
+			"type": "string",
+			"default": "",
+			"id": 2
+		},
+
+		"show_nametag": {
+			"type": "byte",
+			"id": 3
+		},
+
+		"silent": {
+			"type": "byte",
+			"id": 4
+		},
+
+		"potion_color": {
+			"type": "int",
+			"id": 7
+		},
+
+		"potion_ambient": {
+			"type": "byte",
+			"id": 8
+		},
+
+		"no_ai": {
+			"type": "byte",
+			"id": 15
+		},
+
+		"slime_size": {
+			"type": "byte",
+			"id": 16
+		},
+
+		"player_flags": {
+			"type": "byte",
+			"id": 16,
+			"flags": {
+				"sleeping": 0,
+				"dead": 1
+			}
+		},
+
+		"potion_meta": {
+			"type": "short",
+			"id": 16
+		},
+
+		"block_info": {
+			"type": "int",
+			"id": 20
+		},
+
+		"boat_type": {
+			"type": "byte",
+			"id": 20
+		}
+
+	}
+
+}

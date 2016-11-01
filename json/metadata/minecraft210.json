@@ -23,51 +23,24 @@
 	},
 	
 	"metadata": {
-		
-		"on_fire": {
+
+		"entity_flags": {
 			"type": "byte",
 			"id": 0,
-			"mask": 1
-		},
-		
-		"crouched": {
-			"type": "byte",
-			"id": 0,
-			"mask": 2
-		},
-		
-		"sprinting": {
-			"type": "byte",
-			"id": 0,
-			"mask": 8
-		},
-		
-		"consuming": {
-			"type": "byte",
-			"id": 0,
-			"mask": 16
-		},
-		
-		"invisible": {
-			"type": "byte",
-			"id": 0,
-			"mask": 32
-		},
-		
-		"glowing": {
-			"type": "byte",
-			"id": 0,
-			"mask": 64
-		},
-		
-		"flying_elytra": {
-			"type": "byte",
-			"id": 0,
-			"mask": 128
+			"flags": {
+				"on_fire": 0,
+				"sneaking": 1,
+				"sprinting": 3,
+				"using_item": 4,
+				"invisible": 5,
+				"glowing": 6,
+				"flying_elytra": 7
+			}
 		},
 		
 		"air": {
 			"type": "varint",
+			"default": 300,
 			"id": 1
 		},
 		

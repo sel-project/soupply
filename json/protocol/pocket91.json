@@ -111,25 +111,37 @@
 						"type": "string"
 					}
 				]
+			}
+
+		},
+
+		"metadata": {
+
+			"endianness": {
+				"short": "little-endian"
 			},
 
-			"metadata": [
-				{
-					"property": "content",
-					"type": "metadata_value[]"
-				}
-			],
+			"length": "varuint",
+			"end": null,
 
-			"metadata_content": [
-				{
-					"property": "id",
-					"type": "varuint"
-				},
-				{
-					"property": "type",
-					"type": "varuint"
-				}
-			]
+			"header": {
+				"id": "varuint",
+				"type": "varuint"
+			},
+
+			"types": {
+
+				"byte": 0,
+				"short": 1,
+				"varint": 2,
+				"float": 3,
+				"string": 4,
+				"slot": 5,
+				"int{xyz}": 6,
+				"varlong": 7,
+				"float{xyz}": 8
+
+			}
 
 		}
 
@@ -603,7 +615,7 @@
 						"type": "bool"
 					},
 					{
-						"name": "server_vendor",
+						"name": "level_id",
 						"type": "string"
 					},
 					{

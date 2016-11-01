@@ -18,10 +18,16 @@ import sul.conversion;
 import sul.json;
 
 mixin template Metadata(size_t[][string] games) {
+
+	import sul.buffers;
+
 	mixin((){
+	//static assert(0, (){
 
 			import std.conv : to;
+			import std.string : toUpper;
 
+			import sul.buffers;
 			import sul.conversion;
 			import sul.json;
 
@@ -45,8 +51,9 @@ mixin template Metadata(size_t[][string] games) {
 
 			// structs["air"] = ["short": ["pocket91", "pocket92"], "varint": ["minecraft210"]]
 			string[][string][string] structs;
-			// defaults[game ~ metadata] = ""
-			string[string] defaults;
+			// defaults[game][metadata] = ""
+			string[string][string] defaults;
+			// always[game ~ metadata] = true
 			bool[string] always;
 			string[] metadatas;
 			foreach(string game, JSONObject object; objects) {
@@ -67,16 +74,22 @@ mixin template Metadata(size_t[][string] games) {
 
 						foreach(string flag, const(JSON) flag_value; cast(JSONObject)info["flags"]) {
 							add(flag, "bool");
+							defaults[game][toCamelCase(flag)] = "false";
 						}
 
 					} else {
 						add(meta, cast(JSONString)info["type"]);
+						string cc = toCamelCase(meta);
 						if("default" in info) {
-							string idf = game ~ toCamelCase(meta);
 							auto def = info["default"];
-							if(def.type == JsonType.string) defaults[idf] = "\"" ~ (cast(JSONString)def).value ~ "\"";
-							else if(def.type == JsonType.integer) defaults[idf] = (cast(JSONInteger)def).value.to!string;
-							else if(def.type == JsonType.floating) defaults[idf] = (cast(JSONFloating)def).value.to!string;
+							if(def.type == JsonType.string) defaults[game][cc] = "\"" ~ (cast(JSONString)def).value ~ "\"";
+							else if(def.type == JsonType.integer) defaults[game][cc] = (cast(JSONInteger)def).value.to!string;
+							else if(def.type == JsonType.floating) defaults[game][cc] = (cast(JSONFloating)def).value.to!string;
+						} else {
+							defaults[game][cc] = (cast(JSONString)info["type"]).value ~ ".init";
+						}
+						if("always" in info) {
+							always[game ~ cc] = true;
 						}
 					}
 				}
@@ -85,11 +98,10 @@ mixin template Metadata(size_t[][string] games) {
 			string structs_data = "struct Metadata{";
 			foreach(string metadata, string[][string] values; structs) {
 				string first = "";
-				structs_data ~= "struct s_" ~ metadata ~ "{";
+				structs_data ~= "struct " ~ toUpper(metadata[0..1]) ~ metadata[1..$] ~ "{";
 				foreach(string type, string[] v; values) {
 					if(first == "") first = v[0];
-					string idf = v[0] ~ metadata;
-					structs_data ~= type ~ " " ~ v[0] ~ (idf in defaults ? "=" ~ defaults[idf] : "") ~ ";";
+					structs_data ~= type ~ " " ~ v[0] ~ (metadata in defaults[v[0]] ? "=" ~ defaults[v[0]][metadata] : "") ~ ";";
 					if(v.length > 1) {
 						foreach(string vv ; v[1..$]) {
 							structs_data ~= "alias " ~ vv ~ "=" ~ v[0] ~ ";";
@@ -102,15 +114,40 @@ mixin template Metadata(size_t[][string] games) {
 				}
 				structs_data ~= "}";
 				structs_data ~= "T get(T)(){return this." ~ first ~ ";}";
-				structs_data ~= "}s_" ~ metadata ~ " " ~ metadata ~ ";";
+				structs_data ~= "}" ~ toUpper(metadata[0..1]) ~ metadata[1..$] ~ " " ~ metadata ~ ";";
 			}
 			structs_data ~= "bool set(string metadata, T)(T value){static if(is(typeof(mixin(\"this.\"~metadata)))){mixin(\"this.\"~metadata~\"=value;\");return true;}else{return false;}}";
 			structs_data ~= "T get(string metadata, T)(){static if(is(typeof(mixin(\"this.\"~metadata)))){mixin(\"return this.\"~metadata~\".get!T;\");}else{return T.init;}}";
+			mixin((){
+			//static assert(0, (){
+
+					string ret = "";
+					foreach(string game, size_t[] protocols; games) {
+						foreach(size_t protocol ; protocols) {
+							string g = game ~ to!string(protocol);
+							ret ~= "structs_data ~= \"auto encode(string game, size_t protocol)() if(game == \\\"" ~ game ~ "\\\" && protocol == " ~ to!string(protocol) ~ "){\";";
+							ret ~= "structs_data ~= \"auto buffer = BufferOf!(\\\"" ~ game ~ "\\\", " ~ to!string(protocol) ~ ").instance;ubyte[] ret;\";";
+							ret ~= "structs_data ~= \"ubyte[] c_ret;uint count = 0;\";";
+							ret ~= "foreach(string meta, string def; defaults[\"" ~ g ~ "\"]) {
+								if(\"" ~ g ~ "\" ~ meta in always) {
+									structs_data ~= \"count++;buffer.write(this.\" ~ meta ~ \"." ~ g ~ ", ret);\";
+								} else {
+									structs_data ~= \"if(this.\" ~ meta ~ \"." ~ g ~ " != \" ~ def ~ \"){count++;buffer.write(this.\" ~ meta ~ \"." ~ g ~ ", ret);};\";
+								}
+							}";
+							ret ~= "structs_data ~= \"buffer.writeMetadataLength(count, c_ret);buffer.writeMetadataEnd(ret);\";";
+							ret ~= "structs_data ~= \"return c_ret ~ ret;}\";";
+						}
+					}
+					return ret;
+
+				}());
 			structs_data ~= "}";
 
 			return structs_data;
 
 	}());
+
 }
 
 /*
