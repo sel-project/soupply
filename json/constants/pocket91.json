@@ -110,6 +110,12 @@
 				"remove": 1
 			}
 		},
+
+		"drop_item": {
+			"type": {
+				"drop": 0
+			}
+		},
 		
 		"adventure_settings": {
 			"flags": {

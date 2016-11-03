@@ -1,6 +1,7 @@
 module sul.buffers;
 
 static import std.bitmanip;
+import std.conv : to;
 import std.meta : NoDuplicates;
 import std.system : Endian;
 import std.traits : isArray;

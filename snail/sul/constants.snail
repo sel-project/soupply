@@ -1,0 +1,47 @@
+{module sul.constants
+
+	{use
+		std.json
+		sul.conversion
+	}
+
+	{enum Constants (string game, size_t protocol)
+
+		@{foreach packetName, json : utilsJSON("constants", game, protocol):JSONObject["constants"]:JSONObject
+
+			@@ Constants.PacketName
+			{enum {toPascalCase(packetName)}
+				
+				@{foreach fieldName, fields : json
+
+					@@ Constants.PacketName.fieldName
+					{enum {toCamelCase(fieldName)} size_t @@TODO right type from protocol
+
+						@{foreach variableName, value : fields
+
+							@@ Constants.PacketName.fieldName.variableName
+							{toCamelCase(variableName)} = value
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+}
+
+@@@
+
+alias Const = Constants@("pocket", 91)
+
+assert(Const.Text.type.raw == 0)
+assert(Const.Text.type.system == 2)
+assert(Const.EntityEvent.eventId.hurtAnimation == 2)
+
+@@@

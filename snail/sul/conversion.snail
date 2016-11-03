@@ -1,0 +1,42 @@
+{module sul.conversion
+
+	{use
+		std.file
+		std.json
+		std.string
+	}
+
+	@{version
+		Windows
+			enum string UTILS = "%appdata%\\.sel\\utils\\json\\min\\"
+		:
+			enum string UTILS = "~/.sel/utils/json/min/"
+	}
+
+	{function utilsJSON (string type, string game, size_t protocol) returns JSON
+		return parseJSON(readString(UTILS ; type ; "." ; game ; to(@string, protocol) ; ".json"))
+	}
+
+	{function toCamelCase (string \string) returns $string
+		string ret
+		bool nextUp = false
+		{foreach char : string
+			{if
+				c == '_'
+					nextUp = true
+				nextUp
+					ret ;= toUpper(char)
+					nextUp = false
+				:
+					ret ;= char
+			}
+		}
+		return ret
+	}
+
+	{function toPascalCase (string \string) returns $string
+		toCamelCase(/return)
+		return toUpper(string[0..1]) ; string[1..$]
+	}
+
+}
