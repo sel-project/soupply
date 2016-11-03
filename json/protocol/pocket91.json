@@ -173,9 +173,9 @@
 				"float": 3,
 				"string": 4,
 				"slot": 5,
-				"int{xyz}": 6,
+				"int<xyz>": 6,
 				"varlong": 7,
-				"float{xyz}": 8
+				"float<xyz>": 8
 
 			}
 
@@ -545,18 +545,11 @@
 					{
 						"name": "type",
 						"type": "ubyte"
-					},
-					{
-						"name": "messages",
-						"type": {
-							"type": "array",
-							"base": "string",
-							"length": 2
-						}
 					}
 				],
 				"variants": {
-					"type": {
+					"field": "type",
+					"values": {
 						"raw": {
 							"value": 0,
 							"fields": [
@@ -671,7 +664,7 @@
 					},
 					{
 						"name": "position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "yaw",
@@ -703,7 +696,7 @@
 					},
 					{
 						"name": "spawn_position",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					},
 					{
 						"name": "loaded_in_creative",
@@ -767,11 +760,11 @@
 					},
 					{
 						"name": "position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "motion",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "yaw",
@@ -815,11 +808,11 @@
 					},
 					{
 						"name": "position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "yaw",
@@ -875,11 +868,11 @@
 					},
 					{
 						"name": "position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "motion",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					}
 				]
 			},
@@ -899,7 +892,7 @@
 					},
 					{
 						"name": "position",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					},
 					{
 						"name": "unknown",
@@ -935,7 +928,7 @@
 					},
 					{
 						"name": "position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "pitch",
@@ -963,7 +956,7 @@
 					},
 					{
 						"name": "position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "yaw",
@@ -1007,7 +1000,7 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					}
 				]
 			},
@@ -1019,7 +1012,7 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					},
 					{
 						"name": "block",
@@ -1047,7 +1040,7 @@
 					},
 					{
 						"name": "position",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					},
 					{
 						"name": "direction",
@@ -1067,7 +1060,7 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "radius",
@@ -1075,7 +1068,7 @@
 					},
 					{
 						"name": "destroyed_blocks",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					}
 				]
 			},
@@ -1091,7 +1084,7 @@
 					},
 					{
 						"name": "position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "volume",
@@ -1119,7 +1112,7 @@
 					},
 					{
 						"name": "position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "data",
@@ -1135,7 +1128,7 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					},
 					{
 						"name": "data",
@@ -1184,7 +1177,8 @@
 					}
 				],
 				"variants": {
-					"event": {
+					"field": "event",
+					"values": {
 						"add": {
 							"value": 0,
 							"fields": [
@@ -1309,7 +1303,7 @@
 				"fields": [
 					{
 						"name": "block_position",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					},
 					{
 						"name": "face",
@@ -1317,11 +1311,11 @@
 					},
 					{
 						"name": "face_position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "player_position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "slot",
@@ -1349,7 +1343,7 @@
 					},
 					{
 						"name": "position",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					},
 					{
 						"name": "face",
@@ -1397,7 +1391,7 @@
 					},
 					{
 						"name": "motion",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					}
 				]
 			},
@@ -1445,7 +1439,7 @@
 					},
 					{
 						"name": "position",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					},
 					{
 						"name": "unknown_bool",
@@ -1477,7 +1471,7 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "float{xyz}"
+						"type": "float<xyz>"
 					}
 				]
 			},
@@ -1533,7 +1527,7 @@
 					},
 					{
 						"name": "position",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					},
 					{
 						"name": "id",
@@ -1681,7 +1675,7 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "varint{xyz}"
+						"type": "varint<xyz>"
 					},
 					{
 						"name": "metadata",
@@ -1697,7 +1691,7 @@
 				"fields": [
 					{
 						"name": "motion",
-						"type": "float{xz}"
+						"type": "float<xz>"
 					},
 					{
 						"name": "flags",
@@ -1815,70 +1809,197 @@
 						}
 					}
 				}
-			}
-
-		},
-
-
-
-
-
-
-
-
-
-		"boss_event": {
-			"id": 74,
-			"clientbound": true,
-			"serverbound": false,
-			"fields": [
-				{
-					"name": "id",
-					"type": "entity_id"
-				},
-				{
-					"name": "event",
-					"type": "varint"
-				}
-			],
-			"variants": {
-				"event": {
-					"add": {
-						"value": 0,
-						"fields": [
-							{
-								"name": "title",
-								"type": "string"
-							},
-							{
-								"name": "health",
-								"type": "float"
-							},
-							{
-								"name": "color",
-								"type": "varuint"
-							},
-							{
-								"name": "notches",
-								"type": "varuint"
-							}
-						]
+			},
+			
+			"telemetry_event": null,
+			
+			"spawn_experience_orb": {
+				"id": 64,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "position",
+						"type": "float<xyz>"
 					},
-					"remove": {
-						"value": 1,
-						"fields": []
+					{
+						"name": "count",
+						"type": "varint"
+					}
+				]
+			},
+			
+			"clientbound_map_item_data": null,
+			
+			"map_info_request": {
+				"id": 66,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "map_id",
+						"type": "entity_id"
+					}
+				]
+			},
+			
+			"request_chunk_radius": {
+				"id": 67,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "radius",
+						"type": "varint"
+					}
+				]
+			},
+			
+			"chunk_radius_updated": {
+				"id": 68,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "radius",
+						"type": "varint"
+					}
+				]
+			},
+			
+			"item_frame_drop_item": {
+				"id": 69,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "position",
+						"type": "varint<xyz>"
 					},
-					"update_health": {
-						"value": 2,
-						"fields": [
-							{
-								"name": "health",
-								"type": "float"
-							}
-						]
+					{
+						"name": "item",
+						"type": "slot"
+					}
+				]
+			},
+			
+			"replace_selected_item": {
+				"id": 70,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "item",
+						"type": "slot"
+					}
+				]
+			},
+			
+			"game_rules_changed": null,
+			
+			"camera": {
+				"id": 72,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "runtime_id",
+						"type": "entity_id"
+					}
+				]
+			},
+			
+			"add_item": {
+				"id": 73,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "item",
+						"type": "slot"
+					}
+				]
+			},
+			
+			"boss_event": {
+				"id": 74,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "entity_id"
+					},
+					{
+						"name": "event",
+						"type": "varint"
+					}
+				],
+				"variants": {
+					"field": "event",
+					"values": {
+						"add": {
+							"value": 0,
+							"fields": [
+								{
+									"name": "title",
+									"type": "string"
+								},
+								{
+									"name": "health",
+									"type": "float"
+								},
+								{
+									"name": "color",
+									"type": "varuint"
+								},
+								{
+									"name": "notches",
+									"type": "varuint"
+								}
+							]
+						},
+						"remove": {
+							"value": 1,
+							"fields": []
+						},
+						"update_health": {
+							"value": 2,
+							"fields": [
+								{
+									"name": "health",
+									"type": "float"
+								}
+							]
+						}
 					}
 				}
-			}
+			},
+			
+			"available_commands": {
+				"id": 75,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "fields",
+						"type": "string[]"
+					}
+				]
+			},
+			
+			"command_step": null,
+			
+			"resource_pack_data_info": null,
+			
+			"resource_pack_chunk_data": null,
+			
+			"resource_pack_chunk_request": null
+				
 		}
 
 	}
