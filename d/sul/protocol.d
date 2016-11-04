@@ -26,19 +26,6 @@ import sul.types.special;
 // bool, byte, ubyte, short, ushort, int, uint, long, ulong, float, double, char, wchar, dchar
 // var..., special..., triad, uuid
 
-mixin template SulEncoding(L) {
-
-	//TODO functions for default types
-
-	void write(T)(T[] value, ref ubyte[] buffer) {
-		write!L(createId(value.length), buffer);
-		foreach(T t ; value) {
-			write!T(v, buffer);
-		}
-	}
-
-}
-
 template createId(T) {
 	static if(is(T == class)) {
 		T createId(size_t id){ return new T(id); }
@@ -56,85 +43,157 @@ enum SoftwareType {
 
 }
 
-template Packets(string game, size_t protocol, SoftwareType software_type) {
+template Packets(string game, size_t protocol, SoftwareType software_type, E...) {
 
-	mixin(packetsEnum(cast(JSONObject)UtilsJSON!("protocol", game, protocol), software_type == SoftwareType.client));
+	static assert(0, packetsEnum(cast(JSONObject)UtilsJSON!("protocol", game, protocol), software_type == SoftwareType.client));
 
 }
 
 private @property string packetsEnum(JSONObject json, bool is_client) {
+
+	string ret = "const structs Protocol{";
+
+	bool little_endian = false;
+	string[] change_endianness;
 	string id_type = "uint";
 	string array_length = "uint";
+	string[string] aliases; // { "entity_id": "varint" }
+	Tuple!(string, bool)[string] arrays;
+
 	if("encoding" in json && json["encoding"].type == JsonType.object) {
 		auto encoding = cast(JSONObject)json["encoding"];
-		//TODO endianness
+		if("endianness" in encoding && json["encoding"].type == JsonType.object) {
+			foreach(string var, const(JSON) endianness; cast(JSONObject)encoding["endianness"]) {
+				if(endianness.type == JsonType.string) {
+					bool le = (cast(JSONString)endianness).value == "little-endian";
+					if(var == "*") {
+						little_endian = le;
+					} else if(little_endian ^ le) {
+						change_endianness ~= var;
+					}
+				}
+			}
+		}
 		if("id" in encoding && encoding["id"].type == JsonType.string) {
 			id_type = cast(JSONString)encoding["id"];
 		}
-		if("array_length" in json && json["array_length"].type == JsonType.string) {
-			array_length = cast(JSONString)json["array_length"];
+		if("array_length" in encoding && encoding["array_length"].type == JsonType.string) {
+			array_length = cast(JSONString)encoding["array_length"];
 		}
-		if("types" in json && json["types"].type == JsonType.object) {
-
+		if("types" in encoding && encoding["types"].type == JsonType.object) {
+			ret ~= "const struct Types{";
+			foreach(string index, const(JSON) type; cast(JSONObject)encoding["types"]) {
+				if(type.type == JsonType.string) {
+					aliases[index] = cast(JSONString)type;
+				} else if(type.type == JsonType.object) {
+					auto typeo = cast(JSONObject)type;
+					if("type" in typeo) {
+						switch((cast(JSONString)typeo["type"]).value) {
+							case "struct":
+								ret ~= "const struct " ~ toPascalCase(index) ~ "{}";
+								break;
+							case "array":
+								arrays[index] = Tuple!(string, bool)(cast(JSONString)typeo["base"], cast(JSONBoolean)typeo["length"]);
+								break;
+							default:
+								break;
+						}
+					}
+				}
+			}
+			ret ~= "}";
 		}
 	}
-	string ret = "const struct Packets{";
+
+	string buffer = "static class Buffer : sul.buffers.Buffer!(Endian." ~ (little_endian ? "little" : "big") ~ "Endian){";
+
 	if("packets" in json && json["packets"].type == JsonType.object) {
 		foreach(string group_name, const(JSON) group; cast(JSONObject)json["packets"]) {
 			if(group.type == JsonType.object) {
 				ret ~= "static const struct " ~ toPascalCase(group_name) ~ "{";
 				foreach(string packet_name, const(JSON) packet; cast(JSONObject)group) {
-					if(packet.type == JsonType.object) {
-						/*JSONObject o = cast(JSONObject)packet;
-						ret ~= "alias " ~ toPascalCase(packet_name) ~ "=Packet!(" ~ id_type ~ "," ~ to!string((cast(JSONInteger)o["id"]).value) ~ ",";
-						ret ~= to!string((cast(JSONBoolean)o["clientbound"]) && !is_client) ~ "," ~ to!string((cast(JSONBoolean)o["serverbound"]) && is_client) ~ "," ~ array_length; 
+					if(packet !is null && packet.type == JsonType.object) {
+						JSONObject o = cast(JSONObject)packet;
+						string encode = "public ubyte[] encode(){ubyte[] payload;";
+						ret ~= "const struct " ~ toPascalCase(packet_name) ~ "{enum packetId=createId!" ~ id_type ~ "(" ~ to!string((cast(JSONInteger)o["id"]).value) ~ ");";
+						//ret ~= to!string((cast(JSONBoolean)o["clientbound"]) && !is_client) ~ "," ~ to!string((cast(JSONBoolean)o["serverbound"]) && is_client) ~ "," ~ array_length; 
 						if("fields" in o && o["fields"].type == JsonType.array) {
-							string[] f;
 							foreach(const(JSON) field ; cast(JSONArray)o["fields"]) {
 								if(field.type == JsonType.object) {
 									JSONObject fo = cast(JSONObject)field;
 									if("name" in fo && fo["name"].type == JsonType.string && "type" in fo && fo["type"].type == JsonType.string) {
+										string name = toCamelCase((cast(JSONString)fo["name"]).value);
+										string type = cast(JSONString)fo["type"];
 										//TODO allow custom types from here
-										f ~= cast(JSONString)fo["type"];
-										f ~= "\"" ~ cast(JSONString)fo["name"] ~ "\"";
+										ret ~= type ~ " " ~ name ~ ";";
+
+										encode ~= "Buffer.instance.write(this." ~ name ~ ", payload);";
 									}
 								}
 							}
-							ret ~= "," ~ f.join(",");
 						}
-						ret ~= ");";*/
+						ret ~= encode ~ "return payload;}" ~ "}";
 					}
 				}
 				ret ~= "}";
 			}
 		}
 	}
-	return ret ~ "}";
+
+	return ret ~ buffer ~ "}}";
+
 }
 
 /*
 
-const struct Packets {
+const struct Protocol {
 
 	const static struct Types {
-	
-		static struct Slot {
-			varint id;
-			varint meta_count;
-			nbt nbt;
+
+		static struct Plugin {
+			string name;
+			string vers;
 		}
+
+		static struct Address {
+			bool is_ipv6;
+			ubyte[16] ipv6;
+			ubyte[4] ipv4;
+			ushort port;
+		}
+
+		static struct Skin {
+			bool is_empty;
+			string name;
+			ubyte[] data;
+		}
+
+		/+static struct LoggedMessage {
+			ulong timestamp;
+			string logger;
+			string message;
+		}+/
+
+		alias LoggedMessage = SelLoggedMessage;
 
 	}
 
-	const static struct Encoding {
+	const static class Buffer : Buffer!(Endian.bigEndian) {
 
-		mixin SulEncoding("varint");
+		public override void writeLength(size_t length, ref ubyte[] buffer) {
+			this.write(varuint(to!uint(length)), buffer);
+		}
 
-		write(Types.Slot slot, ref ubyte[] buffer) {
-			write!varint(slot.id, buffer);
-			if(slot.id > 0) write!varint(slot.meta_count);
-			if(slot.id > 0) write!(ushort, Endian.littleEndian)(cast(ushort)slot.nbt.length, buffer);
-			if(slot.nbt.length > 0) write!nbt(slot.nbt, buffer);
+		public writePlugin(Types.Plugin plugin, ref ubyte[] buffer) {
+			this.write(plugin.name, buffer);
+			this.write(plugin.vers, buffer);
+		}
+
+		public writeAddress(Types.Address address, ref ubyte[] buffer) {
+			this.write(address.isIpv6, buffer);
+			if(address.isIpv6) this.write(address.ipv6, buffer);
+			if(!address.isIpv6) this.write(address.ipv4, buffer);
+			this.write(address.port, buffer);
 		}
 
 	}

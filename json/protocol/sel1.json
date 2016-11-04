@@ -7,12 +7,12 @@
 	"encoding": {
 
 		"endianness": {
-			"*": "bigendian"
+			"*": "big-endian"
 		},
 
 		"id": "ubyte",
 
-		"array_length": "specialuint",
+		"array_length": "varuint",
 
 		"types": {
 
@@ -107,7 +107,7 @@
 				"fields": [
 					{
 						"name": "protocol",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "name",
@@ -183,7 +183,7 @@
 					},
 					{
 						"name": "protocols",
-						"type": "specialuint[]"
+						"type": "varuint[]"
 					},
 					{
 						"name": "motd",
@@ -219,17 +219,45 @@
 				"fields": [
 					{
 						"name": "online",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "max",
-						"type": "specialuint"
+						"type": "varuint"
+					}
+				]
+			},
+
+			"nodes": {
+				"id": 14,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "nodes",
+						"type": "string[]"
+					}
+				]
+			},
+
+			"update_nodes": {
+				"id": 15,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "type",
+						"type": "ubyte"
+					},
+					{
+						"name": "node",
+						"type": "string"
 					}
 				]
 			},
 
 			"server_resource_usage": {
-				"id": 14,
+				"id": 16,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -259,7 +287,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "reason",
@@ -267,7 +295,7 @@
 					},
 					{
 						"name": "protocol",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "username",
@@ -295,17 +323,31 @@
 					},
 					{
 						"name": "ping",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "language",
 						"type": "string"
-					},
-					{
-						"name": "additional_data",
-						"type": "specialuint"
 					}
-				]
+				],
+				"variants": {
+					"field": "game",
+					"values": {
+						"pocket": {
+							"value": 1,
+							"fields": [
+								{
+									"name": "packet_loss",
+									"type": "float"
+								}
+							]
+						},
+						"minecraft": {
+							"value": 2,
+							"fields": []
+						}
+					}
+				}
 			},
 
 			"disconnect_player": {
@@ -315,7 +357,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "reason",
@@ -335,7 +377,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "reason",
@@ -351,7 +393,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "new_node",
@@ -367,7 +409,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "language",
@@ -383,7 +425,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "display_name",
@@ -399,7 +441,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "packet",
@@ -439,11 +481,11 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "ping",
-						"type": "specialuint"
+						"type": "varuint"
 					}
 				]
 			},
@@ -455,7 +497,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "specialuint"
+						"type": "varuint"
 					},
 					{
 						"name": "packet_loss",

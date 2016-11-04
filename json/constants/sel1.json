@@ -6,6 +6,13 @@
 
 	"constants": {
 
+		"update_nodes": {
+			"type": {
+				"add": 0,
+				"remove": 1
+			}
+		},
+
 		"add_player": {
 			"reason": {
 				"first_join": 0,

@@ -8,13 +8,13 @@
 
 	@{version
 		Windows
-			enum string UTILS = "%appdata%\\.sel\\utils\\json\\min\\"
+			enum string utils = "%appdata%\\.sel\\utils\\json\\min\\"
 		:
-			enum string UTILS = "~/.sel/utils/json/min/"
+			enum string utils = "~/.sel/utils/json/min/"
 	}
 
 	{function utilsJSON (string type, string game, size_t protocol) returns JSON
-		return parseJSON(readString(UTILS ; type ; "." ; game ; to(@string, protocol) ; ".json"))
+		return parseJSON(readString(utils ; type ; "." ; game ; to(@string, protocol) ; ".json"))
 	}
 
 	{function toCamelCase (string \string) returns $string

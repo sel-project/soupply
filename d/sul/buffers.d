@@ -4,7 +4,7 @@ static import std.bitmanip;
 import std.conv : to;
 import std.meta : NoDuplicates;
 import std.system : Endian;
-import std.traits : isArray;
+import std.traits : isArray, isDynamicArray;
 
 import sul.types.var;
 
@@ -24,11 +24,11 @@ class Buffer(E...) if(E.length >= 1) {
 
 	public void write(T)(T value, ref ubyte[] buffer) {
 		static if(isArray!T) {
-			this.writeLength(value.length, buffer);
+			static if(!isDynamicArray!T) this.writeLength(value.length, buffer);
 			foreach(av ; value) {
 				this.write(av, buffer);
 			}
-		} else static if(T.stringof.length > 3 && T.stringof[0..3] == "var") {
+		} else static if(T.stringof.length > 3 && T.stringof.startsWith("var")) {
 			buffer ~= value.encode();
 		} else {
 			buffer.length += T.sizeof;

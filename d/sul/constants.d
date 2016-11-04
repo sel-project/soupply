@@ -19,12 +19,9 @@ import std.conv : to;
 import sul.conversion;
 import sul.json;
 
-//TODO
-alias varint = int;
-alias varuint = uint;
-alias varlong = long;
-
 template Constants(string game, size_t protocol) {
+
+	import sul.types.var;
 
 	static if(__traits(compiles, UtilsJSON!("protocol", game, protocol))) {
 		mixin(constantsEnum(cast(JSONObject)UtilsJSON!("constants", game, protocol), cast(JSONObject)UtilsJSON!("protocol", game, protocol)));

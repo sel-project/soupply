@@ -20,6 +20,7 @@ import sul.json;
 mixin template Metadata(size_t[][string] games) {
 
 	import sul.buffers;
+	import sul.types.var;
 
 	mixin((){
 	//static assert(0, (){
@@ -41,7 +42,7 @@ mixin template Metadata(size_t[][string] games) {
 				return ret ~ "];";
 			}());
 
-			// types["minecraft210"]["float{xyz}"] = 10
+			// types["minecraft210"]["float<xyz>"] = 10
 			size_t[string][string] types;
 			foreach(string game, JSONObject object; objects) {
 				foreach(string type, const(JSON) value; cast(JSONObject)object["types"]) {
