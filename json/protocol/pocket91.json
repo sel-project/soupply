@@ -21,17 +21,7 @@
 
 		"types": {
 
-			"remaining_bytes": {
-				"type": "array",
-				"base": "ubyte",
-				"length": false
-			},
-
-			"magic": {
-				"type": "array",
-				"base": "ubyte",
-				"length": 16
-			},
+			"magic": "ubyte[16]",
 
 			"short_string": {
 				"type": "array",
@@ -43,12 +33,8 @@
 				"type": "struct",
 				"fields": [
 					{
-						"name": "version",
-						"type": "bool"
-					},
-					{
 						"name": "ip_bytes",
-						"type": "remaining_bytes",
+						"type": "ubyte[]",
 						"mask": 255,
 						"__comment": "4 bytes for ipv4, 6 for ipv6. Every byte is xor-ed with 255"
 					},
@@ -60,6 +46,24 @@
 			},
 
 			"entity_id": "varlong",
+
+			"pack": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "id",
+						"type": "string"
+					},
+					{
+						"name": "version",
+						"type": "string"
+					},
+					{
+						"name": "size",
+						"type": "ulong"
+					}
+				]
+			},
 
 			"slot": {
 				"type": "struct",
@@ -103,34 +107,12 @@
 						"type": "float"
 					},
 					{
-						"name": "value",
+						"name": "value2",
 						"type": "float"
 					},
 					{
 						"name": "name",
 						"type": "string"
-					}
-				]
-			},
-
-			"player_list": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "uuid",
-						"type": "uuid"
-					},
-					{
-						"name": "id",
-						"type": "entity_id"
-					},
-					{
-						"name": "display_name",
-						"type": "string"
-					},
-					{
-						"name": "skin",
-						"type": "skin"
 					}
 				]
 			},
@@ -145,6 +127,28 @@
 					{
 						"name": "data",
 						"type": "ubyte[]"
+					}
+				]
+			},
+
+			"player_list": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "uuid",
+						"type": "uuid"
+					},
+					{
+						"name": "entity_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "display_name",
+						"type": "string"
+					},
+					{
+						"name": "skin",
+						"type": "skin"
 					}
 				]
 			}
@@ -354,11 +358,7 @@
 					},
 					{
 						"name": "system_addresses",
-						"type": {
-							"type": "array",
-							"base": "address",
-							"length": 10
-						}
+						"type": "address[10]"
 					},
 					{
 						"name": "ping",
@@ -382,11 +382,7 @@
 					},
 					{
 						"name": "system_addresses",
-						"type": {
-							"type": "array",
-							"base": "address",
-							"length": 10
-						}
+						"type": "address[10]"
 					},
 					{
 						"name": "ping",
@@ -480,23 +476,23 @@
 				]
 			},
 
-			"encryption_request": {
+			"server_handshake": {
 				"id": 3,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "key",
-						"type": "short_string"
+						"name": "server_public_key",
+						"type": "string"
 					},
 					{
-						"name": "verification",
-						"type": "short_string"
+						"name": "token",
+						"type": "ubyte[]"
 					}
 				]
 			},
 
-			"encryption_response": {
+			"client_magic": {
 				"id": 4,
 				"clientbound": false,
 				"serverbound": true,
@@ -531,11 +527,43 @@
 				]
 			},
 
-			"resource_packs_info": null,
+			"resource_packs_info": {
+				"id": 7,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "must_accept",
+						"type": "bool"
+					},
+					{
+						"name": "behaviour_packs",
+						"type": "pack[]"
+					},
+					{
+						"name": "resource_packs",
+						"type": "pack[]"
+					}
+				]
+			},
 
 			"resource_pack_stack": null,
 
-			"resource_pack_client_response": null,
+			"resource_pack_client_response": {
+				"id": 9,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "status",
+						"type": "ubyte"
+					},
+					{
+						"name": "resource_pack_version",
+						"type": "ushort"
+					}
+				]
+			},
 
 			"text": {
 				"id": 10,
@@ -655,7 +683,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -751,7 +779,7 @@
 						"type": "string"
 					},
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -795,7 +823,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -843,7 +871,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					}
 				]
@@ -855,7 +883,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -883,7 +911,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -907,7 +935,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "entity_picked",
+						"name": "entity_taken",
 						"type": "entity_id"
 					},
 					{
@@ -923,7 +951,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -951,7 +979,7 @@
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -1031,7 +1059,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -1108,7 +1136,7 @@
 				"fields": [
 					{
 						"name": "event_id",
-						"type": "entity_id"
+						"type": "varint"
 					},
 					{
 						"name": "position",
@@ -1148,7 +1176,7 @@
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -1168,7 +1196,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -1214,7 +1242,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -1230,7 +1258,7 @@
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -1258,7 +1286,7 @@
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -1334,7 +1362,7 @@
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -1370,7 +1398,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -1386,7 +1414,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -1458,7 +1486,7 @@
 						"type": "varint"
 					},
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					}
 				]
@@ -1530,7 +1558,7 @@
 						"type": "varint<xyz>"
 					},
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					}
 				]
@@ -1903,7 +1931,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{
@@ -1931,7 +1959,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "entity_id",
 						"type": "entity_id"
 					},
 					{

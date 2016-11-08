@@ -53,6 +53,7 @@ private @property string constantsEnum(JSONObject json, JSONObject protocol) {
 		}
 	}
 
+	// for type matching
 	JSONObject packets = protocol is null ? null : cast(JSONObject)protocol["packets"];
 
 	string ret = "const struct Constants{";
@@ -66,6 +67,7 @@ private @property string constantsEnum(JSONObject json, JSONObject protocol) {
 						// try to get the right value from the protocol field
 						if(packets !is null) {
 							foreach(string a, const(JSON) packet_pool; packets) {
+								//TODO if(packet_name in packet_pool) { ...
 								foreach(string packet_name_match, const(JSON) packet; cast(JSONObject)packet_pool) {
 									if(packet_name == packet_name_match) {
 										foreach(const(JSON) packet_field ; cast(JSONArray)((cast(JSONObject)packet)["fields"])) {
@@ -76,6 +78,8 @@ private @property string constantsEnum(JSONObject json, JSONObject protocol) {
 													if(type in type_table) {
 														type = type_table[type];
 													}
+													//TODO break all cycles
+													//using goto :(
 													break;
 												}
 											}

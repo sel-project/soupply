@@ -55,7 +55,7 @@ struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
 
 	alias value this;
 	
-	/*public static pure nothrow @safe var!T read(ref ubyte[] buffer) {
+	public static pure nothrow @safe var!T fromBuffer(ref ubyte[] buffer) {
 		if(buffer.length == 0) return var!T.init;
 		U unsigned = 0;
 		size_t j, k;
@@ -67,9 +67,15 @@ struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
 		static if(isUnsigned!T) {
 			return var!T(unsigned);
 		} else {
-			return var!T(cast(T)((unsigned >> 1) ^ (unsigned << RIGHT_SHIFT)));
+			T value = unsigned >> 1;
+			if(unsigned & 1) {
+				value++;
+				return var!T(-value);
+			} else {
+				return var!T(value);
+			}
 		}
-	}*/
+	}
 	
 	public enum stringof = "var" ~ T.stringof;
 	

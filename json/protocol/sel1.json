@@ -38,12 +38,12 @@
 						"type": "bool"
 					},
 					{
-						"name": "v4_bytes",
+						"name": "bytes4",
 						"when": "is_ipv6==false",
 						"type": "ubyte[4]"
 					},
 					{
-						"name": "v6_bytes",
+						"name": "bytes6",
 						"when": "is_ipv6==true",
 						"type": "ubyte[16]"
 					},
@@ -344,7 +344,12 @@
 						},
 						"minecraft": {
 							"value": 2,
-							"fields": []
+							"fields": [
+								{
+									"name": "signature",
+									"type": "string"
+								}
+							]
 						}
 					}
 				}
@@ -445,11 +450,7 @@
 					},
 					{
 						"name": "packet",
-						"type": {
-							"type": "array",
-							"base": "ubyte",
-							"length": false
-						}
+						"type": "remaining_bytes"
 					}
 				]
 			},
