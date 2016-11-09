@@ -22,7 +22,7 @@
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "password",
+						"name": "hash",
 						"type": "string"
 					},
 					{
@@ -131,7 +131,8 @@
 			"permission_denied": {
 				"id": 4,
 				"clientbound": true,
-				"serverbound": false
+				"serverbound": false,
+				"fields": []
 			},
 
 			"update_stats": {

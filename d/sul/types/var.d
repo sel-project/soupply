@@ -76,6 +76,14 @@ struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
 			}
 		}
 	}
+
+	public static pure nothrow @safe var!T[] convert(T[] array) {
+		var!T[] ret = new var!T[array.length];
+		foreach(size_t i, ref var!T value; ret) {
+			value = array[i];
+		}
+		return ret;
+	}
 	
 	public enum stringof = "var" ~ T.stringof;
 	

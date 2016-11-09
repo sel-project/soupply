@@ -233,11 +233,12 @@ mixin template Instance() {
 
 	private static typeof(this) n_instance;
 
-	public static this() {
+	/*public static this() {
 		n_instance = new typeof(this);
-	}
+	}*/
 
-	public static nothrow @property @safe @nogc instance() {
+	public static nothrow @property @safe instance() {
+		if(n_instance is null) n_instance = new typeof(this)();
 		return n_instance;
 	}
 
