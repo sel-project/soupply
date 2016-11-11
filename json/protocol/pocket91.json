@@ -10,8 +10,7 @@
 
 			"*": "big-endian",
 			"triad": "little-endian",
-			"float": "little-endian",
-			"nbt": "little-endian"
+			"float": "little-endian"
 
 		},
 
@@ -26,7 +25,7 @@
 			"short_string": {
 				"type": "array",
 				"base": "char",
-				"array_length": "ushort"
+				"length": "ushort"
 			},
 
 			"address": {
@@ -43,6 +42,11 @@
 						"type": "ushort"
 					}
 				]
+			},
+
+			"encapsulation": {
+				"type": "struct",
+				"fields": []
 			},
 
 			"entity_id": "varlong",
@@ -86,7 +90,7 @@
 					{
 						"name": "nbt_data",
 						"when": "nbt_length>0",
-						"type": "nbt"
+						"type": "ubyte[]"
 					}
 				]
 			},
@@ -151,6 +155,21 @@
 						"type": "skin"
 					}
 				]
+			},
+
+			"chunk": {
+				"type": "struct",
+				"fields": []
+			},
+
+			"recipe": {
+				"type": "struct",
+				"fields": []
+			},
+
+			"metadata": {
+				"type": "struct",
+				"fields": []
 			}
 
 		},
@@ -201,8 +220,12 @@
 						"type": "long"
 					},
 					{
-						"name": "magic_numbers",
+						"name": "magic",
 						"type": "magic"
+					},
+					{
+						"name": "guid",
+						"type": "ubyte[8]"
 					}
 				]
 			},
@@ -221,7 +244,7 @@
 						"type": "long"
 					},
 					{
-						"name": "magic_numbers",
+						"name": "magic",
 						"type": "magic"
 					},
 					{
@@ -241,7 +264,7 @@
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "magic_numbers",
+						"name": "magic",
 						"type": "magic"
 					},
 					{
@@ -257,7 +280,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "magic_numbers",
+						"name": "magic",
 						"type": "magic"
 					},
 					{
@@ -281,7 +304,7 @@
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "magic_numbers",
+						"name": "magic",
 						"type": "magic"
 					},
 					{
@@ -305,7 +328,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "magic_numbers",
+						"name": "magic",
 						"type": "magic"
 					},
 					{
@@ -424,8 +447,7 @@
 			},
 
 			"encapsulated": {
-				"id": [128, 132, 136, 140],
-				"default_id": 132,
+				"id": 132,
 				"clientbound": true,
 				"serverbound": true,
 				"fields": [
@@ -833,10 +855,6 @@
 					{
 						"name": "type",
 						"type": "varuint"
-					},
-					{
-						"name": "position",
-						"type": "float<xyz>"
 					},
 					{
 						"name": "position",

@@ -50,7 +50,7 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 		} else static if(T.stringof.length > 3 && T.stringof.startsWith("var")) {
 			buffer ~= value.encode();
 		} else {
-			mixin("this.write" ~ capital(Base!T.stringof) ~ "(value, buffer);");
+			mixin("this.write" ~ convert(Base!T.stringof) ~ "(value, buffer);");
 		}
 	}
 
@@ -90,7 +90,7 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 		} else static if(T.stringof.length >= 3 && T.stringof.startsWith("var")) {
 			return T.fromBuffer(buffer);
 		} else {
-			mixin("return this.read" ~ capital(Base!T.stringof) ~ "(buffer);");
+			mixin("return this.read" ~ convert(Base!T.stringof) ~ "(buffer);");
 		}
 	}
 
@@ -179,8 +179,8 @@ template Base(T) {
 }
 
 template Type(T) {
-	static if(T.stringof.indexOf("[") >= 0) {
-		mixin("alias Type = " ~ T.stringof[0..T.stringof.indexOf("[")] ~ ";");
+	static if(isArray!T) {
+		alias Type = typeof(T.init[0]);
 	} else {
 		alias Type = T;
 	}
@@ -189,6 +189,10 @@ template Type(T) {
 string capital(string str) {
 	if(str.length == 0) return str;
 	else return toUpper(str[0..1]) ~ str[1..$];
+}
+
+string convert(string str) {
+	return capital(str).split(".")[$-1];
 }
 
 class Buffer(E...) if(E.length >= 1) {

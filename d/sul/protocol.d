@@ -68,7 +68,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 	string array_length = "uint";
 	string[string] aliases = ["uuid": "UUID", "remaining_bytes": "RemainingBytes", "triad": "Triad"]; // { "entity_id": "varint" }
 	Tuple!(string, string)[][string] types; // types["Address"] = [(type, condition), (type, condition)]
-	Tuple!(string, bool)[string] arrays;
+	Tuple!(string, string)[string] arrays; // arrays["ShortString"] = ("ubyte", "ushort")
 
 	if("encoding" in json && json["encoding"].type == JsonType.object) {
 		auto encoding = cast(JSONObject)json["encoding"];
@@ -92,6 +92,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 		}
 		if("types" in encoding && encoding["types"].type == JsonType.object) {
 			ret ~= "const struct Types{";
+			ret ~= "static struct Ubyte{ubyte b;alias b this;}"; // what's this
 			foreach(string index, const(JSON) type; cast(JSONObject)encoding["types"]) {
 				if(type.type == JsonType.string) {
 					aliases[index] = cast(JSONString)type;
@@ -117,7 +118,10 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 								ret ~= "}";
 								break;
 							case "array":
-								arrays[index] = Tuple!(string, bool)(cast(JSONString)typeo["base"], cast(JSONBoolean)typeo["length"]);
+								string name = toPascalCase(index);
+								auto tuple = Tuple!(string, string)(cast(JSONString)typeo["base"], cast(JSONString)typeo["length"]);
+								arrays[name] = tuple;
+								ret ~= "static struct " ~ name ~ "{public " ~ tuple[0] ~ "[] array;alias array this;}";
 								break;
 							default:
 								break;
@@ -139,7 +143,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 					if(packet !is null && packet.type == JsonType.object) {
 						JSONObject o = cast(JSONObject)packet;
 						string encode = "public ubyte[] encode(bool write_id=true)(){ubyte[] payload;static if(write_id){Buffer.instance.write(packetId, payload);}";
-						string decode = "public typeof(this) decode(bool read_id=true)(ubyte[] payload){static if(read_id){Buffer.instance.read!" ~ id_type ~ "(payload);}";
+						string decode = "public typeof(this) decode(bool read_id=true)(ubyte[] payload){static if(read_id){Buffer.instance.read!(" ~ id_type ~ ")(payload);}";
 						Tuple!(string, string)[] order;
 						ret ~= "static struct " ~ toPascalCase(packet_name) ~ "{enum packetId=createId!" ~ id_type ~ "(" ~ to!string((cast(JSONInteger)o["id"]).value) ~ ");";
 						bool clientbound = cast(JSONBoolean)o["clientbound"];
@@ -219,18 +223,35 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 		}
 	}
 
+	string w, r;
 	foreach(string type, Tuple!(string, string)[] about; types) {
-		buffer ~= "public void write" ~ type ~ "(Types." ~ type ~ " value, ref ubyte[] buffer){";
+		w ~= "public void write" ~ type ~ "(Types." ~ type ~ " value, ref ubyte[] buffer){";
+		r ~= "public Types." ~ type ~ " read" ~ type ~ "(ref ubyte[] buffer){Types." ~ type ~ " value;";
 		foreach(data ; about) {
 			string write = "this.write(value." ~ data[0] ~ ", buffer);";
+			string read = "value." ~ data[0] ~ "=this.read!(typeof(Types." ~ type ~ "." ~ data[0] ~ "))(buffer);";
 			if(data[1] == "") {
-				buffer ~= write;
+				w ~= write;
+				r ~= read;
 			} else {
-				buffer ~= "if(value." ~ toCamelCase(data[1]) ~ "){" ~ write ~ "}";
+				w ~= "if(value." ~ toCamelCase(data[1]) ~ "){" ~ write ~ "}";
+				r ~= "if(value." ~ toCamelCase(data[1]) ~ "){" ~ read ~ "}";
 			}
 		}
-		buffer ~= "}";
+		w ~= "}";
+		r ~= "return value;}";
 	}
+	foreach(string type, Tuple!(string, string) array; arrays) {
+		w ~= "public void write" ~ type ~ "(Types." ~ type ~ " value, ref ubyte[] buffer){";
+		w ~= "this.write(cast(" ~ array[1] ~ ")value.array.length, buffer);";
+		w ~= "foreach(v ; value.array){this.write(v, buffer);}";
+		w ~= "}";
+		r ~= "public Types." ~ type ~ " read" ~ type ~ "(ref ubyte[] buffer){Types." ~ type ~ " value;";
+		r ~= "value.array.length=this.read!(" ~ array[1] ~ ")(buffer);";
+		r ~= "foreach(ref " ~ array[0] ~ " v ; value.array){v=this.read!(" ~ array[0] ~ ")(buffer);}";
+		r ~= "return value;}";
+	}
+	buffer ~= w ~ r;
 
 	return ret ~ buffer ~ "}}";
 
@@ -242,13 +263,14 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 // type[44]
 // type<xyz>
 string convertType(string[string] aliases, string type) {
+	if(type.indexOf("<") > 0) type = type[0..type.indexOf("<")]; //TODO vectors
 	string ret, t = type;
 	auto array = type.indexOf("[");
 	if(array >= 0) {
 		t = type[0..array];
 	}
 	if(t in aliases) {
-		t = aliases[t];
+		return convertType(aliases, aliases[t] ~ (array >= 0 ? type[array..$] : ""));
 	}
 	foreach(string dt ; defaultTypes) {
 		if(dt == t) {
