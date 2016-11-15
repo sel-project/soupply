@@ -16,24 +16,36 @@
 
 		"login": {
 
-			"auth": {
+			"auth_credentials": {
 				"id": 1,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "payload",
+						"type": "ubyte[16]"
+					}
+				]
+			},
+
+			"auth": {
+				"id": 2,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
 					{
 						"name": "hash",
-						"type": "string"
+						"type": "ubyte[20]"
 					},
 					{
-						"name": "commands_permission",
+						"name": "commands",
 						"type": "bool"
 					}
 				]
 			},
 
 			"welcome": {
-				"id": 1,
+				"id": 3,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -65,7 +77,7 @@
 		"status": {
 
 			"ping": {
-				"id": 2,
+				"id": 0,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -77,7 +89,7 @@
 			},
 
 			"pong": {
-				"id": 2,
+				"id": 0,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -93,7 +105,7 @@
 		"play": {
 
 			"console_message": {
-				"id": 3,
+				"id": 1,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -117,7 +129,7 @@
 			},
 
 			"command": {
-				"id": 4,
+				"id": 2,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -129,19 +141,19 @@
 			},
 
 			"permission_denied": {
-				"id": 4,
+				"id": 3,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": []
 			},
 
 			"update_stats": {
-				"id": 5,
+				"id": 4,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "server_name",
+						"name": "display_name",
 						"type": "string"
 					},
 					{
@@ -157,30 +169,18 @@
 						"type": "uint"
 					},
 					{
-						"name": "tps",
-						"type": "float"
-					},
-					{
 						"name": "upload",
 						"type": "uint"
 					},
 					{
 						"name": "download",
 						"type": "uint"
-					},
-					{
-						"name": "ram",
-						"type": "ulong"
-					},
-					{
-						"name": "cpu",
-						"type": "float"
 					}
 				]
 			},
 
 			"update_nodes": {
-				"id": 6,
+				"id": 5,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
