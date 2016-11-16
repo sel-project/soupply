@@ -90,6 +90,20 @@
 						"type": "string"
 					}
 				]
+			},
+
+			"player": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "position",
+						"type": "float<xyz>"
+					}
+				]
 			}
 
 		}
@@ -543,6 +557,95 @@
 					{
 						"name": "messages",
 						"type": "logged_message[]"
+					}
+				]
+			},
+
+			"request_worlds": {
+				"id": 61,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": []
+			},
+
+			"worlds_list": {
+				"id": 62,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "worlds",
+						"type": "string[]"
+					}
+				]
+			},
+
+			"start_tracking": {
+				"id": 63,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "world",
+						"type": "string"
+					},
+					{
+						"name": "center",
+						"type": "int<xz>"
+					},
+					{
+						"name": "radius",
+						"type": "varuint"
+					}
+				]
+			},
+
+			"stop_tracking": {
+				"id": 64,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": []
+			},
+
+			"tracking_error": {
+				"id": 65,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": []
+			},
+
+			"tracking_data_add_players": {
+				"id": 66,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "players",
+						"type": "player[]"
+					}
+				]
+			},
+
+			"tracking_data_remove_players": {
+				"id": 67,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "players",
+						"type": "varuint[]"
+					}
+				]
+			},
+
+			"tracking_data_move_players": {
+				"id": 68,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "players",
+						"type": "player[]"
 					}
 				]
 			}
