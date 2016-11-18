@@ -1,0 +1,370 @@
+{
+
+	"__software": "RakNet",
+	"__protocol": 6,
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"encoding": {
+
+		"endianness": {
+			"*": "big-endian",
+			"triad": "little-endian"
+		},
+
+		"id": "ubyte",
+
+		"array_length": "ushort",
+
+		"types": {
+
+			"magic": "ubyte[16]",
+
+			"address": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "type",
+						"type": "ubyte"
+					},
+					{
+						"name": "ip_bytes",
+						"type": "remaining_bytes"
+					},
+					{
+						"name": "port",
+						"type": "ushort"
+					}
+				]
+			},
+
+			"encapsulation": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "info",
+						"type": "ubyte"
+					},
+					{
+						"name": "length",
+						"type": "ushort"
+					},
+					{
+						"name": "message_index",
+						"type": "triad",
+						"when": "(info&0x7F)>=64"
+					},
+					{
+						"name": "order_index",
+						"type": "triad",
+						"when": "(info&0x7F)>=96"
+					},
+					{
+						"name": "order_channel",
+						"type": "ubyte",
+						"when": "(info&0x7F)>=96"
+					},
+					{
+						"name": "split",
+						"type": "split",
+						"when": "(info&0x80)!=0"
+					},
+					{
+						"name": "payload",
+						"type": "remaining_bytes"
+					}
+				]
+			},
+
+			"split": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "count",
+						"type": "uint"
+					},
+					{
+						"name": "id",
+						"type": "ushort"
+					},
+					{
+						"name": "order",
+						"type": "uint"
+					}
+				]
+			}
+
+		}
+	
+	},
+
+	"packets": {
+
+		"status": {
+
+			"ping": {
+				"id": 1,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "ping",
+						"type": "long"
+					},
+					{
+						"name": "magic",
+						"type": "magic"
+					}
+				]
+			},
+
+			"pong": {
+				"id": 28,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "ping",
+						"type": "long"
+					},
+					{
+						"name": "pong",
+						"type": "long"
+					},
+					{
+						"name": "magic",
+						"type": "magic"
+					},
+					{
+						"name": "status",
+						"type": "string"
+					}
+				]
+			}
+
+		},
+
+		"login": {
+
+			"open_connection_request_1": {
+				"id": 5,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "magic",
+						"type": "magic"
+					},
+					{
+						"name": "mtu",
+						"type": "remaining_bytes"
+					}
+				]
+			},
+
+			"open_connection_response_1": {
+				"id": 6,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "magic",
+						"type": "magic"
+					},
+					{
+						"name": "server_id",
+						"type": "long"
+					},
+					{
+						"name": "security",
+						"type": "bool"
+					},
+					{
+						"name": "mtu_length",
+						"type": "ushort"
+					}
+				]
+			},
+
+			"open_connection_request_2": {
+				"id": 7,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "magic",
+						"type": "magic"
+					},
+					{
+						"name": "server_address",
+						"type": "address"
+					},
+					{
+						"name": "mtu_length",
+						"type": "ushort"
+					},
+					{
+						"name": "client_id",
+						"type": "long"
+					}
+				]
+			},
+
+			"open_connection_response_2": {
+				"id": 8,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "magic",
+						"type": "magic"
+					},
+					{
+						"name": "server_id",
+						"type": "long"
+					},
+					{
+						"name": "server_address",
+						"type": "address"
+					},
+					{
+						"name": "mtu_length",
+						"type": "ushort"
+					},
+					{
+						"name": "security",
+						"type": "bool"
+					}
+				]
+			},
+
+			"client_connect": {
+				"id": 9,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "client_id",
+						"type": "long"
+					},
+					{
+						"name": "ping",
+						"type": "long"
+					}
+				]
+			},
+
+			"server_handshake": {
+				"id": 16,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "client_address",
+						"type": "address"
+					},
+					{
+						"name": "mtu_length",
+						"type": "ushort"
+					},
+					{
+						"name": "system_addresses",
+						"type": "address[10]"
+					},
+					{
+						"name": "ping",
+						"type": "long"
+					},
+					{
+						"name": "pong",
+						"type": "long"
+					}
+				]
+			},
+
+			"client_handshake": {
+				"id": 19,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "client_address",
+						"type": "address"
+					},
+					{
+						"name": "system_addresses",
+						"type": "address[10]"
+					},
+					{
+						"name": "ping",
+						"type": "long"
+					},
+					{
+						"name": "pong",
+						"type": "long"
+					}
+				]
+			}
+
+		},
+
+		"connection": {
+
+			"ping": {
+				"id": 0,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "time",
+						"type": "long"
+					}
+				]
+			},
+
+			"pong": {
+				"id": 3,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "time",
+						"type": "long"
+					}
+				]
+			},
+
+			"ack": {
+				"id": 160,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": []
+			},
+
+			"nack": {
+				"id": 192,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": []
+			},
+
+			"encapsulated": {
+				"id": 132,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "count",
+						"type": "triad"
+					},
+					{
+						"name": "encapsulation",
+						"type": "encapsulation"
+					}
+				]
+			}
+
+		}
+
+	}
+
+}

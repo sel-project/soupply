@@ -234,8 +234,8 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 				w ~= write;
 				r ~= read;
 			} else {
-				w ~= "if(value." ~ toCamelCase(data[1]) ~ "){" ~ write ~ "}";
-				r ~= "if(value." ~ toCamelCase(data[1]) ~ "){" ~ read ~ "}";
+				w ~= "with(value) if(" ~ toCamelCase(data[1]) ~ "){" ~ write ~ "}";
+				r ~= "with(value) if(" ~ toCamelCase(data[1]) ~ "){" ~ read ~ "}";
 			}
 		}
 		w ~= "}";

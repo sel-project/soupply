@@ -104,8 +104,8 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 	protected void writeLength(size_t length, ref ubyte[] buffer) {
 		static if(is(L == size_t)) {
 			this.write(length, buffer);
-		} else static if(__traits(compiles, { L l = length; })) {
-			L l = length;
+		} else static if(!is(L == struct) && !is(L == class)) {
+			L l = cast(L)length;
 			this.write(l, buffer);
 		} else {
 			this.write(L(length.to!uint), buffer);
@@ -152,7 +152,7 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 		}
 	}
 
-	public int readTriad(ref ubyte[] buffer) {
+	public Triad readTriad(ref ubyte[] buffer) {
 		int ret = 0;
 		if(buffer.length < 3) buffer.length = 3;
 		static if(endiannessOf!Triad == Endian.bigEndian) {
@@ -165,7 +165,7 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 			ret |= buffer[2];
 		}
 		buffer = buffer[3..$];
-		return ret;
+		return Triad(ret);
 	}
 
 }

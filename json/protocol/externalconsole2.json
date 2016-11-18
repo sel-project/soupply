@@ -17,7 +17,7 @@
 		"login": {
 
 			"auth_credentials": {
-				"id": 1,
+				"id": 0,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -29,7 +29,7 @@
 			},
 
 			"auth": {
-				"id": 2,
+				"id": 1,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -45,7 +45,7 @@
 			},
 
 			"welcome": {
-				"id": 3,
+				"id": 2,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -58,7 +58,7 @@
 						"type": "string"
 					},
 					{
-						"name": "software_version",
+						"name": "version",
 						"type": "string"
 					},
 					{
