@@ -1,0 +1,69 @@
+{
+	
+	"__game": "Minecraft",
+	"__protocol": 210,
+	"__website": "https://github.com/sel-project/sel-utils",
+	
+	"encoding": {
+	
+		"endianness": {
+			"*": "big-endian"
+		},
+		
+		"id": "varuint",
+		
+		"array_length": "varuint",
+		
+		"types": {
+		
+			
+		
+		}
+	
+	},
+	
+	"packets": {
+		
+		"status": {
+		
+			"handshake": {
+				"id": 0,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "protocol",
+						"type": "varuint"
+					},
+					{
+						"name": "server_address",
+						"type": "string"
+					},
+					{
+						"name": "server_port",
+						"type": "ushort"
+					},
+					{
+						"name": "next",
+						"type": "varuint"
+					}
+				]
+			},
+			
+			"status": {
+				"id": 0,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "json",
+						"type": "string"
+					}
+				]
+			}
+		
+		}
+		
+	}
+
+}

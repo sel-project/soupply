@@ -5,6 +5,13 @@
 	"__website": "https://github.com/sel-project/sel-utils",
 
 	"constants": {
+	
+		"handshake": {
+			"next": {
+				"status": 1,
+				"login": 2
+			}
+		},
 
 		"spawn_global_entity": {
 			"type": {
