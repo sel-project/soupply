@@ -28,16 +28,6 @@ import sul.types.special;
 // bool, byte, ubyte, short, ushort, int, uint, long, ulong, float, double, char, wchar, dchar
 // var..., special..., triad, uuid
 
-template createId(T) {
-	static if(is(T == class)) {
-		T createId(size_t id){ return new T(id); }
-	} else static if(is(T == struct)) {
-		T createId(size_t id){ return T(id); }
-	} else {
-		T createId(size_t id){ return cast(T)id; }
-	}
-}
-
 enum SoftwareType {
 
 	client,
@@ -145,7 +135,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 						string encode = "public ubyte[] encode(bool write_id=true)(){ubyte[] payload;static if(write_id){Buffer.instance.write(packetId, payload);}";
 						string decode = "public typeof(this) decode(bool read_id=true)(ubyte[] payload){static if(read_id){Buffer.instance.read!(" ~ id_type ~ ")(payload);}";
 						Tuple!(string, string)[] order;
-						ret ~= "static struct " ~ toPascalCase(packet_name) ~ "{enum packetId=createId!" ~ id_type ~ "(" ~ to!string((cast(JSONInteger)o["id"]).value) ~ ");";
+						ret ~= "static struct " ~ toPascalCase(packet_name) ~ "{enum " ~ id_type ~ " packetId=" ~ to!string((cast(JSONInteger)o["id"]).value) ~ ";";
 						bool clientbound = cast(JSONBoolean)o["clientbound"];
 						bool serverbound = cast(JSONBoolean)o["serverbound"];
 						bool can_encode = clientbound && !is_client || serverbound && is_client;

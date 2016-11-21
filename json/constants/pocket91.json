@@ -9,8 +9,8 @@
 		"play_status": {
 			"status": {
 				"ok": 0,
-				"client_outdated": 1,
-				"server_outdated": 2,
+				"outdated_client": 1,
+				"outdated_server": 2,
 				"spawned": 3,
 				"invalid_tenant": 4,
 				"edition_mismatch": 5

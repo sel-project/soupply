@@ -60,6 +60,122 @@
 						"type": "string"
 					}
 				]
+			},
+			
+			"ping": {
+				"id": 1,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "time",
+						"type": "ulong"
+					}
+				]
+			},
+			
+			"pong": {
+				"id": 1,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "time",
+						"type": "ulong"
+					}
+				]
+			}
+		
+		},
+		
+		"login": {
+		
+			"disconnect": {
+				"id": 0,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "reason",
+						"type": "string"
+					}
+				]
+			},
+			
+			"login_start": {
+				"id": 0,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "username",
+						"type": "string"
+					}
+				]
+			},
+			
+			"encryption_request": {
+				"id": 1,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "server_id",
+						"type": "string"
+					},
+					{
+						"name": "public_key",
+						"type": "ubyte[]"
+					},
+					{
+						"name": "verify_token",
+						"type": "ubyte[]"
+					}
+				]
+			},
+			
+			"encryption_response": {
+				"id": 1,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "shared_secret",
+						"type": "ubyte[]"
+					},
+					{
+						"name": "verify_token",
+						"type": "ubyte[]"
+					}
+				]
+			},
+			
+			"login_success": {
+				"id": 2,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "uuid",
+						"type": "string"
+					},
+					{
+						"name": "username",
+						"type": "string"
+					}
+				]
+			},
+			
+			"set_compression": {
+				"id": 3,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "thresold",
+						"type": "varuint"
+					}
+				]
 			}
 		
 		}

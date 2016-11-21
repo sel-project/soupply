@@ -195,7 +195,7 @@
 					},
 					{
 						"name": "body",
-						"type": "string"
+						"type": "ubyte[]"
 					}
 				]
 			},
@@ -257,8 +257,8 @@
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "compressed_packets",
-						"type": "string"
+						"name": "data",
+						"type": "ubyte[]"
 					}
 				]
 			},

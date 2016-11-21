@@ -27,12 +27,37 @@
 						"type": "ubyte"
 					},
 					{
-						"name": "ip_bytes",
-						"type": "remaining_bytes"
+						"name": "ipv4",
+						"type": "ubyte[4]",
+						"when": "type==4"
+					},
+					{
+						"name": "ipv6",
+						"type": "ubyte[16]",
+						"when": "type==6"
 					},
 					{
 						"name": "port",
 						"type": "ushort"
+					}
+				]
+			},
+
+			"acknowledge": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "unique",
+						"type": "bool"
+					},
+					{
+						"name": "first",
+						"type": "triad"
+					},
+					{
+						"name": "last",
+						"type": "triad",
+						"when": "unique==false"
 					}
 				]
 			},
@@ -66,7 +91,7 @@
 					{
 						"name": "split",
 						"type": "split",
-						"when": "(info&0x80)!=0"
+						"when": "(info&0x10)!=0"
 					},
 					{
 						"name": "payload",
@@ -303,6 +328,13 @@
 						"type": "long"
 					}
 				]
+			},
+
+			"cancel_connection": {
+				"id": 21,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": []
 			}
 
 		},
@@ -334,17 +366,27 @@
 			},
 
 			"ack": {
-				"id": 160,
-				"clientbound": true,
-				"serverbound": true,
-				"fields": []
-			},
-
-			"nack": {
 				"id": 192,
 				"clientbound": true,
 				"serverbound": true,
-				"fields": []
+				"fields": [
+					{
+						"name": "packets",
+						"type": "acknowledge[]"
+					}
+				]
+			},
+
+			"nack": {
+				"id": 160,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "packets",
+						"type": "acknowledge[]"
+					}
+				]
 			},
 
 			"encapsulated": {
