@@ -178,6 +178,34 @@
 				]
 			}
 		
+		},
+		
+		"play": {
+		
+			"clientbound_keep_alive": {
+				"id": 31,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "varuint"
+					}
+				]
+			},
+			
+			"serverbound_keep_alive": {
+				"id": 11,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "id",
+						"type": "varuint"
+					}
+				]
+			}
+		
 		}
 		
 	}
