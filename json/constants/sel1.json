@@ -25,7 +25,8 @@
 			"reason": {
 				"left": 0,
 				"timed_out": 1,
-				"kicked": 2
+				"kicked": 2,
+				"transferred": 3
 			}
 		},
 

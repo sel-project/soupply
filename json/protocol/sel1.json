@@ -369,7 +369,7 @@
 				}
 			},
 
-			"disconnect_player": {
+			"kick_player": {
 				"id": 22,
 				"clientbound": false,
 				"serverbound": true,
@@ -415,7 +415,7 @@
 						"type": "varuint"
 					},
 					{
-						"name": "new_node",
+						"name": "node",
 						"type": "string"
 					}
 				]
