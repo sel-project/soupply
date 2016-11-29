@@ -22,7 +22,6 @@ import std.typetuple : TypeTuple;
 
 import sul.conversion;
 import sul.json;
-import sul.types.special;
 
 // default types
 // bool, byte, ubyte, short, ushort, int, uint, long, ulong, float, double, char, wchar, dchar
