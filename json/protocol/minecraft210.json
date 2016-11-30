@@ -52,6 +52,168 @@
 						"type": "varuint"
 					}
 				]
+			},
+
+			"slot": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "id",
+						"type": "short"
+					},
+					{
+						"name": "count",
+						"type": "ubyte",
+						"when": "id>0"
+					},
+					{
+						"name": "damage",
+						"type": "ushort",
+						"when": "id>0"
+					},
+					{
+						"name": "nbt",
+						"type": "remaining_bytes",
+						"when": "id>0"
+					}
+				]
+			},
+
+			"slots": {
+				"type": "array",
+				"base": "slot",
+				"length": "ushort"
+			},
+
+			"explosion_records": {
+				"type": "array",
+				"base": "byte<xyz>",
+				"length": "uint"
+			},
+
+			"icon": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "direction_and_type",
+						"type": "ubyte"
+					},
+					{
+						"name": "position",
+						"type": "ubyte<xz>"
+					}
+				]
+			},
+
+			"property": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "value",
+						"type": "string"
+					},
+					{
+						"name": "signed",
+						"type": "bool"
+					},
+					{
+						"name": "signature",
+						"type": "string",
+						"when": "signed==true"
+					}
+				]
+			},
+
+			"list_add_player": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "uuid",
+						"type": "uuid"
+					},
+					{
+						"name": "properties",
+						"type": "property[]"
+					},
+					{
+						"name": "gamemode",
+						"type": "varuint"
+					},
+					{
+						"name": "latency",
+						"type": "varuint"
+					},
+					{
+						"name": "has_display_name",
+						"type": "bool"
+					},
+					{
+						"name": "display_name",
+						"type": "string",
+						"when": "has_display_name==true"
+					}
+				]
+			},
+
+			"list_update_gamemode": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "uuid",
+						"type": "uuid"
+					},
+					{
+						"name": "gamemode",
+						"type": "varuint"
+					}
+				]
+			},
+
+			"list_update_latency": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "uuid",
+						"type": "uuid"
+					},
+					{
+						"name": "latency",
+						"type": "varuint"
+					}
+				]
+			},
+
+			"list_update_display_name": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "uuid",
+						"type": "uuid"
+					},
+					{
+						"name": "has_display_name",
+						"type": "bool"
+					},
+					{
+						"name": "display_name",
+						"type": "string",
+						"when": "has_display_name==true"
+					}
+				]
+			},
+
+			"list_remove_player": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "uuid",
+						"type": "uuid"
+					}
+				]
 			}
 		
 		}
@@ -708,6 +870,126 @@
 				]
 			},
 
+			"window_items": {
+				"id": 20,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "window",
+						"type": "ubyte"
+					},
+					{
+						"name": "count",
+						"type": "ushort"
+					},
+					{
+						"name": "slots",
+						"type": "slots"
+					}
+				]
+			},
+
+			"window_property": {
+				"id": 21,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "window",
+						"type": "ubyte"
+					},
+					{
+						"name": "property",
+						"type": "ushort"
+					},
+					{
+						"name": "value",
+						"type": "short"
+					}
+				]
+			},
+
+			"set_slot": {
+				"id": 22,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "window",
+						"type": "ubyte"
+					},
+					{
+						"name": "slot",
+						"type": "ushort"
+					},
+					{
+						"name": "item",
+						"type": "slot"
+					}
+				]
+			},
+
+			"set_cooldown": {
+				"id": 23,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "item",
+						"type": "varuint"
+					},
+					{
+						"name": "cooldown_ticks",
+						"type": "varuint"
+					}
+				]
+			},
+
+			"plugin_message_clientbound": {
+				"id": 24,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "channel",
+						"type": "string"
+					},
+					{
+						"name": "data",
+						"type": "remaining_bytes"
+					}
+				]
+			},
+
+			"named_sound_effect": {
+				"id": 25,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "category",
+						"type": "varuint"
+					},
+					{
+						"name": "position",
+						"type": "int<xyz>"
+					},
+					{
+						"name": "volume",
+						"type": "float"
+					},
+					{
+						"name": "pitch",
+						"type": "float"
+					}
+				]
+			},
+
 			"disconnect": {
 				"id": 26,
 				"clientbound": true,
@@ -716,6 +998,74 @@
 					{
 						"name": "reason",
 						"type": "string"
+					}
+				]
+			},
+
+			"entity_status": {
+				"id": 27,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "entity_id",
+						"type": "uint"
+					},
+					{
+						"name": "status",
+						"type": "ubyte"
+					}
+				]
+			},
+
+			"explosion": {
+				"id": 28,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "position",
+						"type": "float<xyz>"
+					},
+					{
+						"name": "radius",
+						"type": "float"
+					},
+					{
+						"name": "records",
+						"type": "explosion_records"
+					},
+					{
+						"name": "motion",
+						"type": "float<xyz>"
+					}
+				]
+			},
+
+			"unload_chunk": {
+				"id": 29,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "position",
+						"type": "int<xz>"
+					}
+				]
+			},
+
+			"change_game_state": {
+				"id": 30,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "reason",
+						"type": "ubyte"
+					},
+					{
+						"name": "value",
+						"type": "float"
 					}
 				]
 			},
@@ -728,6 +1078,535 @@
 					{
 						"name": "id",
 						"type": "varuint"
+					}
+				]
+			},
+
+			"chunk_data": {
+				"id": 32,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "position",
+						"type": "int<xz>"
+					},
+					{
+						"name": "all_chunks",
+						"type": "bool"
+					},
+					{
+						"name": "sections",
+						"type": "varuint"
+					},
+					{
+						"name": "data",
+						"type": "ubyte[]"
+					},
+					{
+						"name": "biomes",
+						"type": "remaining_bytes"
+					},
+					{
+						"name": "tiles",
+						"type": "remaining_bytes[]"
+					}
+				]
+			},
+
+			"effect": {
+				"id": 33,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "uint"
+					},
+					{
+						"name": "position",
+						"type": "ulong"
+					},
+					{
+						"name": "data",
+						"type": "uint"
+					},
+					{
+						"name": "disable_volume",
+						"type": "bool"
+					}
+				]
+			},
+
+			"particle": {
+				"id": 34,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "uint"
+					},
+					{
+						"name": "long_distance",
+						"type": "bool"
+					},
+					{
+						"name": "position",
+						"type": "float<xyz>"
+					},
+					{
+						"name": "offset",
+						"type": "float<xyz>"
+					},
+					{
+						"name": "data",
+						"type": "float"
+					},
+					{
+						"name": "count",
+						"type": "uint"
+					},
+					{
+						"name": "additional_data",
+						"type": "varuint[2]"
+					}
+				]
+			},
+
+			"join_game": {
+				"id": 35,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "entity_id",
+						"type": "uint"
+					},
+					{
+						"name": "gamemode",
+						"type": "ubyte"
+					},
+					{
+						"name": "dimension",
+						"type": "int"
+					},
+					{
+						"name": "difficulty",
+						"type": "ubyte"
+					},
+					{
+						"name": "max_players",
+						"type": "ubyte"
+					},
+					{
+						"name": "level_type",
+						"type": "string"
+					},
+					{
+						"name": "reduced_debug",
+						"type": "bool"
+					}
+				]
+			},
+
+			"map": {
+				"id": 36,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "map_id",
+						"type": "varuint"
+					},
+					{
+						"name": "scale",
+						"type": "ubyte"
+					},
+					{
+						"name": "show_icons",
+						"type": "bool"
+					},
+					{
+						"name": "icons",
+						"type": "icon[]"
+					},
+					{
+						"name": "colums",
+						"type": "ubyte"
+					},
+					{
+						"name": "rows",
+						"type": "ubyte"
+					},
+					{
+						"name": "offset",
+						"type": "ubyte<xz>"
+					},
+					{
+						"name": "data",
+						"type": "ubyte[]"
+					}
+				]
+			},
+
+			"entity_relative_move": {
+				"id": 37,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "entity_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "delta",
+						"type": "short<xyz>"
+					},
+					{
+						"name": "on_ground",
+						"type": "bool"
+					}
+				]
+			},
+
+			"entity_look_and_relative_mode": {
+				"id": 38,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "entity_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "delta",
+						"type": "short<xyz>"
+					},
+					{
+						"name": "yaw",
+						"type": "angle"
+					},
+					{
+						"name": "pitch",
+						"type": "angle"
+					},
+					{
+						"name": "on_ground",
+						"type": "bool"
+					}
+				]
+			},
+
+			"entity_look": {
+				"id": 39,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "entity_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "yaw",
+						"type": "angle"
+					},
+					{
+						"name": "pitch",
+						"type": "angle"
+					},
+					{
+						"name": "on_ground",
+						"type": "bool"
+					}
+				]
+			},
+
+			"entity": {
+				"id": 40,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "entity_id",
+						"type": "entity_id"
+					}
+				]
+			},
+
+			"vehicle_move_clientbound": {
+				"id": 41,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "position",
+						"type": "double<xyz>"
+					},
+					{
+						"name": "yaw",
+						"type": "float"
+					},
+					{
+						"name": "pitch",
+						"type": "float"
+					}
+				]
+			},
+
+			"open_sign_editor": {
+				"id": 42,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "position",
+						"type": "ulong"
+					}
+				]
+			},
+
+			"player_abilities": {
+				"id": 43,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "flags",
+						"type": "ubyte"
+					},
+					{
+						"name": "flying_speed",
+						"type": "float"
+					},
+					{
+						"name": "fov_modifier",
+						"type": "float"
+					}
+				]
+			},
+
+			"combat_event": {
+				"id": 44,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "event",
+						"type": "ubyte"
+					}
+				],
+				"variants": {
+					"field": "event",
+					"values": {
+						"enter_combat": {
+							"value": 0,
+							"fields": []
+						},
+						"end_combat": {
+							"value": 1,
+							"fields": [
+								{
+									"name": "duration",
+									"type": "varuint"
+								},
+								{
+									"name": "entity_id",
+									"type": "uint"
+								}
+							]
+						},
+						"entity_dead": {
+							"value": 2,
+							"fields": [
+								{
+									"name": "player_id",
+									"type": "entity_id"
+								},
+								{
+									"name": "entity_id",
+									"type": "uint"
+								},
+								{
+									"name": "message",
+									"type": "string"
+								}
+							]
+						}
+					}
+				}
+			},
+
+			"player_list_item": {
+				"id": 45,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "action",
+						"type": "varuint"
+					}
+				],
+				"variants": {
+					"field": "action",
+					"values": {
+						"add_player": {
+							"value": 0,
+							"fields": [
+								{
+									"name": "players",
+									"type": "list_add_player[]"
+								}
+							]
+						},
+						"update_gamemode": {
+							"value": 1,
+							"fields": [
+								{
+									"name": "players",
+									"type": "list_update_gamemode[]"
+								}
+							]
+						},
+						"update_latency": {
+							"value": 2,
+							"fields": [
+								{
+									"name": "players",
+									"type": "list_update_latency[]"
+								}
+							]
+						},
+						"update_display_name": {
+							"value": 3,
+							"fields": [
+								{
+									"name": "players",
+									"type": "list_update_display_name[]"
+								}
+							]
+						},
+						"remove_player": {
+							"value": 4,
+							"fields": [
+								{
+									"name": "players",
+									"type": "list_remove_player[]"
+								}
+							]
+						}
+					}
+				}
+			},
+
+			"player_position_and_look_clientbound": {
+				"id": 46,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "position",
+						"type": "double<xyz>"
+					},
+					{
+						"name": "yaw",
+						"type": "float"
+					},
+					{
+						"name": "pitch",
+						"type": "float"
+					},
+					{
+						"name": "flags",
+						"type": "ubyte"
+					},
+					{
+						"name": "teleport_id",
+						"type": "varuint"
+					}
+				]
+			},
+
+			"use_bed": {
+				"id": 47,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "entity_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "position",
+						"type": "ulong"
+					}
+				]
+			},
+
+			"destroy_entities": {
+				"id": 48,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "entity_ids",
+						"type": "entity_id[]"
+					}
+				]
+			},
+
+			"remove_entity_effect": {
+				"id": 49,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "entity_id",
+						"type": "entity_id"
+					},
+					{
+						"name": "effect",
+						"type": "ubyte"
+					}
+				]
+			},
+
+			"resource_pack_send": {
+				"id": 50,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "url",
+						"type": "string"
+					},
+					{
+						"name": "hash",
+						"type": "string"
+					}
+				]
+			},
+
+			"respawn": {
+				"id": 51,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "dimension",
+						"type": "int"
+					},
+					{
+						"name": "difficulty",
+						"type": "ubyte"
+					},
+					{
+						"name": "gamemode",
+						"type": "ubyte"
+					},
+					{
+						"name": "level_type",
+						"type": "string"
 					}
 				]
 			},

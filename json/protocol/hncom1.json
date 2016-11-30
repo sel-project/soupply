@@ -336,37 +336,14 @@
 						"type": "skin"
 					},
 					{
-						"name": "ping",
+						"name": "latency",
 						"type": "varuint"
 					},
 					{
 						"name": "language",
 						"type": "string"
 					}
-				],
-				"variants": {
-					"field": "game",
-					"values": {
-						"pocket": {
-							"value": 1,
-							"fields": [
-								{
-									"name": "packet_loss",
-									"type": "float"
-								}
-							]
-						},
-						"minecraft": {
-							"value": 2,
-							"fields": [
-								{
-									"name": "signature",
-									"type": "string"
-								}
-							]
-						}
-					}
-				}
+				]
 			},
 
 			"kick_player": {
@@ -505,7 +482,7 @@
 				]
 			},
 
-			"update_player_ping": {
+			"update_player_latency": {
 				"id": 41,
 				"clientbound": true,
 				"serverbound": false,
@@ -515,7 +492,7 @@
 						"type": "varuint"
 					},
 					{
-						"name": "ping",
+						"name": "latency",
 						"type": "varuint"
 					}
 				]

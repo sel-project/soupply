@@ -108,7 +108,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 								break;
 							case "array":
 								string name = toPascalCase(index);
-								auto tuple = Tuple!(string, string)(cast(JSONString)typeo["base"], cast(JSONString)typeo["length"]);
+								auto tuple = Tuple!(string, string)(convertType(aliases, toCamelCase(cast(JSONString)typeo["base"])), cast(JSONString)typeo["length"]);
 								arrays[name] = tuple;
 								ret ~= "static struct " ~ name ~ "{public " ~ tuple[0] ~ "[] array;alias array this;}";
 								break;
@@ -251,12 +251,16 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 // type[][]
 // type[44]
 // type<xyz>
+// type<xyz>[]
 string convertType(string[string] aliases, string type) {
-	if(type.indexOf("<") > 0) type = type[0..type.indexOf("<")]; //TODO vectors
 	string ret, t = type;
 	auto array = type.indexOf("[");
 	if(array >= 0) {
 		t = type[0..array];
+	}
+	auto vector = type.indexOf("<");
+	if(vector >= 0) {
+		t = type[0..vector];
 	}
 	if(t in aliases) {
 		return convertType(aliases, aliases[t] ~ (array >= 0 ? type[array..$] : ""));
