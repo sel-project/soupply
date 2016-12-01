@@ -1,7 +1,7 @@
 {
 
 	"__game": "Minecraft",
-	"__protocol": 210,
+	"__protocol": 315,
 	"__website": "https://github.com/sel-project/sel-utils",
 
 	"constants": {
@@ -90,7 +90,10 @@
 				"white_cross": 4,
 				"red_pointer": 5,
 				"white_circle":  6,
-				"blue_square": 7
+				"blue_square": 7,
+				"far_away_player": 8,
+				"mansion": 9,
+				"temple": 10
 			}
 		},
 

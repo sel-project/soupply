@@ -1,7 +1,7 @@
 {
 	
 	"__game": "Minecraft",
-	"__protocol": 210,
+	"__protocol": 315,
 	"__website": "https://github.com/sel-project/sel-utils",
 	
 	"encoding": {
@@ -481,7 +481,7 @@
 					},
 					{
 						"name": "type",
-						"type": "ubyte"
+						"type": "varuint"
 					},
 					{
 						"name": "position",
@@ -2120,8 +2120,17 @@
 								}
 							]
 						},
-						"set_timings": {
+						"set_action_bar": {
 							"value": 2,
+							"fields": [
+								{
+									"name": "text",
+									"type": "string"
+								}
+							]
+						},
+						"set_timings": {
+							"value": 3,
 							"fields": [
 								{
 									"name": "fade_in",
@@ -2138,11 +2147,11 @@
 							]
 						},
 						"hide": {
-							"value": 3,
+							"value": 4,
 							"fields": []
 						},
 						"reset": {
-							"value": 4,
+							"value": 5,
 							"fields": []
 						}
 					}
@@ -2205,6 +2214,10 @@
 					{
 						"name": "collector",
 						"type": "entity_id"
+					},
+					{
+						"name": "count",
+						"type": "varuint"
 					}
 				]
 			},
@@ -2792,7 +2805,7 @@
 					},
 					{
 						"name": "cursor",
-						"type": "ubyte<xyz>"
+						"type": "float<xyz>"
 					}
 				]
 			},

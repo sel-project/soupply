@@ -188,15 +188,17 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 											ctor ~= tup[1] ~ " " ~ tup[0];
 										}
 									}
-									ret ~= "public this(" ~ ctor.join(",") ~ "){";
-									foreach(tup ; corder) {
-										if(tup[0] == field) {
-											ret ~= "this." ~ field ~ "=" ~ to!string((cast(JSONInteger)vo["value"]).value) ~ ";";
-										} else {
-											ret ~= "this." ~ tup[0] ~ "=" ~ tup[0] ~ ";";
+									if(ctor.length) {
+										ret ~= "public this(" ~ ctor.join(",") ~ "){";
+										foreach(tup ; corder) {
+											if(tup[0] == field) {
+												ret ~= "this." ~ field ~ "=" ~ to!string((cast(JSONInteger)vo["value"]).value) ~ ";";
+											} else {
+												ret ~= "this." ~ tup[0] ~ "=" ~ tup[0] ~ ";";
+											}
 										}
+										ret ~= "}";
 									}
-									ret ~= "}";
 									// enc/dec
 									if(can_encode) ret ~= "public ubyte[] encode(bool write_id=true)(){ubyte[] payload=this.sup.encode!write_id();" ~ encode ~ "return payload;}";
 									if(can_decode) ret ~= "public typeof(this) decode(bool read_id=true)(ubyte[] payload){this.sup.decode!read_id(payload);" ~ decode ~ "return this;}";
@@ -214,21 +216,21 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 
 	string w, r;
 	foreach(string type, Tuple!(string, string)[] about; types) {
-		w ~= "public void write" ~ type ~ "(Types." ~ type ~ " value, ref ubyte[] buffer){";
-		r ~= "public Types." ~ type ~ " read" ~ type ~ "(ref ubyte[] buffer){Types." ~ type ~ " value;";
+		w ~= "public void write" ~ type ~ "(Types." ~ type ~ " value__, ref ubyte[] buffer){";
+		r ~= "public Types." ~ type ~ " read" ~ type ~ "(ref ubyte[] buffer){Types." ~ type ~ " value__;";
 		foreach(data ; about) {
-			string write = "this.write(value." ~ data[0] ~ ", buffer);";
-			string read = "value." ~ data[0] ~ "=this.read!(typeof(Types." ~ type ~ "." ~ data[0] ~ "))(buffer);";
+			string write = "this.write(value__." ~ data[0] ~ ", buffer);";
+			string read = "value__." ~ data[0] ~ "=this.read!(typeof(Types." ~ type ~ "." ~ data[0] ~ "))(buffer);";
 			if(data[1] == "") {
 				w ~= write;
 				r ~= read;
 			} else {
-				w ~= "with(value) if(" ~ toCamelCase(data[1]) ~ "){" ~ write ~ "}";
-				r ~= "with(value) if(" ~ toCamelCase(data[1]) ~ "){" ~ read ~ "}";
+				w ~= "with(value__) if(" ~ toCamelCase(data[1]) ~ "){" ~ write ~ "}";
+				r ~= "with(value__) if(" ~ toCamelCase(data[1]) ~ "){" ~ read ~ "}";
 			}
 		}
 		w ~= "}";
-		r ~= "return value;}";
+		r ~= "return value__;}";
 	}
 	foreach(string type, Tuple!(string, string) array; arrays) {
 		w ~= "public void write" ~ type ~ "(Types." ~ type ~ " value, ref ubyte[] buffer){";

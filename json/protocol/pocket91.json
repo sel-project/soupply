@@ -39,6 +39,24 @@
 				]
 			},
 
+			"block_position": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "x",
+						"type": "varint"
+					},
+					{
+						"name": "y",
+						"type": "varuint"
+					},
+					{
+						"name": "z",
+						"type": "varint"
+					}
+				]
+			},
+
 			"slot": {
 				"type": "struct",
 				"fields": [
@@ -460,7 +478,7 @@
 					},
 					{
 						"name": "spawn_position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					},
 					{
 						"name": "loaded_in_creative",
@@ -652,7 +670,7 @@
 					},
 					{
 						"name": "position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					},
 					{
 						"name": "unknown",
@@ -760,7 +778,7 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					}
 				]
 			},
@@ -772,7 +790,7 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					},
 					{
 						"name": "block",
@@ -800,7 +818,7 @@
 					},
 					{
 						"name": "position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					},
 					{
 						"name": "direction",
@@ -828,7 +846,7 @@
 					},
 					{
 						"name": "destroyed_blocks",
-						"type": "varint<xyz>"
+						"type": "block_position[]"
 					}
 				]
 			},
@@ -888,15 +906,11 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					},
 					{
 						"name": "data",
-						"type": {
-							"type": "array",
-							"base": "varint",
-							"length": 2
-						}
+						"type": "varint[2]"
 					}
 				]
 			},
@@ -1063,7 +1077,7 @@
 				"fields": [
 					{
 						"name": "block_position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					},
 					{
 						"name": "face",
@@ -1103,7 +1117,7 @@
 					},
 					{
 						"name": "position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					},
 					{
 						"name": "face",
@@ -1199,7 +1213,7 @@
 					},
 					{
 						"name": "position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					},
 					{
 						"name": "unknown_bool",
@@ -1287,7 +1301,7 @@
 					},
 					{
 						"name": "position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					},
 					{
 						"name": "entity_id",
@@ -1435,7 +1449,7 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					},
 					{
 						"name": "metadata",
@@ -1634,7 +1648,7 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "varint<xyz>"
+						"type": "block_position"
 					},
 					{
 						"name": "item",
