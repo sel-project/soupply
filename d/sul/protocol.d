@@ -132,7 +132,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 					if(packet !is null && packet.type == JsonType.object) {
 						JSONObject o = cast(JSONObject)packet;
 						string encode = "public ubyte[] encode(bool write_id=true)(){ubyte[] payload;static if(write_id){Buffer.instance.write(packetId, payload);}";
-						string decode = "public typeof(this) decode(bool read_id=true)(ubyte[] payload){static if(read_id){Buffer.instance.read!(" ~ id_type ~ ")(payload);}";
+						string decode = "public typeof(this) decode(bool read_id=true)(ubyte[] payload, size_t* readed=null){size_t length=payload.length;static if(read_id){Buffer.instance.read!(" ~ id_type ~ ")(payload);}";
 						Tuple!(string, string)[] order;
 						ret ~= "static struct " ~ toPascalCase(packet_name) ~ "{enum " ~ id_type ~ " packetId=" ~ to!string((cast(JSONInteger)o["id"]).value) ~ ";";
 						bool clientbound = cast(JSONBoolean)o["clientbound"];
@@ -156,7 +156,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 							}
 						}
 						if(can_encode) ret ~= encode ~ "return payload;}";
-						if(can_decode) ret ~= decode ~ "return this;}";
+						if(can_decode) ret ~= decode ~ "if(readed){*readed=length-payload.length;}return this;}";
 						if("variants" in o) {
 							auto variants = cast(JSONObject)o["variants"];
 							if("field" in variants && "values" in variants) {
@@ -167,6 +167,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 									encode = "";
 									decode = "";
 									ret ~= "static struct " ~ toPascalCase(variant_name) ~ "{";
+									ret ~= "enum typeof(" ~ toPascalCase(packet_name) ~ ".init." ~ field ~ ") " ~ field ~ "=" ~ to!string((cast(JSONInteger)vo["value"]).value) ~ ";";
 									ret ~= toPascalCase(packet_name) ~ " sup;alias sup this;";
 									// fields
 									foreach(const(JSON) f ; cast(JSONArray)vo["fields"]) {
@@ -189,19 +190,17 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 										}
 									}
 									if(ctor.length) {
-										ret ~= "public this(" ~ ctor.join(",") ~ "){";
+										ret ~= "public this(" ~ (ctor.length ? ctor.join(",") : "int dummy") ~ "){";
 										foreach(tup ; corder) {
-											if(tup[0] == field) {
-												ret ~= "this." ~ field ~ "=" ~ to!string((cast(JSONInteger)vo["value"]).value) ~ ";";
-											} else {
+											if(tup[0] != field) {
 												ret ~= "this." ~ tup[0] ~ "=" ~ tup[0] ~ ";";
 											}
 										}
 										ret ~= "}";
 									}
 									// enc/dec
-									if(can_encode) ret ~= "public ubyte[] encode(bool write_id=true)(){ubyte[] payload=this.sup.encode!write_id();" ~ encode ~ "return payload;}";
-									if(can_decode) ret ~= "public typeof(this) decode(bool read_id=true)(ubyte[] payload){this.sup.decode!read_id(payload);" ~ decode ~ "return this;}";
+									if(can_encode) ret ~= "public ubyte[] encode(bool write_id=true)(){this.sup." ~ field ~ "=this." ~ field ~ ";ubyte[] payload=this.sup.encode!write_id();" ~ encode ~ "return payload;}";
+									if(can_decode) ret ~= "public typeof(this) decode(bool read_id=true)(ubyte[] payload){size_t readed;this.sup.decode!read_id(payload, &readed);payload=payload[readed..$];" ~ decode ~ "return this;}";
 									ret ~= "}";
 								}
 							}
