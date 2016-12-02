@@ -6,19 +6,13 @@
 
 	"encoding": {
 
+		"endianness": {
+			"*": "big-endian"
+		},
+
 		"id": "ubyte",
 
-		"array_length": "uint",
-		
-		"types": {
-		
-			"string": {
-				"type": "array",
-				"base": "char",
-				"array_length": "ushort"
-			}
-		
-		}
+		"array_length": "ushort"
 
 	},
 
@@ -26,103 +20,131 @@
 
 		"login": {
 
+			"auth_credentials": {
+				"id": 0,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "protocol",
+						"type": "ubyte"
+					},
+					{
+						"name": "hash_algorithm",
+						"type": "string"
+					},
+					{
+						"name": "payload",
+						"type": "ubyte[16]"
+					}
+				]
+			},
+
 			"auth": {
 				"id": 1,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "password",
-						"type": "string"
-					},
-					{
-						"name": "commands_permission",
-						"type": "bool"
+						"name": "hash",
+						"type": "ubyte[]"
 					}
 				]
 			},
 
 			"welcome": {
-				"id": 1,
+				"id": 2,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "accepted",
-						"type": "bool"
-					},
-					{
-						"name": "software",
-						"type": "string"
-					},
-					{
-						"name": "software_version",
-						"type": "string"
-					},
-					{
-						"name": "api",
-						"type": "uint"
+						"name": "status",
+						"type": "ubyte"
 					}
-				]
+				],
+				"variants": {
+					"field": "status",
+					"values": {
+						"accepted": {
+							"value": 0,
+							"fields": [
+								{
+									"name": "remote_commands",
+									"type": "bool"
+								},
+								{
+									"name": "software",
+									"type": "string"
+								},
+								{
+									"name": "versions",
+									"type": "ubyte[3]"
+								},
+								{
+									"name": "pocket_protocols",
+									"type": "uint[]"
+								},
+								{
+									"name": "minecraft_protocols",
+									"type": "uint[]"
+								},
+								{
+									"name": "connected_nodes",
+									"type": "string[]"
+								}
+							]
+						},
+						"wrong_hash": {
+							"value": 1,
+							"fields": []
+						},
+						"timed_out": {
+							"value": 2,
+							"fields": []
+						}
+					}
+				}
 			}
 
 		},
 
 		"status": {
 
-			"ping": {
-				"id": 2,
-				"clientbound": false,
+			"keep_alive": {
+				"id": 0,
+				"clientbound": true,
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "ping",
-						"type": "ulong"
+						"name": "count",
+						"type": "uint"
 					}
 				]
 			},
 
-			"pong": {
-				"id": 2,
+			"update_nodes": {
+				"id": 1,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "pong",
-						"type": "ulong"
-					}
-				]
-			}
-
-		},
-
-		"play": {
-
-			"console_messages": {
-				"id": 3,
-				"clientbound": true,
-				"serverbound": true,
-				"fields": [
+						"name": "action",
+						"type": "ubyte"
+					},
 					{
-						"name": "messages",
-						"type": "string[]"
+						"name": "node",
+						"type": "string"
 					}
 				]
-			},
-
-			"permission_denied": {
-				"id": 4,
-				"clientbound": true,
-				"serverbound": false
 			},
 
 			"update_stats": {
-				"id": 5,
+				"id": 2,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "server_name",
+						"name": "display_name",
 						"type": "string"
 					},
 					{
@@ -138,26 +160,61 @@
 						"type": "uint"
 					},
 					{
-						"name": "tps",
-						"type": "float"
-					},
-					{
 						"name": "upload",
-						"type": "ulong"
+						"type": "uint"
 					},
 					{
 						"name": "download",
-						"type": "ulong"
-					},
-					{
-						"name": "ram",
-						"type": "ulong"
-					},
-					{
-						"name": "cpu",
-						"type": "float"
+						"type": "uint"
 					}
 				]
+			}
+
+		},
+
+		"play": {
+
+			"console_message": {
+				"id": 3,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "node",
+						"type": "string"
+					},
+					{
+						"name": "timestamp",
+						"type": "ulong"
+					},
+					{
+						"name": "logger",
+						"type": "string"
+					},
+					{
+						"name": "message",
+						"type": "string"
+					}
+				]
+			},
+
+			"command": {
+				"id": 4,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "command",
+						"type": "string"
+					}
+				]
+			},
+
+			"permission_denied": {
+				"id": 5,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": []
 			}
 
 		}
