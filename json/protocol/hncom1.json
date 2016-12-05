@@ -168,12 +168,8 @@
 						"type": "string"
 					},
 					{
-						"name": "accepted_language",
+						"name": "accepted_languages",
 						"type": "string[]"
-					},
-					{
-						"name": "web_port",
-						"type": "ushort"
 					},
 					{
 						"name": "json_data",

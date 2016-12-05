@@ -6,6 +6,7 @@ import std.meta : NoDuplicates;
 import std.string;
 import std.system : Endian;
 import std.traits : isArray, isDynamicArray;
+import std.typecons : isTuple;
 import std.typetuple : TypeTuple;
 import std.uuid : UUID;
 
@@ -47,7 +48,15 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 					this.write(av, buffer);
 				}
 			}
-		} else static if(T.stringof.length > 3 && T.stringof.startsWith("var")) {
+		} else static if(isTuple!T) {
+			mixin((){
+				string ret;
+				foreach(immutable name ; T.fieldNames) {
+					ret ~= "this.write(value." ~ name ~ ", buffer);";
+				}
+				return ret;
+			}());
+		} else static if(T.stringof.startsWith("var")) {
 			buffer ~= value.encode();
 		} else {
 			mixin("this.write" ~ convert(Base!T.stringof) ~ "(value, buffer);");
@@ -87,7 +96,17 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 				}
 				return ret;
 			}
-		} else static if(T.stringof.length >= 3 && T.stringof.startsWith("var")) {
+		} else static if(isTuple!T) {
+			T value;
+			mixin((){
+				string ret;
+				foreach(immutable name ; T.fieldNames) {
+					ret ~= "value." ~ name ~ "=this.read!(typeof(value." ~ name ~ "))(buffer);";
+				}
+				return ret;
+			}());
+			return value;
+		} else static if(T.stringof.startsWith("var")) {
 			return T.fromBuffer(buffer);
 		} else {
 			mixin("return this.read" ~ convert(Base!T.stringof) ~ "(buffer);");

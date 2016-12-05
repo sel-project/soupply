@@ -17,7 +17,7 @@ module sul.protocol;
 import std.conv : to;
 import std.string;
 import std.system : Endian;
-import std.typecons : Tuple;
+import std.typecons : isTuple, Tuple;
 import std.typetuple : TypeTuple;
 
 import sul.conversion;
@@ -131,6 +131,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 				foreach(string packet_name, const(JSON) packet; cast(JSONObject)group) {
 					if(packet !is null && packet.type == JsonType.object) {
 						JSONObject o = cast(JSONObject)packet;
+						string[] members;
 						string encode = "public ubyte[] encode(bool write_id=true)(){ubyte[] payload;static if(write_id){Buffer.instance.write(packetId, payload);}";
 						string decode = "public typeof(this) decode(bool read_id=true)(ubyte[] payload, size_t* readed=null){size_t length=payload.length;static if(read_id){Buffer.instance.read!(" ~ id_type ~ ")(payload);}";
 						Tuple!(string, string)[] order;
@@ -148,6 +149,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 										string type = convertType(aliases, cast(JSONString)fo["type"]);
 										order ~= Tuple!(string, string)(name, type);
 										ret ~= type ~ " " ~ name ~ ";";
+										members ~= name;
 
 										encode ~= "Buffer.instance.write(this." ~ name ~ ", payload);";
 										decode ~= "this." ~ name ~ "=Buffer.instance.read!(" ~ type ~ ")(payload);";
@@ -155,17 +157,22 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 								}
 							}
 						}
+						ret ~= "enum string[] members = " ~ to!string(members) ~ ";";
 						if(can_encode) ret ~= encode ~ "return payload;}";
 						if(can_decode) ret ~= decode ~ "if(readed){*readed=length-payload.length;}return this;}";
 						if("variants" in o) {
 							auto variants = cast(JSONObject)o["variants"];
 							if("field" in variants && "values" in variants) {
 								string field = parseName(toCamelCase(cast(JSONString)variants["field"]));
+								ret ~= "enum string variantField=\"" ~ field ~ "\";";
+								string[] vnames;
 								foreach(string variant_name, const(JSON) variant; cast(JSONObject)variants["values"]) {
+									string[] vmembers = members.dup;
 									auto vo = cast(JSONObject)variant;
 									auto corder = order.dup;
 									encode = "";
 									decode = "";
+									vnames ~= toPascalCase(variant_name);
 									ret ~= "static struct " ~ toPascalCase(variant_name) ~ "{";
 									ret ~= "enum typeof(" ~ toPascalCase(packet_name) ~ ".init." ~ field ~ ") " ~ field ~ "=" ~ to!string((cast(JSONInteger)vo["value"]).value) ~ ";";
 									ret ~= toPascalCase(packet_name) ~ " sup;alias sup this;";
@@ -177,6 +184,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 											string type = convertType(aliases, cast(JSONString)fo["type"]);
 											corder ~= Tuple!(string, string)(name, type);
 											ret ~= type ~ " " ~ name ~ ";";
+											vmembers ~= name;
 											
 											encode ~= "Buffer.instance.write(this." ~ name ~ ", payload);";
 											decode ~= "this." ~ name ~ "=Buffer.instance.read!(" ~ type ~ ")(payload);";
@@ -190,7 +198,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 										}
 									}
 									if(ctor.length) {
-										ret ~= "public this(" ~ (ctor.length ? ctor.join(",") : "int dummy") ~ "){";
+										ret ~= "public this(" ~ ctor.join(",") ~ "){";
 										foreach(tup ; corder) {
 											if(tup[0] != field) {
 												ret ~= "this." ~ tup[0] ~ "=" ~ tup[0] ~ ";";
@@ -198,11 +206,13 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 										}
 										ret ~= "}";
 									}
+									ret ~= "enum string[] members = " ~ to!string(vmembers) ~ ";";
 									// enc/dec
 									if(can_encode) ret ~= "public ubyte[] encode(bool write_id=true)(){this.sup." ~ field ~ "=this." ~ field ~ ";ubyte[] payload=this.sup.encode!write_id();" ~ encode ~ "return payload;}";
 									if(can_decode) ret ~= "public typeof(this) decode(bool read_id=true)(ubyte[] payload){size_t readed;this.sup.decode!read_id(payload, &readed);payload=payload[readed..$];" ~ decode ~ "return this;}";
 									ret ~= "}";
 								}
+								ret ~= "enum string[] variants=" ~ to!string(vnames) ~ ";";
 							}
 						}
 						ret ~= "}";
@@ -261,15 +271,20 @@ string convertType(string[string] aliases, string type) {
 	}
 	auto vector = type.indexOf("<");
 	if(vector >= 0) {
-		t = type[0..vector];
-	}
-	if(t in aliases) {
+		string tt = type[0..vector];
+		t = "Tuple!(";
+		foreach(char c ; type[vector+1..type.indexOf(">")]) {
+			t ~= tt ~ ",\"" ~ c ~ "\",";
+		}
+		ret = t[0..$-1] ~ ")";
+	} else if(t in aliases) {
 		return convertType(aliases, aliases[t] ~ (array >= 0 ? type[array..$] : ""));
-	}
-	foreach(string dt ; defaultTypes) {
-		if(dt == t) {
-			ret = dt;
-			break;
+	} else {
+		foreach(string dt ; defaultTypes) {
+			if(dt == t) {
+				ret = dt;
+				break;
+			}
 		}
 	}
 	if(ret == "") ret = "Types." ~ toPascalCase(t);
