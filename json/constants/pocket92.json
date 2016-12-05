@@ -110,10 +110,25 @@
 				"remove": 1
 			}
 		},
+		
+		"animate": {
+			"action": {
+				"breaking": 1,
+				"wake_up": 3
+			}
+		},
 
 		"drop_item": {
 			"type": {
 				"drop": 0
+			}
+		},
+		
+		"container_set_content": {
+			"window": {
+				"inventory": 0,
+				"armor": 120,
+				"creative": 121
 			}
 		},
 		

@@ -593,6 +593,10 @@
 						"type": "float<xyz>"
 					},
 					{
+						"name": "motion",
+						"type": "float<xyz>"
+					},
+					{
 						"name": "yaw",
 						"type": "float"
 					},
