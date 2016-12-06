@@ -15,8 +15,6 @@
 		"array_length": "varuint",
 		
 		"types": {
-
-			"metadata": "ubyte",
 		
 			"entity_id": "varuint",
 
@@ -212,14 +210,9 @@
 				]
 			},
 
-			"list_remove_player": {
+			"metadata": {
 				"type": "struct",
-				"fields": [
-					{
-						"name": "uuid",
-						"type": "uuid"
-					}
-				]
+				"fields": []
 			}
 		
 		}
@@ -1276,7 +1269,7 @@
 				]
 			},
 
-			"entity_look_and_relative_mode": {
+			"entity_look_and_relative_move": {
 				"id": 38,
 				"clientbound": true,
 				"serverbound": false,
@@ -1497,7 +1490,7 @@
 							"fields": [
 								{
 									"name": "players",
-									"type": "list_remove_player[]"
+									"type": "uuid[]"
 								}
 							]
 						}
@@ -1879,7 +1872,7 @@
 					},
 					{
 						"name": "saturation",
-						"type": "varuint"
+						"type": "float"
 					}
 				]
 			},

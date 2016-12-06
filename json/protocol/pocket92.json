@@ -1084,6 +1084,10 @@
 						"type": "block_position"
 					},
 					{
+						"name": "hotbar_slot",
+						"type": "varuint"
+					},
+					{
 						"name": "face",
 						"type": "varint"
 					},
@@ -1346,6 +1350,10 @@
 					{
 						"name": "item",
 						"type": "slot"
+					},
+					{
+						"name": "unknown",
+						"type": "ubyte"
 					}
 				]
 			},
@@ -1488,12 +1496,12 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "type",
-						"type": "ubyte" 
+						"name": "position",
+						"type": "varint<xz>"
 					},
 					{
-						"name": "chunk",
-						"type": "chunk"
+						"name": "data",
+						"type": "ubyte[]"
 					}
 				]
 			},

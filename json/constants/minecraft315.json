@@ -56,12 +56,19 @@
 			}
 		},
 
+		"entity_status": {
+			"status": {
+				"hurt": 2,
+				"death": 3
+			}
+		},
+
 		"change_game_state": {
 			"reason": {
 				"invalid_bed": 0,
 				"end_raining": 1,
 				"begin_raining": 2,
-				"change_game_mode": 3,
+				"change_gamemode": 3,
 				"exit_end": 4,
 				"demo_message": 5,
 				"arrow_hitting_player": 6,
