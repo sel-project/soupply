@@ -43,7 +43,7 @@ template Protocol(string game, size_t protocol, SoftwareType software_type, E...
 	import sul.buffers;
 	import sul.types.var;
 
-	mixin(packetsEnum(cast(JSONObject)UtilsJSON!("protocol", game, protocol), software_type == SoftwareType.client));
+	mixin(packetsEnum(cast(JSONObject)utilsJSON!("protocol", game, protocol), software_type == SoftwareType.client));
 
 }
 
@@ -122,7 +122,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 		}
 	}
 
-	string buffer = "static class Buffer{mixin Instance;mixin BufferMethods!(Endian." ~ (little_endian ? "little" : "big") ~ "Endian, " ~ array_length ~ ");";
+	string buffer = "static class Buffer{mixin Instance;mixin BufferMethods!(Endian." ~ (little_endian ? "little" : "big") ~ "Endian, " ~ array_length ~ "," ~ change_endianness.join(",") ~ ");";
 
 	if("packets" in json && json["packets"].type == JsonType.object) {
 		foreach(string group_name, const(JSON) group; cast(JSONObject)json["packets"]) {
@@ -294,6 +294,7 @@ string convertType(string[string] aliases, string type) {
 string parseName(string name) {
 	if(name == "version") return "vers";
 	else if(name == "body") return "body_";
+	else if(name == "default") return "default_";
 	else return name;
 }
 

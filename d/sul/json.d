@@ -109,19 +109,19 @@ public const(JSON) parseJSON(string json) {
 	
 	try {
 		
-		return new JSONInteger(json.to!ptrdiff_t);
+		return new JSONInteger(json);
 		
 	} catch(ConvException) {}
 	
 	try {
 		
-		return new JSONFloating(json.to!double);
+		return new JSONFloating(json);
 		
 	} catch(ConvException) {}
 
 	if(json == "true" || json == "false") {
 
-		return new JSONBoolean(json == "true");
+		return new JSONBoolean(json);
 
 	}
 
@@ -209,11 +209,26 @@ alias JSONArray = JSONOf!(const(JSON)[], JsonType.array);
 
 alias JSONString = JSONOf!(string, JsonType.string);
 
-alias JSONInteger = JSONOf!(ptrdiff_t, JsonType.integer);
+class JSONRaw(T, JsonType type) : JSONOf!(T, type) {
 
-alias JSONFloating = JSONOf!(double, JsonType.floating);
+	public string raw;
 
-alias JSONBoolean = JSONOf!(bool, JsonType.boolean);
+	public this() {}
+
+	public this(string raw) {
+		super(to!T(raw));
+		this.raw = raw;
+	}
+
+	alias value this;
+
+}
+
+alias JSONInteger = JSONRaw!(ptrdiff_t, JsonType.integer);
+
+alias JSONFloating = JSONRaw!(double, JsonType.floating);
+
+alias JSONBoolean = JSONRaw!(bool, JsonType.boolean);
 
 class JSONObject : JSONArray {
 

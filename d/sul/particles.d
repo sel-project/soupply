@@ -19,7 +19,7 @@ import sul.json;
 
 template Particles(string game, size_t protocol) {
 
-	mixin(particlesEnum(cast(JSONObject)UtilsJSON!("particles", game, protocol)));
+	mixin(particlesEnum(cast(JSONObject)utilsJSON!("particles", game, protocol)));
 
 }
 

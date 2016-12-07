@@ -99,7 +99,7 @@
 						"type": "float"
 					},
 					{
-						"name": "value2",
+						"name": "default",
 						"type": "float"
 					},
 					{
@@ -474,11 +474,11 @@
 					},
 					{
 						"name": "difficulty",
-						"type": "varuint"
+						"type": "varint"
 					},
 					{
 						"name": "spawn_position",
-						"type": "block_position"
+						"type": "varint<xyz>"
 					},
 					{
 						"name": "loaded_in_creative",
@@ -1502,6 +1502,10 @@
 					{
 						"name": "data",
 						"type": "ubyte[]"
+					},
+					{
+						"name": "tiles",
+						"type": "ubyte[][]"
 					}
 				]
 			},

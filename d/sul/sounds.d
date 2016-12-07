@@ -19,7 +19,7 @@ import sul.json;
 
 template Sounds(string game, size_t protocol) {
 
-	mixin(soundsEnum(cast(JSONObject)UtilsJSON!("sounds", game, protocol)));
+	mixin(soundsEnum(cast(JSONObject)utilsJSON!("sounds", game, protocol)));
 
 }
 

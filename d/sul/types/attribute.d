@@ -12,8 +12,8 @@
  * See the GNU Lesser General Public License for more details.
  * 
  */
-module attribute;
+module sul.types.attribute;
 
 import std.typecons : Tuple;
 
-alias Attribute = Tuple!(float, "min", float, "max", float, "value", string, "name");
+alias Attribute = Tuple!(string, "name", float, "min", float, "max", float, "value");

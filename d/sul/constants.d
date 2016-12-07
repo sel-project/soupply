@@ -23,10 +23,10 @@ template Constants(string game, size_t protocol) {
 
 	import sul.types.var;
 
-	static if(__traits(compiles, UtilsJSON!("protocol", game, protocol))) {
-		mixin(constantsEnum(cast(JSONObject)UtilsJSON!("constants", game, protocol), cast(JSONObject)UtilsJSON!("protocol", game, protocol)));
+	static if(__traits(compiles, utilsJSON!("protocol", game, protocol))) {
+		mixin(constantsEnum(cast(JSONObject)utilsJSON!("constants", game, protocol), cast(JSONObject)utilsJSON!("protocol", game, protocol)));
 	} else {
-		mixin(constantsEnum(cast(JSONObject)UtilsJSON!("constants", game, protocol), null));
+		mixin(constantsEnum(cast(JSONObject)utilsJSON!("constants", game, protocol), null));
 	}
 
 }

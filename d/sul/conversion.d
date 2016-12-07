@@ -42,7 +42,7 @@ template fileImpl(string name) {
  * Reads a compile-time minified JSON file and parses it into
  * a constants JSON object.
  */
-static const UtilsJSON(string type, string game, size_t protocol) = parseJSON(file!(type, game, protocol));
+static const utilsJSON(string type, string game, size_t protocol) = parseJSON(file!(type, game, protocol));
 
 @property string toCamelCase(string str) {
 	string ret = "";

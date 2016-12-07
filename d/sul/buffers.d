@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2016 SEL
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ * 
+ */
 module sul.buffers;
 
 static import std.bitmanip;
@@ -29,7 +43,7 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 
 	protected static Endian endiannessOf(T)() {
 		foreach(F ; E) {
-			static if(is(T == F)) return !endianness;
+			static if(is(T == F)) return cast(Endian)!endianness;
 		}
 		return endianness;
 	}

@@ -1,0 +1,47 @@
+{
+
+	"__game": "Minecraft",
+	"__protocol": 210,
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"attributes": {
+
+		"max_health": {
+
+			"name": "generic.maxHealth",
+			"min": 0,
+			"max": 1024,
+			"default": 20
+
+		},
+
+		"absorption": {
+
+			"name": "generic.absorption",
+			"min": 0,
+			"max": 4,
+			"default": 0
+
+		},
+
+		"speed": {
+
+			"name": "generic.movementSpeed",
+			"min": 0,
+			"max": 24791,
+			"default": 0.1
+
+		},
+
+		"knockback_resistance": {
+
+			"name": "generic.knockbackResistance",
+			"min": 0,
+			"max": 1,
+			"default": 0
+
+		}
+
+	}
+
+}

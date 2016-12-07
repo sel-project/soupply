@@ -36,7 +36,7 @@ mixin template Metadata(size_t[][string] games) {
 				string ret = "JSONObject[string] objects=[";
 				foreach(string game, size_t[] protocols; games) {
 					foreach(size_t protocol ; protocols) {
-						ret ~= "\"" ~ game ~ to!string(protocol) ~ "\": cast(JSONObject)UtilsJSON!(\"metadata\", \"" ~ game ~ "\", " ~ to!string(protocol) ~ "),";
+						ret ~= "\"" ~ game ~ to!string(protocol) ~ "\": cast(JSONObject)utilsJSON!(\"metadata\", \"" ~ game ~ "\", " ~ to!string(protocol) ~ "),";
 					}
 				}
 				return ret ~ "];";
