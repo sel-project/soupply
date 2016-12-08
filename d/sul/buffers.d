@@ -174,7 +174,7 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 	}
 
 	public void writeTriad(int value, ref ubyte[] buffer) {
-		static if(endiannessOf!Triad == Endian.bigEndian) {
+		static if(endiannessOf!Triad == Endian.littleEndian) {
 			buffer ~= value & 255;
 			buffer ~= (value >> 8) & 255;
 			buffer ~= (value >> 16) & 255;
@@ -188,7 +188,7 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 	public Triad readTriad(ref ubyte[] buffer) {
 		int ret = 0;
 		if(buffer.length < 3) buffer.length = 3;
-		static if(endiannessOf!Triad == Endian.bigEndian) {
+		static if(endiannessOf!Triad == Endian.littleEndian) {
 			ret |= buffer[0];
 			ret |= buffer[1] << 8;
 			ret |= buffer[2] << 16;

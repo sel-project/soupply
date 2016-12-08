@@ -55,7 +55,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 	string[] change_endianness;
 	string id_type = "uint";
 	string array_length = "uint";
-	string[string] aliases = ["uuid": "UUID", "remaining_bytes": "RemainingBytes", "triad": "Triad"]; // { "entity_id": "varint" }
+	string[string] aliases = ["uuid": "UUID", "remaining_bytes": "RemainingBytes", "triad": "Triad"];
 	Tuple!(string, string)[][string] types; // types["Address"] = [(type, condition), (type, condition)]
 	Tuple!(string, string)[string] arrays; // arrays["ShortString"] = ("ubyte", "ushort")
 
@@ -81,7 +81,6 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 		}
 		if("types" in encoding && encoding["types"].type == JsonType.object) {
 			ret ~= "const struct Types{";
-			ret ~= "static struct Ubyte{ubyte b;alias b this;}"; // what's this
 			foreach(string index, const(JSON) type; cast(JSONObject)encoding["types"]) {
 				if(type.type == JsonType.string) {
 					aliases[index] = cast(JSONString)type;
@@ -120,6 +119,10 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 			}
 			ret ~= "}";
 		}
+	}
+
+	foreach(ref string change ; change_endianness) {
+		change = convertType(aliases, change);
 	}
 
 	string buffer = "static class Buffer{mixin Instance;mixin BufferMethods!(Endian." ~ (little_endian ? "little" : "big") ~ "Endian, " ~ array_length ~ "," ~ change_endianness.join(",") ~ ");";

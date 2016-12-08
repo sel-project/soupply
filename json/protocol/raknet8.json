@@ -190,7 +190,7 @@
 				]
 			},
 
-			"open_connection_response_1": {
+			"open_connection_reply_1": {
 				"id": 6,
 				"clientbound": true,
 				"serverbound": false,
@@ -238,7 +238,7 @@
 				]
 			},
 
-			"open_connection_response_2": {
+			"open_connection_reply_2": {
 				"id": 8,
 				"clientbound": true,
 				"serverbound": false,
