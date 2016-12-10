@@ -1,7 +1,7 @@
 {
 
 	"__game": "Minecraft: Pocket Edition",
-	"__protocol": 92,
+	"__protocol": 100,
 	"__website": "https://github.com/sel-project/sel-utils",
 
 	"items": [
@@ -491,6 +491,10 @@
 		{
 			"name": "Bottle o' Enchanting",
 			"id": 384
+		},
+		{
+			"name": "Shulker Shell",
+			"id": 445
 		},
 		{
 			"name": "Prismarine Shard",
@@ -2621,6 +2625,10 @@
 		{
 			"name": "Note Block",
 			"id": 25
+		},
+		{
+			"name": "End Rod",
+			"id": 208
 		},
 		{
 			"name": "End Portal",
