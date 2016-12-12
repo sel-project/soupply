@@ -445,7 +445,7 @@
 			"game_packets": {
 				"id": 16,
 				"clientbound": true,
-				"serverbound": false,
+				"serverbound": true,
 				"fields": [
 					{
 						"name": "hub_id",
