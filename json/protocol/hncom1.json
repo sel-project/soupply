@@ -222,7 +222,7 @@
 
 		"status": {
 
-			"status": {
+			"players": {
 				"id": 5,
 				"clientbound": true,
 				"serverbound": false,

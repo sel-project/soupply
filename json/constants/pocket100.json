@@ -17,18 +17,6 @@
 			}
 		},
 		
-		"text": {
-			"type": {
-				"raw": 0,
-				"chat": 1,
-				"translation": 2,
-				"popup": 3,
-				"tip": 4,
-				"system": 5,
-				"whisper": 6
-			}
-		},
-		
 		"update_block": {
 			"flags_and_meta": {
 				"neighbours": 1,
@@ -152,18 +140,12 @@
 				"admin": 4
 			}
 		},
-		
-		"full_chunk_data": {
-			"type": {
-				"colums": 0,
-				"layers": 1
-			}
-		},
-		
-		"player_list": {
-			"type": {
+
+		"boss_event": {
+			"event": {
 				"add": 0,
-				"remove": 1
+				"update": 1,
+				"remove": 2
 			}
 		}
 	

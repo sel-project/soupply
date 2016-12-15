@@ -858,7 +858,7 @@
 			"level_sound_event": {
 				"id": 26,
 				"clientbound": true,
-				"serverbound": false,
+				"serverbound": true,
 				"fields": [
 					{
 						"name": "sound",
@@ -1134,7 +1134,17 @@
 				]
 			},
 			
-			"player_fall": null,
+			"player_fall": {
+				"id": 37,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "distance",
+						"type": "float"
+					}
+				]
+			},
 
 			"hurt_armor": {
 				"id": 38,
@@ -1512,7 +1522,7 @@
 				]
 			},
 
-			"set_commands_enabled": {
+			"set_cheats": {
 				"id": 59,
 				"clientbound": true,
 				"serverbound": false,
@@ -1728,48 +1738,9 @@
 					},
 					{
 						"name": "event",
-						"type": "varint"
+						"type": "varuint"
 					}
-				],
-				"variants": {
-					"field": "event",
-					"values": {
-						"add": {
-							"value": 0,
-							"fields": [
-								{
-									"name": "title",
-									"type": "string"
-								},
-								{
-									"name": "health",
-									"type": "float"
-								},
-								{
-									"name": "color",
-									"type": "varuint"
-								},
-								{
-									"name": "notches",
-									"type": "varuint"
-								}
-							]
-						},
-						"remove": {
-							"value": 1,
-							"fields": []
-						},
-						"update_health": {
-							"value": 2,
-							"fields": [
-								{
-									"name": "health",
-									"type": "float"
-								}
-							]
-						}
-					}
-				}
+				]
 			},
 			
 			"available_commands": {
@@ -1778,8 +1749,12 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "fields",
-						"type": "string[]"
+						"name": "commands",
+						"type": "string"
+					},
+					{
+						"name": "unknown",
+						"type": "string"
 					}
 				]
 			},
