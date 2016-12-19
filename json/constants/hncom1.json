@@ -29,6 +29,17 @@
 				"transferred": 3
 			}
 		},
+		
+		"update_list": {
+			"list": {
+				"whitelist": 0,
+				"blacklist": 1
+			},
+			"action": {
+				"add": 0,
+				"remove": 1
+			}
+		},
 
 		"remote_command": {
 			"origin": {

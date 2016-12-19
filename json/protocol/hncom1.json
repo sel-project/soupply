@@ -425,9 +425,65 @@
 					}
 				]
 			},
+			
+			"update_list": {
+				"id": 15,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "list",
+						"type": "ubyte"
+					},
+					{
+						"name": "action",
+						"type": "ubyte"
+					},
+					{
+						"name": "type",
+						"type": "ubyte"
+					}
+				],
+				"variants": {
+					"field": "type",
+					"values": {
+						"by_hub_id": {
+							"value": 0,
+							"fields": [
+								{
+									"name": "hub_id",
+									"type": "varuint"
+								}
+							]
+						},
+						"by_name": {
+							"value": 1,
+							"fields": [
+								{
+									"name": "username",
+									"type": "string"
+								}
+							]
+						},
+						"by_suuid": {
+							"value": 2,
+							"fields": [
+								{
+									"name": "game",
+									"type": "ubyte"
+								},
+								{
+									"name": "uuid",
+									"type": "uuid"
+								}
+							]
+						}
+					}
+				}
+			},
 
 			"game_packet": {
-				"id": 15,
+				"id": 16,
 				"clientbound": true,
 				"serverbound": true,
 				"fields": [
@@ -443,7 +499,7 @@
 			},
 
 			"game_packets": {
-				"id": 16,
+				"id": 17,
 				"clientbound": true,
 				"serverbound": true,
 				"fields": [
@@ -459,7 +515,7 @@
 			},
 
 			"remote_command": {
-				"id": 17,
+				"id": 18,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -479,7 +535,7 @@
 			},
 
 			"update_player_latency": {
-				"id": 18,
+				"id": 19,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -495,7 +551,7 @@
 			},
 
 			"update_player_packet_loss": {
-				"id": 19,
+				"id": 20,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -511,7 +567,7 @@
 			},
 
 			"log": {
-				"id": 20,
+				"id": 21,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -523,7 +579,7 @@
 			},
 
 			"logs": {
-				"id": 21,
+				"id": 22,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
