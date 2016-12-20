@@ -19,7 +19,7 @@ import std.conv : to;
 import std.meta : NoDuplicates;
 import std.string;
 import std.system : Endian;
-import std.traits : isArray, isDynamicArray;
+import std.traits : isArray, isDynamicArray, staticIndexOf;
 import std.typecons : isTuple;
 import std.typetuple : TypeTuple;
 import std.uuid : UUID;
@@ -41,14 +41,17 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 	static import std.bitmanip;
 	import std.traits : isArray, isDynamicArray;
 
-	protected static Endian endiannessOf(T)() {
-		foreach(F ; E) {
-			static if(is(T == F)) return cast(Endian)!endianness;
+	alias eee = endianness;
+
+	template endiannessOf(T) {
+		static if(staticIndexOf!(T, E) >= 0) {
+			enum endiannessOf = cast(Endian)!endianness;
+		} else {
+			enum endiannessOf = endianness;
 		}
-		return endianness;
 	}
 
-	public void write(T)(T value, ref ubyte[] buffer) {
+	public void write(T, Endian e=endiannessOf!T)(T value, ref ubyte[] buffer) {
 		static if(is(T == RemainingBytes)) {
 			buffer ~= value;
 		} else static if(is(T == UUID)) {
@@ -73,11 +76,11 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 		} else static if(T.stringof.startsWith("var")) {
 			buffer ~= value.encode();
 		} else {
-			mixin("this.write" ~ convert(Base!T.stringof) ~ "(value, buffer);");
+			mixin("this.write" ~ convert(Base!T.stringof) ~ "!e(value, buffer);");
 		}
 	}
 
-	public T read(T)(ref ubyte[] buffer) {
+	public T read(T, Endian e=endiannessOf!T)(ref ubyte[] buffer) {
 		static if(is(T == RemainingBytes)) {
 			ubyte[] ret = buffer.dup;
 			buffer.length = 0;
@@ -95,7 +98,7 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 				} else {
 					R[] ret = new R[this.readLength(buffer)];
 					foreach(ref R value ; ret) {
-						value = this.read!R(buffer);
+						value = this.read!(R, e)(buffer);
 					}
 					return ret;
 				}
@@ -105,7 +108,7 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 					ret = cast(R[])this.read(ret.length, buffer);
 				} else {
 					foreach(ref R value ; ret) {
-						value = this.read!R(buffer);
+						value = this.read!(R, e)(buffer);
 					}
 				}
 				return ret;
@@ -123,7 +126,7 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 		} else static if(T.stringof.startsWith("var")) {
 			return T.fromBuffer(buffer);
 		} else {
-			mixin("return this.read" ~ convert(Base!T.stringof) ~ "(buffer);");
+			mixin("return this.read" ~ convert(Base!T.stringof) ~ "!e(buffer);");
 		}
 	}
 
@@ -152,14 +155,14 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 	mixin((){
 		string w, r;
 		foreach(T ; TypeTuple!(bool, byte, ubyte, short, ushort, int, uint, long, ulong, float, double)) {
-			w ~= "public void write" ~ capital(T.stringof) ~ "(" ~ T.stringof ~ " value, ref ubyte[] buffer){";
+			w ~= "public void write" ~ capital(T.stringof) ~ "(Endian e=endiannessOf!(" ~ T.stringof ~ "))(" ~ T.stringof ~ " value, ref ubyte[] buffer){";
 			w ~= "size_t index = buffer.length;";
 			w ~= "buffer.length += " ~ to!string(T.sizeof) ~ ";";
-			w ~= "std.bitmanip.write!(" ~ T.stringof ~ ", endiannessOf!(" ~ T.stringof ~ ")())(buffer, value, index);";
+			w ~= "std.bitmanip.write!(" ~ T.stringof ~ ", e)(buffer, value, index);";
 			w ~= "}";
-			r ~= "public " ~ T.stringof ~ " read" ~ capital(T.stringof) ~ "(ref ubyte[] buffer){";
+			r ~= "public " ~ T.stringof ~ " read" ~ capital(T.stringof) ~ "(Endian e=endiannessOf!(" ~ T.stringof ~ "))(ref ubyte[] buffer){";
 			r ~= "if(buffer.length < " ~ to!string(T.sizeof) ~ "){buffer.length=" ~ to!string(T.sizeof) ~ ";}";
-			r ~= "return std.bitmanip.read!(" ~ T.stringof ~ ", endiannessOf!(" ~ T.stringof ~ ")())(buffer);";
+			r ~= "return std.bitmanip.read!(" ~ T.stringof ~ ", e)(buffer);";
 			r ~= "}";
 		}
 		return w ~ r;
@@ -173,8 +176,8 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 		return cast(char)this.read!ubyte(buffer);
 	}
 
-	public void writeTriad(int value, ref ubyte[] buffer) {
-		static if(endiannessOf!Triad == Endian.littleEndian) {
+	public void writeTriad(Endian e=endiannessOf!Triad)(int value, ref ubyte[] buffer) {
+		static if(e == Endian.littleEndian) {
 			buffer ~= value & 255;
 			buffer ~= (value >> 8) & 255;
 			buffer ~= (value >> 16) & 255;
@@ -185,10 +188,10 @@ mixin template BufferMethods(Endian endianness, L, E...) {
 		}
 	}
 
-	public Triad readTriad(ref ubyte[] buffer) {
+	public Triad readTriad(Endian e=endiannessOf!Triad)(ref ubyte[] buffer) {
 		int ret = 0;
 		if(buffer.length < 3) buffer.length = 3;
-		static if(endiannessOf!Triad == Endian.littleEndian) {
+		static if(e == Endian.littleEndian) {
 			ret |= buffer[0];
 			ret |= buffer[1] << 8;
 			ret |= buffer[2] << 16;

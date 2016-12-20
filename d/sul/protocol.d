@@ -17,6 +17,7 @@ module sul.protocol;
 import std.conv : to;
 import std.string;
 import std.system : Endian;
+import std.traits : staticIndexOf;
 import std.typecons : isTuple, Tuple;
 import std.typetuple : TypeTuple;
 
@@ -57,7 +58,7 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 	string array_length = "uint";
 	string[string] aliases = ["uuid": "UUID", "remaining_bytes": "RemainingBytes", "triad": "Triad"];
 	Tuple!(string, string)[][string] types; // types["Address"] = [(type, condition), (type, condition)]
-	Tuple!(string, string)[string] arrays; // arrays["ShortString"] = ("ubyte", "ushort")
+	Tuple!(string, string, string)[string] arrays; // arrays["ShortString"] = (base, length, endianness)
 
 	if("encoding" in json && json["encoding"].type == JsonType.object) {
 		auto encoding = cast(JSONObject)json["encoding"];
@@ -107,7 +108,11 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 								break;
 							case "array":
 								string name = toPascalCase(index);
-								auto tuple = Tuple!(string, string)(convertType(aliases, toCamelCase(cast(JSONString)typeo["base"])), cast(JSONString)typeo["length"]);
+								auto tuple = Tuple!(string, string, string)(convertType(aliases, toCamelCase(cast(JSONString)typeo["base"])), cast(JSONString)typeo["length"], "");
+								auto e = "endianness" in typeo;
+								if(e && (*e).type == JsonType.string) {
+									tuple[2] = toCamelCase(cast(JSONString)*e);
+								}
 								arrays[name] = tuple;
 								ret ~= "static struct " ~ name ~ "{public " ~ tuple[0] ~ "[] array;alias array this;}";
 								break;
@@ -228,8 +233,9 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 
 	string w, r;
 	foreach(string type, Tuple!(string, string)[] about; types) {
-		w ~= "public void write" ~ type ~ "(Types." ~ type ~ " value__, ref ubyte[] buffer){";
-		r ~= "public Types." ~ type ~ " read" ~ type ~ "(ref ubyte[] buffer){Types." ~ type ~ " value__;";
+		//TODO fields' custom endianness
+		w ~= "public void write" ~ type ~ "(Endian e=endiannessOf!(Types." ~ type ~ "))(Types." ~ type ~ " value__, ref ubyte[] buffer){";
+		r ~= "public Types." ~ type ~ " read" ~ type ~ "(Endian e=endiannessOf!(Types." ~ type ~ "))(ref ubyte[] buffer){Types." ~ type ~ " value__;";
 		foreach(data ; about) {
 			string write = "this.write(value__." ~ data[0] ~ ", buffer);";
 			string read = "value__." ~ data[0] ~ "=this.read!(typeof(Types." ~ type ~ "." ~ data[0] ~ "))(buffer);";
@@ -244,13 +250,14 @@ private @property string packetsEnum(JSONObject json, bool is_client) {
 		w ~= "}";
 		r ~= "return value__;}";
 	}
-	foreach(string type, Tuple!(string, string) array; arrays) {
-		w ~= "public void write" ~ type ~ "(Types." ~ type ~ " value, ref ubyte[] buffer){";
-		w ~= "this.write(cast(" ~ array[1] ~ ")value.array.length, buffer);";
+	foreach(string type, array; arrays) {
+		string e = array[2].length ? "Endian." ~ array[2] : "endiannessOf!(Types." ~ type ~ ")"; // applies to the length, not the values
+		w ~= "public void write" ~ type ~ "(Endian e=" ~ e ~ ")(Types." ~ type ~ " value, ref ubyte[] buffer){";
+		w ~= "this.write!(" ~ array[1] ~ ", e)(cast(" ~ array[1] ~ ")value.array.length, buffer);";
 		w ~= "foreach(v ; value.array){this.write(v, buffer);}";
 		w ~= "}";
-		r ~= "public Types." ~ type ~ " read" ~ type ~ "(ref ubyte[] buffer){Types." ~ type ~ " value;";
-		r ~= "value.array.length=this.read!(" ~ array[1] ~ ")(buffer);";
+		r ~= "public Types." ~ type ~ " read" ~ type ~ "(Endian e=" ~ e ~ ")(ref ubyte[] buffer){Types." ~ type ~ " value;";
+		r ~= "value.array.length=this.read!(" ~ array[1] ~ ", e)(buffer);";
 		r ~= "foreach(ref " ~ array[0] ~ " v ; value.array){v=this.read!(" ~ array[0] ~ ")(buffer);}";
 		r ~= "return value;}";
 	}
