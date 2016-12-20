@@ -142,6 +142,10 @@
 						"type": "uuid"
 					},
 					{
+						"name": "name",
+						"type": "string"
+					},
+					{
 						"name": "properties",
 						"type": "property[]"
 					},
@@ -212,10 +216,7 @@
 				]
 			},
 
-			"metadata": {
-				"type": "struct",
-				"fields": []
-			}
+			"metadata": "remaining_bytes"
 		
 		}
 	
@@ -1093,7 +1094,7 @@
 						"type": "int<xz>"
 					},
 					{
-						"name": "all_chunks",
+						"name": "full",
 						"type": "bool"
 					},
 					{
@@ -1103,10 +1104,6 @@
 					{
 						"name": "data",
 						"type": "ubyte[]"
-					},
-					{
-						"name": "biomes",
-						"type": "remaining_bytes"
 					},
 					{
 						"name": "tiles",

@@ -70,17 +70,18 @@
 						"type": "varint"
 					},
 					{
-						"name": "nbt_length",
+						"name": "nbt",
 						"when": "id>0",
-						"type": "ushort",
-						"endianness": "little-endian"
-					},
-					{
-						"name": "nbt_data",
-						"when": "nbt_length>0",
-						"type": "ubyte[]"
+						"type": "slot_nbt"
 					}
 				]
+			},
+
+			"slot_nbt": {
+				"type": "array",
+				"base": "ubyte",
+				"length": "ushort",
+				"endianness": "little-endian"
 			},
 
 			"attribute": {

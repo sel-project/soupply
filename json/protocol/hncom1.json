@@ -498,9 +498,9 @@
 				]
 			},
 
-			"game_packets": {
+			"ordered_game_packet": {
 				"id": 17,
-				"clientbound": true,
+				"clientbound": false,
 				"serverbound": true,
 				"fields": [
 					{
@@ -508,8 +508,12 @@
 						"type": "varuint"
 					},
 					{
-						"name": "packets",
-						"type": "ubyte[][]"
+						"name": "order",
+						"type": "varuint"
+					},
+					{
+						"name": "packet",
+						"type": "remaining_bytes"
 					}
 				]
 			},
