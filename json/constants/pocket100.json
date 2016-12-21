@@ -16,6 +16,14 @@
 				"edition_mismatch": 5
 			}
 		},
+
+		"move_player": {
+			"mode": {
+				"normal": 0,
+				"reset": 1,
+				"rotation": 2
+			}
+		},
 		
 		"update_block": {
 			"flags_and_meta": {

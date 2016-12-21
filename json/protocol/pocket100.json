@@ -1743,24 +1743,65 @@
 					}
 				]
 			},
+
+			"show_credits": {
+				"id": 76,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": []
+			},
 			
 			"available_commands": {
-				"id": 76,
+				"id": 77,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
 						"name": "commands",
 						"type": "string"
-					},
-					{
-						"name": "unknown",
-						"type": "string"
 					}
 				]
 			},
 			
-			"command_step": null,
+			"command_step": {
+				"id": 78,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "command",
+						"type": "string"
+					},
+					{
+						"name": "overload",
+						"type": "string"
+					},
+					{
+						"name": "unknown1",
+						"type": "varuint"
+					},
+					{
+						"name": "unknown2",
+						"type": "varuint"
+					},
+					{
+						"name": "is_output",
+						"type": "bool"
+					},
+					{
+						"name": "unknown3",
+						"type": "varulong"
+					},
+					{
+						"name": "input",
+						"type": "string"
+					},
+					{
+						"name": "output",
+						"type": "string"
+					}
+				]
+			},
 			
 			"resource_pack_data_info": null,
 			
