@@ -6,27 +6,18 @@
 
 	"constants": {
 
-		"update_nodes": {
+		"nodes": {
 			"type": {
 				"add": 0,
 				"remove": 1
 			}
 		},
 
-		"add_player": {
-			"reason": {
-				"first_join": 0,
-				"transferred": 1,
-				"forcibly_transferred": 2
-			}
-		},
-
-		"player_disconnected": {
-			"reason": {
-				"left": 0,
-				"timed_out": 1,
-				"kicked": 2,
-				"transferred": 3
+		"remote_command": {
+			"origin": {
+				"hub": 0,
+				"external_console": 1,
+				"rcon": 2
 			}
 		},
 		
@@ -41,11 +32,20 @@
 			}
 		},
 
-		"remote_command": {
-			"origin": {
-				"hub": 0,
-				"external_console": 1,
-				"rcon": 2
+		"add": {
+			"reason": {
+				"first_join": 0,
+				"transferred": 1,
+				"forcibly_transferred": 2
+			}
+		},
+
+		"remove": {
+			"reason": {
+				"left": 0,
+				"timed_out": 1,
+				"kicked": 2,
+				"transferred": 3
 			}
 		}
 
