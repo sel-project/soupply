@@ -19,6 +19,9 @@ import sul.json;
 
 mixin template Metadata(size_t[][string] games) {
 
+	import std.conv : to;
+	import std.string : capitalize;
+
 	import sul.buffers;
 	import sul.types.var;
 
@@ -96,7 +99,7 @@ mixin template Metadata(size_t[][string] games) {
 				}
 			}
 
-			string structs_data = "struct Metadata{";
+			string structs_data = "struct Metadata{bool changed;";
 			foreach(string metadata, string[][string] values; structs) {
 				string first = "";
 				structs_data ~= "struct " ~ toUpper(metadata[0..1]) ~ metadata[1..$] ~ "{";
@@ -109,15 +112,15 @@ mixin template Metadata(size_t[][string] games) {
 						}
 					}
 				}
-				structs_data ~= "void opAssign(T)(T value){";
+				structs_data ~= "T opAssign(T)(T value){";
 				foreach(string var, string[] games; values) {
 					structs_data ~= "this." ~ games[0] ~ "=value;";
 				}
-				structs_data ~= "}";
+				structs_data ~= "return value;}";
 				structs_data ~= "T get(T)(){return this." ~ first ~ ";}";
 				structs_data ~= "}" ~ toUpper(metadata[0..1]) ~ metadata[1..$] ~ " " ~ metadata ~ ";";
 			}
-			structs_data ~= "bool set(string metadata, T)(T value){static if(is(typeof(mixin(\"this.\"~metadata)))){mixin(\"this.\"~metadata~\"=value;\");return true;}else{return false;}}";
+			structs_data ~= "T set(string metadata, T)(T value){static if(is(typeof(mixin(\"this.\"~metadata)))){this.changed=true;mixin(\"return this.\"~metadata~\"=value;\");}else{return T.init;}}";
 			structs_data ~= "T get(string metadata, T)(){static if(is(typeof(mixin(\"this.\"~metadata)))){mixin(\"return this.\"~metadata~\".get!T;\");}else{return T.init;}}";
 			mixin((){
 			//static assert(0, (){
@@ -149,21 +152,33 @@ mixin template Metadata(size_t[][string] games) {
 
 	}());
 
+	class MetadataEncoder {
+
+		mixin((){
+			string ret;
+			foreach(string game, size_t[] protocols; games) {
+				foreach(size_t protocol ; protocols) {
+					ret ~= "public abstract ubyte[] encode" ~ capitalize(game) ~ to!string(protocol) ~ "();";
+				}
+			}
+			return ret;
+		}());
+
+	}
+
+	// alias EntityMetadataEncoder = MetadataEncoderOf!("entity_flags", "nametag", "owner", "air");
+	// alias ItemEntityMetadataEncoder = MetadataEncoderOf!(EntityMetadataEncoder, "slot");
+
+	class MetadataEncoderOf(E...) : MetadataEncoder {}
+
 }
 
 /*
 
-// sel
-enum Metadatas {
-	
-	onFire,
-	sneaking,
-	...
-
-}
-
 // in an entity
 struct Metadata {
+
+	bool changed;
 
 	private struct StructOnFire {
 

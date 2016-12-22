@@ -54,21 +54,43 @@
 				]
 			},
 
+			"game": {
+				"type": "struct",
+				"fields": [
+					{
+						"name": "type",
+						"type": "ubyte"
+					},
+					{
+						"name": "protocols",
+						"type": "uint[]"
+					},
+					{
+						"name": "motd",
+						"type": "string"
+					},
+					{
+						"name": "port",
+						"type": "ushort"
+					}
+				]
+			},
+
 			"skin": {
 				"type": "struct",
 				"fields": [
 					{
-						"name": "is_empty",
+						"name": "empty",
 						"type": "bool"
 					},
 					{
 						"name": "name",
-						"when": "is_empty==false",
+						"when": "empty==false",
 						"type": "string"
 					},
 					{
 						"name": "data",
-						"when": "is_empty==false",
+						"when": "empty==false",
 						"type": "ubyte[]"
 					}
 				]
@@ -150,7 +172,7 @@
 				]
 			},
 
-			"generic_info": {
+			"info": {
 				"id": 2,
 				"clientbound": true,
 				"serverbound": false,
@@ -164,6 +186,10 @@
 						"type": "string"
 					},
 					{
+						"name": "games",
+						"type": "game[]"
+					},
+					{
 						"name": "language",
 						"type": "string"
 					},
@@ -172,42 +198,18 @@
 						"type": "string[]"
 					},
 					{
-						"name": "json_data",
-						"type": "string"
-					}
-				]
-			},
-
-			"game_info": {
-				"id": 3,
-				"clientbound": true,
-				"serverbound": false,
-				"fields": [
-					{
-						"name": "last",
-						"type": "bool"
-					},
-					{
-						"name": "game",
-						"type": "ubyte"
-					},
-					{
-						"name": "protocols",
-						"type": "varuint[]"
-					},
-					{
-						"name": "motd",
+						"name": "social_json",
 						"type": "string"
 					},
 					{
-						"name": "port",
-						"type": "ushort"
+						"name": "additional_json",
+						"type": "string"
 					}
 				]
 			},
 
 			"ready": {
-				"id": 4,
+				"id": 3,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -223,7 +225,7 @@
 		"status": {
 
 			"players": {
-				"id": 5,
+				"id": 4,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -239,7 +241,7 @@
 			},
 
 			"nodes": {
-				"id": 6,
+				"id": 5,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -251,7 +253,7 @@
 			},
 
 			"update_nodes": {
-				"id": 7,
+				"id": 6,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -267,7 +269,7 @@
 			},
 
 			"server_resource_usage": {
-				"id": 8,
+				"id": 7,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -291,7 +293,7 @@
 		"play": {
 
 			"add_player": {
-				"id": 9,
+				"id": 8,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -343,7 +345,7 @@
 			},
 
 			"kick_player": {
-				"id": 10,
+				"id": 9,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -363,7 +365,7 @@
 			},
 
 			"player_disconnected": {
-				"id": 11,
+				"id": 10,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -379,7 +381,7 @@
 			},
 
 			"transfer_player": {
-				"id": 12,
+				"id": 11,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -395,7 +397,7 @@
 			},
 
 			"update_player_language": {
-				"id": 13,
+				"id": 12,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -411,7 +413,7 @@
 			},
 
 			"update_player_display_name": {
-				"id": 14,
+				"id": 13,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -427,7 +429,7 @@
 			},
 			
 			"update_list": {
-				"id": 15,
+				"id": 14,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -483,7 +485,7 @@
 			},
 
 			"game_packet": {
-				"id": 16,
+				"id": 15,
 				"clientbound": true,
 				"serverbound": true,
 				"fields": [
@@ -499,7 +501,7 @@
 			},
 
 			"ordered_game_packet": {
-				"id": 17,
+				"id": 16,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -519,7 +521,7 @@
 			},
 
 			"remote_command": {
-				"id": 18,
+				"id": 17,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -539,7 +541,7 @@
 			},
 
 			"update_player_latency": {
-				"id": 19,
+				"id": 18,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -555,7 +557,7 @@
 			},
 
 			"update_player_packet_loss": {
-				"id": 20,
+				"id": 19,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -571,7 +573,7 @@
 			},
 
 			"log": {
-				"id": 21,
+				"id": 20,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -583,7 +585,7 @@
 			},
 
 			"logs": {
-				"id": 22,
+				"id": 21,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
