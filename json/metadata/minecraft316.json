@@ -1,0 +1,69 @@
+{
+	
+	"__game": "Minecraft",
+	"__protocol": 316,
+	"__website": "https://github.com/sel-project/sel-utils",
+	
+	"types": {
+		
+		"byte": 0,
+		"varint": 1,
+		"float": 2,
+		"string": 3,
+		"chat": 4,
+		"slot": 5,
+		"bool": 6,
+		"rotation": 7,
+		"position": 8,
+		"optional_position": 9,
+		"direction": 10,
+		"optional_uuid": 11,
+		"block": 12
+		
+	},
+	
+	"metadata": {
+
+		"entity_flags": {
+			"type": "byte",
+			"id": 0,
+			"flags": {
+				"on_fire": 0,
+				"sneaking": 1,
+				"sprinting": 3,
+				"using_item": 4,
+				"invisible": 5,
+				"glowing": 6,
+				"flying_elytra": 7
+			}
+		},
+		
+		"air": {
+			"type": "varint",
+			"default": 300,
+			"id": 1
+		},
+		
+		"custom_name": {
+			"type": "string",
+			"id": 2
+		},
+		
+		"custom_name_visible": {
+			"type": "bool",
+			"id": 3
+		},
+		
+		"silent": {
+			"type": "bool",
+			"id": 4
+		},
+		
+		"no_gravity": {
+			"type": "bool",
+			"id": 5
+		}
+		
+	}
+	
+}
