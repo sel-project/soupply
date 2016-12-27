@@ -550,7 +550,7 @@
 						"type": "float<xyz>"
 					},
 					{
-						"name": "yaw",
+						"name": "pitch",
 						"type": "float"
 					},
 					{
@@ -558,7 +558,7 @@
 						"type": "float"
 					},
 					{
-						"name": "pitch",
+						"name": "yaw",
 						"type": "float"
 					},
 					{
@@ -598,11 +598,11 @@
 						"type": "float<xyz>"
 					},
 					{
-						"name": "yaw",
+						"name": "pitch",
 						"type": "float"
 					},
 					{
-						"name": "pitch",
+						"name": "yaw",
 						"type": "float"
 					},
 					{
@@ -742,7 +742,7 @@
 						"type": "float<xyz>"
 					},
 					{
-						"name": "yaw",
+						"name": "pitch",
 						"type": "float"
 					},
 					{
@@ -750,7 +750,7 @@
 						"type": "float"
 					},
 					{
-						"name": "pitch",
+						"name": "yaw",
 						"type": "float"
 					},
 					{

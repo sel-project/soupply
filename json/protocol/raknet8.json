@@ -152,7 +152,7 @@
 						"type": "long"
 					},
 					{
-						"name": "pong",
+						"name": "server_id",
 						"type": "long"
 					},
 					{
