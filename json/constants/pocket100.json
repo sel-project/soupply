@@ -96,7 +96,9 @@
 				"start_sneak": 11,
 				"stop_sneak": 12,
 				"dimension_change": 13,
-				"abort_dimension_change": 14
+				"abort_dimension_change": 14,
+				"start_gliding": 15,
+				"stop_gliding": 16
 			}
 		},
 		

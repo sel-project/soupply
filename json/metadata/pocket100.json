@@ -12,16 +12,16 @@
 		"float": 3,
 		"string": 4,
 		"slot": 5,
-		"int{xyz}": 6,
+		"varint<xyz>": 6,
 		"varlong": 7,
-		"float{xyz}": 8
+		"float<xyz>": 8
 
 	},
 
 	"metadata": {
 
 		"entity_flags": {
-			"type": "varint",
+			"type": "varlong",
 			"id": 0,
 			"flags": {
 				"on_fire": 0,
@@ -51,12 +51,13 @@
 				"tamed": 24,
 				"leashed": 25,
 				"sheared": 26,
-				"all_flying": 27,
+				"gliding": 27,
 				"elder": 28,
 				"moving": 29,
 				"breathing": 30,
 				"chested": 31,
-				"stackable": 32
+				"stackable": 32,
+				"idling": 36
 			}
 		},
 
