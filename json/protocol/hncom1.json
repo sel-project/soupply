@@ -150,6 +150,10 @@
 				"serverbound": false,
 				"fields": [
 					{
+						"name": "server_id",
+						"type": "long"
+					},
+					{
 						"name": "online_mode",
 						"type": "bool"
 					},
