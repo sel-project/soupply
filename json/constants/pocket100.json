@@ -75,10 +75,10 @@
 		
 		"interact": {
 			"action": {
-				"right_click": 1,
-				"left_click": 2,
+				"attack": 1,
+				"interact": 2,
 				"leave_vehicle": 3,
-				"looking": 4
+				"hover": 4
 			}
 		},
 		

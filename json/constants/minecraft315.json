@@ -154,6 +154,14 @@
 			}
 		},
 
+		"use_entity": {
+			"type": {
+				"interact": 0,
+				"attack": 1,
+				"interact_at": 2
+			}
+		},
+
 		"player_digging": {
 			"status": {
 				"started_digging": 0,
