@@ -19,14 +19,15 @@ import sul.json;
 
 mixin template Metadata(size_t[][string] games) {
 
+	import std.algorithm : canFind;
 	import std.conv : to;
 	import std.string : capitalize;
 
 	import sul.buffers;
+	import sul.protocol : defaultTypes;
 	import sul.types.var;
 
 	mixin((){
-	//static assert(0, (){
 
 			import std.conv : to;
 			import std.string : toUpper;
@@ -39,7 +40,7 @@ mixin template Metadata(size_t[][string] games) {
 				string ret = "JSONObject[string] objects=[";
 				foreach(string game, size_t[] protocols; games) {
 					foreach(size_t protocol ; protocols) {
-						ret ~= "\"" ~ game ~ to!string(protocol) ~ "\": cast(JSONObject)utilsJSON!(\"metadata\", \"" ~ game ~ "\", " ~ to!string(protocol) ~ "),";
+						ret ~= "`" ~ game ~ to!string(protocol) ~ "`: cast(JSONObject)utilsJSON!(`metadata`, `" ~ game ~ "`, " ~ to!string(protocol) ~ "),";
 					}
 				}
 				return ret ~ "];";
@@ -66,8 +67,10 @@ mixin template Metadata(size_t[][string] games) {
 					void add(string var, string type) {
 						var = toCamelCase(var);
 						structs[var][type] ~= game;
-						foreach(string mt ; metadatas) {
-							if(mt == var) return;
+						if(defaultTypes.canFind(var)) {
+							foreach(string mt ; metadatas) {
+								if(mt == var) return; // for the aliases (do not create identical variables)
+							}
 						}
 						metadatas ~= var;
 					}
@@ -86,12 +89,13 @@ mixin template Metadata(size_t[][string] games) {
 						string cc = toCamelCase(meta);
 						if("default" in info) {
 							auto def = info["default"];
-							if(def.type == JsonType.string) defaults[game][cc] = "\"" ~ (cast(JSONString)def).value ~ "\"";
-							else if(def.type == JsonType.integer) defaults[game][cc] = (cast(JSONInteger)def).value.to!string;
-							else if(def.type == JsonType.floating) defaults[game][cc] = (cast(JSONFloating)def).value.to!string;
-						} else {
+							if(def.type == JsonType.string) defaults[game][cc] = "`" ~ (cast(JSONString)def).value ~ "`";
+							else if(def.type == JsonType.integer) defaults[game][cc] = (cast(JSONInteger)def).raw;
+							else if(def.type == JsonType.floating) defaults[game][cc] = (cast(JSONFloating)def).raw;
+							else if(def.type == JsonType.boolean) defaults[game][cc] = (cast(JSONBoolean)def).raw;
+						}/* else {
 							defaults[game][cc] = (cast(JSONString)info["type"]).value ~ ".init";
-						}
+						}*/
 						if("always" in info) {
 							always[game ~ cc] = true;
 						}
@@ -99,11 +103,21 @@ mixin template Metadata(size_t[][string] games) {
 				}
 			}
 
-			string structs_data = "struct Metadata{bool changed;";
+			string structs_data = "static import sul.protocol;";
+			foreach(string game, protocols; games) {
+				structs_data ~= "static import sel.player." ~ game ~ ";";
+				foreach(protocol ; protocols) {
+					structs_data ~= "alias __" ~ game ~ to!string(protocol) ~ " = sul.protocol.Protocol!(`" ~ game ~ "`, " ~ to!string(protocol) ~ ", sul.protocol.SoftwareType.client).Types;";
+				}
+			}
+			structs_data ~= "struct Metadata{bool changed;";
 			foreach(string metadata, string[][string] values; structs) {
 				string first = "";
 				structs_data ~= "struct " ~ toUpper(metadata[0..1]) ~ metadata[1..$] ~ "{";
 				foreach(string type, string[] v; values) {
+					if(!defaultTypes.canFind(type)) {
+						type = "__" ~ v[0] ~ "." ~ toPascalCase(type);
+					}
 					if(first == "") first = v[0];
 					structs_data ~= type ~ " " ~ v[0] ~ (metadata in defaults[v[0]] ? "=" ~ defaults[v[0]][metadata] : "") ~ ";";
 					if(v.length > 1) {
@@ -122,7 +136,7 @@ mixin template Metadata(size_t[][string] games) {
 			}
 			structs_data ~= "T set(string metadata, T)(T value){static if(is(typeof(mixin(\"this.\"~metadata)))){this.changed=true;mixin(\"return this.\"~metadata~\"=value;\");}else{return T.init;}}";
 			structs_data ~= "T get(string metadata, T)(){static if(is(typeof(mixin(\"this.\"~metadata)))){mixin(\"return this.\"~metadata~\".get!T;\");}else{return T.init;}}";
-			mixin((){
+			/*mixin((){
 			//static assert(0, (){
 
 					string ret = "";
@@ -145,7 +159,7 @@ mixin template Metadata(size_t[][string] games) {
 					}
 					return ret;
 
-				}());
+				}());*/
 			structs_data ~= "}";
 
 			return structs_data;

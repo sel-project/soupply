@@ -62,6 +62,11 @@
 		"no_gravity": {
 			"type": "bool",
 			"id": 5
+		},
+
+		"item": {
+			"type": "slot",
+			"id": 6
 		}
 		
 	}

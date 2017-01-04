@@ -17,12 +17,12 @@ module sul.types.var;
 import std.traits : isNumeric, isIntegral, isSigned, isUnsigned, Unsigned;
 
 struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
-	
+
 	alias U = Unsigned!T;
 	
-	private static immutable U MASK = U.max - 0x7F;
-	private static immutable size_t MAX_BYTES = T.sizeof * 8 / 7 + (T.sizeof * 8 % 7 == 0 ? 0 : 1);
-	private static immutable size_t RIGHT_SHIFT = (T.sizeof * 8) - 1;
+	public static immutable U MASK = U.max - 0x7F;
+	public static immutable size_t MAX_BYTES = T.sizeof * 8 / 7 + (T.sizeof * 8 % 7 == 0 ? 0 : 1);
+	public static immutable size_t RIGHT_SHIFT = (T.sizeof * 8) - 1;
 	
 	public T value;
 	

@@ -40,7 +40,7 @@ string attributesEnum(JSONObject json) {
 				auto max = "max" in object;
 				auto def = "default" in object;
 				if(name && min && max && def) {
-					ret ~= "static const " ~ toCamelCase(attr_name) ~ "=Attribute(\"" ~ (cast(JSONString)*name).value ~ "\"," ~ conv(*min) ~ "," ~ conv(*max) ~ "," ~ conv(*def) ~ ");";
+					ret ~= "static const " ~ toCamelCase(attr_name) ~ "=Attribute(`" ~ (cast(JSONString)*name).value ~ "`," ~ conv(*min) ~ "," ~ conv(*max) ~ "," ~ conv(*def) ~ ");";
 				}
 			}
 		}

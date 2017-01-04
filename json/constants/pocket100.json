@@ -5,6 +5,13 @@
 	"__website": "https://github.com/sel-project/sel-utils",
 	
 	"constants": {
+
+		"login": {
+			"edition": {
+				"classic": 0,
+				"education": 1
+			}
+		},
 	
 		"play_status": {
 			"status": {

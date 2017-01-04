@@ -170,6 +170,7 @@
 			},
 
 			"length": "varuint",
+
 			"end": null,
 
 			"header": {
@@ -209,8 +210,8 @@
 						"type": "uint"
 					},
 					{
-						"name": "education_edition",
-						"type": "bool"
+						"name": "edition",
+						"type": "ubyte"
 					},
 					{
 						"name": "body",
