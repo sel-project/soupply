@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<protocol software="External Console" version="1">
+<protocol>
+
+	<software>External Console</software>
+
+	<protocol>1</protocol>
 
 	<description>
 		Protocol used by SEL to communicate with external sources using TCP or web sockets.
@@ -22,9 +26,7 @@
 		<section name="login">
 
 			<packet name="authCredentials" id="0" clientbound="true" serverbound="false">
-				<description>
-					Credentials for login.
-				</description>
+				Credentials for login.
 				<field name="protocol" type="ubyte">
 					Protocol used by the server. If the client uses a different one it should close the connection without sending any packet.
 				</field>
@@ -89,9 +91,7 @@
 		<section name="play">
 
 			<packet name="consoleMessage" id="3" clientbound="true" serverbound="false">
-				<description>
-					Logs a message from the server's console. It may be a result of a command, a debug message or any other message that the server retains able to be seen by the External Console.
-				</description>
+				Logs a message from the server's console. It may be a result of a command, a debug message or any other message that the server retains able to be seen by the External Console.
 				<field name="node" type="string">
 					Name of the node that has created the log or an empty string if the log has been created by the hub or by a server implementation that isn't based on the hub-node structure.
 				</field>
@@ -107,18 +107,14 @@
 			</packet>
 
 			<packet name="command" id="4" clientbound="false" serverbound="false">
-				<description>
-					Executes a command remotely if the server allows it. If not a [Permission Denied](#permission-denied) is sent back. The ideal client should never send this packet if remoteCommands field in [Welcome.Accepted](#accepted) is not true.
-				</description>
+				Executes a command remotely if the server allows it. If not a [Permission Denied](#permission-denied) is sent back. The ideal client should never send this packet if remoteCommands field in [Welcome.Accepted](#accepted) is not true.
 				<field name="command" type="string">
 					Command to be executed on the server. On SEL servers it should start with a slash or a point (hub command) or a node name followed by the command (node command).
 				</field>
 			</packet>
 
 			<packet name="permissionDenied" id="5" clientbound="true" serverbound="false">
-				<description>
-					Bodyless packet only sent in response to [Command](#command) when the server doesn't allow the execution of remote commands through the External Console protocol. The ideal client should never receive this packet avoiding the use of [Command](#command) if the remoteCommands field in [Welcome.Accepted](#accepted) is not true.
-				</description>
+				Bodyless packet only sent in response to [Command](#command) when the server doesn't allow the execution of remote commands through the External Console protocol. The ideal client should never receive this packet avoiding the use of [Command](#command) if the remoteCommands field in [Welcome.Accepted](#accepted) is not true.
 			</packet>
 
 		</section>

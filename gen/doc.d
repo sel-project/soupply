@@ -30,9 +30,16 @@ void doc() {
 	foreach(string file ; dirEntries("../xml/protocol", SpanMode.breadth)) {
 		if(file.isFile && file.endsWith(".xml")) {
 			immutable name = file.name;
-			string data = "# " ~ name.pretty ~ "\n\n";
+			string data;
+			string types;
 			foreach(element ; new Document(cast(string)read(file)).elements) {
 				switch(element.tag.name) {
+					case "software":
+						data ~= "# " ~ element.text.strip ~ " ";
+						break;
+					case "protocol":
+						data ~= element.text.strip ~ "\n\n";
+						break;
 					case "description":
 						data ~= element.text.strip ~ "\n\n";
 						break;
@@ -45,13 +52,16 @@ void doc() {
 									with(enc.tag) aliases[attr["name"]] = attr["type"];
 									break;
 								case "type":
-									data ~= "#### " ~ enc.tag.attr["name"].pretty ~ "\n\n";
-									data ~= " | | | \n---|---|---\n";
+									types ~= "#### " ~ enc.tag.attr["name"].pretty ~ "\n\n";
+									types ~= " | | | \n---|---|---\n";
 									foreach(field ; enc.elements) {
 										if(field.tag.name == "field") {
-											data ~= field.tag.attr["name"].pretty ~ " | " ~ convert(field.tag.attr["type"]) ~ " | \n";
+											types ~= field.tag.attr["name"].pretty ~ " | " ~ convert(field.tag.attr["type"]) ~ " | ";
+											if(field.texts.length) types ~= field.texts[0].to!string.strip.replace("|", "\\|");
+											types ~= "\n";
 										}
 									}
+									types ~= "\n";
 									break;
 								default:
 									break;
@@ -61,15 +71,18 @@ void doc() {
 						break;
 					case "packets":
 						data ~= "## Packets\n\n";
+						data ~= "Section | Packets\n---|:---:\n";
+						string sdata;
 						foreach(section ; element.elements) {
-							data ~= "### " ~ section.tag.attr["name"].pretty ~ "\n\n";
-							data ~= "Name | DEC | HEX | Clientbound | Serverbound\n---|:---:|:---:|:---:|:---:\n";
+							immutable sn = section.tag.attr["name"].pretty;
+							data ~= "[" ~ sn ~ "](#" ~ sn.toLower.replace(" ", "-") ~ ") | " ~ to!string(section.elements.length) ~ "\n";
+							sdata ~= "### " ~ sn ~ "\n\n";
+							sdata ~= "Name | DEC | HEX | Clientbound | Serverbound\n---|:---:|:---:|:---:|:---:\n";
 							string packets = "";
 							foreach(packet ; section.elements) {
 								immutable packetName = packet.tag.attr["name"].pretty;
-								with(packet.tag) data ~= "[" ~ packetName ~ "](#" ~ packetName.toLower.replace(" ", "-") ~ ") | " ~ attr["id"] ~ " | " ~ attr["id"].to!size_t.to!string(16) ~ " | " ~ (attr["clientbound"] == "true" ? "✔" : "") ~ " | " ~ (attr["serverbound"] == "true" ? "✔" : "") ~ "\n";
+								with(packet.tag) sdata ~= "[" ~ packetName ~ "](#" ~ packetName.toLower.replace(" ", "-") ~ ") | " ~ attr["id"] ~ " | " ~ attr["id"].to!size_t.to!string(16) ~ " | " ~ (attr["clientbound"] == "true" ? "✓" : "") ~ " | " ~ (attr["serverbound"] == "true" ? "✓" : "") ~ "\n";
 								packets ~= "#### " ~ packetName ~ "\n\n";
-								//data ~= packet.text.strip ~ "\n\n";
 								string fields, constants, variants;
 								foreach(field ; packet.elements) {
 									switch(field.tag.name) {
@@ -87,7 +100,7 @@ void doc() {
 													}
 												}
 											}
-											fields ~= "\n\n";
+											fields ~= "\n";
 											break;
 										case "variants":
 											variants ~= "##### Variants:\n\n";
@@ -99,17 +112,19 @@ void doc() {
 											break;
 									}
 								}
-								if(fields.length) packets ~= " | | | \n---|---|---\n" ~ fields;
+								if(fields.length) packets ~= " | | | \n---|---|---\n" ~ fields ~ "\n";
 								if(constants.length) packets ~= "##### Constants:\n\n" ~ constants ~ "\n\n";
 								if(variants.length) packets ~= variants;
 							}
-							data ~= "\n" ~ packets ~ "\n\n--\n\n";
+							sdata ~= "\n" ~ packets ~ "\n\n--\n\n";
 						}
+						data ~= "\n" ~ sdata;
 						break;
 					default:
 						break;
 				}
 			}
+			if(types.length) data ~= "\n\n--------\n\n## Types:\n\n" ~ types;
 			write("../doc/" ~ name ~ ".md", data);
 		}
 	}

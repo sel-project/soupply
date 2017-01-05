@@ -7,10 +7,10 @@ import sul.utils.Enchantment;
 class Item {
 
 	public final String name;
-	public final ushort id, meta;
+	public final int id, meta;
 	public final Enchantment enchantment;
 
-	public Item(String name, ushort id, ushort meta, Enchantment enchantment) {
+	public Item(String name, int id, int meta, Enchantment enchantment) {
 		this.name = name;
 		this.id = id;
 		this.meta = meta;
