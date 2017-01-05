@@ -1,7 +1,7 @@
 module java;
 
 import std.ascii : newline;
-import std.file;
+import std.file : mkdir, mkdirRecurse, exists;
 import std.json;
 import std.path : dirSeparator;
 import std.string;
@@ -10,7 +10,60 @@ import all;
 
 void java(JSONValue[string] jsons) {
 
-	mkdirRecurse("../src/java/sul");
+	mkdirRecurse("../src/java/sul/utils");
+
+	write("../src/java/sul/utils/Item.java", q{
+package sul.utils;
+
+import sul.utils.Enchantment;
+
+class Item {
+
+	public final String name;
+	public final ushort id, meta;
+	public final Enchantment enchantment;
+
+	public Item(String name, ushort id, ushort meta, Enchantment enchantment) {
+		this.name = name;
+		this.id = id;
+		this.meta = meta;
+		this.enchantment = enchantment;
+	}
+
+}
+	});
+
+	write("../src/java/sul/utils/Enchantment.java", q{
+package sul.utils;
+
+class Enchantment {
+
+	public final int type, level;
+
+	public Enchantment(int type, int level) {
+		this.type = type;
+		this.level = level;
+	}
+
+}
+		});
+
+	enum string[string] defaultAliases = [
+		"ubyte": "short",
+		"ushort": "int",
+		"uint": "long",
+		"ulong": "long",
+		"string": "String",
+		"uuid": "UUID",
+		"remaining_bytes": "byte[]",
+		"triad": "int",
+		"varshort": "short",
+		"varushort": "int",
+		"varint": "int",
+		"varuint": "long",
+		"varlong": "long",
+		"varulong": "long"
+	];
 
 	// attributes
 	foreach(string game, JSONValue attributes; jsons["attributes"].object) {
@@ -33,32 +86,54 @@ void java(JSONValue[string] jsons) {
 	}
 
 	// constants
-	foreach(string game, JSONValue constants; jsons["constants"].object) {
-		game = toPascalCase(game);
+	foreach(string game, JSONValue constants; jsons["constants"]) {
 		string data = `package sul.constants;` ~ newline ~ newline ~
-			`final class ` ~ game ~ ` {` ~ newline ~ newline ~
-			`	private ` ~ game ~ `() {}` ~ newline ~ newline;
-		foreach(string name, JSONValue value; constants.object) {
+			`final class ` ~ toPascalCase(game) ~ ` {` ~ newline ~ newline ~
+			`	private ` ~ toPascalCase(game) ~ `() {}` ~ newline ~ newline;
+		foreach(string name, JSONValue value; constants) {
+			JSONValue[] fields = null; // from protocol's
+			foreach(JSONValue category ; jsons["protocol"].object[game].object["packets"].object) {
+				foreach(string packet_name, JSONValue packet; category.object) {
+					if(packet_name == name) {
+						fields = packet.object["fields"].array;
+						break;
+					}
+				}
+			}
 			data ~= `	public final static class ` ~ toPascalCase(name) ~ ` {` ~ newline ~ newline;
 			foreach(string field, JSONValue v; value.object) {
 				data ~= `		public final static class ` ~ toCamelCase(field) ~ ` {` ~ newline ~ newline;
-				//TODO get right type from protocol
-				foreach(string var, JSONValue content; v.object) {
-					data ~= `			public final static int ` ~ toUpper(var) ~ ` = ` ~ content.toString() ~ `;` ~ newline;
+				string type = "int";
+				if(fields !is null) {
+					foreach(packet_field ; fields) {
+						auto obj = packet_field.object;
+						if(obj["name"].str == field) {
+							type = obj["type"].str;
+							auto conv = type in defaultAliases;
+							if(conv) type = *conv;
+							break;
+						}
+					}
+				}
+				foreach(string var, JSONValue content; v) {
+					data ~= `			public final static ` ~ type ~ ` ` ~ toUpper(var) ~ ` = ` ~ content.toString() ~ `;` ~ newline;
 				}
 				data ~= newline ~ `		}` ~ newline ~ newline;
 			}
 			data ~= `	}` ~ newline ~ newline;
 		}
 		if(!exists("../src/java/sul/constants")) mkdir("../src/java/sul/constants");
-		write("../src/java/sul/constants/" ~ game ~ ".java", data ~ "}" ~ newline);
+		write("../src/java/sul/constants/" ~ toPascalCase(game) ~ ".java", data ~ "}" ~ newline);
 	}
 
 	// creative
-	/*foreach(string game, JSONValue creative; jsons["creative"].object) {
+	foreach(string game, JSONValue creative; jsons["creative"].object) {
 		game = toPascalCase(game);
 		string data = `package sul.creative;` ~ newline ~ newline ~
-			`public enum ` ~ game ~ ` {` ~ newline ~ newline;
+			`import sul.utils.Item;` ~ newline ~
+			`import sul.utils.Enchantment;` ~ newline ~ newline ~
+			`public final class ` ~ game ~ ` {` ~ newline ~ newline ~
+			`	public final Item[] ITEMS = new Item[]{` ~ newline ~ newline;
 		foreach(JSONValue item ; creative.array) {
 			auto obj = item.object;
 			auto name = "name" in obj;
@@ -66,11 +141,12 @@ void java(JSONValue[string] jsons) {
 			auto meta = "meta" in obj;
 			auto ench = "enchantment" in obj;
 			if(name && id) {
-				data ~= `	Item(` ~ name.toString() ~ `, ` ~ id.toString() ~ `, ` ~ (meta ? meta.toString() : "0") ~ (ench ? `, Enchantment(` ~ ench.object["type"].toString() ~ `, ` ~ ench.object["level"].toString() ~ `)` : "") ~ `),` ~ newline;
+				data ~= `		new Item(` ~ name.toString() ~ `, ` ~ id.toString() ~ `, ` ~ (meta ? meta.toString() : "0") ~ `, ` ~ (ench ? `new Enchantment(` ~ ench.object["type"].toString() ~ `, ` ~ ench.object["level"].toString() ~ `)` : `null`) ~ `),` ~ newline;
 			}
 		}
+		data ~= newline ~ `	}` ~ newline ~ newline ~ `}`;
 		if(!exists("../src/java/sul/creative")) mkdir("../src/java/sul/creative");
-		write("../src/java/sul/creative/" ~ game ~ ".java", data ~ newline ~ "}" ~ newline);
-	}*/
+		write("../src/java/sul/creative/" ~ game ~ ".java", data);
+	}
 
 }

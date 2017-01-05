@@ -1,7 +1,7 @@
 module js;
 
 import std.ascii : newline;
-import std.file;
+import std.file : mkdir, mkdirRecurse, exists;
 import std.json;
 import std.path : dirSeparator;
 import std.string;
