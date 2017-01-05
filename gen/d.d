@@ -3,6 +3,7 @@ module d;
 import std.algorithm : canFind, min;
 import std.ascii : newline;
 import std.base64 : Base64URL;
+import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
 import std.json;
 import std.path : dirSeparator;
@@ -15,7 +16,7 @@ string hash(string name) {
 	return Base64URL.encode(cast(ubyte[])name).replace("-", "_").replace("=", "")[0..min($, 16)];
 }
 
-void d(JSONValue[string] jsons) {
+void d(Attributes[string] attributes, JSONValue[string] jsons) {
 
 	mkdirRecurse("../src/d/sul/utils");
 
@@ -106,13 +107,12 @@ alias varulong = var!ulong;
 	];
 
 	// attributes
-	foreach(string game, JSONValue attributes; jsons["attributes"].object) {
+	foreach(string game, Attributes attrs; attributes) {
 		string data = "module sul.attributes." ~ game ~ ";\n\nimport std.typecons : Tuple;\n\n" ~
-			`alias Attribute = Tuple!(string, "name", float, "min", float, "max", float, "def");` ~ 
-			"\n\nstruct Attributes {\n\n\t@disable this();\n\n";
-		foreach(string name, JSONValue value; attributes.object) {
-			auto obj = value.object;
-			data ~= "\tenum " ~ toCamelCase(name) ~ " = Attribute(" ~ obj["name"].toString() ~ ", " ~ obj["min"].toString() ~ ", " ~ obj["max"].toString() ~ ", " ~ obj["default"].toString() ~ ");\n\n";
+			"alias Attribute = Tuple!(string, \"name\", float, \"min\", float, \"max\", float, \"def\");\n\n" ~ 
+			"struct Attributes {\n\n\t@disable this();\n\n";
+		foreach(attr; attrs.data) {
+			data ~= "\tenum " ~ attr.id ~ " = Attribute(\"" ~ attr.name ~ "\", " ~ attr.min.to!string ~ ", " ~ attr.max.to!string ~ ", " ~ attr.def.to!string ~ ");\n\n";
 		}
 		if(!exists("../src/d/sul/attributes")) mkdir("../src/d/sul/attributes");
 		write("../src/d/sul/attributes/" ~ game ~ ".d", data ~ "}");
@@ -156,27 +156,6 @@ alias varulong = var!ulong;
 		}
 		if(!exists("../src/d/sul/constants")) mkdir("../src/d/sul/constants");
 		write("../src/d/sul/constants/" ~ game ~ ".d", data ~ "}");
-	}
-
-	// creative
-	foreach(string game, JSONValue creative; jsons["creative"].object) {
-		string data = `module sul.creative.` ~ game ~ `;` ~ newline ~ newline ~
-			`import std.typecons : Tuple;` ~ newline ~ newline ~
-			`alias Enchantment = Tuple!(ubyte, "type", ubyte, "level");` ~ newline ~
-			`alias Item = Tuple!(string, "name", ushort, "id", ushort, "meta", Enchantment, "enchantment");` ~ newline ~ newline ~
-			`enum Item[] Creative = [` ~ newline ~ newline;
-		foreach(JSONValue item ; creative.array) {
-			auto obj = item.object;
-			auto name = "name" in obj;
-			auto id = "id" in obj;
-			auto meta = "meta" in obj;
-			auto ench = "enchantment" in obj;
-			if(name && id) {
-				data ~= `	Item(` ~ name.toString() ~ `, ` ~ id.toString() ~ `, ` ~ (meta ? meta.toString() : "0") ~ (ench ? `, Enchantment(` ~ ench.object["type"].toString() ~ `, ` ~ ench.object["level"].toString() ~ `)` : "") ~ `),` ~ newline;
-			}
-		}
-		if(!exists("../src/d/sul/creative")) mkdir("../src/d/sul/creative");
-		write("../src/d/sul/creative/" ~ game ~ ".d", data ~ newline ~ "}" ~ newline);
 	}
 
 	//TODO particles

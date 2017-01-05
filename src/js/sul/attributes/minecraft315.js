@@ -2,9 +2,9 @@
 // https://github.com/sel-project/sel-utils
 const Attributes = {
 
-	ABSORPTION: {"name": "generic.absorption", "min": 0, "max": 4, "default": 0},
-
 	MAX_HEALTH: {"name": "generic.maxHealth", "min": 0, "max": 1024, "default": 20},
+
+	ABSORPTION: {"name": "generic.absorption", "min": 0, "max": 4, "default": 0},
 
 	SPEED: {"name": "generic.movementSpeed", "min": 0, "max": 24791, "default": 0.1},
 

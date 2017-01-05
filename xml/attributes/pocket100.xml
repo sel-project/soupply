@@ -7,7 +7,7 @@
 	<protocol>100</protocol>
 
 	<attribute
-		id="heath"
+		id="health"
 		name="minecraft:health"
 		min="0"
 		max="20"
@@ -18,7 +18,7 @@
 		name="minecraft:generic.absorption"
 		min="0"
 		max="4"
-		default="4" />
+		default="0" />
 
 	<attribute
 		id="hunger"

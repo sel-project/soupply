@@ -1,6 +1,7 @@
 module js;
 
 import std.ascii : newline;
+import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
 import std.json;
 import std.path : dirSeparator;
@@ -8,16 +9,16 @@ import std.string;
 
 import all;
 
-void js(JSONValue[string] jsons) {
+void js(Attributes[string] attributes, JSONValue[string] jsons) {
 	
 	mkdirRecurse("../src/js/sul");
 	
 	// attributes
-	foreach(string game, JSONValue attributes; jsons["attributes"].object) {
-		string data = `const Attributes = {` ~ newline ~ newline;
-		foreach(string name, JSONValue value; attributes.object) {
-			auto obj = value.object;
-			data ~= `	` ~ toUpper(name) ~ `: {"name": ` ~ obj["name"].toString() ~ `, "min": ` ~ obj["min"].toString() ~ `, "max": ` ~ obj["max"].toString() ~ `, "default": ` ~ obj["default"].toString() ~ `},` ~ newline ~ newline;
+	foreach(string game, Attributes attrs; attributes) {
+		string data = "const Attributes = {\n\n";
+		foreach(attr ; attrs.data) {
+			//TODO convert to snake case
+			data ~= "\t" ~ toUpper(toSnakeCase(attr.id)) ~ ": {\"name\": \"" ~ attr.name ~ "\", \"min\": " ~ attr.min.to!string ~ ", \"max\": " ~ attr.max.to!string ~ ", \"default\": " ~ attr.def.to!string ~ "},\n\n";
 		}
 		if(!exists("../src/js/sul/attributes")) mkdir("../src/js/sul/attributes");
 		write("../src/js/sul/attributes/" ~ game ~ ".js", data ~ "}" ~ newline);
@@ -39,26 +40,6 @@ void js(JSONValue[string] jsons) {
 		}
 		if(!exists("../src/js/sul/constants")) mkdir("../src/js/sul/constants");
 		write("../src/js/sul/constants/" ~ game ~ ".js", data ~ "}" ~ newline);
-	}
-
-	// creative
-	foreach(string game, JSONValue creative; jsons["creative"].object) {
-		string data = `const Creative = [` ~ newline ~ newline;
-		foreach(JSONValue item ; creative.array) {
-			auto obj = item.object;
-			auto name = "name" in obj;
-			auto id = "id" in obj;
-			auto meta = "meta" in obj;
-			auto ench = "enchantment" in obj;
-			if(name && id) {
-				data ~= `	{"name": ` ~ name.toString() ~ `, ` ~ 
-					`"id": ` ~ id.toString() ~ `, ` ~ 
-					`"meta": ` ~ (meta ? meta.toString() : "0") ~
-					(ench ? `, "enchantment": {"type": ` ~ ench.object["type"].toString() ~ `, "level": ` ~ ench.object["level"].toString() ~ `}` : "") ~ `},` ~ newline;
-			}
-		}
-		if(!exists("../src/js/sul/creative")) mkdir("../src/js/sul/creative");
-		write("../src/js/sul/creative/" ~ game ~ ".js", data ~ newline ~ "]" ~ newline);
 	}
 	
 }

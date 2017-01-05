@@ -10,9 +10,9 @@ struct Attributes {
 
 	@disable this();
 
-	enum absorption = Attribute("generic.absorption", 0, 4, 0);
-
 	enum maxHealth = Attribute("generic.maxHealth", 0, 1024, 20);
+
+	enum absorption = Attribute("generic.absorption", 0, 4, 0);
 
 	enum speed = Attribute("generic.movementSpeed", 0, 24791, 0.1);
 
