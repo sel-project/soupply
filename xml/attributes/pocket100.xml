@@ -56,7 +56,7 @@
 		default="0.1" />
 
 	<attribute
-		id="knockbackResistance"
+		id="knockback-resistance"
 		name="minecraft:generic.knockback_resistance"
 		min="0"
 		max="1"

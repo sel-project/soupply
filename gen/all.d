@@ -37,7 +37,7 @@ void main(string[] args) {
 						curr.protocol = element.text.strip.to!size_t;
 						break;
 					case "attribute":
-						with(element.tag) curr.data ~= Attribute(attr["id"], attr["name"], attr["min"].to!float, attr["max"].to!float, attr["default"].to!float);
+						with(element.tag) curr.data ~= Attribute(toCamelCase(attr["id"]), attr["name"], attr["min"].to!float, attr["max"].to!float, attr["default"].to!float);
 						break;
 					default:
 						break;
@@ -110,7 +110,7 @@ void main(string[] args) {
 	string ret = "";
 	bool next_up = false;
 	foreach(c ; str.toLower.dup) {
-		if(c == '_') {
+		if(c == '_' || c == '-') {
 			next_up = true;
 		} else if(next_up) {
 			ret ~= toUpper(c);

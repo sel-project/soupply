@@ -7,7 +7,7 @@
 	<protocol>210</protocol>
 
 	<attribute
-		id="maxHealth"
+		id="max-health"
 		name="generic.maxHealth"
 		min="0"
 		max="1024"
@@ -28,7 +28,7 @@
 		default="0.1" />
 
 	<attribute
-		id="knockbackResistance"
+		id="knockback-resistance"
 		name="generic.knockbackResistance"
 		min="0"
 		max="1"
