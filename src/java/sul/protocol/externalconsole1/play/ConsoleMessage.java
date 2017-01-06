@@ -18,7 +18,7 @@ import sul.utils.Packet;
  * message or any other message that the server retains able to be seen by the External
  * Console.
  */
-class ConsoleMessage : Packet {
+class ConsoleMessage extends Packet {
 
 	public final static byte ID = (byte)3;
 

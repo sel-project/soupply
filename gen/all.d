@@ -31,7 +31,7 @@ alias Field = Tuple!(string, "name", string, "type", string, "condition", string
 
 alias Variant = Tuple!(string, "name", string, "value", string, "description", Field[], "fields");
 
-alias Packet = Tuple!(string, "name", size_t, "id", bool, "clientbound", bool, "serverbound", string, "description", Field[], "fields", string, "variantField", Variant[], "varians");
+alias Packet = Tuple!(string, "name", size_t, "id", bool, "clientbound", bool, "serverbound", string, "description", Field[], "fields", string, "variantField", Variant[], "variants");
 
 alias Type = Tuple!(string, "name", string, "description", Field[], "fields");
 
@@ -60,7 +60,7 @@ void main(string[] args) {
 						curr.protocol = element.text.strip.to!size_t;
 						break;
 					case "attribute":
-						with(element.tag) curr.data ~= Attribute(toCamelCase(attr["id"]), attr["name"], attr["min"].to!float, attr["max"].to!float, attr["default"].to!float);
+						with(element.tag) curr.data ~= Attribute(attr["id"].replace("-", "_"), attr["name"], attr["min"].to!float, attr["max"].to!float, attr["default"].to!float);
 						break;
 					default:
 						break;
@@ -197,7 +197,25 @@ void main(string[] args) {
 												}
 												packet.fields ~= field;
 											} else if(fv.tag.name == "variants") {
-
+												packet.variantField = fv.tag.attr["field"];
+												foreach(v ; fv.elements) {
+													if(v.tag.name == "variant") {
+														Variant variant;
+														variant.name = v.tag.attr["name"].replace("-", "_");
+														variant.value = v.tag.attr["value"].replace("-", "_");
+														variant.description = text(v);
+														foreach(f ; v.elements) {
+															if(f.tag.name == "field") {
+																Field field;
+																field.name = f.tag.attr["name"].replace("-", "_");
+																field.type = convert(f.tag.attr["type"].replace("-", "_"));
+																field.description = text(f);
+																variant.fields ~= field;
+															}
+														}
+														packet.variants ~= variant;
+													}
+												}
 											}
 										}
 										section.packets ~= packet;

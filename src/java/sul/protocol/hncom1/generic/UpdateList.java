@@ -13,7 +13,7 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.Packet;
 
-class UpdateList : Packet {
+class UpdateList extends Packet {
 
 	public final static byte ID = (byte)9;
 
@@ -38,6 +38,18 @@ class UpdateList : Packet {
 
 	@Override
 	public void decode(byte[] buffer) {
+	}
+
+	public static class ByHubId extends UpdateList {
+
+	}
+
+	public static class ByName extends UpdateList {
+
+	}
+
+	public static class BySuuid extends UpdateList {
+
 	}
 
 }

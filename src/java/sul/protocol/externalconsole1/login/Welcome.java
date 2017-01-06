@@ -13,7 +13,7 @@ import java.util.UUID;
 import sul.protocol.externalconsole1.types.*;
 import sul.utils.Packet;
 
-class Welcome : Packet {
+class Welcome extends Packet {
 
 	public final static byte ID = (byte)2;
 
@@ -28,6 +28,18 @@ class Welcome : Packet {
 
 	@Override
 	public void decode(byte[] buffer) {
+	}
+
+	public static class Accepted extends Welcome {
+
+	}
+
+	public static class WrongHash extends Welcome {
+
+	}
+
+	public static class TimedOut extends Welcome {
+
 	}
 
 }

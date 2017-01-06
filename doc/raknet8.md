@@ -2,6 +2,14 @@
 
 Minecraft: Pocket Edition's networking protocol.
 
+## Endianness
+
+all: Big Endian
+
+triad: Little Endian
+
+--------
+
 ## Packets
 
 Section | Packets
@@ -18,24 +26,54 @@ Packet | DEC | HEX | Clientbound | Serverbound
 [Nack](#nack) | 160 | A0 | ✓ | ✓
 [Encapsulated](#encapsulated) | 132 | 84 | ✓ | ✓
 
-#### Ack
+* ### Ack
 
-Field | Type
----|---
-packets | [acknowledge](#acknowledge)[]
+	**ID**: 192
 
-#### Nack
+	**Clientbound**: yes
 
-Field | Type
----|---
-packets | [acknowledge](#acknowledge)[]
+	**Serverbound**: yes
 
-#### Encapsulated
+	**Fields**:
 
-Field | Type
----|---
-count | [triad](#triad)
-encapsulation | [encapsulation](#encapsulation)
+	* packets
+
+		**Type**: [acknowledge](#acknowledge)[]
+
+
+* ### Nack
+
+	**ID**: 160
+
+	**Clientbound**: yes
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* packets
+
+		**Type**: [acknowledge](#acknowledge)[]
+
+
+* ### Encapsulated
+
+	**ID**: 132
+
+	**Clientbound**: yes
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* count
+
+		**Type**: triad
+
+	* encapsulation
+
+		**Type**: [encapsulation](#encapsulation)
+
 
 ### Unconnected
 
@@ -48,57 +86,159 @@ Packet | DEC | HEX | Clientbound | Serverbound
 [Open Connection Request 2](#open-connection-request-2) | 7 | 7 |  | ✓
 [Open Connection Reply 2](#open-connection-reply-2) | 8 | 8 | ✓ | 
 
-#### Ping
+* ### Ping
 
-Field | Type
----|---
-pingId | long
-magic | ubyte[16]
+	**ID**: 1
 
-#### Pong
+	**Clientbound**: no
 
-Field | Type
----|---
-pingId | long
-serverId | long
-magic | ubyte[16]
-status | string
+	**Serverbound**: yes
 
-#### Open Connection Request 1
+	**Fields**:
 
-Field | Type
----|---
-magic | ubyte[16]
-protocol | ubyte
-mtu | bytes
+	* pingId
 
-#### Open Connection Reply 1
+		**Type**: long
 
-Field | Type
----|---
-magic | ubyte[16]
-serverId | long
-security | bool
-mtuLength | ushort
+	* magic
 
-#### Open Connection Request 2
+		**Type**: ubyte[16]
 
-Field | Type
----|---
-magic | ubyte[16]
-serveraddress | [address](#address)
-mtuLength | ushort
-clientId | long
 
-#### Open Connection Reply 2
+* ### Pong
 
-Field | Type
----|---
-magic | ubyte[16]
-serverId | long
-serverAddress | [address](#address)
-mtuLength | ushort
-security | bool
+	**ID**: 28
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* pingId
+
+		**Type**: long
+
+	* serverId
+
+		**Type**: long
+
+	* magic
+
+		**Type**: ubyte[16]
+
+	* status
+
+		**Type**: string
+
+
+* ### Open Connection Request 1
+
+	**ID**: 5
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* magic
+
+		**Type**: ubyte[16]
+
+	* protocol
+
+		**Type**: ubyte
+
+	* mtu
+
+		**Type**: bytes
+
+
+* ### Open Connection Reply 1
+
+	**ID**: 6
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* magic
+
+		**Type**: ubyte[16]
+
+	* serverId
+
+		**Type**: long
+
+	* security
+
+		**Type**: bool
+
+	* mtuLength
+
+		**Type**: ushort
+
+
+* ### Open Connection Request 2
+
+	**ID**: 7
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* magic
+
+		**Type**: ubyte[16]
+
+	* serveraddress
+
+		**Type**: [address](#address)
+
+	* mtuLength
+
+		**Type**: ushort
+
+	* clientId
+
+		**Type**: long
+
+
+* ### Open Connection Reply 2
+
+	**ID**: 8
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* magic
+
+		**Type**: ubyte[16]
+
+	* serverId
+
+		**Type**: long
+
+	* serverAddress
+
+		**Type**: [address](#address)
+
+	* mtuLength
+
+		**Type**: ushort
+
+	* security
+
+		**Type**: bool
+
 
 ### Encapsulated
 
@@ -112,90 +252,239 @@ Packet | DEC | HEX | Clientbound | Serverbound
 [Pong](#pong) | 3 | 3 | ✓ | 
 [Mcpe](#mcpe) | 254 | FE | ✓ | ✓
 
-#### Client Connect
+* ### Client Connect
 
-Field | Type
----|---
-clientId | long
-pingId | long
+	**ID**: 9
 
-#### Server Handshake
+	**Clientbound**: no
 
-Field | Type
----|---
-clientAddress | [address](#address)
-mtuLength | ushort
-systemAddresses | [address](#address)[10]
-pingId | long
-serverId | long
+	**Serverbound**: yes
 
-#### Client Handshake
+	**Fields**:
 
-Field | Type
----|---
-clientAddress | [address](#address)
-systemAddresses | [address](#address)[10]
-pingId | long
-clientId | long
+	* clientId
 
-#### Client Cancel Connection
+		**Type**: long
 
-#### Ping
+	* pingId
 
-Field | Type
----|---
-time | long
+		**Type**: long
 
-#### Pong
 
-Field | Type
----|---
-time | long
+* ### Server Handshake
 
-#### Mcpe
+	**ID**: 16
 
-Field | Type
----|---
-packet | bytes
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* clientAddress
+
+		**Type**: [address](#address)
+
+	* mtuLength
+
+		**Type**: ushort
+
+	* systemAddresses
+
+		**Type**: [address](#address)[10]
+
+	* pingId
+
+		**Type**: long
+
+	* serverId
+
+		**Type**: long
+
+
+* ### Client Handshake
+
+	**ID**: 19
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* clientAddress
+
+		**Type**: [address](#address)
+
+	* systemAddresses
+
+		**Type**: [address](#address)[10]
+
+	* pingId
+
+		**Type**: long
+
+	* clientId
+
+		**Type**: long
+
+
+* ### Client Cancel Connection
+
+	**ID**: 21
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+* ### Ping
+
+	**ID**: 0
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* time
+
+		**Type**: long
+
+
+* ### Pong
+
+	**ID**: 3
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* time
+
+		**Type**: long
+
+
+* ### Mcpe
+
+	**ID**: 254
+
+	**Clientbound**: yes
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* packet
+
+		**Type**: bytes
+
 
 --------
 
-### Types
+## Types
 
-#### Address
+* ### Address
 
-Field | Type | Condition
----|---|---
-type | ubyte | 
-ipv4 | ubyte[4] | type==4
-ipv6 | ubyte[16] | type==6
-port | ushort | 
+	**Fields**:
 
-#### Acknowledge
+	* type
 
-Field | Type | Condition
----|---|---
-unique | bool | 
-first | [triad](#triad) | 
-last | [triad](#triad) | unique==false
+		**Type**: ubyte
 
-#### Encapsulation
+	* ipv4
 
-Field | Type | Condition
----|---|---
-info | ubyte | 
-length | ushort | 
-messageIndex | [triad](#triad) | (info&0x7f)>=64
-orderIndex | [triad](#triad) | (info&0x7f)>=96
-orderChannel | ubyte | (info&0x7f)>=96
-split | [split](#split) | (info&0x10)!=0
-payload | bytes | 
+		**Type**: ubyte[4]
 
-#### Split
+		**When**: type==4
 
-Field | Type
----|---
-count | uint
-id | ushort
-order | uint
+	* ipv6
+
+		**Type**: ubyte[16]
+
+		**When**: type==6
+
+	* port
+
+		**Type**: ushort
+
+
+* ### Acknowledge
+
+	**Fields**:
+
+	* unique
+
+		**Type**: bool
+
+	* first
+
+		**Type**: triad
+
+	* last
+
+		**Type**: triad
+
+		**When**: unique==false
+
+
+* ### Encapsulation
+
+	**Fields**:
+
+	* info
+
+		**Type**: ubyte
+
+	* length
+
+		**Type**: ushort
+
+	* messageIndex
+
+		**Type**: triad
+
+		**When**: (info&0x7f)>=64
+
+	* orderIndex
+
+		**Type**: triad
+
+		**When**: (info&0x7f)>=96
+
+	* orderChannel
+
+		**Type**: ubyte
+
+		**When**: (info&0x7f)>=96
+
+	* split
+
+		**Type**: [split](#split)
+
+		**When**: (info&0x10)!=0
+
+	* payload
+
+		**Type**: bytes
+
+
+* ### Split
+
+	**Fields**:
+
+	* count
+
+		**Type**: uint
+
+	* id
+
+		**Type**: ushort
+
+	* order
+
+		**Type**: uint
+
 

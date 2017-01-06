@@ -13,7 +13,7 @@ import java.util.UUID;
 import sul.protocol.externalconsole1.types.*;
 import sul.utils.Packet;
 
-class KeepAlive : Packet {
+class KeepAlive extends Packet {
 
 	public final static byte ID = (byte)0;
 

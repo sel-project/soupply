@@ -19,7 +19,7 @@ import sul.utils.Packet;
  * ideal client should never receive this packet avoiding the use of [Command](#command)
  * if the remoteCommands field in [Welcome.Accepted](#accepted) is not true.
  */
-class PermissionDenied : Packet {
+class PermissionDenied extends Packet {
 
 	public final static byte ID = (byte)5;
 

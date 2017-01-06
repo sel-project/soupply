@@ -13,7 +13,7 @@ import java.util.UUID;
 import sul.protocol.raknet8.types.*;
 import sul.utils.Packet;
 
-class Ping : Packet {
+class Ping extends Packet {
 
 	public final static byte ID = (byte)0;
 

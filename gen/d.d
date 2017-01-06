@@ -112,7 +112,7 @@ alias varulong = var!ulong;
 			"alias Attribute = Tuple!(string, \"name\", float, \"min\", float, \"max\", float, \"def\");\n\n" ~ 
 			"struct Attributes {\n\n\t@disable this();\n\n";
 		foreach(attr; attrs.data) {
-			data ~= "\tenum " ~ attr.id ~ " = Attribute(\"" ~ attr.name ~ "\", " ~ attr.min.to!string ~ ", " ~ attr.max.to!string ~ ", " ~ attr.def.to!string ~ ");\n\n";
+			data ~= "\tenum " ~ toCamelCase(attr.id) ~ " = Attribute(\"" ~ attr.name ~ "\", " ~ attr.min.to!string ~ ", " ~ attr.max.to!string ~ ", " ~ attr.def.to!string ~ ");\n\n";
 		}
 		if(!exists("../src/d/sul/attributes")) mkdir("../src/d/sul/attributes");
 		write("../src/d/sul/attributes/" ~ game ~ ".d", data ~ "}", "attributes/" ~ game);

@@ -13,7 +13,7 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.Packet;
 
-class UpdateLanguage : Packet {
+class UpdateLanguage extends Packet {
 
 	public final static byte ID = (byte)14;
 

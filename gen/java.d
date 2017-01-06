@@ -98,14 +98,14 @@ abstract class Packet {
 				if(packet.description.length) {
 					data ~= javadoc("", packet.description);
 				}
-				data ~= "class " ~ toPascalCase(packet.name) ~ " : Packet {\n\n";
+				data ~= "class " ~ toPascalCase(packet.name) ~ " extends Packet {\n\n";
 				data ~= "\tpublic final static " ~ id ~ " ID = (" ~ id ~ ")" ~ to!string(packet.id) ~ ";\n\n";
 				data ~= "\tpublic final static boolean CLIENTBOUND = " ~ to!string(packet.clientbound) ~ ";\n";
 				data ~= "\tpublic final static boolean SERVERBOUND = " ~ to!string(packet.serverbound) ~ ";\n\n";
 				foreach(field ; packet.fields) {
 					if(field.constants.length) {
 						immutable fieldType = convert(field.type);
-						data ~= "\t// " ~ toCamelCase(field.name) ~ "\n";
+						data ~= "\t// " ~ field.name.replace("_", " ") ~ "\n";
 						foreach(constant ; field.constants) {
 							data ~= "\tpublic final static " ~ fieldType ~ " " ~ toUpper(constant.name) ~ " = (" ~ fieldType ~ ")" ~ constant.value ~ ";\n";
 						}
@@ -125,7 +125,18 @@ abstract class Packet {
 				data ~= "\n\t@Override\n\tpublic void decode(byte[] buffer) {\n";
 
 				data ~= "\t}\n";
-				data ~= "\n}";
+				if(packet.variants.length) {
+					data ~= "\n";
+					foreach(j, variant; packet.variants) {
+						if(variant.description.length) data ~= javadoc("\t", variant.description);
+						data ~= "\tpublic static class " ~ toPascalCase(variant.name) ~ " extends " ~ toPascalCase(packet.name) ~ " {\n\n";
+
+						data ~= "\t}\n\n";
+					}
+				} else {
+					data ~= "\n";
+				}
+				data ~= "}";
 				write("../src/java/sul/protocol/" ~ game ~ "/" ~ sectionName ~ "/" ~ toPascalCase(packet.name) ~ ".java", data, "protocol/" ~ game);
 			}
 		}

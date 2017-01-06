@@ -2,6 +2,12 @@
 
 Communication between hub and nodes.
 
+## Endianness
+
+all: Big Endian
+
+--------
+
 ## Packets
 
 Section | Packets
@@ -20,42 +26,123 @@ Packet | DEC | HEX | Clientbound | Serverbound
 [Info](#info) | 2 | 2 | ✓ | 
 [Ready](#ready) | 3 | 3 |  | ✓
 
-#### Connection
+* ### Connection
 
-Field | Type | Description
----|---|---
-protocol | varuint | Version of the protocol used by the client that must match the hub's one
-name | string | Name of the node that will be validated by the hub.
-mainNode | bool | Indicates whether the node accepts clients when they first connect to the hub or exclusively when they are manually transferred.
+	**ID**: 0
 
-#### Connection Response
+	**Clientbound**: no
 
-Field | Type
----|---
-protocolAccepted | bool
-nameAccepted | bool
+	**Serverbound**: yes
 
-#### Info
+	**Fields**:
 
-Field | Type
----|---
-serverId | long
-onlineMode | bool
-displayName | string
-games | [game](#game)[]
-online | varuint
-max | varuint
-language | string
-acceptedLanguages | string[]
-nodes | string[]
-socialJson | string
-additionalJson | string
+	* protocol
 
-#### Ready
+		**Type**: varuint
 
-Field | Type
----|---
-plugins | [plugin](#plugin)[]
+		Version of the protocol used by the client that must match the hub's one
+
+	* name
+
+		**Type**: string
+
+		Name of the node that will be validated by the hub.
+
+	* mainNode
+
+		**Type**: bool
+
+		Indicates whether the node accepts clients when they first connect to the hub or exclusively when they are manually transferred.
+
+
+* ### Connection Response
+
+	**ID**: 1
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* protocolAccepted
+
+		**Type**: bool
+
+	* nameAccepted
+
+		**Type**: bool
+
+
+* ### Info
+
+	**ID**: 2
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* serverId
+
+		**Type**: long
+
+	* onlineMode
+
+		**Type**: bool
+
+	* displayName
+
+		**Type**: string
+
+	* games
+
+		**Type**: [game](#game)[]
+
+	* online
+
+		**Type**: varuint
+
+	* max
+
+		**Type**: varuint
+
+	* language
+
+		**Type**: string
+
+	* acceptedLanguages
+
+		**Type**: string[]
+
+	* nodes
+
+		**Type**: string[]
+
+	* socialJson
+
+		**Type**: string
+
+	* additionalJson
+
+		**Type**: string
+
+
+* ### Ready
+
+	**ID**: 3
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* plugins
+
+		**Type**: [plugin](#plugin)[]
+
 
 ### Status
 
@@ -65,27 +152,73 @@ Packet | DEC | HEX | Clientbound | Serverbound
 [Nodes](#nodes) | 5 | 5 | ✓ | 
 [Resources Usage](#resources-usage) | 6 | 6 | ✓ | 
 
-#### Players
+* ### Players
 
-Field | Type
----|---
-online | varuint
-max | varuint
+	**ID**: 4
 
-#### Nodes
+	**Clientbound**: yes
 
-Field | Type
----|---
-action | ubyte
-node | string
+	**Serverbound**: no
 
-#### Resources Usage
+	**Fields**:
 
-Field | Type
----|---
-tps | float
-ram | varulong
-cpu | float
+	* online
+
+		**Type**: varuint
+
+	* max
+
+		**Type**: varuint
+
+
+* ### Nodes
+
+	**ID**: 5
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* action
+
+		**Type**: ubyte
+
+		**Constants**:
+
+		Name | Value
+		---|:---:
+		add | 0
+		remove | 1
+
+	* node
+
+		**Type**: string
+
+
+* ### Resources Usage
+
+	**ID**: 6
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* tps
+
+		**Type**: float
+
+	* ram
+
+		**Type**: varulong
+
+	* cpu
+
+		**Type**: float
+
 
 ### Generic
 
@@ -95,27 +228,129 @@ Packet | DEC | HEX | Clientbound | Serverbound
 [Remote Command](#remote-command) | 8 | 8 | ✓ | 
 [Update List](#update-list) | 9 | 9 |  | ✓
 
-#### Logs
+* ### Logs
 
-Field | Type
----|---
-messages | [log](#log)[]
+	**ID**: 7
 
-#### Remote Command
+	**Clientbound**: no
 
-Field | Type
----|---
-origin | ubyte
-sender | [address](#address)
-command | string
+	**Serverbound**: yes
 
-#### Update List
+	**Fields**:
 
-Field | Type
----|---
-list | ubyte
-action | ubyte
-type | ubyte
+	* messages
+
+		**Type**: [log](#log)[]
+
+
+* ### Remote Command
+
+	**ID**: 8
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* origin
+
+		**Type**: ubyte
+
+		**Constants**:
+
+		Name | Value
+		---|:---:
+		hub | 0
+		externalConsole | 1
+		rcon | 2
+
+	* sender
+
+		**Type**: [address](#address)
+
+	* command
+
+		**Type**: string
+
+
+* ### Update List
+
+	**ID**: 9
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* list
+
+		**Type**: ubyte
+
+		**Constants**:
+
+		Name | Value
+		---|:---:
+		whitelist | 0
+		blacklist | 1
+
+	* action
+
+		**Type**: ubyte
+
+		**Constants**:
+
+		Name | Value
+		---|:---:
+		add | 0
+		remove | 1
+
+	* type
+
+		**Type**: ubyte
+
+
+	**Variants**:
+
+	**Field**: type
+
+	* By Hub Id
+
+		**Field's value**: 0
+
+		**Additional Fields**:
+
+		* hubId
+
+			**Type**: varuint
+
+
+	* By Name
+
+		**Field's value**: 1
+
+		**Additional Fields**:
+
+		* username
+
+			**Type**: string
+
+
+	* By Suuid
+
+		**Field's value**: 2
+
+		**Additional Fields**:
+
+		* game
+
+			**Type**: ubyte
+
+		* uuid
+
+			**Type**: uuid
+
 
 ### Player
 
@@ -132,129 +367,345 @@ Packet | DEC | HEX | Clientbound | Serverbound
 [Game Packet](#game-packet) | 18 | 12 | ✓ | ✓
 [Ordered Game Packet](#ordered-game-packet) | 19 | 13 |  | ✓
 
-#### Add
+* ### Add
 
-Field | Type
----|---
-hubId | varuint
-reason | ubyte
-protocol | varuint
-username | string
-displayName | string
-address | [address](#address)
-game | ubyte
-uuid | uuid
-skin | [skin](#skin)
-latency | varuint
-packetLoss | float
-language | string
+	**ID**: 10
 
-#### Remove
+	**Clientbound**: yes
 
-Field | Type
----|---
-hubId | varuint
-reason | ubyte
+	**Serverbound**: no
 
-#### Kick
+	**Fields**:
 
-Field | Type
----|---
-hubId | varuint
-reason | string
-translation | bool
+	* hubId
 
-#### Transfer
+		**Type**: varuint
 
-Field | Type
----|---
-hubId | varuint
-node | string
+	* reason
 
-#### Update Language
+		**Type**: ubyte
 
-Field | Type
----|---
-hubId | varuint
-language | string
+		**Constants**:
 
-#### Update Display Name
+		Name | Value
+		---|:---:
+		firstJoin | 0
+		transferred | 1
+		forciblyTransferred | 2
 
-Field | Type
----|---
-hubId | varuint
-displayName | string
+	* protocol
 
-#### Update Latency
+		**Type**: varuint
 
-Field | Type
----|---
-hubId | varuint
-latency | varuint
+	* username
 
-#### Update Packet Loss
+		**Type**: string
 
-Field | Type
----|---
-hubId | varuint
-packetLoss | float
+	* displayName
 
-#### Game Packet
+		**Type**: string
 
-Field | Type
----|---
-hubId | varuint
-packet | bytes
+	* address
 
-#### Ordered Game Packet
+		**Type**: [address](#address)
 
-Field | Type
----|---
-hubId | varuint
-order | varuint
-packet | bytes
+	* game
+
+		**Type**: ubyte
+
+	* uuid
+
+		**Type**: uuid
+
+	* skin
+
+		**Type**: [skin](#skin)
+
+	* latency
+
+		**Type**: varuint
+
+	* packetLoss
+
+		**Type**: float
+
+	* language
+
+		**Type**: string
+
+
+* ### Remove
+
+	**ID**: 11
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* hubId
+
+		**Type**: varuint
+
+	* reason
+
+		**Type**: ubyte
+
+		**Constants**:
+
+		Name | Value
+		---|:---:
+		left | 0
+		timedOut | 1
+		kicked | 2
+		transferred | 3
+
+
+* ### Kick
+
+	**ID**: 12
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* hubId
+
+		**Type**: varuint
+
+	* reason
+
+		**Type**: string
+
+	* translation
+
+		**Type**: bool
+
+
+* ### Transfer
+
+	**ID**: 13
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* hubId
+
+		**Type**: varuint
+
+	* node
+
+		**Type**: string
+
+
+* ### Update Language
+
+	**ID**: 14
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* hubId
+
+		**Type**: varuint
+
+	* language
+
+		**Type**: string
+
+
+* ### Update Display Name
+
+	**ID**: 15
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* hubId
+
+		**Type**: varuint
+
+	* displayName
+
+		**Type**: string
+
+
+* ### Update Latency
+
+	**ID**: 16
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* hubId
+
+		**Type**: varuint
+
+	* latency
+
+		**Type**: varuint
+
+
+* ### Update Packet Loss
+
+	**ID**: 17
+
+	**Clientbound**: yes
+
+	**Serverbound**: no
+
+	**Fields**:
+
+	* hubId
+
+		**Type**: varuint
+
+	* packetLoss
+
+		**Type**: float
+
+
+* ### Game Packet
+
+	**ID**: 18
+
+	**Clientbound**: yes
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* hubId
+
+		**Type**: varuint
+
+	* packet
+
+		**Type**: bytes
+
+
+* ### Ordered Game Packet
+
+	**ID**: 19
+
+	**Clientbound**: no
+
+	**Serverbound**: yes
+
+	**Fields**:
+
+	* hubId
+
+		**Type**: varuint
+
+	* order
+
+		**Type**: varuint
+
+	* packet
+
+		**Type**: bytes
+
 
 --------
 
-### Types
+## Types
 
-#### Plugin
+* ### Plugin
 
-Field | Type
----|---
-name | string
-version | string
+	**Fields**:
 
-#### Address
+	* name
 
-Internet protocol address. Could be either version 4 and 6.
+		**Type**: string
 
-Field | Type | Description
----|---|---
-bytes | ubyte[] | Bytes of the address. The length may be 4 (for ipv4 addresses) or 16 (for ipv6 addresses). The byte order is always big-endian (network order).
-port | ushort | Port of the address.
+	* version
 
-#### Game
+		**Type**: string
 
-Field | Type
----|---
-type | ubyte
-protocols | uint[]
-motd | string
-port | ushort
 
-#### Skin
+* ### Address
 
-Field | Type
----|---
-name | string
-data | ubyte[]
+	Internet protocol address. Could be either version 4 and 6.
 
-#### Log
+	**Fields**:
 
-Field | Type
----|---
-timestamp | ulong
-logger | string
-message | string
+	* bytes
+
+		**Type**: ubyte[]
+
+		Bytes of the address. The length may be 4 (for ipv4 addresses) or 16 (for ipv6 addresses). The byte order is always big-endian (network order).
+
+	* port
+
+		**Type**: ushort
+
+		Port of the address.
+
+
+* ### Game
+
+	**Fields**:
+
+	* type
+
+		**Type**: ubyte
+
+	* protocols
+
+		**Type**: uint[]
+
+	* motd
+
+		**Type**: string
+
+	* port
+
+		**Type**: ushort
+
+
+* ### Skin
+
+	**Fields**:
+
+	* name
+
+		**Type**: string
+
+	* data
+
+		**Type**: ubyte[]
+
+
+* ### Log
+
+	**Fields**:
+
+	* timestamp
+
+		**Type**: ulong
+
+	* logger
+
+		**Type**: string
+
+	* message
+
+		**Type**: string
+
 

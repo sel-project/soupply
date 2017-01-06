@@ -13,7 +13,7 @@ import java.util.UUID;
 import sul.protocol.raknet8.types.*;
 import sul.utils.Packet;
 
-class Nack : Packet {
+class Nack extends Packet {
 
 	public final static byte ID = (byte)160;
 

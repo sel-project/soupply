@@ -18,12 +18,12 @@ import sul.utils.Packet;
  * is sent back. The ideal client should never send this packet if remoteCommands field
  * in [Welcome.Accepted](#accepted) is not true.
  */
-class Command : Packet {
+class Command extends Packet {
 
 	public final static byte ID = (byte)4;
 
 	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = false;
+	public final static boolean SERVERBOUND = true;
 
 	/**
 	 * Command to be executed on the server. On SEL servers it should start with a slash

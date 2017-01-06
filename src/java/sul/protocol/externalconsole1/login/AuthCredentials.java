@@ -16,7 +16,7 @@ import sul.utils.Packet;
 /**
  * Credentials for login.
  */
-class AuthCredentials : Packet {
+class AuthCredentials extends Packet {
 
 	public final static byte ID = (byte)0;
 

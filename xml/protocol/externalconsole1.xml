@@ -115,7 +115,7 @@
 				</field>
 			</packet>
 
-			<packet name="command" id="4" clientbound="false" serverbound="false">
+			<packet name="command" id="4" clientbound="false" serverbound="true">
 				Executes a command remotely if the server allows it. If not a [Permission Denied](#permission-denied) is sent back. The ideal client should never send this packet if remoteCommands field in [Welcome.Accepted](#accepted) is not true.
 				<field name="command" type="string">
 					Command to be executed on the server. On SEL servers it should start with a slash or a point (hub command) or a node name followed by the command (node command).

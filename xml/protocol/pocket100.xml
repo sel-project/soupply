@@ -14,6 +14,8 @@
 
 		<alias name="entity-id" type="varlong" />
 
+		<alias name="runtime-id" type="varlong" />
+
 		<type name="pack">
 			<field name="id" type="string" />
 			<field name="version" type="string" />
@@ -78,6 +80,279 @@
 					<constant name="invalid-tenant" value="4" />
 					<constant name="edition-mismatch" value="5" />
 				</field>
+			</packet>
+
+			<packet name="server-handshake" id="3" clientbound="true" serverbound="false">
+				<field name="server-public-key" type="string" />
+				<field name="token" type="ubyte[]" />
+			</packet>
+
+			<packet name="client-magic" id="4" clientbound="false" serverbound="true">
+
+			</packet>
+
+			<packet name="disconnect" id="5" clientbound="true" serverbound="false">
+				<field name="hide-disconnection-screen" type="bool" />
+				<field name="message" type="string" />
+			</packet>
+
+			<packet name="batch" id="6" clientbound="true" serverbound="true">
+				<field name="data" type="ubyte[]" />
+			</packet>
+
+			<packet name="resource-packs-info" id="7" clientbound="true" serverbound="false">
+				<field name="must-accept" type="bool" />
+				<field name="behaviour-packs" type="pack[]" />
+				<field name="resource-packs" type="pack[]" />
+			</packet>
+
+			<packet name="resource-pack-client-response" id="9" clientbound="false" serverbound="true">
+				<field name="status" type="ubyte" />
+				<field name="resource-pack-version" type="ushort" />
+			</packet>
+
+			<packet name="text" id="10" clientbound="true" serverbound="true">
+				<field name="type" type="ubyte" />
+				<variants field="type">
+					<variant name="raw" value="0">
+						<field name="message" type="string" />
+					</variant>
+					<variant name="chat" value="1">
+						<field name="sender" type="string" />
+						<field name="message" type="string" />
+					</variant>
+					<variant name="translation" value="2">
+						<field name="message" type="string" />
+						<field name="parameters" type="string[]" />
+					</variant>
+					<variant name="popup" value="3">
+						<field name="title" type="string" />
+						<field name="subtitle" type="string" />
+					</variant>
+					<variant name="tip" value="4">
+						<field name="message" type="string" />
+					</variant>
+					<variant name="system" value="5">
+						<field name="message" type="string" />
+					</variant>
+					<variant name="whisper" value="6">
+						<field name="sender" type="string" />
+						<field name="message" type="string" />
+					</variant>
+				</variants>
+			</packet>
+
+			<packet name="set-time" id="11" clientbound="true" serverbound="false">
+				<field name="time" type="varint" />
+				<field name="daylight-cycle" type="bool" />
+			</packet>
+
+			<packet name="start-game" id="12" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="runtime-id" type="runtime-id" />
+				<field name="position" type="float<xyz>" />
+				<field name="yaw" type="float" />
+				<field name="pitch" type="float" />
+				<field name="seed" type="varint" />
+				<field name="dimension" type="varint">
+					<constant name="overworld" value="0" />
+					<constant name="nether" value="1" />
+					<constant name="end" value="2" />
+				</field>
+				<field name="generator" type="varint">
+					<constant name="old" value="0" />
+					<constant name="infinite" value="1" />
+					<constant name="flat" value="2" />
+				</field>
+				<field name="world-gamemode" type="varint">
+					<constant name="survival" value="0" />
+					<constant name="creative" value="1" />
+				</field>
+				<field name="difficulty" type="varint">
+					<constant name="peaceful" value="0" />
+					<constant name="easy" value="1" />
+					<constant name="normal" value="2" />
+					<constant name="hard" value="3" />
+				</field>
+				<field name="spawn-position" type="varint<xyz>" />
+				<field name="loaded-in-creative" type="bool" />
+				<field name="time" type="varint" />
+				<field name="edition" type="ubyte">
+					<constant name="classic" value="0" />
+					<constant name="education" value="1" />
+				</field>
+				<field name="rain-level" type="float" />
+				<field name="lighting-level" type="float" />
+				<field name="cheats-enabled" type="bool" />
+				<field name="texture-required" type="bool" />
+				<field name="level-id" type="string" />
+				<field name="world-name" type="string" />
+			</packet>
+
+			<packet name="add-player" id="13" clientbound="true" serverbound="false">
+				<field name="uuid" type="uuid" />
+				<field name="username" type="string" />
+				<field name="entity-id" type="entity-id" />
+				<field name="runtime-id" type="runtime-id" />
+				<field name="position" type="float<xyz>" />
+				<field name="motion" type="float<xyz>" />
+				<field name="pitch" type="float" />
+				<field name="head-yaw" type="float" />
+				<field name="yaw" type="float" />
+				<field name="held-item" type="slot" />
+				<field name="metadata" type="bytes" />
+			</packet>
+
+			<packet name="add-entity" id="14" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="runtime-id" type="runtime-id" />
+				<field name="type" type="varuint" />
+				<field name="position" type="float<xyz>" />
+				<field name="motion" type="float<xyz>" />
+				<field name="pitch" type="float" />
+				<field name="yaw" type="float" />
+				<field name="attributes" type="attribute[]" />
+				<field name="metadata" type="ubyte[]" />
+				<field name="links" type="entity-id[]" />
+			</packet>
+
+			<packet name="remove-entity" id="15" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+			</packet>
+
+			<packet name="add-item-entity" id="16" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="runtime-id" type="runtime-id" />
+				<field name="item" type="slot" />
+				<field name="position" type="float<xyz>" />
+				<field name="motion" type="float<xyz>" />
+			</packet>
+
+			<packet name="add-hanging-entity" id="17" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="runtime-id" type="runtime-id" />
+				<field name="position" type="block-position" />
+				<field name="?" type="varint" />
+			</packet>
+
+			<packet name="take-item-entity" id="18" clientbound="true" serverbound="false">
+				<field name="taken" type="entity-id" />
+				<field name="collector" type="entity-id" />
+			</packet>
+
+			<packet name="move-entity" id="19" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="position" type="float<xyz>" />
+				<field name="pitch" type="float" />
+				<field name="head-yaw" type="float" />
+				<field name="yaw" type="float" />
+			</packet>
+
+			<packet name="move-player" id="20" clientbound="true" serverbound="true">
+				<field name="entity-id" type="entity-id" />
+				<field name="position" type="float<xyz>" />
+				<field name="pitch" type="float" />
+				<field name="head-yaw" type="float" />
+				<field name="yaw" type="float" />
+				<field name="animation" type="ubyte">
+					<constant name="full" value="0" />
+					<constant name="none" value="1" />
+					<constant name="rotation" value="2" />
+				</field>
+				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="rider-jump" id="21" clientbound="true" serverbound="true">
+				<field name="rider" type="entity-id" />
+			</packet>
+
+			<packet name="remove-block" id="22" clientbound="false" serverbound="true">
+				<field name="position" type="block-position" />
+			</packet>
+
+			<packet name="update-block" id="23" clientbound="true" serverbound="false">
+				<field name="position" type="block-position" />
+				<field name="block" type="varuint" />
+				<field name="flags-and-meta" type="varuint">
+					<constant name="neighbors" value="1" />
+					<constant name="network" value="2" />
+					<constant name="no-graphic" value="4" />
+					<constant name="priority" value="8" />
+				</field>
+			</packet>
+
+			<packet name="add-painting" id="24" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="runtime-id" type="runtime-id" />
+				<field name="position" type="block-position" />
+				<field name="direction" type="varint" />
+				<field name="title" type="string" />
+			</packet>
+
+			<packet name="explode" id="25" clientbound="true" serverbound="false">
+				<field name="position" type="float<xyz>" />
+				<field name="radius" type="float" />
+				<field name="destroyed-blocks" type="block-position[]" />
+			</packet>
+
+			<packet name="level-sound-event" id="26" clientbound="true" serverbound="true">
+				<field name="sound" type="ubyte" />
+				<field name="position" type="float<xyz>" />
+				<field name="volume" type="varuint" />
+				<field name="pitch" type="varint" />
+				<field name="?" type="bool" />
+			</packet>
+			
+			<packet name="level-event" id="27" clientbound="true" serverbound="false">
+				<field name="event-id" type="varint">
+					<constant name="start-rain" value="3001" />
+					<constant name="start-thunder" value="3002" />
+					<constant name="stop-rain" value="3003" />
+					<constant name="stop-thunder" value="3004" />
+					<constant name="set-data" value="4000" />
+					<constant name="players-sleeping" value="9800" />
+				</field>
+				<field name="position" type="float<xyz>" />
+				<field name="data" type="varint" />
+			</packet>
+
+			<packet name="block-event" id="28" clientbound="true" serverbound="false">
+				<field name="position" type="block-position" />
+				<field name="data" type="varint[2]" />
+			</packet>
+
+			<packet name="entity-event" id="29" clientbound="true" serverbound="true">
+				<field name="entity-id" type="entity-id" />
+				<field name="event-id" type="ubyte">
+					<constant name="hurt-animation" value="2" />
+					<constant name="death-animation" value="3" />
+					<constant name="tame-fail" value="6" />
+					<constant name="tame-success" value="7" />
+					<constant name="shake-wet" value="8" />
+					<constant name="use-item" value="9" />
+					<constant name="eat-grass-animation" value="10" />
+					<constant name="fish-hook-bubbles" value="11" />
+					<constant name="fish-hook-position" value="12" />
+					<constant name="fish-hook-hook" value="13" />
+					<constant name="fish-hook-tease" value="14" />
+					<constant name="squid-ink-cloud" value="15" />
+					<constant name="ambient-sound" value="16" />
+					<constant name="respawn" value="17" />
+				</field>
+				<field name="?" type="varint" />
+			</packet>
+
+			<packet name="mob-effect" id="30" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="event-id" type="ubyte">
+					<constant name="add" value="0" />
+					<constant name="modify" value="1" />
+					<constant name="remove" value="2" />
+				</field>
+				<field name="effect" type="varint" />
+				<field name="amplifier" type="varint" />
+				<field name="particles" type="bool" />
+				<field name="duration" type="varint" />
 			</packet>
 
 		</section>

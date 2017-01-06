@@ -13,7 +13,7 @@ import java.util.UUID;
 import sul.protocol.raknet8.types.*;
 import sul.utils.Packet;
 
-class OpenConnectionRequest1 : Packet {
+class OpenConnectionRequest1 extends Packet {
 
 	public final static byte ID = (byte)5;
 

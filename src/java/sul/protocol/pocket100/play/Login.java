@@ -13,7 +13,7 @@ import java.util.UUID;
 import sul.protocol.pocket100.types.*;
 import sul.utils.Packet;
 
-class Login : Packet {
+class Login extends Packet {
 
 	public final static byte ID = (byte)1;
 

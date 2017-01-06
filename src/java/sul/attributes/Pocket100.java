@@ -24,7 +24,7 @@ public enum Pocket100 {
 
 	SPEED("minecraft:movement", 0, 24791, 0.1);
 
-	KNOCKBACKRESISTANCE("minecraft:generic.knockback_resistance", 0, 1, 0);
+	KNOCKBACK_RESISTANCE("minecraft:generic.knockback_resistance", 0, 1, 0);
 
 	public final String name;
 	public final float min, max, def;

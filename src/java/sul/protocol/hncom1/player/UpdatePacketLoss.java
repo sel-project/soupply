@@ -13,7 +13,7 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.Packet;
 
-class UpdatePacketLoss : Packet {
+class UpdatePacketLoss extends Packet {
 
 	public final static byte ID = (byte)17;
 
