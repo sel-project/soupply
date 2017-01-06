@@ -7,14 +7,14 @@
 	<protocol>8</protocol>
 
 	<description>
-		Protocol used by SEL to communicate with external sources using TCP or web sockets.
+		Minecraft: Pocket Edition's networking protocol.
 	</description>
 
-	<encoding id="ubyte" arrayLength="ushort">
+	<encoding id="ubyte" arraylength="ushort">
 
-		<endianness type="*" value="bigEndian" />
+		<endianness type="*" value="big-endian" />
 		
-		<endianness type="triad" value="littleEndian" />
+		<endianness type="triad" value="little-endian" />
 
 		<alias name="magic" type="ubyte[16]" />
 		
@@ -34,9 +34,9 @@
 		<type name="encapsulation">
 			<field name="info" type="ubyte" />
 			<field name="length" type="ushort" />
-			<field name="messageIndex" type="triad" when="(info&0x7F)>=64" />
-			<field name="orderIndex" type="triad" when="(info&0x7F)>=96" />
-			<field name="orderChannel" type="ubyte" when="(info&0x7F)>=96" />
+			<field name="message-index" type="triad" when="(info&0x7F)>=64" />
+			<field name="order-index" type="triad" when="(info&0x7F)>=96" />
+			<field name="order-channel" type="ubyte" when="(info&0x7F)>=96" />
 			<field name="split" type="split" when="(info&0x10)!=0" />
 			<field name="payload" type="bytes" />
 		</type>
@@ -51,85 +51,7 @@
 
 	<packets>
 
-		<section name="status">
-
-			<packet name="ping" id="1" clientbound="false" serverbound="true">
-				<field name="pingId" type="long" />
-				<field name="magic" type="magic" />
-			</packet>
-
-			<packet name="pong" id="28" clientbound="true" serverbound="false">
-				<field name="pingId" type="long" />
-				<field name="serverId" type="long" />
-				<field name="magic" type="magic" />
-				<field name="status" type="string" />
-			</packet>
-
-		</section>
-
-		<section name="login">
-
-			<packet name="openConnectionRequest1" id="5" clientbound="false" serverbound="true">
-				<field name="magic" type="magic" />
-				<field name="protocol" type="ubyte" />
-				<field name="mtu" type="bytes" />
-			</packet>
-
-			<packet name="openConnectionReply1" id="6" clientbound="true" serverbound="false">
-				<field name="magic" type="magic" />
-				<field name="serverId" type="long" />
-				<field name="security" type="bool" />
-				<field name="mtuLength" type="ushort" />
-			</packet>
-
-			<packet name="openConnectionRequest2" id="7" clientbound="false" serverbound="true">
-				<field name="magic" type="magic" />
-				<field name="serverAddress" type="address" />
-				<field name="mtuLength" type="ushort" />
-				<field name="clientId" type="long" />
-			</packet>
-
-			<packet name="openConnectionReply2" id="8" clientbound="true" serverbound="false">
-				<field name="magic" type="magic" />
-				<field name="serverId" type="long" />
-				<field name="serverAddress" type="address" />
-				<field name="mtuLength" type="ushort" />
-				<field name="security" type="bool" />
-			</packet>
-
-			<packet name="clientConnect" id="9" clientbound="false" serverbound="true">
-				<field name="clientId" type="long" />
-				<field name="pingId" type="long" />
-			</packet>
-
-			<packet name="serverHandshake" id="16" clientbound="true" serverbound="false">
-				<field name="clientAddress" type="address" />
-				<field name="mtuLength" type="ushort" />
-				<field name="systemAddresses" type="address[10]" />
-				<field name="pingId" type="long" />
-				<field name="serverId" type="long" />
-			</packet>
-
-			<packet name="clientHandshake" id="19" clientbound="false" serverbound="true">
-				<field name="clientAddress" type="address" />
-				<field name="systemAddresses" type="address[10]" />
-				<field name="pingId" type="long" />
-				<field name="clientId" type="long" />
-			</packet>
-
-			<packet name="clientCancelConnection" id="21" clientbound="false" serverbound="true" />
-
-		</section>
-
-		<section name="connected">
-
-			<packet name="ping" id="0" clientbound="false" serverbound="true">
-				<field name="time" type="long" />
-			</packet>
-
-			<packet name="pong" id="3" clientbound="true" serverbound="false">
-				<field name="time" type="long" />
-			</packet>
+		<section name="control">
 
 			<packet name="ack" id="192" clientbound="true" serverbound="true">
 				<field name="packets" type="acknowledge[]" />
@@ -144,7 +66,85 @@
 				<field name="encapsulation" type="encapsulation" />
 			</packet>
 
-			<packet name="mcpePacket" id="254" clientbound="true" serverbound="true">
+		</section>
+
+		<section name="unconnected">
+
+			<packet name="ping" id="1" clientbound="false" serverbound="true">
+				<field name="ping-id" type="long" />
+				<field name="magic" type="magic" />
+			</packet>
+
+			<packet name="pong" id="28" clientbound="true" serverbound="false">
+				<field name="ping-id" type="long" />
+				<field name="server-id" type="long" />
+				<field name="magic" type="magic" />
+				<field name="status" type="string" />
+			</packet>
+
+			<packet name="open-connection-request-1" id="5" clientbound="false" serverbound="true">
+				<field name="magic" type="magic" />
+				<field name="protocol" type="ubyte" />
+				<field name="mtu" type="bytes" />
+			</packet>
+
+			<packet name="open-connection-reply-1" id="6" clientbound="true" serverbound="false">
+				<field name="magic" type="magic" />
+				<field name="server-id" type="long" />
+				<field name="security" type="bool" />
+				<field name="mtu-length" type="ushort" />
+			</packet>
+
+			<packet name="open-connection-request-2" id="7" clientbound="false" serverbound="true">
+				<field name="magic" type="magic" />
+				<field name="serverAddress" type="address" />
+				<field name="mtu-length" type="ushort" />
+				<field name="client-id" type="long" />
+			</packet>
+
+			<packet name="open-connection-reply-2" id="8" clientbound="true" serverbound="false">
+				<field name="magic" type="magic" />
+				<field name="server-id" type="long" />
+				<field name="server-address" type="address" />
+				<field name="mtu-length" type="ushort" />
+				<field name="security" type="bool" />
+			</packet>
+
+		</section>
+
+		<section name="encapsulated">
+
+			<packet name="client-connect" id="9" clientbound="false" serverbound="true">
+				<field name="client-id" type="long" />
+				<field name="ping-id" type="long" />
+			</packet>
+
+			<packet name="server-handshake" id="16" clientbound="true" serverbound="false">
+				<field name="client-address" type="address" />
+				<field name="mtu-length" type="ushort" />
+				<field name="system-addresses" type="address[10]" />
+				<field name="ping-id" type="long" />
+				<field name="server-id" type="long" />
+			</packet>
+
+			<packet name="client-handshake" id="19" clientbound="false" serverbound="true">
+				<field name="client-address" type="address" />
+				<field name="system-addresses" type="address[10]" />
+				<field name="ping-id" type="long" />
+				<field name="client-id" type="long" />
+			</packet>
+
+			<packet name="client-cancel-connection" id="21" clientbound="false" serverbound="true" />
+
+			<packet name="ping" id="0" clientbound="false" serverbound="true">
+				<field name="time" type="long" />
+			</packet>
+
+			<packet name="pong" id="3" clientbound="true" serverbound="false">
+				<field name="time" type="long" />
+			</packet>
+
+			<packet name="mcpe" id="254" clientbound="true" serverbound="true">
 				<field name="packet" type="bytes" />
 			</packet>
 

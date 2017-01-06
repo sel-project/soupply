@@ -1,5 +1,6 @@
 module all;
 
+import std.algorithm : min;
 import std.conv : to;
 import std.file : dirEntries, SpanMode, read, isFile, _write = write;
 import std.json;
@@ -15,11 +16,33 @@ static import js;
 static import doc;
 static import json;
 
-alias File(T) = Tuple!(string, "software", size_t, "protocol", T[], "data");
+
+alias File(T) = Tuple!(string, "software", size_t, "protocol", T, "data");
+
 
 alias Attribute = Tuple!(string, "id", string, "name", float, "min", float, "max", float, "def");
 
-alias Attributes = File!Attribute;
+alias Attributes = File!(Attribute[]);
+
+
+alias Constant = Tuple!(string, "name", string, "value");
+
+alias Field = Tuple!(string, "name", string, "type", string, "condition", string, "endianness", string, "description", Constant[], "constants");
+
+alias Variant = Tuple!(string, "name", string, "value", string, "description", Field[], "fields");
+
+alias Packet = Tuple!(string, "name", size_t, "id", bool, "clientbound", bool, "serverbound", string, "description", Field[], "fields", string, "variantField", Variant[], "varians");
+
+alias Type = Tuple!(string, "name", string, "description", Field[], "fields");
+
+alias Section = Tuple!(string, "name", Packet[], "packets");
+
+alias Array = Tuple!(string, "name", string, "base", string, "length", string, "endianness");
+
+alias Protocol = Tuple!(string, "description", string, "id", string, "arrayLength", string[string], "endianness", Section[], "sections", Type[], "types", Array[], "arrays");
+
+alias Protocols = File!Protocol;
+
 
 void main(string[] args) {
 
@@ -55,14 +78,6 @@ void main(string[] args) {
 		}
 	}
 
-	// creative
-	JSONValue[string] creative;
-	foreach(string file ; dirEntries("../json/creative", SpanMode.breadth)) {
-		if(file.isFile && file.endsWith(".json")) {
-			creative[file.name!"json"] = parseJSON(cast(string)read(file)).object["items"];
-		}
-	}
-
 	// metadata
 	JSONValue[string] metadata;
 	foreach(string file ; dirEntries("../json/metadata", SpanMode.breadth)) {
@@ -75,10 +90,127 @@ void main(string[] args) {
 	JSONValue[string] particles;
 
 	// protocol
-	JSONValue[string] protocol;
+	JSONValue[string] p;
 	foreach(string file ; dirEntries("../json/protocol", SpanMode.breadth)) {
 		if(file.isFile && file.endsWith(".json")) {
-			protocol[file.name!"json"] = parseJSON(cast(string)read(file)).object;
+			p[file.name!"json"] = parseJSON(cast(string)read(file)).object;
+		}
+	}
+
+	Protocols[string] protocols;
+	foreach(string file ; dirEntries("../xml/protocol", SpanMode.breadth)) {
+		if(file.isFile && file.endsWith(".xml")) {
+			Protocols protocol;
+			string[string] aliases;
+			@property string convert(string type) {
+				auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
+				auto t = type[0..end];
+				auto a = t in aliases;
+				if(a) t = *a;
+				return t ~ type[end..$];
+			}
+			@property string text(Element element) {
+				return decode(strip((){
+					if(element.texts.length) {
+						return element.texts[0].to!string;
+					} else {
+						try {
+							return element.text;
+						} catch(DecodeException) {
+							return "";
+						}
+					}
+				}()));
+			}
+			foreach(element ; new Document(cast(string)read(file)).elements) {
+				switch(element.tag.name) {
+					case "software":
+						protocol.software = text(element);
+						break;
+					case "protocol":
+						protocol.protocol = to!size_t(text(element));
+						break;
+					case "description":
+						protocol.data.description = text(element);
+						break;
+					case "encoding":
+						protocol.data.id = element.tag.attr["id"];
+						protocol.data.arrayLength = element.tag.attr["arraylength"];
+						foreach(e ; element.elements) {
+							switch(e.tag.name) {
+								case "endianness":
+									with(e.tag) protocol.data.endianness[attr["type"].replace("-", "_")] = attr["value"].replace("-", "_");
+									break;
+								case "alias":
+									with(e.tag) aliases[attr["name"].replace("-", "_")] = attr["type"].replace("-", "_");
+									break;
+								case "type":
+									Type type;
+									type.name = e.tag.attr["name"].replace("-", "_");
+									type.description = text(e);
+									foreach(f ; e.elements) {
+										if(f.tag.name == "field") {
+											Field field;
+											with(f.tag) {
+												field.name = attr["name"].replace("-", "_");
+												field.type = convert(attr["type"].replace("-", "_"));
+												field.description = text(f);
+												if("endianness" in attr) field.endianness = attr["endianness"].replace("-", "_");
+												if("when" in attr) field.condition = attr["when"].replace("-", "_");
+											}
+											type.fields ~= field;
+										}
+									}
+									protocol.data.types ~= type;
+									break;
+								case "array":
+									with(e.tag) protocol.data.arrays ~= Array(attr["name"].replace("-", "_"), convert(attr["base"].replace("-", "_")), convert(attr["length"].replace("-", "_")), ("endianness" in attr ? attr["endianness"].replace("-", "_") : ""));
+									break;
+								default:
+									break;
+							}
+						}
+						break;
+					case "packets":
+						foreach(s ; element.elements) {
+							if(s.tag.name == "section") {
+								Section section;
+								section.name = s.tag.attr["name"].replace("-", "_");
+								foreach(pk ; s.elements) {
+									if(pk.tag.name == "packet") {
+										Packet packet;
+										packet.name = pk.tag.attr["name"].replace("-", "_");
+										packet.id = pk.tag.attr["id"].to!size_t;
+										packet.clientbound = pk.tag.attr["clientbound"].to!bool;
+										packet.serverbound = pk.tag.attr["serverbound"].to!bool;
+										packet.description = text(pk);
+										foreach(fv ; pk.elements) {
+											if(fv.tag.name == "field") {
+												Field field;
+												field.name = fv.tag.attr["name"].replace("-", "_");
+												field.type = convert(fv.tag.attr["type"].replace("-", "_"));
+												field.description = text(fv);
+												foreach(c ; fv.elements) {
+													if(c.tag.name == "constant") {
+														field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), c.tag.attr["value"]);
+													}
+												}
+												packet.fields ~= field;
+											} else if(fv.tag.name == "variants") {
+
+											}
+										}
+										section.packets ~= packet;
+									}
+								}
+								protocol.data.sections ~= section;
+							}
+						}
+					default:
+						break;
+				}
+			}
+			protocols[file.name!"xml"] = protocol;
 		}
 	}
 
@@ -89,15 +221,15 @@ void main(string[] args) {
 		"constants": JSONValue(constants),
 		"metadata": JSONValue(metadata),
 		"particles": JSONValue(particles),
-		"protocol": JSONValue(protocol),
+		"protocol": JSONValue(p),
 		"sounds": JSONValue(sounds),
 	];
 
 	d.d(attributes, jsons);
-	java.java(attributes, jsons);
+	java.java(attributes, protocols, jsons);
 	js.js(attributes, jsons);
 
-	doc.doc();
+	doc.doc(protocols);
 	json.json(attributes);
 
 }
@@ -136,6 +268,11 @@ void main(string[] args) {
 	return snaked.toLower;
 }
 
-void write(string file, string data) {
-	_write(file, "// This file has been automatically generated by sel-utils\n// https://github.com/sel-project/sel-utils\n" ~ data.strip ~ "\n");
+void write(string file, string data, string from="") {
+	_write(file, "/*\n * This file has been automatically generated by sel-utils and\n" ~
+		" * it's released under the GNU General Public License version 3.\n *\n" ~
+		" * Repository: https://github.com/sel-project/sel-utils\n" ~
+		" * License: https://github.com/sel-project/sel-utils/blob/master/LICENSE\n" ~
+		(from.length ? " * From: https://github.com/sel-project/sel-utils/blob/master/xml/" ~ from ~ ".xml\n" : "") ~
+		" */\n" ~ data.strip ~ "\n");
 }

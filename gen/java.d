@@ -1,5 +1,6 @@
 module java;
 
+import std.algorithm : canFind, min;
 import std.ascii : newline;
 import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
@@ -9,23 +10,26 @@ import std.string;
 
 import all;
 
-void java(Attributes[string] attributes, JSONValue[string] jsons) {
+void java(Attributes[string] attributes, Protocols[string] protocols, JSONValue[string] jsons) {
 
 	mkdirRecurse("../src/java/sul/utils");
 
+	enum defaultTypes = ["boolean", "byte", "short", "int", "long", "float", "double", "String", "UUID"];
+
 	enum string[string] defaultAliases = [
-		"ubyte": "short",
-		"ushort": "int",
-		"uint": "long",
+		"bool": "boolean",
+		"ubyte": "byte",
+		"ushort": "short",
+		"uint": "int",
 		"ulong": "long",
 		"string": "String",
 		"uuid": "UUID",
-		"remaining_bytes": "byte[]",
+		"bytes": "byte[]",
 		"triad": "int",
 		"varshort": "short",
-		"varushort": "int",
+		"varushort": "short",
 		"varint": "int",
-		"varuint": "long",
+		"varuint": "int",
 		"varlong": "long",
 		"varulong": "long"
 	];
@@ -35,59 +39,111 @@ void java(Attributes[string] attributes, JSONValue[string] jsons) {
 		game = toPascalCase(game);
 		string data = "package sul.attributes;\n\npublic enum " ~ game ~ " {\n\n";
 		foreach(attr ; attrs.data) {
-			//TODO convert to snake case
-			data ~= "\t" ~ toUpper(toSnakeCase(attr.id)) ~ "(\"" ~ attr.name ~ "\", " ~ attr.min.to!string ~ ", " ~ attr.max.to!string ~ ", " ~ attr.def.to!string ~ ");\n\n";
+			data ~= "\t" ~ toUpper(attr.id) ~ "(\"" ~ attr.name ~ "\", " ~ attr.min.to!string ~ ", " ~ attr.max.to!string ~ ", " ~ attr.def.to!string ~ ");\n\n";
 		}
-		data ~= `	public final String name;` ~ newline ~ `	public final float min, max, def;` ~ newline ~ newline;
-		data ~= `	` ~ game ~ `(String name, float min, float max, float def) {` ~ newline;
-		data ~= `		this.name = name;` ~ newline;
-		data ~= `		this.min = min;` ~ newline;
-		data ~= `		this.max = max;` ~ newline;
-		data ~= `		this.def = def;` ~ newline;
-		data ~= `	}` ~ newline ~ newline ~ `}` ~ newline;
+		data ~= "\tpublic final String name;\n\tpublic final float min, max, def;\n\n";
+		data ~= "\t" ~ game ~ "(String name, float min, float max, float def) {\n";
+		data ~= "\t\tthis.name = name;\n";
+		data ~= "\t\tthis.min = min;\n";
+		data ~= "\t\tthis.max = max;\n";
+		data ~= "\t\tthis.def = def;\n";
+		data ~= "\t}\n\n}\n";
 		if(!exists("../src/java/sul/attributes")) mkdir("../src/java/sul/attributes");
-		write("../src/java/sul/attributes/" ~ game ~ ".java", data);
+		write("../src/java/sul/attributes/" ~ game ~ ".java", data, "attributes/" ~ game);
 	}
 
-	// constants
-	foreach(string game, JSONValue constants; jsons["constants"]) {
-		string data = `package sul.constants;` ~ newline ~ newline ~
-			`final class ` ~ toPascalCase(game) ~ ` {` ~ newline ~ newline ~
-			`	private ` ~ toPascalCase(game) ~ `() {}` ~ newline ~ newline;
-		foreach(string name, JSONValue value; constants) {
-			JSONValue[] fields = null; // from protocol's
-			foreach(JSONValue category ; jsons["protocol"].object[game].object["packets"].object) {
-				foreach(string packet_name, JSONValue packet; category.object) {
-					if(packet_name == name) {
-						fields = packet.object["fields"].array;
-						break;
-					}
-				}
-			}
-			data ~= `	public final static class ` ~ toPascalCase(name) ~ ` {` ~ newline ~ newline;
-			foreach(string field, JSONValue v; value.object) {
-				data ~= `		public final static class ` ~ toCamelCase(field) ~ ` {` ~ newline ~ newline;
-				string type = "int";
-				if(fields !is null) {
-					foreach(packet_field ; fields) {
-						auto obj = packet_field.object;
-						if(obj["name"].str == field) {
-							type = obj["type"].str;
-							auto conv = type in defaultAliases;
-							if(conv) type = *conv;
-							break;
-						}
-					}
-				}
-				foreach(string var, JSONValue content; v) {
-					data ~= `			public final static ` ~ type ~ ` ` ~ toUpper(var) ~ ` = ` ~ content.toString() ~ `;` ~ newline;
-				}
-				data ~= newline ~ `		}` ~ newline ~ newline;
-			}
-			data ~= `	}` ~ newline ~ newline;
+	write("../src/java/sul/utils/Packet.java", q{
+package sul.utils;
+
+abstract class Packet {
+
+	abstract byte[] encode();
+
+	abstract void decode(byte[] buffer);
+
+}
+	});
+
+	// protocols
+	foreach(string game, Protocols prs; protocols) {
+		mkdirRecurse("../src/java/sul/protocol/" ~ game ~ "/types");
+		@property string convert(string type) {
+			auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
+			auto t = type[0..end];
+			auto a = t in defaultAliases;
+			if(a) t = *a;
+			if(!defaultTypes.canFind(t)) t = toPascalCase(t);
+			return t ~ type[end..$];
 		}
-		if(!exists("../src/java/sul/constants")) mkdir("../src/java/sul/constants");
-		write("../src/java/sul/constants/" ~ toPascalCase(game) ~ ".java", data ~ "}" ~ newline);
+		immutable id = convert(prs.data.id);
+		foreach(type ; prs.data.types) {
+			string data = "package sul.protocol." ~ game ~ ".types;\n\nimport java.util.UUID;\n\n";
+			if(type.description.length) data ~= javadoc("", type.description);
+			data ~= "final class " ~ toPascalCase(type.name) ~ " {\n\n";
+			foreach(i, field; type.fields) {
+				if(field.description.length) {
+					if(i != 0) data ~= "\n";
+					data ~= javadoc("\t", field.description);
+				}
+				data ~= "\tpublic " ~ convert(field.type) ~ " " ~ toCamelCase(field.name) ~ ";\n";
+			}
+			data ~= "\n}";
+			write("../src/java/sul/protocol/" ~ game ~ "/types/" ~ toPascalCase(type.name) ~ ".java", data, "protocol/" ~ game);
+		}
+		foreach(section ; prs.data.sections) {
+			immutable sectionName = section.name.replace("_", "");
+			mkdirRecurse("../src/java/sul/protocol/" ~ game ~ "/" ~ sectionName);
+			foreach(packet ; section.packets) {
+				string data = "package sul.protocol." ~ game ~ "." ~ sectionName ~ ";\n\nimport java.util.UUID;\n\nimport sul.protocol." ~ game ~ ".types.*;\nimport sul.utils.Packet;\n\n";
+				if(packet.description.length) {
+					data ~= javadoc("", packet.description);
+				}
+				data ~= "class " ~ toPascalCase(packet.name) ~ " : Packet {\n\n";
+				data ~= "\tpublic final static " ~ id ~ " ID = (" ~ id ~ ")" ~ to!string(packet.id) ~ ";\n\n";
+				data ~= "\tpublic final static boolean CLIENTBOUND = " ~ to!string(packet.clientbound) ~ ";\n";
+				data ~= "\tpublic final static boolean SERVERBOUND = " ~ to!string(packet.serverbound) ~ ";\n\n";
+				foreach(field ; packet.fields) {
+					if(field.constants.length) {
+						immutable fieldType = convert(field.type);
+						data ~= "\t// " ~ toCamelCase(field.name) ~ "\n";
+						foreach(constant ; field.constants) {
+							data ~= "\tpublic final static " ~ fieldType ~ " " ~ toUpper(constant.name) ~ " = (" ~ fieldType ~ ")" ~ constant.value ~ ";\n";
+						}
+						data ~= "\n";
+					}
+				}
+				foreach(i, field; packet.fields) {
+					if(field.description.length) {
+						if(i != 0) data ~= "\n";
+						data ~= javadoc("\t", field.description);
+					}
+					data ~= "\tpublic " ~ convert(field.type) ~ " " ~ toCamelCase(field.name) ~ ";\n";
+				}
+				data ~= "\n\t@Override\n\tpublic byte[] encode() {\n";
+
+				data ~= "\t}\n";
+				data ~= "\n\t@Override\n\tpublic void decode(byte[] buffer) {\n";
+
+				data ~= "\t}\n";
+				data ~= "\n}";
+				write("../src/java/sul/protocol/" ~ game ~ "/" ~ sectionName ~ "/" ~ toPascalCase(packet.name) ~ ".java", data, "protocol/" ~ game);
+			}
+		}
 	}
 
+}
+
+string javadoc(string space, string description) {
+	return space ~ "/**\n" ~ javadocImpl(space, description.split(" ")) ~ space ~ " */\n";
+}
+
+string javadocImpl(string space, string[] words) {
+	size_t length;
+	string[] ret;
+	while(length < 80 && words.length) {
+		ret ~= words[0];
+		length += words[0].length + 1;
+		words = words[1..$];
+	}
+	return space ~ " * " ~ ret.join(" ") ~ "\n" ~ (words.length ? javadocImpl(space, words) : "");
 }

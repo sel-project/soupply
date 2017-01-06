@@ -10,11 +10,11 @@
 		Communication between hub and nodes.
 	</description>
 
-	<encoding id="ubyte" arrayLength="varuint">
+	<encoding id="ubyte" arraylength="varuint">
 
-		<endianness type="*" value="bigEndian" />
+		<endianness type="*" value="big-endian" />
 
-		<alias name="hubId" type="varuint" />
+		<alias name="hub-id" type="varuint" />
 
 		<type name="plugin">
 			<field name="name" type="string" />
@@ -22,8 +22,13 @@
 		</type>
 
 		<type name="address">
-			<field name="bytes" type="ubyte[]" />
-			<field name="port" type="ushort" />
+			Internet protocol address. Could be either version 4 and 6.
+			<field name="bytes" type="ubyte[]">
+				Bytes of the address. The length may be 4 (for ipv4 addresses) or 16 (for ipv6 addresses). The byte order is always big-endian (network order).
+			</field>
+			<field name="port" type="ushort">
+				Port of the address.
+			</field>
 		</type>
 
 		<type name="game">
@@ -57,28 +62,28 @@
 				<field name="name" type="string">
 					Name of the node that will be validated by the hub.
 				</field>
-				<field name="mainNode" type="bool">
+				<field name="main-node" type="bool">
 					Indicates whether the node accepts clients when they first connect to the hub or exclusively when they are manually transferred.
 				</field>
 			</packet>
 
-			<packet name="connectionResponse" id="1" clientbound="true" serverbound="false">
-				<field name="protocolAccepted" type="bool" />
-				<field name="nameAccepted" type="bool" />
+			<packet name="connection-response" id="1" clientbound="true" serverbound="false">
+				<field name="protocol-accepted" type="bool" />
+				<field name="name-accepted" type="bool" />
 			</packet>
 
 			<packet name="info" id="2" clientbound="true" serverbound="false">
-				<field name="serverId" type="long" />
-				<field name="onlineMode" type="bool" />
-				<field name="displayName" type="string" />
+				<field name="server-id" type="long" />
+				<field name="online-mode" type="bool" />
+				<field name="display-name" type="string" />
 				<field name="games" type="game[]" />
 				<field name="online" type="varuint" />
 				<field name="max" type="varuint" />
 				<field name="language" type="string" />
-				<field name="acceptedLanguages" type="string[]" />
+				<field name="accepted-languages" type="string[]" />
 				<field name="nodes" type="string[]" />
-				<field name="socialJson" type="string" />
-				<field name="additionalJson" type="string" />
+				<field name="social-json" type="string" />
+				<field name="additional-json" type="string" />
 			</packet>
 
 			<packet name="ready" id="3" clientbound="false" serverbound="true">
@@ -102,7 +107,7 @@
 				<field name="node" type="string" />
 			</packet>
 
-			<packet name="resourcesUsage" id="6" clientbound="true" serverbound="false">
+			<packet name="resources-usage" id="6" clientbound="true" serverbound="false">
 				<field name="tps" type="float" />
 				<field name="ram" type="varulong" />
 				<field name="cpu" type="float" />
@@ -116,17 +121,17 @@
 				<field name="messages" type="log[]" />
 			</packet>
 
-			<packet name="remoteCommand" id="8" clientbound="true" serverbound="false">
+			<packet name="remote-command" id="8" clientbound="true" serverbound="false">
 				<field name="origin" type="ubyte">
 					<constant name="hub" value="0" />
-					<constant name="externalConsole" value="1" />
+					<constant name="external-console" value="1" />
 					<constant name="rcon" value="2" />
 				</field>
 				<field name="sender" type="address" />
 				<field name="command" type="string" />
 			</packet>
 
-			<packet name="update_list" id="9" clientbound="false" serverbound="true">
+			<packet name="update-list" id="9" clientbound="false" serverbound="true">
 				<field name="list" type="ubyte">
 					<constant name="whitelist" value="0" />
 					<constant name="blacklist" value="1" />
@@ -137,13 +142,13 @@
 				</field>
 				<field name="type" type="ubyte" />
 				<variants field="type">
-					<variant name="byHubId" value="0">
-						<field name="hubId" type="hubId" />
+					<variant name="by-hub-id" value="0">
+						<field name="hub-id" type="hub-id" />
 					</variant>
-					<variant name="byName" value="1">
+					<variant name="by-name" value="1">
 						<field name="username" type="string" />
 					</variant>
-					<variant name="bySuuid" value="2">
+					<variant name="by-suuid" value="2">
 						<field name="game" type="ubyte" />
 						<field name="uuid" type="uuid" />
 					</variant>
@@ -155,72 +160,72 @@
 		<section name="player">
 
 			<packet name="add" id="10" clientbound="true" serverbound="false">
-				<field name="hubId" type="hubId" />
+				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="ubyte">
-					<constant name="firstJoin" value="0" />
+					<constant name="first-join" value="0" />
 					<constant name="transferred" value="1" />
-					<constant name="forciblyTransferred" value="2" />
+					<constant name="forcibly-transferred" value="2" />
 				</field>
 				<field name="protocol" type="varuint" />
 				<field name="username" type="string" />
-				<field name="displayName" type=" string" />
+				<field name="display-name" type="string" />
 				<field name="address" type="address" />
 				<field name="game" type="ubyte" />
 				<field name="uuid" type="uuid" />
 				<field name="skin" type="skin" />
 				<field name="latency" type="varuint" />
-				<field name="packetLoss" type="float" />
+				<field name="packet-loss" type="float" />
 				<field name="language" type="string" />
 			</packet>
 
 			<packet name="remove" id="11" clientbound="true" serverbound="false">
-				<field name="hubId" type="hubId" />
+				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="ubyte">
 					<constant name="left" value="0" />
-					<constant name="timedOut" value="1" />
+					<constant name="timed-out" value="1" />
 					<constant name="kicked" value="2" />
 					<constant name="transferred" value="3" />
 				</field>
 			</packet>
 
 			<packet name="kick" id="12" clientbound="false" serverbound="true">
-				<field name="hubId" type="hubId" />
+				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="string" />
 				<field name="translation" type="bool" />
 			</packet>
 
 			<packet name="transfer" id="13" clientbound="false" serverbound="true">
-				<field name="hubId" type="hubId" />
+				<field name="hub-id" type="hub-id" />
 				<field name="node" type="string" />
 			</packet>
 
-			<packet name="updateLanguage" id="14" clientbound="false" serverbound="true">
-				<field name="hubId" type="hubId" />
+			<packet name="update-language" id="14" clientbound="false" serverbound="true">
+				<field name="hub-id" type="hub-id" />
 				<field name="language" type="string" />
 			</packet>
 
-			<packet name="updateDisplayName" id="15" clientbound="false" serverbound="true">
-				<field name="hubId" type="hubId" />
-				<field name="displayName" type="string" />
+			<packet name="update-display-name" id="15" clientbound="false" serverbound="true">
+				<field name="hub-id" type="hub-id" />
+				<field name="display-name" type="string" />
 			</packet>
 
-			<packet name="updateLatency" id="16" clientbound="true" serverbound="false">
-				<field name="hubId" type="hubId" />
+			<packet name="update-latency" id="16" clientbound="true" serverbound="false">
+				<field name="hub-id" type="hub-id" />
 				<field name="latency" type="varuint" />
 			</packet>
 
-			<packet name="updatePacketLoss" id="17" clientbound="true" serverbound="false">
-				<field name="hubId" type="hubId" />
-				<field name="packetLoss" type="float" />
+			<packet name="update-packet-loss" id="17" clientbound="true" serverbound="false">
+				<field name="hub-id" type="hub-id" />
+				<field name="packet-loss" type="float" />
 			</packet>
 
-			<packet name="gamePacket" id="18" clientbound="true" serverbound="true">
-				<field name="hubId" type="hubId" />
+			<packet name="game-packet" id="18" clientbound="true" serverbound="true">
+				<field name="hub-id" type="hub-id" />
 				<field name="packet" type="bytes" />
 			</packet>
 
-			<packet name="orderedGamePacket" id="19" clientbound="false" serverbound="true">
-				<field name="hubId" type="hubId" />
+			<packet name="ordered-game-packet" id="19" clientbound="false" serverbound="true">
+				<field name="hub-id" type="hub-id" />
 				<field name="order" type="varuint" />
 				<field name="packet" type="bytes" />
 			</packet>

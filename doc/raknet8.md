@@ -1,219 +1,201 @@
 # Raknet 8
 
-Protocol used by SEL to communicate with external sources using TCP or web sockets.
-
-## Encoding
-
---------
+Minecraft: Pocket Edition's networking protocol.
 
 ## Packets
 
 Section | Packets
 ---|:---:
-[Status](#status) | 2
-[Login](#login) | 8
-[Connected](#connected) | 6
+[Control](#control) | 3
+[Unconnected](#unconnected) | 6
+[Encapsulated](#encapsulated) | 7
 
-### Status
+### Control
 
-Name | DEC | HEX | Clientbound | Serverbound
+Packet | DEC | HEX | Clientbound | Serverbound
+---|:---:|:---:|:---:|:---:
+[Ack](#ack) | 192 | C0 | ✓ | ✓
+[Nack](#nack) | 160 | A0 | ✓ | ✓
+[Encapsulated](#encapsulated) | 132 | 84 | ✓ | ✓
+
+#### Ack
+
+Field | Type
+---|---
+packets | [acknowledge](#acknowledge)[]
+
+#### Nack
+
+Field | Type
+---|---
+packets | [acknowledge](#acknowledge)[]
+
+#### Encapsulated
+
+Field | Type
+---|---
+count | [triad](#triad)
+encapsulation | [encapsulation](#encapsulation)
+
+### Unconnected
+
+Packet | DEC | HEX | Clientbound | Serverbound
 ---|:---:|:---:|:---:|:---:
 [Ping](#ping) | 1 | 1 |  | ✓
 [Pong](#pong) | 28 | 1C | ✓ | 
-
-#### Ping
-
- | | | 
----|---|---
-pingId | long | 
-magic | ubyte[16] | 
-
-#### Pong
-
- | | | 
----|---|---
-pingId | long | 
-serverId | long | 
-magic | ubyte[16] | 
-status | string | 
-
-
-
---
-
-### Login
-
-Name | DEC | HEX | Clientbound | Serverbound
----|:---:|:---:|:---:|:---:
 [Open Connection Request 1](#open-connection-request-1) | 5 | 5 |  | ✓
 [Open Connection Reply 1](#open-connection-reply-1) | 6 | 6 | ✓ | 
 [Open Connection Request 2](#open-connection-request-2) | 7 | 7 |  | ✓
 [Open Connection Reply 2](#open-connection-reply-2) | 8 | 8 | ✓ | 
+
+#### Ping
+
+Field | Type
+---|---
+pingId | long
+magic | ubyte[16]
+
+#### Pong
+
+Field | Type
+---|---
+pingId | long
+serverId | long
+magic | ubyte[16]
+status | string
+
+#### Open Connection Request 1
+
+Field | Type
+---|---
+magic | ubyte[16]
+protocol | ubyte
+mtu | bytes
+
+#### Open Connection Reply 1
+
+Field | Type
+---|---
+magic | ubyte[16]
+serverId | long
+security | bool
+mtuLength | ushort
+
+#### Open Connection Request 2
+
+Field | Type
+---|---
+magic | ubyte[16]
+serveraddress | [address](#address)
+mtuLength | ushort
+clientId | long
+
+#### Open Connection Reply 2
+
+Field | Type
+---|---
+magic | ubyte[16]
+serverId | long
+serverAddress | [address](#address)
+mtuLength | ushort
+security | bool
+
+### Encapsulated
+
+Packet | DEC | HEX | Clientbound | Serverbound
+---|:---:|:---:|:---:|:---:
 [Client Connect](#client-connect) | 9 | 9 |  | ✓
 [Server Handshake](#server-handshake) | 16 | 10 | ✓ | 
 [Client Handshake](#client-handshake) | 19 | 13 |  | ✓
 [Client Cancel Connection](#client-cancel-connection) | 21 | 15 |  | ✓
-
-#### Open Connection Request 1
-
- | | | 
----|---|---
-magic | ubyte[16] | 
-protocol | ubyte | 
-mtu | [bytes](#bytes) | 
-
-#### Open Connection Reply 1
-
- | | | 
----|---|---
-magic | ubyte[16] | 
-serverId | long | 
-security | bool | 
-mtuLength | ushort | 
-
-#### Open Connection Request 2
-
- | | | 
----|---|---
-magic | ubyte[16] | 
-serverAddress | [address](#address) | 
-mtuLength | ushort | 
-clientId | long | 
-
-#### Open Connection Reply 2
-
- | | | 
----|---|---
-magic | ubyte[16] | 
-serverId | long | 
-serverAddress | [address](#address) | 
-mtuLength | ushort | 
-security | bool | 
+[Ping](#ping) | 0 | 0 |  | ✓
+[Pong](#pong) | 3 | 3 | ✓ | 
+[Mcpe](#mcpe) | 254 | FE | ✓ | ✓
 
 #### Client Connect
 
- | | | 
----|---|---
-clientId | long | 
-pingId | long | 
+Field | Type
+---|---
+clientId | long
+pingId | long
 
 #### Server Handshake
 
- | | | 
----|---|---
-clientAddress | [address](#address) | 
-mtuLength | ushort | 
-systemAddresses | [address](#address)[10] | 
-pingId | long | 
-serverId | long | 
+Field | Type
+---|---
+clientAddress | [address](#address)
+mtuLength | ushort
+systemAddresses | [address](#address)[10]
+pingId | long
+serverId | long
 
 #### Client Handshake
 
- | | | 
----|---|---
-clientAddress | [address](#address) | 
-systemAddresses | [address](#address)[10] | 
-pingId | long | 
-clientId | long | 
+Field | Type
+---|---
+clientAddress | [address](#address)
+systemAddresses | [address](#address)[10]
+pingId | long
+clientId | long
 
 #### Client Cancel Connection
 
-
-
---
-
-### Connected
-
-Name | DEC | HEX | Clientbound | Serverbound
----|:---:|:---:|:---:|:---:
-[Ping](#ping) | 0 | 0 |  | ✓
-[Pong](#pong) | 3 | 3 | ✓ | 
-[Ack](#ack) | 192 | C0 | ✓ | ✓
-[Nack](#nack) | 160 | A0 | ✓ | ✓
-[Encapsulated](#encapsulated) | 132 | 84 | ✓ | ✓
-[Mcpe Packet](#mcpe-packet) | 254 | FE | ✓ | ✓
-
 #### Ping
 
- | | | 
----|---|---
-time | long | 
+Field | Type
+---|---
+time | long
 
 #### Pong
 
- | | | 
----|---|---
-time | long | 
+Field | Type
+---|---
+time | long
 
-#### Ack
+#### Mcpe
 
- | | | 
----|---|---
-packets | [acknowledge](#acknowledge)[] | 
-
-#### Nack
-
- | | | 
----|---|---
-packets | [acknowledge](#acknowledge)[] | 
-
-#### Encapsulated
-
- | | | 
----|---|---
-count | [triad](#triad) | 
-encapsulation | [encapsulation](#encapsulation) | 
-
-#### Mcpe Packet
-
- | | | 
----|---|---
-packet | [bytes](#bytes) | 
-
-
-
---
-
-
+Field | Type
+---|---
+packet | bytes
 
 --------
 
-## Types:
+### Types
 
 #### Address
 
- | | | 
+Field | Type | Condition
 ---|---|---
-Type | ubyte | 
-Ipv 4 | ubyte[4] | 
-Ipv 6 | ubyte[16] | 
-Port | ushort | 
+type | ubyte | 
+ipv4 | ubyte[4] | type==4
+ipv6 | ubyte[16] | type==6
+port | ushort | 
 
 #### Acknowledge
 
- | | | 
+Field | Type | Condition
 ---|---|---
-Unique | bool | 
-First | [triad](#triad) | 
-Last | [triad](#triad) | 
+unique | bool | 
+first | [triad](#triad) | 
+last | [triad](#triad) | unique==false
 
 #### Encapsulation
 
- | | | 
+Field | Type | Condition
 ---|---|---
-Info | ubyte | 
-Length | ushort | 
-Message Index | [triad](#triad) | 
-Order Index | [triad](#triad) | 
-Order Channel | ubyte | 
-Split | [split](#split) | 
-Payload | [bytes](#bytes) | 
+info | ubyte | 
+length | ushort | 
+messageIndex | [triad](#triad) | (info&0x7f)>=64
+orderIndex | [triad](#triad) | (info&0x7f)>=96
+orderChannel | ubyte | (info&0x7f)>=96
+split | [split](#split) | (info&0x10)!=0
+payload | bytes | 
 
 #### Split
 
- | | | 
----|---|---
-Count | uint | 
-Id | ushort | 
-Order | uint | 
+Field | Type
+---|---
+count | uint
+id | ushort
+order | uint
 

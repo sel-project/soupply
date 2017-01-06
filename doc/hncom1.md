@@ -2,10 +2,6 @@
 
 Communication between hub and nodes.
 
-## Encoding
-
---------
-
 ## Packets
 
 Section | Packets
@@ -17,7 +13,7 @@ Section | Packets
 
 ### Login
 
-Name | DEC | HEX | Clientbound | Serverbound
+Packet | DEC | HEX | Clientbound | Serverbound
 ---|:---:|:---:|:---:|:---:
 [Connection](#connection) | 0 | 0 |  | ✓
 [Connection Response](#connection-response) | 1 | 1 | ✓ | 
@@ -26,48 +22,44 @@ Name | DEC | HEX | Clientbound | Serverbound
 
 #### Connection
 
- | | | 
+Field | Type | Description
 ---|---|---
-protocol | varuint | Version of the protocol used by the client that must match the hub&apos;s one
+protocol | varuint | Version of the protocol used by the client that must match the hub's one
 name | string | Name of the node that will be validated by the hub.
 mainNode | bool | Indicates whether the node accepts clients when they first connect to the hub or exclusively when they are manually transferred.
 
 #### Connection Response
 
- | | | 
----|---|---
-protocolAccepted | bool | 
-nameAccepted | bool | 
+Field | Type
+---|---
+protocolAccepted | bool
+nameAccepted | bool
 
 #### Info
 
- | | | 
----|---|---
-serverId | long | 
-onlineMode | bool | 
-displayName | string | 
-games | [game](#game)[] | 
-online | varuint | 
-max | varuint | 
-language | string | 
-acceptedLanguages | string[] | 
-nodes | string[] | 
-socialJson | string | 
-additionalJson | string | 
+Field | Type
+---|---
+serverId | long
+onlineMode | bool
+displayName | string
+games | [game](#game)[]
+online | varuint
+max | varuint
+language | string
+acceptedLanguages | string[]
+nodes | string[]
+socialJson | string
+additionalJson | string
 
 #### Ready
 
- | | | 
----|---|---
-plugins | [plugin](#plugin)[] | 
-
-
-
---
+Field | Type
+---|---
+plugins | [plugin](#plugin)[]
 
 ### Status
 
-Name | DEC | HEX | Clientbound | Serverbound
+Packet | DEC | HEX | Clientbound | Serverbound
 ---|:---:|:---:|:---:|:---:
 [Players](#players) | 4 | 4 | ✓ | 
 [Nodes](#nodes) | 5 | 5 | ✓ | 
@@ -75,102 +67,59 @@ Name | DEC | HEX | Clientbound | Serverbound
 
 #### Players
 
- | | | 
----|---|---
-online | varuint | 
-max | varuint | 
+Field | Type
+---|---
+online | varuint
+max | varuint
 
 #### Nodes
 
- | | | 
----|---|---
-action | ubyte | 
-node | string | 
-
-##### Constants:
-
-* Action
-
-	* Add: 0
-	* Remove: 1
-
+Field | Type
+---|---
+action | ubyte
+node | string
 
 #### Resources Usage
 
- | | | 
----|---|---
-tps | float | 
-ram | varulong | 
-cpu | float | 
-
-
-
---
+Field | Type
+---|---
+tps | float
+ram | varulong
+cpu | float
 
 ### Generic
 
-Name | DEC | HEX | Clientbound | Serverbound
+Packet | DEC | HEX | Clientbound | Serverbound
 ---|:---:|:---:|:---:|:---:
 [Logs](#logs) | 7 | 7 |  | ✓
 [Remote Command](#remote-command) | 8 | 8 | ✓ | 
-[Update_list](#update_list) | 9 | 9 |  | ✓
+[Update List](#update-list) | 9 | 9 |  | ✓
 
 #### Logs
 
- | | | 
----|---|---
-messages | [log](#log)[] | 
+Field | Type
+---|---
+messages | [log](#log)[]
 
 #### Remote Command
 
- | | | 
----|---|---
-origin | ubyte | 
-sender | [address](#address) | 
-command | string | 
+Field | Type
+---|---
+origin | ubyte
+sender | [address](#address)
+command | string
 
-##### Constants:
+#### Update List
 
-* Origin
-
-	* Hub: 0
-	* External Console: 1
-	* Rcon: 2
-
-
-#### Update_list
-
- | | | 
----|---|---
-list | ubyte | 
-action | ubyte | 
-type | ubyte | 
-
-##### Constants:
-
-* List
-
-	* Whitelist: 0
-	* Blacklist: 1
-* Action
-
-	* Add: 0
-	* Remove: 1
-
-
-##### Variants:
-
-**Field:** type
-
-
-
-
-
---
+Field | Type
+---|---
+list | ubyte
+action | ubyte
+type | ubyte
 
 ### Player
 
-Name | DEC | HEX | Clientbound | Serverbound
+Packet | DEC | HEX | Clientbound | Serverbound
 ---|:---:|:---:|:---:|:---:
 [Add](#add) | 10 | A | ✓ | 
 [Remove](#remove) | 11 | B | ✓ | 
@@ -185,150 +134,127 @@ Name | DEC | HEX | Clientbound | Serverbound
 
 #### Add
 
- | | | 
----|---|---
-hubId | varuint | 
-reason | ubyte | 
-protocol | varuint | 
-username | string | 
-displayName | [ string](# string) | 
-address | [address](#address) | 
-game | ubyte | 
-uuid | uuid | 
-skin | [skin](#skin) | 
-latency | varuint | 
-packetLoss | float | 
-language | string | 
-
-##### Constants:
-
-* Reason
-
-	* First Join: 0
-	* Transferred: 1
-	* Forcibly Transferred: 2
-
+Field | Type
+---|---
+hubId | varuint
+reason | ubyte
+protocol | varuint
+username | string
+displayName | string
+address | [address](#address)
+game | ubyte
+uuid | uuid
+skin | [skin](#skin)
+latency | varuint
+packetLoss | float
+language | string
 
 #### Remove
 
- | | | 
----|---|---
-hubId | varuint | 
-reason | ubyte | 
-
-##### Constants:
-
-* Reason
-
-	* Left: 0
-	* Timed Out: 1
-	* Kicked: 2
-	* Transferred: 3
-
+Field | Type
+---|---
+hubId | varuint
+reason | ubyte
 
 #### Kick
 
- | | | 
----|---|---
-hubId | varuint | 
-reason | string | 
-translation | bool | 
+Field | Type
+---|---
+hubId | varuint
+reason | string
+translation | bool
 
 #### Transfer
 
- | | | 
----|---|---
-hubId | varuint | 
-node | string | 
+Field | Type
+---|---
+hubId | varuint
+node | string
 
 #### Update Language
 
- | | | 
----|---|---
-hubId | varuint | 
-language | string | 
+Field | Type
+---|---
+hubId | varuint
+language | string
 
 #### Update Display Name
 
- | | | 
----|---|---
-hubId | varuint | 
-displayName | string | 
+Field | Type
+---|---
+hubId | varuint
+displayName | string
 
 #### Update Latency
 
- | | | 
----|---|---
-hubId | varuint | 
-latency | varuint | 
+Field | Type
+---|---
+hubId | varuint
+latency | varuint
 
 #### Update Packet Loss
 
- | | | 
----|---|---
-hubId | varuint | 
-packetLoss | float | 
+Field | Type
+---|---
+hubId | varuint
+packetLoss | float
 
 #### Game Packet
 
- | | | 
----|---|---
-hubId | varuint | 
-packet | [bytes](#bytes) | 
+Field | Type
+---|---
+hubId | varuint
+packet | bytes
 
 #### Ordered Game Packet
 
- | | | 
----|---|---
-hubId | varuint | 
-order | varuint | 
-packet | [bytes](#bytes) | 
-
-
-
---
-
-
+Field | Type
+---|---
+hubId | varuint
+order | varuint
+packet | bytes
 
 --------
 
-## Types:
+### Types
 
 #### Plugin
 
- | | | 
----|---|---
-Name | string | 
-Version | string | 
+Field | Type
+---|---
+name | string
+version | string
 
 #### Address
 
- | | | 
+Internet protocol address. Could be either version 4 and 6.
+
+Field | Type | Description
 ---|---|---
-Bytes | ubyte[] | 
-Port | ushort | 
+bytes | ubyte[] | Bytes of the address. The length may be 4 (for ipv4 addresses) or 16 (for ipv6 addresses). The byte order is always big-endian (network order).
+port | ushort | Port of the address.
 
 #### Game
 
- | | | 
----|---|---
-Type | ubyte | 
-Protocols | uint[] | 
-Motd | string | 
-Port | ushort | 
+Field | Type
+---|---
+type | ubyte
+protocols | uint[]
+motd | string
+port | ushort
 
 #### Skin
 
- | | | 
----|---|---
-Name | string | 
-Data | ubyte[] | 
+Field | Type
+---|---
+name | string
+data | ubyte[]
 
 #### Log
 
- | | | 
----|---|---
-Timestamp | ulong | 
-Logger | string | 
-Message | string | 
+Field | Type
+---|---
+timestamp | ulong
+logger | string
+message | string
 

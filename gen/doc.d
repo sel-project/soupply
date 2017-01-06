@@ -2,137 +2,82 @@ module doc;
 
 import std.algorithm : min, canFind;
 import std.conv : to;
-import std.file;
+static import std.file;
 import std.xml;
 import std.path : dirSeparator;
 import std.string;
 
 import std.stdio : writeln;
 
-void doc() {
+import all;
 
-	mkdirRecurse("../doc");
+void doc(Protocols[string] protocols) {
 
-	enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "string", "varshort", "varushort", "varint", "varuint", "varlong", "varulong", "uuid"];
+	std.file.mkdirRecurse("../doc");
 
-	string[string] aliases;
+	enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "string", "varshort", "varushort", "varint", "varuint", "varlong", "varulong", "uuid", "bytes"];
 
 	@property string convert(string type) {
 		auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
 		immutable t = type[0..end];
 		if(defaultTypes.canFind(t)) return type;
-		auto a = t in aliases;
-		if(a) return *a;
-		else return "[" ~ t ~ "](#" ~ t.toLower ~ ")" ~ type[end..$];
+		else return "[" ~ t ~ "](#" ~ toSnakeCase(t).replace("-", "_") ~ ")" ~ type[end..$];
 	}
 
 	// protocol
-	foreach(string file ; dirEntries("../xml/protocol", SpanMode.breadth)) {
-		if(file.isFile && file.endsWith(".xml")) {
-			immutable name = file.name;
-			string data;
-			string types;
-			foreach(element ; new Document(cast(string)read(file)).elements) {
-				switch(element.tag.name) {
-					case "software":
-						data ~= "# " ~ element.text.strip ~ " ";
-						break;
-					case "protocol":
-						data ~= element.text.strip ~ "\n\n";
-						break;
-					case "description":
-						data ~= element.text.strip ~ "\n\n";
-						break;
-					case "encoding":
-						data ~= "## Encoding\n\n";
-						foreach(enc ; element.elements) {
-							switch(enc.tag.name) {
-								case "endianness":break;
-								case "alias":
-									with(enc.tag) aliases[attr["name"]] = attr["type"];
-									break;
-								case "type":
-									types ~= "#### " ~ enc.tag.attr["name"].pretty ~ "\n\n";
-									types ~= " | | | \n---|---|---\n";
-									foreach(field ; enc.elements) {
-										if(field.tag.name == "field") {
-											types ~= field.tag.attr["name"].pretty ~ " | " ~ convert(field.tag.attr["type"]) ~ " | ";
-											if(field.texts.length) types ~= field.texts[0].to!string.strip.replace("|", "\\|");
-											types ~= "\n";
-										}
-									}
-									types ~= "\n";
-									break;
-								default:
-									break;
-							}
-						}
-						data ~= "--------\n\n";
-						break;
-					case "packets":
-						data ~= "## Packets\n\n";
-						data ~= "Section | Packets\n---|:---:\n";
-						string sdata;
-						foreach(section ; element.elements) {
-							immutable sn = section.tag.attr["name"].pretty;
-							data ~= "[" ~ sn ~ "](#" ~ sn.toLower.replace(" ", "-") ~ ") | " ~ to!string(section.elements.length) ~ "\n";
-							sdata ~= "### " ~ sn ~ "\n\n";
-							sdata ~= "Name | DEC | HEX | Clientbound | Serverbound\n---|:---:|:---:|:---:|:---:\n";
-							string packets = "";
-							foreach(packet ; section.elements) {
-								immutable packetName = packet.tag.attr["name"].pretty;
-								with(packet.tag) sdata ~= "[" ~ packetName ~ "](#" ~ packetName.toLower.replace(" ", "-") ~ ") | " ~ attr["id"] ~ " | " ~ attr["id"].to!size_t.to!string(16) ~ " | " ~ (attr["clientbound"] == "true" ? "✓" : "") ~ " | " ~ (attr["serverbound"] == "true" ? "✓" : "") ~ "\n";
-								packets ~= "#### " ~ packetName ~ "\n\n";
-								string fields, constants, variants;
-								foreach(field ; packet.elements) {
-									switch(field.tag.name) {
-										case "description":
-											packets ~= field.text.strip ~ "\n\n";
-											break;
-										case "field":
-											fields ~= field.tag.attr["name"] ~ " | " ~ convert(field.tag.attr["type"]) ~ " | ";
-											if(field.texts.length) fields ~= field.texts[0].to!string.strip.replace("|", "\\|");
-											if(field.elements.length) {
-												constants ~= "* " ~ field.tag.attr["name"].pretty ~ "\n\n";
-												foreach(constant ; field.elements) {
-													if(constant.tag.name == "constant") {
-														with(constant.tag) constants ~= "\t* " ~ attr["name"].pretty ~ ": " ~ attr["value"] ~ "\n";
-													}
-												}
-											}
-											fields ~= "\n";
-											break;
-										case "variants":
-											variants ~= "##### Variants:\n\n";
-											variants ~= "**Field:** " ~ field.tag.attr["field"] ~ "\n\n";
-
-											variants ~= "\n\n";
-											break;
-										default:
-											break;
-									}
-								}
-								if(fields.length) packets ~= " | | | \n---|---|---\n" ~ fields ~ "\n";
-								if(constants.length) packets ~= "##### Constants:\n\n" ~ constants ~ "\n\n";
-								if(variants.length) packets ~= variants;
-							}
-							sdata ~= "\n" ~ packets ~ "\n\n--\n\n";
-						}
-						data ~= "\n" ~ sdata;
-						break;
-					default:
-						break;
+	foreach(string game, Protocols ptrs; protocols) {
+		string data = "# " ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "\n\n";
+		if(ptrs.data.description.length) data ~= ptrs.data.description ~ "\n\n";
+		// fields (generic)
+		void writeFields(Field[] fields) {
+			if(fields.length) {
+				bool condition, endianness, description;
+				foreach(field ; fields) {
+					condition |= field.condition.length != 0;
+					endianness |= field.endianness.length != 0;
+					description |= field.description.length != 0;
 				}
+				data ~= "Field | Type" ~ (condition ? " | Condition" : "") ~ (endianness ? " | Endianness" : "") ~ (description ? " | Description" : "") ~ "\n";
+				data ~= "---|---" ~ (condition ? "|---" : "") ~ (endianness ? "|---" : "") ~ (description ? "|---" : "") ~ "\n";
+				foreach(field ; fields) {
+					data ~= toCamelCase(field.name) ~ " | " ~ convert(toCamelCase(field.type)) ~ (condition ? " | " ~ toCamelCase(field.condition) : "") ~ (endianness ? field.endianness.replace("-", " ") : "") ~ (description ? " | " ~ field.description : "") ~ "\n";
+				}
+				data ~= "\n";
 			}
-			if(types.length) data ~= "\n\n--------\n\n## Types:\n\n" ~ types;
-			write("../doc/" ~ name ~ ".md", data);
 		}
+		//TODO encoding
+		// packets
+		data ~= "## Packets\n\nSection | Packets\n---|:---:\n";
+		foreach(section ; ptrs.data.sections) {
+			data ~= "[" ~ pretty(toCamelCase(section.name)) ~ "](#" ~ section.name.replace("_", "-") ~ ") | " ~ to!string(section.packets.length) ~ "\n";
+		}
+		data ~= "\n";
+		foreach(section ; ptrs.data.sections) {
+			data ~= "### " ~ pretty(toCamelCase(section.name)) ~ "\n\n";
+			data ~= "Packet | DEC | HEX | Clientbound | Serverbound\n---|:---:|:---:|:---:|:---:\n";
+			foreach(packet ; section.packets) {
+				data ~= "[" ~ pretty(toCamelCase(packet.name)) ~ "](#" ~ packet.name.replace("_", "-") ~ ") | " ~ packet.id.to!string ~ " | " ~ packet.id.to!string(16) ~ " | " ~ (packet.clientbound ? "✓" : "") ~ " | " ~ (packet.serverbound ? "✓" : "") ~ "\n";
+			}
+			data ~= "\n";
+			foreach(packet ; section.packets) {
+				data ~= "#### " ~ pretty(toCamelCase(packet.name)) ~ "\n\n";
+				if(packet.description.length) data ~= packet.description ~ "\n\n";
+				writeFields(packet.fields);
+			}
+		}
+		// types
+		if(ptrs.data.types.length) {
+			data ~= "--------\n\n";
+			data ~= "### Types\n\n";
+			foreach(type ; ptrs.data.types) {
+				data ~= "#### " ~ pretty(toCamelCase(type.name)) ~ "\n\n";
+				if(type.description.length) data ~= type.description ~ "\n\n";
+				writeFields(type.fields);
+			}
+		}
+		std.file.write("../doc/" ~ game ~ ".md", data);
 	}
 
-}
-
-@property string name(string file) {
-	return file[file.lastIndexOf(dirSeparator)+1..$-4];
 }
 
 @property string pretty(string name) {

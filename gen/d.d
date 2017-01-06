@@ -115,47 +115,7 @@ alias varulong = var!ulong;
 			data ~= "\tenum " ~ attr.id ~ " = Attribute(\"" ~ attr.name ~ "\", " ~ attr.min.to!string ~ ", " ~ attr.max.to!string ~ ", " ~ attr.def.to!string ~ ");\n\n";
 		}
 		if(!exists("../src/d/sul/attributes")) mkdir("../src/d/sul/attributes");
-		write("../src/d/sul/attributes/" ~ game ~ ".d", data ~ "}");
-	}
-
-	// constants
-	foreach(string game, JSONValue constants; jsons["constants"].object) {
-		string data = "module sul.constants." ~ game ~ ";\n\nstatic struct Constants {\n\n";
-		foreach(string name, JSONValue value; constants.object) {
-			JSONValue[] fields = null; // from protocol's
-			foreach(JSONValue category ; jsons["protocol"].object[game].object["packets"].object) {
-				foreach(string packet_name, JSONValue packet; category.object) {
-					if(packet_name == name) {
-						fields = packet.object["fields"].array;
-						break;
-					}
-				}
-			}
-			data ~= "\tstatic struct " ~ toPascalCase(name) ~ " {\n\n";
-			foreach(string field, JSONValue v; value.object) {
-				data ~= "\t\tstatic struct " ~ toCamelCase(field) ~ " {\n\n";
-				string type = "";
-				if(fields !is null) {
-					foreach(packet_field ; fields) {
-						auto obj = packet_field.object;
-						if(obj["name"].str == field) {
-							type = obj["type"].str;
-							auto conv = type in defaultAliases;
-							if(conv) type = *conv;
-							type ~= " ";
-							break;
-						}
-					}
-				}
-				foreach(string var, JSONValue content; v.object) {
-					data ~= "\t\t\tenum " ~ type ~ toCamelCase(var) ~ " = " ~ content.toString() ~ ";\n";
-				}
-				data ~= "\n\t\t}\n\n";
-			}
-			data ~= "\t}\n\n";
-		}
-		if(!exists("../src/d/sul/constants")) mkdir("../src/d/sul/constants");
-		write("../src/d/sul/constants/" ~ game ~ ".d", data ~ "}");
+		write("../src/d/sul/attributes/" ~ game ~ ".d", data ~ "}", "attributes/" ~ game);
 	}
 
 	//TODO particles
@@ -270,7 +230,7 @@ alias varulong = var!ulong;
 						ret ~= createEncoding(array_length, name ~ ".length.to!" ~ array_length_c);
 					}
 				}
-				if(nt == "ubyte") return ret ~= " buffer~=" ~ name ~ ";";
+				if(nt == "ubyte") return ret ~= "buffer~=" ~ name ~ ";";
 				else return ret ~ "foreach(" ~ hash(name) ~ ";" ~ name ~ "){ " ~ createEncoding(type[0..lo], hash(name)) ~ " }";
 			}
 			auto ts = conv.lastIndexOf("<");
@@ -287,7 +247,7 @@ alias varulong = var!ulong;
 			if(type.startsWith("var")) return "buffer~=" ~ type ~ ".encode(" ~ name ~ ");";
 			else if(type == "string") return "ubyte[] " ~ hash(name) ~ "=cast(ubyte[])" ~ name ~ "; " ~ createEncoding("ubyte[]", hash(name));
 			else if(type == "uuid") return "buffer~=" ~ name ~ ".data;";
-			else if(type == "remaining_bytes") return "buffer~=" ~ name ~ ";";
+			else if(type == "remaining_bytes" || type == "ubyte") return "buffer~=" ~ name ~ ";";
 			else if(type == "triad") return "buffer.length+=3; " ~ (endiannessOf("triad", e) == "bigEndian" ? ("buffer[$-1]=" ~ name ~ "&255; buffer[$-2]=(" ~ name ~ ">>8)&255; buffer[$-3]=(" ~ name ~ ">>16)&255"): ("buffer[$-3]=" ~ name ~ "&255; buffer[$-2]=(" ~ name ~ ">>8)&255; buffer[$-1]=(" ~ name ~ ">>16)&255")) ~ ";";
 			else if(defaultTypes.canFind(type)) return "buffer.length+=" ~ type ~ ".sizeof; write!(" ~ type ~ ", " ~ endiannessOf(type, e) ~ ")(buffer, " ~ name ~ ", buffer.length-" ~ type ~ ".sizeof);";
 			else return name ~ ".encode(buffer);";
@@ -459,7 +419,7 @@ alias varulong = var!ulong;
 		data ~= `}` ~ newline;
 
 		if(!exists("../src/d/sul/protocol")) mkdir("../src/d/sul/protocol");
-		write("../src/d/sul/protocol/" ~ game ~ ".d", data);
+		write("../src/d/sul/protocol/" ~ game ~ ".d", data, "protocol/" ~ game);
 	}
 
 	//TODO sounds
