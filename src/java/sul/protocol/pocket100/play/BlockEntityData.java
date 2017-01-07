@@ -21,11 +21,11 @@ class BlockEntityData extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	public BlockPosition position;
-	public byte[] metadata;
+	public byte[] nbt;
 
 	@Override
 	public int length() {
-		return position.length() + metadata.length;
+		return position.length() + nbt.length;
 	}
 
 	@Override

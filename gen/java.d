@@ -239,8 +239,7 @@ string javadoc(string space, string description) {
 	while(search) {
 		auto m = matchFirst(description, ctRegex!`\[[a-zA-Z0-9 \.]{2,30}\]\([a-zA-Z0-9\#:\/-]{2,64}\)`);
 		if(m) {
-			auto l = m.hit.indexOf("(");
-			description = m.pre ~ `<a href="` ~ m.hit[l+1..$-1] ~ `">` ~ m.hit[1..l-1] ~ `</a>` ~ m.post;
+			description = m.pre ~ m.hit[1..m.hit.indexOf("]")] ~ m.post;
 		} else {
 			search = false;
 		}

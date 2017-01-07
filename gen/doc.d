@@ -17,7 +17,7 @@ void doc(Protocols[string] protocols) {
 
 	std.file.mkdirRecurse("../doc");
 
-	enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "string", "varshort", "varushort", "varint", "varuint", "varlong", "varulong", "triad", "uuid", "bytes"];
+	enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "string", "varshort", "varushort", "varint", "varuint", "varlong", "varulong", "triad", "uuid", "bytes", "metadata"];
 
 	@property string convert(string type) {
 		auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
@@ -72,25 +72,38 @@ void doc(Protocols[string] protocols) {
 		}
 		if(ptrs.data.description.length) data ~= ptrs.data.description ~ "\n\n";
 		data ~= "--------\n\n";
-		// fields (generic)
-		void writeFields(Field[] fields, size_t spaces=1, string fieldDesc="Fields") {
+		// field (generic)
+		void writeFields(string namespace, Field[] fields, size_t spaces=1, string fieldDesc="Fields") {
 			string space;
 			foreach(i ; 0..spaces) space ~= "\t";
 			if(fields.length) {
 				data ~= space ~ "**" ~fieldDesc ~ "**:\n\n";
+				bool endianness, condition;
 				foreach(field ; fields) {
-					data ~= space ~ "* " ~ toCamelCase(field.name) ~ "\n\n";
-					data ~= space ~ "\t**Type**: " ~ convert(toCamelCase(field.type)) ~ "\n\n";
-					if(field.condition.length) data ~= space ~"\t**When**: " ~ toCamelCase(field.condition) ~ "\n\n";
-					if(field.endianness.length) data ~= space ~ "\t**Endianness**: " ~ pretty(toCamelCase(field.endianness)) ~ "\n\n";
-					if(field.description.length) data ~= space ~ "\t" ~ field.description ~ "\n\n";
-					if(field.constants.length) {
-						data ~= space ~ "\t**Constants**:\n\n";
-						data ~= space ~ "\tName | Value\n" ~ space ~ "\t---|:---:\n";
-						foreach(constant ; field.constants) {
-							data ~= space ~ "\t" ~ toCamelCase(constant.name) ~ " | " ~ constant.value ~ "\n";
+					endianness |= field.endianness.length != 0;
+					condition |= field.condition.length != 0;
+				}
+				data ~= space ~ "Name | Type" ~ (endianness ? " | Endianness" : "") ~ (condition ? " | When" : "") ~ "\n";
+				data ~= space ~ "---|---" ~ (endianness ? "|:---:" : "") ~ (condition ? "|:---:" : "") ~ "\n";
+				foreach(field ; fields) {
+					data ~= space;
+					if(field.description.length || field.constants.length) data ~= "[" ~ toCamelCase(field.name) ~ "](#" ~ link(namespace, field.name) ~ ")";
+					else data ~= toCamelCase(field.name);
+					data ~= " | " ~ convert(toCamelCase(field.type)) ~ (endianness ? " | " ~ field.endianness.replace("_", " ") : "") ~ (condition ? " | " ~ toCamelCase(field.condition) : "") ~ "\n";
+				}
+				data ~= "\n";
+				foreach(field ; fields) {
+					if(field.description.length || field.constants.length) {
+						data ~= space ~ "* <a name=\"" ~ link(namespace, field.name) ~ "\"></a>" ~ toCamelCase(field.name) ~ "\n\n";
+						if(field.description.length) data ~= space ~ "\t" ~ field.description ~ "\n\n";
+						if(field.constants.length) {
+							data ~= space ~ "\t**Constants**:\n\n";
+							data ~= space ~ "\tName | Value\n" ~ space ~ "\t---|:---:\n";
+							foreach(constant ; field.constants) {
+								data ~= space ~ "\t" ~ toCamelCase(constant.name) ~ " | " ~ constant.value ~ "\n";
+							}
+							data ~= "\n";
 						}
-						data ~= "\n";
 					}
 				}
 				data ~= "\n";
@@ -110,24 +123,31 @@ void doc(Protocols[string] protocols) {
 		}
 		data ~= "\n";
 		foreach(section ; ptrs.data.sections) {
+			//data ~= "<a name=\"" ~ link(section.name) ~ "\"></a>\n";
 			data ~= "### " ~ pretty(toCamelCase(section.name)) ~ "\n\n";
 			data ~= "Packet | DEC | HEX | Clientbound | Serverbound\n---|:---:|:---:|:---:|:---:\n";
 			foreach(packet ; section.packets) {
-				data ~= "[" ~ pretty(toCamelCase(packet.name)) ~ "](#" ~ packet.name.replace("_", "-") ~ ") | " ~ packet.id.to!string ~ " | " ~ packet.id.to!string(16) ~ " | " ~ (packet.clientbound ? "✓" : "") ~ " | " ~ (packet.serverbound ? "✓" : "") ~ "\n";
+				data ~= "[" ~ pretty(toCamelCase(packet.name)) ~ "](#" ~ link(section.name, packet.name) ~ ") | " ~ packet.id.to!string ~ " | " ~ packet.id.to!string(16) ~ " | " ~ (packet.clientbound ? "✓" : "") ~ " | " ~ (packet.serverbound ? "✓" : "") ~ "\n";
 			}
 			data ~= "\n";
 			foreach(packet ; section.packets) {
+				data ~= "<a name=\"" ~ link(section.name, packet.name) ~ "\"></a>\n";
 				data ~= "* ### " ~ pretty(toCamelCase(packet.name)) ~ "\n\n";
 				data ~= "\t**ID**: " ~ to!string(packet.id) ~ "\n\n";
 				data ~= "\t**Clientbound**: " ~ (packet.clientbound ? "yes" : "no") ~ "\n\n";
 				data ~= "\t**Serverbound**: " ~ (packet.serverbound ? "yes" : "no") ~ "\n\n";
 				if(packet.description.length) data ~= "\t" ~ packet.description ~ "\n\n";
-				writeFields(packet.fields);
+				writeFields(link(section.name, packet.name), packet.fields);
 				if(packet.variants.length) {
-					data ~= "\t**Variants**:\n\n\t**Field**: " ~ toCamelCase(packet.variantField) ~ "\n\n";
+					data ~= "\t**Variants**:\n\n";//\t**Field**: " ~ toCamelCase(packet.variantField) ~ "\n\n";
+					data ~= "\tVariant | Field | Value\n\t---|---|:---:\n";
 					foreach(variant ; packet.variants) {
-						data ~= "\t* " ~ pretty(toCamelCase(variant.name)) ~ "\n\n\t\t**Field's value**: " ~ variant.value ~ "\n\n";
-						writeFields(variant.fields, 2, "Additional Fields");
+						data ~= "\t" ~ pretty(toCamelCase(variant.name)) ~ " | " ~ toCamelCase(packet.variantField) ~ " | " ~ variant.value ~ "\n";
+					}
+					data ~= "\n";
+					foreach(variant ; packet.variants) {
+						data ~= "\t* <a name=\"" ~ link(section.name, packet.name, variant.name) ~ "\"></a>" ~ pretty(toCamelCase(variant.name)) ~ "\n\n";//\t\t**Field's value**: " ~ variant.value ~ "\n\n";
+						writeFields(link(section.name, packet.name, variant.name), variant.fields, 2, "Additional Fields");
 					}
 				}
 			}
@@ -139,7 +159,7 @@ void doc(Protocols[string] protocols) {
 			foreach(type ; ptrs.data.types) {
 				data ~= "* ### " ~ pretty(toCamelCase(type.name)) ~ "\n\n";
 				if(type.description.length) data ~= "\t" ~ type.description ~ "\n\n";
-				writeFields(type.fields);
+				writeFields(type.name, type.fields);
 			}
 		}
 		immutable ps = ptrs.protocol.to!string;
@@ -184,5 +204,9 @@ void doc(Protocols[string] protocols) {
 		ret ~= c;
 	}
 	if(!ret.length) return ret;
-	else return toUpper(ret[0..1]) ~ ret[1..$];
+	else return (toUpper(ret[0..1]) ~ ret[1..$]).replace("And", "and").replace("Of", "of");
+}
+
+string link(string[] pieces...) {
+	return pieces.join(".").replace("_", "-");
 }

@@ -206,7 +206,7 @@
 				<field name="head-yaw" type="float" />
 				<field name="yaw" type="float" />
 				<field name="held-item" type="slot" />
-				<field name="metadata" type="bytes" />
+				<field name="metadata" type="metadata" />
 			</packet>
 
 			<packet name="add-entity" id="14" clientbound="true" serverbound="false">
@@ -218,7 +218,7 @@
 				<field name="pitch" type="float" />
 				<field name="yaw" type="float" />
 				<field name="attributes" type="attribute[]" />
-				<field name="metadata" type="ubyte[]" />
+				<field name="metadata" type="metadata" />
 				<field name="links" type="entity-id[]" />
 			</packet>
 
@@ -432,7 +432,7 @@
 
 			<packet name="set-entity-data" id="39" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
-				<field name="metadata" type="bytes" />
+				<field name="metadata" type="metadata" />
 			</packet>
 
 			<packet name="set-entity-motion" id="40" clientbound="true" serverbound="false">
@@ -550,7 +550,7 @@
 
 			<packet name="block-entity-data" id="56" clientbound="true" serverbound="false">
 				<field name="position" type="block-position" />
-				<field name="metadata" type="bytes" />
+				<field name="nbt" type="bytes" />
 			</packet>
 
 			<packet name="player-input" id="57" clientbound="false" serverbound="true">

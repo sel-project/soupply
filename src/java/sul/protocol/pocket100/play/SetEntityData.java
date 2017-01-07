@@ -21,11 +21,11 @@ class SetEntityData extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	public long entityId;
-	public byte[] metadata;
+	public Metadata metadata;
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + metadata.length;
+		return Var.Long.length(entityId) + metadata.length();
 	}
 
 	@Override

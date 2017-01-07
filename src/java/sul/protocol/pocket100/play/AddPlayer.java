@@ -30,11 +30,11 @@ class AddPlayer extends Packet {
 	public float headYaw;
 	public float yaw;
 	public Slot heldItem;
-	public byte[] metadata;
+	public Metadata metadata;
 
 	@Override
 	public int length() {
-		return Var.Uint.length(username.getBytes(StandardCharset.UTF_8).length) + username.getBytes(StandardCharset.UTF_8).length + Var.Long.length(entityId) + Var.Long.length(runtimeId) + position.length() + motion.length() + heldItem.length() + metadata.length + 28;
+		return Var.Uint.length(username.getBytes(StandardCharset.UTF_8).length) + username.getBytes(StandardCharset.UTF_8).length + Var.Long.length(entityId) + Var.Long.length(runtimeId) + position.length() + motion.length() + heldItem.length() + metadata.length() + 28;
 	}
 
 	@Override

@@ -16,7 +16,7 @@ Protocol | Packets | Released | From | To
 :---:|:---:|:---:|:---:|:---:
 [210](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/210.md) | 11 | 2016/6/8 | 1.10 | 1.10.2
 [315](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/315.md) | 11 | 2016/11/14 | 1.11 | 1.11
-[316](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/316.md) | 11 | 2016/12/20 | 1.11.1 | 
+[316](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/316.md) | 87 | 2016/12/20 | 1.11.1 | 
 
 ## Minecraft: Pocket Edition
 

@@ -37,9 +37,9 @@ alias Type = Tuple!(string, "name", string, "description", Field[], "fields");
 
 alias Section = Tuple!(string, "name", Packet[], "packets");
 
-alias Array = Tuple!(string, "name", string, "base", string, "length", string, "endianness");
+alias Array = Tuple!(string, "base", string, "length", string, "endianness");
 
-alias Protocol = Tuple!(string, "released", string, "from", string, "to", string, "description", string, "id", string, "arrayLength", string[string], "endianness", Section[], "sections", Type[], "types", Array[], "arrays");
+alias Protocol = Tuple!(string, "released", string, "from", string, "to", string, "description", string, "id", string, "arrayLength", string[string], "endianness", Section[], "sections", Type[], "types", Array[string], "arrays");
 
 alias Protocols = File!Protocol;
 
@@ -178,7 +178,7 @@ void main(string[] args) {
 									protocol.data.types ~= type;
 									break;
 								case "array":
-									with(e.tag) protocol.data.arrays ~= Array(attr["name"].replace("-", "_"), convert(attr["base"].replace("-", "_")), convert(attr["length"].replace("-", "_")), ("endianness" in attr ? attr["endianness"].replace("-", "_") : ""));
+									with(e.tag) protocol.data.arrays[attr["name"].replace("-", "_")] = Array(convert(attr["base"].replace("-", "_")), convert(attr["length"].replace("-", "_")), ("endianness" in attr ? attr["endianness"].replace("-", "_") : ""));
 									break;
 								default:
 									break;
@@ -262,7 +262,7 @@ void main(string[] args) {
 		"sounds": JSONValue(sounds),
 	];
 
-	d.d(attributes, jsons);
+	d.d(attributes, protocols, jsons);
 	java.java(attributes, protocols, jsons);
 	js.js(attributes, jsons);
 

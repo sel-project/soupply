@@ -36,7 +36,7 @@ struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
 		return buffer;
 	}
 	
-	public static pure nothrow @safe T fromBuffer(ref ubyte[] buffer) {
+	public static pure nothrow @safe T decode(ref ubyte[] buffer) {
 		if(buffer.length == 0) return T.init;
 		U unsigned = 0;
 		size_t j, k;

@@ -28,12 +28,12 @@ class AddEntity extends Packet {
 	public float pitch;
 	public float yaw;
 	public Attribute[] attributes;
-	public byte[] metadata;
+	public Metadata metadata;
 	public long[] links;
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + Var.Uint.length(type) + position.length() + motion.length() + Var.Uint.length(attributes.length) + attributes.length() + Var.Uint.length(metadata.length) + metadata.length() + Var.Uint.length(links.length) + links.length() + 8;
+		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + Var.Uint.length(type) + position.length() + motion.length() + Var.Uint.length(attributes.length) + attributes.length() + metadata.length() + Var.Uint.length(links.length) + links.length() + 8;
 	}
 
 	@Override
