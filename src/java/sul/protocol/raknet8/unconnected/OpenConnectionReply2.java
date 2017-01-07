@@ -28,7 +28,7 @@ class OpenConnectionReply2 extends Packet {
 
 	@Override
 	public int length() {
-		return magic.length() + server_address.length() + 11;
+		return magic.length() + serverAddress.length() + 13;
 	}
 
 	@Override

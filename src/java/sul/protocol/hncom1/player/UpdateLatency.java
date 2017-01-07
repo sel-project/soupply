@@ -25,7 +25,7 @@ class UpdateLatency extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hub_id) + Var.Uint.length(latency);
+		return Var.Uint.length(hubId) + Var.Uint.length(latency);
 	}
 
 	@Override

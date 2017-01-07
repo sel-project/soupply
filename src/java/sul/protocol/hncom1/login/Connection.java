@@ -38,7 +38,7 @@ class Connection extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(protocol) + name.length() + 1;
+		return Var.Uint.length(protocol) + Var.Uint.length(name.getBytes(StandardCharset.UTF_8).length) + name.getBytes(StandardCharset.UTF_8).length + 1;
 	}
 
 	@Override

@@ -27,7 +27,7 @@ class Pong extends Packet {
 
 	@Override
 	public int length() {
-		return magic.length() + status.length() + 16;
+		return magic.length() + status.getBytes(StandardCharset.UTF_8).length + 20;
 	}
 
 	@Override

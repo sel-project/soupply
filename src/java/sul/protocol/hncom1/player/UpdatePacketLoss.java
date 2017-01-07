@@ -25,7 +25,7 @@ class UpdatePacketLoss extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hub_id) + 4;
+		return Var.Uint.length(hubId) + 4;
 	}
 
 	@Override

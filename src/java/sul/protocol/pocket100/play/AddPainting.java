@@ -28,7 +28,7 @@ class AddPainting extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + Var.Long.length(runtime_id) + position.length() + Var.Int.length(direction) + title.length();
+		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + position.length() + Var.Int.length(direction) + Var.Uint.length(title.getBytes(StandardCharset.UTF_8).length) + title.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override

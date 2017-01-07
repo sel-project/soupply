@@ -26,7 +26,7 @@ class ContainerSetContent extends Packet {
 
 	@Override
 	public int length() {
-		return slots.length() + hotbar.length() + 1;
+		return Var.Uint.length(slots.length) + slots.length() + Var.Uint.length(hotbar.length) + hotbar.length() + 1;
 	}
 
 	@Override

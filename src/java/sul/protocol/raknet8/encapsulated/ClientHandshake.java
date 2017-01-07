@@ -27,7 +27,7 @@ class ClientHandshake extends Packet {
 
 	@Override
 	public int length() {
-		return client_address.length() + system_addresses.length() + 16;
+		return clientAddress.length() + systemAddresses.length() + 18;
 	}
 
 	@Override

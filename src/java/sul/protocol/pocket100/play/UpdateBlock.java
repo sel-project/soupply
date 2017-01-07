@@ -32,7 +32,7 @@ class UpdateBlock extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + Var.Uint.length(block) + Var.Uint.length(flags_and_meta);
+		return position.length() + Var.Uint.length(block) + Var.Uint.length(flagsAndMeta);
 	}
 
 	@Override

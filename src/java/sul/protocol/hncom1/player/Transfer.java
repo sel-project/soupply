@@ -25,7 +25,7 @@ class Transfer extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hub_id) + node.length();
+		return Var.Uint.length(hubId) + Var.Uint.length(node.getBytes(StandardCharset.UTF_8).length) + node.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override

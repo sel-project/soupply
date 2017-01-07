@@ -25,7 +25,7 @@ class SetEntityData extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + metadata.length();
+		return Var.Long.length(entityId) + metadata.length;
 	}
 
 	@Override

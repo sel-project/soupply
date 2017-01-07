@@ -62,10 +62,16 @@ void doc(Protocols[string] protocols) {
 			}
 		}
 		if(ptrs.data.from.length) {
-			if(ptrs.data.to.length) data ~= "Used from **" ~ ptrs.data.from ~ "** to **" ~ ptrs.data.to ~ "**\n\n";
-			else data ~= "In use since **" ~ ptrs.data.from ~ "**\n\n";
+			if(ptrs.data.to.length) {
+				if(ptrs.data.from == ptrs.data.to) data ~= "Used in version **" ~ ptrs.data.from ~ "**";
+				else data ~= "Used from version **" ~ ptrs.data.from ~ "** to **" ~ ptrs.data.to ~ "**";
+			} else {
+				data ~= "In use since version **" ~ ptrs.data.from ~ "**";
+			}
+			data ~= "\n\n";
 		}
 		if(ptrs.data.description.length) data ~= ptrs.data.description ~ "\n\n";
+		data ~= "--------\n\n";
 		// fields (generic)
 		void writeFields(Field[] fields, size_t spaces=1, string fieldDesc="Fields") {
 			string space;
@@ -92,9 +98,9 @@ void doc(Protocols[string] protocols) {
 		}
 		// endianness
 		data ~= "## Endianness\n\n";
-		if("*" in ptrs.data.endianness) data ~= "all: " ~ pretty(toCamelCase(ptrs.data.endianness["*"])) ~ "\n\n";
+		if("*" in ptrs.data.endianness) data ~= "every type: " ~ ptrs.data.endianness["*"].replace("_", " ") ~ "\n\n";
 		foreach(string type, string end; ptrs.data.endianness) {
-			if(type != "*") data ~= convert(type) ~ ": " ~ pretty(toCamelCase(end)) ~ "\n\n";
+			if(type != "*") data ~= convert(type) ~ ": " ~ end.replace("_", " ") ~ "\n\n";
 		}
 		data ~= "--------\n\n";
 		// packets

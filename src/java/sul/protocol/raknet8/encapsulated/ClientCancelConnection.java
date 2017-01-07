@@ -20,10 +20,9 @@ class ClientCancelConnection extends Packet {
 	public final static boolean CLIENTBOUND = false;
 	public final static boolean SERVERBOUND = true;
 
-
 	@Override
 	public int length() {
-		return ;
+		return 0;
 	}
 
 	@Override

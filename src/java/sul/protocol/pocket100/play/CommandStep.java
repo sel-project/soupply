@@ -31,7 +31,7 @@ class CommandStep extends Packet {
 
 	@Override
 	public int length() {
-		return command.length() + overload.length() + Var.Uint.length(?) + Var.Uint.length(?) + Var.Ulong.length(?) + input.length() + output.length() + 1;
+		return Var.Uint.length(command.getBytes(StandardCharset.UTF_8).length) + command.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(overload.getBytes(StandardCharset.UTF_8).length) + overload.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(?) + Var.Uint.length(?) + Var.Ulong.length(?) + Var.Uint.length(input.getBytes(StandardCharset.UTF_8).length) + input.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(output.getBytes(StandardCharset.UTF_8).length) + output.getBytes(StandardCharset.UTF_8).length + 1;
 	}
 
 	@Override

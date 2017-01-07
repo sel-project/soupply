@@ -30,7 +30,7 @@ class Login extends Packet {
 
 	@Override
 	public int length() {
-		return body.length() + 5;
+		return Var.Uint.length(body.length) + body.length() + 5;
 	}
 
 	@Override

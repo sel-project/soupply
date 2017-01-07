@@ -29,7 +29,7 @@ class UpdateNodes extends Packet {
 
 	@Override
 	public int length() {
-		return node.length() + 1;
+		return node.getBytes(StandardCharset.UTF_8).length + 3;
 	}
 
 	@Override

@@ -26,7 +26,7 @@ class Kick extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hub_id) + reason.length() + 1;
+		return Var.Uint.length(hubId) + Var.Uint.length(reason.getBytes(StandardCharset.UTF_8).length) + reason.getBytes(StandardCharset.UTF_8).length + 1;
 	}
 
 	@Override

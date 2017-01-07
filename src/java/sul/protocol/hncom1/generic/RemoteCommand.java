@@ -31,7 +31,7 @@ class RemoteCommand extends Packet {
 
 	@Override
 	public int length() {
-		return sender.length() + command.length() + 1;
+		return sender.length() + Var.Uint.length(command.getBytes(StandardCharset.UTF_8).length) + command.getBytes(StandardCharset.UTF_8).length + 1;
 	}
 
 	@Override

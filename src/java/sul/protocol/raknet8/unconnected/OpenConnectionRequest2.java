@@ -21,13 +21,13 @@ class OpenConnectionRequest2 extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	public byte[16] magic;
-	public Address serveraddress;
+	public Address serverAddress;
 	public short mtuLength;
 	public long clientId;
 
 	@Override
 	public int length() {
-		return magic.length() + serverAddress.length() + 10;
+		return magic.length() + serverAddress.length() + 12;
 	}
 
 	@Override

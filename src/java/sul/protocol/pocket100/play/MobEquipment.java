@@ -28,7 +28,7 @@ class MobEquipment extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + item.length() + 3;
+		return Var.Long.length(entityId) + item.length() + 3;
 	}
 
 	@Override

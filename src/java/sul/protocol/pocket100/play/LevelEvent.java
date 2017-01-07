@@ -34,7 +34,7 @@ class LevelEvent extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(event_id) + position.length() + Var.Int.length(data);
+		return Var.Int.length(eventId) + position.length() + Var.Int.length(data);
 	}
 
 	@Override

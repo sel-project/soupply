@@ -25,7 +25,7 @@ class GamePacket extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hub_id) + packet.length();
+		return Var.Uint.length(hubId) + packet.length;
 	}
 
 	@Override

@@ -44,7 +44,7 @@ class PlayerAction extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + Var.Int.length(action) + position.length() + Var.Int.length(face);
+		return Var.Long.length(entityId) + Var.Int.length(action) + position.length() + Var.Int.length(face);
 	}
 
 	@Override

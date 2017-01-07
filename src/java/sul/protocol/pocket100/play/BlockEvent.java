@@ -25,7 +25,7 @@ class BlockEvent extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + data.length();
+		return position.length() + Var.Uint.length(data.length) + data.length();
 	}
 
 	@Override

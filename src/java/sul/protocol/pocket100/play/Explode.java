@@ -26,7 +26,7 @@ class Explode extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + destroyed_blocks.length() + 4;
+		return position.length() + Var.Uint.length(destroyedBlocks.length) + destroyedBlocks.length() + 4;
 	}
 
 	@Override

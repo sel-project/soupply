@@ -52,7 +52,7 @@ class ConsoleMessage extends Packet {
 
 	@Override
 	public int length() {
-		return node.length() + logger.length() + message.length() + 8;
+		return node.getBytes(StandardCharset.UTF_8).length + logger.getBytes(StandardCharset.UTF_8).length + message.getBytes(StandardCharset.UTF_8).length + 14;
 	}
 
 	@Override

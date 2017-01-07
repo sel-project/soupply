@@ -25,7 +25,7 @@ class Disconnect extends Packet {
 
 	@Override
 	public int length() {
-		return message.length() + 1;
+		return Var.Uint.length(message.getBytes(StandardCharset.UTF_8).length) + message.getBytes(StandardCharset.UTF_8).length + 1;
 	}
 
 	@Override

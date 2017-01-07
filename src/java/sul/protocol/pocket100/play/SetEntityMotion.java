@@ -25,7 +25,7 @@ class SetEntityMotion extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + motion.length();
+		return Var.Long.length(entityId) + motion.length();
 	}
 
 	@Override

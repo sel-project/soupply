@@ -28,7 +28,7 @@ class AddItemEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + Var.Long.length(runtime_id) + item.length() + position.length() + motion.length();
+		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + item.length() + position.length() + motion.length();
 	}
 
 	@Override

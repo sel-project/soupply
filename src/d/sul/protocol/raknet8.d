@@ -74,9 +74,9 @@ static struct Types {
 		public void encode(ref ubyte[] buffer) {
 			buffer~=info;
 			buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, length, buffer.length-ushort.sizeof);
-			if((info&0x7f)>=64){ buffer.length+=3; buffer[$-3]=messageIndex&255; buffer[$-2]=(messageIndex>>8)&255; buffer[$-1]=(messageIndex>>16)&255; }
-			if((info&0x7f)>=96){ buffer.length+=3; buffer[$-3]=orderIndex&255; buffer[$-2]=(orderIndex>>8)&255; buffer[$-1]=(orderIndex>>16)&255; }
-			if((info&0x7f)>=96){ buffer~=orderChannel; }
+			if((info&0x7F)>=64){ buffer.length+=3; buffer[$-3]=messageIndex&255; buffer[$-2]=(messageIndex>>8)&255; buffer[$-1]=(messageIndex>>16)&255; }
+			if((info&0x7F)>=96){ buffer.length+=3; buffer[$-3]=orderIndex&255; buffer[$-2]=(orderIndex>>8)&255; buffer[$-1]=(orderIndex>>16)&255; }
+			if((info&0x7F)>=96){ buffer~=orderChannel; }
 			if((info&0x10)!=0){ split.encode(buffer); }
 			buffer~=payload;
 		}
@@ -84,9 +84,9 @@ static struct Types {
 		public void decode(ref ubyte[] buffer) {
 			if(buffer.length>=ubyte.sizeof){ info=read!(ubyte, Endian.bigEndian)(buffer); }
 			if(buffer.length>=ushort.sizeof){ length=read!(ushort, Endian.bigEndian)(buffer); }
-			if((info&0x7f)>=64){ if(buffer.length>=3){ messageIndex=buffer[0]|(buffer[1]<<8)|(buffer[2]<<16); buffer=buffer[3..$]; } }
-			if((info&0x7f)>=96){ if(buffer.length>=3){ orderIndex=buffer[0]|(buffer[1]<<8)|(buffer[2]<<16); buffer=buffer[3..$]; } }
-			if((info&0x7f)>=96){ if(buffer.length>=ubyte.sizeof){ orderChannel=read!(ubyte, Endian.bigEndian)(buffer); } }
+			if((info&0x7F)>=64){ if(buffer.length>=3){ messageIndex=buffer[0]|(buffer[1]<<8)|(buffer[2]<<16); buffer=buffer[3..$]; } }
+			if((info&0x7F)>=96){ if(buffer.length>=3){ orderIndex=buffer[0]|(buffer[1]<<8)|(buffer[2]<<16); buffer=buffer[3..$]; } }
+			if((info&0x7F)>=96){ if(buffer.length>=ubyte.sizeof){ orderChannel=read!(ubyte, Endian.bigEndian)(buffer); } }
 			if((info&0x10)!=0){ split.decode(buffer); }
 			payload=buffer.dup; buffer.length=0;
 		}

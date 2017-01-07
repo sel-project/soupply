@@ -31,7 +31,7 @@ class Remove extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hub_id) + 1;
+		return Var.Uint.length(hubId) + 1;
 	}
 
 	@Override

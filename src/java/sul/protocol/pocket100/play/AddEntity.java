@@ -33,7 +33,7 @@ class AddEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + Var.Long.length(runtime_id) + Var.Uint.length(type) + position.length() + motion.length() + attributes.length() + metadata.length() + links.length() + 8;
+		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + Var.Uint.length(type) + position.length() + motion.length() + Var.Uint.length(attributes.length) + attributes.length() + Var.Uint.length(metadata.length) + metadata.length() + Var.Uint.length(links.length) + links.length() + 8;
 	}
 
 	@Override

@@ -20,10 +20,9 @@ class ShowCredits extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
-
 	@Override
 	public int length() {
-		return ;
+		return 0;
 	}
 
 	@Override

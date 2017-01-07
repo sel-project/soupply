@@ -28,7 +28,7 @@ class ContainerOpen extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(slot_count) + position.length() + Var.Long.length(entity_id) + 2;
+		return Var.Int.length(slotCount) + position.length() + Var.Long.length(entityId) + 2;
 	}
 
 	@Override

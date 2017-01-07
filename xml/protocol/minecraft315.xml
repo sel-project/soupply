@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<protocol>
+
+	<software>Minecraft</software>
+
+	<protocol>315</protocol>
+
+	<released>2016/11/14</released>
+
+	<from>1.11</from>
+
+	<to>1.11</to>
+
+	<encoding id="varuint" arraylength="varuint">
+
+		<endianness type="*" value="big-endian" />
+
+		<alias name="entity-id" type="varuint" />
+
+		<alias name="angle" type="ubyte" />
+
+		<type name="statistic">
+			<field name="name" type="string" />
+			<field name="value" type="varuint" />
+		</type>
+
+		<type name="block-change">
+			<field name="xz" type="ubyte" />
+			<field name="y" type="ubyte" />
+			<field name="block" type="varuint" />
+		</type>
+
+		<type name="slot">
+			<field name="id" type="short" />
+			<field name="count" type="ubyte" when="id>0" />
+			<field name="damage" type="ushort" when="id>0" />
+			<field name="nbt" type="bytes" when="id>0" />
+		</type>
+
+		<array name="slots" base="slot" length="ushort" />
+
+		<array name="explosion-records" base="byte<xyz>" length="uint" />
+
+		<type name="icon">
+			<field name="direction-and-type" type="ubyte" />
+			<field name="position" type="ubyte<xz>" />
+		</type>
+
+		<type name="property">
+			<field name="name" type="string" />
+			<field name="value" type="string" />
+			<field name="signed" type="bool" />
+			<field name="signature" type="string" when="signed==true" />
+		</type>
+
+		<array name="properties" base="property" length="uint" />
+
+		<type name="list-add-player">
+			<field name="uuid" type="uuid" />
+			<field name="name" type="string" />
+			<field name="properties" type="property[]" />
+			<field name="gamemode" type="varuint">
+				<constant name="survival" value="0" />
+				<constant name="creative" value="1" />
+				<constant name="adventure" value="2" />
+				<constant name="spectator" value="3" />
+			</field>
+			<field name="latency" type="varuint" />
+			<field name="has-display-name" type="bool" />
+			<field name="display-name" type="string" when="has-display-name==true" />
+		</type>
+
+		<type name="list-update-gamemode">
+			<field name="uuid" type="uuid" />
+			<field name="gamemode" type="varuint">
+				<constant name="survival" value="0" />
+				<constant name="creative" value="1" />
+				<constant name="adventure" value="2" />
+				<constant name="spectator" value="3" />
+			</field>
+		</type>
+
+		<type name="list-update-display-name">
+			<field name="uuid" type="uuid" />
+			<field name="has-display-name" type="bool" />
+			<field name="display-name" type="string" when="has-display-name==true" />
+		</type>
+
+	</encoding>
+
+	<packets>
+
+		<section name="status">
+
+			<packet name="handshake" id="0" clientbound="false" serverbound="true">
+				<field name="protocol" type="varuint" />
+				<field name="server-address" type="string" />
+				<field name="server-port" type="ushort" />
+				<field name="next" type="varuint">
+					<constant name="status" value="1" />
+					<constant name="login" value="2" />
+				</field>
+			</packet>
+
+			<packet name="request" id="0" clientbound="false" serverbound="true">
+
+			</packet>
+
+			<packet name="response" id="0" clientbound="true" serverbound="false">
+				<field name="json" type="string" />
+			</packet>
+
+			<packet name="ping" id="1" clientbound="false" serverbound="true">
+				<field name="ping-id" type="long" />
+			</packet>
+
+			<packet name="pong" id="1" clientbound="true" serverbound="false">
+				<field name="ping-id" type="long" />
+			</packet>
+
+		</section>
+
+		<section name="login">
+
+			<packet name="disconnect" id="0" clientbound="true" serverbound="false">
+				<field name="reason" type="string" />
+			</packet>
+
+			<packet name="login-start" id="0" clientbound="false" serverbound="true">
+				<field name="username" type="string" />
+			</packet>
+
+			<packet name="encryption-request" id="1" clientbound="true" serverbound="false">
+				<field name="server-id" type="string" />
+				<field name="public-key" type="ubyte[]" />
+				<field name="verify-token" type="ubyte[]" />
+			</packet>
+
+			<packet name="encryption-response" id="1" clientbound="false" serverbound="true">
+				<field name="shared-secret" type="ubyte[]" />
+				<field name="verify-token" type="ubyte[]" />
+			</packet>
+
+			<packet name="login-success" id="2" clientbound="true" serverbound="false">
+				<field name="uuid" type="string" />
+				<field name="username" type="string" />
+			</packet>
+
+			<packet name="set-compression" id="3" clientbound="true" serverbound="false">
+				<field name="thresold" type="varuint" />
+			</packet>
+
+		</section>
+
+		<section name="clientbound">
+
+		</section>
+
+		<section name="serverbound">
+
+		</section>
+
+	</packets>
+
+</protocol>

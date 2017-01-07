@@ -24,7 +24,7 @@ class Mcpe extends Packet {
 
 	@Override
 	public int length() {
-		return packet.length();
+		return packet.length;
 	}
 
 	@Override

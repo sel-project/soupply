@@ -26,7 +26,7 @@ class FullChunkData extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + data.length() + tiles.length();
+		return position.length() + Var.Uint.length(data.length) + data.length() + Var.Uint.length(tiles.length) + tiles.length();
 	}
 
 	@Override

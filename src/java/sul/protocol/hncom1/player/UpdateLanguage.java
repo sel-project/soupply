@@ -25,7 +25,7 @@ class UpdateLanguage extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hub_id) + language.length();
+		return Var.Uint.length(hubId) + Var.Uint.length(language.getBytes(StandardCharset.UTF_8).length) + language.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override

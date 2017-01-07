@@ -30,7 +30,7 @@ class UseItem extends Packet {
 
 	@Override
 	public int length() {
-		return block_position.length() + Var.Uint.length(hotbar_slot) + Var.Int.length(face) + face_position.length() + position.length() + Var.Int.length(slot) + item.length();
+		return blockPosition.length() + Var.Uint.length(hotbarSlot) + Var.Int.length(face) + facePosition.length() + position.length() + Var.Int.length(slot) + item.length();
 	}
 
 	@Override

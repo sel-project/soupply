@@ -67,7 +67,7 @@ class StartGame extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + Var.Long.length(runtime_id) + position.length() + Var.Int.length(seed) + Var.Int.length(dimension) + Var.Int.length(generator) + Var.Int.length(world_gamemode) + Var.Int.length(difficulty) + spawn_position.length() + Var.Int.length(time) + level_id.length() + world_name.length() + 20;
+		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + position.length() + Var.Int.length(seed) + Var.Int.length(dimension) + Var.Int.length(generator) + Var.Int.length(worldGamemode) + Var.Int.length(difficulty) + spawnPosition.length() + Var.Int.length(time) + Var.Uint.length(levelId.getBytes(StandardCharset.UTF_8).length) + levelId.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(worldName.getBytes(StandardCharset.UTF_8).length) + worldName.getBytes(StandardCharset.UTF_8).length + 20;
 	}
 
 	@Override

@@ -28,7 +28,7 @@ class CraftingEvent extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(type) + input.length() + output.length() + 17;
+		return Var.Int.length(type) + Var.Uint.length(input.length) + input.length() + Var.Uint.length(output.length) + output.length() + 17;
 	}
 
 	@Override

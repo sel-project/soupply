@@ -25,7 +25,7 @@ class UpdateDisplayName extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hub_id) + display_name.length();
+		return Var.Uint.length(hubId) + Var.Uint.length(displayName.getBytes(StandardCharset.UTF_8).length) + displayName.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override

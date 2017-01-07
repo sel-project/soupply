@@ -25,7 +25,7 @@ class BlockEntityData extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + metadata.length();
+		return position.length() + metadata.length;
 	}
 
 	@Override

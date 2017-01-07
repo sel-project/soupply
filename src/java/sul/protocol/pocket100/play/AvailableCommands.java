@@ -24,7 +24,7 @@ class AvailableCommands extends Packet {
 
 	@Override
 	public int length() {
-		return commands.length();
+		return Var.Uint.length(commands.getBytes(StandardCharset.UTF_8).length) + commands.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override

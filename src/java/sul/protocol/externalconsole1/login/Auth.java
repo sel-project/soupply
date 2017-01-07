@@ -24,7 +24,7 @@ class Auth extends Packet {
 
 	@Override
 	public int length() {
-		return hash.length();
+		return hash.length() + 2;
 	}
 
 	@Override

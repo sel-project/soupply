@@ -278,7 +278,7 @@ void main(string[] args) {
 @property string toCamelCase(string str) {
 	string ret = "";
 	bool next_up = false;
-	foreach(c ; str.toLower.dup) {
+	foreach(c ; str.dup) {
 		if(c == '_' || c == '-') {
 			next_up = true;
 		} else if(next_up) {

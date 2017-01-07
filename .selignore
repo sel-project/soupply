@@ -2,3 +2,5 @@ release.sa
 README.md
 .gitignore
 .git/
+doc/
+gen/

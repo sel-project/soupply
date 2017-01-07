@@ -34,7 +34,7 @@ class MobEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + Var.Int.length(effect) + Var.Int.length(amplifier) + Var.Int.length(duration) + 2;
+		return Var.Long.length(entityId) + Var.Int.length(effect) + Var.Int.length(amplifier) + Var.Int.length(duration) + 2;
 	}
 
 	@Override

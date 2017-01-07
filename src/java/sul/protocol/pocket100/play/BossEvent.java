@@ -30,7 +30,7 @@ class BossEvent extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + Var.Uint.length(event_id);
+		return Var.Long.length(entityId) + Var.Uint.length(eventId);
 	}
 
 	@Override

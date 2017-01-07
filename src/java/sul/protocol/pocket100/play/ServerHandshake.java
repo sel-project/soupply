@@ -25,7 +25,7 @@ class ServerHandshake extends Packet {
 
 	@Override
 	public int length() {
-		return server_public_key.length() + token.length();
+		return Var.Uint.length(serverPublicKey.getBytes(StandardCharset.UTF_8).length) + serverPublicKey.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(token.length) + token.length();
 	}
 
 	@Override

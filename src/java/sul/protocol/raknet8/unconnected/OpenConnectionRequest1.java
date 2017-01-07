@@ -26,7 +26,7 @@ class OpenConnectionRequest1 extends Packet {
 
 	@Override
 	public int length() {
-		return magic.length() + mtu.length() + 1;
+		return magic.length() + mtu.length + 3;
 	}
 
 	@Override

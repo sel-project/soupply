@@ -34,7 +34,7 @@ class AddPlayer extends Packet {
 
 	@Override
 	public int length() {
-		return username.length() + Var.Long.length(entity_id) + Var.Long.length(runtime_id) + position.length() + motion.length() + held_item.length() + metadata.length() + 28;
+		return Var.Uint.length(username.getBytes(StandardCharset.UTF_8).length) + username.getBytes(StandardCharset.UTF_8).length + Var.Long.length(entityId) + Var.Long.length(runtimeId) + position.length() + motion.length() + heldItem.length() + metadata.length + 28;
 	}
 
 	@Override

@@ -24,7 +24,7 @@ class MapInfoRequest extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(map_id);
+		return Var.Long.length(mapId);
 	}
 
 	@Override

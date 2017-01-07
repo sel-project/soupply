@@ -25,7 +25,7 @@ class MobArmorEquipment extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + armor.length();
+		return Var.Long.length(entityId) + Var.Uint.length(armor.length) + armor.length();
 	}
 
 	@Override

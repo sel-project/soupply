@@ -42,7 +42,7 @@ class EntityEvent extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + Var.Int.length(?) + 1;
+		return Var.Long.length(entityId) + Var.Int.length(?) + 1;
 	}
 
 	@Override

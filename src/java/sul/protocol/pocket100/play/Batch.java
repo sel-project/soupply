@@ -24,7 +24,7 @@ class Batch extends Packet {
 
 	@Override
 	public int length() {
-		return data.length();
+		return Var.Uint.length(data.length) + data.length();
 	}
 
 	@Override

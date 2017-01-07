@@ -34,7 +34,7 @@ class Info extends Packet {
 
 	@Override
 	public int length() {
-		return display_name.length() + games.length() + Var.Uint.length(online) + Var.Uint.length(max) + language.length() + accepted_languages.length() + nodes.length() + social_json.length() + additional_json.length() + 9;
+		return Var.Uint.length(displayName.getBytes(StandardCharset.UTF_8).length) + displayName.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(games.length) + games.length() + Var.Uint.length(online) + Var.Uint.length(max) + Var.Uint.length(language.getBytes(StandardCharset.UTF_8).length) + language.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(acceptedLanguages.length) + acceptedLanguages.length() + Var.Uint.length(nodes.length) + nodes.length() + Var.Uint.length(socialJson.getBytes(StandardCharset.UTF_8).length) + socialJson.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(additionalJson.getBytes(StandardCharset.UTF_8).length) + additionalJson.getBytes(StandardCharset.UTF_8).length + 9;
 	}
 
 	@Override

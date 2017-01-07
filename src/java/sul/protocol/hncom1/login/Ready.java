@@ -24,7 +24,7 @@ class Ready extends Packet {
 
 	@Override
 	public int length() {
-		return plugins.length();
+		return Var.Uint.length(plugins.length) + plugins.length();
 	}
 
 	@Override

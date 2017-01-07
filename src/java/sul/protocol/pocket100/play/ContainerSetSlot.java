@@ -28,7 +28,7 @@ class ContainerSetSlot extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(slot) + Var.Int.length(hotbar_slot) + item.length() + 2;
+		return Var.Int.length(slot) + Var.Int.length(hotbarSlot) + item.length() + 2;
 	}
 
 	@Override

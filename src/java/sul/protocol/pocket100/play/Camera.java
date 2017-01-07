@@ -25,7 +25,7 @@ class Camera extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + Var.Long.length(runtime_id);
+		return Var.Long.length(entityId) + Var.Long.length(runtimeId);
 	}
 
 	@Override

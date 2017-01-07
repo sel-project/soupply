@@ -43,7 +43,7 @@ class AuthCredentials extends Packet {
 
 	@Override
 	public int length() {
-		return hash_algorithm.length() + payload.length() + 1;
+		return hashAlgorithm.getBytes(StandardCharset.UTF_8).length + payload.length() + 5;
 	}
 
 	@Override

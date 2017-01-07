@@ -29,7 +29,7 @@ class UpdateStats extends Packet {
 
 	@Override
 	public int length() {
-		return nodes.length() + 20;
+		return nodes.length() + 22;
 	}
 
 	@Override

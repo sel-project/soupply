@@ -24,7 +24,7 @@ class RemoveEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id);
+		return Var.Long.length(entityId);
 	}
 
 	@Override

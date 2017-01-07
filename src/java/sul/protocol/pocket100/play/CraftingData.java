@@ -24,7 +24,7 @@ class CraftingData extends Packet {
 
 	@Override
 	public int length() {
-		return recipes.length();
+		return Var.Uint.length(recipes.length) + recipes.length();
 	}
 
 	@Override

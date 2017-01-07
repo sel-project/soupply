@@ -26,7 +26,7 @@ class ResourcePacksInfo extends Packet {
 
 	@Override
 	public int length() {
-		return behaviour_packs.length() + resource_packs.length() + 1;
+		return Var.Uint.length(behaviourPacks.length) + behaviourPacks.length() + Var.Uint.length(resourcePacks.length) + resourcePacks.length() + 1;
 	}
 
 	@Override

@@ -28,7 +28,7 @@ class MoveEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entity_id) + position.length() + 12;
+		return Var.Long.length(entityId) + position.length() + 12;
 	}
 
 	@Override

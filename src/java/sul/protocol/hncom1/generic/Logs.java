@@ -24,7 +24,7 @@ class Logs extends Packet {
 
 	@Override
 	public int length() {
-		return messages.length();
+		return Var.Uint.length(messages.length) + messages.length();
 	}
 
 	@Override

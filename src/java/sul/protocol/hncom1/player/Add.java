@@ -44,7 +44,7 @@ class Add extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hub_id) + Var.Uint.length(protocol) + username.length() + display_name.length() + address.length() + skin.length() + Var.Uint.length(latency) + language.length() + 22;
+		return Var.Uint.length(hubId) + Var.Uint.length(protocol) + Var.Uint.length(username.getBytes(StandardCharset.UTF_8).length) + username.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(displayName.getBytes(StandardCharset.UTF_8).length) + displayName.getBytes(StandardCharset.UTF_8).length + address.length() + skin.length() + Var.Uint.length(latency) + Var.Uint.length(language.getBytes(StandardCharset.UTF_8).length) + language.getBytes(StandardCharset.UTF_8).length + 22;
 	}
 
 	@Override

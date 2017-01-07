@@ -29,7 +29,7 @@ class Animate extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(action) + Var.Long.length(entity_id);
+		return Var.Int.length(action) + Var.Long.length(entityId);
 	}
 
 	@Override

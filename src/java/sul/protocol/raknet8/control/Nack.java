@@ -24,7 +24,7 @@ class Nack extends Packet {
 
 	@Override
 	public int length() {
-		return packets.length();
+		return packets.length() + 2;
 	}
 
 	@Override

@@ -25,7 +25,7 @@ class Ping extends Packet {
 
 	@Override
 	public int length() {
-		return magic.length() + 8;
+		return magic.length() + 10;
 	}
 
 	@Override
