@@ -347,6 +347,13 @@ Packet | DEC | HEX | Clientbound | Serverbound
 
 			**Type**: ubyte
 
+			**Constants**:
+
+			Name | Value
+			---|:---:
+			pocket | 1
+			minecraft | 2
+
 		* uuid
 
 			**Type**: uuid
@@ -412,6 +419,13 @@ Packet | DEC | HEX | Clientbound | Serverbound
 	* game
 
 		**Type**: ubyte
+
+		**Constants**:
+
+		Name | Value
+		---|:---:
+		pocket | 1
+		minecraft | 2
 
 	* uuid
 
@@ -665,6 +679,13 @@ Packet | DEC | HEX | Clientbound | Serverbound
 	* type
 
 		**Type**: ubyte
+
+		**Constants**:
+
+		Name | Value
+		---|:---:
+		pocket | 1
+		minecraft | 2
 
 	* protocols
 

@@ -9,6 +9,8 @@ package sul.utils;
 
 abstract class Packet {
 
+	abstract int length();
+
 	abstract byte[] encode();
 
 	abstract void decode(byte[] buffer);

@@ -32,7 +32,10 @@
 		</type>
 
 		<type name="game">
-			<field name="type" type="ubyte" />
+			<field name="type" type="ubyte">
+				<constant name="pocket" value="1" />
+				<constant name="minecraft" value="2" />
+			</field>
 			<field name="protocols" type="uint[]" />
 			<field name="motd" type="string" />
 			<field name="port" type="ushort" />
@@ -149,7 +152,10 @@
 						<field name="username" type="string" />
 					</variant>
 					<variant name="by-suuid" value="2">
-						<field name="game" type="ubyte" />
+						<field name="game" type="ubyte">
+							<constant name="pocket" value="1" />
+							<constant name="minecraft" value="2" />
+						</field>
 						<field name="uuid" type="uuid" />
 					</variant>
 				</variants>
@@ -170,7 +176,10 @@
 				<field name="username" type="string" />
 				<field name="display-name" type="string" />
 				<field name="address" type="address" />
-				<field name="game" type="ubyte" />
+				<field name="game" type="ubyte">
+					<constant name="pocket" value="1" />
+					<constant name="minecraft" value="2" />
+				</field>
 				<field name="uuid" type="uuid" />
 				<field name="skin" type="skin" />
 				<field name="latency" type="varuint" />

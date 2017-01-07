@@ -298,6 +298,13 @@ Packet | DEC | HEX | Clientbound | Serverbound
 
 		**Type**: ubyte
 
+		**Constants**:
+
+		Name | Value
+		---|:---:
+		pocket | 1
+		minecraft | 2
+
 	* protocols
 
 		**Type**: uint[]

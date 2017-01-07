@@ -1,11 +1,12 @@
 module doc;
 
-import std.algorithm : min, canFind;
+import std.algorithm : min, canFind, sort;
 import std.conv : to;
 static import std.file;
 import std.xml;
 import std.path : dirSeparator;
 import std.string;
+import std.typecons : Tuple, tuple;
 
 import std.stdio : writeln;
 
@@ -100,6 +101,24 @@ void doc(Protocols[string] protocols) {
 		}
 		std.file.write("../doc/" ~ game ~ ".md", data);
 	}
+
+	// index
+	Tuple!(Protocol, string)[size_t][string] p;
+	foreach(game, prts; protocols) {
+		p[prts.software][prts.protocol] = tuple(prts.data, game);
+	}
+	string data;
+	foreach(string name ; sort(p.keys).release()) {
+		data ~= "## " ~ name ~ "\n\n";
+		data ~= "Protocol | Packets\n:---:|:---:\n";
+		foreach(size_t protocol ; sort(p[name].keys).release()) {
+			size_t packets = 0;
+			foreach(section ; p[name][protocol][0].sections) packets += section.packets.length;
+			data ~= "[" ~ to!string(protocol) ~ "](https://github.com/sel-project/sel-utils/tree/master/doc/" ~ p[name][protocol][1] ~ ".md) | " ~ to!string(packets) ~ "\n";
+		}
+		data ~= "\n";
+	}
+	std.file.write("../doc/index.md", data);
 
 }
 

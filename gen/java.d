@@ -57,6 +57,8 @@ package sul.utils;
 
 abstract class Packet {
 
+	abstract int length();
+
 	abstract byte[] encode();
 
 	abstract void decode(byte[] buffer);
@@ -80,6 +82,16 @@ abstract class Packet {
 			string data = "package sul.protocol." ~ game ~ ".types;\n\nimport java.util.UUID;\n\n";
 			if(type.description.length) data ~= javadoc("", type.description);
 			data ~= "final class " ~ toPascalCase(type.name) ~ " {\n\n";
+			foreach(field ; type.fields) {
+				if(field.constants.length) {
+					immutable fieldType = convert(field.type);
+					data ~= "\t// " ~ field.name.replace("_", " ") ~ "\n";
+					foreach(constant ; field.constants) {
+						data ~= "\tpublic final static " ~ fieldType ~ " " ~ toUpper(constant.name) ~ " = (" ~ fieldType ~ ")" ~ constant.value ~ ";\n";
+					}
+					data ~= "\n";
+				}
+			}
 			foreach(i, field; type.fields) {
 				if(field.description.length) {
 					if(i != 0) data ~= "\n";

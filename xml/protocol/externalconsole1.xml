@@ -15,7 +15,10 @@
 		<endianness type="*" value="big-endian" />
 		
 		<type name="game">
-			<field name="type" type="ubyte"></field>
+			<field name="type" type="ubyte">
+				<constant name="pocket" value="1" />
+				<constant name="minecraft" value="2" />
+			</field>
 			<field name="protocols" type="uint[]"></field>
 		</type>
 
@@ -53,7 +56,6 @@
 				<field name="status" type="ubyte"></field>
 				<variants field="status">
 					<variant name="accepted" value="0">
-						
 						<field name="remote-commands" type="bool"></field>
 						<field name="software" type="string"></field>
 						<field name="versions" type="ubyte[3]"></field>

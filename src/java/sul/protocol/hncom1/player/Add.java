@@ -25,6 +25,10 @@ class Add extends Packet {
 	public final static byte TRANSFERRED = (byte)1;
 	public final static byte FORCIBLY_TRANSFERRED = (byte)2;
 
+	// game
+	public final static byte POCKET = (byte)1;
+	public final static byte MINECRAFT = (byte)2;
+
 	public int hubId;
 	public byte reason;
 	public int protocol;

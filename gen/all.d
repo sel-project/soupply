@@ -158,6 +158,11 @@ void main(string[] args) {
 												if("endianness" in attr) field.endianness = attr["endianness"].replace("-", "_");
 												if("when" in attr) field.condition = attr["when"].replace("-", "_");
 											}
+											foreach(c ; f.elements) {
+												if(c.tag.name == "constant") {
+													field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), c.tag.attr["value"]);
+												}
+											}
 											type.fields ~= field;
 										}
 									}
@@ -210,6 +215,11 @@ void main(string[] args) {
 																field.name = f.tag.attr["name"].replace("-", "_");
 																field.type = convert(f.tag.attr["type"].replace("-", "_"));
 																field.description = text(f);
+																foreach(c ; f.elements) {
+																	if(c.tag.name == "constant") {
+																		field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), c.tag.attr["value"]);
+																	}
+																}
 																variant.fields ~= field;
 															}
 														}

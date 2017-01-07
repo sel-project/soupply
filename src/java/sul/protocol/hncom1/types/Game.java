@@ -12,6 +12,10 @@ import java.util.UUID;
 
 final class Game {
 
+	// type
+	public final static byte POCKET = (byte)1;
+	public final static byte MINECRAFT = (byte)2;
+
 	public byte type;
 	public int[] protocols;
 	public String motd;
