@@ -2,23 +2,23 @@
 
 Protocol | Packets
 :---:|:---:
-[1](https://github.com/sel-project/sel-utils/tree/master/doc/externalconsole1.md) | 9
+[1](https://github.com/sel-project/sel-utils/tree/master/doc/externalconsole/1.md) | 9
 
 ## Hub-Node Communication
 
-Protocol | Packets
-:---:|:---:
-[1](https://github.com/sel-project/sel-utils/tree/master/doc/hncom1.md) | 20
+Protocol | Packets | Released | From
+:---:|:---:|:---:|:---:
+[1](https://github.com/sel-project/sel-utils/tree/master/doc/hncom/1.md) | 20 | 2017/1/7 | 1.0.0
 
 ## Minecraft: Pocket Edition
 
-Protocol | Packets
-:---:|:---:
-[100](https://github.com/sel-project/sel-utils/tree/master/doc/pocket100.md) | 74
+Protocol | Packets | Released | From
+:---:|:---:|:---:|:---:
+[100](https://github.com/sel-project/sel-utils/tree/master/doc/pocket/100.md) | 74 | 2016/12/19 | 1.0.0
 
 ## Raknet
 
-Protocol | Packets
-:---:|:---:
-[8](https://github.com/sel-project/sel-utils/tree/master/doc/raknet8.md) | 16
+Protocol | Packets | Released | From
+:---:|:---:|:---:|:---:
+[8](https://github.com/sel-project/sel-utils/tree/master/doc/raknet/8.md) | 16 | 2011/8/16 | Alpha 0.1.0
 

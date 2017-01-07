@@ -2,6 +2,7 @@ module doc;
 
 import std.algorithm : min, canFind, sort;
 import std.conv : to;
+import std.datetime : Date;
 static import std.file;
 import std.xml;
 import std.path : dirSeparator;
@@ -28,6 +29,42 @@ void doc(Protocols[string] protocols) {
 
 	foreach(string game, Protocols ptrs; protocols) {
 		string data = "# " ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "\n\n";
+		if(ptrs.data.released.length) {
+			auto spl = ptrs.data.released.split("/");
+			if(spl.length == 3) {
+				immutable day = spl[2] ~ (){
+					auto ret = spl[2];
+					if(spl[2].length >= 2 && spl[0][$-2] != '1') {
+						if(spl[2][$-1] == '1') return "st";
+						else if(spl[2][$-1] == '2') return "nd";
+						else if(spl[2][$-1] == '3') return "rd";
+					}
+					return "th";
+				}();
+				immutable month = (){
+					final switch(to!size_t(spl[1])) {
+						case 1: return "January";
+						case 2: return "February";
+						case 3: return "March";
+						case 4: return "April";
+						case 5: return "May";
+						case 6: return "June";
+						case 7: return "July";
+						case 8: return "August";
+						case 9: return "September";
+						case 10: return "October";
+						case 11: return "November";
+						case 12: return "December";
+					}
+				}();
+				auto date = Date(to!int(spl[0]), to!int(spl[1]), to!int(spl[2]));
+				data ~= "**Released**: " ~ month ~ " " ~ day ~ ", " ~ spl[0] ~ "\n\n";
+			}
+		}
+		if(ptrs.data.from.length) {
+			if(ptrs.data.to.length) data ~= "Used from **" ~ ptrs.data.from ~ "** to **" ~ ptrs.data.to ~ "**\n\n";
+			else data ~= "In use since **" ~ ptrs.data.from ~ "**\n\n";
+		}
 		if(ptrs.data.description.length) data ~= ptrs.data.description ~ "\n\n";
 		// fields (generic)
 		void writeFields(Field[] fields, size_t spaces=1, string fieldDesc="Fields") {
@@ -99,7 +136,9 @@ void doc(Protocols[string] protocols) {
 				writeFields(type.fields);
 			}
 		}
-		std.file.write("../doc/" ~ game ~ ".md", data);
+		immutable ps = ptrs.protocol.to!string;
+		std.file.mkdirRecurse("../doc/" ~ game[0..$-ps.length]);
+		std.file.write("../doc/" ~ game[0..$-ps.length] ~ "/" ~ ps ~ ".md", data);
 	}
 
 	// index
@@ -109,12 +148,22 @@ void doc(Protocols[string] protocols) {
 	}
 	string data;
 	foreach(string name ; sort(p.keys).release()) {
+		auto sorted = sort(p[name].keys).release();
+		bool _released, _from, _to;
+		foreach(protocols ; p[name]) {
+			_released |= protocols[0].released.length != 0;
+			_from |= protocols[0].from.length != 0;
+			_to |= protocols[0].to.length != 0;
+		}
 		data ~= "## " ~ name ~ "\n\n";
-		data ~= "Protocol | Packets\n:---:|:---:\n";
+		data ~= "Protocol | Packets" ~ (_released ? " | Released" : "") ~ (_from ? " | From" : "") ~ (_to ? " | To" : "") ~ "\n";
+		data ~= ":---:|:---:" ~ (_released ? "|:---:" : "") ~ (_from ? "|:---:" : "") ~ (_to ? "|:---:" : "") ~ "\n";
 		foreach(size_t protocol ; sort(p[name].keys).release()) {
+			immutable ps = to!string(protocol);
+			auto cp = p[name][protocol];
 			size_t packets = 0;
-			foreach(section ; p[name][protocol][0].sections) packets += section.packets.length;
-			data ~= "[" ~ to!string(protocol) ~ "](https://github.com/sel-project/sel-utils/tree/master/doc/" ~ p[name][protocol][1] ~ ".md) | " ~ to!string(packets) ~ "\n";
+			foreach(section ; cp[0].sections) packets += section.packets.length;
+			data ~= "[" ~ ps ~ "](https://github.com/sel-project/sel-utils/tree/master/doc/" ~ cp[1][0..$-ps.length] ~ "/" ~ ps ~ ".md) | " ~ to!string(packets) ~ (_released ? " | " ~ cp[0].released : "") ~ (_from ? " | " ~ cp[0].from : "") ~ (_to ? " | " ~ cp[0].to : "") ~ "\n";
 		}
 		data ~= "\n";
 	}

@@ -6,6 +6,10 @@
 
 	<protocol>8</protocol>
 
+	<released>2011/8/16</released>
+
+	<from>Alpha 0.1.0</from>
+
 	<description>
 		Minecraft: Pocket Edition's networking protocol.
 	</description>

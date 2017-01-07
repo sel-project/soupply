@@ -6,6 +6,10 @@
 
 	<protocol>100</protocol>
 
+	<released>2016/12/19</released>
+
+	<from>1.0.0</from>
+
 	<encoding id="ubyte" arraylength="varuint">
 
 		<endianness type="*" value="big-endian" />

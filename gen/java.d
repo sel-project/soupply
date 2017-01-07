@@ -66,20 +66,76 @@ abstract class Packet {
 }
 	});
 
+	void fieldsLengthImpl(string name, string type, ref size_t fixed, ref string[] exps) {
+		switch(type) {
+			case "bool":
+			case "byte":
+			case "ubyte":
+				fixed += 1;
+				break;
+			case "short":
+			case "ushort":
+				fixed += 2;
+				break;
+			case "triad":
+				fixed += 3;
+				break;
+			case "int":
+			case "uint":
+			case "float":
+				fixed += 4;
+				break;
+			case "long":
+			case "ulong":
+			case "double":
+				fixed += 8;
+				break;
+			case "uuid":
+				fixed += 16;
+				break;
+			case "varshort":
+			case "varushort":
+			case "varint":
+			case "varuint":
+			case "varlong":
+			case "varulong":
+				exps ~= "Var." ~ toPascalCase(type[3..$]) ~ ".length(" ~ name ~ ")";
+				break;
+			default:
+				exps ~= name ~ ".length()";
+				break;
+		}
+	}
+	
+	string fieldsLength(Field[] fields) {
+		size_t fixed = 0;
+		string[] exps;
+		foreach(field ; fields) {
+			fieldsLengthImpl(field.name, field.type, fixed, exps);
+		}
+		if(fixed != 0) exps ~= to!string(fixed);
+		return exps.join(" + ");
+	}
+
 	// protocols
+	string[] tuples;
 	foreach(string game, Protocols prs; protocols) {
 		mkdirRecurse("../src/java/sul/protocol/" ~ game ~ "/types");
 		@property string convert(string type) {
 			auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
 			auto t = type[0..end];
+			auto e = type[end..$];
 			auto a = t in defaultAliases;
-			if(a) t = *a;
-			if(!defaultTypes.canFind(t)) t = toPascalCase(t);
-			return t ~ type[end..$];
+			if(a) return convert(*a ~ e);
+			if(e.length && e[0] == '<') {
+				if(!tuples.canFind(t ~ e)) tuples ~= (t ~ e);
+				return "Tuples." ~ toPascalCase(t) ~ toUpper(e[1..$-1]);
+			} else if(defaultTypes.canFind(t)) return t ~ e;
+			else return toPascalCase(t) ~ e;
 		}
 		immutable id = convert(prs.data.id);
 		foreach(type ; prs.data.types) {
-			string data = "package sul.protocol." ~ game ~ ".types;\n\nimport java.util.UUID;\n\n";
+			string data = "package sul.protocol." ~ game ~ ".types;\n\nimport java.util.UUID;\n\nimport sul.utils.Tuples;\nimport sul.utils.Var;\n\n";
 			if(type.description.length) data ~= javadoc("", type.description);
 			data ~= "final class " ~ toPascalCase(type.name) ~ " {\n\n";
 			foreach(field ; type.fields) {
@@ -106,7 +162,7 @@ abstract class Packet {
 			immutable sectionName = section.name.replace("_", "");
 			mkdirRecurse("../src/java/sul/protocol/" ~ game ~ "/" ~ sectionName);
 			foreach(packet ; section.packets) {
-				string data = "package sul.protocol." ~ game ~ "." ~ sectionName ~ ";\n\nimport java.util.UUID;\n\nimport sul.protocol." ~ game ~ ".types.*;\nimport sul.utils.Packet;\n\n";
+				string data = "package sul.protocol." ~ game ~ "." ~ sectionName ~ ";\n\nimport java.util.UUID;\n\nimport sul.protocol." ~ game ~ ".types.*;\nimport sul.utils.*;\n\n";
 				if(packet.description.length) {
 					data ~= javadoc("", packet.description);
 				}
@@ -131,6 +187,9 @@ abstract class Packet {
 					}
 					data ~= "\tpublic " ~ convert(field.type) ~ " " ~ toCamelCase(field.name) ~ ";\n";
 				}
+				data ~= "\n\t@Override\n\tpublic int length() {\n";
+				data ~= "\t\treturn " ~ fieldsLength(packet.fields) ~ ";\n";
+				data ~= "\t}\n";
 				data ~= "\n\t@Override\n\tpublic byte[] encode() {\n";
 
 				data ~= "\t}\n";
