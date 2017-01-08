@@ -10,7 +10,7 @@ import std.string;
 
 import all;
 
-void java(Attributes[string] attributes, Protocols[string] protocols, JSONValue[string] jsons) {
+void java(Attributes[string] attributes, Protocols[string] protocols, Creative[string] creative) {
 
 	mkdirRecurse("../src/java/sul/utils");
 

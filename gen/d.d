@@ -1,8 +1,7 @@
 module d;
 
-import std.algorithm : canFind, min;
+import std.algorithm : canFind;
 import std.ascii : newline;
-import std.base64 : Base64URL;
 import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
 import std.json;
@@ -12,11 +11,7 @@ import std.typecons;
 
 import all;
 
-string hash(string name) {
-	return Base64URL.encode(cast(ubyte[])name).replace("-", "_").replace("=", "")[0..min($, 16)];
-}
-
-void d(Attributes[string] attributes, Protocols[string] protocols, JSONValue[string] jsons) {
+void d(Attributes[string] attributes, Protocols[string] protocols, Creative[string] creative) {
 
 	mkdirRecurse("../src/d/sul/utils");
 
@@ -130,15 +125,6 @@ alias varulong = var!ulong;
 	}
 
 	//TODO creative inventory
-
-	// metadata
-	{
-		foreach(string game, JSONValue metadatas; jsons["metadata"]) {
-
-			string data = `module sul.metadata;`;
-
-		}
-	}
 
 	// protocol
 	foreach(string game, Protocols prts; protocols) {
@@ -274,7 +260,7 @@ alias varulong = var!ulong;
 				if(field.constants.length) {
 					data ~= space ~ "// " ~ field.name.replace("_", " ") ~ "\n";
 					foreach(constant ; field.constants) {
-						data ~= space ~ "public enum " ~ convertType(field.type) ~ " " ~ toUpper(constant.name) ~ " = " ~ constant.value ~ ";\n";
+						data ~= space ~ "public enum " ~ convertType(field.type) ~ " " ~ toUpper(constant.name) ~ " = " ~ (field.type == "string" ? JSONValue(constant.value).toString() : constant.value) ~ ";\n";
 					}
 					data ~= "\n";
 				}

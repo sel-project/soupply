@@ -1,12 +1,11 @@
 {
 
-	"__game": "Minecraft: Pocket Edition",
+	"__software": "Minecraft: Pocket Edition",
 	"__protocol": 100,
 	"__website": "https://github.com/sel-project/sel-utils",
 
 	"items": [
 
-		{ "__category": "Food & Brewing" },
 		{
 			"name": "Coal",
 			"id": 263
@@ -507,639 +506,790 @@
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 0,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 0,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 0,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 0,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 0,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 0,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 0,
-				"level": 4
-			}
+			"enchantments": [
+				{
+					"id": 0,
+					"level": 4
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 1,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 1,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 1,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 1,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 1,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 1,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 1,
-				"level": 4
-			}
+			"enchantments": [
+				{
+					"id": 1,
+					"level": 4
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 2,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 2,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 2,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 2,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 2,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 2,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 2,
-				"level": 4
-			}
+			"enchantments": [
+				{
+					"id": 2,
+					"level": 4
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 3,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 3,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 3,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 3,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 3,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 3,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 3,
-				"level": 4
-			}
+			"enchantments": [
+				{
+					"id": 3,
+					"level": 4
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 4,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 4,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 4,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 4,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 4,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 4,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 4,
-				"level": 4
-			}
+			"enchantments": [
+				{
+					"id": 4,
+					"level": 4
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 5,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 5,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 5,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 5,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 5,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 5,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 6,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 6,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 6,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 6,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 6,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 6,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 7,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 7,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 7,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 7,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 7,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 7,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 8,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 8,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 9,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 9,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 9,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 9,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 9,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 9,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 9,
-				"level": 4
-			}
+			"enchantments": [
+				{
+					"id": 9,
+					"level": 4
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 9,
-				"level": 5
-			}
+			"enchantments": [
+				{
+					"id": 9,
+					"level": 5
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 10,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 10,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 10,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 10,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 10,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 10,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 10,
-				"level": 4
-			}
+			"enchantments": [
+				{
+					"id": 10,
+					"level": 4
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 10,
-				"level": 5
-			}
+			"enchantments": [
+				{
+					"id": 10,
+					"level": 5
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 11,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 11,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 11,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 11,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 11,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 11,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 11,
-				"level": 4
-			}
+			"enchantments": [
+				{
+					"id": 11,
+					"level": 4
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 11,
-				"level": 5
-			}
+			"enchantments": [
+				{
+					"id": 11,
+					"level": 5
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 12,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 12,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 12,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 12,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 13,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 13,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 13,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 13,
+					"level": 2
+				},
+				{
+					"id": 14,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 14,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 14,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 14,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 14,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 14,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 15,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 15,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 15,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 15,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 15,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 15,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 15,
+					"level": 4
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 15,
-				"level": 4
-			}
+			"enchantments": [
+				{
+					"id": 15,
+					"level": 5
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 15,
-				"level": 5
-			}
+			"enchantments": [
+				{
+					"id": 16,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 16,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 17,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 17,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 17,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 17,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 17,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 17,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 18,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 18,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 18,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 18,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 18,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 18,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 19,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 19,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 19,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 19,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 19,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 19,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 19,
+					"level": 4
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 19,
-				"level": 4
-			}
+			"enchantments": [
+				{
+					"id": 19,
+					"level": 5
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 19,
-				"level": 5
-			}
+			"enchantments": [
+				{
+					"id": 20,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 20,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 20,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 20,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 21,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 21,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 22,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 22,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 23,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 23,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 23,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 23,
-				"level": 2
-			}
+			"enchantments": [
+				{
+					"id": 23,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 23,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 24,
+					"level": 1
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 24,
-				"level": 1
-			}
+			"enchantments": [
+				{
+					"id": 24,
+					"level": 2
+				}
+			]
 		},
 		{
 			"name": "Enchanted Book",
 			"id": 403,
-			"enchantment": {
-				"type": 24,
-				"level": 2
-			}
-		},
-		{
-			"name": "Enchanted Book",
-			"id": 403,
-			"enchantment": {
-				"type": 24,
-				"level": 3
-			}
+			"enchantments": [
+				{
+					"id": 24,
+					"level": 3
+				}
+			]
 		},
 		{
 			"name": "Ink Sac",
-			"id": 351,
-			"meta": 0
+			"id": 351
 		},
 		{
 			"name": "Grey Dye",
@@ -1772,8 +1922,6 @@
 			"id": 466,
 			"meta": 36
 		},
-		
-		{ "__category": "Weapons" },
 		{
 			"name": "Rail",
 			"id": 66
@@ -2385,8 +2533,6 @@
 			"name": "Eye of Ender",
 			"id": 381
 		},
-		
-		{ "__category": "Decoration Blocks"},
 		{
 			"name": "Beacon",
 			"id": 138
@@ -2698,8 +2844,7 @@
 		},
 		{
 			"name": "Sunflower",
-			"id": 175,
-			"meta": 0
+			"id": 175
 		},
 		{
 			"name": "Lilac",
@@ -2746,8 +2891,7 @@
 		},
 		{
 			"name": "Mushroom",
-			"id": 99,
-			"meta": 0
+			"id": 99
 		},
 		{
 			"name": "Mushroom",
@@ -2941,8 +3085,7 @@
 		},
 		{
 			"name": "Wool",
-			"id": 35,
-			"meta": 0
+			"id": 35
 		},
 		{
 			"name": "Light Grey Wool",
@@ -3021,8 +3164,7 @@
 		},
 		{
 			"name": "Carpet",
-			"id": 171,
-			"meta": 0
+			"id": 171
 		},
 		{
 			"name": "Light Grey Carpet",
@@ -3099,8 +3241,6 @@
 			"id": 171,
 			"meta": 6
 		},
-		
-		{ "__category": "Building Blocks" },
 		{
 			"name": "Cobblestone",
 			"id": 4
@@ -3221,8 +3361,7 @@
 		},
 		{
 			"name": "White Stained Clay",
-			"id": 159,
-			"meta": 0
+			"id": 159
 		},
 		{
 			"name": "Orange Stained Clay",
@@ -3342,8 +3481,7 @@
 		},
 		{
 			"name": "Oak Wood",
-			"id": 17,
-			"meta": 0
+			"id": 17
 		},
 		{
 			"name": "Spruce Wood",
@@ -3362,8 +3500,7 @@
 		},
 		{
 			"name": "Acacia Wood",
-			"id": 162,
-			"meta": 0
+			"id": 162
 		},
 		{
 			"name": "Dark Oak Wood",
@@ -3492,8 +3629,7 @@
 		},
 		{
 			"name": "Red Sandstone Slab",
-			"id": 182,
-			"meta": 0
+			"id": 182
 		},
 		{
 			"name": "Stone Bricks Slab",
@@ -3607,7 +3743,7 @@
 			"name": "End Stone",
 			"id": 121
 		}
-		
+
 	]
 
 }

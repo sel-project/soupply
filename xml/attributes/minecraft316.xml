@@ -21,7 +21,7 @@
 		default="0" />
 
 	<attribute
-		id="speed"
+		id="movement-speed"
 		name="generic.movementSpeed"
 		min="0"
 		max="24791"
@@ -33,5 +33,19 @@
 		min="0"
 		max="1"
 		default="0" />
+
+	<attribute
+		id="attack-damage"
+		name="generic.attackDamage"
+		min="0"
+		max="2048"
+		default="2" />
+
+	<attribute
+		id="attack-speed"
+		name="generic.attackSpeed"
+		min="0"
+		max="1024"
+		default="4" />
 
 </attributes>

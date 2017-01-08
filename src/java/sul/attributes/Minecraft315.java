@@ -14,9 +14,13 @@ public enum Minecraft315 {
 
 	ABSORPTION("generic.absorption", 0, 4, 0);
 
-	SPEED("generic.movementSpeed", 0, 24791, 0.1);
+	MOVEMENT_SPEED("generic.movementSpeed", 0, 24791, 0.1);
 
 	KNOCKBACK_RESISTANCE("generic.knockbackResistance", 0, 1, 0);
+
+	ATTACK_DAMAGE("generic.attackDamage", 0, 2048, 2);
+
+	ATTACK_SPEED("generic.attackSpeed", 0, 1024, 4);
 
 	public final String name;
 	public final float min, max, def;

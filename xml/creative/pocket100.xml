@@ -1,0 +1,920 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<creative>
+
+	<software>Minecraft: Pocket Edition</software>
+
+	<protocol>100</protocol>
+
+	<category name="Food and Brewing">
+
+		<item name="Coal" id="263" />
+		<item name="Charcoal" id="263" meta="1" />
+		<item name="Diamond" id="264" />
+		<item name="Iron Ingot" id="265" />
+		<item name="Gold Ingot" id="266" />
+		<item name="Emerald" id="388" />
+		<item name="Stick" id="280" />
+		<item name="Bowl" id="281" />
+		<item name="String" id="287" />
+		<item name="Feather" id="288" />
+		<item name="Flint" id="318" />
+		<item name="Leather" id="334" />
+		<item name="Rabbit Hide" id="415" />
+		<item name="Clay" id="337" />
+		<item name="Sugar" id="353" />
+		<item name="Brick" id="336" />
+		<item name="Nether Brick" id="405" />
+		<item name="Nether Quartz" id="406" />
+		<item name="Paper" id="339" />
+		<item name="Book" id="340" />
+		<item name="Arrow" id="262" />
+		<item name="Bone" id="352" />
+		<item name="Empty Map" id="395" />
+		<item name="Sugar Canes" id="338" />
+		<item name="Wheat" id="296" />
+		<item name="Arrow of Night Vision" id="262" meta="5" />
+		<item name="Arrow of Night Vision" id="262" meta="6" />
+		<item name="Arrow of Invisibility" id="262" meta="7" />
+		<item name="Arrow of Invisibility" id="262" meta="8" />
+		<item name="Arrow of Leaping" id="262" meta="9" />
+		<item name="Arrow of Leaping" id="262" meta="10" />
+		<item name="Arrow of Leaping" id="262" meta="11" />
+		<item name="Arrow of Fire Resistance" id="262" meta="12" />
+		<item name="Arrow of Fire Resistance" id="262" meta="13" />
+		<item name="Arrow of Swiftness" id="262" meta="14" />
+		<item name="Arrow of Swiftness" id="262" meta="15" />
+		<item name="Arrow of Swiftness" id="262" meta="16" />
+		<item name="Arrow of Slowness" id="262" meta="17" />
+		<item name="Arrow of Slowness" id="262" meta="18" />
+		<item name="Arrow of Water Breathing" id="262" meta="19" />
+		<item name="Arrow of Water Breathing" id="262" meta="20" />
+		<item name="Arrow of Healing" id="262" meta="21" />
+		<item name="Arrow of Healing" id="262" meta="22" />
+		<item name="Arrow of Harming" id="262" meta="23" />
+		<item name="Arrow of Harming" id="262" meta="24" />
+		<item name="Arrow of Poison" id="262" meta="25" />
+		<item name="Arrow of Poison" id="262" meta="26" />
+		<item name="Arrow of Poison" id="262" meta="27" />
+		<item name="Arrow of Regeneration" id="262" meta="28" />
+		<item name="Arrow of Regeneration" id="262" meta="29" />
+		<item name="Arrow of Regeneration" id="262" meta="30" />
+		<item name="Arrow of Strength" id="262" meta="31" />
+		<item name="Arrow of Strength" id="262" meta="32" />
+		<item name="Arrow of Strength" id="262" meta="33" />
+		<item name="Arrow of Weakness" id="262" meta="34" />
+		<item name="Arrow of Weakness" id="262" meta="35" />
+		<item name="Arrow of Decay" id="262" meta="36" />
+		<item name="Seeds" id="295" />
+		<item name="Pumpkin Seeds" id="361" />
+		<item name="Melon Seeds" id="362" />
+		<item name="Beetroot Seeds" id="458" />
+		<item name="Egg" id="344" />
+		<item name="Apple" id="260" />
+		<item name="Golden Apple" id="322" />
+		<item name="Golden Apple" id="466" />
+		<item name="Raw Fish" id="349" />
+		<item name="Raw Salmon" id="460" />
+		<item name="Clownfish" id="461" />
+		<item name="Pufferfish" id="462" />
+		<item name="Cooked Fish" id="350" />
+		<item name="Cooked Salmon" id="463" />
+		<item name="Rotten flesh" id="367" />
+		<item name="Mushroom Stew" id="282" />
+		<item name="Bread" id="297" />
+		<item name="Raw Porkchop" id="319" />
+		<item name="Cooked Porkchop" id="320" />
+		<item name="Raw Chicken" id="365" />
+		<item name="Cooked Chicken" id="366" />
+		<item name="Raw Mutton" id="423" />
+		<item name="Cooked Mutton" id="424" />
+		<item name="Raw Beef" id="363" />
+		<item name="Steak" id="364" />
+		<item name="Melon" id="360" />
+		<item name="Carrot" id="391" />
+		<item name="Potato" id="392" />
+		<item name="Baked Potato" id="393" />
+		<item name="Poisonous Potato" id="394" />
+		<item name="Beetroot" id="457" />
+		<item name="Cookie" id="357" />
+		<item name="Pumpkin Pie" id="400" />
+		<item name="Raw Rabbit" id="411" />
+		<item name="Cooked Rabbit" id="412" />
+		<item name="Rabbit Stew" id="413" />
+		<item name="Chorus Fruit" id="432" />
+		<item name="Popped Chorus Fruit" id="433" />
+		<item name="Nether Star" id="399" />
+		<item name="Magma Cream" id="378" />
+		<item name="Blaze Rod" id="369" />
+		<item name="Gold Nugget" id="371" />
+		<item name="Golden Carrot" id="396" />
+		<item name="Glistering Melon" id="382" />
+		<item name="Rabbit's Foot" id="414" />
+		<item name="Ghast Tear" id="370" />
+		<item name="Slimeball" id="341" />
+		<item name="Blaze Powder" id="377" />
+		<item name="Nether Wart" id="372" />
+		<item name="Gunpowder" id="289" />
+		<item name="Glowstone Dust" id="348" />
+		<item name="Spider Eye" id="375" />
+		<item name="Fermented Spider Eye" id="376" />
+		<item name="Dragon's breath" id="437" />
+		<item name="Carrot on a stick" id="398" />
+		<item name="Bottle o' Enchanting" id="384" />
+		<item name="Shulker Shell" id="445" />
+		<item name="Prismarine Shard" id="409" />
+		<item name="Prismarine Crystals" id="422" />
+		<item name="Enchanted Book" id="403">
+			<enchantment id="0" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="0" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="0" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="0" level="4" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="1" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="1" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="1" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="1" level="4" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="2" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="2" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="2" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="2" level="4" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="3" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="3" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="3" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="3" level="4" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="4" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="4" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="4" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="4" level="4" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="5" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="5" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="5" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="6" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="6" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="6" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="7" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="7" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="7" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="8" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="9" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="9" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="9" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="9" level="4" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="9" level="5" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="10" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="10" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="10" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="10" level="4" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="10" level="5" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="11" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="11" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="11" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="11" level="4" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="11" level="5" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="12" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="12" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="13" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="13" level="2" />
+		<item name="Enchanted Book" id="403">
+		</item>
+			<enchantment id="14" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="14" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="14" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="15" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="15" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="15" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="15" level="4" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="15" level="5" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="16" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="17" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="17" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="17" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="18" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="18" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="18" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="19" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="19" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="19" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="19" level="4" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="19" level="5" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="20" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="20" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="21" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="22" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="23" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="23" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="23" level="3" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="24" level="1" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="24" level="2" />
+		</item>
+		<item name="Enchanted Book" id="403">
+			<enchantment id="24" level="3" />
+		</item>
+		<item name="Ink Sac" id="351" meta="0" />
+		<item name="Grey Dye" id="351" meta="8" />
+		<item name="Light Grey Dye" id="351" meta="7" />
+		<item name="Bone Meal" id="351" meta="15" />
+		<item name="Light Blue Dye" id="351" meta="12" />
+		<item name="Orange Dye" id="351" meta="14" />
+		<item name="Rose Red" id="351" meta="1" />
+		<item name="Lapis Lazuli" id="351" meta="4" />
+		<item name="Purple Dye" id="351" meta="5" />
+		<item name="Magenta Dye" id="351" meta="13" />
+		<item name="Pink Dye" id="351" meta="9" />
+		<item name="Cocoa Beans" id="351" meta="3" />
+		<item name="Dandelion Yellow" id="351" meta="11" />
+		<item name="Lime Dye" id="351" meta="10" />
+		<item name="Cactus Green" id="351" meta="2" />
+		<item name="Cyan Dye" id="351" meta="6" />
+		<item name="Glass Bottle" id="374" />
+		<item name="Water Bottle" id="373" />
+		<item name="Mundane Potion" id="373" meta="1" />
+		<item name="Mundane Potion" id="373" meta="2" />
+		<item name="Thick Potion" id="373" meta="3" />
+		<item name="Awkward Potion" id="373" meta="4" />
+		<item name="Potion of Night Vision" id="373" meta="5" />
+		<item name="Potion of Night Vision" id="373" meta="6" />
+		<item name="Potion of Invisibility" id="373" meta="7" />
+		<item name="Potion of Invisibility" id="373" meta="8" />
+		<item name="Potion of Leaping" id="373" meta="9" />
+		<item name="Potion of Leaping" id="373" meta="10" />
+		<item name="Potion of Leaping" id="373" meta="11" />
+		<item name="Potion of Fire Resistance" id="373" meta="12" />
+		<item name="Potion of Fire Resistance" id="373" meta="13" />
+		<item name="Potion of Swiftness" id="373" meta="14" />
+		<item name="Potion of Swiftness" id="373" meta="15" />
+		<item name="Potion of Swiftness" id="373" meta="16" />
+		<item name="Potion of Slowness" id="373" meta="17" />
+		<item name="Potion of Slowness" id="373" meta="18" />
+		<item name="Potion of Water Breathing" id="373" meta="19" />
+		<item name="Potion of Water Breathing" id="373" meta="20" />
+		<item name="Potion of Healing" id="373" meta="21" />
+		<item name="Potion of Healing" id="373" meta="22" />
+		<item name="Potion of Harming" id="373" meta="23" />
+		<item name="Potion of Harming" id="373" meta="24" />
+		<item name="Potion of Poison" id="373" meta="25" />
+		<item name="Potion of Poison" id="373" meta="26" />
+		<item name="Potion of Poison" id="373" meta="27" />
+		<item name="Potion of Regeneration" id="373" meta="28" />
+		<item name="Potion of Regeneration" id="373" meta="29" />
+		<item name="Potion of Regeneration" id="373" meta="30" />
+		<item name="Potion of Strength" id="373" meta="31" />
+		<item name="Potion of Strength" id="373" meta="32" />
+		<item name="Potion of Strength" id="373" meta="33" />
+		<item name="Potion of Weakness" id="373" meta="34" />
+		<item name="Potion of Weakness" id="373" meta="35" />
+		<item name="Potion of Decay" id="373" meta="36" />
+		<item name="Splash Water Bottle" id="438" />
+		<item name="Splash Mundane Potion" id="438" meta="1" />
+		<item name="Splash Mundane Potion" id="438" meta="2" />
+		<item name="Splash Thick Potion" id="438" meta="3" />
+		<item name="Splash Awkward Potion" id="438" meta="4" />
+		<item name="Splash Potion of Night Vision" id="438" meta="5" />
+		<item name="Splash Potion of Night Vision" id="438" meta="6" />
+		<item name="Splash Potion of Invisibility" id="438" meta="7" />
+		<item name="Splash Potion of Invisibility" id="438" meta="8" />
+		<item name="Splash Potion of Leaping" id="438" meta="9" />
+		<item name="Splash Potion of Leaping" id="438" meta="10" />
+		<item name="Splash Potion of Leaping" id="438" meta="11" />
+		<item name="Splash Potion of Fire Resistance" id="438" meta="12" />
+		<item name="Splash Potion of Fire Resistance" id="438" meta="13" />
+		<item name="Splash Potion of Swiftness" id="438" meta="14" />
+		<item name="Splash Potion of Swiftness" id="438" meta="15" />
+		<item name="Splash Potion of Swiftness" id="438" meta="16" />
+		<item name="Splash Potion of Slowness" id="438" meta="17" />
+		<item name="Splash Potion of Slowness" id="438" meta="18" />
+		<item name="Splash Potion of Water Breathing" id="438" meta="19" />
+		<item name="Splash Potion of Water Breathing" id="438" meta="20" />
+		<item name="Splash Potion of Healing" id="438" meta="21" />
+		<item name="Splash Potion of Healing" id="438" meta="22" />
+		<item name="Splash Potion of Harming" id="438" meta="23" />
+		<item name="Splash Potion of Harming" id="438" meta="24" />
+		<item name="Splash Potion of Poison" id="438" meta="25" />
+		<item name="Splash Potion of Poison" id="438" meta="26" />
+		<item name="Splash Potion of Poison" id="438" meta="27" />
+		<item name="Splash Potion of Regeneration" id="438" meta="28" />
+		<item name="Splash Potion of Regeneration" id="438" meta="29" />
+		<item name="Splash Potion of Regeneration" id="438" meta="30" />
+		<item name="Splash Potion of Strength" id="438" meta="31" />
+		<item name="Splash Potion of Strength" id="438" meta="32" />
+		<item name="Splash Potion of Strength" id="438" meta="33" />
+		<item name="Splash Potion of Weakness" id="438" meta="34" />
+		<item name="Splash Potion of Weakness" id="438" meta="35" />
+		<item name="Splash Potion of Decay" id="438" meta="36" />
+		<item name="Lingering Water Bottle" id="466" />
+		<item name="Lingering Mundane Potion" id="466" meta="1" />
+		<item name="Lingering Mundane Potion" id="466" meta="2" />
+		<item name="Lingering Thick Potion" id="466" meta="3" />
+		<item name="Lingering Awkward Potion" id="466" meta="4" />
+		<item name="Lingering Potion of Night Vision" id="466" meta="5" />
+		<item name="Lingering Potion of Night Vision" id="466" meta="6" />
+		<item name="Lingering Potion of Invisibility" id="466" meta="7" />
+		<item name="Lingering Potion of Invisibility" id="466" meta="8" />
+		<item name="Lingering Potion of Leaping" id="466" meta="9" />
+		<item name="Lingering Potion of Leaping" id="466" meta="10" />
+		<item name="Lingering Potion of Leaping" id="466" meta="11" />
+		<item name="Lingering Potion of Fire Resistance" id="466" meta="12" />
+		<item name="Lingering Potion of Fire Resistance" id="466" meta="13" />
+		<item name="Lingering Potion of Swiftness" id="466" meta="14" />
+		<item name="Lingering Potion of Swiftness" id="466" meta="15" />
+		<item name="Lingering Potion of Swiftness" id="466" meta="16" />
+		<item name="Lingering Potion of Slowness" id="466" meta="17" />
+		<item name="Lingering Potion of Slowness" id="466" meta="18" />
+		<item name="Lingering Potion of Water Breathing" id="466" meta="19" />
+		<item name="Lingering Potion of Water Breathing" id="466" meta="20" />
+		<item name="Lingering Potion of Healing" id="466" meta="21" />
+		<item name="Lingering Potion of Healing" id="466" meta="22" />
+		<item name="Lingering Potion of Harming" id="466" meta="23" />
+		<item name="Lingering Potion of Harming" id="466" meta="24" />
+		<item name="Lingering Potion of Poison" id="466" meta="25" />
+		<item name="Lingering Potion of Poison" id="466" meta="26" />
+		<item name="Lingering Potion of Poison" id="466" meta="27" />
+		<item name="Lingering Potion of Regeneration" id="466" meta="28" />
+		<item name="Lingering Potion of Regeneration" id="466" meta="29" />
+		<item name="Lingering Potion of Regeneration" id="466" meta="30" />
+		<item name="Lingering Potion of Strength" id="466" meta="31" />
+		<item name="Lingering Potion of Strength" id="466" meta="32" />
+		<item name="Lingering Potion of Strength" id="466" meta="33" />
+		<item name="Lingering Potion of Weakness" id="466" meta="34" />
+		<item name="Lingering Potion of Weakness" id="466" meta="35" />
+		<item name="Lingering Potion of Decay" id="466" meta="36" />
+
+	</category>
+
+	<category name="Weapons">
+
+		<item name="Rail" id="66" />
+		<item name="Powered Rail" id="27" />
+		<item name="Detector Rail" id="28" />
+		<item name="Activator Rail" id="126" />
+		<item name="Torch" id="50" />
+		<item name="Bucket" id="325" />
+		<item name="Milk" id="325" meta="1" />
+		<item name="Water Bucket" id="325" meta="8" />
+		<item name="Lava Bucket" id="325" meta="10" />
+		<item name="TNT" id="46" />
+		<item name="Lead" id="420" />
+		<item name="Name Tag" id="421" />
+		<item name="Redstone" id="331" />
+		<item name="Bow" id="261" />
+		<item name="Fishing Rod" id="346" />
+		<item name="Flint and Steel" id="259" />
+		<item name="Shears" id="359" />
+		<item name="Clock" id="347" />
+		<item name="Compass" id="345" />
+		<item name="Minecart" id="328" />
+		<item name="Minecart with Chest" id="342" />
+		<item name="Minecart with Hopper" id="408" />
+		<item name="Minecart with TNT" id="407" />
+		<item name="Oak Boat" id="333" />
+		<item name="Spruce Boat" id="333" meta="1" />
+		<item name="Birch Boat" id="333" meta="2" />
+		<item name="Jungle Boat" id="333" meta="3" />
+		<item name="Acacia Boat" id="333" meta="4" />
+		<item name="Dark Oak Boat" id="333" meta="5" />
+		<item name="Saddle" id="329" />
+		<item name="Leather Horse Armor" id="416" />
+		<item name="Iron Horse Armor" id="417" />
+		<item name="Gold Horse Armor" id="418" />
+		<item name="Diamond Horse Armor" id="419" />
+		<item name="Spawn Villager" id="383" meta="15" />
+		<item name="Spawn Chicken" id="383" meta="10" />
+		<item name="Spawn Cow" id="383" meta="11" />
+		<item name="Spawn Pig" id="383" meta="12" />
+		<item name="Spawn Sheep" id="383" meta="13" />
+		<item name="Spawn Wolf" id="383" meta="14" />
+		<item name="Spawn Polar Bear" id="383" meta="28" />
+		<item name="Spawn Ocelot" id="383" meta="22" />
+		<item name="Spawn Mooshroom" id="383" meta="16" />
+		<item name="Spawn Bat" id="383" meta="19" />
+		<item name="Spawn Rabbit" id="383" meta="18" />
+		<item name="Spawn Horse" id="383" meta="23" />
+		<item name="Spawn Donkey" id="383" meta="24" />
+		<item name="Spawn Mule" id="383" meta="25" />
+		<item name="Spawn Skeleton Horse" id="383" meta="26" />
+		<item name="Spawn Zombie Horse" id="383" meta="27" />
+		<item name="Spawn Creeper" id="383" meta="33" />
+		<item name="Spawn Enderman" id="383" meta="38" />
+		<item name="Spawn Silverfish" id="383" meta="39" />
+		<item name="Spawn Skeleton" id="383" meta="34" />
+		<item name="Spawn Wither Horse" id="383" meta="48" />
+		<item name="Spawn Stray" id="383" meta="46" />
+		<item name="Spawn Slime" id="383" meta="37" />
+		<item name="Spawn Spider" id="383" meta="35" />
+		<item name="Spawn Zombie" id="383" meta="32" />
+		<item name="Spawn Zombie Pigman" id="383" meta="36" />
+		<item name="Spawn Husk" id="383" meta="47" />
+		<item name="Spawn Squid" id="383" meta="17" />
+		<item name="Spawn Cave Spider" id="383" meta="40" />
+		<item name="Spawn Witch" id="383" meta="45" />
+		<item name="Spawn Guardian" id="383" meta="49" />
+		<item name="Spawn Elder Guardian" id="383" meta="50" />
+		<item name="Spawn Endermite" id="383" meta="55" />
+		<item name="Spawn Magma Cube" id="383" meta="42" />
+		<item name="Spawn Ghast" id="383" meta="41" />
+		<item name="Spawn Blaze" id="383" meta="43" />
+		<item name="Spawn Shulker" id="383" meta="54" />
+		<item name="Fire Charge" id="385" />
+		<item name="Wooden Sword" id="268" />
+		<item name="Wooden Hoe" id="290" />
+		<item name="Wooden Shovel" id="269" />
+		<item name="Wooden Pickaxe" id="270" />
+		<item name="Wooden Axe" id="271" />
+		<item name="Stone Sword" id="272" />
+		<item name="Stone Hoe" id="291" />
+		<item name="Stone Shovel" id="273" />
+		<item name="Stone Pickaxe" id="274" />
+		<item name="Stone Axe" id="275" />
+		<item name="Iron Sword" id="267" />
+		<item name="Iron Hoe" id="292" />
+		<item name="Iron Shovel" id="256" />
+		<item name="Iron Pickaxe" id="257" />
+		<item name="Iron Axe" id="258" />
+		<item name="Diamond Sword" id="276" />
+		<item name="Diamond Hoe" id="293" />
+		<item name="Diamond Shovel" id="277" />
+		<item name="Diamond Pickaxe" id="278" />
+		<item name="Diamond Axe" id="279" />
+		<item name="Golden Sword" id="283" />
+		<item name="Golden Hoe" id="294" />
+		<item name="Golden Shovel" id="284" />
+		<item name="Golden Pickaxe" id="285" />
+		<item name="Golden Axe" id="286" />
+		<item name="Leather Cap" id="298" />
+		<item name="Leather Tunic" id="299" />
+		<item name="Leather Pants" id="300" />
+		<item name="Leather Boots" id="301" />
+		<item name="Chain Helmet" id="302" />
+		<item name="Chain Chestplate" id="303" />
+		<item name="Chain Leggings" id="304" />
+		<item name="Chain Boots" id="305" />
+		<item name="Iron Helmet" id="306" />
+		<item name="Iron Chestplate" id="307" />
+		<item name="Iron Leggings" id="308" />
+		<item name="Iron Boots" id="309" />
+		<item name="Diamond Helmet" id="310" />
+		<item name="Diamond Chestplate" id="311" />
+		<item name="Diamond Leggings" id="312" />
+		<item name="Diamond Boots" id="313" />
+		<item name="Golden Helmet" id="314" />
+		<item name="Golden Chestplate" id="315" />
+		<item name="Golden Leggings" id="316" />
+		<item name="Golden Boots" id="317" />
+		<item name="Elytra Wings" id="444" />
+		<item name="Lever" id="69" />
+		<item name="Redstone Lamp" id="123" />
+		<item name="Redstone Torch" id="76" />
+		<item name="Wooden Pressure Plate" id="72" />
+		<item name="Stone Pressure Plate" id="70" />
+		<item name="Weighted Pressure Plate (Light)" id="147" />
+		<item name="Weighted Pressure Plate (Heavy)" id="148" />
+		<item name="Button" id="143" meta="5" />
+		<item name="Button" id="77" meta="5" />
+		<item name="Daylight Sensor" id="151" />
+		<item name="Tripwire Hook" id="131" />
+		<item name="Redstone Repeater" id="356" />
+		<item name="Redstone Comparator" id="404" />
+		<item name="Dispenser" id="23" meta="3" />
+		<item name="Dropper" id="125" meta="3" />
+		<item name="Piston" id="33" meta="1" />
+		<item name="Sticky Piston" id="29" meta="1" />
+		<item name="Observer" id="251" />
+		<item name="Hopper" id="410" />
+		<item name="Snowball" id="332" />
+		<item name="Ender Pearl" id="368" />
+		<item name="Eye of Ender" id="381" />
+
+	</category>
+
+	<category name="Decoration Blocks">
+
+		<item name="Beacon" id="138" />
+		<item name="Cobblestone Wall" id="139" />
+		<item name="Mossy Cobblestone Wall" id="139" meta="1" />
+		<item name="Lily Pad" id="111" />
+		<item name="Sea Lantern" id="169" />
+		<item name="Chorus Plant" id="240" />
+		<item name="Chorus Flower" id="200" />
+		<item name="Block of Gold" id="41" />
+		<item name="Block of Iron" id="42" />
+		<item name="Block of Diamond" id="57" />
+		<item name="Lapis Lazuli Block" id="22" />
+		<item name="Block of Coal" id="173" />
+		<item name="Block of Emerald" id="133" />
+		<item name="Block of Redstone" id="152" />
+		<item name="Top Snow" id="78" />
+		<item name="Glass" id="20" />
+		<item name="Glowstone" id="89" />
+		<item name="Vines" id="106" />
+		<item name="Ladder" id="65" />
+		<item name="Sponge" id="19" />
+		<item name="Wet Sponge" id="19" meta="1" />
+		<item name="Glass Pane" id="102" />
+		<item name="Oak Door" id="324" />
+		<item name="Spruce Door" id="427" />
+		<item name="Birch Door" id="428" />
+		<item name="Jungle Door" id="429" />
+		<item name="Acacia Door" id="430" />
+		<item name="Dark Oak Wood" id="431" />
+		<item name="Iron Door" id="330" />
+		<item name="Wooden Trapdoor" id="96" />
+		<item name="Iron Trapdoor" id="167" />
+		<item name="Oak Fence" id="85" />
+		<item name="Spruce Fence gate" id="85" meta="1" />
+		<item name="Birch Fence" id="85" meta="2" />
+		<item name="Jungle Fence" id="85" meta="3" />
+		<item name="Acacia Fence" id="85" meta="4" />
+		<item name="Dark Oak Fence" id="85" meta="5" />
+		<item name="Nether Brick Fence" id="113" />
+		<item name="Oak Fence Gate" id="107" />
+		<item name="Spruce Fence Gate" id="183" />
+		<item name="Birch Fence Gate" id="184" />
+		<item name="Jungle Fence Gate" id="185" />
+		<item name="Acacia Fence Gate" id="187" />
+		<item name="Dark Oak Fence Gate" id="186" />
+		<item name="Iron Bars" id="101" />
+		<item name="Bed" id="355" />
+		<item name="Bookshelf" id="47" />
+		<item name="Sign" id="323" />
+		<item name="Painting" id="321" />
+		<item name="Item Frame" id="389" />
+		<item name="Crafting Table" id="58" />
+		<item name="Stonecutter" id="245" />
+		<item name="Chest" id="54" />
+		<item name="Trapped Chest" id="146" />
+		<item name="Furnace" id="61" />
+		<item name="Brewing Stand" id="379" />
+		<item name="Cauldron" id="380" />
+		<item name="Note Block" id="25" />
+		<item name="End Rod" id="208" />
+		<item name="End Portal" id="120" />
+		<item name="Anvil" id="145" />
+		<item name="Slightly Damaged Anvil" id="145" meta="4" />
+		<item name="Very Damaged Anvil" id="145" meta="8" />
+		<item name="Dandelion" id="37" />
+		<item name="Poppy" id="38" />
+		<item name="Blue Orchid" id="38" meta="1" />
+		<item name="Allium" id="38" meta="2" />
+		<item name="Azure Bluet" id="38" meta="3" />
+		<item name="Red Tulip" id="38" meta="4" />
+		<item name="Orange Tulip" id="38" meta="5" />
+		<item name="White Tulip" id="38" meta="6" />
+		<item name="Pink Tulip" id="38" meta="7" />
+		<item name="Oxeye Daisy" id="38" meta="8" />
+		<item name="Sunflower" id="175" meta="0" />
+		<item name="Lilac" id="175" meta="1" />
+		<item name="Double Tallgrass" id="175" meta="2" />
+		<item name="Large Fern" id="175" meta="3" />
+		<item name="Rose Bush" id="175" meta="4" />
+		<item name="Peony" id="175" meta="5" />
+		<item name="Mushroom" id="39" />
+		<item name="Mushroom" id="40" />
+		<item name="Mushroom" id="99" meta="14" />
+		<item name="Mushroom" id="100" meta="14" />
+		<item name="Mushroom" id="99" meta="0" />
+		<item name="Mushroom" id="99" meta="15" />
+		<item name="Cactus" id="81" />
+		<item name="Melon" id="103" />
+		<item name="Pumpkin" id="86" />
+		<item name="Jack o'Lantern" id="91" />
+		<item name="Cobweb" id="30" />
+		<item name="Hay Bale" id="170" />
+		<item name="Grass" id="31" meta="1" />
+		<item name="Fern" id="31" meta="2" />
+		<item name="Dead Bush" id="32" />
+		<item name="Oak Sapling" id="6" />
+		<item name="Spruce Sapling" id="6" meta="1" />
+		<item name="Birch Sapling" id="6" meta="2" />
+		<item name="Jungle Sapling" id="6" meta="3" />
+		<item name="Acacia Sapling" id="6" meta="4" />
+		<item name="Dark Oak Sapling" id="6" meta="5" />
+		<item name="Oak Leaves" id="18" />
+		<item name="Spruce Leaves" id="18" meta="1" />
+		<item name="Birch Leaves" id="18" meta="2" />
+		<item name="Jungle Leaves" id="18" meta="3" />
+		<item name="Acacia Leaves" id="161" />
+		<item name="Dark Oak Leaves" id="161" meta="1" />
+		<item name="Cake" id="354" />
+		<item name="Skeleton Skull" id="397" />
+		<item name="Wither Skeleton Skull" id="397" meta="1" />
+		<item name="Zombie Head" id="397" meta="2" />
+		<item name="Head" id="397" meta="3" />
+		<item name="Creeper Head" id="397" meta="4" />
+		<item name="Dragon Head" id="397" meta="5" />
+		<item name="Flower Pot" id="390" />
+		<item name="Stone Monster Egg" id="92" />
+		<item name="Cobblestone Monster Egg" id="92" meta="1" />
+		<item name="Stone Brick Monster Egg" id="92" meta="2" />
+		<item name="Mossy Stone Brick Monster Egg" id="92" meta="3" />
+		<item name="Cracked Stone Brick Monster Egg" id="92" meta="4" />
+		<item name="Chiseled Stone Brick Monster Egg" id="92" meta="5" />
+		<item name="Dragon Egg" id="122" />
+		<item name="End Crystal" id="71" />
+		<item name="Monster Spawner" id="52" />
+		<item name="Enchantment Table" id="116" />
+		<item name="Slime Block" id="165" />
+		<item name="Ender Chest" id="130" />
+		<item name="Wool" id="35" meta="0" />
+		<item name="Light Grey Wool" id="35" meta="8" />
+		<item name="Grey Wool" id="35" meta="7" />
+		<item name="Black Wool" id="35" meta="15" />
+		<item name="Brown Wool" id="35" meta="12" />
+		<item name="Red Wool" id="35" meta="14" />
+		<item name="Orange Wool" id="35" meta="1" />
+		<item name="Yellow Wool" id="35" meta="4" />
+		<item name="Lime Wool" id="35" meta="5" />
+		<item name="Green Wool" id="35" meta="13" />
+		<item name="Cyan Wool" id="35" meta="9" />
+		<item name="Light Blue Wool" id="35" meta="3" />
+		<item name="Blue Wool" id="35" meta="11" />
+		<item name="Purple Wool" id="35" meta="10" />
+		<item name="Magenta Wool" id="35" meta="2" />
+		<item name="Pink Wool" id="35" meta="6" />
+		<item name="Carpet" id="171" meta="0" />
+		<item name="Light Grey Carpet" id="171" meta="8" />
+		<item name="Grey Carpet" id="171" meta="7" />
+		<item name="Black Carpet" id="171" meta="15" />
+		<item name="Brown Carpet" id="171" meta="12" />
+		<item name="Red Carpet" id="171" meta="14" />
+		<item name="Orange Carpet" id="171" meta="1" />
+		<item name="Yellow Carpet" id="171" meta="4" />
+		<item name="Lime Carpet" id="171" meta="5" />
+		<item name="Green Carpet" id="171" meta="13" />
+		<item name="Cyan Carpet" id="171" meta="9" />
+		<item name="Light Blue Carpet" id="171" meta="3" />
+		<item name="Blue Carpet" id="171" meta="11" />
+		<item name="Purple Carpet" id="171" meta="10" />
+		<item name="Magenta Carpet" id="171" meta="2" />
+		<item name="Pink Carpet" id="171" meta="6" />
+
+	</category>
+
+	<category name="Building Blocks">
+
+		<item name="Cobblestone" id="4" />
+		<item name="Stone Bricks" id="98" />
+		<item name="Mossy Stone Bricks" id="98" meta="1" />
+		<item name="Cracked Stone Bricks" id="98" meta="2" />
+		<item name="Chiseled Stone Bricks" id="98" meta="3" />
+		<item name="Moss Stone" id="48" />
+		<item name="Oak Wood Planks" id="5" />
+		<item name="Spruce Wood Planks" id="5" meta="1" />
+		<item name="Birch Wood Planks" id="5" meta="2" />
+		<item name="Jungle Wood Planks" id="5" meta="3" />
+		<item name="Acacia Wood Planks" id="5" meta="4" />
+		<item name="Dark Oak Wood Planks" id="5" meta="5" />
+		<item name="Bricks" id="45" />
+		<item name="Stone" id="1" />
+		<item name="Granite" id="1" meta="1" />
+		<item name="Polished Granite" id="1" meta="2" />
+		<item name="Diorite" id="1" meta="3" />
+		<item name="Polished Diorite" id="1" meta="4" />
+		<item name="Andesite" id="1" meta="5" />
+		<item name="Polished Andesite" id="1" meta="6" />
+		<item name="Dirt" id="3" />
+		<item name="Podzol" id="243" />
+		<item name="Grass Block" id="2" />
+		<item name="Mycelium" id="110" />
+		<item name="Clay" id="82" />
+		<item name="Hardened Clay" id="172" />
+		<item name="White Stained Clay" id="159" meta="0" />
+		<item name="Orange Stained Clay" id="159" meta="1" />
+		<item name="Magenta Stained Clay" id="159" meta="2" />
+		<item name="Light Blue Stained Clay" id="159" meta="3" />
+		<item name="Yellow Stained Clay" id="159" meta="4" />
+		<item name="Lime Stained Clay" id="159" meta="5" />
+		<item name="Pink Stained Clay" id="159" meta="6" />
+		<item name="Grey Stained Clay" id="159" meta="7" />
+		<item name="Light Grey Stained Clay" id="159" meta="8" />
+		<item name="Cyan Stained Clay" id="159" meta="9" />
+		<item name="Purple Stained Clay" id="159" meta="10" />
+		<item name="Blue Stained Clay" id="159" meta="11" />
+		<item name="Brown Stained Clay" id="159" meta="12" />
+		<item name="Green Stained Clay" id="159" meta="13" />
+		<item name="Red Stained Clay" id="159" meta="14" />
+		<item name="Black Stained Clay" id="159" meta="15" />
+		<item name="Sandstone" id="24" />
+		<item name="Chiseled Sandstone" id="24" meta="1" />
+		<item name="Smooth Sandstone" id="24" meta="2" />
+		<item name="Red Sandstone" id="179" />
+		<item name="Chiseled Red Sandstone" id="179" meta="1" />
+		<item name="Smooth Red Sandstone" id="179" meta="2" />
+		<item name="Sand" id="12" />
+		<item name="Red Sand" id="12" meta="1" />
+		<item name="Gravel" id="13" />
+		<item name="Oak Wood" id="17" meta="0" />
+		<item name="Spruce Wood" id="17" meta="1" />
+		<item name="Birch Wood" id="17" meta="2" />
+		<item name="Jungle Wood" id="17" meta="3" />
+		<item name="Acacia Wood" id="162" meta="0" />
+		<item name="Dark Oak Wood" id="162" meta="1" />
+		<item name="Nether Brick" id="112" />
+		<item name="Netherrack" id="87" />
+		<item name="Soul Sand" id="88" />
+		<item name="Bedrock" id="7" />
+		<item name="Cobblestone Stairs" id="67" />
+		<item name="Oak Wood Stairs" id="53" />
+		<item name="Spruce Wood Stairs" id="134" />
+		<item name="Birch Wood Stairs" id="135" />
+		<item name="Jungle Wood Stairs" id="136" />
+		<item name="Acacia Wood Stairs" id="163" />
+		<item name="Dark Oak Wood Stairs" id="164" />
+		<item name="Brick Stairs" id="108" />
+		<item name="Sandstone Stairs" id="128" />
+		<item name="Red Sandstone Stairs" id="180" />
+		<item name="Stone Brick Stairs" id="109" />
+		<item name="Nether brick Stairs" id="114" />
+		<item name="Quartz Stairs" id="156" />
+		<item name="Purpur Stairs" id="203" />
+		<item name="Stone Slab" id="44" />
+		<item name="Cobblestone Slab" id="44" meta="3" />
+		<item name="Oak Wood Slab" id="158" />
+		<item name="Spruce Wood Slab" id="158" meta="1" />
+		<item name="Birch Wood Slab" id="158" meta="2" />
+		<item name="Jungle Wood Slab" id="158" meta="3" />
+		<item name="Acacia Wood Slab" id="158" meta="4" />
+		<item name="Dark Oak Wood Slab" id="158" meta="5" />
+		<item name="Bricks Slab" id="44" meta="4" />
+		<item name="Sandstone Slab" id="44" meta="1" />
+		<item name="Red Sandstone Slab" id="182" meta="0" />
+		<item name="Stone Bricks Slab" id="44" meta="5" />
+		<item name="Nether Brick Slab" id="44" meta="7" />
+		<item name="Quartz Slab" id="44" meta="6" />
+		<item name="Purpur Slab" id="205" />
+		<item name="Block of Quartz" id="155" />
+		<item name="Pillar Quartz Block" id="155" meta="1" />
+		<item name="Chiseled Quartz Block" id="155" meta="2" />
+		<item name="Prismarine" id="168" />
+		<item name="Prismarine Bricks" id="168" meta="1" />
+		<item name="Dark Prismarine" id="168" meta="2" />
+		<item name="Purpur Block" id="201" />
+		<item name="Purpur Pillar" id="201" meta="2" />
+		<item name="Coal Ore" id="16" />
+		<item name="Iron Ore" id="15" />
+		<item name="Gold Ore" id="14" />
+		<item name="Diamond Ore" id="56" />
+		<item name="Lapis Lazuli Ore" id="21" />
+		<item name="Redstone Ore" id="73" />
+		<item name="Emerald Ore" id="129" />
+		<item name="Nether Quartz Ore" id="153" />
+		<item name="Obsidian" id="49" />
+		<item name="Ice" id="79" />
+		<item name="Packed Ice" id="174" />
+		<item name="Snow" id="80" />
+		<item name="End Stone Brick" id="206" />
+		<item name="End Stone" id="121" />
+
+	</category>
+
+</creative>

@@ -20,8 +20,12 @@ struct Attributes {
 
 	enum absorption = Attribute("generic.absorption", 0, 4, 0);
 
-	enum speed = Attribute("generic.movementSpeed", 0, 24791, 0.1);
+	enum movementSpeed = Attribute("generic.movementSpeed", 0, 24791, 0.1);
 
 	enum knockbackResistance = Attribute("generic.knockbackResistance", 0, 1, 0);
+
+	enum attackDamage = Attribute("generic.attackDamage", 0, 2048, 2);
+
+	enum attackSpeed = Attribute("generic.attackSpeed", 0, 1024, 4);
 
 }

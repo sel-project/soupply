@@ -13,7 +13,7 @@ import std.stdio : writeln;
 
 import all;
 
-void doc(Protocols[string] protocols) {
+void doc(Attributes[string] attributes, Protocols[string] protocols) {
 
 	std.file.mkdirRecurse("../doc");
 
@@ -28,7 +28,12 @@ void doc(Protocols[string] protocols) {
 	}
 
 	foreach(string game, Protocols ptrs; protocols) {
+		auto attributes = game in attributes;
 		string data = "# " ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "\n\n";
+		string[] jumps = ["[Endianness](#endianness)", "[Packets](#packets)"];
+		if(ptrs.data.types.length) jumps ~= "[Types](#types)";
+		if(attributes) jumps ~= "[Attributes](#attributes)";
+		data ~= "**Jump to**: " ~ jumps.join(", ") ~ "\n\n";
 		if(ptrs.data.released.length) {
 			auto spl = ptrs.data.released.split("/");
 			if(spl.length == 3) {
@@ -161,6 +166,16 @@ void doc(Protocols[string] protocols) {
 				if(type.description.length) data ~= "\t" ~ type.description ~ "\n\n";
 				writeFields(type.name, type.fields);
 			}
+		}
+		// attributes
+		if(attributes) {
+			data ~= "--------\n\n";
+			data ~= "## Attributes\n\n";
+			data ~= "Name | Key | Min | Max | Default\n---|---|:---:|:---:|:---:\n";
+			foreach(attribute ; (*attributes).data) {
+				data ~= pretty(toCamelCase(attribute.id)) ~ " | " ~ attribute.name ~ " | " ~ to!string(attribute.min) ~ " | " ~ to!string(attribute.max) ~ " | " ~ to!string(attribute.def) ~ "\n";
+			}
+			data ~= "\n";
 		}
 		immutable ps = ptrs.protocol.to!string;
 		std.file.mkdirRecurse("../doc/" ~ game[0..$-ps.length]);

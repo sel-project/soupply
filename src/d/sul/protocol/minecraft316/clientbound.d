@@ -2946,16 +2946,16 @@ struct Teams {
 		public enum ubyte SEE_TEAM_INVISIBLE_PLAYERS = 2;
 
 		// nametag visibility
-		public enum string ALWAYS = always;
-		public enum string HIDE_OTHER_TEAMS = hideOtherTeams;
-		public enum string HIDE_OWN_TEAM = hideOwnTeam;
-		public enum string NEVEN = never;
+		public enum string ALWAYS = "always";
+		public enum string HIDE_OTHER_TEAMS = "hideOtherTeams";
+		public enum string HIDE_OWN_TEAM = "hideOwnTeam";
+		public enum string NEVEN = "never";
 
 		// collision rule
-		public enum string ALWAYS = always;
-		public enum string PUSH_OTHER_TEAMS = pushOtherTeams;
-		public enum string PUSH_OWN_TEAM = pushOwnTeam;
-		public enum string NEVEN = never;
+		public enum string ALWAYS = "always";
+		public enum string PUSH_OTHER_TEAMS = "pushOtherTeams";
+		public enum string PUSH_OWN_TEAM = "pushOwnTeam";
+		public enum string NEVEN = "never";
 
 		public string displayName;
 		public string prefix;
@@ -3027,16 +3027,16 @@ struct Teams {
 		public enum ubyte SEE_TEAM_INVISIBLE_PLAYERS = 2;
 
 		// nametag visibility
-		public enum string ALWAYS = always;
-		public enum string HIDE_OTHER_TEAMS = hideOtherTeams;
-		public enum string HIDE_OWN_TEAM = hideOwnTeam;
-		public enum string NEVEN = never;
+		public enum string ALWAYS = "always";
+		public enum string HIDE_OTHER_TEAMS = "hideOtherTeams";
+		public enum string HIDE_OWN_TEAM = "hideOwnTeam";
+		public enum string NEVEN = "never";
 
 		// collision rule
-		public enum string ALWAYS = always;
-		public enum string PUSH_OTHER_TEAMS = pushOtherTeams;
-		public enum string PUSH_OWN_TEAM = pushOwnTeam;
-		public enum string NEVEN = never;
+		public enum string ALWAYS = "always";
+		public enum string PUSH_OTHER_TEAMS = "pushOtherTeams";
+		public enum string PUSH_OWN_TEAM = "pushOwnTeam";
+		public enum string NEVEN = "never";
 
 		public string displayName;
 		public string prefix;

@@ -1,6 +1,6 @@
 {
 
-	"__game": "Minecraft",
+	"__software": "Minecraft",
 	"__protocol": 315,
 	"__website": "https://github.com/sel-project/sel-utils",
 
@@ -24,7 +24,7 @@
 
 		},
 
-		"speed": {
+		"movement_speed": {
 
 			"name": "generic.movementSpeed",
 			"min": 0,
@@ -39,6 +39,24 @@
 			"min": 0,
 			"max": 1,
 			"default": 0
+
+		},
+
+		"attack_damage": {
+
+			"name": "generic.attackDamage",
+			"min": 0,
+			"max": 2048,
+			"default": 2
+
+		},
+
+		"attack_speed": {
+
+			"name": "generic.attackSpeed",
+			"min": 0,
+			"max": 1024,
+			"default": 4
 
 		}
 

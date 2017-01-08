@@ -1,6 +1,7 @@
 module all;
 
 import std.algorithm : min;
+import std.base64 : Base64URL;
 import std.conv : to;
 import std.file : dirEntries, SpanMode, read, isFile, _write = write;
 import std.json;
@@ -23,6 +24,13 @@ alias File(T) = Tuple!(string, "software", size_t, "protocol", T, "data");
 alias Attribute = Tuple!(string, "id", string, "name", float, "min", float, "max", float, "def");
 
 alias Attributes = File!(Attribute[]);
+
+
+alias Enchantment = Tuple!(ubyte, "id", ubyte, "level");
+
+alias Item = Tuple!(string, "name", ushort, "id", ushort, "meta", Enchantment[], "enchantments");
+
+alias Creative = File!(Item[]);
 
 
 alias Constant = Tuple!(string, "name", string, "value");
@@ -70,33 +78,44 @@ void main(string[] args) {
 		}
 	}
 
-	// constants
-	JSONValue[string] constants;
-	foreach(string file ; dirEntries("../json/constants", SpanMode.breadth)) {
-		if(file.isFile && file.endsWith(".json")) {
-			constants[file.name!"json"] = parseJSON(cast(string)read(file)).object["constants"];
+	// creative items
+	Creative[string] creative;
+	foreach(string file ; dirEntries("../xml/creative", SpanMode.breadth)) {
+		if(file.isFile && file.endsWith(".xml")) {
+			Creative c;
+			foreach(element ; new Document(cast(string)read(file)).elements) {
+				switch(element.tag.name) {
+					case "software":
+						c.software = element.text.strip;
+						break;
+					case "protocol":
+						c.protocol = element.text.strip.to!size_t;
+						break;
+					case "category":
+						foreach(i ; element.elements) {
+							if(i.tag.name == "item") {
+								Item item;
+								item.name = i.tag.attr["name"];
+								item.id = i.tag.attr["id"].to!ushort;
+								if("meta" in i.tag.attr) item.meta = i.tag.attr["meta"].to!ushort;
+								foreach(e ; i.elements) {
+									if(e.tag.name == "enchantment") {
+										with(e.tag) item.enchantments ~= Enchantment(attr["id"].to!ubyte, attr["level"].to!ubyte);
+									}
+								}
+								c.data ~= item;
+							}
+						}
+						break;
+					default:
+						break;
+				}
+			}
+			creative[file.name!"xml"] = c;
 		}
 	}
-
-	// metadata
-	JSONValue[string] metadata;
-	foreach(string file ; dirEntries("../json/metadata", SpanMode.breadth)) {
-		if(file.isFile && file.endsWith(".json")) {
-			metadata[file.name!"json"] = parseJSON(cast(string)read(file)).object;
-		}
-	}
-
-	// particles
-	JSONValue[string] particles;
 
 	// protocol
-	JSONValue[string] p;
-	foreach(string file ; dirEntries("../json/protocol", SpanMode.breadth)) {
-		if(file.isFile && file.endsWith(".json")) {
-			p[file.name!"json"] = parseJSON(cast(string)read(file)).object;
-		}
-	}
-
 	Protocols[string] protocols;
 	foreach(string file ; dirEntries("../xml/protocol", SpanMode.breadth)) {
 		if(file.isFile && file.endsWith(".xml")) {
@@ -255,23 +274,12 @@ void main(string[] args) {
 		}
 	}
 
-	// sounds
-	JSONValue[string] sounds;
+	d.d(attributes, protocols, creative);
+	java.java(attributes, protocols, creative);
+	js.js(attributes, protocols, creative);
 
-	auto jsons = [
-		"constants": JSONValue(constants),
-		"metadata": JSONValue(metadata),
-		"particles": JSONValue(particles),
-		"protocol": JSONValue(p),
-		"sounds": JSONValue(sounds),
-	];
-
-	d.d(attributes, protocols, jsons);
-	java.java(attributes, protocols, jsons);
-	js.js(attributes, jsons);
-
-	doc.doc(protocols);
-	json.json(attributes);
+	doc.doc(attributes, protocols);
+	json.json(attributes, protocols, creative);
 
 }
 
@@ -307,6 +315,10 @@ void main(string[] args) {
 		snaked ~= c;
 	}
 	return snaked.toLower;
+}
+
+string hash(string name) {
+	return Base64URL.encode(cast(ubyte[])name).replace("-", "_").replace("=", "")[0..min($, 16)];
 }
 
 void write(string file, string data, string from="") {

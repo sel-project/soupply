@@ -9,7 +9,7 @@ import std.string;
 
 import all;
 
-void js(Attributes[string] attributes, JSONValue[string] jsons) {
+void js(Attributes[string] attributes, Protocols[string] protocols, Creative[string] creative) {
 	
 	mkdirRecurse("../src/js/sul");
 	
