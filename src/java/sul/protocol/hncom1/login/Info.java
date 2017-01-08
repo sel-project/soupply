@@ -21,8 +21,8 @@ class Info extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	public long serverId;
-	public boolean onlineMode;
 	public String displayName;
+	public boolean onlineMode;
 	public Game[] games;
 	public int online;
 	public int max;

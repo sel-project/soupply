@@ -105,9 +105,9 @@ struct Info {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public long serverId;
-	public bool onlineMode;
+	public ulong serverId;
 	public string displayName;
+	public bool onlineMode;
 	public sul.protocol.hncom1.types.Game[] games;
 	public uint online;
 	public uint max;
@@ -120,9 +120,9 @@ struct Info {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, serverId, _buffer.length-long.sizeof);
-		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, onlineMode, _buffer.length-bool.sizeof);
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, serverId, _buffer.length-ulong.sizeof);
 		ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint);_buffer~=ZGlzcGxheU5hbWU;
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, onlineMode, _buffer.length-bool.sizeof);
 		_buffer~=varuint.encode(games.length.to!uint);foreach(Z2FtZXM;games){ Z2FtZXM.encode(_buffer); }
 		_buffer~=varuint.encode(online);
 		_buffer~=varuint.encode(max);
@@ -140,9 +140,9 @@ struct Info {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+long.sizeof){ serverId=peek!(long, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+bool.sizeof){ onlineMode=peek!(bool, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ulong.sizeof){ serverId=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
 		ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU;
+		if(_buffer.length>=*_index+bool.sizeof){ onlineMode=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		games.length=varuint.decode(_buffer, *_index);foreach(ref Z2FtZXM;games){ Z2FtZXM.decode(_buffer, _index); }
 		online=varuint.decode(_buffer, *_index);
 		max=varuint.decode(_buffer, *_index);

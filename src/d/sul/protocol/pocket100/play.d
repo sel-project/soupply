@@ -1139,6 +1139,9 @@ struct LevelSoundEvent {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
+	// sound
+	public enum ubyte NOTE = 16;
+
 	public ubyte sound;
 	public Tuple!(float, "x", float, "y", float, "z") position;
 	public uint volume;
@@ -1186,6 +1189,48 @@ struct LevelEvent {
 	public enum int STOP_THUNDER = 3004;
 	public enum int SET_DATA = 4000;
 	public enum int PLAYERS_SLEEPING = 9800;
+	public enum int BUBBLE = 16385;
+	public enum int CRITICAL = 16386;
+	public enum int BLOCK_FORCE_FIELD = 16387;
+	public enum int SMOKE = 16388;
+	public enum int EXPLODE = 16389;
+	public enum int EVAPORATION = 16390;
+	public enum int FLAME = 16391;
+	public enum int LAVA = 16392;
+	public enum int LARGE_SMOKE = 16393;
+	public enum int REDSTONE = 16394;
+	public enum int RISING_RED_DUST = 16395;
+	public enum int ITEM_BREAK = 16396;
+	public enum int SNOWBALL_POOF = 16397;
+	public enum int HUGE_EXPLODE = 16398;
+	public enum int HUGE_EXPLODE_SEED = 16399;
+	public enum int MOB_FLAME = 16400;
+	public enum int HEART = 16401;
+	public enum int TERRAIN = 16402;
+	public enum int TOWN_AURA = 16403;
+	public enum int PORTAL = 16404;
+	public enum int WATER_SPLASH = 16405;
+	public enum int WATER_WAKE = 16406;
+	public enum int DRIP_WATER = 16407;
+	public enum int DRIP_LAVA = 16408;
+	public enum int FALLING_DUST = 16409;
+	public enum int MOB_SPELL = 16410;
+	public enum int MOB_SPELL_AMBIENT = 16411;
+	public enum int MOB_SPELL_INSTANTANEOUS = 16412;
+	public enum int INK = 16413;
+	public enum int SLIME = 16414;
+	public enum int RAIN_SPLASH = 16415;
+	public enum int VILLAGER_ANGRY = 16416;
+	public enum int VILLAGER_HAPPY = 16417;
+	public enum int ENCHANTMENT_TABLE = 16418;
+	public enum int TRACKING_EMITTER = 16419;
+	public enum int NOTE = 16420;
+	public enum int WITCH_SPELL = 16421;
+	public enum int CARROT = 16422;
+	public enum int END_ROD = 16424;
+	public enum int DRAGON_BREATH = 16425;
+	public enum int SHOOT = 2000;
+	public enum int DESTROY = 2001;
 
 	public int eventId;
 	public Tuple!(float, "x", float, "y", float, "z") position;

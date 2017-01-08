@@ -144,14 +144,14 @@ void doc(Attributes[string] attributes, Protocols[string] protocols) {
 				if(packet.description.length) data ~= "\t" ~ packet.description ~ "\n\n";
 				writeFields(link(section.name, packet.name), packet.fields);
 				if(packet.variants.length) {
-					data ~= "\t**Variants**:\n\n";//\t**Field**: " ~ toCamelCase(packet.variantField) ~ "\n\n";
+					data ~= "\t**Variants**:\n\n";
 					data ~= "\tVariant | Field | Value\n\t---|---|:---:\n";
 					foreach(variant ; packet.variants) {
-						data ~= "\t" ~ pretty(toCamelCase(variant.name)) ~ " | " ~ toCamelCase(packet.variantField) ~ " | " ~ variant.value ~ "\n";
+						data ~= "\t[" ~ pretty(toCamelCase(variant.name)) ~ "](#" ~ link(section.name, packet.name, variant.name) ~ ") | " ~ toCamelCase(packet.variantField) ~ " | " ~ variant.value ~ "\n";
 					}
 					data ~= "\n";
 					foreach(variant ; packet.variants) {
-						data ~= "\t* <a name=\"" ~ link(section.name, packet.name, variant.name) ~ "\"></a>**" ~ pretty(toCamelCase(variant.name)) ~ "**\n\n";//\t\t**Field's value**: " ~ variant.value ~ "\n\n";
+						data ~= "\t* <a name=\"" ~ link(section.name, packet.name, variant.name) ~ "\"></a>**" ~ pretty(toCamelCase(variant.name)) ~ "**\n\n";
 						writeFields(link(section.name, packet.name, variant.name), variant.fields, 2, "Additional Fields");
 					}
 				}
@@ -219,7 +219,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols) {
 		ret ~= c;
 	}
 	if(!ret.length) return ret;
-	else return (toUpper(ret[0..1]) ~ ret[1..$]).replace("And", "and").replace("Of", "of");
+	else return (toUpper(ret[0..1]) ~ ret[1..$]).replace(" And ", " and ").replace(" Of ", " of ").replace(" In ", " in ");
 }
 
 string link(string[] pieces...) {

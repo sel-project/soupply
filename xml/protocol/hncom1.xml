@@ -80,9 +80,9 @@
 			</packet>
 
 			<packet name="info" id="2" clientbound="true" serverbound="false">
-				<field name="server-id" type="long" />
-				<field name="online-mode" type="bool" />
+				<field name="server-id" type="ulong" />
 				<field name="display-name" type="string" />
+				<field name="online-mode" type="bool" />
 				<field name="games" type="game[]" />
 				<field name="online" type="varuint" />
 				<field name="max" type="varuint" />

@@ -302,7 +302,9 @@
 			</packet>
 
 			<packet name="level-sound-event" id="26" clientbound="true" serverbound="true">
-				<field name="sound" type="ubyte" />
+				<field name="sound" type="ubyte">
+					<constant name="note" value="16" />
+				</field>
 				<field name="position" type="entity-position" />
 				<field name="volume" type="varuint" />
 				<field name="pitch" type="varint" />
@@ -317,6 +319,48 @@
 					<constant name="stop-thunder" value="3004" />
 					<constant name="set-data" value="4000" />
 					<constant name="players-sleeping" value="9800" />
+					<constant name="bubble" value="16385" />
+					<constant name="critical" value="16386" />
+					<constant name="block-force-field" value="16387" />
+					<constant name="smoke" value="16388" />
+					<constant name="explode" value="16389" />
+					<constant name="evaporation" value="16390" />
+					<constant name="flame" value="16391" />
+					<constant name="lava" value="16392" />
+					<constant name="large-smoke" value="16393" />
+					<constant name="redstone" value="16394" />
+					<constant name="rising-red-dust" value="16395" />
+					<constant name="item-break" value="16396" />
+					<constant name="snowball-poof" value="16397" />
+					<constant name="huge-explode" value="16398" />
+					<constant name="huge-explode-seed" value="16399" />
+					<constant name="mob-flame" value="16400" />
+					<constant name="heart" value="16401" />
+					<constant name="terrain" value="16402" />
+					<constant name="town-aura" value="16403" />
+					<constant name="portal" value="16404" />
+					<constant name="water-splash" value="16405" />
+					<constant name="water-wake" value="16406" />
+					<constant name="drip-water" value="16407" />
+					<constant name="drip-lava" value="16408" />
+					<constant name="falling-dust" value="16409" />
+					<constant name="mob-spell" value="16410" />
+					<constant name="mob-spell-ambient" value="16411" />
+					<constant name="mob-spell-instantaneous" value="16412" />
+					<constant name="ink" value="16413" />
+					<constant name="slime" value="16414" />
+					<constant name="rain-splash" value="16415" />
+					<constant name="villager-angry" value="16416" />
+					<constant name="villager-happy" value="16417" />
+					<constant name="enchantment-table" value="16418" />
+					<constant name="tracking-emitter" value="16419" />
+					<constant name="note" value="16420" />
+					<constant name="witch-spell" value="16421" />
+					<constant name="carrot" value="16422" />
+					<constant name="end-rod" value="16424" />
+					<constant name="dragon-breath" value="16425" />
+					<constant name="shoot" value="2000" />
+					<constant name="destroy" value="2001" />
 				</field>
 				<field name="position" type="entity-position" />
 				<field name="data" type="varint" />

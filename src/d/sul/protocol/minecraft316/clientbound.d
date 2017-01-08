@@ -537,7 +537,7 @@ struct BossBar {
 		public enum uint NO_DIVISION = 0;
 		public enum uint SIX_NOTCHES = 1;
 		public enum uint TEN_NOTCHES = 2;
-		public enum uint TWELWE_NOTCHES = 3;
+		public enum uint TWELVE_NOTCHES = 3;
 		public enum uint TWENTY_NOTCHES = 4;
 
 		// flags
@@ -661,7 +661,7 @@ struct BossBar {
 		public enum uint NO_DIVISION = 0;
 		public enum uint SIX_NOTCHES = 1;
 		public enum uint TEN_NOTCHES = 2;
-		public enum uint TWELWE_NOTCHES = 3;
+		public enum uint TWELVE_NOTCHES = 3;
 		public enum uint TWENTY_NOTCHES = 4;
 
 		public uint color;
