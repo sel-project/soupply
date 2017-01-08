@@ -8,10 +8,11 @@
  */
 module sul.protocol.hncom1.generic;
 
-import std.bitmanip : write, read;
+import std.bitmanip : write, peek;
 import std.conv : to;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
+import std.typecons : Tuple;
 import std.uuid : UUID;
 
 import sul.utils.var;
@@ -27,18 +28,22 @@ struct Logs {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public types.Log[] messages;
+	public sul.protocol.hncom1.types.Log[] messages;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer~=varuint.encode(messages.length.to!uint);foreach(bWVzc2FnZXM;messages){ bWVzc2FnZXM.encode(buffer); }
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer~=varuint.encode(messages.length.to!uint);foreach(bWVzc2FnZXM;messages){ bWVzc2FnZXM.encode(_buffer); }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		messages.length=varuint.decode(buffer);foreach(ref bWVzc2FnZXM;messages){ bWVzc2FnZXM.decode(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		messages.length=varuint.decode(_buffer, *_index);foreach(ref bWVzc2FnZXM;messages){ bWVzc2FnZXM.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -57,23 +62,27 @@ struct RemoteCommand {
 	public enum ubyte RCON = 2;
 
 	public ubyte origin;
-	public types.Address sender;
+	public sul.protocol.hncom1.types.Address sender;
 	public string command;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer~=origin;
-		sender.encode(buffer);
-		ubyte[] Y29tbWFuZA=cast(ubyte[])command; buffer~=varuint.encode(Y29tbWFuZA.length.to!uint);buffer~=Y29tbWFuZA;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer~=origin;
+		sender.encode(_buffer);
+		ubyte[] Y29tbWFuZA=cast(ubyte[])command; _buffer~=varuint.encode(Y29tbWFuZA.length.to!uint);_buffer~=Y29tbWFuZA;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=ubyte.sizeof){ origin=read!(ubyte, Endian.bigEndian)(buffer); }
-		sender.decode(buffer);
-		ubyte[] Y29tbWFuZA; Y29tbWFuZA.length=varuint.decode(buffer);if(buffer.length>=Y29tbWFuZA.length){ Y29tbWFuZA=buffer[0..Y29tbWFuZA.length]; buffer=buffer[Y29tbWFuZA.length..$]; }; command=cast(string)Y29tbWFuZA;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+ubyte.sizeof){ origin=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		sender.decode(_buffer, _index);
+		ubyte[] Y29tbWFuZA; Y29tbWFuZA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y29tbWFuZA.length){ Y29tbWFuZA=_buffer[*_index..*_index+Y29tbWFuZA.length].dup; *_index+=Y29tbWFuZA.length; }; command=cast(string)Y29tbWFuZA;
 		return this;
 	}
 
@@ -99,20 +108,103 @@ struct UpdateList {
 	public ubyte type;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer~=list;
-		buffer~=action;
-		buffer~=type;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer~=list;
+		_buffer~=action;
+		_buffer~=type;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=ubyte.sizeof){ list=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ action=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ type=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+ubyte.sizeof){ list=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ action=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ type=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
+	}
+
+	public struct ByHubId {
+
+		public enum typeof(type) TYPE = 0;
+
+		public uint hubId;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(hubId);
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			hubId=varuint.decode(_buffer, *_index);
+			return this;
+		}
+
+	}
+
+	public struct ByName {
+
+		public enum typeof(type) TYPE = 1;
+
+		public string username;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			ubyte[] dXNlcm5hbWU=cast(ubyte[])username; _buffer~=varuint.encode(dXNlcm5hbWU.length.to!uint);_buffer~=dXNlcm5hbWU;
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			ubyte[] dXNlcm5hbWU; dXNlcm5hbWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dXNlcm5hbWU.length){ dXNlcm5hbWU=_buffer[*_index..*_index+dXNlcm5hbWU.length].dup; *_index+=dXNlcm5hbWU.length; }; username=cast(string)dXNlcm5hbWU;
+			return this;
+		}
+
+	}
+
+	public struct BySuuid {
+
+		public enum typeof(type) TYPE = 2;
+
+		// game
+		public enum ubyte POCKET = 1;
+		public enum ubyte MINECRAFT = 2;
+
+		public ubyte game;
+		public UUID uuid;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=game;
+			_buffer~=uuid.data;
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			if(_buffer.length>=*_index+ubyte.sizeof){ game=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+			if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
+			return this;
+		}
+
 	}
 
 }

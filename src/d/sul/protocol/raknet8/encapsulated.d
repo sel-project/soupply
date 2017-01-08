@@ -8,10 +8,11 @@
  */
 module sul.protocol.raknet8.encapsulated;
 
-import std.bitmanip : write, read;
+import std.bitmanip : write, peek;
 import std.conv : to;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
+import std.typecons : Tuple;
 import std.uuid : UUID;
 
 import sul.utils.var;
@@ -31,17 +32,21 @@ struct ClientConnect {
 	public long pingId;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(buffer, clientId, buffer.length-long.sizeof);
-		buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(buffer, pingId, buffer.length-long.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, clientId, _buffer.length-long.sizeof);
+		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, pingId, _buffer.length-long.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=long.sizeof){ clientId=read!(long, Endian.bigEndian)(buffer); }
-		if(buffer.length>=long.sizeof){ pingId=read!(long, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+long.sizeof){ clientId=peek!(long, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+long.sizeof){ pingId=peek!(long, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -54,30 +59,34 @@ struct ServerHandshake {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public types.Address clientAddress;
+	public sul.protocol.raknet8.types.Address clientAddress;
 	public ushort mtuLength;
-	public types.Address[10] systemAddresses;
+	public sul.protocol.raknet8.types.Address[10] systemAddresses;
 	public long pingId;
 	public long serverId;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		clientAddress.encode(buffer);
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, mtuLength, buffer.length-ushort.sizeof);
-		foreach(c3lzdGVtQWRkcmVz;systemAddresses){ c3lzdGVtQWRkcmVz.encode(buffer); }
-		buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(buffer, pingId, buffer.length-long.sizeof);
-		buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(buffer, serverId, buffer.length-long.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		clientAddress.encode(_buffer);
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, mtuLength, _buffer.length-ushort.sizeof);
+		foreach(c3lzdGVtQWRkcmVz;systemAddresses){ c3lzdGVtQWRkcmVz.encode(_buffer); }
+		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, pingId, _buffer.length-long.sizeof);
+		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, serverId, _buffer.length-long.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		clientAddress.decode(buffer);
-		if(buffer.length>=ushort.sizeof){ mtuLength=read!(ushort, Endian.bigEndian)(buffer); }
-		foreach(ref c3lzdGVtQWRkcmVz;systemAddresses){ c3lzdGVtQWRkcmVz.decode(buffer); }
-		if(buffer.length>=long.sizeof){ pingId=read!(long, Endian.bigEndian)(buffer); }
-		if(buffer.length>=long.sizeof){ serverId=read!(long, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		clientAddress.decode(_buffer, _index);
+		if(_buffer.length>=*_index+ushort.sizeof){ mtuLength=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
+		foreach(ref c3lzdGVtQWRkcmVz;systemAddresses){ c3lzdGVtQWRkcmVz.decode(_buffer, _index); }
+		if(_buffer.length>=*_index+long.sizeof){ pingId=peek!(long, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+long.sizeof){ serverId=peek!(long, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -90,27 +99,31 @@ struct ClientHandshake {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public types.Address clientAddress;
-	public types.Address[10] systemAddresses;
+	public sul.protocol.raknet8.types.Address clientAddress;
+	public sul.protocol.raknet8.types.Address[10] systemAddresses;
 	public long pingId;
 	public long clientId;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		clientAddress.encode(buffer);
-		foreach(c3lzdGVtQWRkcmVz;systemAddresses){ c3lzdGVtQWRkcmVz.encode(buffer); }
-		buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(buffer, pingId, buffer.length-long.sizeof);
-		buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(buffer, clientId, buffer.length-long.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		clientAddress.encode(_buffer);
+		foreach(c3lzdGVtQWRkcmVz;systemAddresses){ c3lzdGVtQWRkcmVz.encode(_buffer); }
+		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, pingId, _buffer.length-long.sizeof);
+		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, clientId, _buffer.length-long.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		clientAddress.decode(buffer);
-		foreach(ref c3lzdGVtQWRkcmVz;systemAddresses){ c3lzdGVtQWRkcmVz.decode(buffer); }
-		if(buffer.length>=long.sizeof){ pingId=read!(long, Endian.bigEndian)(buffer); }
-		if(buffer.length>=long.sizeof){ clientId=read!(long, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		clientAddress.decode(_buffer, _index);
+		foreach(ref c3lzdGVtQWRkcmVz;systemAddresses){ c3lzdGVtQWRkcmVz.decode(_buffer, _index); }
+		if(_buffer.length>=*_index+long.sizeof){ pingId=peek!(long, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+long.sizeof){ clientId=peek!(long, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -124,13 +137,17 @@ struct ClientCancelConnection {
 	public enum bool SERVERBOUND = true;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		return this;
 	}
 
@@ -146,15 +163,19 @@ struct Ping {
 	public long time;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(buffer, time, buffer.length-long.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, time, _buffer.length-long.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=long.sizeof){ time=read!(long, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+long.sizeof){ time=peek!(long, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -170,15 +191,19 @@ struct Pong {
 	public long time;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(buffer, time, buffer.length-long.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, time, _buffer.length-long.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=long.sizeof){ time=read!(long, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+long.sizeof){ time=peek!(long, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -194,15 +219,19 @@ struct Mcpe {
 	public ubyte[] packet;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer~=packet;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer~=packet;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		packet=buffer.dup; buffer.length=0;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		packet=_buffer[*_index..$].dup; *_index=buffer.length;
 		return this;
 	}
 

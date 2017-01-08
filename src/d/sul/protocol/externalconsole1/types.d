@@ -8,9 +8,10 @@
  */
 module sul.protocol.externalconsole1.types;
 
-import std.bitmanip : write, read;
+import std.bitmanip : write, peek;
 import std.conv : to;
 import std.system : Endian;
+import std.typecons : Tuple;
 import std.uuid : UUID;
 
 import sul.utils.var;
@@ -24,14 +25,22 @@ struct Game {
 	public ubyte type;
 	public uint[] protocols;
 
-	public void encode(ref ubyte[] buffer) {
-		buffer~=type;
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, protocols.length.to!ushort, buffer.length-ushort.sizeof);foreach(cHJvdG9jb2xz;protocols){ buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, cHJvdG9jb2xz, buffer.length-uint.sizeof); }
+	public ubyte[] encode() {
+		ubyte[] _buffer;
+		this.encode(_buffer);
+		return _buffer;
 	}
 
-	public void decode(ref ubyte[] buffer) {
-		if(buffer.length>=ubyte.sizeof){ type=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ushort.sizeof){ protocols.length=read!(ushort, Endian.bigEndian)(buffer); }foreach(ref cHJvdG9jb2xz;protocols){ if(buffer.length>=uint.sizeof){ cHJvdG9jb2xz=read!(uint, Endian.bigEndian)(buffer); } }
+	public ubyte[] encode(ref ubyte[] _buffer) {
+		_buffer~=type;
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, protocols.length.to!ushort, _buffer.length-ushort.sizeof);foreach(cHJvdG9jb2xz;protocols){ _buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, cHJvdG9jb2xz, _buffer.length-uint.sizeof); }
+		return _buffer;
+	}
+
+	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+		if(_buffer.length>=*_index+ubyte.sizeof){ type=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ protocols.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }foreach(ref cHJvdG9jb2xz;protocols){ if(_buffer.length>=*_index+uint.sizeof){ cHJvdG9jb2xz=peek!(uint, Endian.bigEndian)(_buffer, _index); } }
+		return this;
 	}
 
 }
@@ -43,18 +52,26 @@ struct NodeStats {
 	public ulong ram;
 	public float cpu;
 
-	public void encode(ref ubyte[] buffer) {
-		ubyte[] bmFtZQ=cast(ubyte[])name; buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, bmFtZQ.length.to!ushort, buffer.length-ushort.sizeof);buffer~=bmFtZQ;
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, tps, buffer.length-float.sizeof);
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, ram, buffer.length-ulong.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, cpu, buffer.length-float.sizeof);
+	public ubyte[] encode() {
+		ubyte[] _buffer;
+		this.encode(_buffer);
+		return _buffer;
 	}
 
-	public void decode(ref ubyte[] buffer) {
-		ubyte[] bmFtZQ; if(buffer.length>=ushort.sizeof){ bmFtZQ.length=read!(ushort, Endian.bigEndian)(buffer); }if(buffer.length>=bmFtZQ.length){ bmFtZQ=buffer[0..bmFtZQ.length]; buffer=buffer[bmFtZQ.length..$]; }; name=cast(string)bmFtZQ;
-		if(buffer.length>=float.sizeof){ tps=read!(float, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ulong.sizeof){ ram=read!(ulong, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ cpu=read!(float, Endian.bigEndian)(buffer); }
+	public ubyte[] encode(ref ubyte[] _buffer) {
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, bmFtZQ.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=bmFtZQ;
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, tps, _buffer.length-float.sizeof);
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, ram, _buffer.length-ulong.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, cpu, _buffer.length-float.sizeof);
+		return _buffer;
+	}
+
+	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+		ubyte[] bmFtZQ; if(_buffer.length>=*_index+ushort.sizeof){ bmFtZQ.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		if(_buffer.length>=*_index+float.sizeof){ tps=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ulong.sizeof){ ram=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ cpu=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		return this;
 	}
 
 }

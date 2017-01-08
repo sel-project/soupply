@@ -8,10 +8,11 @@
  */
 module sul.protocol.externalconsole1.play;
 
-import std.bitmanip : write, read;
+import std.bitmanip : write, peek;
 import std.conv : to;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
+import std.typecons : Tuple;
 import std.uuid : UUID;
 
 import sul.utils.var;
@@ -58,21 +59,25 @@ struct ConsoleMessage {
 	public string message;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		ubyte[] bm9kZQ=cast(ubyte[])node; buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, bm9kZQ.length.to!ushort, buffer.length-ushort.sizeof);buffer~=bm9kZQ;
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, timestamp, buffer.length-ulong.sizeof);
-		ubyte[] bG9nZ2Vy=cast(ubyte[])logger; buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, bG9nZ2Vy.length.to!ushort, buffer.length-ushort.sizeof);buffer~=bG9nZ2Vy;
-		ubyte[] bWVzc2FnZQ=cast(ubyte[])message; buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, bWVzc2FnZQ.length.to!ushort, buffer.length-ushort.sizeof);buffer~=bWVzc2FnZQ;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		ubyte[] bm9kZQ=cast(ubyte[])node; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, bm9kZQ.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=bm9kZQ;
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, timestamp, _buffer.length-ulong.sizeof);
+		ubyte[] bG9nZ2Vy=cast(ubyte[])logger; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, bG9nZ2Vy.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=bG9nZ2Vy;
+		ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, bWVzc2FnZQ.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=bWVzc2FnZQ;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		ubyte[] bm9kZQ; if(buffer.length>=ushort.sizeof){ bm9kZQ.length=read!(ushort, Endian.bigEndian)(buffer); }if(buffer.length>=bm9kZQ.length){ bm9kZQ=buffer[0..bm9kZQ.length]; buffer=buffer[bm9kZQ.length..$]; }; node=cast(string)bm9kZQ;
-		if(buffer.length>=ulong.sizeof){ timestamp=read!(ulong, Endian.bigEndian)(buffer); }
-		ubyte[] bG9nZ2Vy; if(buffer.length>=ushort.sizeof){ bG9nZ2Vy.length=read!(ushort, Endian.bigEndian)(buffer); }if(buffer.length>=bG9nZ2Vy.length){ bG9nZ2Vy=buffer[0..bG9nZ2Vy.length]; buffer=buffer[bG9nZ2Vy.length..$]; }; logger=cast(string)bG9nZ2Vy;
-		ubyte[] bWVzc2FnZQ; if(buffer.length>=ushort.sizeof){ bWVzc2FnZQ.length=read!(ushort, Endian.bigEndian)(buffer); }if(buffer.length>=bWVzc2FnZQ.length){ bWVzc2FnZQ=buffer[0..bWVzc2FnZQ.length]; buffer=buffer[bWVzc2FnZQ.length..$]; }; message=cast(string)bWVzc2FnZQ;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		ubyte[] bm9kZQ; if(_buffer.length>=*_index+ushort.sizeof){ bm9kZQ.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+bm9kZQ.length){ bm9kZQ=_buffer[*_index..*_index+bm9kZQ.length].dup; *_index+=bm9kZQ.length; }; node=cast(string)bm9kZQ;
+		if(_buffer.length>=*_index+ulong.sizeof){ timestamp=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
+		ubyte[] bG9nZ2Vy; if(_buffer.length>=*_index+ushort.sizeof){ bG9nZ2Vy.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+bG9nZ2Vy.length){ bG9nZ2Vy=_buffer[*_index..*_index+bG9nZ2Vy.length].dup; *_index+=bG9nZ2Vy.length; }; logger=cast(string)bG9nZ2Vy;
+		ubyte[] bWVzc2FnZQ; if(_buffer.length>=*_index+ushort.sizeof){ bWVzc2FnZQ.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
 		return this;
 	}
 
@@ -97,15 +102,19 @@ struct Command {
 	public string command;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		ubyte[] Y29tbWFuZA=cast(ubyte[])command; buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, Y29tbWFuZA.length.to!ushort, buffer.length-ushort.sizeof);buffer~=Y29tbWFuZA;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		ubyte[] Y29tbWFuZA=cast(ubyte[])command; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, Y29tbWFuZA.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=Y29tbWFuZA;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		ubyte[] Y29tbWFuZA; if(buffer.length>=ushort.sizeof){ Y29tbWFuZA.length=read!(ushort, Endian.bigEndian)(buffer); }if(buffer.length>=Y29tbWFuZA.length){ Y29tbWFuZA=buffer[0..Y29tbWFuZA.length]; buffer=buffer[Y29tbWFuZA.length..$]; }; command=cast(string)Y29tbWFuZA;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		ubyte[] Y29tbWFuZA; if(_buffer.length>=*_index+ushort.sizeof){ Y29tbWFuZA.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+Y29tbWFuZA.length){ Y29tbWFuZA=_buffer[*_index..*_index+Y29tbWFuZA.length].dup; *_index+=Y29tbWFuZA.length; }; command=cast(string)Y29tbWFuZA;
 		return this;
 	}
 
@@ -125,13 +134,17 @@ struct PermissionDenied {
 	public enum bool SERVERBOUND = false;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		return this;
 	}
 

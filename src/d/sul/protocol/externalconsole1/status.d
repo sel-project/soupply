@@ -8,10 +8,11 @@
  */
 module sul.protocol.externalconsole1.status;
 
-import std.bitmanip : write, read;
+import std.bitmanip : write, peek;
 import std.conv : to;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
+import std.typecons : Tuple;
 import std.uuid : UUID;
 
 import sul.utils.var;
@@ -30,15 +31,19 @@ struct KeepAlive {
 	public uint count;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, count, buffer.length-uint.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, count, _buffer.length-uint.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=uint.sizeof){ count=read!(uint, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+uint.sizeof){ count=peek!(uint, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -59,17 +64,21 @@ struct UpdateNodes {
 	public string node;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer~=action;
-		ubyte[] bm9kZQ=cast(ubyte[])node; buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, bm9kZQ.length.to!ushort, buffer.length-ushort.sizeof);buffer~=bm9kZQ;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer~=action;
+		ubyte[] bm9kZQ=cast(ubyte[])node; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, bm9kZQ.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=bm9kZQ;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=ubyte.sizeof){ action=read!(ubyte, Endian.bigEndian)(buffer); }
-		ubyte[] bm9kZQ; if(buffer.length>=ushort.sizeof){ bm9kZQ.length=read!(ushort, Endian.bigEndian)(buffer); }if(buffer.length>=bm9kZQ.length){ bm9kZQ=buffer[0..bm9kZQ.length]; buffer=buffer[bm9kZQ.length..$]; }; node=cast(string)bm9kZQ;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+ubyte.sizeof){ action=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		ubyte[] bm9kZQ; if(_buffer.length>=*_index+ushort.sizeof){ bm9kZQ.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+bm9kZQ.length){ bm9kZQ=_buffer[*_index..*_index+bm9kZQ.length].dup; *_index+=bm9kZQ.length; }; node=cast(string)bm9kZQ;
 		return this;
 	}
 
@@ -87,28 +96,32 @@ struct UpdateStats {
 	public uint uptime;
 	public uint upload;
 	public uint download;
-	public types.NodeStats[] nodes;
+	public sul.protocol.externalconsole1.types.NodeStats[] nodes;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, onlinePlayers, buffer.length-uint.sizeof);
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, maxPlayers, buffer.length-uint.sizeof);
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, uptime, buffer.length-uint.sizeof);
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, upload, buffer.length-uint.sizeof);
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, download, buffer.length-uint.sizeof);
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, nodes.length.to!ushort, buffer.length-ushort.sizeof);foreach(bm9kZXM;nodes){ bm9kZXM.encode(buffer); }
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, onlinePlayers, _buffer.length-uint.sizeof);
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, maxPlayers, _buffer.length-uint.sizeof);
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, uptime, _buffer.length-uint.sizeof);
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, upload, _buffer.length-uint.sizeof);
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, download, _buffer.length-uint.sizeof);
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, nodes.length.to!ushort, _buffer.length-ushort.sizeof);foreach(bm9kZXM;nodes){ bm9kZXM.encode(_buffer); }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=uint.sizeof){ onlinePlayers=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=uint.sizeof){ maxPlayers=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=uint.sizeof){ uptime=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=uint.sizeof){ upload=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=uint.sizeof){ download=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ushort.sizeof){ nodes.length=read!(ushort, Endian.bigEndian)(buffer); }foreach(ref bm9kZXM;nodes){ bm9kZXM.decode(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+uint.sizeof){ onlinePlayers=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+uint.sizeof){ maxPlayers=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+uint.sizeof){ uptime=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+uint.sizeof){ upload=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+uint.sizeof){ download=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ nodes.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }foreach(ref bm9kZXM;nodes){ bm9kZXM.decode(_buffer, _index); }
 		return this;
 	}
 

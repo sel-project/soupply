@@ -8,10 +8,11 @@
  */
 module sul.protocol.externalconsole1.login;
 
-import std.bitmanip : write, read;
+import std.bitmanip : write, peek;
 import std.conv : to;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
+import std.typecons : Tuple;
 import std.uuid : UUID;
 
 import sul.utils.var;
@@ -49,19 +50,23 @@ struct AuthCredentials {
 	public ubyte[16] payload;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer~=protocol;
-		ubyte[] aGFzaEFsZ29yaXRo=cast(ubyte[])hashAlgorithm; buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, aGFzaEFsZ29yaXRo.length.to!ushort, buffer.length-ushort.sizeof);buffer~=aGFzaEFsZ29yaXRo;
-		buffer~=payload;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer~=protocol;
+		ubyte[] aGFzaEFsZ29yaXRo=cast(ubyte[])hashAlgorithm; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, aGFzaEFsZ29yaXRo.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=aGFzaEFsZ29yaXRo;
+		_buffer~=payload;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=ubyte.sizeof){ protocol=read!(ubyte, Endian.bigEndian)(buffer); }
-		ubyte[] aGFzaEFsZ29yaXRo; if(buffer.length>=ushort.sizeof){ aGFzaEFsZ29yaXRo.length=read!(ushort, Endian.bigEndian)(buffer); }if(buffer.length>=aGFzaEFsZ29yaXRo.length){ aGFzaEFsZ29yaXRo=buffer[0..aGFzaEFsZ29yaXRo.length]; buffer=buffer[aGFzaEFsZ29yaXRo.length..$]; }; hashAlgorithm=cast(string)aGFzaEFsZ29yaXRo;
-		if(buffer.length>=payload.length){ payload=buffer[0..payload.length]; buffer=buffer[payload.length..$]; }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+ubyte.sizeof){ protocol=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		ubyte[] aGFzaEFsZ29yaXRo; if(_buffer.length>=*_index+ushort.sizeof){ aGFzaEFsZ29yaXRo.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+aGFzaEFsZ29yaXRo.length){ aGFzaEFsZ29yaXRo=_buffer[*_index..*_index+aGFzaEFsZ29yaXRo.length].dup; *_index+=aGFzaEFsZ29yaXRo.length; }; hashAlgorithm=cast(string)aGFzaEFsZ29yaXRo;
+		if(_buffer.length>=*_index+payload.length){ payload=_buffer[*_index..*_index+payload.length].dup; *_index+=payload.length; }
 		return this;
 	}
 
@@ -77,15 +82,19 @@ struct Auth {
 	public ubyte[] hash;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, hash.length.to!ushort, buffer.length-ushort.sizeof);buffer~=hash;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, hash.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=hash;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=ushort.sizeof){ hash.length=read!(ushort, Endian.bigEndian)(buffer); }if(buffer.length>=hash.length){ hash=buffer[0..hash.length]; buffer=buffer[hash.length..$]; }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+ushort.sizeof){ hash.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+hash.length){ hash=_buffer[*_index..*_index+hash.length].dup; *_index+=hash.length; }
 		return this;
 	}
 
@@ -101,16 +110,99 @@ struct Welcome {
 	public ubyte status;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer~=status;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer~=status;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=ubyte.sizeof){ status=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+ubyte.sizeof){ status=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
+	}
+
+	public struct Accepted {
+
+		public enum typeof(status) STATUS = 0;
+
+		public bool remoteCommands;
+		public string software;
+		public ubyte[3] versions;
+		public string displayName;
+		public sul.protocol.externalconsole1.types.Game[] protocols;
+		public string[] connectedNodes;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, remoteCommands, _buffer.length-bool.sizeof);
+			ubyte[] c29mdHdhcmU=cast(ubyte[])software; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, c29mdHdhcmU.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=c29mdHdhcmU;
+			_buffer~=versions;
+			ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, ZGlzcGxheU5hbWU.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=ZGlzcGxheU5hbWU;
+			_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, protocols.length.to!ushort, _buffer.length-ushort.sizeof);foreach(cHJvdG9jb2xz;protocols){ cHJvdG9jb2xz.encode(_buffer); }
+			_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, connectedNodes.length.to!ushort, _buffer.length-ushort.sizeof);foreach(Y29ubmVjdGVkTm9k;connectedNodes){ ubyte[] WTI5dWJtVmpkR1Zr=cast(ubyte[])Y29ubmVjdGVkTm9k; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, WTI5dWJtVmpkR1Zr.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=WTI5dWJtVmpkR1Zr; }
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			if(_buffer.length>=*_index+bool.sizeof){ remoteCommands=peek!(bool, Endian.bigEndian)(_buffer, _index); }
+			ubyte[] c29mdHdhcmU; if(_buffer.length>=*_index+ushort.sizeof){ c29mdHdhcmU.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+c29mdHdhcmU.length){ c29mdHdhcmU=_buffer[*_index..*_index+c29mdHdhcmU.length].dup; *_index+=c29mdHdhcmU.length; }; software=cast(string)c29mdHdhcmU;
+			if(_buffer.length>=*_index+versions.length){ versions=_buffer[*_index..*_index+versions.length].dup; *_index+=versions.length; }
+			ubyte[] ZGlzcGxheU5hbWU; if(_buffer.length>=*_index+ushort.sizeof){ ZGlzcGxheU5hbWU.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU;
+			if(_buffer.length>=*_index+ushort.sizeof){ protocols.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }foreach(ref cHJvdG9jb2xz;protocols){ cHJvdG9jb2xz.decode(_buffer, _index); }
+			if(_buffer.length>=*_index+ushort.sizeof){ connectedNodes.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }foreach(ref Y29ubmVjdGVkTm9k;connectedNodes){ ubyte[] WTI5dWJtVmpkR1Zr; if(_buffer.length>=*_index+ushort.sizeof){ WTI5dWJtVmpkR1Zr.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+WTI5dWJtVmpkR1Zr.length){ WTI5dWJtVmpkR1Zr=_buffer[*_index..*_index+WTI5dWJtVmpkR1Zr.length].dup; *_index+=WTI5dWJtVmpkR1Zr.length; }; Y29ubmVjdGVkTm9k=cast(string)WTI5dWJtVmpkR1Zr; }
+			return this;
+		}
+
+	}
+
+	public struct WrongHash {
+
+		public enum typeof(status) STATUS = 1;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			return this;
+		}
+
+	}
+
+	public struct TimedOut {
+
+		public enum typeof(status) STATUS = 2;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			return this;
+		}
+
 	}
 
 }

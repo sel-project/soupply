@@ -22,10 +22,11 @@ struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
 		static if(isUnsigned!T) {
 			U unsigned = value;
 		} else {
-			//U unsigned = cast(U)((value << 1) ^ (value >> RIGHT_SHIFT));
-			U unsigned = cast(U)(value << 1);
-			if(value < 0) {
-				unsigned = -unsigned - 1;
+			U unsigned;
+			if(value >= 0) {
+				unsigned = cast(U)(value << 1);
+			} else if(value < 0) {
+				unsigned = cast(U)((-value << 1) - 1);
 			}
 		}
 		while((unsigned & MASK) != 0) {
@@ -35,16 +36,19 @@ struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
 		buffer ~= unsigned & 0xFF;
 		return buffer;
 	}
+
+	public static pure nothrow @trusted T decode(ubyte[] buffer, size_t index=0) {
+		return decode(buffer, &index);
+	}
 	
-	public static pure nothrow @safe T decode(ref ubyte[] buffer) {
-		if(buffer.length == 0) return T.init;
+	public static pure nothrow @safe T decode(ubyte[] buffer, size_t* index) {
+		if(buffer.length <= *index) return T.init;
 		U unsigned = 0;
 		size_t j, k;
 		do {
-			k = buffer[0];
-			buffer = buffer[1..$];
+			k = buffer[*index];
 			unsigned |= (k & 0x7F) << (j++ * 7);
-		} while(buffer.length != 0 && j < MAX_BYTES && (k & 0x80) != 0);
+		} while(++*index < buffer.length && j < MAX_BYTES && (k & 0x80) != 0);
 		static if(isUnsigned!T) {
 			return unsigned;
 		} else {
@@ -56,6 +60,13 @@ struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
 				return value;
 			}
 		}
+	}
+
+	public static pure nothrow @trusted T fromBuffer(ref ubyte[] buffer) {
+		size_t index = 0;
+		auto ret = decode(buffer, &index);
+		buffer = buffer[index..$];
+		return ret;
 	}
 	
 	public enum stringof = "var" ~ T.stringof;

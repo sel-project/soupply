@@ -204,6 +204,8 @@ void main(string[] args) {
 												field.name = fv.tag.attr["name"].replace("-", "_");
 												field.type = convert(fv.tag.attr["type"].replace("-", "_"));
 												field.description = text(fv);
+												if("endianness" in fv.tag.attr) field.endianness = fv.tag.attr["endianness"].replace("-", "_");
+												if("when" in fv.tag.attr) field.condition = fv.tag.attr["when"].replace("-", "_");
 												foreach(c ; fv.elements) {
 													if(c.tag.name == "constant") {
 														field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), c.tag.attr["value"]);
@@ -224,6 +226,8 @@ void main(string[] args) {
 																field.name = f.tag.attr["name"].replace("-", "_");
 																field.type = convert(f.tag.attr["type"].replace("-", "_"));
 																field.description = text(f);
+																if("endianness" in f.tag.attr) field.endianness = f.tag.attr["endianness"].replace("-", "_");
+																if("when" in f.tag.attr) field.condition = f.tag.attr["when"].replace("-", "_");
 																foreach(c ; f.elements) {
 																	if(c.tag.name == "constant") {
 																		field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), c.tag.attr["value"]);

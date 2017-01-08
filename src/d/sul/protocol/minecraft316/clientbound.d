@@ -8,10 +8,11 @@
  */
 module sul.protocol.minecraft316.clientbound;
 
-import std.bitmanip : write, read;
+import std.bitmanip : write, peek;
 import std.conv : to;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
+import std.typecons : Tuple;
 import std.uuid : UUID;
 
 import sul.utils.var;
@@ -37,29 +38,33 @@ struct SpawnObject {
 	public Tuple!(short, "x", short, "y", short, "z") velocity;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=uuid.data;
-		buffer~=type;
-		buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.x, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.y, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.z, buffer.length-double.sizeof);
-		buffer~=pitch;
-		buffer~=yaw;
-		buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, data, buffer.length-int.sizeof);
-		buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, velocity.x, buffer.length-short.sizeof);buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, velocity.y, buffer.length-short.sizeof);buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, velocity.z, buffer.length-short.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=uuid.data;
+		_buffer~=type;
+		_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.x, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.y, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.z, _buffer.length-double.sizeof);
+		_buffer~=pitch;
+		_buffer~=yaw;
+		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, data, _buffer.length-int.sizeof);
+		_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, velocity.x, _buffer.length-short.sizeof);_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, velocity.y, _buffer.length-short.sizeof);_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, velocity.z, _buffer.length-short.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=16){ ubyte[16] dXVpZA=buffer[0..16]; buffer=buffer[16..$]; uuid=UUID(dXVpZA); }
-		if(buffer.length>=ubyte.sizeof){ type=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=double.sizeof){ position.x=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.y=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.z=read!(double, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ pitch=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ yaw=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=int.sizeof){ data=read!(int, Endian.bigEndian)(buffer); }
-		if(buffer.length>=short.sizeof){ velocity.x=read!(short, Endian.bigEndian)(buffer); }if(buffer.length>=short.sizeof){ velocity.y=read!(short, Endian.bigEndian)(buffer); }if(buffer.length>=short.sizeof){ velocity.z=read!(short, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ type=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+double.sizeof){ position.x=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.y=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.z=peek!(double, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ pitch=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ yaw=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+int.sizeof){ data=peek!(int, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+short.sizeof){ velocity.x=peek!(short, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+short.sizeof){ velocity.y=peek!(short, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+short.sizeof){ velocity.z=peek!(short, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -77,19 +82,23 @@ struct SpawnExperienceOrb {
 	public ushort count;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.x, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.y, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.z, buffer.length-double.sizeof);
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, count, buffer.length-ushort.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.x, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.y, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.z, _buffer.length-double.sizeof);
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, count, _buffer.length-ushort.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=double.sizeof){ position.x=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.y=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.z=read!(double, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ushort.sizeof){ count=read!(ushort, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+double.sizeof){ position.x=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.y=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.z=peek!(double, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ count=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -110,19 +119,23 @@ struct SpawnGlobalEntity {
 	public Tuple!(double, "x", double, "y", double, "z") position;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=type;
-		buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.x, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.y, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.z, buffer.length-double.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=type;
+		_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.x, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.y, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.z, _buffer.length-double.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=ubyte.sizeof){ type=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=double.sizeof){ position.x=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.y=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.z=read!(double, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+ubyte.sizeof){ type=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+double.sizeof){ position.x=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.y=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.z=peek!(double, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -143,34 +156,38 @@ struct SpawnMob {
 	public ubyte pitch;
 	public ubyte headPitch;
 	public Tuple!(short, "x", short, "y", short, "z") velocity;
-	public types.Metadata metadata;
+	public sul.protocol.minecraft316.types.Metadata metadata;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=uuid.data;
-		buffer~=varuint.encode(type);
-		buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.x, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.y, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.z, buffer.length-double.sizeof);
-		buffer~=yaw;
-		buffer~=pitch;
-		buffer~=headPitch;
-		buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, velocity.x, buffer.length-short.sizeof);buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, velocity.y, buffer.length-short.sizeof);buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, velocity.z, buffer.length-short.sizeof);
-		metadata.encode(buffer);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=uuid.data;
+		_buffer~=varuint.encode(type);
+		_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.x, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.y, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.z, _buffer.length-double.sizeof);
+		_buffer~=yaw;
+		_buffer~=pitch;
+		_buffer~=headPitch;
+		_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, velocity.x, _buffer.length-short.sizeof);_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, velocity.y, _buffer.length-short.sizeof);_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, velocity.z, _buffer.length-short.sizeof);
+		metadata.encode(_buffer);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=16){ ubyte[16] dXVpZA=buffer[0..16]; buffer=buffer[16..$]; uuid=UUID(dXVpZA); }
-		type=varuint.decode(buffer);
-		if(buffer.length>=double.sizeof){ position.x=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.y=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.z=read!(double, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ yaw=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ pitch=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ headPitch=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=short.sizeof){ velocity.x=read!(short, Endian.bigEndian)(buffer); }if(buffer.length>=short.sizeof){ velocity.y=read!(short, Endian.bigEndian)(buffer); }if(buffer.length>=short.sizeof){ velocity.z=read!(short, Endian.bigEndian)(buffer); }
-		metadata.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
+		type=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+double.sizeof){ position.x=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.y=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.z=peek!(double, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ yaw=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ pitch=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ headPitch=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+short.sizeof){ velocity.x=peek!(short, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+short.sizeof){ velocity.y=peek!(short, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+short.sizeof){ velocity.z=peek!(short, Endian.bigEndian)(_buffer, _index); }
+		metadata.decode(_buffer, _index);
 		return this;
 	}
 
@@ -190,23 +207,27 @@ struct SpawnPainting {
 	public ubyte direction;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=uuid.data;
-		ubyte[] dGl0bGU=cast(ubyte[])title; buffer~=varuint.encode(dGl0bGU.length.to!uint);buffer~=dGl0bGU;
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, position, buffer.length-ulong.sizeof);
-		buffer~=direction;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=uuid.data;
+		ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint);_buffer~=dGl0bGU;
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, position, _buffer.length-ulong.sizeof);
+		_buffer~=direction;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=16){ ubyte[16] dXVpZA=buffer[0..16]; buffer=buffer[16..$]; uuid=UUID(dXVpZA); }
-		ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(buffer);if(buffer.length>=dGl0bGU.length){ dGl0bGU=buffer[0..dGl0bGU.length]; buffer=buffer[dGl0bGU.length..$]; }; title=cast(string)dGl0bGU;
-		if(buffer.length>=ulong.sizeof){ position=read!(ulong, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ direction=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
+		ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
+		if(_buffer.length>=*_index+ulong.sizeof){ position=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ direction=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -224,28 +245,32 @@ struct SpawnPlayer {
 	public Tuple!(double, "x", double, "y", double, "z") position;
 	public ubyte yaw;
 	public ubyte pitch;
-	public types.Metadata metadata;
+	public sul.protocol.minecraft316.types.Metadata metadata;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=uuid.data;
-		buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.x, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.y, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.z, buffer.length-double.sizeof);
-		buffer~=yaw;
-		buffer~=pitch;
-		metadata.encode(buffer);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=uuid.data;
+		_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.x, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.y, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.z, _buffer.length-double.sizeof);
+		_buffer~=yaw;
+		_buffer~=pitch;
+		metadata.encode(_buffer);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=16){ ubyte[16] dXVpZA=buffer[0..16]; buffer=buffer[16..$]; uuid=UUID(dXVpZA); }
-		if(buffer.length>=double.sizeof){ position.x=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.y=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.z=read!(double, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ yaw=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ pitch=read!(ubyte, Endian.bigEndian)(buffer); }
-		metadata.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
+		if(_buffer.length>=*_index+double.sizeof){ position.x=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.y=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.z=peek!(double, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ yaw=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ pitch=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		metadata.decode(_buffer, _index);
 		return this;
 	}
 
@@ -270,17 +295,21 @@ struct Animation {
 	public ubyte animation;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=animation;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=animation;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=ubyte.sizeof){ animation=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+ubyte.sizeof){ animation=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -293,18 +322,22 @@ struct Statistics {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public types.Statistic[] statistics;
+	public sul.protocol.minecraft316.types.Statistic[] statistics;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(statistics.length.to!uint);foreach(c3RhdGlzdGljcw;statistics){ c3RhdGlzdGljcw.encode(buffer); }
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(statistics.length.to!uint);foreach(c3RhdGlzdGljcw;statistics){ c3RhdGlzdGljcw.encode(_buffer); }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		statistics.length=varuint.decode(buffer);foreach(ref c3RhdGlzdGljcw;statistics){ c3RhdGlzdGljcw.decode(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		statistics.length=varuint.decode(_buffer, *_index);foreach(ref c3RhdGlzdGljcw;statistics){ c3RhdGlzdGljcw.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -322,19 +355,23 @@ struct BlockBreakAnimation {
 	public ubyte stage;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, position, buffer.length-ulong.sizeof);
-		buffer~=stage;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, position, _buffer.length-ulong.sizeof);
+		_buffer~=stage;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=ulong.sizeof){ position=read!(ulong, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ stage=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+ulong.sizeof){ position=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ stage=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -364,19 +401,23 @@ struct UpdateBlockEntity {
 	public ubyte[] nbt;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, position, buffer.length-ulong.sizeof);
-		buffer~=action;
-		buffer~=nbt;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, position, _buffer.length-ulong.sizeof);
+		_buffer~=action;
+		_buffer~=nbt;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ulong.sizeof){ position=read!(ulong, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ action=read!(ubyte, Endian.bigEndian)(buffer); }
-		nbt=buffer.dup; buffer.length=0;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ulong.sizeof){ position=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ action=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		nbt=_buffer[*_index..$].dup; *_index=buffer.length;
 		return this;
 	}
 
@@ -395,21 +436,25 @@ struct BlockAction {
 	public uint blockType;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, position, buffer.length-ulong.sizeof);
-		buffer~=action;
-		buffer~=parameter;
-		buffer~=varuint.encode(blockType);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, position, _buffer.length-ulong.sizeof);
+		_buffer~=action;
+		_buffer~=parameter;
+		_buffer~=varuint.encode(blockType);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ulong.sizeof){ position=read!(ulong, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ action=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ parameter=read!(ubyte, Endian.bigEndian)(buffer); }
-		blockType=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ulong.sizeof){ position=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ action=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ parameter=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		blockType=varuint.decode(_buffer, *_index);
 		return this;
 	}
 
@@ -426,17 +471,21 @@ struct BlockChange {
 	public uint block;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, position, buffer.length-ulong.sizeof);
-		buffer~=varuint.encode(block);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, position, _buffer.length-ulong.sizeof);
+		_buffer~=varuint.encode(block);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ulong.sizeof){ position=read!(ulong, Endian.bigEndian)(buffer); }
-		block=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ulong.sizeof){ position=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
+		block=varuint.decode(_buffer, *_index);
 		return this;
 	}
 
@@ -453,18 +502,217 @@ struct BossBar {
 	public uint action;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=uuid.data;
-		buffer~=varuint.encode(action);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=uuid.data;
+		_buffer~=varuint.encode(action);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=16){ ubyte[16] dXVpZA=buffer[0..16]; buffer=buffer[16..$]; uuid=UUID(dXVpZA); }
-		action=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
+		action=varuint.decode(_buffer, *_index);
 		return this;
+	}
+
+	public struct Add {
+
+		public enum typeof(action) ACTION = 0;
+
+		// color
+		public enum uint PINK = 0;
+		public enum uint BLUE = 1;
+		public enum uint RED = 2;
+		public enum uint GREEN = 3;
+		public enum uint YELLOW = 4;
+		public enum uint PURPLE = 5;
+		public enum uint WHITE = 6;
+
+		// division
+		public enum uint NO_DIVISION = 0;
+		public enum uint SIX_NOTCHES = 1;
+		public enum uint TEN_NOTCHES = 2;
+		public enum uint TWELWE_NOTCHES = 3;
+		public enum uint TWENTY_NOTCHES = 4;
+
+		// flags
+		public enum ubyte DARK_SKY = 1;
+		public enum ubyte IS_DRAGON_BAR = 2;
+
+		public string title;
+		public float health;
+		public uint color;
+		public uint division;
+		public ubyte flags;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint);_buffer~=dGl0bGU;
+			_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, health, _buffer.length-float.sizeof);
+			_buffer~=varuint.encode(color);
+			_buffer~=varuint.encode(division);
+			_buffer~=flags;
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
+			if(_buffer.length>=*_index+float.sizeof){ health=peek!(float, Endian.bigEndian)(_buffer, _index); }
+			color=varuint.decode(_buffer, *_index);
+			division=varuint.decode(_buffer, *_index);
+			if(_buffer.length>=*_index+ubyte.sizeof){ flags=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+			return this;
+		}
+
+	}
+
+	public struct Remove {
+
+		public enum typeof(action) ACTION = 1;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			return this;
+		}
+
+	}
+
+	public struct UpdateHealth {
+
+		public enum typeof(action) ACTION = 2;
+
+		public float health;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, health, _buffer.length-float.sizeof);
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			if(_buffer.length>=*_index+float.sizeof){ health=peek!(float, Endian.bigEndian)(_buffer, _index); }
+			return this;
+		}
+
+	}
+
+	public struct UpdateTitle {
+
+		public enum typeof(action) ACTION = 3;
+
+		public string title;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint);_buffer~=dGl0bGU;
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
+			return this;
+		}
+
+	}
+
+	public struct UpdateStyle {
+
+		public enum typeof(action) ACTION = 4;
+
+		// color
+		public enum uint PINK = 0;
+		public enum uint BLUE = 1;
+		public enum uint RED = 2;
+		public enum uint GREEN = 3;
+		public enum uint YELLOW = 4;
+		public enum uint PURPLE = 5;
+		public enum uint WHITE = 6;
+
+		// division
+		public enum uint NO_DIVISION = 0;
+		public enum uint SIX_NOTCHES = 1;
+		public enum uint TEN_NOTCHES = 2;
+		public enum uint TWELWE_NOTCHES = 3;
+		public enum uint TWENTY_NOTCHES = 4;
+
+		public uint color;
+		public uint division;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(color);
+			_buffer~=varuint.encode(division);
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			color=varuint.decode(_buffer, *_index);
+			division=varuint.decode(_buffer, *_index);
+			return this;
+		}
+
+	}
+
+	public struct UpdateFlags {
+
+		public enum typeof(action) ACTION = 5;
+
+		// flags
+		public enum ubyte DARK_SKY = 1;
+		public enum ubyte IS_DRAGON_BAR = 2;
+
+		public ubyte flags;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=flags;
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			if(_buffer.length>=*_index+ubyte.sizeof){ flags=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+			return this;
+		}
+
 	}
 
 }
@@ -485,15 +733,19 @@ struct ServerDifficulty {
 	public ubyte difficulty;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=difficulty;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=difficulty;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ difficulty=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ difficulty=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -509,15 +761,19 @@ struct TabComplete {
 	public string[] matches;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(matches.length.to!uint);foreach(bWF0Y2hlcw;matches){ ubyte[] YldGMFkyaGxjdw=cast(ubyte[])bWF0Y2hlcw; buffer~=varuint.encode(YldGMFkyaGxjdw.length.to!uint);buffer~=YldGMFkyaGxjdw; }
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(matches.length.to!uint);foreach(bWF0Y2hlcw;matches){ ubyte[] YldGMFkyaGxjdw=cast(ubyte[])bWF0Y2hlcw; _buffer~=varuint.encode(YldGMFkyaGxjdw.length.to!uint);_buffer~=YldGMFkyaGxjdw; }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		matches.length=varuint.decode(buffer);foreach(ref bWF0Y2hlcw;matches){ ubyte[] YldGMFkyaGxjdw; YldGMFkyaGxjdw.length=varuint.decode(buffer);if(buffer.length>=YldGMFkyaGxjdw.length){ YldGMFkyaGxjdw=buffer[0..YldGMFkyaGxjdw.length]; buffer=buffer[YldGMFkyaGxjdw.length..$]; }; bWF0Y2hlcw=cast(string)YldGMFkyaGxjdw; }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		matches.length=varuint.decode(_buffer, *_index);foreach(ref bWF0Y2hlcw;matches){ ubyte[] YldGMFkyaGxjdw; YldGMFkyaGxjdw.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+YldGMFkyaGxjdw.length){ YldGMFkyaGxjdw=_buffer[*_index..*_index+YldGMFkyaGxjdw.length].dup; *_index+=YldGMFkyaGxjdw.length; }; bWF0Y2hlcw=cast(string)YldGMFkyaGxjdw; }
 		return this;
 	}
 
@@ -539,17 +795,21 @@ struct ChatMessage {
 	public ubyte position;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		ubyte[] bWVzc2FnZQ=cast(ubyte[])message; buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);buffer~=bWVzc2FnZQ;
-		buffer~=position;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
+		_buffer~=position;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(buffer);if(buffer.length>=bWVzc2FnZQ.length){ bWVzc2FnZQ=buffer[0..bWVzc2FnZQ.length]; buffer=buffer[bWVzc2FnZQ.length..$]; }; message=cast(string)bWVzc2FnZQ;
-		if(buffer.length>=ubyte.sizeof){ position=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+		if(_buffer.length>=*_index+ubyte.sizeof){ position=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -563,20 +823,24 @@ struct MultiBlockChange {
 	public enum bool SERVERBOUND = false;
 
 	public Tuple!(int, "x", int, "z") chunk;
-	public types.BlockChange[] changes;
+	public sul.protocol.minecraft316.types.BlockChange[] changes;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, chunk.x, buffer.length-int.sizeof);buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, chunk.z, buffer.length-int.sizeof);
-		buffer~=varuint.encode(changes.length.to!uint);foreach(Y2hhbmdlcw;changes){ Y2hhbmdlcw.encode(buffer); }
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, chunk.x, _buffer.length-int.sizeof);_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, chunk.z, _buffer.length-int.sizeof);
+		_buffer~=varuint.encode(changes.length.to!uint);foreach(Y2hhbmdlcw;changes){ Y2hhbmdlcw.encode(_buffer); }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=int.sizeof){ chunk.x=read!(int, Endian.bigEndian)(buffer); }if(buffer.length>=int.sizeof){ chunk.z=read!(int, Endian.bigEndian)(buffer); }
-		changes.length=varuint.decode(buffer);foreach(ref Y2hhbmdlcw;changes){ Y2hhbmdlcw.decode(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+int.sizeof){ chunk.x=peek!(int, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+int.sizeof){ chunk.z=peek!(int, Endian.bigEndian)(_buffer, _index); }
+		changes.length=varuint.decode(_buffer, *_index);foreach(ref Y2hhbmdlcw;changes){ Y2hhbmdlcw.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -594,19 +858,23 @@ struct ConfirmTransaction {
 	public bool accepted;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=window;
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, action, buffer.length-ushort.sizeof);
-		buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(buffer, accepted, buffer.length-bool.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=window;
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, action, _buffer.length-ushort.sizeof);
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, accepted, _buffer.length-bool.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ window=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ushort.sizeof){ action=read!(ushort, Endian.bigEndian)(buffer); }
-		if(buffer.length>=bool.sizeof){ accepted=read!(bool, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ window=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ action=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+bool.sizeof){ accepted=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -622,15 +890,19 @@ struct CloseWindow {
 	public ubyte window;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=window;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=window;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ window=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ window=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -649,21 +921,25 @@ struct OpenWindow {
 	public ubyte slots;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=window;
-		ubyte[] dHlwZQ=cast(ubyte[])type; buffer~=varuint.encode(dHlwZQ.length.to!uint);buffer~=dHlwZQ;
-		ubyte[] dGl0bGU=cast(ubyte[])title; buffer~=varuint.encode(dGl0bGU.length.to!uint);buffer~=dGl0bGU;
-		buffer~=slots;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=window;
+		ubyte[] dHlwZQ=cast(ubyte[])type; _buffer~=varuint.encode(dHlwZQ.length.to!uint);_buffer~=dHlwZQ;
+		ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint);_buffer~=dGl0bGU;
+		_buffer~=slots;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ window=read!(ubyte, Endian.bigEndian)(buffer); }
-		ubyte[] dHlwZQ; dHlwZQ.length=varuint.decode(buffer);if(buffer.length>=dHlwZQ.length){ dHlwZQ=buffer[0..dHlwZQ.length]; buffer=buffer[dHlwZQ.length..$]; }; type=cast(string)dHlwZQ;
-		ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(buffer);if(buffer.length>=dGl0bGU.length){ dGl0bGU=buffer[0..dGl0bGU.length]; buffer=buffer[dGl0bGU.length..$]; }; title=cast(string)dGl0bGU;
-		if(buffer.length>=ubyte.sizeof){ slots=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ window=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		ubyte[] dHlwZQ; dHlwZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dHlwZQ.length){ dHlwZQ=_buffer[*_index..*_index+dHlwZQ.length].dup; *_index+=dHlwZQ.length; }; type=cast(string)dHlwZQ;
+		ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
+		if(_buffer.length>=*_index+ubyte.sizeof){ slots=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -678,22 +954,26 @@ struct WindowItems {
 
 	public ubyte window;
 	public ushort count;
-	public types.Slots slots;
+	public sul.protocol.minecraft316.types.Slot[] slots;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=window;
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, count, buffer.length-ushort.sizeof);
-		slots.encode(buffer);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=window;
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, count, _buffer.length-ushort.sizeof);
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, slots.length.to!ushort, _buffer.length-ushort.sizeof);foreach(c2xvdHM;slots){ c2xvdHM.encode(_buffer); }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ window=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ushort.sizeof){ count=read!(ushort, Endian.bigEndian)(buffer); }
-		slots.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ window=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ count=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ slots.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }foreach(ref c2xvdHM;slots){ c2xvdHM.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -726,19 +1006,23 @@ struct WindowProperty {
 	public short value;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=window;
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, property, buffer.length-ushort.sizeof);
-		buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, value, buffer.length-short.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=window;
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, property, _buffer.length-ushort.sizeof);
+		_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, value, _buffer.length-short.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ window=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ushort.sizeof){ property=read!(ushort, Endian.bigEndian)(buffer); }
-		if(buffer.length>=short.sizeof){ value=read!(short, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ window=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ property=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+short.sizeof){ value=peek!(short, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -753,22 +1037,26 @@ struct SetSlot {
 
 	public ubyte window;
 	public ushort slot;
-	public types.Slot item;
+	public sul.protocol.minecraft316.types.Slot item;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=window;
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, slot, buffer.length-ushort.sizeof);
-		item.encode(buffer);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=window;
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, slot, _buffer.length-ushort.sizeof);
+		item.encode(_buffer);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ window=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ushort.sizeof){ slot=read!(ushort, Endian.bigEndian)(buffer); }
-		item.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ window=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ slot=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
+		item.decode(_buffer, _index);
 		return this;
 	}
 
@@ -785,17 +1073,21 @@ struct SetCooldown {
 	public uint cooldown;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(item);
-		buffer~=varuint.encode(cooldown);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(item);
+		_buffer~=varuint.encode(cooldown);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		item=varuint.decode(buffer);
-		cooldown=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		item=varuint.decode(_buffer, *_index);
+		cooldown=varuint.decode(_buffer, *_index);
 		return this;
 	}
 
@@ -812,17 +1104,21 @@ struct PluginMessage {
 	public ubyte[] data;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		ubyte[] Y2hhbm5lbA=cast(ubyte[])channel; buffer~=varuint.encode(Y2hhbm5lbA.length.to!uint);buffer~=Y2hhbm5lbA;
-		buffer~=data;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		ubyte[] Y2hhbm5lbA=cast(ubyte[])channel; _buffer~=varuint.encode(Y2hhbm5lbA.length.to!uint);_buffer~=Y2hhbm5lbA;
+		_buffer~=data;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		ubyte[] Y2hhbm5lbA; Y2hhbm5lbA.length=varuint.decode(buffer);if(buffer.length>=Y2hhbm5lbA.length){ Y2hhbm5lbA=buffer[0..Y2hhbm5lbA.length]; buffer=buffer[Y2hhbm5lbA.length..$]; }; channel=cast(string)Y2hhbm5lbA;
-		data=buffer.dup; buffer.length=0;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		ubyte[] Y2hhbm5lbA; Y2hhbm5lbA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y2hhbm5lbA.length){ Y2hhbm5lbA=_buffer[*_index..*_index+Y2hhbm5lbA.length].dup; *_index+=Y2hhbm5lbA.length; }; channel=cast(string)Y2hhbm5lbA;
+		data=_buffer[*_index..$].dup; *_index=buffer.length;
 		return this;
 	}
 
@@ -842,23 +1138,27 @@ struct NamedSoundEffect {
 	public float pitch;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		ubyte[] bmFtZQ=cast(ubyte[])name; buffer~=varuint.encode(bmFtZQ.length.to!uint);buffer~=bmFtZQ;
-		buffer~=varuint.encode(category);
-		buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, position.x, buffer.length-int.sizeof);buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, position.y, buffer.length-int.sizeof);buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, position.z, buffer.length-int.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, volume, buffer.length-float.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, pitch, buffer.length-float.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint);_buffer~=bmFtZQ;
+		_buffer~=varuint.encode(category);
+		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.x, _buffer.length-int.sizeof);_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.y, _buffer.length-int.sizeof);_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.z, _buffer.length-int.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, volume, _buffer.length-float.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, pitch, _buffer.length-float.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(buffer);if(buffer.length>=bmFtZQ.length){ bmFtZQ=buffer[0..bmFtZQ.length]; buffer=buffer[bmFtZQ.length..$]; }; name=cast(string)bmFtZQ;
-		category=varuint.decode(buffer);
-		if(buffer.length>=int.sizeof){ position.x=read!(int, Endian.bigEndian)(buffer); }if(buffer.length>=int.sizeof){ position.y=read!(int, Endian.bigEndian)(buffer); }if(buffer.length>=int.sizeof){ position.z=read!(int, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ volume=read!(float, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ pitch=read!(float, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		category=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+int.sizeof){ position.x=peek!(int, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+int.sizeof){ position.y=peek!(int, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+int.sizeof){ position.z=peek!(int, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ volume=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ pitch=peek!(float, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -874,15 +1174,19 @@ struct Disconnect {
 	public string reason;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		ubyte[] cmVhc29u=cast(ubyte[])reason; buffer~=varuint.encode(cmVhc29u.length.to!uint);buffer~=cmVhc29u;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		ubyte[] cmVhc29u=cast(ubyte[])reason; _buffer~=varuint.encode(cmVhc29u.length.to!uint);_buffer~=cmVhc29u;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		ubyte[] cmVhc29u; cmVhc29u.length=varuint.decode(buffer);if(buffer.length>=cmVhc29u.length){ cmVhc29u=buffer[0..cmVhc29u.length]; buffer=buffer[cmVhc29u.length..$]; }; reason=cast(string)cmVhc29u;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		ubyte[] cmVhc29u; cmVhc29u.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+cmVhc29u.length){ cmVhc29u=_buffer[*_index..*_index+cmVhc29u.length].dup; *_index+=cmVhc29u.length; }; reason=cast(string)cmVhc29u;
 		return this;
 	}
 
@@ -903,17 +1207,21 @@ struct EntityStatus {
 	public ubyte status;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, entityId, buffer.length-uint.sizeof);
-		buffer~=status;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, entityId, _buffer.length-uint.sizeof);
+		_buffer~=status;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=uint.sizeof){ entityId=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ status=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+uint.sizeof){ entityId=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ status=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -928,25 +1236,29 @@ struct Explosion {
 
 	public Tuple!(float, "x", float, "y", float, "z") position;
 	public float radius;
-	public types.ExplosionRecords records;
+	public Tuple!(byte, "x", byte, "y", byte, "z")[] records;
 	public Tuple!(float, "x", float, "y", float, "z") motion;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, position.x, buffer.length-float.sizeof);buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, position.y, buffer.length-float.sizeof);buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, position.z, buffer.length-float.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, radius, buffer.length-float.sizeof);
-		records.encode(buffer);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, motion.x, buffer.length-float.sizeof);buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, motion.y, buffer.length-float.sizeof);buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, motion.z, buffer.length-float.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, position.x, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, position.y, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, position.z, _buffer.length-float.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, radius, _buffer.length-float.sizeof);
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, records.length.to!uint, _buffer.length-uint.sizeof);foreach(cmVjb3Jkcw;records){ cmVjb3Jkcw.encode(_buffer); }
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, motion.x, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, motion.y, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, motion.z, _buffer.length-float.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=float.sizeof){ position.x=read!(float, Endian.bigEndian)(buffer); }if(buffer.length>=float.sizeof){ position.y=read!(float, Endian.bigEndian)(buffer); }if(buffer.length>=float.sizeof){ position.z=read!(float, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ radius=read!(float, Endian.bigEndian)(buffer); }
-		records.decode(buffer);
-		if(buffer.length>=float.sizeof){ motion.x=read!(float, Endian.bigEndian)(buffer); }if(buffer.length>=float.sizeof){ motion.y=read!(float, Endian.bigEndian)(buffer); }if(buffer.length>=float.sizeof){ motion.z=read!(float, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+float.sizeof){ position.x=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ position.y=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ position.z=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ radius=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+uint.sizeof){ records.length=peek!(uint, Endian.bigEndian)(_buffer, _index); }foreach(ref cmVjb3Jkcw;records){ cmVjb3Jkcw.decode(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ motion.x=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ motion.y=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ motion.z=peek!(float, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -962,15 +1274,19 @@ struct UnloadChunk {
 	public Tuple!(int, "x", int, "z") position;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, position.x, buffer.length-int.sizeof);buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, position.z, buffer.length-int.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.x, _buffer.length-int.sizeof);_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.z, _buffer.length-int.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=int.sizeof){ position.x=read!(int, Endian.bigEndian)(buffer); }if(buffer.length>=int.sizeof){ position.z=read!(int, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+int.sizeof){ position.x=peek!(int, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+int.sizeof){ position.z=peek!(int, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1013,17 +1329,21 @@ struct ChangeGameState {
 	public float value;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=reason;
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, value, buffer.length-float.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=reason;
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, value, _buffer.length-float.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ reason=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ value=read!(float, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ reason=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ value=peek!(float, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1039,15 +1359,19 @@ struct KeepAlive {
 	public uint id;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(id);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(id);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		id=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		id=varuint.decode(_buffer, *_index);
 		return this;
 	}
 
@@ -1067,23 +1391,27 @@ struct ChunkData {
 	public ubyte[] tiles;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, position.x, buffer.length-int.sizeof);buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, position.z, buffer.length-int.sizeof);
-		buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(buffer, full, buffer.length-bool.sizeof);
-		buffer~=varuint.encode(sections);
-		buffer~=varuint.encode(data.length.to!uint);buffer~=data;
-		buffer~=tiles;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.x, _buffer.length-int.sizeof);_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.z, _buffer.length-int.sizeof);
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, full, _buffer.length-bool.sizeof);
+		_buffer~=varuint.encode(sections);
+		_buffer~=varuint.encode(data.length.to!uint);_buffer~=data;
+		_buffer~=tiles;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=int.sizeof){ position.x=read!(int, Endian.bigEndian)(buffer); }if(buffer.length>=int.sizeof){ position.z=read!(int, Endian.bigEndian)(buffer); }
-		if(buffer.length>=bool.sizeof){ full=read!(bool, Endian.bigEndian)(buffer); }
-		sections=varuint.decode(buffer);
-		data.length=varuint.decode(buffer);if(buffer.length>=data.length){ data=buffer[0..data.length]; buffer=buffer[data.length..$]; }
-		tiles=buffer.dup; buffer.length=0;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+int.sizeof){ position.x=peek!(int, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+int.sizeof){ position.z=peek!(int, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+bool.sizeof){ full=peek!(bool, Endian.bigEndian)(_buffer, _index); }
+		sections=varuint.decode(_buffer, *_index);
+		data.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
+		tiles=_buffer[*_index..$].dup; *_index=buffer.length;
 		return this;
 	}
 
@@ -1102,21 +1430,25 @@ struct Effect {
 	public bool disableVolume;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, effectId, buffer.length-uint.sizeof);
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, position, buffer.length-ulong.sizeof);
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, data, buffer.length-uint.sizeof);
-		buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(buffer, disableVolume, buffer.length-bool.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, effectId, _buffer.length-uint.sizeof);
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, position, _buffer.length-ulong.sizeof);
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, data, _buffer.length-uint.sizeof);
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, disableVolume, _buffer.length-bool.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=uint.sizeof){ effectId=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ulong.sizeof){ position=read!(ulong, Endian.bigEndian)(buffer); }
-		if(buffer.length>=uint.sizeof){ data=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=bool.sizeof){ disableVolume=read!(bool, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+uint.sizeof){ effectId=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ulong.sizeof){ position=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+uint.sizeof){ data=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+bool.sizeof){ disableVolume=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1138,27 +1470,31 @@ struct Particle {
 	public uint[2] additionalData;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, particleId, buffer.length-uint.sizeof);
-		buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(buffer, longDistance, buffer.length-bool.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, position.x, buffer.length-float.sizeof);buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, position.y, buffer.length-float.sizeof);buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, position.z, buffer.length-float.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, offset.x, buffer.length-float.sizeof);buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, offset.y, buffer.length-float.sizeof);buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, offset.z, buffer.length-float.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, data, buffer.length-float.sizeof);
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, count, buffer.length-uint.sizeof);
-		foreach(YWRkaXRpb25hbERh;additionalData){ buffer~=varuint.encode(YWRkaXRpb25hbERh); }
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, particleId, _buffer.length-uint.sizeof);
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, longDistance, _buffer.length-bool.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, position.x, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, position.y, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, position.z, _buffer.length-float.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, offset.x, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, offset.y, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, offset.z, _buffer.length-float.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, data, _buffer.length-float.sizeof);
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, count, _buffer.length-uint.sizeof);
+		foreach(YWRkaXRpb25hbERh;additionalData){ _buffer~=varuint.encode(YWRkaXRpb25hbERh); }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=uint.sizeof){ particleId=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=bool.sizeof){ longDistance=read!(bool, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ position.x=read!(float, Endian.bigEndian)(buffer); }if(buffer.length>=float.sizeof){ position.y=read!(float, Endian.bigEndian)(buffer); }if(buffer.length>=float.sizeof){ position.z=read!(float, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ offset.x=read!(float, Endian.bigEndian)(buffer); }if(buffer.length>=float.sizeof){ offset.y=read!(float, Endian.bigEndian)(buffer); }if(buffer.length>=float.sizeof){ offset.z=read!(float, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ data=read!(float, Endian.bigEndian)(buffer); }
-		if(buffer.length>=uint.sizeof){ count=read!(uint, Endian.bigEndian)(buffer); }
-		foreach(ref YWRkaXRpb25hbERh;additionalData){ YWRkaXRpb25hbERh=varuint.decode(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+uint.sizeof){ particleId=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+bool.sizeof){ longDistance=peek!(bool, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ position.x=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ position.y=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ position.z=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ offset.x=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ offset.y=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ offset.z=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ data=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+uint.sizeof){ count=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		foreach(ref YWRkaXRpb25hbERh;additionalData){ YWRkaXRpb25hbERh=varuint.decode(_buffer, *_index); }
 		return this;
 	}
 
@@ -1197,27 +1533,31 @@ struct JoinGame {
 	public bool reducedDebug;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, entityId, buffer.length-uint.sizeof);
-		buffer~=gamemode;
-		buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, dimension, buffer.length-int.sizeof);
-		buffer~=difficulty;
-		buffer~=maxPlayers;
-		ubyte[] bGV2ZWxUeXBl=cast(ubyte[])levelType; buffer~=varuint.encode(bGV2ZWxUeXBl.length.to!uint);buffer~=bGV2ZWxUeXBl;
-		buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(buffer, reducedDebug, buffer.length-bool.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, entityId, _buffer.length-uint.sizeof);
+		_buffer~=gamemode;
+		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, dimension, _buffer.length-int.sizeof);
+		_buffer~=difficulty;
+		_buffer~=maxPlayers;
+		ubyte[] bGV2ZWxUeXBl=cast(ubyte[])levelType; _buffer~=varuint.encode(bGV2ZWxUeXBl.length.to!uint);_buffer~=bGV2ZWxUeXBl;
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, reducedDebug, _buffer.length-bool.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=uint.sizeof){ entityId=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ gamemode=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=int.sizeof){ dimension=read!(int, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ difficulty=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ maxPlayers=read!(ubyte, Endian.bigEndian)(buffer); }
-		ubyte[] bGV2ZWxUeXBl; bGV2ZWxUeXBl.length=varuint.decode(buffer);if(buffer.length>=bGV2ZWxUeXBl.length){ bGV2ZWxUeXBl=buffer[0..bGV2ZWxUeXBl.length]; buffer=buffer[bGV2ZWxUeXBl.length..$]; }; levelType=cast(string)bGV2ZWxUeXBl;
-		if(buffer.length>=bool.sizeof){ reducedDebug=read!(bool, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+uint.sizeof){ entityId=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ gamemode=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+int.sizeof){ dimension=peek!(int, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ difficulty=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ maxPlayers=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		ubyte[] bGV2ZWxUeXBl; bGV2ZWxUeXBl.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bGV2ZWxUeXBl.length){ bGV2ZWxUeXBl=_buffer[*_index..*_index+bGV2ZWxUeXBl.length].dup; *_index+=bGV2ZWxUeXBl.length; }; levelType=cast(string)bGV2ZWxUeXBl;
+		if(_buffer.length>=*_index+bool.sizeof){ reducedDebug=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1233,36 +1573,40 @@ struct Map {
 	public uint mapId;
 	public ubyte scale;
 	public bool showIcons;
-	public types.Icon[] icons;
+	public sul.protocol.minecraft316.types.Icon[] icons;
 	public ubyte colums;
 	public ubyte rows;
 	public Tuple!(ubyte, "x", ubyte, "z") offset;
 	public ubyte[] data;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(mapId);
-		buffer~=scale;
-		buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(buffer, showIcons, buffer.length-bool.sizeof);
-		buffer~=varuint.encode(icons.length.to!uint);foreach(aWNvbnM;icons){ aWNvbnM.encode(buffer); }
-		buffer~=colums;
-		buffer~=rows;
-		buffer~=offset.x;buffer~=offset.z;
-		buffer~=varuint.encode(data.length.to!uint);buffer~=data;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(mapId);
+		_buffer~=scale;
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, showIcons, _buffer.length-bool.sizeof);
+		_buffer~=varuint.encode(icons.length.to!uint);foreach(aWNvbnM;icons){ aWNvbnM.encode(_buffer); }
+		_buffer~=colums;
+		_buffer~=rows;
+		_buffer~=offset.x;_buffer~=offset.z;
+		_buffer~=varuint.encode(data.length.to!uint);_buffer~=data;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		mapId=varuint.decode(buffer);
-		if(buffer.length>=ubyte.sizeof){ scale=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=bool.sizeof){ showIcons=read!(bool, Endian.bigEndian)(buffer); }
-		icons.length=varuint.decode(buffer);foreach(ref aWNvbnM;icons){ aWNvbnM.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ colums=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ rows=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ offset.x=read!(ubyte, Endian.bigEndian)(buffer); }if(buffer.length>=ubyte.sizeof){ offset.z=read!(ubyte, Endian.bigEndian)(buffer); }
-		data.length=varuint.decode(buffer);if(buffer.length>=data.length){ data=buffer[0..data.length]; buffer=buffer[data.length..$]; }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		mapId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+ubyte.sizeof){ scale=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+bool.sizeof){ showIcons=peek!(bool, Endian.bigEndian)(_buffer, _index); }
+		icons.length=varuint.decode(_buffer, *_index);foreach(ref aWNvbnM;icons){ aWNvbnM.decode(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ colums=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ rows=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ offset.x=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+ubyte.sizeof){ offset.z=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		data.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
 		return this;
 	}
 
@@ -1280,19 +1624,23 @@ struct EntityRelativeMove {
 	public bool onGround;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, delta.x, buffer.length-short.sizeof);buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, delta.y, buffer.length-short.sizeof);buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, delta.z, buffer.length-short.sizeof);
-		buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(buffer, onGround, buffer.length-bool.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, delta.x, _buffer.length-short.sizeof);_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, delta.y, _buffer.length-short.sizeof);_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, delta.z, _buffer.length-short.sizeof);
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, onGround, _buffer.length-bool.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=short.sizeof){ delta.x=read!(short, Endian.bigEndian)(buffer); }if(buffer.length>=short.sizeof){ delta.y=read!(short, Endian.bigEndian)(buffer); }if(buffer.length>=short.sizeof){ delta.z=read!(short, Endian.bigEndian)(buffer); }
-		if(buffer.length>=bool.sizeof){ onGround=read!(bool, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+short.sizeof){ delta.x=peek!(short, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+short.sizeof){ delta.y=peek!(short, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+short.sizeof){ delta.z=peek!(short, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+bool.sizeof){ onGround=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1312,23 +1660,27 @@ struct EntityLookAndRelativeMove {
 	public bool onGround;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, delta.x, buffer.length-short.sizeof);buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, delta.y, buffer.length-short.sizeof);buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, delta.z, buffer.length-short.sizeof);
-		buffer~=yaw;
-		buffer~=pitch;
-		buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(buffer, onGround, buffer.length-bool.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, delta.x, _buffer.length-short.sizeof);_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, delta.y, _buffer.length-short.sizeof);_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, delta.z, _buffer.length-short.sizeof);
+		_buffer~=yaw;
+		_buffer~=pitch;
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, onGround, _buffer.length-bool.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=short.sizeof){ delta.x=read!(short, Endian.bigEndian)(buffer); }if(buffer.length>=short.sizeof){ delta.y=read!(short, Endian.bigEndian)(buffer); }if(buffer.length>=short.sizeof){ delta.z=read!(short, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ yaw=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ pitch=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=bool.sizeof){ onGround=read!(bool, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+short.sizeof){ delta.x=peek!(short, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+short.sizeof){ delta.y=peek!(short, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+short.sizeof){ delta.z=peek!(short, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ yaw=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ pitch=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+bool.sizeof){ onGround=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1347,21 +1699,25 @@ struct EntityLook {
 	public bool onGround;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=yaw;
-		buffer~=pitch;
-		buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(buffer, onGround, buffer.length-bool.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=yaw;
+		_buffer~=pitch;
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, onGround, _buffer.length-bool.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=ubyte.sizeof){ yaw=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ pitch=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=bool.sizeof){ onGround=read!(bool, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+ubyte.sizeof){ yaw=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ pitch=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+bool.sizeof){ onGround=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1377,15 +1733,19 @@ struct Entity {
 	public uint entityId;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
 		return this;
 	}
 
@@ -1403,19 +1763,23 @@ struct VehicleMove {
 	public float pitch;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.x, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.y, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.z, buffer.length-double.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, yaw, buffer.length-float.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, pitch, buffer.length-float.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.x, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.y, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.z, _buffer.length-double.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, yaw, _buffer.length-float.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, pitch, _buffer.length-float.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=double.sizeof){ position.x=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.y=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.z=read!(double, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ yaw=read!(float, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ pitch=read!(float, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+double.sizeof){ position.x=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.y=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.z=peek!(double, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ yaw=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ pitch=peek!(float, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1431,15 +1795,19 @@ struct OpenSignEditor {
 	public ulong position;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, position, buffer.length-ulong.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, position, _buffer.length-ulong.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ulong.sizeof){ position=read!(ulong, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ulong.sizeof){ position=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1463,19 +1831,23 @@ struct PlayerAbilities {
 	public float fovModifier;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=flags;
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, flyingSpeed, buffer.length-float.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, fovModifier, buffer.length-float.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=flags;
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, flyingSpeed, _buffer.length-float.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, fovModifier, _buffer.length-float.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ flags=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ flyingSpeed=read!(float, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ fovModifier=read!(float, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ flags=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ flyingSpeed=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ fovModifier=peek!(float, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1491,16 +1863,97 @@ struct CombatEvent {
 	public ubyte eventId;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=eventId;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=eventId;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ eventId=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ eventId=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
+	}
+
+	public struct EnterCombat {
+
+		public enum typeof(eventId) EVENT-ID = 0;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			return this;
+		}
+
+	}
+
+	public struct EndCombat {
+
+		public enum typeof(eventId) EVENT-ID = 1;
+
+		public uint duration;
+		public uint entityId;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(duration);
+			_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, entityId, _buffer.length-uint.sizeof);
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			duration=varuint.decode(_buffer, *_index);
+			if(_buffer.length>=*_index+uint.sizeof){ entityId=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+			return this;
+		}
+
+	}
+
+	public struct EntityDead {
+
+		public enum typeof(eventId) EVENT-ID = 2;
+
+		public uint playerId;
+		public uint entityId;
+		public string message;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(playerId);
+			_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, entityId, _buffer.length-uint.sizeof);
+			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			playerId=varuint.decode(_buffer, *_index);
+			if(_buffer.length>=*_index+uint.sizeof){ entityId=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+			return this;
+		}
+
 	}
 
 }
@@ -1515,16 +1968,140 @@ struct PlayerListItem {
 	public uint action;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(action);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(action);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		action=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		action=varuint.decode(_buffer, *_index);
 		return this;
+	}
+
+	public struct AddPlayer {
+
+		public enum typeof(action) ACTION = 0;
+
+		public sul.protocol.minecraft316.types.ListAddPlayer[] players;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
+			return this;
+		}
+
+	}
+
+	public struct UpdateGamemode {
+
+		public enum typeof(action) ACTION = 1;
+
+		public sul.protocol.minecraft316.types.ListUpdateGamemode[] players;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
+			return this;
+		}
+
+	}
+
+	public struct UpdateLatency {
+
+		public enum typeof(action) ACTION = 2;
+
+		public sul.protocol.minecraft316.types.ListUpdateLatency[] players;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
+			return this;
+		}
+
+	}
+
+	public struct UpdateDisplayName {
+
+		public enum typeof(action) ACTION = 3;
+
+		public sul.protocol.minecraft316.types.ListUpdateDisplayName[] players;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
+			return this;
+		}
+
+	}
+
+	public struct RemovePlayer {
+
+		public enum typeof(action) ACTION = 4;
+
+		public UUID[] players;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ _buffer~=cGxheWVycw.data; }
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ if(_buffer.length>=*_index+16){ ubyte[16] Y0d4aGVXVnljdw=buffer[*_index..*_index+16].dup; *_index+=16; cGxheWVycw=UUID(Y0d4aGVXVnljdw); } }
+			return this;
+		}
+
 	}
 
 }
@@ -1543,23 +2120,27 @@ struct PlayerPositionAndLook {
 	public uint teleportId;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.x, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.y, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.z, buffer.length-double.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, yaw, buffer.length-float.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, pitch, buffer.length-float.sizeof);
-		buffer~=flags;
-		buffer~=varuint.encode(teleportId);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.x, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.y, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.z, _buffer.length-double.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, yaw, _buffer.length-float.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, pitch, _buffer.length-float.sizeof);
+		_buffer~=flags;
+		_buffer~=varuint.encode(teleportId);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=double.sizeof){ position.x=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.y=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.z=read!(double, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ yaw=read!(float, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ pitch=read!(float, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ flags=read!(ubyte, Endian.bigEndian)(buffer); }
-		teleportId=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+double.sizeof){ position.x=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.y=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.z=peek!(double, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ yaw=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ pitch=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ flags=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		teleportId=varuint.decode(_buffer, *_index);
 		return this;
 	}
 
@@ -1576,17 +2157,21 @@ struct UseBed {
 	public ulong position;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, position, buffer.length-ulong.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, position, _buffer.length-ulong.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=ulong.sizeof){ position=read!(ulong, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+ulong.sizeof){ position=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1602,15 +2187,19 @@ struct DestroyEntities {
 	public uint[] entityIds;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityIds.length.to!uint);foreach(ZW50aXR5SWRz;entityIds){ buffer~=varuint.encode(ZW50aXR5SWRz); }
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityIds.length.to!uint);foreach(ZW50aXR5SWRz;entityIds){ _buffer~=varuint.encode(ZW50aXR5SWRz); }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityIds.length=varuint.decode(buffer);foreach(ref ZW50aXR5SWRz;entityIds){ ZW50aXR5SWRz=varuint.decode(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityIds.length=varuint.decode(_buffer, *_index);foreach(ref ZW50aXR5SWRz;entityIds){ ZW50aXR5SWRz=varuint.decode(_buffer, *_index); }
 		return this;
 	}
 
@@ -1627,17 +2216,21 @@ struct RemoveEntityEffect {
 	public ubyte effectId;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=effectId;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=effectId;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=ubyte.sizeof){ effectId=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+ubyte.sizeof){ effectId=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1654,17 +2247,21 @@ struct ResourcePackSend {
 	public string hash;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		ubyte[] dXJs=cast(ubyte[])url; buffer~=varuint.encode(dXJs.length.to!uint);buffer~=dXJs;
-		ubyte[] aGFzaA=cast(ubyte[])hash; buffer~=varuint.encode(aGFzaA.length.to!uint);buffer~=aGFzaA;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		ubyte[] dXJs=cast(ubyte[])url; _buffer~=varuint.encode(dXJs.length.to!uint);_buffer~=dXJs;
+		ubyte[] aGFzaA=cast(ubyte[])hash; _buffer~=varuint.encode(aGFzaA.length.to!uint);_buffer~=aGFzaA;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		ubyte[] dXJs; dXJs.length=varuint.decode(buffer);if(buffer.length>=dXJs.length){ dXJs=buffer[0..dXJs.length]; buffer=buffer[dXJs.length..$]; }; url=cast(string)dXJs;
-		ubyte[] aGFzaA; aGFzaA.length=varuint.decode(buffer);if(buffer.length>=aGFzaA.length){ aGFzaA=buffer[0..aGFzaA.length]; buffer=buffer[aGFzaA.length..$]; }; hash=cast(string)aGFzaA;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		ubyte[] dXJs; dXJs.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dXJs.length){ dXJs=_buffer[*_index..*_index+dXJs.length].dup; *_index+=dXJs.length; }; url=cast(string)dXJs;
+		ubyte[] aGFzaA; aGFzaA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+aGFzaA.length){ aGFzaA=_buffer[*_index..*_index+aGFzaA.length].dup; *_index+=aGFzaA.length; }; hash=cast(string)aGFzaA;
 		return this;
 	}
 
@@ -1700,21 +2297,25 @@ struct Respawn {
 	public string levelType;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, dimension, buffer.length-int.sizeof);
-		buffer~=difficulty;
-		buffer~=gamemode;
-		ubyte[] bGV2ZWxUeXBl=cast(ubyte[])levelType; buffer~=varuint.encode(bGV2ZWxUeXBl.length.to!uint);buffer~=bGV2ZWxUeXBl;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, dimension, _buffer.length-int.sizeof);
+		_buffer~=difficulty;
+		_buffer~=gamemode;
+		ubyte[] bGV2ZWxUeXBl=cast(ubyte[])levelType; _buffer~=varuint.encode(bGV2ZWxUeXBl.length.to!uint);_buffer~=bGV2ZWxUeXBl;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=int.sizeof){ dimension=read!(int, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ difficulty=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ gamemode=read!(ubyte, Endian.bigEndian)(buffer); }
-		ubyte[] bGV2ZWxUeXBl; bGV2ZWxUeXBl.length=varuint.decode(buffer);if(buffer.length>=bGV2ZWxUeXBl.length){ bGV2ZWxUeXBl=buffer[0..bGV2ZWxUeXBl.length]; buffer=buffer[bGV2ZWxUeXBl.length..$]; }; levelType=cast(string)bGV2ZWxUeXBl;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+int.sizeof){ dimension=peek!(int, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ difficulty=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ gamemode=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		ubyte[] bGV2ZWxUeXBl; bGV2ZWxUeXBl.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bGV2ZWxUeXBl.length){ bGV2ZWxUeXBl=_buffer[*_index..*_index+bGV2ZWxUeXBl.length].dup; *_index+=bGV2ZWxUeXBl.length; }; levelType=cast(string)bGV2ZWxUeXBl;
 		return this;
 	}
 
@@ -1731,17 +2332,21 @@ struct EntityHeadLook {
 	public ubyte headYaw;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=headYaw;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=headYaw;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=ubyte.sizeof){ headYaw=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+ubyte.sizeof){ headYaw=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1757,16 +2362,188 @@ struct WorldBorder {
 	public uint action;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(action);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(action);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		action=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		action=varuint.decode(_buffer, *_index);
 		return this;
+	}
+
+	public struct SetSize {
+
+		public enum typeof(action) ACTION = 0;
+
+		public double diameter;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, diameter, _buffer.length-double.sizeof);
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			if(_buffer.length>=*_index+double.sizeof){ diameter=peek!(double, Endian.bigEndian)(_buffer, _index); }
+			return this;
+		}
+
+	}
+
+	public struct LerpSize {
+
+		public enum typeof(action) ACTION = 1;
+
+		public double oldDiameter;
+		public double newDiameter;
+		public ulong speed;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, oldDiameter, _buffer.length-double.sizeof);
+			_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, newDiameter, _buffer.length-double.sizeof);
+			_buffer~=varulong.encode(speed);
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			if(_buffer.length>=*_index+double.sizeof){ oldDiameter=peek!(double, Endian.bigEndian)(_buffer, _index); }
+			if(_buffer.length>=*_index+double.sizeof){ newDiameter=peek!(double, Endian.bigEndian)(_buffer, _index); }
+			speed=varulong.decode(_buffer, *_index);
+			return this;
+		}
+
+	}
+
+	public struct SetCenter {
+
+		public enum typeof(action) ACTION = 2;
+
+		public Tuple!(double, "x", double, "y", double, "z") center;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, center.x, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, center.y, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, center.z, _buffer.length-double.sizeof);
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			if(_buffer.length>=*_index+double.sizeof){ center.x=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ center.y=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ center.z=peek!(double, Endian.bigEndian)(_buffer, _index); }
+			return this;
+		}
+
+	}
+
+	public struct Initialize {
+
+		public enum typeof(action) ACTION = 3;
+
+		public Tuple!(double, "x", double, "y", double, "z") center;
+		public double oldDiameter;
+		public double newDiameter;
+		public ulong speed;
+		public uint portalTeleportBoundary;
+		public uint warningTime;
+		public uint warningBlocks;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, center.x, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, center.y, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, center.z, _buffer.length-double.sizeof);
+			_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, oldDiameter, _buffer.length-double.sizeof);
+			_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, newDiameter, _buffer.length-double.sizeof);
+			_buffer~=varulong.encode(speed);
+			_buffer~=varuint.encode(portalTeleportBoundary);
+			_buffer~=varuint.encode(warningTime);
+			_buffer~=varuint.encode(warningBlocks);
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			if(_buffer.length>=*_index+double.sizeof){ center.x=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ center.y=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ center.z=peek!(double, Endian.bigEndian)(_buffer, _index); }
+			if(_buffer.length>=*_index+double.sizeof){ oldDiameter=peek!(double, Endian.bigEndian)(_buffer, _index); }
+			if(_buffer.length>=*_index+double.sizeof){ newDiameter=peek!(double, Endian.bigEndian)(_buffer, _index); }
+			speed=varulong.decode(_buffer, *_index);
+			portalTeleportBoundary=varuint.decode(_buffer, *_index);
+			warningTime=varuint.decode(_buffer, *_index);
+			warningBlocks=varuint.decode(_buffer, *_index);
+			return this;
+		}
+
+	}
+
+	public struct SetWarningTime {
+
+		public enum typeof(action) ACTION = 4;
+
+		public uint warningTime;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(warningTime);
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			warningTime=varuint.decode(_buffer, *_index);
+			return this;
+		}
+
+	}
+
+	public struct SetWarningBlocks {
+
+		public enum typeof(action) ACTION = 5;
+
+		public uint warningBlocks;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(warningBlocks);
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			warningBlocks=varuint.decode(_buffer, *_index);
+			return this;
+		}
+
 	}
 
 }
@@ -1781,15 +2558,19 @@ struct Camera {
 	public uint entityId;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
 		return this;
 	}
 
@@ -1805,15 +2586,19 @@ struct HeldItemChange {
 	public ubyte slot;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=slot;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=slot;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ slot=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ slot=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1835,17 +2620,21 @@ struct DisplayScoreboard {
 	public string scoreName;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=position;
-		ubyte[] c2NvcmVOYW1l=cast(ubyte[])scoreName; buffer~=varuint.encode(c2NvcmVOYW1l.length.to!uint);buffer~=c2NvcmVOYW1l;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=position;
+		ubyte[] c2NvcmVOYW1l=cast(ubyte[])scoreName; _buffer~=varuint.encode(c2NvcmVOYW1l.length.to!uint);_buffer~=c2NvcmVOYW1l;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ubyte.sizeof){ position=read!(ubyte, Endian.bigEndian)(buffer); }
-		ubyte[] c2NvcmVOYW1l; c2NvcmVOYW1l.length=varuint.decode(buffer);if(buffer.length>=c2NvcmVOYW1l.length){ c2NvcmVOYW1l=buffer[0..c2NvcmVOYW1l.length]; buffer=buffer[c2NvcmVOYW1l.length..$]; }; scoreName=cast(string)c2NvcmVOYW1l;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ position=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		ubyte[] c2NvcmVOYW1l; c2NvcmVOYW1l.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c2NvcmVOYW1l.length){ c2NvcmVOYW1l=_buffer[*_index..*_index+c2NvcmVOYW1l.length].dup; *_index+=c2NvcmVOYW1l.length; }; scoreName=cast(string)c2NvcmVOYW1l;
 		return this;
 	}
 
@@ -1859,20 +2648,24 @@ struct EntityMetadata {
 	public enum bool SERVERBOUND = false;
 
 	public uint entityId;
-	public types.Metadata metadata;
+	public sul.protocol.minecraft316.types.Metadata metadata;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		metadata.encode(buffer);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		metadata.encode(_buffer);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		metadata.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		metadata.decode(_buffer, _index);
 		return this;
 	}
 
@@ -1889,17 +2682,21 @@ struct AttachEntity {
 	public uint holder;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, target, buffer.length-uint.sizeof);
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, holder, buffer.length-uint.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, target, _buffer.length-uint.sizeof);
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, holder, _buffer.length-uint.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=uint.sizeof){ target=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=uint.sizeof){ holder=read!(uint, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+uint.sizeof){ target=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+uint.sizeof){ holder=peek!(uint, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1916,17 +2713,21 @@ struct EntityVelocity {
 	public Tuple!(short, "x", short, "y", short, "z") velocity;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, velocity.x, buffer.length-short.sizeof);buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, velocity.y, buffer.length-short.sizeof);buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(buffer, velocity.z, buffer.length-short.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, velocity.x, _buffer.length-short.sizeof);_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, velocity.y, _buffer.length-short.sizeof);_buffer.length+=short.sizeof; write!(short, Endian.bigEndian)(_buffer, velocity.z, _buffer.length-short.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=short.sizeof){ velocity.x=read!(short, Endian.bigEndian)(buffer); }if(buffer.length>=short.sizeof){ velocity.y=read!(short, Endian.bigEndian)(buffer); }if(buffer.length>=short.sizeof){ velocity.z=read!(short, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+short.sizeof){ velocity.x=peek!(short, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+short.sizeof){ velocity.y=peek!(short, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+short.sizeof){ velocity.z=peek!(short, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -1941,22 +2742,26 @@ struct EntityEquipment {
 
 	public uint entityId;
 	public uint slot;
-	public types.Slot item;
+	public sul.protocol.minecraft316.types.Slot item;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=varuint.encode(slot);
-		item.encode(buffer);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=varuint.encode(slot);
+		item.encode(_buffer);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		slot=varuint.decode(buffer);
-		item.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		slot=varuint.decode(_buffer, *_index);
+		item.decode(_buffer, _index);
 		return this;
 	}
 
@@ -1974,19 +2779,23 @@ struct SetExperience {
 	public uint totalExperience;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, experience, buffer.length-float.sizeof);
-		buffer~=varuint.encode(level);
-		buffer~=varuint.encode(totalExperience);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, experience, _buffer.length-float.sizeof);
+		_buffer~=varuint.encode(level);
+		_buffer~=varuint.encode(totalExperience);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=float.sizeof){ experience=read!(float, Endian.bigEndian)(buffer); }
-		level=varuint.decode(buffer);
-		totalExperience=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+float.sizeof){ experience=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		level=varuint.decode(_buffer, *_index);
+		totalExperience=varuint.decode(_buffer, *_index);
 		return this;
 	}
 
@@ -2004,19 +2813,23 @@ struct UpdateHealth {
 	public float saturation;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, health, buffer.length-float.sizeof);
-		buffer~=varuint.encode(hunger);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, saturation, buffer.length-float.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, health, _buffer.length-float.sizeof);
+		_buffer~=varuint.encode(hunger);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, saturation, _buffer.length-float.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=float.sizeof){ health=read!(float, Endian.bigEndian)(buffer); }
-		hunger=varuint.decode(buffer);
-		if(buffer.length>=float.sizeof){ saturation=read!(float, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+float.sizeof){ health=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		hunger=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+float.sizeof){ saturation=peek!(float, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -2040,21 +2853,25 @@ struct ScoreboardObjective {
 	public string type;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		ubyte[] bmFtZQ=cast(ubyte[])name; buffer~=varuint.encode(bmFtZQ.length.to!uint);buffer~=bmFtZQ;
-		buffer~=mode;
-		ubyte[] dmFsdWU=cast(ubyte[])value; buffer~=varuint.encode(dmFsdWU.length.to!uint);buffer~=dmFsdWU;
-		ubyte[] dHlwZQ=cast(ubyte[])type; buffer~=varuint.encode(dHlwZQ.length.to!uint);buffer~=dHlwZQ;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint);_buffer~=bmFtZQ;
+		_buffer~=mode;
+		ubyte[] dmFsdWU=cast(ubyte[])value; _buffer~=varuint.encode(dmFsdWU.length.to!uint);_buffer~=dmFsdWU;
+		ubyte[] dHlwZQ=cast(ubyte[])type; _buffer~=varuint.encode(dHlwZQ.length.to!uint);_buffer~=dHlwZQ;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(buffer);if(buffer.length>=bmFtZQ.length){ bmFtZQ=buffer[0..bmFtZQ.length]; buffer=buffer[bmFtZQ.length..$]; }; name=cast(string)bmFtZQ;
-		if(buffer.length>=ubyte.sizeof){ mode=read!(ubyte, Endian.bigEndian)(buffer); }
-		ubyte[] dmFsdWU; dmFsdWU.length=varuint.decode(buffer);if(buffer.length>=dmFsdWU.length){ dmFsdWU=buffer[0..dmFsdWU.length]; buffer=buffer[dmFsdWU.length..$]; }; value=cast(string)dmFsdWU;
-		ubyte[] dHlwZQ; dHlwZQ.length=varuint.decode(buffer);if(buffer.length>=dHlwZQ.length){ dHlwZQ=buffer[0..dHlwZQ.length]; buffer=buffer[dHlwZQ.length..$]; }; type=cast(string)dHlwZQ;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		if(_buffer.length>=*_index+ubyte.sizeof){ mode=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		ubyte[] dmFsdWU; dmFsdWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dmFsdWU.length){ dmFsdWU=_buffer[*_index..*_index+dmFsdWU.length].dup; *_index+=dmFsdWU.length; }; value=cast(string)dmFsdWU;
+		ubyte[] dHlwZQ; dHlwZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dHlwZQ.length){ dHlwZQ=_buffer[*_index..*_index+dHlwZQ.length].dup; *_index+=dHlwZQ.length; }; type=cast(string)dHlwZQ;
 		return this;
 	}
 
@@ -2071,17 +2888,21 @@ struct SetPassengers {
 	public uint[] passengers;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=varuint.encode(passengers.length.to!uint);foreach(cGFzc2VuZ2Vycw;passengers){ buffer~=varuint.encode(cGFzc2VuZ2Vycw); }
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=varuint.encode(passengers.length.to!uint);foreach(cGFzc2VuZ2Vycw;passengers){ _buffer~=varuint.encode(cGFzc2VuZ2Vycw); }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		passengers.length=varuint.decode(buffer);foreach(ref cGFzc2VuZ2Vycw;passengers){ cGFzc2VuZ2Vycw=varuint.decode(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		passengers.length=varuint.decode(_buffer, *_index);foreach(ref cGFzc2VuZ2Vycw;passengers){ cGFzc2VuZ2Vycw=varuint.decode(_buffer, *_index); }
 		return this;
 	}
 
@@ -2098,18 +2919,209 @@ struct Teams {
 	public ubyte mode;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		ubyte[] bmFtZQ=cast(ubyte[])name; buffer~=varuint.encode(bmFtZQ.length.to!uint);buffer~=bmFtZQ;
-		buffer~=mode;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint);_buffer~=bmFtZQ;
+		_buffer~=mode;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(buffer);if(buffer.length>=bmFtZQ.length){ bmFtZQ=buffer[0..bmFtZQ.length]; buffer=buffer[bmFtZQ.length..$]; }; name=cast(string)bmFtZQ;
-		if(buffer.length>=ubyte.sizeof){ mode=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		if(_buffer.length>=*_index+ubyte.sizeof){ mode=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
+	}
+
+	public struct CreateTeam {
+
+		public enum typeof(mode) MODE = 0;
+
+		// friendly flags
+		public enum ubyte FRIENDLY_FIRE = 1;
+		public enum ubyte SEE_TEAM_INVISIBLE_PLAYERS = 2;
+
+		// nametag visibility
+		public enum string ALWAYS = always;
+		public enum string HIDE_OTHER_TEAMS = hideOtherTeams;
+		public enum string HIDE_OWN_TEAM = hideOwnTeam;
+		public enum string NEVEN = never;
+
+		// collision rule
+		public enum string ALWAYS = always;
+		public enum string PUSH_OTHER_TEAMS = pushOtherTeams;
+		public enum string PUSH_OWN_TEAM = pushOwnTeam;
+		public enum string NEVEN = never;
+
+		public string displayName;
+		public string prefix;
+		public string suffix;
+		public ubyte friendlyFlags;
+		public string nametagVisibility;
+		public string collisionRule;
+		public ubyte color;
+		public string[] players;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint);_buffer~=ZGlzcGxheU5hbWU;
+			ubyte[] cHJlZml4=cast(ubyte[])prefix; _buffer~=varuint.encode(cHJlZml4.length.to!uint);_buffer~=cHJlZml4;
+			ubyte[] c3VmZml4=cast(ubyte[])suffix; _buffer~=varuint.encode(c3VmZml4.length.to!uint);_buffer~=c3VmZml4;
+			_buffer~=friendlyFlags;
+			ubyte[] bmFtZXRhZ1Zpc2li=cast(ubyte[])nametagVisibility; _buffer~=varuint.encode(bmFtZXRhZ1Zpc2li.length.to!uint);_buffer~=bmFtZXRhZ1Zpc2li;
+			ubyte[] Y29sbGlzaW9uUnVs=cast(ubyte[])collisionRule; _buffer~=varuint.encode(Y29sbGlzaW9uUnVs.length.to!uint);_buffer~=Y29sbGlzaW9uUnVs;
+			_buffer~=color;
+			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw=cast(ubyte[])cGxheWVycw; _buffer~=varuint.encode(Y0d4aGVXVnljdw.length.to!uint);_buffer~=Y0d4aGVXVnljdw; }
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU;
+			ubyte[] cHJlZml4; cHJlZml4.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+cHJlZml4.length){ cHJlZml4=_buffer[*_index..*_index+cHJlZml4.length].dup; *_index+=cHJlZml4.length; }; prefix=cast(string)cHJlZml4;
+			ubyte[] c3VmZml4; c3VmZml4.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c3VmZml4.length){ c3VmZml4=_buffer[*_index..*_index+c3VmZml4.length].dup; *_index+=c3VmZml4.length; }; suffix=cast(string)c3VmZml4;
+			if(_buffer.length>=*_index+ubyte.sizeof){ friendlyFlags=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+			ubyte[] bmFtZXRhZ1Zpc2li; bmFtZXRhZ1Zpc2li.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZXRhZ1Zpc2li.length){ bmFtZXRhZ1Zpc2li=_buffer[*_index..*_index+bmFtZXRhZ1Zpc2li.length].dup; *_index+=bmFtZXRhZ1Zpc2li.length; }; nametagVisibility=cast(string)bmFtZXRhZ1Zpc2li;
+			ubyte[] Y29sbGlzaW9uUnVs; Y29sbGlzaW9uUnVs.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y29sbGlzaW9uUnVs.length){ Y29sbGlzaW9uUnVs=_buffer[*_index..*_index+Y29sbGlzaW9uUnVs.length].dup; *_index+=Y29sbGlzaW9uUnVs.length; }; collisionRule=cast(string)Y29sbGlzaW9uUnVs;
+			if(_buffer.length>=*_index+ubyte.sizeof){ color=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw; Y0d4aGVXVnljdw.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y0d4aGVXVnljdw.length){ Y0d4aGVXVnljdw=_buffer[*_index..*_index+Y0d4aGVXVnljdw.length].dup; *_index+=Y0d4aGVXVnljdw.length; }; cGxheWVycw=cast(string)Y0d4aGVXVnljdw; }
+			return this;
+		}
+
+	}
+
+	public struct RemoveTeam {
+
+		public enum typeof(mode) MODE = 1;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			return this;
+		}
+
+	}
+
+	public struct UpdateTeamInfo {
+
+		public enum typeof(mode) MODE = 2;
+
+		// friendly flags
+		public enum ubyte FRIENDLY_FIRE = 1;
+		public enum ubyte SEE_TEAM_INVISIBLE_PLAYERS = 2;
+
+		// nametag visibility
+		public enum string ALWAYS = always;
+		public enum string HIDE_OTHER_TEAMS = hideOtherTeams;
+		public enum string HIDE_OWN_TEAM = hideOwnTeam;
+		public enum string NEVEN = never;
+
+		// collision rule
+		public enum string ALWAYS = always;
+		public enum string PUSH_OTHER_TEAMS = pushOtherTeams;
+		public enum string PUSH_OWN_TEAM = pushOwnTeam;
+		public enum string NEVEN = never;
+
+		public string displayName;
+		public string prefix;
+		public string suffix;
+		public ubyte friendlyFlags;
+		public string nametagVisibility;
+		public string collisionRule;
+		public ubyte color;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint);_buffer~=ZGlzcGxheU5hbWU;
+			ubyte[] cHJlZml4=cast(ubyte[])prefix; _buffer~=varuint.encode(cHJlZml4.length.to!uint);_buffer~=cHJlZml4;
+			ubyte[] c3VmZml4=cast(ubyte[])suffix; _buffer~=varuint.encode(c3VmZml4.length.to!uint);_buffer~=c3VmZml4;
+			_buffer~=friendlyFlags;
+			ubyte[] bmFtZXRhZ1Zpc2li=cast(ubyte[])nametagVisibility; _buffer~=varuint.encode(bmFtZXRhZ1Zpc2li.length.to!uint);_buffer~=bmFtZXRhZ1Zpc2li;
+			ubyte[] Y29sbGlzaW9uUnVs=cast(ubyte[])collisionRule; _buffer~=varuint.encode(Y29sbGlzaW9uUnVs.length.to!uint);_buffer~=Y29sbGlzaW9uUnVs;
+			_buffer~=color;
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU;
+			ubyte[] cHJlZml4; cHJlZml4.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+cHJlZml4.length){ cHJlZml4=_buffer[*_index..*_index+cHJlZml4.length].dup; *_index+=cHJlZml4.length; }; prefix=cast(string)cHJlZml4;
+			ubyte[] c3VmZml4; c3VmZml4.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c3VmZml4.length){ c3VmZml4=_buffer[*_index..*_index+c3VmZml4.length].dup; *_index+=c3VmZml4.length; }; suffix=cast(string)c3VmZml4;
+			if(_buffer.length>=*_index+ubyte.sizeof){ friendlyFlags=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+			ubyte[] bmFtZXRhZ1Zpc2li; bmFtZXRhZ1Zpc2li.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZXRhZ1Zpc2li.length){ bmFtZXRhZ1Zpc2li=_buffer[*_index..*_index+bmFtZXRhZ1Zpc2li.length].dup; *_index+=bmFtZXRhZ1Zpc2li.length; }; nametagVisibility=cast(string)bmFtZXRhZ1Zpc2li;
+			ubyte[] Y29sbGlzaW9uUnVs; Y29sbGlzaW9uUnVs.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y29sbGlzaW9uUnVs.length){ Y29sbGlzaW9uUnVs=_buffer[*_index..*_index+Y29sbGlzaW9uUnVs.length].dup; *_index+=Y29sbGlzaW9uUnVs.length; }; collisionRule=cast(string)Y29sbGlzaW9uUnVs;
+			if(_buffer.length>=*_index+ubyte.sizeof){ color=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+			return this;
+		}
+
+	}
+
+	public struct AddPlayers {
+
+		public enum typeof(mode) MODE = 3;
+
+		public string[] players;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw=cast(ubyte[])cGxheWVycw; _buffer~=varuint.encode(Y0d4aGVXVnljdw.length.to!uint);_buffer~=Y0d4aGVXVnljdw; }
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw; Y0d4aGVXVnljdw.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y0d4aGVXVnljdw.length){ Y0d4aGVXVnljdw=_buffer[*_index..*_index+Y0d4aGVXVnljdw.length].dup; *_index+=Y0d4aGVXVnljdw.length; }; cGxheWVycw=cast(string)Y0d4aGVXVnljdw; }
+			return this;
+		}
+
+	}
+
+	public struct RemovePlayers {
+
+		public enum typeof(mode) MODE = 4;
+
+		public string[] players;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw=cast(ubyte[])cGxheWVycw; _buffer~=varuint.encode(Y0d4aGVXVnljdw.length.to!uint);_buffer~=Y0d4aGVXVnljdw; }
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw; Y0d4aGVXVnljdw.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y0d4aGVXVnljdw.length){ Y0d4aGVXVnljdw=_buffer[*_index..*_index+Y0d4aGVXVnljdw.length].dup; *_index+=Y0d4aGVXVnljdw.length; }; cGxheWVycw=cast(string)Y0d4aGVXVnljdw; }
+			return this;
+		}
+
 	}
 
 }
@@ -2131,21 +3143,25 @@ struct UpdateScore {
 	public uint value;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		ubyte[] c2NvcmVOYW1l=cast(ubyte[])scoreName; buffer~=varuint.encode(c2NvcmVOYW1l.length.to!uint);buffer~=c2NvcmVOYW1l;
-		buffer~=action;
-		ubyte[] b2JqZWN0aXZlTmFt=cast(ubyte[])objectiveName; buffer~=varuint.encode(b2JqZWN0aXZlTmFt.length.to!uint);buffer~=b2JqZWN0aXZlTmFt;
-		buffer~=varuint.encode(value);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		ubyte[] c2NvcmVOYW1l=cast(ubyte[])scoreName; _buffer~=varuint.encode(c2NvcmVOYW1l.length.to!uint);_buffer~=c2NvcmVOYW1l;
+		_buffer~=action;
+		ubyte[] b2JqZWN0aXZlTmFt=cast(ubyte[])objectiveName; _buffer~=varuint.encode(b2JqZWN0aXZlTmFt.length.to!uint);_buffer~=b2JqZWN0aXZlTmFt;
+		if(action!=1){ _buffer~=varuint.encode(value); }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		ubyte[] c2NvcmVOYW1l; c2NvcmVOYW1l.length=varuint.decode(buffer);if(buffer.length>=c2NvcmVOYW1l.length){ c2NvcmVOYW1l=buffer[0..c2NvcmVOYW1l.length]; buffer=buffer[c2NvcmVOYW1l.length..$]; }; scoreName=cast(string)c2NvcmVOYW1l;
-		if(buffer.length>=ubyte.sizeof){ action=read!(ubyte, Endian.bigEndian)(buffer); }
-		ubyte[] b2JqZWN0aXZlTmFt; b2JqZWN0aXZlTmFt.length=varuint.decode(buffer);if(buffer.length>=b2JqZWN0aXZlTmFt.length){ b2JqZWN0aXZlTmFt=buffer[0..b2JqZWN0aXZlTmFt.length]; buffer=buffer[b2JqZWN0aXZlTmFt.length..$]; }; objectiveName=cast(string)b2JqZWN0aXZlTmFt;
-		value=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		ubyte[] c2NvcmVOYW1l; c2NvcmVOYW1l.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c2NvcmVOYW1l.length){ c2NvcmVOYW1l=_buffer[*_index..*_index+c2NvcmVOYW1l.length].dup; *_index+=c2NvcmVOYW1l.length; }; scoreName=cast(string)c2NvcmVOYW1l;
+		if(_buffer.length>=*_index+ubyte.sizeof){ action=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		ubyte[] b2JqZWN0aXZlTmFt; b2JqZWN0aXZlTmFt.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+b2JqZWN0aXZlTmFt.length){ b2JqZWN0aXZlTmFt=_buffer[*_index..*_index+b2JqZWN0aXZlTmFt.length].dup; *_index+=b2JqZWN0aXZlTmFt.length; }; objectiveName=cast(string)b2JqZWN0aXZlTmFt;
+		if(action!=1){ value=varuint.decode(_buffer, *_index); }
 		return this;
 	}
 
@@ -2161,15 +3177,19 @@ struct SpawnPosition {
 	public ulong position;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, position, buffer.length-ulong.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, position, _buffer.length-ulong.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ulong.sizeof){ position=read!(ulong, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ulong.sizeof){ position=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -2186,17 +3206,21 @@ struct TimeUpdate {
 	public long time;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(buffer, worldAge, buffer.length-ulong.sizeof);
-		buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(buffer, time, buffer.length-long.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, worldAge, _buffer.length-ulong.sizeof);
+		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, time, _buffer.length-long.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		if(buffer.length>=ulong.sizeof){ worldAge=read!(ulong, Endian.bigEndian)(buffer); }
-		if(buffer.length>=long.sizeof){ time=read!(long, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		if(_buffer.length>=*_index+ulong.sizeof){ worldAge=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+long.sizeof){ time=peek!(long, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -2212,16 +3236,162 @@ struct Title {
 	public uint action;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(action);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(action);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		action=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		action=varuint.decode(_buffer, *_index);
 		return this;
+	}
+
+	public struct SetTitle {
+
+		public enum typeof(action) ACTION = 0;
+
+		public string text;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint);_buffer~=dGV4dA;
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
+			return this;
+		}
+
+	}
+
+	public struct SetSubtitle {
+
+		public enum typeof(action) ACTION = 1;
+
+		public string text;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint);_buffer~=dGV4dA;
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
+			return this;
+		}
+
+	}
+
+	public struct SetActionBar {
+
+		public enum typeof(action) ACTION = 2;
+
+		public string text;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint);_buffer~=dGV4dA;
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
+			return this;
+		}
+
+	}
+
+	public struct SetTimings {
+
+		public enum typeof(action) ACTION = 3;
+
+		public uint fadeIn;
+		public uint stay;
+		public uint fadeOut;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, fadeIn, _buffer.length-uint.sizeof);
+			_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, stay, _buffer.length-uint.sizeof);
+			_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, fadeOut, _buffer.length-uint.sizeof);
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			if(_buffer.length>=*_index+uint.sizeof){ fadeIn=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+			if(_buffer.length>=*_index+uint.sizeof){ stay=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+			if(_buffer.length>=*_index+uint.sizeof){ fadeOut=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+			return this;
+		}
+
+	}
+
+	public struct Hide {
+
+		public enum typeof(action) ACTION = 4;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			return this;
+		}
+
+	}
+
+	public struct Reset {
+
+		public enum typeof(action) ACTION = 5;
+
+		public ubyte[] encode() {
+			ubyte[] _buffer;
+			this.encode(_buffer);
+			return _buffer;
+		}
+
+		public ubyte[] encode(ref ubyte[] _buffer) {
+			return _buffer;
+		}
+
+		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+			return this;
+		}
+
 	}
 
 }
@@ -2240,23 +3410,27 @@ struct SoundEffect {
 	public float pitch;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(soundId);
-		buffer~=varuint.encode(category);
-		buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, position.x, buffer.length-int.sizeof);buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, position.y, buffer.length-int.sizeof);buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(buffer, position.z, buffer.length-int.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, volume, buffer.length-float.sizeof);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, pitch, buffer.length-float.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(soundId);
+		_buffer~=varuint.encode(category);
+		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.x, _buffer.length-int.sizeof);_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.y, _buffer.length-int.sizeof);_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.z, _buffer.length-int.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, volume, _buffer.length-float.sizeof);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, pitch, _buffer.length-float.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		soundId=varuint.decode(buffer);
-		category=varuint.decode(buffer);
-		if(buffer.length>=int.sizeof){ position.x=read!(int, Endian.bigEndian)(buffer); }if(buffer.length>=int.sizeof){ position.y=read!(int, Endian.bigEndian)(buffer); }if(buffer.length>=int.sizeof){ position.z=read!(int, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ volume=read!(float, Endian.bigEndian)(buffer); }
-		if(buffer.length>=float.sizeof){ pitch=read!(float, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		soundId=varuint.decode(_buffer, *_index);
+		category=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+int.sizeof){ position.x=peek!(int, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+int.sizeof){ position.y=peek!(int, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+int.sizeof){ position.z=peek!(int, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ volume=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+float.sizeof){ pitch=peek!(float, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -2273,17 +3447,21 @@ struct PlayerListHeaderAndFooter {
 	public string footer;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		ubyte[] aGVhZGVy=cast(ubyte[])header; buffer~=varuint.encode(aGVhZGVy.length.to!uint);buffer~=aGVhZGVy;
-		ubyte[] Zm9vdGVy=cast(ubyte[])footer; buffer~=varuint.encode(Zm9vdGVy.length.to!uint);buffer~=Zm9vdGVy;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		ubyte[] aGVhZGVy=cast(ubyte[])header; _buffer~=varuint.encode(aGVhZGVy.length.to!uint);_buffer~=aGVhZGVy;
+		ubyte[] Zm9vdGVy=cast(ubyte[])footer; _buffer~=varuint.encode(Zm9vdGVy.length.to!uint);_buffer~=Zm9vdGVy;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		ubyte[] aGVhZGVy; aGVhZGVy.length=varuint.decode(buffer);if(buffer.length>=aGVhZGVy.length){ aGVhZGVy=buffer[0..aGVhZGVy.length]; buffer=buffer[aGVhZGVy.length..$]; }; header=cast(string)aGVhZGVy;
-		ubyte[] Zm9vdGVy; Zm9vdGVy.length=varuint.decode(buffer);if(buffer.length>=Zm9vdGVy.length){ Zm9vdGVy=buffer[0..Zm9vdGVy.length]; buffer=buffer[Zm9vdGVy.length..$]; }; footer=cast(string)Zm9vdGVy;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		ubyte[] aGVhZGVy; aGVhZGVy.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+aGVhZGVy.length){ aGVhZGVy=_buffer[*_index..*_index+aGVhZGVy.length].dup; *_index+=aGVhZGVy.length; }; header=cast(string)aGVhZGVy;
+		ubyte[] Zm9vdGVy; Zm9vdGVy.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Zm9vdGVy.length){ Zm9vdGVy=_buffer[*_index..*_index+Zm9vdGVy.length].dup; *_index+=Zm9vdGVy.length; }; footer=cast(string)Zm9vdGVy;
 		return this;
 	}
 
@@ -2301,19 +3479,23 @@ struct CollectItem {
 	public uint count;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(collected);
-		buffer~=varuint.encode(collector);
-		buffer~=varuint.encode(count);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(collected);
+		_buffer~=varuint.encode(collector);
+		_buffer~=varuint.encode(count);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		collected=varuint.decode(buffer);
-		collector=varuint.decode(buffer);
-		count=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		collected=varuint.decode(_buffer, *_index);
+		collector=varuint.decode(_buffer, *_index);
+		count=varuint.decode(_buffer, *_index);
 		return this;
 	}
 
@@ -2333,23 +3515,27 @@ struct EntityTeleport {
 	public bool onGround;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.x, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.y, buffer.length-double.sizeof);buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(buffer, position.z, buffer.length-double.sizeof);
-		buffer~=yaw;
-		buffer~=pitch;
-		buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(buffer, onGround, buffer.length-bool.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.x, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.y, _buffer.length-double.sizeof);_buffer.length+=double.sizeof; write!(double, Endian.bigEndian)(_buffer, position.z, _buffer.length-double.sizeof);
+		_buffer~=yaw;
+		_buffer~=pitch;
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, onGround, _buffer.length-bool.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=double.sizeof){ position.x=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.y=read!(double, Endian.bigEndian)(buffer); }if(buffer.length>=double.sizeof){ position.z=read!(double, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ yaw=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ pitch=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=bool.sizeof){ onGround=read!(bool, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+double.sizeof){ position.x=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.y=peek!(double, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+double.sizeof){ position.z=peek!(double, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ yaw=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ pitch=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+bool.sizeof){ onGround=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
@@ -2363,20 +3549,24 @@ struct EntityProperties {
 	public enum bool SERVERBOUND = false;
 
 	public uint entityId;
-	public types.Properties properties;
+	public sul.protocol.minecraft316.types.Property[] properties;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		properties.encode(buffer);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, properties.length.to!uint, _buffer.length-uint.sizeof);foreach(cHJvcGVydGllcw;properties){ cHJvcGVydGllcw.encode(_buffer); }
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		properties.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+uint.sizeof){ properties.length=peek!(uint, Endian.bigEndian)(_buffer, _index); }foreach(ref cHJvcGVydGllcw;properties){ cHJvcGVydGllcw.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -2400,23 +3590,27 @@ struct EntityEffect {
 	public ubyte flags;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=varuint.encode(ID); }
-		buffer~=varuint.encode(entityId);
-		buffer~=effectId;
-		buffer~=amplifier;
-		buffer~=varuint.encode(duration);
-		buffer~=flags;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=varuint.encode(ID); }
+		_buffer~=varuint.encode(entityId);
+		_buffer~=effectId;
+		_buffer~=amplifier;
+		_buffer~=varuint.encode(duration);
+		_buffer~=flags;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(buffer); }
-		entityId=varuint.decode(buffer);
-		if(buffer.length>=ubyte.sizeof){ effectId=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ubyte.sizeof){ amplifier=read!(ubyte, Endian.bigEndian)(buffer); }
-		duration=varuint.decode(buffer);
-		if(buffer.length>=ubyte.sizeof){ flags=read!(ubyte, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
+		entityId=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+ubyte.sizeof){ effectId=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ubyte.sizeof){ amplifier=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		duration=varuint.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+ubyte.sizeof){ flags=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 

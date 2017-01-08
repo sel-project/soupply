@@ -8,9 +8,10 @@
  */
 module sul.protocol.raknet8.types;
 
-import std.bitmanip : write, read;
+import std.bitmanip : write, peek;
 import std.conv : to;
 import std.system : Endian;
+import std.typecons : Tuple;
 import std.uuid : UUID;
 
 import sul.utils.var;
@@ -22,18 +23,26 @@ struct Address {
 	public ubyte[16] ipv6;
 	public ushort port;
 
-	public void encode(ref ubyte[] buffer) {
-		buffer~=type;
-		if(type==4){ buffer~=ipv4; }
-		if(type==6){ buffer~=ipv6; }
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, port, buffer.length-ushort.sizeof);
+	public ubyte[] encode() {
+		ubyte[] _buffer;
+		this.encode(_buffer);
+		return _buffer;
 	}
 
-	public void decode(ref ubyte[] buffer) {
-		if(buffer.length>=ubyte.sizeof){ type=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(type==4){ if(buffer.length>=ipv4.length){ ipv4=buffer[0..ipv4.length]; buffer=buffer[ipv4.length..$]; } }
-		if(type==6){ if(buffer.length>=ipv6.length){ ipv6=buffer[0..ipv6.length]; buffer=buffer[ipv6.length..$]; } }
-		if(buffer.length>=ushort.sizeof){ port=read!(ushort, Endian.bigEndian)(buffer); }
+	public ubyte[] encode(ref ubyte[] _buffer) {
+		_buffer~=type;
+		if(type==4){ _buffer~=ipv4; }
+		if(type==6){ _buffer~=ipv6; }
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, port, _buffer.length-ushort.sizeof);
+		return _buffer;
+	}
+
+	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+		if(_buffer.length>=*_index+ubyte.sizeof){ type=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(type==4){ if(_buffer.length>=*_index+ipv4.length){ ipv4=_buffer[*_index..*_index+ipv4.length].dup; *_index+=ipv4.length; } }
+		if(type==6){ if(_buffer.length>=*_index+ipv6.length){ ipv6=_buffer[*_index..*_index+ipv6.length].dup; *_index+=ipv6.length; } }
+		if(_buffer.length>=*_index+ushort.sizeof){ port=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
+		return this;
 	}
 
 }
@@ -44,16 +53,24 @@ struct Acknowledge {
 	public int first;
 	public int last;
 
-	public void encode(ref ubyte[] buffer) {
-		buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(buffer, unique, buffer.length-bool.sizeof);
-		buffer.length+=3; buffer[$-3]=first&255; buffer[$-2]=(first>>8)&255; buffer[$-1]=(first>>16)&255;
-		if(unique==false){ buffer.length+=3; buffer[$-3]=last&255; buffer[$-2]=(last>>8)&255; buffer[$-1]=(last>>16)&255; }
+	public ubyte[] encode() {
+		ubyte[] _buffer;
+		this.encode(_buffer);
+		return _buffer;
 	}
 
-	public void decode(ref ubyte[] buffer) {
-		if(buffer.length>=bool.sizeof){ unique=read!(bool, Endian.bigEndian)(buffer); }
-		if(buffer.length>=3){ first=buffer[0]|(buffer[1]<<8)|(buffer[2]<<16); buffer=buffer[3..$]; }
-		if(unique==false){ if(buffer.length>=3){ last=buffer[0]|(buffer[1]<<8)|(buffer[2]<<16); buffer=buffer[3..$]; } }
+	public ubyte[] encode(ref ubyte[] _buffer) {
+		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, unique, _buffer.length-bool.sizeof);
+		_buffer.length+=3; _buffer[$-3]=first&255; _buffer[$-2]=(first>>8)&255; _buffer[$-1]=(first>>16)&255;
+		if(unique==false){ _buffer.length+=3; _buffer[$-3]=last&255; _buffer[$-2]=(last>>8)&255; _buffer[$-1]=(last>>16)&255; }
+		return _buffer;
+	}
+
+	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+		if(_buffer.length>=*_index+bool.sizeof){ unique=peek!(bool, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+3){ first=buffer[*_index]|(buffer[*_index+1]<<8)|(buffer[*_index+2]<<16); *_index+=3; }
+		if(unique==false){ if(_buffer.length>=*_index+3){ last=buffer[*_index]|(buffer[*_index+1]<<8)|(buffer[*_index+2]<<16); *_index+=3; } }
+		return this;
 	}
 
 }
@@ -65,27 +82,35 @@ struct Encapsulation {
 	public int messageIndex;
 	public int orderIndex;
 	public ubyte orderChannel;
-	public types.Split split;
+	public sul.protocol.raknet8.types.Split split;
 	public ubyte[] payload;
 
-	public void encode(ref ubyte[] buffer) {
-		buffer~=info;
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, length, buffer.length-ushort.sizeof);
-		if((info&0x7F)>=64){ buffer.length+=3; buffer[$-3]=messageIndex&255; buffer[$-2]=(messageIndex>>8)&255; buffer[$-1]=(messageIndex>>16)&255; }
-		if((info&0x7F)>=96){ buffer.length+=3; buffer[$-3]=orderIndex&255; buffer[$-2]=(orderIndex>>8)&255; buffer[$-1]=(orderIndex>>16)&255; }
-		if((info&0x7F)>=96){ buffer~=orderChannel; }
-		if((info&0x10)!=0){ split.encode(buffer); }
-		buffer~=payload;
+	public ubyte[] encode() {
+		ubyte[] _buffer;
+		this.encode(_buffer);
+		return _buffer;
 	}
 
-	public void decode(ref ubyte[] buffer) {
-		if(buffer.length>=ubyte.sizeof){ info=read!(ubyte, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ushort.sizeof){ length=read!(ushort, Endian.bigEndian)(buffer); }
-		if((info&0x7F)>=64){ if(buffer.length>=3){ messageIndex=buffer[0]|(buffer[1]<<8)|(buffer[2]<<16); buffer=buffer[3..$]; } }
-		if((info&0x7F)>=96){ if(buffer.length>=3){ orderIndex=buffer[0]|(buffer[1]<<8)|(buffer[2]<<16); buffer=buffer[3..$]; } }
-		if((info&0x7F)>=96){ if(buffer.length>=ubyte.sizeof){ orderChannel=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if((info&0x10)!=0){ split.decode(buffer); }
-		payload=buffer.dup; buffer.length=0;
+	public ubyte[] encode(ref ubyte[] _buffer) {
+		_buffer~=info;
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, length, _buffer.length-ushort.sizeof);
+		if((info&0x7F)>=64){ _buffer.length+=3; _buffer[$-3]=messageIndex&255; _buffer[$-2]=(messageIndex>>8)&255; _buffer[$-1]=(messageIndex>>16)&255; }
+		if((info&0x7F)>=96){ _buffer.length+=3; _buffer[$-3]=orderIndex&255; _buffer[$-2]=(orderIndex>>8)&255; _buffer[$-1]=(orderIndex>>16)&255; }
+		if((info&0x7F)>=96){ _buffer~=orderChannel; }
+		if((info&0x10)!=0){ split.encode(_buffer); }
+		_buffer~=payload;
+		return _buffer;
+	}
+
+	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+		if(_buffer.length>=*_index+ubyte.sizeof){ info=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
+		if((info&0x7F)>=64){ if(_buffer.length>=*_index+3){ messageIndex=buffer[*_index]|(buffer[*_index+1]<<8)|(buffer[*_index+2]<<16); *_index+=3; } }
+		if((info&0x7F)>=96){ if(_buffer.length>=*_index+3){ orderIndex=buffer[*_index]|(buffer[*_index+1]<<8)|(buffer[*_index+2]<<16); *_index+=3; } }
+		if((info&0x7F)>=96){ if(_buffer.length>=*_index+ubyte.sizeof){ orderChannel=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if((info&0x10)!=0){ split.decode(_buffer, _index); }
+		payload=_buffer[*_index..$].dup; *_index=buffer.length;
+		return this;
 	}
 
 }
@@ -96,16 +121,24 @@ struct Split {
 	public ushort id;
 	public uint order;
 
-	public void encode(ref ubyte[] buffer) {
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, count, buffer.length-uint.sizeof);
-		buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(buffer, id, buffer.length-ushort.sizeof);
-		buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(buffer, order, buffer.length-uint.sizeof);
+	public ubyte[] encode() {
+		ubyte[] _buffer;
+		this.encode(_buffer);
+		return _buffer;
 	}
 
-	public void decode(ref ubyte[] buffer) {
-		if(buffer.length>=uint.sizeof){ count=read!(uint, Endian.bigEndian)(buffer); }
-		if(buffer.length>=ushort.sizeof){ id=read!(ushort, Endian.bigEndian)(buffer); }
-		if(buffer.length>=uint.sizeof){ order=read!(uint, Endian.bigEndian)(buffer); }
+	public ubyte[] encode(ref ubyte[] _buffer) {
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, count, _buffer.length-uint.sizeof);
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, id, _buffer.length-ushort.sizeof);
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, order, _buffer.length-uint.sizeof);
+		return _buffer;
+	}
+
+	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
+		if(_buffer.length>=*_index+uint.sizeof){ count=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ id=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
+		if(_buffer.length>=*_index+uint.sizeof){ order=peek!(uint, Endian.bigEndian)(_buffer, _index); }
+		return this;
 	}
 
 }

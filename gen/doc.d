@@ -94,7 +94,7 @@ void doc(Protocols[string] protocols) {
 				data ~= "\n";
 				foreach(field ; fields) {
 					if(field.description.length || field.constants.length) {
-						data ~= space ~ "* <a name=\"" ~ link(namespace, field.name) ~ "\"></a>" ~ toCamelCase(field.name) ~ "\n\n";
+						data ~= space ~ "* <a name=\"" ~ link(namespace, field.name) ~ "\"></a>**" ~ toCamelCase(field.name) ~ "**\n\n";
 						if(field.description.length) data ~= space ~ "\t" ~ field.description ~ "\n\n";
 						if(field.constants.length) {
 							data ~= space ~ "\t**Constants**:\n\n";
@@ -146,7 +146,7 @@ void doc(Protocols[string] protocols) {
 					}
 					data ~= "\n";
 					foreach(variant ; packet.variants) {
-						data ~= "\t* <a name=\"" ~ link(section.name, packet.name, variant.name) ~ "\"></a>" ~ pretty(toCamelCase(variant.name)) ~ "\n\n";//\t\t**Field's value**: " ~ variant.value ~ "\n\n";
+						data ~= "\t* <a name=\"" ~ link(section.name, packet.name, variant.name) ~ "\"></a>**" ~ pretty(toCamelCase(variant.name)) ~ "**\n\n";//\t\t**Field's value**: " ~ variant.value ~ "\n\n";
 						writeFields(link(section.name, packet.name, variant.name), variant.fields, 2, "Additional Fields");
 					}
 				}

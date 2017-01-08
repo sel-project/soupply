@@ -8,10 +8,11 @@
  */
 module sul.protocol.hncom1.status;
 
-import std.bitmanip : write, read;
+import std.bitmanip : write, peek;
 import std.conv : to;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
+import std.typecons : Tuple;
 import std.uuid : UUID;
 
 import sul.utils.var;
@@ -31,17 +32,21 @@ struct Players {
 	public uint max;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer~=varuint.encode(online);
-		buffer~=varuint.encode(max);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer~=varuint.encode(online);
+		_buffer~=varuint.encode(max);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		online=varuint.decode(buffer);
-		max=varuint.decode(buffer);
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		online=varuint.decode(_buffer, *_index);
+		max=varuint.decode(_buffer, *_index);
 		return this;
 	}
 
@@ -62,17 +67,21 @@ struct Nodes {
 	public string node;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer~=action;
-		ubyte[] bm9kZQ=cast(ubyte[])node; buffer~=varuint.encode(bm9kZQ.length.to!uint);buffer~=bm9kZQ;
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer~=action;
+		ubyte[] bm9kZQ=cast(ubyte[])node; _buffer~=varuint.encode(bm9kZQ.length.to!uint);_buffer~=bm9kZQ;
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=ubyte.sizeof){ action=read!(ubyte, Endian.bigEndian)(buffer); }
-		ubyte[] bm9kZQ; bm9kZQ.length=varuint.decode(buffer);if(buffer.length>=bm9kZQ.length){ bm9kZQ=buffer[0..bm9kZQ.length]; buffer=buffer[bm9kZQ.length..$]; }; node=cast(string)bm9kZQ;
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+ubyte.sizeof){ action=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
+		ubyte[] bm9kZQ; bm9kZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bm9kZQ.length){ bm9kZQ=_buffer[*_index..*_index+bm9kZQ.length].dup; *_index+=bm9kZQ.length; }; node=cast(string)bm9kZQ;
 		return this;
 	}
 
@@ -90,19 +99,23 @@ struct ResourcesUsage {
 	public float cpu;
 
 	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] buffer;
-		static if(writeId){ buffer~=ID; }
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, tps, buffer.length-float.sizeof);
-		buffer~=varulong.encode(ram);
-		buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(buffer, cpu, buffer.length-float.sizeof);
-		return buffer;
+		ubyte[] _buffer;
+		static if(writeId){ _buffer~=ID; }
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, tps, _buffer.length-float.sizeof);
+		_buffer~=varulong.encode(ram);
+		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, cpu, _buffer.length-float.sizeof);
+		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] buffer) {
-		static if(readId){ typeof(ID) _id; if(buffer.length>=ubyte.sizeof){ _id=read!(ubyte, Endian.bigEndian)(buffer); } }
-		if(buffer.length>=float.sizeof){ tps=read!(float, Endian.bigEndian)(buffer); }
-		ram=varulong.decode(buffer);
-		if(buffer.length>=float.sizeof){ cpu=read!(float, Endian.bigEndian)(buffer); }
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
+		return this.decode!readId(_buffer, &_index);
+	}
+
+	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
+		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+float.sizeof){ tps=peek!(float, Endian.bigEndian)(_buffer, _index); }
+		ram=varulong.decode(_buffer, *_index);
+		if(_buffer.length>=*_index+float.sizeof){ cpu=peek!(float, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
 
