@@ -21,25 +21,32 @@ class ResourcePackStatus extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// result
-	public final static int LOADED = (int)0;
-	public final static int DECLINED = (int)1;
-	public final static int FAILED = (int)2;
-	public final static int ACCEPTED = (int)3;
+	public static immutable int LOADED = 0;
+	public static immutable int DECLINED = 1;
+	public static immutable int FAILED = 2;
+	public static immutable int ACCEPTED = 3;
 
 	public String hash;
 	public int result;
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hash.getBytes(StandardCharset.UTF_8).length) + hash.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(result);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] aGFzaA=hash.getBytes("UTF-8"); this.writeVaruint((int)aGFzaA.length); this.writeBytes(aGFzaA);
+		this.writeVaruint(result);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

@@ -21,23 +21,30 @@ class UpdateNodes extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// action
-	public final static byte ADD = (byte)0;
-	public final static byte REMOVE = (byte)1;
+	public static immutable byte ADD = 0;
+	public static immutable byte REMOVE = 1;
 
 	public byte action;
 	public String node;
 
 	@Override
 	public int length() {
-		return node.getBytes(StandardCharset.UTF_8).length + 3;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(action);
+		byte[] bm9kZQ=node.getBytes("UTF-8"); this.writeShortB((short)bm9kZQ.length); this.writeBytes(bm9kZQ);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

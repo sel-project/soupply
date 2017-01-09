@@ -25,15 +25,22 @@ class MultiBlockChange extends Packet {
 
 	@Override
 	public int length() {
-		return chunk.length() + Var.Uint.length(changes.length) + changes.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeIntB(chunk.x);this.writeIntB(chunk.z);
+		this.writeVaruint((int)changes.length); for(block_change Y2hhbmdlcw:changes){ this.writeBytes(Y2hhbmdlcw.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

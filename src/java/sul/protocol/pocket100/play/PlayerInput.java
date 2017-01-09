@@ -22,19 +22,27 @@ class PlayerInput extends Packet {
 
 	public Tuples.FloatXYZ motion;
 	public byte flags;
-	public boolean ?;
+	public boolean unknown2;
 
 	@Override
 	public int length() {
-		return motion.length() + 2;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeFloatlittle_endian(motion.x);this.writeFloatlittle_endian(motion.y);this.writeFloatlittle_endian(motion.z);
+		this.writeByteB(flags);
+		this.writeBoolB(unknown2);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

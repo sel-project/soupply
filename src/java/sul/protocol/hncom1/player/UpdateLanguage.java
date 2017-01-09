@@ -25,15 +25,22 @@ class UpdateLanguage extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + Var.Uint.length(language.getBytes(StandardCharset.UTF_8).length) + language.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVaruint(hubId);
+		byte[] bGFuZ3VhZ2U=language.getBytes("UTF-8"); this.writeVaruint((int)bGFuZ3VhZ2U.length); this.writeBytes(bGFuZ3VhZ2U);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

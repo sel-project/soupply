@@ -25,15 +25,22 @@ class Disconnect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(message.getBytes(StandardCharset.UTF_8).length) + message.getBytes(StandardCharset.UTF_8).length + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeBoolB(hideDisconnectionScreen);
+		byte[] bWVzc2FnZQ=message.getBytes("UTF-8"); this.writeVaruint((int)bWVzc2FnZQ.length); this.writeBytes(bWVzc2FnZQ);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

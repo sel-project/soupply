@@ -26,15 +26,23 @@ class EncryptionRequest extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(serverId.getBytes(StandardCharset.UTF_8).length) + serverId.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(publicKey.length) + publicKey.length() + Var.Uint.length(verifyToken.length) + verifyToken.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] c2VydmVySWQ=serverId.getBytes("UTF-8"); this.writeVaruint((int)c2VydmVySWQ.length); this.writeBytes(c2VydmVySWQ);
+		this.writeVaruint((int)publicKey.length); for(ubyte cHVibGljS2V5:publicKey){ this.writeByteB(cHVibGljS2V5); }
+		this.writeVaruint((int)verifyToken.length); for(ubyte dmVyaWZ5VG9rZW4:verifyToken){ this.writeByteB(dmVyaWZ5VG9rZW4); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

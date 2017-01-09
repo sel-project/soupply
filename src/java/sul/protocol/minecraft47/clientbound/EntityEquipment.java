@@ -21,11 +21,11 @@ class EntityEquipment extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// slot
-	public final static int HAND = (int)0;
-	public final static int BOOTS = (int)1;
-	public final static int LEGGINGS = (int)2;
-	public final static int CHESTPLATE = (int)3;
-	public final static int HELMET = (int)4;
+	public static immutable int HAND = 0;
+	public static immutable int BOOTS = 1;
+	public static immutable int LEGGINGS = 2;
+	public static immutable int CHESTPLATE = 3;
+	public static immutable int HELMET = 4;
 
 	public int entityId;
 	public int slot;
@@ -33,15 +33,23 @@ class EntityEquipment extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(entityId) + Var.Uint.length(slot) + item.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(entityId);
+		this.writeVaruint(slot);
+		this.writeBytes(item.encode());
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

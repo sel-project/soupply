@@ -33,15 +33,30 @@ class AddEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + Var.Uint.length(type) + position.length() + motion.length() + Var.Uint.length(attributes.length) + attributes.length() + metadata.length() + Var.Uint.length(links.length) + links.length() + 8;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(entityId);
+		this.writeVarlong(runtimeId);
+		this.writeVaruint(type);
+		this.writeFloatlittle_endian(position.x);this.writeFloatlittle_endian(position.y);this.writeFloatlittle_endian(position.z);
+		this.writeFloatlittle_endian(motion.x);this.writeFloatlittle_endian(motion.y);this.writeFloatlittle_endian(motion.z);
+		this.writeFloatlittle_endian(pitch);
+		this.writeFloatlittle_endian(yaw);
+		this.writeVaruint((int)attributes.length); for(attribute YXR0cmlidXRlcw:attributes){ this.writeBytes(YXR0cmlidXRlcw.encode()); }
+		this.writeBytes(metadata.encode());
+		this.writeVaruint((int)links.length); for(varlong bGlua3M:links){ this.writeVarlong(bGlua3M); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

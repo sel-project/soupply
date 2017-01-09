@@ -24,19 +24,29 @@ class MobEquipment extends Packet {
 	public Slot item;
 	public byte slot;
 	public byte selectedSlot;
-	public byte ?;
+	public byte unknown4;
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + item.length() + 3;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(entityId);
+		this.writeBytes(item.encode());
+		this.writeByteB(slot);
+		this.writeByteB(selectedSlot);
+		this.writeByteB(unknown4);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

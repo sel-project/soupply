@@ -21,9 +21,9 @@ class RemoteCommand extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// origin
-	public final static byte HUB = (byte)0;
-	public final static byte EXTERNAL_CONSOLE = (byte)1;
-	public final static byte RCON = (byte)2;
+	public static immutable byte HUB = 0;
+	public static immutable byte EXTERNAL_CONSOLE = 1;
+	public static immutable byte RCON = 2;
 
 	public byte origin;
 	public Address sender;
@@ -31,15 +31,23 @@ class RemoteCommand extends Packet {
 
 	@Override
 	public int length() {
-		return sender.length() + Var.Uint.length(command.getBytes(StandardCharset.UTF_8).length) + command.getBytes(StandardCharset.UTF_8).length + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(origin);
+		this.writeBytes(sender.encode());
+		byte[] Y29tbWFuZA=command.getBytes("UTF-8"); this.writeVaruint((int)Y29tbWFuZA.length); this.writeBytes(Y29tbWFuZA);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

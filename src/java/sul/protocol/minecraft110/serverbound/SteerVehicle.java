@@ -21,8 +21,8 @@ class SteerVehicle extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// flags
-	public final static byte JUMP = (byte)1;
-	public final static byte UNMOUNT = (byte)2;
+	public static immutable byte JUMP = 1;
+	public static immutable byte UNMOUNT = 2;
 
 	public float sideways;
 	public float forward;
@@ -30,15 +30,23 @@ class SteerVehicle extends Packet {
 
 	@Override
 	public int length() {
-		return 9;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeFloatB(sideways);
+		this.writeFloatB(forward);
+		this.writeByteB(flags);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

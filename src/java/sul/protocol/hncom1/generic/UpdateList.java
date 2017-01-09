@@ -21,12 +21,12 @@ class UpdateList extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// list
-	public final static byte WHITELIST = (byte)0;
-	public final static byte BLACKLIST = (byte)1;
+	public static immutable byte WHITELIST = 0;
+	public static immutable byte BLACKLIST = 1;
 
 	// action
-	public final static byte ADD = (byte)0;
-	public final static byte REMOVE = (byte)1;
+	public static immutable byte ADD = 0;
+	public static immutable byte REMOVE = 1;
 
 	public byte list;
 	public byte action;
@@ -34,15 +34,23 @@ class UpdateList extends Packet {
 
 	@Override
 	public int length() {
-		return 3;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(list);
+		this.writeByteB(action);
+		this.writeByteB(type);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 	public static class ByHubId extends UpdateList {

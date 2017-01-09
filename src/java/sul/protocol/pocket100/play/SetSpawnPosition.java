@@ -20,21 +20,29 @@ class SetSpawnPosition extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
-	public int ?;
+	public int unknown0;
 	public BlockPosition position;
-	public boolean ?;
+	public boolean unknown2;
 
 	@Override
 	public int length() {
-		return Var.Int.length(?) + position.length() + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarint(unknown0);
+		this.writeBytes(position.encode());
+		this.writeBoolB(unknown2);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

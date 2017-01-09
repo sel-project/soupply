@@ -25,15 +25,22 @@ class Players extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(online) + Var.Uint.length(max);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVaruint(online);
+		this.writeVaruint(max);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

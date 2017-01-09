@@ -21,9 +21,9 @@ class MobEffect extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// event id
-	public final static byte ADD = (byte)0;
-	public final static byte MODIFY = (byte)1;
-	public final static byte REMOVE = (byte)2;
+	public static immutable byte ADD = 0;
+	public static immutable byte MODIFY = 1;
+	public static immutable byte REMOVE = 2;
 
 	public long entityId;
 	public byte eventId;
@@ -34,15 +34,26 @@ class MobEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Int.length(effect) + Var.Int.length(amplifier) + Var.Int.length(duration) + 2;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(entityId);
+		this.writeByteB(eventId);
+		this.writeVarint(effect);
+		this.writeVarint(amplifier);
+		this.writeBoolB(particles);
+		this.writeVarint(duration);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

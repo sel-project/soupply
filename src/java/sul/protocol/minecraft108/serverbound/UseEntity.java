@@ -21,13 +21,13 @@ class UseEntity extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// type
-	public final static int INTERACT = (int)0;
-	public final static int ATTACK = (int)1;
-	public final static int INTERACT_AT = (int)2;
+	public static immutable int INTERACT = 0;
+	public static immutable int ATTACK = 1;
+	public static immutable int INTERACT_AT = 2;
 
 	// hand
-	public final static int MAIN_HAND = (int)0;
-	public final static int OFF_HAND = (int)1;
+	public static immutable int MAIN_HAND = 0;
+	public static immutable int OFF_HAND = 1;
 
 	public int target;
 	public int type;
@@ -36,15 +36,24 @@ class UseEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(target) + Var.Uint.length(type) + targetPosition.length() + Var.Uint.length(hand);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(target);
+		this.writeVaruint(type);
+		if(type==2){ this.writeFloatB(targetPosition.x);this.writeFloatB(targetPosition.y);this.writeFloatB(targetPosition.z); }
+		if(type==2){ this.writeVaruint(hand); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

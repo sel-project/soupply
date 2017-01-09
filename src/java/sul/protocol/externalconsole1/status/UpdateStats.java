@@ -29,15 +29,26 @@ class UpdateStats extends Packet {
 
 	@Override
 	public int length() {
-		return nodes.length() + 22;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeIntB(onlinePlayers);
+		this.writeIntB(maxPlayers);
+		this.writeIntB(uptime);
+		this.writeIntB(upload);
+		this.writeIntB(download);
+		this.writeShortB((short)nodes.length); for(node_stats bm9kZXM:nodes){ this.writeBytes(bm9kZXM.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

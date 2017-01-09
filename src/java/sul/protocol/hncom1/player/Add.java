@@ -21,13 +21,13 @@ class Add extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// reason
-	public final static byte FIRST_JOIN = (byte)0;
-	public final static byte TRANSFERRED = (byte)1;
-	public final static byte FORCIBLY_TRANSFERRED = (byte)2;
+	public static immutable byte FIRST_JOIN = 0;
+	public static immutable byte TRANSFERRED = 1;
+	public static immutable byte FORCIBLY_TRANSFERRED = 2;
 
 	// game
-	public final static byte POCKET = (byte)1;
-	public final static byte MINECRAFT = (byte)2;
+	public static immutable byte POCKET = 1;
+	public static immutable byte MINECRAFT = 2;
 
 	public int hubId;
 	public byte reason;
@@ -44,15 +44,32 @@ class Add extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + Var.Uint.length(protocol) + Var.Uint.length(username.getBytes(StandardCharset.UTF_8).length) + username.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(displayName.getBytes(StandardCharset.UTF_8).length) + displayName.getBytes(StandardCharset.UTF_8).length + address.length() + skin.length() + Var.Uint.length(latency) + Var.Uint.length(language.getBytes(StandardCharset.UTF_8).length) + language.getBytes(StandardCharset.UTF_8).length + 22;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVaruint(hubId);
+		this.writeByteB(reason);
+		this.writeVaruint(protocol);
+		byte[] dXNlcm5hbWU=username.getBytes("UTF-8"); this.writeVaruint((int)dXNlcm5hbWU.length); this.writeBytes(dXNlcm5hbWU);
+		byte[] ZGlzcGxheU5hbWU=displayName.getBytes("UTF-8"); this.writeVaruint((int)ZGlzcGxheU5hbWU.length); this.writeBytes(ZGlzcGxheU5hbWU);
+		this.writeBytes(address.encode());
+		this.writeByteB(game);
+		this.writeLongB(uuid.getLeastSignificantBits()); this.writeLongB(uuid.getMostSignificantBits());
+		this.writeBytes(skin.encode());
+		this.writeVaruint(latency);
+		this.writeFloatB(packetLoss);
+		byte[] bGFuZ3VhZ2U=language.getBytes("UTF-8"); this.writeVaruint((int)bGFuZ3VhZ2U.length); this.writeBytes(bGFuZ3VhZ2U);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

@@ -24,15 +24,21 @@ class CraftingData extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(recipes.length) + recipes.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVaruint((int)recipes.length); for(recipe cmVjaXBlcw:recipes){ this.writeBytes(cmVjaXBlcw.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

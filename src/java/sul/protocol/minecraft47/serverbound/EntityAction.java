@@ -21,13 +21,13 @@ class EntityAction extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// action
-	public final static int START_SNEAKING = (int)0;
-	public final static int STOP_SNEAKING = (int)1;
-	public final static int LEAVE_BED = (int)2;
-	public final static int START_SPRINTING = (int)3;
-	public final static int STOP_SPRINTING = (int)4;
-	public final static int START_HORSE_JUMP = (int)5;
-	public final static int STOP_HORSE_JUMP = (int)6;
+	public static immutable int START_SNEAKING = 0;
+	public static immutable int STOP_SNEAKING = 1;
+	public static immutable int LEAVE_BED = 2;
+	public static immutable int START_SPRINTING = 3;
+	public static immutable int STOP_SPRINTING = 4;
+	public static immutable int START_HORSE_JUMP = 5;
+	public static immutable int STOP_HORSE_JUMP = 6;
 
 	public int entityId;
 	public int action;
@@ -35,15 +35,23 @@ class EntityAction extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(entityId) + Var.Uint.length(action) + Var.Uint.length(jumpBoost);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(entityId);
+		this.writeVaruint(action);
+		if(action==5){ this.writeVaruint(jumpBoost); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

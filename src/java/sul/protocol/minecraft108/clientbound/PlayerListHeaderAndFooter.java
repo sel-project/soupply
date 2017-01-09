@@ -25,15 +25,22 @@ class PlayerListHeaderAndFooter extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(header.getBytes(StandardCharset.UTF_8).length) + header.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(footer.getBytes(StandardCharset.UTF_8).length) + footer.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] aGVhZGVy=header.getBytes("UTF-8"); this.writeVaruint((int)aGVhZGVy.length); this.writeBytes(aGVhZGVy);
+		byte[] Zm9vdGVy=footer.getBytes("UTF-8"); this.writeVaruint((int)Zm9vdGVy.length); this.writeBytes(Zm9vdGVy);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

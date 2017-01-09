@@ -21,37 +21,44 @@ class AdventureSettings extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// flags
-	public final static int IMMUTABLE_WORLD = (int)1;
-	public final static int PVP_DISABLED = (int)2;
-	public final static int PVM_DISABLED = (int)4;
-	public final static int MVP_DISBALED = (int)8;
-	public final static int EVP_DISABLED = (int)16;
-	public final static int AUTO_JUMP = (int)32;
-	public final static int ALLOW_FLIGHT = (int)64;
-	public final static int NO_CLIP = (int)256;
-	public final static int FLYING = (int)1024;
+	public static immutable int IMMUTABLE_WORLD = 1;
+	public static immutable int PVP_DISABLED = 2;
+	public static immutable int PVM_DISABLED = 4;
+	public static immutable int MVP_DISBALED = 8;
+	public static immutable int EVP_DISABLED = 16;
+	public static immutable int AUTO_JUMP = 32;
+	public static immutable int ALLOW_FLIGHT = 64;
+	public static immutable int NO_CLIP = 256;
+	public static immutable int FLYING = 1024;
 
 	// permissions
-	public final static int USER = (int)0;
-	public final static int OPERATOR = (int)1;
-	public final static int HOST = (int)2;
-	public final static int AUTOMATION = (int)3;
-	public final static int ADMIN = (int)4;
+	public static immutable int USER = 0;
+	public static immutable int OPERATOR = 1;
+	public static immutable int HOST = 2;
+	public static immutable int AUTOMATION = 3;
+	public static immutable int ADMIN = 4;
 
 	public int flags;
 	public int permissions;
 
 	@Override
 	public int length() {
-		return Var.Uint.length(flags) + Var.Uint.length(permissions);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVaruint(flags);
+		this.writeVaruint(permissions);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

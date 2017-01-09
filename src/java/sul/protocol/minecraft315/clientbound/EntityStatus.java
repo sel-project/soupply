@@ -21,58 +21,65 @@ class EntityStatus extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// status
-	public final static byte SPAWN_TIPPED_ARROW_PARTICLE_EFFECTS = (byte)0;
-	public final static byte PLAY_JUMPING_ANIMATION_AND_PARTICLES = (byte)1;
-	public final static byte RESET_SPAWNER_DELAY = (byte)1;
-	public final static byte PLAY_HURT_ANIMATION_AND_SOUND = (byte)2;
-	public final static byte PLAY_DEAD_ANIMATION_AND_SOUND = (byte)3;
-	public final static byte PLAY_ATTACK_ANIMATION_AND_SOUND = (byte)4;
-	public final static byte SPAWN_SMOKE_PARTICLES = (byte)6;
-	public final static byte SPAWN_HEART_PARTICLES = (byte)7;
-	public final static byte PLAY_SHAKING_WATER_ANIMATION = (byte)8;
-	public final static byte FINISHED_CONSUMING = (byte)9;
-	public final static byte PLAY_EATING_GRASS_ANIMATION = (byte)10;
-	public final static byte IGNITE_MINECART_TNT = (byte)10;
-	public final static byte HOLD_POPPY = (byte)11;
-	public final static byte SPAWN_VILLAGER_MATING_HEART_PARTICLES = (byte)12;
-	public final static byte SPAWN_VILLAGER_ANGRY_PARTICLES = (byte)13;
-	public final static byte SPAWN_VILLAGER_HAPPY_PARTICLES = (byte)14;
-	public final static byte SPAWN_WITCH_MAGIC_PARTICLES = (byte)15;
-	public final static byte PLAY_ZOMBIE_CURE_FINISHED_SOUND = (byte)16;
-	public final static byte SPAWN_FIREWORK_EXPLOSION_EFFECT = (byte)17;
-	public final static byte SPAWN_LOVE_PARTICLES = (byte)18;
-	public final static byte RESET_SQUID_ROTATION = (byte)19;
-	public final static byte SPAWN_EXPLOSION_PARTICLES = (byte)20;
-	public final static byte PLAY_GUARDIAN_SOUND_EFFECT = (byte)21;
-	public final static byte ENABLE_REDUCED_DEBUG_SCREEN = (byte)22;
-	public final static byte DISABLE_REDUCED_DEBUG_SCREEN = (byte)23;
-	public final static byte SET_OP_PERMISSION_LEVEL_0 = (byte)24;
-	public final static byte SET_OP_PERMISSION_LEVEL_1 = (byte)25;
-	public final static byte SET_OP_PERMISSION_LEVEL_2 = (byte)26;
-	public final static byte SET_OP_PERMISSION_LEVEL_3 = (byte)27;
-	public final static byte SET_OP_PERMISSION_LEVEL_4 = (byte)28;
-	public final static byte PLAY_SHIELD_BLOCK_SOUND = (byte)29;
-	public final static byte PLAY_SHIELD_BREAK_SOUND = (byte)30;
-	public final static byte HOOK_KNOCKBACK = (byte)31;
-	public final static byte PLAY_HIT_SOUND = (byte)32;
-	public final static byte PLAY_THORNS_HURT_ANIMATION_AND_SOUND = (byte)33;
-	public final static byte REMOVE_POPPY = (byte)34;
-	public final static byte PLAY_TOTEM_UNDYING_ANIMATION = (byte)35;
+	public static immutable byte SPAWN_TIPPED_ARROW_PARTICLE_EFFECTS = 0;
+	public static immutable byte PLAY_JUMPING_ANIMATION_AND_PARTICLES = 1;
+	public static immutable byte RESET_SPAWNER_DELAY = 1;
+	public static immutable byte PLAY_HURT_ANIMATION_AND_SOUND = 2;
+	public static immutable byte PLAY_DEAD_ANIMATION_AND_SOUND = 3;
+	public static immutable byte PLAY_ATTACK_ANIMATION_AND_SOUND = 4;
+	public static immutable byte SPAWN_SMOKE_PARTICLES = 6;
+	public static immutable byte SPAWN_HEART_PARTICLES = 7;
+	public static immutable byte PLAY_SHAKING_WATER_ANIMATION = 8;
+	public static immutable byte FINISHED_CONSUMING = 9;
+	public static immutable byte PLAY_EATING_GRASS_ANIMATION = 10;
+	public static immutable byte IGNITE_MINECART_TNT = 10;
+	public static immutable byte HOLD_POPPY = 11;
+	public static immutable byte SPAWN_VILLAGER_MATING_HEART_PARTICLES = 12;
+	public static immutable byte SPAWN_VILLAGER_ANGRY_PARTICLES = 13;
+	public static immutable byte SPAWN_VILLAGER_HAPPY_PARTICLES = 14;
+	public static immutable byte SPAWN_WITCH_MAGIC_PARTICLES = 15;
+	public static immutable byte PLAY_ZOMBIE_CURE_FINISHED_SOUND = 16;
+	public static immutable byte SPAWN_FIREWORK_EXPLOSION_EFFECT = 17;
+	public static immutable byte SPAWN_LOVE_PARTICLES = 18;
+	public static immutable byte RESET_SQUID_ROTATION = 19;
+	public static immutable byte SPAWN_EXPLOSION_PARTICLES = 20;
+	public static immutable byte PLAY_GUARDIAN_SOUND_EFFECT = 21;
+	public static immutable byte ENABLE_REDUCED_DEBUG_SCREEN = 22;
+	public static immutable byte DISABLE_REDUCED_DEBUG_SCREEN = 23;
+	public static immutable byte SET_OP_PERMISSION_LEVEL_0 = 24;
+	public static immutable byte SET_OP_PERMISSION_LEVEL_1 = 25;
+	public static immutable byte SET_OP_PERMISSION_LEVEL_2 = 26;
+	public static immutable byte SET_OP_PERMISSION_LEVEL_3 = 27;
+	public static immutable byte SET_OP_PERMISSION_LEVEL_4 = 28;
+	public static immutable byte PLAY_SHIELD_BLOCK_SOUND = 29;
+	public static immutable byte PLAY_SHIELD_BREAK_SOUND = 30;
+	public static immutable byte HOOK_KNOCKBACK = 31;
+	public static immutable byte PLAY_HIT_SOUND = 32;
+	public static immutable byte PLAY_THORNS_HURT_ANIMATION_AND_SOUND = 33;
+	public static immutable byte REMOVE_POPPY = 34;
+	public static immutable byte PLAY_TOTEM_UNDYING_ANIMATION = 35;
 
 	public int entityId;
 	public byte status;
 
 	@Override
 	public int length() {
-		return 5;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeIntB(entityId);
+		this.writeByteB(status);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

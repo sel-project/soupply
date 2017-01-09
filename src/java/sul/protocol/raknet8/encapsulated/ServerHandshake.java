@@ -28,15 +28,25 @@ class ServerHandshake extends Packet {
 
 	@Override
 	public int length() {
-		return clientAddress.length() + systemAddresses.length() + 20;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeBytes(clientAddress.encode());
+		this.writeShortB(mtuLength);
+		for(address c3lzdGVtQWRkcmVz:systemAddresses){ this.writeBytes(c3lzdGVtQWRkcmVz.encode()); }
+		this.writeLongB(pingId);
+		this.writeLongB(serverId);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

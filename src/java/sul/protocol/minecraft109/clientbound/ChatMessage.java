@@ -21,24 +21,31 @@ class ChatMessage extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// position
-	public final static byte CHAT = (byte)0;
-	public final static byte SYSTEM_MESSAGE = (byte)1;
-	public final static byte ABOVE_HOTBAR = (byte)2;
+	public static immutable byte CHAT = 0;
+	public static immutable byte SYSTEM_MESSAGE = 1;
+	public static immutable byte ABOVE_HOTBAR = 2;
 
 	public String message;
 	public byte position;
 
 	@Override
 	public int length() {
-		return Var.Uint.length(message.getBytes(StandardCharset.UTF_8).length) + message.getBytes(StandardCharset.UTF_8).length + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] bWVzc2FnZQ=message.getBytes("UTF-8"); this.writeVaruint((int)bWVzc2FnZQ.length); this.writeBytes(bWVzc2FnZQ);
+		this.writeByteB(position);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

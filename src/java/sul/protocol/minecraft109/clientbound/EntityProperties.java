@@ -25,15 +25,22 @@ class EntityProperties extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(entityId) + properties.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(entityId);
+		this.writeIntB((int)properties.length); for(property cHJvcGVydGllcw:properties){ this.writeBytes(cHJvcGVydGllcw.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

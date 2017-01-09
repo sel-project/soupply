@@ -21,10 +21,10 @@ class SpawnPainting extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// direction
-	public final static byte NORTH = (byte)0;
-	public final static byte WEST = (byte)1;
-	public final static byte SOUTH = (byte)2;
-	public final static byte EAST = (byte)3;
+	public static immutable byte NORTH = 0;
+	public static immutable byte WEST = 1;
+	public static immutable byte SOUTH = 2;
+	public static immutable byte EAST = 3;
 
 	public int entityId;
 	public UUID uuid;
@@ -34,15 +34,25 @@ class SpawnPainting extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(entityId) + Var.Uint.length(title.getBytes(StandardCharset.UTF_8).length) + title.getBytes(StandardCharset.UTF_8).length + 25;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(entityId);
+		this.writeLongB(uuid.getLeastSignificantBits()); this.writeLongB(uuid.getMostSignificantBits());
+		byte[] dGl0bGU=title.getBytes("UTF-8"); this.writeVaruint((int)dGl0bGU.length); this.writeBytes(dGl0bGU);
+		this.writeLongB(position);
+		this.writeByteB(direction);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

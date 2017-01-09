@@ -7,7 +7,9 @@
  */
 package sul.utils;
 
-abstract class Packet {
+import sul.utils.Buffer;
+
+abstract class Packet extends Buffer {
 
 	abstract int length();
 

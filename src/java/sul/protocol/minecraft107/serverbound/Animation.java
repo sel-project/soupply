@@ -21,22 +21,28 @@ class Animation extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// hand
-	public final static int MAIN_HAND = (int)0;
-	public final static int OFF_HAND = (int)1;
+	public static immutable int MAIN_HAND = 0;
+	public static immutable int OFF_HAND = 1;
 
 	public int hand;
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hand);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(hand);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

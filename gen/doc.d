@@ -24,7 +24,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 		immutable t = type[0..end];
 		immutable e = type[end..$].replace(`<`, `\<`).replace(`>`, `\>`);
 		if(defaultTypes.canFind(t)) return t ~ e;
-		else return "[" ~ t ~ "](#" ~ toSnakeCase(t).replace("_", "-") ~ ")" ~ e;
+		else return "[" ~ toCamelCase(t) ~ "](#" ~ link("types", t) ~ ")" ~ e;
 	}
 
 	foreach(string game, Protocols ptrs; protocols) {
@@ -42,7 +42,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			if(spl.length == 3) {
 				immutable day = spl[2] ~ (){
 					auto ret = spl[2];
-					if(spl[2].length >= 2 && spl[0][$-2] != '1') {
+					if(spl[2].length != 2 || spl[0][$-2] == '1') {
 						if(spl[2][$-1] == '1') return "st";
 						else if(spl[2][$-1] == '2') return "nd";
 						else if(spl[2][$-1] == '3') return "rd";
@@ -97,7 +97,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 					data ~= space;
 					if(field.description.length || field.constants.length) data ~= "[" ~ toCamelCase(field.name) ~ "](#" ~ link(namespace, field.name) ~ ")";
 					else data ~= toCamelCase(field.name);
-					data ~= " | " ~ convert(toCamelCase(field.type)) ~ (endianness ? " | " ~ field.endianness.replace("_", " ") : "") ~ (condition ? " | " ~ toCamelCase(field.condition) : "") ~ "\n";
+					data ~= " | " ~ convert(field.type) ~ (endianness ? " | " ~ field.endianness.replace("_", " ") : "") ~ (condition ? " | " ~ toCamelCase(field.condition) : "") ~ "\n";
 				}
 				data ~= "\n";
 				foreach(field ; fields) {
@@ -165,6 +165,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			data ~= "--------\n\n";
 			data ~= "## Types\n\n";
 			foreach(type ; ptrs.data.types) {
+				data ~= "<a name=\"" ~ link("types", type.name) ~ "\"></a>\n";
 				data ~= "* ### " ~ pretty(toCamelCase(type.name)) ~ "\n\n";
 				if(type.description.length) data ~= "\t" ~ type.description ~ "\n\n";
 				writeFields(type.name, type.fields);
@@ -178,10 +179,10 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			foreach(a ; ptrs.data.arrays) {
 				e |= a.endianness.length != 0;
 			}
-			data ~= "Base | Length" ~ (e ? " | Length's endianness" : "") ~ "\n";
+			data ~= "Name | Base | Length" ~ (e ? " | Length's endianness" : "") ~ "\n";
 			data ~= "---|---" ~ (e ? "|---" : "") ~ "\n";
-			foreach(a ; ptrs.data.arrays) {
-				data ~= convert(toCamelCase(a.base)) ~ " | " ~ convert(toCamelCase(a.length)) ~ (e ? " | " ~ a.endianness.replace("_", " ") : "") ~ "\n";
+			foreach(name, a ; ptrs.data.arrays) {
+				data ~= "<a name\"" ~ link("types", name) ~ "\"></a>" ~ toCamelCase(name) ~ " | " ~ convert(a.base) ~ " | " ~ convert(a.length) ~ (e ? " | " ~ a.endianness.replace("_", " ") : "") ~ "\n";
 			}
 			data ~= "\n";
 		}
@@ -194,7 +195,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			data ~= "Name | Type | DEC | HEX | Default | Required\n---|---|:---:|:---:|---|:---:\n";
 			foreach(meta ; (*metadata).data.metadatas) {
 				immutable name = pretty(toCamelCase(meta.name));
-				data ~= (meta.description.length || meta.flags.length ? ("[" ~ name ~ "](#" ~ link("metadata", meta.name) ~ ")") : name) ~ " | " ~ convert(toCamelCase(meta.type)) ~ " | " ~ meta.id.to!string ~ " | " ~ meta.id.to!string(16) ~ " | " ~ meta.def ~ " | " ~ (meta.required ? "✓" : "") ~ "\n";
+				data ~= (meta.description.length || meta.flags.length ? ("[" ~ name ~ "](#" ~ link("metadata", meta.name) ~ ")") : name) ~ " | " ~ convert(meta.type) ~ " | " ~ meta.id.to!string ~ " | " ~ meta.id.to!string(16) ~ " | " ~ meta.def ~ " | " ~ (meta.required ? "✓" : "") ~ "\n";
 			}
 			data ~= "\n";
 			foreach(meta ; (*metadata).data.metadatas) {

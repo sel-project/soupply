@@ -25,15 +25,22 @@ class ServerHandshake extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(serverPublicKey.getBytes(StandardCharset.UTF_8).length) + serverPublicKey.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(token.length) + token.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		byte[] c2VydmVyUHVibGlj=serverPublicKey.getBytes("UTF-8"); this.writeVaruint((int)c2VydmVyUHVibGlj.length); this.writeBytes(c2VydmVyUHVibGlj);
+		this.writeVaruint((int)token.length); for(ubyte dG9rZW4:token){ this.writeByteB(dG9rZW4); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

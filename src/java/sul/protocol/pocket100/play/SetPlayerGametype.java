@@ -21,22 +21,28 @@ class SetPlayerGametype extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// gametype
-	public final static int SURVIVAL = (int)0;
-	public final static int CREATIVE = (int)1;
+	public static immutable int SURVIVAL = 0;
+	public static immutable int CREATIVE = 1;
 
 	public int gametype;
 
 	@Override
 	public int length() {
-		return Var.Int.length(gametype);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarint(gametype);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

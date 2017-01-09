@@ -26,15 +26,23 @@ class Explode extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + Var.Uint.length(destroyedBlocks.length) + destroyedBlocks.length() + 4;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeFloatlittle_endian(position.x);this.writeFloatlittle_endian(position.y);this.writeFloatlittle_endian(position.z);
+		this.writeFloatlittle_endian(radius);
+		this.writeVaruint((int)destroyedBlocks.length); for(block_position ZGVzdHJveWVkQmxv:destroyedBlocks){ this.writeBytes(ZGVzdHJveWVkQmxv.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

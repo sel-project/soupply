@@ -27,15 +27,24 @@ class Pong extends Packet {
 
 	@Override
 	public int length() {
-		return magic.length() + status.getBytes(StandardCharset.UTF_8).length + 20;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeLongB(pingId);
+		this.writeLongB(serverId);
+		for(ubyte bWFnaWM:magic){ this.writeByteB(bWFnaWM); }
+		byte[] c3RhdHVz=status.getBytes("UTF-8"); this.writeShortB((short)c3RhdHVz.length); this.writeBytes(c3RhdHVz);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

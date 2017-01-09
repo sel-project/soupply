@@ -25,15 +25,22 @@ class BlockEntityData extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + nbt.length;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeBytes(position.encode());
+		this.writeBytes(nbt);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

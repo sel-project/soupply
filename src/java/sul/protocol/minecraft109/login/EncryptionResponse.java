@@ -25,15 +25,22 @@ class EncryptionResponse extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(sharedSecret.length) + sharedSecret.length() + Var.Uint.length(verifyToken.length) + verifyToken.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint((int)sharedSecret.length); for(ubyte c2hhcmVkU2VjcmV0:sharedSecret){ this.writeByteB(c2hhcmVkU2VjcmV0); }
+		this.writeVaruint((int)verifyToken.length); for(ubyte dmVyaWZ5VG9rZW4:verifyToken){ this.writeByteB(dmVyaWZ5VG9rZW4); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

@@ -25,15 +25,22 @@ class UpdateAttributes extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Uint.length(attributes.length) + attributes.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(entityId);
+		this.writeVaruint((int)attributes.length); for(attribute YXR0cmlidXRlcw:attributes){ this.writeBytes(YXR0cmlidXRlcw.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

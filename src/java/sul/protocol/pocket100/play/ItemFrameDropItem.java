@@ -25,15 +25,22 @@ class ItemFrameDropItem extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + item.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeBytes(position.encode());
+		this.writeBytes(item.encode());
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

@@ -21,14 +21,14 @@ class PlayerDigging extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// status
-	public final static int START_DIGGING = (int)0;
-	public final static int CANCEL_DIGGING = (int)1;
-	public final static int FINISH_DIGGING = (int)2;
-	public final static int DROP_ITEM_STACK = (int)3;
-	public final static int DROP_ITEM = (int)4;
-	public final static int SHOOT_ARROW = (int)5;
-	public final static int FINISH_EATING = (int)5;
-	public final static int SWAP_ITEM_IN_HAND = (int)6;
+	public static immutable int START_DIGGING = 0;
+	public static immutable int CANCEL_DIGGING = 1;
+	public static immutable int FINISH_DIGGING = 2;
+	public static immutable int DROP_ITEM_STACK = 3;
+	public static immutable int DROP_ITEM = 4;
+	public static immutable int SHOOT_ARROW = 5;
+	public static immutable int FINISH_EATING = 5;
+	public static immutable int SWAP_ITEM_IN_HAND = 6;
 
 	public int status;
 	public long position;
@@ -36,15 +36,23 @@ class PlayerDigging extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(status) + 9;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(status);
+		this.writeLongB(position);
+		this.writeByteB(face);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

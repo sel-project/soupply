@@ -21,21 +21,21 @@ class PlayerAction extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// action
-	public final static int START_BREAK = (int)0;
-	public final static int ABORT_BREAK = (int)1;
-	public final static int STOP_BREAK = (int)2;
-	public final static int RELEASE_ITEM = (int)5;
-	public final static int STOP_SLEEPING = (int)6;
-	public final static int RESPAWN = (int)7;
-	public final static int JUMP = (int)8;
-	public final static int START_SPRINT = (int)9;
-	public final static int STOP_SPRINT = (int)10;
-	public final static int START_SNEAK = (int)11;
-	public final static int STOP_SNEAK = (int)12;
-	public final static int DIMENSION_CHANGE = (int)13;
-	public final static int ABORT_DIMENSION_CHANGE = (int)14;
-	public final static int START_GLIDING = (int)15;
-	public final static int STOP_GLIDING = (int)16;
+	public static immutable int START_BREAK = 0;
+	public static immutable int ABORT_BREAK = 1;
+	public static immutable int STOP_BREAK = 2;
+	public static immutable int RELEASE_ITEM = 5;
+	public static immutable int STOP_SLEEPING = 6;
+	public static immutable int RESPAWN = 7;
+	public static immutable int JUMP = 8;
+	public static immutable int START_SPRINT = 9;
+	public static immutable int STOP_SPRINT = 10;
+	public static immutable int START_SNEAK = 11;
+	public static immutable int STOP_SNEAK = 12;
+	public static immutable int DIMENSION_CHANGE = 13;
+	public static immutable int ABORT_DIMENSION_CHANGE = 14;
+	public static immutable int START_GLIDING = 15;
+	public static immutable int STOP_GLIDING = 16;
 
 	public long entityId;
 	public int action;
@@ -44,15 +44,24 @@ class PlayerAction extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Int.length(action) + position.length() + Var.Int.length(face);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(entityId);
+		this.writeVarint(action);
+		this.writeBytes(position.encode());
+		this.writeVarint(face);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

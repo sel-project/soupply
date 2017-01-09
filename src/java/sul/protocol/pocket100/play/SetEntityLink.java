@@ -21,8 +21,8 @@ class SetEntityLink extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// action
-	public final static byte ADD = (byte)0;
-	public final static byte REMOVE = (byte)1;
+	public static immutable byte ADD = 0;
+	public static immutable byte REMOVE = 1;
 
 	public long from;
 	public long to;
@@ -30,15 +30,23 @@ class SetEntityLink extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(from) + Var.Long.length(to) + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(from);
+		this.writeVarlong(to);
+		this.writeByteB(action);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

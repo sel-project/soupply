@@ -25,15 +25,22 @@ class ResourcePackSend extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(url.getBytes(StandardCharset.UTF_8).length) + url.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(hash.getBytes(StandardCharset.UTF_8).length) + hash.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] dXJs=url.getBytes("UTF-8"); this.writeVaruint((int)dXJs.length); this.writeBytes(dXJs);
+		byte[] aGFzaA=hash.getBytes("UTF-8"); this.writeVaruint((int)aGFzaA.length); this.writeBytes(aGFzaA);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

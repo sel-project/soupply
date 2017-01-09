@@ -25,15 +25,22 @@ class Transfer extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + Var.Uint.length(node.getBytes(StandardCharset.UTF_8).length) + node.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVaruint(hubId);
+		byte[] bm9kZQ=node.getBytes("UTF-8"); this.writeVaruint((int)bm9kZQ.length); this.writeBytes(bm9kZQ);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

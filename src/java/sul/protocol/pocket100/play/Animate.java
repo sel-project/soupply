@@ -21,23 +21,30 @@ class Animate extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// action
-	public final static int BREAKING = (int)1;
-	public final static int WAKE_UP = (int)3;
+	public static immutable int BREAKING = 1;
+	public static immutable int WAKE_UP = 3;
 
 	public int action;
 	public long entityId;
 
 	@Override
 	public int length() {
-		return Var.Int.length(action) + Var.Long.length(entityId);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarint(action);
+		this.writeVarlong(entityId);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

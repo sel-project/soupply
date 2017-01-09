@@ -21,9 +21,9 @@ class MovePlayer extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// animation
-	public final static byte FULL = (byte)0;
-	public final static byte NONE = (byte)1;
-	public final static byte ROTATION = (byte)2;
+	public static immutable byte FULL = 0;
+	public static immutable byte NONE = 1;
+	public static immutable byte ROTATION = 2;
 
 	public long entityId;
 	public Tuples.FloatXYZ position;
@@ -35,15 +35,27 @@ class MovePlayer extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + position.length() + 14;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(entityId);
+		this.writeFloatlittle_endian(position.x);this.writeFloatlittle_endian(position.y);this.writeFloatlittle_endian(position.z);
+		this.writeFloatlittle_endian(pitch);
+		this.writeFloatlittle_endian(headYaw);
+		this.writeFloatlittle_endian(yaw);
+		this.writeByteB(animation);
+		this.writeBoolB(onGround);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

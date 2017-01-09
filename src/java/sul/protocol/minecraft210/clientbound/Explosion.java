@@ -27,15 +27,24 @@ class Explosion extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + records.length() + motion.length() + 4;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeFloatB(position.x);this.writeFloatB(position.y);this.writeFloatB(position.z);
+		this.writeFloatB(radius);
+		this.writeIntB((int)records.length); for(byte<xyz> cmVjb3Jkcw:records){ this.writeBytes(cmVjb3Jkcw.encode()); }
+		this.writeFloatB(motion.x);this.writeFloatB(motion.y);this.writeFloatB(motion.z);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

@@ -24,15 +24,21 @@ class Auth extends Packet {
 
 	@Override
 	public int length() {
-		return hash.length() + 2;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeShortB((short)hash.length); for(ubyte aGFzaA:hash){ this.writeByteB(aGFzaA); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

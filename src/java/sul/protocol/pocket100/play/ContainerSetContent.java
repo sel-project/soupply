@@ -26,15 +26,23 @@ class ContainerSetContent extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(slots.length) + slots.length() + Var.Uint.length(hotbar.length) + hotbar.length() + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(window);
+		this.writeVaruint((int)slots.length); for(slot c2xvdHM:slots){ this.writeBytes(c2xvdHM.encode()); }
+		this.writeVaruint((int)hotbar.length); for(varint aG90YmFy:hotbar){ this.writeVarint(aG90YmFy); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

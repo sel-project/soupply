@@ -24,19 +24,29 @@ class ContainerSetSlot extends Packet {
 	public int slot;
 	public int hotbarSlot;
 	public Slot item;
-	public byte ?;
+	public byte unknown4;
 
 	@Override
 	public int length() {
-		return Var.Int.length(slot) + Var.Int.length(hotbarSlot) + item.length() + 2;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(window);
+		this.writeVarint(slot);
+		this.writeVarint(hotbarSlot);
+		this.writeBytes(item.encode());
+		this.writeByteB(unknown4);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

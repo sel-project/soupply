@@ -43,15 +43,23 @@ class AuthCredentials extends Packet {
 
 	@Override
 	public int length() {
-		return hashAlgorithm.getBytes(StandardCharset.UTF_8).length + payload.length() + 5;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(protocol);
+		byte[] aGFzaEFsZ29yaXRo=hashAlgorithm.getBytes("UTF-8"); this.writeShortB((short)aGFzaEFsZ29yaXRo.length); this.writeBytes(aGFzaEFsZ29yaXRo);
+		for(ubyte cGF5bG9hZA:payload){ this.writeByteB(cGF5bG9hZA); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

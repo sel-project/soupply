@@ -26,15 +26,23 @@ class EntityRelativeMove extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(entityId) + delta.length() + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(entityId);
+		this.writeByteB(delta.x);this.writeByteB(delta.y);this.writeByteB(delta.z);
+		this.writeBoolB(onGround);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

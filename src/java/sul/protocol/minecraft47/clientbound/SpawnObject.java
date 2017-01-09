@@ -30,15 +30,27 @@ class SpawnObject extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(entityId) + position.length() + velocity.length() + 7;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(entityId);
+		this.writeByteB(type);
+		this.writeIntB(position.x);this.writeIntB(position.y);this.writeIntB(position.z);
+		this.writeByteB(pitch);
+		this.writeByteB(yaw);
+		this.writeIntB(data);
+		this.writeShortB(velocity.x);this.writeShortB(velocity.y);this.writeShortB(velocity.z);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

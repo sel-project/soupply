@@ -29,15 +29,26 @@ class SpawnPlayer extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(entityId) + position.length() + metadata.length() + 18;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(entityId);
+		this.writeLongB(uuid.getLeastSignificantBits()); this.writeLongB(uuid.getMostSignificantBits());
+		this.writeDoubleB(position.x);this.writeDoubleB(position.y);this.writeDoubleB(position.z);
+		this.writeByteB(yaw);
+		this.writeByteB(pitch);
+		this.writeBytes(metadata.encode());
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

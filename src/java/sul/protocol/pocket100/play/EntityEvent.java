@@ -21,36 +21,44 @@ class EntityEvent extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// event id
-	public final static byte HURT_ANIMATION = (byte)2;
-	public final static byte DEATH_ANIMATION = (byte)3;
-	public final static byte TAME_FAIL = (byte)6;
-	public final static byte TAME_SUCCESS = (byte)7;
-	public final static byte SHAKE_WET = (byte)8;
-	public final static byte USE_ITEM = (byte)9;
-	public final static byte EAT_GRASS_ANIMATION = (byte)10;
-	public final static byte FISH_HOOK_BUBBLES = (byte)11;
-	public final static byte FISH_HOOK_POSITION = (byte)12;
-	public final static byte FISH_HOOK_HOOK = (byte)13;
-	public final static byte FISH_HOOK_TEASE = (byte)14;
-	public final static byte SQUID_INK_CLOUD = (byte)15;
-	public final static byte AMBIENT_SOUND = (byte)16;
-	public final static byte RESPAWN = (byte)17;
+	public static immutable byte HURT_ANIMATION = 2;
+	public static immutable byte DEATH_ANIMATION = 3;
+	public static immutable byte TAME_FAIL = 6;
+	public static immutable byte TAME_SUCCESS = 7;
+	public static immutable byte SHAKE_WET = 8;
+	public static immutable byte USE_ITEM = 9;
+	public static immutable byte EAT_GRASS_ANIMATION = 10;
+	public static immutable byte FISH_HOOK_BUBBLES = 11;
+	public static immutable byte FISH_HOOK_POSITION = 12;
+	public static immutable byte FISH_HOOK_HOOK = 13;
+	public static immutable byte FISH_HOOK_TEASE = 14;
+	public static immutable byte SQUID_INK_CLOUD = 15;
+	public static immutable byte AMBIENT_SOUND = 16;
+	public static immutable byte RESPAWN = 17;
 
 	public long entityId;
 	public byte eventId;
-	public int ?;
+	public int unknown2;
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Int.length(?) + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(entityId);
+		this.writeByteB(eventId);
+		this.writeVarint(unknown2);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

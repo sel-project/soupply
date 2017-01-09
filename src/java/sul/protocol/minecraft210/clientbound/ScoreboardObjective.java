@@ -21,13 +21,13 @@ class ScoreboardObjective extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// mode
-	public final static byte CREATE = (byte)0;
-	public final static byte REMOVE = (byte)1;
-	public final static byte UPDATE = (byte)2;
+	public static immutable byte CREATE = 0;
+	public static immutable byte REMOVE = 1;
+	public static immutable byte UPDATE = 2;
 
 	// type
-	public final static String NUMERIC = (String)integer;
-	public final static String GRAPHIC = (String)hearts;
+	public static immutable String NUMERIC = "integer";
+	public static immutable String GRAPHIC = "hearts";
 
 	public String name;
 	public byte mode;
@@ -36,15 +36,24 @@ class ScoreboardObjective extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(name.getBytes(StandardCharset.UTF_8).length) + name.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(value.getBytes(StandardCharset.UTF_8).length) + value.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(type.getBytes(StandardCharset.UTF_8).length) + type.getBytes(StandardCharset.UTF_8).length + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] bmFtZQ=name.getBytes("UTF-8"); this.writeVaruint((int)bmFtZQ.length); this.writeBytes(bmFtZQ);
+		this.writeByteB(mode);
+		if(mode!=1){ byte[] dmFsdWU=value.getBytes("UTF-8"); this.writeVaruint((int)dmFsdWU.length); this.writeBytes(dmFsdWU); }
+		if(mode!=1){ byte[] dHlwZQ=type.getBytes("UTF-8"); this.writeVaruint((int)dHlwZQ.length); this.writeBytes(dHlwZQ); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

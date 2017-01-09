@@ -21,8 +21,8 @@ class UpdateScore extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// action
-	public final static byte UPDATE = (byte)0;
-	public final static byte REMOVE = (byte)1;
+	public static immutable byte UPDATE = 0;
+	public static immutable byte REMOVE = 1;
 
 	public String scoreName;
 	public byte action;
@@ -31,15 +31,24 @@ class UpdateScore extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(scoreName.getBytes(StandardCharset.UTF_8).length) + scoreName.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(objectiveName.getBytes(StandardCharset.UTF_8).length) + objectiveName.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(value) + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] c2NvcmVOYW1l=scoreName.getBytes("UTF-8"); this.writeVaruint((int)c2NvcmVOYW1l.length); this.writeBytes(c2NvcmVOYW1l);
+		this.writeByteB(action);
+		byte[] b2JqZWN0aXZlTmFt=objectiveName.getBytes("UTF-8"); this.writeVaruint((int)b2JqZWN0aXZlTmFt.length); this.writeBytes(b2JqZWN0aXZlTmFt);
+		if(action==0){ this.writeVaruint(value); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

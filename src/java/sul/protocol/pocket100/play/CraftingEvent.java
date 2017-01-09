@@ -28,15 +28,25 @@ class CraftingEvent extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(type) + Var.Uint.length(input.length) + input.length() + Var.Uint.length(output.length) + output.length() + 17;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(window);
+		this.writeVarint(type);
+		this.writeLongB(uuid.getLeastSignificantBits()); this.writeLongB(uuid.getMostSignificantBits());
+		this.writeVaruint((int)input.length); for(slot aW5wdXQ:input){ this.writeBytes(aW5wdXQ.encode()); }
+		this.writeVaruint((int)output.length); for(slot b3V0cHV0:output){ this.writeBytes(b3V0cHV0.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

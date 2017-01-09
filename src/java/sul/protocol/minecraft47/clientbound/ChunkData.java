@@ -27,15 +27,24 @@ class ChunkData extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + Var.Uint.length(data.length) + data.length() + 3;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeIntB(position.x);this.writeIntB(position.z);
+		this.writeBoolB(full);
+		this.writeShortB(sections);
+		this.writeVaruint((int)data.length); for(ubyte ZGF0YQ:data){ this.writeByteB(ZGF0YQ); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

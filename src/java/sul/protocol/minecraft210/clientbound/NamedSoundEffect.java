@@ -28,15 +28,25 @@ class NamedSoundEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(name.getBytes(StandardCharset.UTF_8).length) + name.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(category) + position.length() + 8;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] bmFtZQ=name.getBytes("UTF-8"); this.writeVaruint((int)bmFtZQ.length); this.writeBytes(bmFtZQ);
+		this.writeVaruint(category);
+		this.writeIntB(position.x);this.writeIntB(position.y);this.writeIntB(position.z);
+		this.writeFloatB(volume);
+		this.writeFloatB(pitch);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

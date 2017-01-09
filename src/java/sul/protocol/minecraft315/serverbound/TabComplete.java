@@ -27,15 +27,24 @@ class TabComplete extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(text.getBytes(StandardCharset.UTF_8).length) + text.getBytes(StandardCharset.UTF_8).length + 10;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] dGV4dA=text.getBytes("UTF-8"); this.writeVaruint((int)dGV4dA.length); this.writeBytes(dGV4dA);
+		this.writeBoolB(command);
+		this.writeBoolB(hasPosition);
+		if(has_position==true){ this.writeLongB(block); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

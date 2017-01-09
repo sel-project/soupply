@@ -25,15 +25,22 @@ class PlayerPosition extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeDoubleB(position.x);this.writeDoubleB(position.y);this.writeDoubleB(position.z);
+		this.writeBoolB(onGround);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

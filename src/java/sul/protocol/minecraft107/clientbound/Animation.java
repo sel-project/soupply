@@ -21,27 +21,34 @@ class Animation extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// animation
-	public final static byte SWING_ARM = (byte)0;
-	public final static byte TAKE_DAMAGE = (byte)1;
-	public final static byte LEAVE_BED = (byte)2;
-	public final static byte EAT_FOOD = (byte)3;
-	public final static byte CRITICAL_EFFECT = (byte)4;
-	public final static byte MAGICAL_CRITICAL_EFFECT = (byte)5;
+	public static immutable byte SWING_ARM = 0;
+	public static immutable byte TAKE_DAMAGE = 1;
+	public static immutable byte LEAVE_BED = 2;
+	public static immutable byte EAT_FOOD = 3;
+	public static immutable byte CRITICAL_EFFECT = 4;
+	public static immutable byte MAGICAL_CRITICAL_EFFECT = 5;
 
 	public int entityId;
 	public byte animation;
 
 	@Override
 	public int length() {
-		return Var.Uint.length(entityId) + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(entityId);
+		this.writeByteB(animation);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

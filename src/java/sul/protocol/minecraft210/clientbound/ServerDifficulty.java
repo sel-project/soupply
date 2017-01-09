@@ -21,24 +21,30 @@ class ServerDifficulty extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// difficulty
-	public final static byte PEACEFUL = (byte)0;
-	public final static byte EASY = (byte)1;
-	public final static byte NORMAL = (byte)2;
-	public final static byte HARD = (byte)3;
+	public static immutable byte PEACEFUL = 0;
+	public static immutable byte EASY = 1;
+	public static immutable byte NORMAL = 2;
+	public static immutable byte HARD = 3;
 
 	public byte difficulty;
 
 	@Override
 	public int length() {
-		return 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeByteB(difficulty);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

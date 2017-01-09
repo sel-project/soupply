@@ -26,15 +26,23 @@ class SetSlot extends Packet {
 
 	@Override
 	public int length() {
-		return item.length() + 3;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeByteB(window);
+		this.writeShortB(slot);
+		this.writeBytes(item.encode());
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

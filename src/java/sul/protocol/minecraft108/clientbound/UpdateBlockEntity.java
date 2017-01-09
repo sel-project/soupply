@@ -21,12 +21,12 @@ class UpdateBlockEntity extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// action
-	public final static byte MOB_SPAWNER_DATA = (byte)1;
-	public final static byte COMMAND_BLOCK_TEXT = (byte)2;
-	public final static byte BEACON_POWERS = (byte)3;
-	public final static byte MOB_HEAD_DATA = (byte)4;
-	public final static byte FLOWER_POT_FLOWER = (byte)5;
-	public final static byte BANNER_DATA = (byte)6;
+	public static immutable byte MOB_SPAWNER_DATA = 1;
+	public static immutable byte COMMAND_BLOCK_TEXT = 2;
+	public static immutable byte BEACON_POWERS = 3;
+	public static immutable byte MOB_HEAD_DATA = 4;
+	public static immutable byte FLOWER_POT_FLOWER = 5;
+	public static immutable byte BANNER_DATA = 6;
 
 	public long position;
 	public byte action;
@@ -34,15 +34,23 @@ class UpdateBlockEntity extends Packet {
 
 	@Override
 	public int length() {
-		return nbt.length + 9;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeLongB(position);
+		this.writeByteB(action);
+		this.writeBytes(nbt);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

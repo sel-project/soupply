@@ -21,53 +21,53 @@ class Effect extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// effect id
-	public final static int DISPENSER_DISPENSE = (int)1000;
-	public final static int DISPENSER_FAIL_DISPENSE = (int)1001;
-	public final static int DISPENSER_SHOOT = (int)1002;
-	public final static int ENDER_EYE_LAUNCH = (int)1003;
-	public final static int FIREWORK_SHOT = (int)1004;
-	public final static int IRON_DOOR_OPEN = (int)1005;
-	public final static int WOODEN_DOOR_OPEN = (int)1006;
-	public final static int WOODEN_TRAPDOOR_OPEN = (int)1007;
-	public final static int FENCE_GATE_OPEN = (int)1008;
-	public final static int FIRE_EXTINGUISH = (int)1009;
-	public final static int PLAY_RECORD = (int)1010;
-	public final static int IRON_DOOR_CLOSE = (int)1011;
-	public final static int WOODEN_DOOR_CLOSE = (int)1012;
-	public final static int WOODEN_TRAPDOOR_CLOSE = (int)1013;
-	public final static int FENCE_GATE_CLOSE = (int)1014;
-	public final static int GHAST_WARN = (int)1015;
-	public final static int GHAST_SHOOT = (int)1016;
-	public final static int ENDERDRAGON_SHOOT = (int)1017;
-	public final static int BLAZE_SHOOT = (int)1018;
-	public final static int ZOMBIE_ATTACK_WOOD_DOOR = (int)1019;
-	public final static int ZOMBIE_ATTACK_IRON_DOOR = (int)1020;
-	public final static int ZOMBIE_BREAK_WOOD_DOOR = (int)1021;
-	public final static int WITHER_BREAK_BLOCK = (int)1022;
-	public final static int WITHER_SPAWN = (int)1023;
-	public final static int WITHER_SHOOT = (int)1024;
-	public final static int BAT_TAKE_OFF = (int)1025;
-	public final static int ZOMBIE_INFECT_VILLAGER = (int)1026;
-	public final static int ZOMBIE_VILLAGER_CONVERT = (int)1027;
-	public final static int ENDER_DRAGON_BREATH = (int)1028;
-	public final static int ANVIL_BREAK = (int)1029;
-	public final static int ANVIL_USE = (int)1030;
-	public final static int ANVIL_LAND = (int)1031;
-	public final static int PORTAL_TRAVEL = (int)1032;
-	public final static int CHORUS_FLOWER_GROW = (int)1033;
-	public final static int CHORUS_FLOWER_DIE = (int)1034;
-	public final static int BREWING_STAND_BREW = (int)1035;
-	public final static int IRON_TRAPDOOR_OPEN = (int)1036;
-	public final static int IRON_TRAPDOOR_CLOSE = (int)1037;
-	public final static int SPAWN_10_SMOKE_PARTICLES = (int)2000;
-	public final static int BREAK_BREAK_PARTICLES_AND_SOUND = (int)2001;
-	public final static int SPLASH_POTION_PARTICLES_AND_SOUND = (int)2002;
-	public final static int ENDER_EYE_BREAK_PARTICLES_AND_SOUND = (int)2003;
-	public final static int MOB_SPAWN_PARTICLES = (int)2004;
-	public final static int BONEMEAL_PARTICLES = (int)2005;
-	public final static int DRAGON_BREATH = (int)2006;
-	public final static int END_GATEWAY_SPAWN = (int)3000;
-	public final static int ENDERDRAGON_GROWL = (int)3001;
+	public static immutable int DISPENSER_DISPENSE = 1000;
+	public static immutable int DISPENSER_FAIL_DISPENSE = 1001;
+	public static immutable int DISPENSER_SHOOT = 1002;
+	public static immutable int ENDER_EYE_LAUNCH = 1003;
+	public static immutable int FIREWORK_SHOT = 1004;
+	public static immutable int IRON_DOOR_OPEN = 1005;
+	public static immutable int WOODEN_DOOR_OPEN = 1006;
+	public static immutable int WOODEN_TRAPDOOR_OPEN = 1007;
+	public static immutable int FENCE_GATE_OPEN = 1008;
+	public static immutable int FIRE_EXTINGUISH = 1009;
+	public static immutable int PLAY_RECORD = 1010;
+	public static immutable int IRON_DOOR_CLOSE = 1011;
+	public static immutable int WOODEN_DOOR_CLOSE = 1012;
+	public static immutable int WOODEN_TRAPDOOR_CLOSE = 1013;
+	public static immutable int FENCE_GATE_CLOSE = 1014;
+	public static immutable int GHAST_WARN = 1015;
+	public static immutable int GHAST_SHOOT = 1016;
+	public static immutable int ENDERDRAGON_SHOOT = 1017;
+	public static immutable int BLAZE_SHOOT = 1018;
+	public static immutable int ZOMBIE_ATTACK_WOOD_DOOR = 1019;
+	public static immutable int ZOMBIE_ATTACK_IRON_DOOR = 1020;
+	public static immutable int ZOMBIE_BREAK_WOOD_DOOR = 1021;
+	public static immutable int WITHER_BREAK_BLOCK = 1022;
+	public static immutable int WITHER_SPAWN = 1023;
+	public static immutable int WITHER_SHOOT = 1024;
+	public static immutable int BAT_TAKE_OFF = 1025;
+	public static immutable int ZOMBIE_INFECT_VILLAGER = 1026;
+	public static immutable int ZOMBIE_VILLAGER_CONVERT = 1027;
+	public static immutable int ENDER_DRAGON_BREATH = 1028;
+	public static immutable int ANVIL_BREAK = 1029;
+	public static immutable int ANVIL_USE = 1030;
+	public static immutable int ANVIL_LAND = 1031;
+	public static immutable int PORTAL_TRAVEL = 1032;
+	public static immutable int CHORUS_FLOWER_GROW = 1033;
+	public static immutable int CHORUS_FLOWER_DIE = 1034;
+	public static immutable int BREWING_STAND_BREW = 1035;
+	public static immutable int IRON_TRAPDOOR_OPEN = 1036;
+	public static immutable int IRON_TRAPDOOR_CLOSE = 1037;
+	public static immutable int SPAWN_10_SMOKE_PARTICLES = 2000;
+	public static immutable int BREAK_BREAK_PARTICLES_AND_SOUND = 2001;
+	public static immutable int SPLASH_POTION_PARTICLES_AND_SOUND = 2002;
+	public static immutable int ENDER_EYE_BREAK_PARTICLES_AND_SOUND = 2003;
+	public static immutable int MOB_SPAWN_PARTICLES = 2004;
+	public static immutable int BONEMEAL_PARTICLES = 2005;
+	public static immutable int DRAGON_BREATH = 2006;
+	public static immutable int END_GATEWAY_SPAWN = 3000;
+	public static immutable int ENDERDRAGON_GROWL = 3001;
 
 	public int effectId;
 	public long position;
@@ -76,15 +76,24 @@ class Effect extends Packet {
 
 	@Override
 	public int length() {
-		return 17;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeIntB(effectId);
+		this.writeLongB(position);
+		this.writeIntB(data);
+		this.writeBoolB(disableVolume);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

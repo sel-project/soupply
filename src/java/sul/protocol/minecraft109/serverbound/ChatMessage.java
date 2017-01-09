@@ -24,15 +24,21 @@ class ChatMessage extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(text.getBytes(StandardCharset.UTF_8).length) + text.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] dGV4dA=text.getBytes("UTF-8"); this.writeVaruint((int)dGV4dA.length); this.writeBytes(dGV4dA);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

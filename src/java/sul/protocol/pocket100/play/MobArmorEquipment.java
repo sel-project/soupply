@@ -25,15 +25,22 @@ class MobArmorEquipment extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Uint.length(armor.length) + armor.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(entityId);
+		for(slot YXJtb3I:armor){ this.writeBytes(YXJtb3I.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

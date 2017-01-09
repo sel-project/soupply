@@ -21,11 +21,11 @@ class PlayerPositionAndLook extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// flags
-	public final static byte X = (byte)1;
-	public final static byte Y = (byte)2;
-	public final static byte Z = (byte)4;
-	public final static byte Y_ROTATION = (byte)8;
-	public final static byte X_ROTATION = (byte)16;
+	public static immutable byte X = 1;
+	public static immutable byte Y = 2;
+	public static immutable byte Z = 4;
+	public static immutable byte Y_ROTATION = 8;
+	public static immutable byte X_ROTATION = 16;
 
 	public Tuples.DoubleXYZ position;
 	public float yaw;
@@ -34,15 +34,24 @@ class PlayerPositionAndLook extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + 9;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeDoubleB(position.x);this.writeDoubleB(position.y);this.writeDoubleB(position.z);
+		this.writeFloatB(yaw);
+		this.writeFloatB(pitch);
+		this.writeByteB(flags);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

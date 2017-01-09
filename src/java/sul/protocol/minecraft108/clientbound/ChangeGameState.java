@@ -21,43 +21,50 @@ class ChangeGameState extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// reason
-	public final static byte INVALID_BED = (byte)0;
-	public final static byte END_RAINING = (byte)1;
-	public final static byte BEGIN_RAINING = (byte)2;
-	public final static byte CHANGE_GAMEMODE = (byte)3;
-	public final static byte EXIT_END = (byte)4;
-	public final static byte DEMO_MESSAGE = (byte)5;
-	public final static byte ARROW_HITTING_PLAYER = (byte)6;
-	public final static byte FADE_VALUE = (byte)7;
-	public final static byte FADE_TIME = (byte)8;
-	public final static byte PLAY_MOB_APPEARANCE = (byte)10;
+	public static immutable byte INVALID_BED = 0;
+	public static immutable byte END_RAINING = 1;
+	public static immutable byte BEGIN_RAINING = 2;
+	public static immutable byte CHANGE_GAMEMODE = 3;
+	public static immutable byte EXIT_END = 4;
+	public static immutable byte DEMO_MESSAGE = 5;
+	public static immutable byte ARROW_HITTING_PLAYER = 6;
+	public static immutable byte FADE_VALUE = 7;
+	public static immutable byte FADE_TIME = 8;
+	public static immutable byte PLAY_MOB_APPEARANCE = 10;
 
 	// value
-	public final static float SURVIVAL = (float)0;
-	public final static float CREATIVE = (float)1;
-	public final static float ADVENTURE = (float)2;
-	public final static float SPECTATOR = (float)3;
-	public final static float SHOW_DEMO_SCREEN = (float)0;
-	public final static float TELL_MOVEMENT_CONTROLS = (float)101;
-	public final static float TELL_JUMP_CONTROLS = (float)102;
-	public final static float TELL_INVENTORY_CONTROLS = (float)103;
-	public final static float BRIGHT = (float)0;
-	public final static float DARK = (float)1;
+	public static immutable float SURVIVAL = 0;
+	public static immutable float CREATIVE = 1;
+	public static immutable float ADVENTURE = 2;
+	public static immutable float SPECTATOR = 3;
+	public static immutable float SHOW_DEMO_SCREEN = 0;
+	public static immutable float TELL_MOVEMENT_CONTROLS = 101;
+	public static immutable float TELL_JUMP_CONTROLS = 102;
+	public static immutable float TELL_INVENTORY_CONTROLS = 103;
+	public static immutable float BRIGHT = 0;
+	public static immutable float DARK = 1;
 
 	public byte reason;
 	public float value;
 
 	@Override
 	public int length() {
-		return 5;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeByteB(reason);
+		this.writeFloatB(value);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

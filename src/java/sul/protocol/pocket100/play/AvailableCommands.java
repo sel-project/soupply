@@ -24,15 +24,21 @@ class AvailableCommands extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(commands.getBytes(StandardCharset.UTF_8).length) + commands.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		byte[] Y29tbWFuZHM=commands.getBytes("UTF-8"); this.writeVaruint((int)Y29tbWFuZHM.length); this.writeBytes(Y29tbWFuZHM);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

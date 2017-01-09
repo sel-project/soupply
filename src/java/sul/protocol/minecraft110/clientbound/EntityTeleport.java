@@ -28,15 +28,25 @@ class EntityTeleport extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(entityId) + position.length() + 3;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(entityId);
+		this.writeDoubleB(position.x);this.writeDoubleB(position.y);this.writeDoubleB(position.z);
+		this.writeByteB(yaw);
+		this.writeByteB(pitch);
+		this.writeBoolB(onGround);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

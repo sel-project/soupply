@@ -21,25 +21,32 @@ class Interact extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// action
-	public final static byte ATTACK = (byte)1;
-	public final static byte INTERACT = (byte)2;
-	public final static byte LEAVE_VEHICLE = (byte)3;
-	public final static byte HOVER = (byte)4;
+	public static immutable byte ATTACK = 1;
+	public static immutable byte INTERACT = 2;
+	public static immutable byte LEAVE_VEHICLE = 3;
+	public static immutable byte HOVER = 4;
 
 	public byte action;
 	public long target;
 
 	@Override
 	public int length() {
-		return Var.Long.length(target) + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(action);
+		this.writeVarlong(target);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

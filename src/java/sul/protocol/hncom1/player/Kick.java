@@ -27,15 +27,24 @@ class Kick extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + Var.Uint.length(reason.getBytes(StandardCharset.UTF_8).length) + reason.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(parameters.length) + parameters.length() + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVaruint(hubId);
+		byte[] cmVhc29u=reason.getBytes("UTF-8"); this.writeVaruint((int)cmVhc29u.length); this.writeBytes(cmVhc29u);
+		this.writeBoolB(translation);
+		if(translation==true){ this.writeVaruint((int)parameters.length); for(string cGFyYW1ldGVycw:parameters){ byte[] Y0dGeVlXMWxkR1Z5=cGFyYW1ldGVycw.getBytes("UTF-8"); this.writeVaruint((int)Y0dGeVlXMWxkR1Z5.length); this.writeBytes(Y0dGeVlXMWxkR1Z5); } }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

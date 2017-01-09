@@ -21,8 +21,8 @@ class EntityEffect extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// flags
-	public final static byte AMBIENT = (byte)1;
-	public final static byte SHOW_PARTICLES = (byte)2;
+	public static immutable byte AMBIENT = 1;
+	public static immutable byte SHOW_PARTICLES = 2;
 
 	public int entityId;
 	public byte effectId;
@@ -32,15 +32,25 @@ class EntityEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(entityId) + Var.Uint.length(duration) + 3;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(entityId);
+		this.writeByteB(effectId);
+		this.writeByteB(amplifier);
+		this.writeVaruint(duration);
+		this.writeByteB(flags);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

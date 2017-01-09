@@ -21,54 +21,54 @@ class LevelEvent extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// event id
-	public final static int START_RAIN = (int)3001;
-	public final static int START_THUNDER = (int)3002;
-	public final static int STOP_RAIN = (int)3003;
-	public final static int STOP_THUNDER = (int)3004;
-	public final static int SET_DATA = (int)4000;
-	public final static int PLAYERS_SLEEPING = (int)9800;
-	public final static int BUBBLE = (int)16385;
-	public final static int CRITICAL = (int)16386;
-	public final static int BLOCK_FORCE_FIELD = (int)16387;
-	public final static int SMOKE = (int)16388;
-	public final static int EXPLODE = (int)16389;
-	public final static int EVAPORATION = (int)16390;
-	public final static int FLAME = (int)16391;
-	public final static int LAVA = (int)16392;
-	public final static int LARGE_SMOKE = (int)16393;
-	public final static int REDSTONE = (int)16394;
-	public final static int RISING_RED_DUST = (int)16395;
-	public final static int ITEM_BREAK = (int)16396;
-	public final static int SNOWBALL_POOF = (int)16397;
-	public final static int HUGE_EXPLODE = (int)16398;
-	public final static int HUGE_EXPLODE_SEED = (int)16399;
-	public final static int MOB_FLAME = (int)16400;
-	public final static int HEART = (int)16401;
-	public final static int TERRAIN = (int)16402;
-	public final static int TOWN_AURA = (int)16403;
-	public final static int PORTAL = (int)16404;
-	public final static int WATER_SPLASH = (int)16405;
-	public final static int WATER_WAKE = (int)16406;
-	public final static int DRIP_WATER = (int)16407;
-	public final static int DRIP_LAVA = (int)16408;
-	public final static int FALLING_DUST = (int)16409;
-	public final static int MOB_SPELL = (int)16410;
-	public final static int MOB_SPELL_AMBIENT = (int)16411;
-	public final static int MOB_SPELL_INSTANTANEOUS = (int)16412;
-	public final static int INK = (int)16413;
-	public final static int SLIME = (int)16414;
-	public final static int RAIN_SPLASH = (int)16415;
-	public final static int VILLAGER_ANGRY = (int)16416;
-	public final static int VILLAGER_HAPPY = (int)16417;
-	public final static int ENCHANTMENT_TABLE = (int)16418;
-	public final static int TRACKING_EMITTER = (int)16419;
-	public final static int NOTE = (int)16420;
-	public final static int WITCH_SPELL = (int)16421;
-	public final static int CARROT = (int)16422;
-	public final static int END_ROD = (int)16424;
-	public final static int DRAGON_BREATH = (int)16425;
-	public final static int SHOOT = (int)2000;
-	public final static int DESTROY = (int)2001;
+	public static immutable int START_RAIN = 3001;
+	public static immutable int START_THUNDER = 3002;
+	public static immutable int STOP_RAIN = 3003;
+	public static immutable int STOP_THUNDER = 3004;
+	public static immutable int SET_DATA = 4000;
+	public static immutable int PLAYERS_SLEEPING = 9800;
+	public static immutable int BUBBLE = 16385;
+	public static immutable int CRITICAL = 16386;
+	public static immutable int BLOCK_FORCE_FIELD = 16387;
+	public static immutable int SMOKE = 16388;
+	public static immutable int EXPLODE = 16389;
+	public static immutable int EVAPORATION = 16390;
+	public static immutable int FLAME = 16391;
+	public static immutable int LAVA = 16392;
+	public static immutable int LARGE_SMOKE = 16393;
+	public static immutable int REDSTONE = 16394;
+	public static immutable int RISING_RED_DUST = 16395;
+	public static immutable int ITEM_BREAK = 16396;
+	public static immutable int SNOWBALL_POOF = 16397;
+	public static immutable int HUGE_EXPLODE = 16398;
+	public static immutable int HUGE_EXPLODE_SEED = 16399;
+	public static immutable int MOB_FLAME = 16400;
+	public static immutable int HEART = 16401;
+	public static immutable int TERRAIN = 16402;
+	public static immutable int TOWN_AURA = 16403;
+	public static immutable int PORTAL = 16404;
+	public static immutable int WATER_SPLASH = 16405;
+	public static immutable int WATER_WAKE = 16406;
+	public static immutable int DRIP_WATER = 16407;
+	public static immutable int DRIP_LAVA = 16408;
+	public static immutable int FALLING_DUST = 16409;
+	public static immutable int MOB_SPELL = 16410;
+	public static immutable int MOB_SPELL_AMBIENT = 16411;
+	public static immutable int MOB_SPELL_INSTANTANEOUS = 16412;
+	public static immutable int INK = 16413;
+	public static immutable int SLIME = 16414;
+	public static immutable int RAIN_SPLASH = 16415;
+	public static immutable int VILLAGER_ANGRY = 16416;
+	public static immutable int VILLAGER_HAPPY = 16417;
+	public static immutable int ENCHANTMENT_TABLE = 16418;
+	public static immutable int TRACKING_EMITTER = 16419;
+	public static immutable int NOTE = 16420;
+	public static immutable int WITCH_SPELL = 16421;
+	public static immutable int CARROT = 16422;
+	public static immutable int END_ROD = 16424;
+	public static immutable int DRAGON_BREATH = 16425;
+	public static immutable int SHOOT = 2000;
+	public static immutable int DESTROY = 2001;
 
 	public int eventId;
 	public Tuples.FloatXYZ position;
@@ -76,15 +76,23 @@ class LevelEvent extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(eventId) + position.length() + Var.Int.length(data);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarint(eventId);
+		this.writeFloatlittle_endian(position.x);this.writeFloatlittle_endian(position.y);this.writeFloatlittle_endian(position.z);
+		this.writeVarint(data);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

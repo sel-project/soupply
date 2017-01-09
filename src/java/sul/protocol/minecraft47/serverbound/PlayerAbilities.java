@@ -21,10 +21,10 @@ class PlayerAbilities extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// flags
-	public final static byte CREATIVE_MODE = (byte)1;
-	public final static byte FLYING = (byte)2;
-	public final static byte ALLOW_FLYING = (byte)4;
-	public final static byte INVINCIBLE = (byte)8;
+	public static immutable byte CREATIVE_MODE = 1;
+	public static immutable byte FLYING = 2;
+	public static immutable byte ALLOW_FLYING = 4;
+	public static immutable byte INVINCIBLE = 8;
 
 	public byte flags;
 	public float flyingSpeed;
@@ -32,15 +32,23 @@ class PlayerAbilities extends Packet {
 
 	@Override
 	public int length() {
-		return 9;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeByteB(flags);
+		this.writeFloatB(flyingSpeed);
+		this.writeFloatB(walkingSpeed);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

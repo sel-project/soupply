@@ -26,15 +26,23 @@ class AttachEntity extends Packet {
 
 	@Override
 	public int length() {
-		return 9;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeIntB(target);
+		this.writeIntB(holder);
+		this.writeBoolB(leash);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

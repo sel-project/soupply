@@ -25,15 +25,22 @@ class EnchantItem extends Packet {
 
 	@Override
 	public int length() {
-		return 2;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeByteB(window);
+		this.writeByteB(enchantment);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

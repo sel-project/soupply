@@ -24,15 +24,21 @@ class Logs extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(messages.length) + messages.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVaruint((int)messages.length); for(log bWVzc2FnZXM:messages){ this.writeBytes(bWVzc2FnZXM.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

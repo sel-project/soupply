@@ -31,15 +31,28 @@ class Map extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(mapId) + Var.Uint.length(icons.length) + icons.length() + offset.length() + Var.Uint.length(data.length) + data.length() + 4;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(mapId);
+		this.writeByteB(scale);
+		this.writeBoolB(showIcons);
+		this.writeVaruint((int)icons.length); for(icon aWNvbnM:icons){ this.writeBytes(aWNvbnM.encode()); }
+		this.writeByteB(colums);
+		this.writeByteB(rows);
+		this.writeByteB(offset.x);this.writeByteB(offset.z);
+		this.writeVaruint((int)data.length); for(ubyte ZGF0YQ:data){ this.writeByteB(ZGF0YQ); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

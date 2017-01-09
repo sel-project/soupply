@@ -52,15 +52,24 @@ class ConsoleMessage extends Packet {
 
 	@Override
 	public int length() {
-		return node.getBytes(StandardCharset.UTF_8).length + logger.getBytes(StandardCharset.UTF_8).length + message.getBytes(StandardCharset.UTF_8).length + 14;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		byte[] bm9kZQ=node.getBytes("UTF-8"); this.writeShortB((short)bm9kZQ.length); this.writeBytes(bm9kZQ);
+		this.writeLongB(timestamp);
+		byte[] bG9nZ2Vy=logger.getBytes("UTF-8"); this.writeShortB((short)bG9nZ2Vy.length); this.writeBytes(bG9nZ2Vy);
+		byte[] bWVzc2FnZQ=message.getBytes("UTF-8"); this.writeShortB((short)bWVzc2FnZQ.length); this.writeBytes(bWVzc2FnZQ);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

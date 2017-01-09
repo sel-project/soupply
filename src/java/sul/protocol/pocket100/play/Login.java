@@ -21,8 +21,8 @@ class Login extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// edition
-	public final static byte CLASSIC = (byte)0;
-	public final static byte EDUCATION = (byte)1;
+	public static immutable byte CLASSIC = 0;
+	public static immutable byte EDUCATION = 1;
 
 	public int protocol;
 	public byte edition;
@@ -30,15 +30,23 @@ class Login extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(body.length) + body.length() + 5;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeIntB(protocol);
+		this.writeByteB(edition);
+		this.writeVaruint((int)body.length); for(ubyte Ym9keQ:body){ this.writeByteB(Ym9keQ); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

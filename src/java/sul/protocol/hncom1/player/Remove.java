@@ -21,25 +21,32 @@ class Remove extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// reason
-	public final static byte LEFT = (byte)0;
-	public final static byte TIMED_OUT = (byte)1;
-	public final static byte KICKED = (byte)2;
-	public final static byte TRANSFERRED = (byte)3;
+	public static immutable byte LEFT = 0;
+	public static immutable byte TIMED_OUT = 1;
+	public static immutable byte KICKED = 2;
+	public static immutable byte TRANSFERRED = 3;
 
 	public int hubId;
 	public byte reason;
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVaruint(hubId);
+		this.writeByteB(reason);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

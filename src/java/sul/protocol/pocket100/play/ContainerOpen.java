@@ -28,15 +28,25 @@ class ContainerOpen extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(slotCount) + position.length() + Var.Long.length(entityId) + 2;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(window);
+		this.writeByteB(type);
+		this.writeVarint(slotCount);
+		this.writeBytes(position.encode());
+		this.writeVarlong(entityId);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

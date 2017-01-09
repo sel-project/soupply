@@ -26,15 +26,23 @@ class FullChunkData extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + Var.Uint.length(data.length) + data.length() + Var.Uint.length(tiles.length) + tiles.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarint(position.x);this.writeVarint(position.z);
+		this.writeVaruint((int)data.length); for(ubyte ZGF0YQ:data){ this.writeByteB(ZGF0YQ); }
+		this.writeVaruint((int)tiles.length); for(ubyte dGlsZXM:tiles){ this.writeByteB(dGlsZXM); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

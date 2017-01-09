@@ -30,15 +30,27 @@ class UseItem extends Packet {
 
 	@Override
 	public int length() {
-		return blockPosition.length() + Var.Uint.length(hotbarSlot) + Var.Int.length(face) + facePosition.length() + position.length() + Var.Int.length(slot) + item.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeBytes(blockPosition.encode());
+		this.writeVaruint(hotbarSlot);
+		this.writeVarint(face);
+		this.writeFloatlittle_endian(facePosition.x);this.writeFloatlittle_endian(facePosition.y);this.writeFloatlittle_endian(facePosition.z);
+		this.writeFloatlittle_endian(position.x);this.writeFloatlittle_endian(position.y);this.writeFloatlittle_endian(position.z);
+		this.writeVarint(slot);
+		this.writeBytes(item.encode());
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

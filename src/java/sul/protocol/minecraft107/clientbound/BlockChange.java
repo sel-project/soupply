@@ -25,15 +25,22 @@ class BlockChange extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(block) + 8;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeLongB(position);
+		this.writeVaruint(block);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

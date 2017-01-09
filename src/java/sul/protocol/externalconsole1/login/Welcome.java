@@ -24,15 +24,21 @@ class Welcome extends Packet {
 
 	@Override
 	public int length() {
-		return 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(status);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 	public static class Accepted extends Welcome {

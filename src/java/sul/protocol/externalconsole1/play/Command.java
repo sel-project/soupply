@@ -33,15 +33,21 @@ class Command extends Packet {
 
 	@Override
 	public int length() {
-		return command.getBytes(StandardCharset.UTF_8).length + 2;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		byte[] Y29tbWFuZA=command.getBytes("UTF-8"); this.writeShortB((short)Y29tbWFuZA.length); this.writeBytes(Y29tbWFuZA);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

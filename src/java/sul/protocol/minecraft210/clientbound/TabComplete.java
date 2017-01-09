@@ -24,15 +24,21 @@ class TabComplete extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(matches.length) + matches.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint((int)matches.length); for(string bWF0Y2hlcw:matches){ byte[] YldGMFkyaGxjdw=bWF0Y2hlcw.getBytes("UTF-8"); this.writeVaruint((int)YldGMFkyaGxjdw.length); this.writeBytes(YldGMFkyaGxjdw); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

@@ -21,22 +21,29 @@ class DropItem extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// action
-	public final static byte DROP = (byte)0;
+	public static immutable byte DROP = 0;
 
 	public byte action;
 	public Slot item;
 
 	@Override
 	public int length() {
-		return item.length() + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(action);
+		this.writeBytes(item.encode());
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

@@ -24,15 +24,21 @@ class LoginStart extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(username.getBytes(StandardCharset.UTF_8).length) + username.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] dXNlcm5hbWU=username.getBytes("UTF-8"); this.writeVaruint((int)dXNlcm5hbWU.length); this.writeBytes(dXNlcm5hbWU);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

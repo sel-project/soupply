@@ -21,22 +21,22 @@ class ClientSettings extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// chat mode
-	public final static byte ENABLED = (byte)0;
-	public final static byte COMMANDS_ONLY = (byte)1;
-	public final static byte DISABLED = (byte)2;
+	public static immutable byte ENABLED = 0;
+	public static immutable byte COMMANDS_ONLY = 1;
+	public static immutable byte DISABLED = 2;
 
 	// displayed skin parts
-	public final static byte CAPE = (byte)1;
-	public final static byte JACKET = (byte)2;
-	public final static byte LEFT_SLEEVE = (byte)4;
-	public final static byte RIGHT_SLEEVE = (byte)8;
-	public final static byte LEFT_PANTS = (byte)16;
-	public final static byte RIGHT_PANTS = (byte)32;
-	public final static byte HAT = (byte)64;
+	public static immutable byte CAPE = 1;
+	public static immutable byte JACKET = 2;
+	public static immutable byte LEFT_SLEEVE = 4;
+	public static immutable byte RIGHT_SLEEVE = 8;
+	public static immutable byte LEFT_PANTS = 16;
+	public static immutable byte RIGHT_PANTS = 32;
+	public static immutable byte HAT = 64;
 
 	// main hand
-	public final static byte RIGHT = (byte)0;
-	public final static byte LEFT = (byte)1;
+	public static immutable byte RIGHT = 0;
+	public static immutable byte LEFT = 1;
 
 	public String language;
 	public byte viewDistance;
@@ -47,15 +47,26 @@ class ClientSettings extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(language.getBytes(StandardCharset.UTF_8).length) + language.getBytes(StandardCharset.UTF_8).length + 5;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] bGFuZ3VhZ2U=language.getBytes("UTF-8"); this.writeVaruint((int)bGFuZ3VhZ2U.length); this.writeBytes(bGFuZ3VhZ2U);
+		this.writeByteB(viewDistance);
+		this.writeByteB(chatMode);
+		this.writeBoolB(chatColors);
+		this.writeByteB(displayedSkinParts);
+		this.writeByteB(mainHand);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

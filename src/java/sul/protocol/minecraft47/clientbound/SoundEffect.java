@@ -27,15 +27,24 @@ class SoundEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(soundName.getBytes(StandardCharset.UTF_8).length) + soundName.getBytes(StandardCharset.UTF_8).length + position.length() + 5;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] c291bmROYW1l=soundName.getBytes("UTF-8"); this.writeVaruint((int)c291bmROYW1l.length); this.writeBytes(c291bmROYW1l);
+		this.writeIntB(position.x);this.writeIntB(position.y);this.writeIntB(position.z);
+		this.writeFloatB(volume);
+		this.writeByteB(pitch);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

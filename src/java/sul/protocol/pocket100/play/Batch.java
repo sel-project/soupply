@@ -24,15 +24,21 @@ class Batch extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(data.length) + data.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVaruint((int)data.length); for(ubyte ZGF0YQ:data){ this.writeByteB(ZGF0YQ); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

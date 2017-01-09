@@ -21,10 +21,10 @@ class UpdateBlock extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// flags and meta
-	public final static int NEIGHBORS = (int)1;
-	public final static int NETWORK = (int)2;
-	public final static int NO_GRAPHIC = (int)4;
-	public final static int PRIORITY = (int)8;
+	public static immutable int NEIGHBORS = 1;
+	public static immutable int NETWORK = 2;
+	public static immutable int NO_GRAPHIC = 4;
+	public static immutable int PRIORITY = 8;
 
 	public BlockPosition position;
 	public int block;
@@ -32,15 +32,23 @@ class UpdateBlock extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + Var.Uint.length(block) + Var.Uint.length(flagsAndMeta);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeBytes(position.encode());
+		this.writeVaruint(block);
+		this.writeVaruint(flagsAndMeta);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

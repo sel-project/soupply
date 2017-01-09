@@ -21,53 +21,53 @@ class Particle extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// particle id
-	public final static int EXPLODE = (int)0;
-	public final static int LARGE_EXPLOSION = (int)1;
-	public final static int HUGE_EXPLOSION = (int)2;
-	public final static int FIREWORK_SPARK = (int)3;
-	public final static int BUBBLE = (int)4;
-	public final static int SPLASH = (int)5;
-	public final static int WAKE = (int)6;
-	public final static int SUSPENDED = (int)7;
-	public final static int DEPTH_SUSPEND = (int)8;
-	public final static int CRIT = (int)9;
-	public final static int MAGIC_CRIT = (int)10;
-	public final static int SMOKE = (int)11;
-	public final static int LARGE_SMOKE = (int)12;
-	public final static int SPELL = (int)13;
-	public final static int INSTANT_SPELL = (int)14;
-	public final static int MOB_SPELL = (int)15;
-	public final static int MOB_SPELL_AMBIENT = (int)16;
-	public final static int WITCH_MAGIC = (int)17;
-	public final static int DRIP_WATER = (int)18;
-	public final static int DRIP_LAVA = (int)19;
-	public final static int ANGRY_VILLAGER = (int)20;
-	public final static int HAPPY_VILLAGER = (int)21;
-	public final static int TOWN_AURA = (int)22;
-	public final static int NOTE = (int)23;
-	public final static int PORTAL = (int)24;
-	public final static int ENCHANTMENT_TABLE = (int)25;
-	public final static int FLAME = (int)26;
-	public final static int LAVA = (int)27;
-	public final static int FOOTSTEP = (int)28;
-	public final static int CLOUD = (int)29;
-	public final static int RED_DUST = (int)30;
-	public final static int SNOWBALL_POOF = (int)31;
-	public final static int SNOW_SHOVEL = (int)32;
-	public final static int SLIME = (int)33;
-	public final static int HEART = (int)34;
-	public final static int BARRIER = (int)35;
-	public final static int ITEM_CRACK = (int)36;
-	public final static int BLOCK_CRACK = (int)37;
-	public final static int BLOCK_DUST = (int)38;
-	public final static int DROPLET = (int)39;
-	public final static int TAKE = (int)40;
-	public final static int MOB_APPEARANCE = (int)41;
-	public final static int DRAGON_BREATH = (int)42;
-	public final static int ENDROD = (int)43;
-	public final static int DAMAGE_INDICATOR = (int)44;
-	public final static int SWEEP_ATTACK = (int)45;
-	public final static int FALLING_DUST = (int)46;
+	public static immutable int EXPLODE = 0;
+	public static immutable int LARGE_EXPLOSION = 1;
+	public static immutable int HUGE_EXPLOSION = 2;
+	public static immutable int FIREWORK_SPARK = 3;
+	public static immutable int BUBBLE = 4;
+	public static immutable int SPLASH = 5;
+	public static immutable int WAKE = 6;
+	public static immutable int SUSPENDED = 7;
+	public static immutable int DEPTH_SUSPEND = 8;
+	public static immutable int CRIT = 9;
+	public static immutable int MAGIC_CRIT = 10;
+	public static immutable int SMOKE = 11;
+	public static immutable int LARGE_SMOKE = 12;
+	public static immutable int SPELL = 13;
+	public static immutable int INSTANT_SPELL = 14;
+	public static immutable int MOB_SPELL = 15;
+	public static immutable int MOB_SPELL_AMBIENT = 16;
+	public static immutable int WITCH_MAGIC = 17;
+	public static immutable int DRIP_WATER = 18;
+	public static immutable int DRIP_LAVA = 19;
+	public static immutable int ANGRY_VILLAGER = 20;
+	public static immutable int HAPPY_VILLAGER = 21;
+	public static immutable int TOWN_AURA = 22;
+	public static immutable int NOTE = 23;
+	public static immutable int PORTAL = 24;
+	public static immutable int ENCHANTMENT_TABLE = 25;
+	public static immutable int FLAME = 26;
+	public static immutable int LAVA = 27;
+	public static immutable int FOOTSTEP = 28;
+	public static immutable int CLOUD = 29;
+	public static immutable int RED_DUST = 30;
+	public static immutable int SNOWBALL_POOF = 31;
+	public static immutable int SNOW_SHOVEL = 32;
+	public static immutable int SLIME = 33;
+	public static immutable int HEART = 34;
+	public static immutable int BARRIER = 35;
+	public static immutable int ITEM_CRACK = 36;
+	public static immutable int BLOCK_CRACK = 37;
+	public static immutable int BLOCK_DUST = 38;
+	public static immutable int DROPLET = 39;
+	public static immutable int TAKE = 40;
+	public static immutable int MOB_APPEARANCE = 41;
+	public static immutable int DRAGON_BREATH = 42;
+	public static immutable int ENDROD = 43;
+	public static immutable int DAMAGE_INDICATOR = 44;
+	public static immutable int SWEEP_ATTACK = 45;
+	public static immutable int FALLING_DUST = 46;
 
 	public int particleId;
 	public boolean longDistance;
@@ -79,15 +79,27 @@ class Particle extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + offset.length() + Var.Uint.length(additionalData.length) + additionalData.length() + 13;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeIntB(particleId);
+		this.writeBoolB(longDistance);
+		this.writeFloatB(position.x);this.writeFloatB(position.y);this.writeFloatB(position.z);
+		this.writeFloatB(offset.x);this.writeFloatB(offset.y);this.writeFloatB(offset.z);
+		this.writeFloatB(data);
+		this.writeIntB(count);
+		for(varuint YWRkaXRpb25hbERh:additionalData){ this.writeVaruint(YWRkaXRpb25hbERh); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

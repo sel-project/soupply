@@ -21,24 +21,31 @@ class DisplayScoreboard extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// position
-	public final static byte LIST = (byte)0;
-	public final static byte SIDEBAR = (byte)1;
-	public final static byte BELOW_NAME = (byte)2;
+	public static immutable byte LIST = 0;
+	public static immutable byte SIDEBAR = 1;
+	public static immutable byte BELOW_NAME = 2;
 
 	public byte position;
 	public String scoreName;
 
 	@Override
 	public int length() {
-		return Var.Uint.length(scoreName.getBytes(StandardCharset.UTF_8).length) + scoreName.getBytes(StandardCharset.UTF_8).length + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeByteB(position);
+		byte[] c2NvcmVOYW1l=scoreName.getBytes("UTF-8"); this.writeVaruint((int)c2NvcmVOYW1l.length); this.writeBytes(c2NvcmVOYW1l);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

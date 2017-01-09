@@ -34,15 +34,31 @@ class AddPlayer extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(username.getBytes(StandardCharset.UTF_8).length) + username.getBytes(StandardCharset.UTF_8).length + Var.Long.length(entityId) + Var.Long.length(runtimeId) + position.length() + motion.length() + heldItem.length() + metadata.length() + 28;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeLongB(uuid.getLeastSignificantBits()); this.writeLongB(uuid.getMostSignificantBits());
+		byte[] dXNlcm5hbWU=username.getBytes("UTF-8"); this.writeVaruint((int)dXNlcm5hbWU.length); this.writeBytes(dXNlcm5hbWU);
+		this.writeVarlong(entityId);
+		this.writeVarlong(runtimeId);
+		this.writeFloatlittle_endian(position.x);this.writeFloatlittle_endian(position.y);this.writeFloatlittle_endian(position.z);
+		this.writeFloatlittle_endian(motion.x);this.writeFloatlittle_endian(motion.y);this.writeFloatlittle_endian(motion.z);
+		this.writeFloatlittle_endian(pitch);
+		this.writeFloatlittle_endian(headYaw);
+		this.writeFloatlittle_endian(yaw);
+		this.writeBytes(heldItem.encode());
+		this.writeBytes(metadata.encode());
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

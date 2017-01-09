@@ -21,31 +21,31 @@ class Effect extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// effect id
-	public final static int DISPENSER_DISPENSE = (int)1000;
-	public final static int DISPENSER_FAIL_DISPENSE = (int)1001;
-	public final static int DISPENSER_SHOOT = (int)1002;
-	public final static int DOOR_OPEN_OR_CLOSE = (int)1003;
-	public final static int FIREWORK_SHOT = (int)1004;
-	public final static int PLAY_DISC = (int)1005;
-	public final static int GHAST_WARN = (int)1007;
-	public final static int GHAST_SHOOT = (int)1008;
-	public final static int ZOMBIE_ATTACK_WOOD_DOOR = (int)1010;
-	public final static int ZOMBIE_ATTACK_IRON_DOOR = (int)1011;
-	public final static int ZOMBIE_BREAK_WOOD_DOOR = (int)1012;
-	public final static int WITHER_SPAWN = (int)1013;
-	public final static int WITHER_SHOOT = (int)1014;
-	public final static int BAT_TAKE_OFF = (int)1015;
-	public final static int ZOMBIE_INFECT_VILLAGER = (int)1016;
-	public final static int ZOMBIE_VILLAGER_CONVERT = (int)1017;
-	public final static int ANVIL_BREAK = (int)1019;
-	public final static int ANVIL_USE = (int)1020;
-	public final static int ANVIL_LAND = (int)1021;
-	public final static int SPAWN_10_SMOKE_PARTICLES = (int)2000;
-	public final static int BREAK_BREAK_PARTICLES = (int)2001;
-	public final static int SPLASH_POTION_PARTICLES_AND_SOUND = (int)2002;
-	public final static int ENDER_EYE_BREAK_PARTICLES_AND_SOUND = (int)2003;
-	public final static int MOB_SPAWN_PARTICLES = (int)2004;
-	public final static int BONEMEAL_PARTICLES = (int)2005;
+	public static immutable int DISPENSER_DISPENSE = 1000;
+	public static immutable int DISPENSER_FAIL_DISPENSE = 1001;
+	public static immutable int DISPENSER_SHOOT = 1002;
+	public static immutable int DOOR_OPEN_OR_CLOSE = 1003;
+	public static immutable int FIREWORK_SHOT = 1004;
+	public static immutable int PLAY_DISC = 1005;
+	public static immutable int GHAST_WARN = 1007;
+	public static immutable int GHAST_SHOOT = 1008;
+	public static immutable int ZOMBIE_ATTACK_WOOD_DOOR = 1010;
+	public static immutable int ZOMBIE_ATTACK_IRON_DOOR = 1011;
+	public static immutable int ZOMBIE_BREAK_WOOD_DOOR = 1012;
+	public static immutable int WITHER_SPAWN = 1013;
+	public static immutable int WITHER_SHOOT = 1014;
+	public static immutable int BAT_TAKE_OFF = 1015;
+	public static immutable int ZOMBIE_INFECT_VILLAGER = 1016;
+	public static immutable int ZOMBIE_VILLAGER_CONVERT = 1017;
+	public static immutable int ANVIL_BREAK = 1019;
+	public static immutable int ANVIL_USE = 1020;
+	public static immutable int ANVIL_LAND = 1021;
+	public static immutable int SPAWN_10_SMOKE_PARTICLES = 2000;
+	public static immutable int BREAK_BREAK_PARTICLES = 2001;
+	public static immutable int SPLASH_POTION_PARTICLES_AND_SOUND = 2002;
+	public static immutable int ENDER_EYE_BREAK_PARTICLES_AND_SOUND = 2003;
+	public static immutable int MOB_SPAWN_PARTICLES = 2004;
+	public static immutable int BONEMEAL_PARTICLES = 2005;
 
 	public int effectId;
 	public long position;
@@ -54,15 +54,24 @@ class Effect extends Packet {
 
 	@Override
 	public int length() {
-		return 17;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeIntB(effectId);
+		this.writeLongB(position);
+		this.writeIntB(data);
+		this.writeBoolB(disableVolume);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

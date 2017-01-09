@@ -21,25 +21,33 @@ class ChangeDimension extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// dimension
-	public final static int OVERWORLD = (int)0;
-	public final static int NETHER = (int)1;
-	public final static int END = (int)2;
+	public static immutable int OVERWORLD = 0;
+	public static immutable int NETHER = 1;
+	public static immutable int END = 2;
 
 	public int dimension;
 	public Tuples.FloatXYZ position;
-	public boolean ?;
+	public boolean unknown2;
 
 	@Override
 	public int length() {
-		return Var.Int.length(dimension) + position.length() + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarint(dimension);
+		this.writeFloatlittle_endian(position.x);this.writeFloatlittle_endian(position.y);this.writeFloatlittle_endian(position.z);
+		this.writeBoolB(unknown2);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

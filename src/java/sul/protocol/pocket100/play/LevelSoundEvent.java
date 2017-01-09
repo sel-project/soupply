@@ -21,25 +21,35 @@ class LevelSoundEvent extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// sound
-	public final static byte NOTE = (byte)16;
+	public static immutable byte NOTE = 16;
 
 	public byte sound;
 	public Tuples.FloatXYZ position;
 	public int volume;
 	public int pitch;
-	public boolean ?;
+	public boolean unknown4;
 
 	@Override
 	public int length() {
-		return position.length() + Var.Uint.length(volume) + Var.Int.length(pitch) + 2;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeByteB(sound);
+		this.writeFloatlittle_endian(position.x);this.writeFloatlittle_endian(position.y);this.writeFloatlittle_endian(position.z);
+		this.writeVaruint(volume);
+		this.writeVarint(pitch);
+		this.writeBoolB(unknown4);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

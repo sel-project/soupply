@@ -24,15 +24,21 @@ class Response extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(json.getBytes(StandardCharset.UTF_8).length) + json.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		byte[] anNvbg=json.getBytes("UTF-8"); this.writeVaruint((int)anNvbg.length); this.writeBytes(anNvbg);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

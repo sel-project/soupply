@@ -25,15 +25,22 @@ class WindowItems extends Packet {
 
 	@Override
 	public int length() {
-		return slots.length() + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeByteB(window);
+		this.writeShortB((short)slots.length); for(slot c2xvdHM:slots){ this.writeBytes(c2xvdHM.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

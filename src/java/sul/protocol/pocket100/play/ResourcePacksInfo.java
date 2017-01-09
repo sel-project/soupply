@@ -26,15 +26,23 @@ class ResourcePacksInfo extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(behaviourPacks.length) + behaviourPacks.length() + Var.Uint.length(resourcePacks.length) + resourcePacks.length() + 1;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeBoolB(mustAccept);
+		this.writeVaruint((int)behaviourPacks.length); for(pack YmVoYXZpb3VyUGFj:behaviourPacks){ this.writeBytes(YmVoYXZpb3VyUGFj.encode()); }
+		this.writeVaruint((int)resourcePacks.length); for(pack cmVzb3VyY2VQYWNr:resourcePacks){ this.writeBytes(cmVzb3VyY2VQYWNr.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

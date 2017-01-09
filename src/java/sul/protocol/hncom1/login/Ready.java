@@ -24,15 +24,21 @@ class Ready extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(plugins.length) + plugins.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVaruint((int)plugins.length); for(plugin cGx1Z2lucw:plugins){ this.writeBytes(cGx1Z2lucw.encode()); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

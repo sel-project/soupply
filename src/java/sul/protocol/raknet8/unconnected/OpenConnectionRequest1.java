@@ -26,15 +26,23 @@ class OpenConnectionRequest1 extends Packet {
 
 	@Override
 	public int length() {
-		return magic.length() + mtu.length + 3;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		for(ubyte bWFnaWM:magic){ this.writeByteB(bWFnaWM); }
+		this.writeByteB(protocol);
+		this.writeBytes(mtu);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

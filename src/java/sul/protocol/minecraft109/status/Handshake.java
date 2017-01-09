@@ -21,8 +21,8 @@ class Handshake extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// next
-	public final static int STATUS = (int)1;
-	public final static int LOGIN = (int)2;
+	public static immutable int STATUS = 1;
+	public static immutable int LOGIN = 2;
 
 	public int protocol;
 	public String serverAddress;
@@ -31,15 +31,24 @@ class Handshake extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(protocol) + Var.Uint.length(serverAddress.getBytes(StandardCharset.UTF_8).length) + serverAddress.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(next) + 2;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeVaruint(protocol);
+		byte[] c2VydmVyQWRkcmVz=serverAddress.getBytes("UTF-8"); this.writeVaruint((int)c2VydmVyQWRkcmVz.length); this.writeBytes(c2VydmVyQWRkcmVz);
+		this.writeShortB(serverPort);
+		this.writeVaruint(next);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

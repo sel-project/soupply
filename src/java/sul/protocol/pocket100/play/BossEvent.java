@@ -21,24 +21,31 @@ class BossEvent extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// event id
-	public final static int ADD = (int)0;
-	public final static int UPDATE = (int)1;
-	public final static int REMOVE = (int)2;
+	public static immutable int ADD = 0;
+	public static immutable int UPDATE = 1;
+	public static immutable int REMOVE = 2;
 
 	public long entityId;
 	public int eventId;
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Uint.length(eventId);
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(entityId);
+		this.writeVaruint(eventId);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

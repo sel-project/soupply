@@ -28,15 +28,25 @@ class AddPainting extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + position.length() + Var.Int.length(direction) + Var.Uint.length(title.getBytes(StandardCharset.UTF_8).length) + title.getBytes(StandardCharset.UTF_8).length;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(entityId);
+		this.writeVarlong(runtimeId);
+		this.writeBytes(position.encode());
+		this.writeVarint(direction);
+		byte[] dGl0bGU=title.getBytes("UTF-8"); this.writeVaruint((int)dGl0bGU.length); this.writeBytes(dGl0bGU);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

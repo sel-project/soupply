@@ -21,8 +21,8 @@ class PlayerBlockPlacement extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// hand
-	public final static int MAIN_HAND = (int)0;
-	public final static int OFF_HAND = (int)1;
+	public static immutable int MAIN_HAND = 0;
+	public static immutable int OFF_HAND = 1;
 
 	public long position;
 	public int face;
@@ -31,15 +31,24 @@ class PlayerBlockPlacement extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(face) + Var.Uint.length(hand) + cursorPosition.length() + 8;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeLongB(position);
+		this.writeVaruint(face);
+		this.writeVaruint(hand);
+		this.writeFloatB(cursorPosition.x);this.writeFloatB(cursorPosition.y);this.writeFloatB(cursorPosition.z);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

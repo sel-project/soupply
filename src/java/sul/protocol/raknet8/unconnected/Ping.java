@@ -25,15 +25,22 @@ class Ping extends Packet {
 
 	@Override
 	public int length() {
-		return magic.length() + 10;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeLongB(pingId);
+		for(ubyte bWFnaWM:magic){ this.writeByteB(bWFnaWM); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

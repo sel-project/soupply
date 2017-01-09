@@ -29,15 +29,26 @@ class ClickWindow extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(mode) + clickedItem.length() + 6;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeByteB(window);
+		this.writeShortB(slot);
+		this.writeByteB(button);
+		this.writeShortB(action);
+		this.writeVaruint(mode);
+		this.writeBytes(clickedItem.encode());
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

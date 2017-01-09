@@ -21,26 +21,32 @@ class PlayStatus extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// status
-	public final static int OK = (int)0;
-	public final static int OUTDATED_CLIENT = (int)1;
-	public final static int OUTDATED_SERVER = (int)2;
-	public final static int SPAWNED = (int)3;
-	public final static int INVALID_TENANT = (int)4;
-	public final static int EDITION_MISMATCH = (int)5;
+	public static immutable int OK = 0;
+	public static immutable int OUTDATED_CLIENT = 1;
+	public static immutable int OUTDATED_SERVER = 2;
+	public static immutable int SPAWNED = 3;
+	public static immutable int INVALID_TENANT = 4;
+	public static immutable int EDITION_MISMATCH = 5;
 
 	public int status;
 
 	@Override
 	public int length() {
-		return 4;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeIntB(status);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

@@ -25,15 +25,22 @@ class BlockEvent extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + Var.Uint.length(data.length) + data.length();
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeBytes(position.encode());
+		for(varint ZGF0YQ:data){ this.writeVarint(ZGF0YQ); }
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

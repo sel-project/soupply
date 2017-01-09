@@ -21,28 +21,28 @@ class StartGame extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// dimension
-	public final static int OVERWORLD = (int)0;
-	public final static int NETHER = (int)1;
-	public final static int END = (int)2;
+	public static immutable int OVERWORLD = 0;
+	public static immutable int NETHER = 1;
+	public static immutable int END = 2;
 
 	// generator
-	public final static int OLD = (int)0;
-	public final static int INFINITE = (int)1;
-	public final static int FLAT = (int)2;
+	public static immutable int OLD = 0;
+	public static immutable int INFINITE = 1;
+	public static immutable int FLAT = 2;
 
 	// world gamemode
-	public final static int SURVIVAL = (int)0;
-	public final static int CREATIVE = (int)1;
+	public static immutable int SURVIVAL = 0;
+	public static immutable int CREATIVE = 1;
 
 	// difficulty
-	public final static int PEACEFUL = (int)0;
-	public final static int EASY = (int)1;
-	public final static int NORMAL = (int)2;
-	public final static int HARD = (int)3;
+	public static immutable int PEACEFUL = 0;
+	public static immutable int EASY = 1;
+	public static immutable int NORMAL = 2;
+	public static immutable int HARD = 3;
 
 	// edition
-	public final static byte CLASSIC = (byte)0;
-	public final static byte EDUCATION = (byte)1;
+	public static immutable byte CLASSIC = 0;
+	public static immutable byte EDUCATION = 1;
 
 	public long entityId;
 	public long runtimeId;
@@ -67,15 +67,40 @@ class StartGame extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + position.length() + Var.Int.length(seed) + Var.Int.length(dimension) + Var.Int.length(generator) + Var.Int.length(worldGamemode) + Var.Int.length(difficulty) + spawnPosition.length() + Var.Int.length(time) + Var.Uint.length(levelId.getBytes(StandardCharset.UTF_8).length) + levelId.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(worldName.getBytes(StandardCharset.UTF_8).length) + worldName.getBytes(StandardCharset.UTF_8).length + 20;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeByteB(ID);
+		this.writeVarlong(entityId);
+		this.writeVarlong(runtimeId);
+		this.writeFloatlittle_endian(position.x);this.writeFloatlittle_endian(position.y);this.writeFloatlittle_endian(position.z);
+		this.writeFloatlittle_endian(yaw);
+		this.writeFloatlittle_endian(pitch);
+		this.writeVarint(seed);
+		this.writeVarint(dimension);
+		this.writeVarint(generator);
+		this.writeVarint(worldGamemode);
+		this.writeVarint(difficulty);
+		this.writeVarint(spawnPosition.x);this.writeVarint(spawnPosition.y);this.writeVarint(spawnPosition.z);
+		this.writeBoolB(loadedInCreative);
+		this.writeVarint(time);
+		this.writeByteB(edition);
+		this.writeFloatlittle_endian(rainLevel);
+		this.writeFloatlittle_endian(lightingLevel);
+		this.writeBoolB(cheatsEnabled);
+		this.writeBoolB(textureRequired);
+		byte[] bGV2ZWxJZA=levelId.getBytes("UTF-8"); this.writeVaruint((int)bGV2ZWxJZA.length); this.writeBytes(bGV2ZWxJZA);
+		byte[] d29ybGROYW1l=worldName.getBytes("UTF-8"); this.writeVaruint((int)d29ybGROYW1l.length); this.writeBytes(d29ybGROYW1l);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }

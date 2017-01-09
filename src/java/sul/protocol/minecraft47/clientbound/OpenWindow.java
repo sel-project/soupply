@@ -28,15 +28,25 @@ class OpenWindow extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(type.getBytes(StandardCharset.UTF_8).length) + type.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(title.getBytes(StandardCharset.UTF_8).length) + title.getBytes(StandardCharset.UTF_8).length + 6;
 	}
 
 	@Override
 	public byte[] encode() {
+		this.buffer = new byte[this.length()];
+		this.index = 0;
+		this.writeVaruint(ID);
+		this.writeByteB(window);
+		byte[] dHlwZQ=type.getBytes("UTF-8"); this.writeVaruint((int)dHlwZQ.length); this.writeBytes(dHlwZQ);
+		byte[] dGl0bGU=title.getBytes("UTF-8"); this.writeVaruint((int)dGl0bGU.length); this.writeBytes(dGl0bGU);
+		this.writeByteB(slots);
+		this.writeIntB(horseId);
+		return this.buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		this.buffer = buffer;
+		this.index = 0;
 	}
 
 }
