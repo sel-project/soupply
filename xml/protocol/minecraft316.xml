@@ -126,12 +126,8 @@
 				<field name="json" type="string" />
 			</packet>
 
-			<packet name="ping" id="1" clientbound="false" serverbound="true">
-				<field name="ping-id" type="long" />
-			</packet>
-
-			<packet name="pong" id="1" clientbound="true" serverbound="false">
-				<field name="ping-id" type="long" />
+			<packet name="latency" id="1" clientbound="true" serverbound="true">
+				<field name="id" type="long" />
 			</packet>
 
 		</section>
@@ -212,7 +208,12 @@
 				<field name="uuid" type="uuid" />
 				<field name="title" type="string" />
 				<field name="position" type="block-position" />
-				<field name="direction" type="ubyte" />
+				<field name="direction" type="ubyte">
+					<constant name="south" value="0" />
+					<constant name="west" value="1" />
+					<constant name="north" value="2" />
+					<constant name="east" value="3" />
+				</field>
 			</packet>
 
 			<packet name="spawn-player" id="5" clientbound="true" serverbound="false">
@@ -265,8 +266,28 @@
 
 			<packet name="block-action" id="10" clientbound="true" serverbound="false">
 				<field name="position" type="block-position" />
-				<field name="action" type="ubyte" />
-				<field name="parameter" type="ubyte" />
+				<field name="action" type="ubyte">
+					<constant name="note-block-harp" value="0" />
+					<constant name="note-block-bass-drum" value="1" />
+					<constant name="note-block-snare-drum" value="2" />
+					<constant name="note-block-clicks" value="3" />
+					<constant name="note-block-sticks" value="3" />
+					<constant name="note-block-bass-guitar" value="4" />
+					<constant name="piston-extend" value="0" />
+					<constant name="piston-retract" value="1" />
+					<constant name="chest-watchers" value="1" />
+					<constant name="beacon-recalculate" value="1" />
+					<constant name="mob-spawner-reset-delay" value="1" />
+					<constant name="end-gateway-yellow-beam" value="1" />
+				</field>
+				<field name="parameter" type="ubyte">
+					<constant name="piston-down" value="0" />
+					<constant name="piston-up" value="1" />
+					<constant name="piston-south" value="2" />
+					<constant name="piston-west" value="3" />
+					<constant name="piston-north" value="4" />
+					<constant name="piston-east" value="5" />
+				</field>
 				<field name="block-type" type="varuint" />
 			</packet>
 
@@ -303,9 +324,7 @@
 							<constant name="is-dragon-bar" value="2" />
 						</field>
 					</variant>
-					<variant name="remove" value="1">
-
-					</variant>
+					<variant name="remove" value="1" />
 					<variant name="update-health" value="2">
 						<field name="health" type="float" />
 					</variant>
@@ -385,26 +404,31 @@
 
 			<packet name="window-items" id="20" clientbound="true" serverbound="false">
 				<field name="window" type="ubyte" />
-				<field name="count" type="ushort" />
 				<field name="slots" type="slots" />
 			</packet>
 
 			<packet name="window-property" id="21" clientbound="true" serverbound="false">
 				<field name="window" type="ubyte" />
 				<field name="property" type="ushort">
-					<constant name="fire-icon" value="0" />
-					<constant name="max-fuel-burn-time" value="1" />
-					<constant name="progress-arrow" value="2" />
-					<constant name="max-progress" value="3" />
-					<constant name="level-requirement-top-enchantment" value="0" />
-					<constant name="level-requirement-middle-enchantment" value="1" />
-					<constant name="level-requirement-bottom-enchantment" value="2" />
+					<constant name="furnance-fire-icon" value="0" />
+					<constant name="furnace-max-fuel-burn-time" value="1" />
+					<constant name="furnace-progress-arrow" value="2" />
+					<constant name="furnce-max-progress" value="3" />
+					<constant name="enchantment-level-requirement-top" value="0" />
+					<constant name="enchantment-level-requirement-middle" value="1" />
+					<constant name="enchantment-level-requirement-bottom" value="2" />
 					<constant name="enchantment-seed" value="3" />
-					<constant name="power-level" value="0" />
-					<constant name="first-potion-effect" value="1" />
-					<constant name="second-potion-effect" value="2" />
-					<constant name="repair-cost" value="0" />
-					<constant name="brew-time" value="0" />
+					<constant name="enchantment-id-top" value="4" />
+					<constant name="enchantment-id-middle" value="5" />
+					<constant name="enchantment-id-bottom" value="6" />
+					<constant name="enchantment-level-top" value="7" />
+					<constant name="enchantment-level-middle" value="8" />
+					<constant name="enchantment-level-bottom" value="9" />
+					<constant name="beacon-power-level" value="0" />
+					<constant name="beacon-first-effect" value="1" />
+					<constant name="beacon-second-effect" value="2" />
+					<constant name="anvil-repair-cost" value="0" />
+					<constant name="brewing-stand-brew-time" value="0" />
 				</field>
 				<field name="value" type="short" />
 			</packet>
@@ -440,8 +464,43 @@
 			<packet name="entity-status" id="27" clientbound="true" serverbound="false">
 				<field name="entity-id" type="uint" />
 				<field name="status" type="ubyte">
-					<constant name="hurt" value="2" />
-					<constant name="dead" value="3" />
+					<constant name="spawn-tipped-arrow-particle-effects" value="0" />
+					<constant name="play-jumping-animation-and-particles" value="1" />
+					<constant name="reset-spawner-delay" value="1" />
+					<constant name="play-hurt-animation-and-sound" value="2" />
+					<constant name="play-dead-animation-and-sound" value="3" />
+					<constant name="play-attack-animation-and-sound" value="4" />
+					<constant name="spawn-smoke-particles" value="6" />
+					<constant name="spawn-heart-particles" value="7" />
+					<constant name="play-shaking-water-animation" value="8" />
+					<constant name="finished-consuming" value="9" />
+					<constant name="play-eating-grass-animation" value="10" />
+					<constant name="ignite-minecart-tnt" value="10" />
+					<constant name="hold-poppy" value="11" />
+					<constant name="spawn-villager-mating-heart-particles" value="12" />
+					<constant name="spawn-villager-angry-particles" value="13" />
+					<constant name="spawn-villager-happy-particles" value="14" />
+					<constant name="spawn-witch-magic-particles" value="15" />
+					<constant name="play-zombie-cure-finished-sound" value="16" />
+					<constant name="spawn-firework-explosion-effect" value="17" />
+					<constant name="spawn-love-particles" value="18" />
+					<constant name="reset-squid-rotation" value="19" />
+					<constant name="spawn-explosion-particles" value="20" />
+					<constant name="play-guardian-sound-effect" value="21" />
+					<constant name="enable-reduced-debug-screen" value="22" />
+					<constant name="disable-reduced-debug-screen" value="23" />
+					<constant name="set-op-permission-level-0" value="24" />
+					<constant name="set-op-permission-level-1" value="25" />
+					<constant name="set-op-permission-level-2" value="26" />
+					<constant name="set-op-permission-level-3" value="27" />
+					<constant name="set-op-permission-level-4" value="28" />
+					<constant name="play-shield-block-sound" value="29" />
+					<constant name="play-shield-break-sound" value="30" />
+					<constant name="hook-knockback" value="31" />
+					<constant name="play-hit-sound" value="32" />
+					<constant name="play-thorns-hurt-animation-and-sound" value="33" />
+					<constant name="remove-poppy" value="34" />
+					<constant name="play-totem-undying-animation" value="35" />
 				</field>
 			</packet>
 
@@ -499,7 +558,53 @@
 
 			<packet name="effect" id="33" clientbound="true" serverbound="false">
 				<field name="effect-id" type="uint">
-					<!-- TODO ids -->
+					<constant name="dispenser-dispense" value="1000" />
+					<constant name="dispenser-fail-dispense" value="1001" />
+					<constant name="dispenser-shoot" value="1002" />
+					<constant name="ender-eye-launch" value="1003" />
+					<constant name="firework-shot" value="1004" />
+					<constant name="iron-door-open" value="1005" />
+					<constant name="wooden-door-open" value="1006" />
+					<constant name="wooden-trapdoor-open" value="1007" />
+					<constant name="fence-gate-open" value="1008" />
+					<constant name="fire-extinguish" value="1009" />
+					<constant name="play-record" value="1010" />
+					<constant name="iron-door-close" value="1011" />
+					<constant name="wooden-door-close" value="1012" />
+					<constant name="wooden-trapdoor-close" value="1013" />
+					<constant name="fence-gate-close" value="1014" />
+					<constant name="ghast-warn" value="1015" />
+					<constant name="ghast-shoot" value="1016" />
+					<constant name="enderdragon-shoot" value="1017" />
+					<constant name="blaze-shoot" value="1018" />
+					<constant name="zombie-attack-wood-door" value="1019" />
+					<constant name="zombie-attack-iron-door" value="1020" />
+					<constant name="zombie-break-wood-door" value="1021" />
+					<constant name="wither-break-block" value="1022" />
+					<constant name="wither-spawn" value="1023" />
+					<constant name="wither-shoot" value="1024" />
+					<constant name="bat-take-off" value="1025" />
+					<constant name="zombie-infect-villager" value="1026" />
+					<constant name="zombie-villager-convert" value="1027" />
+					<constant name="ender-dragon-breath" value="1028" />
+					<constant name="anvil-break" value="1029" />
+					<constant name="anvil-use" value="1030" />
+					<constant name="anvil-land" value="1031" />
+					<constant name="portal-travel" value="1032" />
+					<constant name="chorus-flower-grow" value="1033" />
+					<constant name="chorus-flower-die" value="1034" />
+					<constant name="brewing-stand-brew" value="1035" />
+					<constant name="iron-trapdoor-open" value="1036" />
+					<constant name="iron-trapdoor-close" value="1037" />
+					<constant name="spawn-10-smoke-particles" value="2000" />
+					<constant name="break-break-particles-and-sound" value="2001" />
+					<constant name="splash-potion-particles-and-sound" value="2002" />
+					<constant name="ender-eye-break-particles-and-sound" value="2003" />
+					<constant name="mob-spawn-particles" value="2004" />
+					<constant name="bonemeal-particles" value="2005" />
+					<constant name="dragon-breath" value="2006" />
+					<constant name="end-gateway-spawn" value="3000" />
+					<constant name="enderdragon-growl" value="3001" />
 				</field>
 				<field name="position" type="block-position" />
 				<field name="data" type="uint" />
@@ -507,7 +612,55 @@
 			</packet>
 
 			<packet name="particle" id="34" clientbound="true" serverbound="false">
-				<field name="particle-id" type="uint" />
+				<field name="particle-id" type="uint">
+					<constant name="explode" value="0" />
+					<constant name="large-explosion" value="1" />
+					<constant name="huge-explosion" value="2" />
+					<constant name="firework-spark" value="3" />
+					<constant name="bubble" value="4" />
+					<constant name="splash" value="5" />
+					<constant name="wake" value="6" />
+					<constant name="suspended" value="7" />
+					<constant name="depth-suspend" value="8" />
+					<constant name="crit" value="9" />
+					<constant name="magic-crit" value="10" />
+					<constant name="smoke" value="11" />
+					<constant name="large-smoke" value="12" />
+					<constant name="spell" value="13" />
+					<constant name="instant-spell" value="14" />
+					<constant name="mob-spell" value="15" />
+					<constant name="mob-spell-ambient" value="16" />
+					<constant name="witch-magic" value="17" />
+					<constant name="drip-water" value="18" />
+					<constant name="drip-lava" value="19" />
+					<constant name="angry-villager" value="20" />
+					<constant name="happy-villager" value="21" />
+					<constant name="town-aura" value="22" />
+					<constant name="note" value="23" />
+					<constant name="portal" value="24" />
+					<constant name="enchantment-table" value="25" />
+					<constant name="flame" value="26" />
+					<constant name="lava" value="27" />
+					<constant name="footstep" value="28" />
+					<constant name="cloud" value="29" />
+					<constant name="red-dust" value="30" />
+					<constant name="snowball-poof" value="31" />
+					<constant name="snow-shovel" value="32" />
+					<constant name="slime" value="33" />
+					<constant name="heart" value="34" />
+					<constant name="barrier" value="35" />
+					<constant name="item-crack" value="36" />
+					<constant name="block-crack" value="37" />
+					<constant name="block-dust" value="38" />
+					<constant name="droplet" value="39" />
+					<constant name="take" value="40" />
+					<constant name="mob-appearance" value="41" />
+					<constant name="dragon-breath" value="42" />
+					<constant name="endrod" value="43" />
+					<constant name="damage-indicator" value="44" />
+					<constant name="sweep-attack" value="45" />
+					<constant name="falling-dust" value="46" />
+				</field>
 				<field name="long-distance" type="bool" />
 				<field name="position" type="float<xyz>" />
 				<field name="offset" type="float<xyz>" />
@@ -536,7 +689,12 @@
 					<constant name="hard" value="3" />
 				</field>
 				<field name="max-players" type="ubyte" />
-				<field name="level-type" type="string" />
+				<field name="level-type" type="string">
+					<constant name="infinity" value="default" />
+					<constant name="flat" value="flat" />
+					<constant name="amplified" value="amplified" />
+					<constant name="large-biomes" value="largeBiomes" />
+				</field>
 				<field name="reduced-debug" type="bool" />
 			</packet>
 
@@ -638,7 +796,13 @@
 				<field name="position" type="entity-position" />
 				<field name="yaw" type="float" />
 				<field name="pitch" type="float" />
-				<field name="flags" type="ubyte" />
+				<field name="flags" type="ubyte">
+					<constant name="x" value="1" />
+					<constant name="y" value="2" />
+					<constant name="z" value="4" />
+					<constant name="y-rotation" value="8" />
+					<constant name="x-rotation" value="16" />
+				</field>
 				<field name="teleport-id" type="varuint" />
 			</packet>
 
@@ -679,7 +843,12 @@
 					<constant name="adventure" value="2" />
 					<constant name="spectator" value="3" />
 				</field>
-				<field name="level-type" type="string" />
+				<field name="level-type" type="string">
+					<constant name="infinity" value="default" />
+					<constant name="flat" value="flat" />
+					<constant name="amplified" value="amplified" />
+					<constant name="large-biomes" value="largeBiomes" />
+				</field>
 			</packet>
 
 			<packet name="entity-head-look" id="52" clientbound="true" serverbound="false">
@@ -776,8 +945,11 @@
 					<constant name="remove" value="1" />
 					<constant name="update" value="2" />
 				</field>
-				<field name="value" type="string" />
-				<field name="type" type="string" />
+				<field name="value" type="string" when="mode!=1" />
+				<field name="type" type="string" when="mode!=1">
+					<constant name="numeric" value="integer" />
+					<constant name="graphic" value="hearts" />
+				</field>
 			</packet>
 
 			<packet name="set-passengers" id="64" clientbound="true" serverbound="false">
@@ -851,7 +1023,7 @@
 					<constant name="remove" value="1" />
 				</field>
 				<field name="objective-name" type="string" />
-				<field name="value" type="varuint" when="action!=1" />
+				<field name="value" type="varuint" when="action==0" />
 			</packet>
 
 			<packet name="spawn-position" id="67" clientbound="true" serverbound="false">
@@ -991,7 +1163,7 @@
 			</packet>
 
 			<packet name="click-window" id="7" clientbound="false" serverbound="true">
-				<field name="window" type="ubyte[]" />
+				<field name="window" type="ubyte" />
 				<field name="slot" type="ushort" />
 				<field name="button" type="ubyte" />
 				<field name="action" type="ushort" />

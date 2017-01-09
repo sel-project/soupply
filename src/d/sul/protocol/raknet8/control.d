@@ -33,7 +33,7 @@ struct Ack {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, packets.length.to!ushort, _buffer.length-ushort.sizeof);foreach(cGFja2V0cw;packets){ cGFja2V0cw.encode(_buffer); }
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, packets.length.to!ushort, _buffer.length-ushort.sizeof); foreach(cGFja2V0cw;packets){ cGFja2V0cw.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -43,7 +43,7 @@ struct Ack {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+ushort.sizeof){ packets.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }foreach(ref cGFja2V0cw;packets){ cGFja2V0cw.decode(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ packets.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } foreach(ref cGFja2V0cw;packets){ cGFja2V0cw.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -61,7 +61,7 @@ struct Nack {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, packets.length.to!ushort, _buffer.length-ushort.sizeof);foreach(cGFja2V0cw;packets){ cGFja2V0cw.encode(_buffer); }
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, packets.length.to!ushort, _buffer.length-ushort.sizeof); foreach(cGFja2V0cw;packets){ cGFja2V0cw.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -71,7 +71,7 @@ struct Nack {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+ushort.sizeof){ packets.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }foreach(ref cGFja2V0cw;packets){ cGFja2V0cw.decode(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ packets.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } foreach(ref cGFja2V0cw;packets){ cGFja2V0cw.decode(_buffer, _index); }
 		return this;
 	}
 

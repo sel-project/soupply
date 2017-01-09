@@ -20,6 +20,13 @@ class PlayerPositionAndLook extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
+	// flags
+	public final static byte X = (byte)1;
+	public final static byte Y = (byte)2;
+	public final static byte Z = (byte)4;
+	public final static byte Y_ROTATION = (byte)8;
+	public final static byte X_ROTATION = (byte)16;
+
 	public Tuples.DoubleXYZ position;
 	public float yaw;
 	public float pitch;

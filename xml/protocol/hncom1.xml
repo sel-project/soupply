@@ -40,7 +40,7 @@
 				<constant name="pocket" value="1" />
 				<constant name="minecraft" value="2" />
 			</field>
-			<field name="protocols" type="uint[]" />
+			<field name="protocols" type="varuint[]" />
 			<field name="motd" type="string" />
 			<field name="port" type="ushort" />
 		</type>
@@ -205,6 +205,7 @@
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="string" />
 				<field name="translation" type="bool" />
+				<field name="parameters" type="string[]" when="translation==true" />
 			</packet>
 
 			<packet name="transfer" id="13" clientbound="false" serverbound="true">

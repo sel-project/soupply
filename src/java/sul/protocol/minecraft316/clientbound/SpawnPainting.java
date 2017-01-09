@@ -20,6 +20,12 @@ class SpawnPainting extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
+	// direction
+	public final static byte SOUTH = (byte)0;
+	public final static byte WEST = (byte)1;
+	public final static byte NORTH = (byte)2;
+	public final static byte EAST = (byte)3;
+
 	public int entityId;
 	public UUID uuid;
 	public String title;

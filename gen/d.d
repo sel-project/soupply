@@ -11,8 +11,10 @@ import std.typecons;
 
 import all;
 
-void d(Attributes[string] attributes, Protocols[string] protocols, Creative[string] creative) {
+void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative) {
 
+	mkdirRecurse("../src/d/sul/attributes");
+	mkdirRecurse("../src/d/sul/metadata");
 	mkdirRecurse("../src/d/sul/utils");
 
 	// write varints
@@ -111,26 +113,25 @@ alias varulong = var!ulong;
 		"varlong": "long",
 		"varulong": "ulong"
 	];
-
+	
 	// attributes
 	foreach(string game, Attributes attrs; attributes) {
 		string data = "module sul.attributes." ~ game ~ ";\n\nimport std.typecons : Tuple;\n\n" ~
 			"alias Attribute = Tuple!(string, \"name\", float, \"min\", float, \"max\", float, \"def\");\n\n" ~ 
-			"struct Attributes {\n\n\t@disable this();\n\n";
+				"struct Attributes {\n\n\t@disable this();\n\n";
 		foreach(attr; attrs.data) {
 			data ~= "\tenum " ~ toCamelCase(attr.id) ~ " = Attribute(\"" ~ attr.name ~ "\", " ~ attr.min.to!string ~ ", " ~ attr.max.to!string ~ ", " ~ attr.def.to!string ~ ");\n\n";
 		}
-		if(!exists("../src/d/sul/attributes")) mkdir("../src/d/sul/attributes");
 		write("../src/d/sul/attributes/" ~ game ~ ".d", data ~ "}", "attributes/" ~ game);
 	}
-
+	
 	//TODO creative inventory
 
 	// protocol
 	foreach(string game, Protocols prts; protocols) {
 
 		mkdirRecurse("../src/d/sul/protocol/" ~ game);
-
+		
 		@property string convertType(string type) {
 			string ret, t = type;
 			auto array = type.indexOf("[");
@@ -191,6 +192,7 @@ alias varulong = var!ulong;
 					} else {
 						ret ~= createEncoding(prts.data.arrayLength, name ~ ".length.to!" ~ arrayLength);
 					}
+					ret ~= " ";
 				}
 				if(nt == "ubyte") return ret ~= "_buffer~=" ~ name ~ ";";
 				else return ret ~ "foreach(" ~ hash(name) ~ ";" ~ name ~ "){ " ~ createEncoding(type[0..lo], hash(name)) ~ " }";
@@ -229,6 +231,7 @@ alias varulong = var!ulong;
 					} else {
 						ret ~= createDecoding(prts.data.arrayLength, name ~ ".length");
 					}
+					ret ~= " ";
 				}
 				string nt = conv[0..lo];
 				if(nt == "ubyte") return ret ~= "if(_buffer.length>=*_index+" ~ name ~ ".length){ " ~ name ~ "=_buffer[*_index..*_index+" ~ name ~ ".length].dup; *_index+=" ~ name ~ ".length; }";
@@ -346,6 +349,48 @@ alias varulong = var!ulong;
 		}
 		write("../src/d/sul/protocol/" ~ game ~ "/package.d", s, "protocol/" ~ game);
 
+	}
+
+	// metadata
+	foreach(string game, Metadatas m; metadatas) {
+
+		@property string convertType(string type) {
+			string ret, t = type;
+			auto array = type.indexOf("[");
+			if(array >= 0) {
+				t = type[0..array];
+			}
+			auto vector = type.indexOf("<");
+			if(vector >= 0) {
+				string tt = convertType(type[0..vector]);
+				t = "Tuple!(";
+				foreach(char c ; type[vector+1..type.indexOf(">")]) {
+					t ~= tt ~ `, "` ~ c ~ `", `;
+				}
+				ret = t[0..$-2] ~ ")";
+			} else if(t in defaultAliases) {
+				return convertType(defaultAliases[t] ~ (array >= 0 ? type[array..$] : ""));
+			} else if(defaultTypes.canFind(t)) {
+				ret = t;
+			}
+			if(ret == "") ret = "sul.protocol." ~ game ~ ".types." ~ toPascalCase(t);
+			return ret ~ (array >= 0 ? type[array..$] : "");
+		}
+
+		string data = "module sul.metadata." ~ game ~ ";\n\n";
+		data ~= "static import sul.protocol." ~ game ~ ".types;";
+		//TODO types
+		//TODO encoding
+		data ~= "struct Metadata {\n\n";
+		foreach(type ; m.data.metadatas) {
+			if(type.flags.length) {
+
+			} else {
+				data ~= "\tpublic " ~ convertType(type.type) ~ " " ~ toCamelCase(type.name) ~ (type.def.length ? " = " ~ type.def : "") ~ ";\n\n";
+			}
+		}
+		data ~= "}";
+		write("../src/d/sul/metadata/" ~ game ~ ".d", data, "metadata/" ~ game);
 	}
 
 }

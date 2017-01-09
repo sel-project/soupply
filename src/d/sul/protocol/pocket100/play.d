@@ -41,7 +41,7 @@ struct Login {
 		static if(writeId){ _buffer~=ID; }
 		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, protocol, _buffer.length-uint.sizeof);
 		_buffer~=edition;
-		_buffer~=varuint.encode(body_.length.to!uint);_buffer~=body_;
+		_buffer~=varuint.encode(body_.length.to!uint); _buffer~=body_;
 		return _buffer;
 	}
 
@@ -53,7 +53,7 @@ struct Login {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		if(_buffer.length>=*_index+uint.sizeof){ protocol=peek!(uint, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ edition=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		body_.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+body_.length){ body_=_buffer[*_index..*_index+body_.length].dup; *_index+=body_.length; }
+		body_.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+body_.length){ body_=_buffer[*_index..*_index+body_.length].dup; *_index+=body_.length; }
 		return this;
 	}
 
@@ -108,8 +108,8 @@ struct ServerHandshake {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
-		ubyte[] c2VydmVyUHVibGlj=cast(ubyte[])serverPublicKey; _buffer~=varuint.encode(c2VydmVyUHVibGlj.length.to!uint);_buffer~=c2VydmVyUHVibGlj;
-		_buffer~=varuint.encode(token.length.to!uint);_buffer~=token;
+		ubyte[] c2VydmVyUHVibGlj=cast(ubyte[])serverPublicKey; _buffer~=varuint.encode(c2VydmVyUHVibGlj.length.to!uint); _buffer~=c2VydmVyUHVibGlj;
+		_buffer~=varuint.encode(token.length.to!uint); _buffer~=token;
 		return _buffer;
 	}
 
@@ -119,8 +119,8 @@ struct ServerHandshake {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		ubyte[] c2VydmVyUHVibGlj; c2VydmVyUHVibGlj.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c2VydmVyUHVibGlj.length){ c2VydmVyUHVibGlj=_buffer[*_index..*_index+c2VydmVyUHVibGlj.length].dup; *_index+=c2VydmVyUHVibGlj.length; }; serverPublicKey=cast(string)c2VydmVyUHVibGlj;
-		token.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+token.length){ token=_buffer[*_index..*_index+token.length].dup; *_index+=token.length; }
+		ubyte[] c2VydmVyUHVibGlj; c2VydmVyUHVibGlj.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c2VydmVyUHVibGlj.length){ c2VydmVyUHVibGlj=_buffer[*_index..*_index+c2VydmVyUHVibGlj.length].dup; *_index+=c2VydmVyUHVibGlj.length; }; serverPublicKey=cast(string)c2VydmVyUHVibGlj;
+		token.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+token.length){ token=_buffer[*_index..*_index+token.length].dup; *_index+=token.length; }
 		return this;
 	}
 
@@ -164,7 +164,7 @@ struct Disconnect {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, hideDisconnectionScreen, _buffer.length-bool.sizeof);
-		ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
+		ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint); _buffer~=bWVzc2FnZQ;
 		return _buffer;
 	}
 
@@ -175,7 +175,7 @@ struct Disconnect {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		if(_buffer.length>=*_index+bool.sizeof){ hideDisconnectionScreen=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+		ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
 		return this;
 	}
 
@@ -193,7 +193,7 @@ struct Batch {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
-		_buffer~=varuint.encode(data.length.to!uint);_buffer~=data;
+		_buffer~=varuint.encode(data.length.to!uint); _buffer~=data;
 		return _buffer;
 	}
 
@@ -203,7 +203,7 @@ struct Batch {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		data.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
+		data.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
 		return this;
 	}
 
@@ -224,8 +224,8 @@ struct ResourcePacksInfo {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, mustAccept, _buffer.length-bool.sizeof);
-		_buffer~=varuint.encode(behaviourPacks.length.to!uint);foreach(YmVoYXZpb3VyUGFj;behaviourPacks){ YmVoYXZpb3VyUGFj.encode(_buffer); }
-		_buffer~=varuint.encode(resourcePacks.length.to!uint);foreach(cmVzb3VyY2VQYWNr;resourcePacks){ cmVzb3VyY2VQYWNr.encode(_buffer); }
+		_buffer~=varuint.encode(behaviourPacks.length.to!uint); foreach(YmVoYXZpb3VyUGFj;behaviourPacks){ YmVoYXZpb3VyUGFj.encode(_buffer); }
+		_buffer~=varuint.encode(resourcePacks.length.to!uint); foreach(cmVzb3VyY2VQYWNr;resourcePacks){ cmVzb3VyY2VQYWNr.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -236,8 +236,8 @@ struct ResourcePacksInfo {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		if(_buffer.length>=*_index+bool.sizeof){ mustAccept=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		behaviourPacks.length=varuint.decode(_buffer, *_index);foreach(ref YmVoYXZpb3VyUGFj;behaviourPacks){ YmVoYXZpb3VyUGFj.decode(_buffer, _index); }
-		resourcePacks.length=varuint.decode(_buffer, *_index);foreach(ref cmVzb3VyY2VQYWNr;resourcePacks){ cmVzb3VyY2VQYWNr.decode(_buffer, _index); }
+		behaviourPacks.length=varuint.decode(_buffer, *_index); foreach(ref YmVoYXZpb3VyUGFj;behaviourPacks){ YmVoYXZpb3VyUGFj.decode(_buffer, _index); }
+		resourcePacks.length=varuint.decode(_buffer, *_index); foreach(ref cmVzb3VyY2VQYWNr;resourcePacks){ cmVzb3VyY2VQYWNr.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -313,12 +313,12 @@ struct Text {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
+			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint); _buffer~=bWVzc2FnZQ;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
 			return this;
 		}
 
@@ -338,14 +338,14 @@ struct Text {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] c2VuZGVy=cast(ubyte[])sender; _buffer~=varuint.encode(c2VuZGVy.length.to!uint);_buffer~=c2VuZGVy;
-			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
+			ubyte[] c2VuZGVy=cast(ubyte[])sender; _buffer~=varuint.encode(c2VuZGVy.length.to!uint); _buffer~=c2VuZGVy;
+			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint); _buffer~=bWVzc2FnZQ;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] c2VuZGVy; c2VuZGVy.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c2VuZGVy.length){ c2VuZGVy=_buffer[*_index..*_index+c2VuZGVy.length].dup; *_index+=c2VuZGVy.length; }; sender=cast(string)c2VuZGVy;
-			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+			ubyte[] c2VuZGVy; c2VuZGVy.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c2VuZGVy.length){ c2VuZGVy=_buffer[*_index..*_index+c2VuZGVy.length].dup; *_index+=c2VuZGVy.length; }; sender=cast(string)c2VuZGVy;
+			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
 			return this;
 		}
 
@@ -365,14 +365,14 @@ struct Text {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
-			_buffer~=varuint.encode(parameters.length.to!uint);foreach(cGFyYW1ldGVycw;parameters){ ubyte[] Y0dGeVlXMWxkR1Z5=cast(ubyte[])cGFyYW1ldGVycw; _buffer~=varuint.encode(Y0dGeVlXMWxkR1Z5.length.to!uint);_buffer~=Y0dGeVlXMWxkR1Z5; }
+			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint); _buffer~=bWVzc2FnZQ;
+			_buffer~=varuint.encode(parameters.length.to!uint); foreach(cGFyYW1ldGVycw;parameters){ ubyte[] Y0dGeVlXMWxkR1Z5=cast(ubyte[])cGFyYW1ldGVycw; _buffer~=varuint.encode(Y0dGeVlXMWxkR1Z5.length.to!uint); _buffer~=Y0dGeVlXMWxkR1Z5; }
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
-			parameters.length=varuint.decode(_buffer, *_index);foreach(ref cGFyYW1ldGVycw;parameters){ ubyte[] Y0dGeVlXMWxkR1Z5; Y0dGeVlXMWxkR1Z5.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y0dGeVlXMWxkR1Z5.length){ Y0dGeVlXMWxkR1Z5=_buffer[*_index..*_index+Y0dGeVlXMWxkR1Z5.length].dup; *_index+=Y0dGeVlXMWxkR1Z5.length; }; cGFyYW1ldGVycw=cast(string)Y0dGeVlXMWxkR1Z5; }
+			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+			parameters.length=varuint.decode(_buffer, *_index); foreach(ref cGFyYW1ldGVycw;parameters){ ubyte[] Y0dGeVlXMWxkR1Z5; Y0dGeVlXMWxkR1Z5.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y0dGeVlXMWxkR1Z5.length){ Y0dGeVlXMWxkR1Z5=_buffer[*_index..*_index+Y0dGeVlXMWxkR1Z5.length].dup; *_index+=Y0dGeVlXMWxkR1Z5.length; }; cGFyYW1ldGVycw=cast(string)Y0dGeVlXMWxkR1Z5; }
 			return this;
 		}
 
@@ -392,14 +392,14 @@ struct Text {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint);_buffer~=dGl0bGU;
-			ubyte[] c3VidGl0bGU=cast(ubyte[])subtitle; _buffer~=varuint.encode(c3VidGl0bGU.length.to!uint);_buffer~=c3VidGl0bGU;
+			ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint); _buffer~=dGl0bGU;
+			ubyte[] c3VidGl0bGU=cast(ubyte[])subtitle; _buffer~=varuint.encode(c3VidGl0bGU.length.to!uint); _buffer~=c3VidGl0bGU;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
-			ubyte[] c3VidGl0bGU; c3VidGl0bGU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c3VidGl0bGU.length){ c3VidGl0bGU=_buffer[*_index..*_index+c3VidGl0bGU.length].dup; *_index+=c3VidGl0bGU.length; }; subtitle=cast(string)c3VidGl0bGU;
+			ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
+			ubyte[] c3VidGl0bGU; c3VidGl0bGU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c3VidGl0bGU.length){ c3VidGl0bGU=_buffer[*_index..*_index+c3VidGl0bGU.length].dup; *_index+=c3VidGl0bGU.length; }; subtitle=cast(string)c3VidGl0bGU;
 			return this;
 		}
 
@@ -418,12 +418,12 @@ struct Text {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
+			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint); _buffer~=bWVzc2FnZQ;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
 			return this;
 		}
 
@@ -442,12 +442,12 @@ struct Text {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
+			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint); _buffer~=bWVzc2FnZQ;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
 			return this;
 		}
 
@@ -467,14 +467,14 @@ struct Text {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] c2VuZGVy=cast(ubyte[])sender; _buffer~=varuint.encode(c2VuZGVy.length.to!uint);_buffer~=c2VuZGVy;
-			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
+			ubyte[] c2VuZGVy=cast(ubyte[])sender; _buffer~=varuint.encode(c2VuZGVy.length.to!uint); _buffer~=c2VuZGVy;
+			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint); _buffer~=bWVzc2FnZQ;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] c2VuZGVy; c2VuZGVy.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c2VuZGVy.length){ c2VuZGVy=_buffer[*_index..*_index+c2VuZGVy.length].dup; *_index+=c2VuZGVy.length; }; sender=cast(string)c2VuZGVy;
-			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+			ubyte[] c2VuZGVy; c2VuZGVy.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c2VuZGVy.length){ c2VuZGVy=_buffer[*_index..*_index+c2VuZGVy.length].dup; *_index+=c2VuZGVy.length; }; sender=cast(string)c2VuZGVy;
+			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
 			return this;
 		}
 
@@ -586,8 +586,8 @@ struct StartGame {
 		_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, lightingLevel, _buffer.length-float.sizeof);
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, cheatsEnabled, _buffer.length-bool.sizeof);
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, textureRequired, _buffer.length-bool.sizeof);
-		ubyte[] bGV2ZWxJZA=cast(ubyte[])levelId; _buffer~=varuint.encode(bGV2ZWxJZA.length.to!uint);_buffer~=bGV2ZWxJZA;
-		ubyte[] d29ybGROYW1l=cast(ubyte[])worldName; _buffer~=varuint.encode(d29ybGROYW1l.length.to!uint);_buffer~=d29ybGROYW1l;
+		ubyte[] bGV2ZWxJZA=cast(ubyte[])levelId; _buffer~=varuint.encode(bGV2ZWxJZA.length.to!uint); _buffer~=bGV2ZWxJZA;
+		ubyte[] d29ybGROYW1l=cast(ubyte[])worldName; _buffer~=varuint.encode(d29ybGROYW1l.length.to!uint); _buffer~=d29ybGROYW1l;
 		return _buffer;
 	}
 
@@ -615,8 +615,8 @@ struct StartGame {
 		if(_buffer.length>=*_index+float.sizeof){ lightingLevel=peek!(float, Endian.littleEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+bool.sizeof){ cheatsEnabled=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+bool.sizeof){ textureRequired=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] bGV2ZWxJZA; bGV2ZWxJZA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bGV2ZWxJZA.length){ bGV2ZWxJZA=_buffer[*_index..*_index+bGV2ZWxJZA.length].dup; *_index+=bGV2ZWxJZA.length; }; levelId=cast(string)bGV2ZWxJZA;
-		ubyte[] d29ybGROYW1l; d29ybGROYW1l.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+d29ybGROYW1l.length){ d29ybGROYW1l=_buffer[*_index..*_index+d29ybGROYW1l.length].dup; *_index+=d29ybGROYW1l.length; }; worldName=cast(string)d29ybGROYW1l;
+		ubyte[] bGV2ZWxJZA; bGV2ZWxJZA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bGV2ZWxJZA.length){ bGV2ZWxJZA=_buffer[*_index..*_index+bGV2ZWxJZA.length].dup; *_index+=bGV2ZWxJZA.length; }; levelId=cast(string)bGV2ZWxJZA;
+		ubyte[] d29ybGROYW1l; d29ybGROYW1l.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+d29ybGROYW1l.length){ d29ybGROYW1l=_buffer[*_index..*_index+d29ybGROYW1l.length].dup; *_index+=d29ybGROYW1l.length; }; worldName=cast(string)d29ybGROYW1l;
 		return this;
 	}
 
@@ -645,7 +645,7 @@ struct AddPlayer {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
 		_buffer~=uuid.data;
-		ubyte[] dXNlcm5hbWU=cast(ubyte[])username; _buffer~=varuint.encode(dXNlcm5hbWU.length.to!uint);_buffer~=dXNlcm5hbWU;
+		ubyte[] dXNlcm5hbWU=cast(ubyte[])username; _buffer~=varuint.encode(dXNlcm5hbWU.length.to!uint); _buffer~=dXNlcm5hbWU;
 		_buffer~=varlong.encode(entityId);
 		_buffer~=varlong.encode(runtimeId);
 		_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, position.x, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, position.y, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, position.z, _buffer.length-float.sizeof);
@@ -665,7 +665,7 @@ struct AddPlayer {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
-		ubyte[] dXNlcm5hbWU; dXNlcm5hbWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dXNlcm5hbWU.length){ dXNlcm5hbWU=_buffer[*_index..*_index+dXNlcm5hbWU.length].dup; *_index+=dXNlcm5hbWU.length; }; username=cast(string)dXNlcm5hbWU;
+		ubyte[] dXNlcm5hbWU; dXNlcm5hbWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dXNlcm5hbWU.length){ dXNlcm5hbWU=_buffer[*_index..*_index+dXNlcm5hbWU.length].dup; *_index+=dXNlcm5hbWU.length; }; username=cast(string)dXNlcm5hbWU;
 		entityId=varlong.decode(_buffer, *_index);
 		runtimeId=varlong.decode(_buffer, *_index);
 		if(_buffer.length>=*_index+float.sizeof){ position.x=peek!(float, Endian.littleEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ position.y=peek!(float, Endian.littleEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ position.z=peek!(float, Endian.littleEndian)(_buffer, _index); }
@@ -708,9 +708,9 @@ struct AddEntity {
 		_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, motion.x, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, motion.y, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, motion.z, _buffer.length-float.sizeof);
 		_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, pitch, _buffer.length-float.sizeof);
 		_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, yaw, _buffer.length-float.sizeof);
-		_buffer~=varuint.encode(attributes.length.to!uint);foreach(YXR0cmlidXRlcw;attributes){ YXR0cmlidXRlcw.encode(_buffer); }
+		_buffer~=varuint.encode(attributes.length.to!uint); foreach(YXR0cmlidXRlcw;attributes){ YXR0cmlidXRlcw.encode(_buffer); }
 		metadata.encode(_buffer);
-		_buffer~=varuint.encode(links.length.to!uint);foreach(bGlua3M;links){ _buffer~=varlong.encode(bGlua3M); }
+		_buffer~=varuint.encode(links.length.to!uint); foreach(bGlua3M;links){ _buffer~=varlong.encode(bGlua3M); }
 		return _buffer;
 	}
 
@@ -727,9 +727,9 @@ struct AddEntity {
 		if(_buffer.length>=*_index+float.sizeof){ motion.x=peek!(float, Endian.littleEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ motion.y=peek!(float, Endian.littleEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ motion.z=peek!(float, Endian.littleEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+float.sizeof){ pitch=peek!(float, Endian.littleEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+float.sizeof){ yaw=peek!(float, Endian.littleEndian)(_buffer, _index); }
-		attributes.length=varuint.decode(_buffer, *_index);foreach(ref YXR0cmlidXRlcw;attributes){ YXR0cmlidXRlcw.decode(_buffer, _index); }
+		attributes.length=varuint.decode(_buffer, *_index); foreach(ref YXR0cmlidXRlcw;attributes){ YXR0cmlidXRlcw.decode(_buffer, _index); }
 		metadata.decode(_buffer, _index);
-		links.length=varuint.decode(_buffer, *_index);foreach(ref bGlua3M;links){ bGlua3M=varlong.decode(_buffer, *_index); }
+		links.length=varuint.decode(_buffer, *_index); foreach(ref bGlua3M;links){ bGlua3M=varlong.decode(_buffer, *_index); }
 		return this;
 	}
 
@@ -1078,7 +1078,7 @@ struct AddPainting {
 		_buffer~=varlong.encode(runtimeId);
 		position.encode(_buffer);
 		_buffer~=varint.encode(direction);
-		ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint);_buffer~=dGl0bGU;
+		ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint); _buffer~=dGl0bGU;
 		return _buffer;
 	}
 
@@ -1092,7 +1092,7 @@ struct AddPainting {
 		runtimeId=varlong.decode(_buffer, *_index);
 		position.decode(_buffer, _index);
 		direction=varint.decode(_buffer, *_index);
-		ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
+		ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
 		return this;
 	}
 
@@ -1114,7 +1114,7 @@ struct Explode {
 		static if(writeId){ _buffer~=ID; }
 		_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, position.x, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, position.y, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, position.z, _buffer.length-float.sizeof);
 		_buffer.length+=float.sizeof; write!(float, Endian.littleEndian)(_buffer, radius, _buffer.length-float.sizeof);
-		_buffer~=varuint.encode(destroyedBlocks.length.to!uint);foreach(ZGVzdHJveWVkQmxv;destroyedBlocks){ ZGVzdHJveWVkQmxv.encode(_buffer); }
+		_buffer~=varuint.encode(destroyedBlocks.length.to!uint); foreach(ZGVzdHJveWVkQmxv;destroyedBlocks){ ZGVzdHJveWVkQmxv.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -1126,7 +1126,7 @@ struct Explode {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		if(_buffer.length>=*_index+float.sizeof){ position.x=peek!(float, Endian.littleEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ position.y=peek!(float, Endian.littleEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ position.z=peek!(float, Endian.littleEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+float.sizeof){ radius=peek!(float, Endian.littleEndian)(_buffer, _index); }
-		destroyedBlocks.length=varuint.decode(_buffer, *_index);foreach(ref ZGVzdHJveWVkQmxv;destroyedBlocks){ ZGVzdHJveWVkQmxv.decode(_buffer, _index); }
+		destroyedBlocks.length=varuint.decode(_buffer, *_index); foreach(ref ZGVzdHJveWVkQmxv;destroyedBlocks){ ZGVzdHJveWVkQmxv.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -1402,7 +1402,7 @@ struct UpdateAttributes {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
 		_buffer~=varlong.encode(entityId);
-		_buffer~=varuint.encode(attributes.length.to!uint);foreach(YXR0cmlidXRlcw;attributes){ YXR0cmlidXRlcw.encode(_buffer); }
+		_buffer~=varuint.encode(attributes.length.to!uint); foreach(YXR0cmlidXRlcw;attributes){ YXR0cmlidXRlcw.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -1413,7 +1413,7 @@ struct UpdateAttributes {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		entityId=varlong.decode(_buffer, *_index);
-		attributes.length=varuint.decode(_buffer, *_index);foreach(ref YXR0cmlidXRlcw;attributes){ YXR0cmlidXRlcw.decode(_buffer, _index); }
+		attributes.length=varuint.decode(_buffer, *_index); foreach(ref YXR0cmlidXRlcw;attributes){ YXR0cmlidXRlcw.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -2130,8 +2130,8 @@ struct ContainerSetContent {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
 		_buffer~=window;
-		_buffer~=varuint.encode(slots.length.to!uint);foreach(c2xvdHM;slots){ c2xvdHM.encode(_buffer); }
-		_buffer~=varuint.encode(hotbar.length.to!uint);foreach(aG90YmFy;hotbar){ _buffer~=varint.encode(aG90YmFy); }
+		_buffer~=varuint.encode(slots.length.to!uint); foreach(c2xvdHM;slots){ c2xvdHM.encode(_buffer); }
+		_buffer~=varuint.encode(hotbar.length.to!uint); foreach(aG90YmFy;hotbar){ _buffer~=varint.encode(aG90YmFy); }
 		return _buffer;
 	}
 
@@ -2142,8 +2142,8 @@ struct ContainerSetContent {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		if(_buffer.length>=*_index+ubyte.sizeof){ window=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		slots.length=varuint.decode(_buffer, *_index);foreach(ref c2xvdHM;slots){ c2xvdHM.decode(_buffer, _index); }
-		hotbar.length=varuint.decode(_buffer, *_index);foreach(ref aG90YmFy;hotbar){ aG90YmFy=varint.decode(_buffer, *_index); }
+		slots.length=varuint.decode(_buffer, *_index); foreach(ref c2xvdHM;slots){ c2xvdHM.decode(_buffer, _index); }
+		hotbar.length=varuint.decode(_buffer, *_index); foreach(ref aG90YmFy;hotbar){ aG90YmFy=varint.decode(_buffer, *_index); }
 		return this;
 	}
 
@@ -2161,7 +2161,7 @@ struct CraftingData {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
-		_buffer~=varuint.encode(recipes.length.to!uint);foreach(cmVjaXBlcw;recipes){ cmVjaXBlcw.encode(_buffer); }
+		_buffer~=varuint.encode(recipes.length.to!uint); foreach(cmVjaXBlcw;recipes){ cmVjaXBlcw.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -2171,7 +2171,7 @@ struct CraftingData {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		recipes.length=varuint.decode(_buffer, *_index);foreach(ref cmVjaXBlcw;recipes){ cmVjaXBlcw.decode(_buffer, _index); }
+		recipes.length=varuint.decode(_buffer, *_index); foreach(ref cmVjaXBlcw;recipes){ cmVjaXBlcw.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -2196,8 +2196,8 @@ struct CraftingEvent {
 		_buffer~=window;
 		_buffer~=varint.encode(type);
 		_buffer~=uuid.data;
-		_buffer~=varuint.encode(input.length.to!uint);foreach(aW5wdXQ;input){ aW5wdXQ.encode(_buffer); }
-		_buffer~=varuint.encode(output.length.to!uint);foreach(b3V0cHV0;output){ b3V0cHV0.encode(_buffer); }
+		_buffer~=varuint.encode(input.length.to!uint); foreach(aW5wdXQ;input){ aW5wdXQ.encode(_buffer); }
+		_buffer~=varuint.encode(output.length.to!uint); foreach(b3V0cHV0;output){ b3V0cHV0.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -2210,8 +2210,8 @@ struct CraftingEvent {
 		if(_buffer.length>=*_index+ubyte.sizeof){ window=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		type=varint.decode(_buffer, *_index);
 		if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
-		input.length=varuint.decode(_buffer, *_index);foreach(ref aW5wdXQ;input){ aW5wdXQ.decode(_buffer, _index); }
-		output.length=varuint.decode(_buffer, *_index);foreach(ref b3V0cHV0;output){ b3V0cHV0.decode(_buffer, _index); }
+		input.length=varuint.decode(_buffer, *_index); foreach(ref aW5wdXQ;input){ aW5wdXQ.decode(_buffer, _index); }
+		output.length=varuint.decode(_buffer, *_index); foreach(ref b3V0cHV0;output){ b3V0cHV0.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -2346,8 +2346,8 @@ struct FullChunkData {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
 		_buffer~=varint.encode(position.x);_buffer~=varint.encode(position.z);
-		_buffer~=varuint.encode(data.length.to!uint);_buffer~=data;
-		_buffer~=varuint.encode(tiles.length.to!uint);_buffer~=tiles;
+		_buffer~=varuint.encode(data.length.to!uint); _buffer~=data;
+		_buffer~=varuint.encode(tiles.length.to!uint); _buffer~=tiles;
 		return _buffer;
 	}
 
@@ -2358,8 +2358,8 @@ struct FullChunkData {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		position.x=varint.decode(_buffer, *_index);position.z=varint.decode(_buffer, *_index);
-		data.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
-		tiles.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+tiles.length){ tiles=_buffer[*_index..*_index+tiles.length].dup; *_index+=tiles.length; }
+		data.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
+		tiles.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+tiles.length){ tiles=_buffer[*_index..*_index+tiles.length].dup; *_index+=tiles.length; }
 		return this;
 	}
 
@@ -2537,12 +2537,12 @@ struct PlayerList {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
+			_buffer~=varuint.encode(players.length.to!uint); foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
+			players.length=varuint.decode(_buffer, *_index); foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
 			return this;
 		}
 
@@ -2561,12 +2561,12 @@ struct PlayerList {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ _buffer~=cGxheWVycw.data; }
+			_buffer~=varuint.encode(players.length.to!uint); foreach(cGxheWVycw;players){ _buffer~=cGxheWVycw.data; }
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ if(_buffer.length>=*_index+16){ ubyte[16] Y0d4aGVXVnljdw=buffer[*_index..*_index+16].dup; *_index+=16; cGxheWVycw=UUID(Y0d4aGVXVnljdw); } }
+			players.length=varuint.decode(_buffer, *_index); foreach(ref cGxheWVycw;players){ if(_buffer.length>=*_index+16){ ubyte[16] Y0d4aGVXVnljdw=buffer[*_index..*_index+16].dup; *_index+=16; cGxheWVycw=UUID(Y0d4aGVXVnljdw); } }
 			return this;
 		}
 
@@ -2879,7 +2879,7 @@ struct AvailableCommands {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
-		ubyte[] Y29tbWFuZHM=cast(ubyte[])commands; _buffer~=varuint.encode(Y29tbWFuZHM.length.to!uint);_buffer~=Y29tbWFuZHM;
+		ubyte[] Y29tbWFuZHM=cast(ubyte[])commands; _buffer~=varuint.encode(Y29tbWFuZHM.length.to!uint); _buffer~=Y29tbWFuZHM;
 		return _buffer;
 	}
 
@@ -2889,7 +2889,7 @@ struct AvailableCommands {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		ubyte[] Y29tbWFuZHM; Y29tbWFuZHM.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y29tbWFuZHM.length){ Y29tbWFuZHM=_buffer[*_index..*_index+Y29tbWFuZHM.length].dup; *_index+=Y29tbWFuZHM.length; }; commands=cast(string)Y29tbWFuZHM;
+		ubyte[] Y29tbWFuZHM; Y29tbWFuZHM.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y29tbWFuZHM.length){ Y29tbWFuZHM=_buffer[*_index..*_index+Y29tbWFuZHM.length].dup; *_index+=Y29tbWFuZHM.length; }; commands=cast(string)Y29tbWFuZHM;
 		return this;
 	}
 
@@ -2914,14 +2914,14 @@ struct CommandStep {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
-		ubyte[] Y29tbWFuZA=cast(ubyte[])command; _buffer~=varuint.encode(Y29tbWFuZA.length.to!uint);_buffer~=Y29tbWFuZA;
-		ubyte[] b3ZlcmxvYWQ=cast(ubyte[])overload; _buffer~=varuint.encode(b3ZlcmxvYWQ.length.to!uint);_buffer~=b3ZlcmxvYWQ;
+		ubyte[] Y29tbWFuZA=cast(ubyte[])command; _buffer~=varuint.encode(Y29tbWFuZA.length.to!uint); _buffer~=Y29tbWFuZA;
+		ubyte[] b3ZlcmxvYWQ=cast(ubyte[])overload; _buffer~=varuint.encode(b3ZlcmxvYWQ.length.to!uint); _buffer~=b3ZlcmxvYWQ;
 		_buffer~=varuint.encode(unknown2);
 		_buffer~=varuint.encode(unknown3);
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, isOutput, _buffer.length-bool.sizeof);
 		_buffer~=varulong.encode(unknown5);
-		ubyte[] aW5wdXQ=cast(ubyte[])input; _buffer~=varuint.encode(aW5wdXQ.length.to!uint);_buffer~=aW5wdXQ;
-		ubyte[] b3V0cHV0=cast(ubyte[])output; _buffer~=varuint.encode(b3V0cHV0.length.to!uint);_buffer~=b3V0cHV0;
+		ubyte[] aW5wdXQ=cast(ubyte[])input; _buffer~=varuint.encode(aW5wdXQ.length.to!uint); _buffer~=aW5wdXQ;
+		ubyte[] b3V0cHV0=cast(ubyte[])output; _buffer~=varuint.encode(b3V0cHV0.length.to!uint); _buffer~=b3V0cHV0;
 		return _buffer;
 	}
 
@@ -2931,14 +2931,14 @@ struct CommandStep {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		ubyte[] Y29tbWFuZA; Y29tbWFuZA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y29tbWFuZA.length){ Y29tbWFuZA=_buffer[*_index..*_index+Y29tbWFuZA.length].dup; *_index+=Y29tbWFuZA.length; }; command=cast(string)Y29tbWFuZA;
-		ubyte[] b3ZlcmxvYWQ; b3ZlcmxvYWQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+b3ZlcmxvYWQ.length){ b3ZlcmxvYWQ=_buffer[*_index..*_index+b3ZlcmxvYWQ.length].dup; *_index+=b3ZlcmxvYWQ.length; }; overload=cast(string)b3ZlcmxvYWQ;
+		ubyte[] Y29tbWFuZA; Y29tbWFuZA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y29tbWFuZA.length){ Y29tbWFuZA=_buffer[*_index..*_index+Y29tbWFuZA.length].dup; *_index+=Y29tbWFuZA.length; }; command=cast(string)Y29tbWFuZA;
+		ubyte[] b3ZlcmxvYWQ; b3ZlcmxvYWQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+b3ZlcmxvYWQ.length){ b3ZlcmxvYWQ=_buffer[*_index..*_index+b3ZlcmxvYWQ.length].dup; *_index+=b3ZlcmxvYWQ.length; }; overload=cast(string)b3ZlcmxvYWQ;
 		unknown2=varuint.decode(_buffer, *_index);
 		unknown3=varuint.decode(_buffer, *_index);
 		if(_buffer.length>=*_index+bool.sizeof){ isOutput=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		unknown5=varulong.decode(_buffer, *_index);
-		ubyte[] aW5wdXQ; aW5wdXQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+aW5wdXQ.length){ aW5wdXQ=_buffer[*_index..*_index+aW5wdXQ.length].dup; *_index+=aW5wdXQ.length; }; input=cast(string)aW5wdXQ;
-		ubyte[] b3V0cHV0; b3V0cHV0.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+b3V0cHV0.length){ b3V0cHV0=_buffer[*_index..*_index+b3V0cHV0.length].dup; *_index+=b3V0cHV0.length; }; output=cast(string)b3V0cHV0;
+		ubyte[] aW5wdXQ; aW5wdXQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+aW5wdXQ.length){ aW5wdXQ=_buffer[*_index..*_index+aW5wdXQ.length].dup; *_index+=aW5wdXQ.length; }; input=cast(string)aW5wdXQ;
+		ubyte[] b3V0cHV0; b3V0cHV0.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+b3V0cHV0.length){ b3V0cHV0=_buffer[*_index..*_index+b3V0cHV0.length].dup; *_index+=b3V0cHV0.length; }; output=cast(string)b3V0cHV0;
 		return this;
 	}
 

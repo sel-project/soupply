@@ -70,7 +70,7 @@ struct Nodes {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
 		_buffer~=action;
-		ubyte[] bm9kZQ=cast(ubyte[])node; _buffer~=varuint.encode(bm9kZQ.length.to!uint);_buffer~=bm9kZQ;
+		ubyte[] bm9kZQ=cast(ubyte[])node; _buffer~=varuint.encode(bm9kZQ.length.to!uint); _buffer~=bm9kZQ;
 		return _buffer;
 	}
 
@@ -81,7 +81,7 @@ struct Nodes {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		if(_buffer.length>=*_index+ubyte.sizeof){ action=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] bm9kZQ; bm9kZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bm9kZQ.length){ bm9kZQ=_buffer[*_index..*_index+bm9kZQ.length].dup; *_index+=bm9kZQ.length; }; node=cast(string)bm9kZQ;
+		ubyte[] bm9kZQ; bm9kZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bm9kZQ.length){ bm9kZQ=_buffer[*_index..*_index+bm9kZQ.length].dup; *_index+=bm9kZQ.length; }; node=cast(string)bm9kZQ;
 		return this;
 	}
 

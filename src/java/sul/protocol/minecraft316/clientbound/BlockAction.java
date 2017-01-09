@@ -20,6 +20,28 @@ class BlockAction extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
+	// action
+	public final static byte NOTE_BLOCK_HARP = (byte)0;
+	public final static byte NOTE_BLOCK_BASS_DRUM = (byte)1;
+	public final static byte NOTE_BLOCK_SNARE_DRUM = (byte)2;
+	public final static byte NOTE_BLOCK_CLICKS = (byte)3;
+	public final static byte NOTE_BLOCK_STICKS = (byte)3;
+	public final static byte NOTE_BLOCK_BASS_GUITAR = (byte)4;
+	public final static byte PISTON_EXTEND = (byte)0;
+	public final static byte PISTON_RETRACT = (byte)1;
+	public final static byte CHEST_WATCHERS = (byte)1;
+	public final static byte BEACON_RECALCULATE = (byte)1;
+	public final static byte MOB_SPAWNER_RESET_DELAY = (byte)1;
+	public final static byte END_GATEWAY_YELLOW_BEAM = (byte)1;
+
+	// parameter
+	public final static byte PISTON_DOWN = (byte)0;
+	public final static byte PISTON_UP = (byte)1;
+	public final static byte PISTON_SOUTH = (byte)2;
+	public final static byte PISTON_WEST = (byte)3;
+	public final static byte PISTON_NORTH = (byte)4;
+	public final static byte PISTON_EAST = (byte)5;
+
 	public long position;
 	public byte action;
 	public byte parameter;

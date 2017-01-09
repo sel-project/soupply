@@ -67,7 +67,7 @@ struct UpdateNodes {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
 		_buffer~=action;
-		ubyte[] bm9kZQ=cast(ubyte[])node; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, bm9kZQ.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=bm9kZQ;
+		ubyte[] bm9kZQ=cast(ubyte[])node; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, bm9kZQ.length.to!ushort, _buffer.length-ushort.sizeof); _buffer~=bm9kZQ;
 		return _buffer;
 	}
 
@@ -78,7 +78,7 @@ struct UpdateNodes {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		if(_buffer.length>=*_index+ubyte.sizeof){ action=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] bm9kZQ; if(_buffer.length>=*_index+ushort.sizeof){ bm9kZQ.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+bm9kZQ.length){ bm9kZQ=_buffer[*_index..*_index+bm9kZQ.length].dup; *_index+=bm9kZQ.length; }; node=cast(string)bm9kZQ;
+		ubyte[] bm9kZQ; if(_buffer.length>=*_index+ushort.sizeof){ bm9kZQ.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } if(_buffer.length>=*_index+bm9kZQ.length){ bm9kZQ=_buffer[*_index..*_index+bm9kZQ.length].dup; *_index+=bm9kZQ.length; }; node=cast(string)bm9kZQ;
 		return this;
 	}
 
@@ -106,7 +106,7 @@ struct UpdateStats {
 		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, uptime, _buffer.length-uint.sizeof);
 		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, upload, _buffer.length-uint.sizeof);
 		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, download, _buffer.length-uint.sizeof);
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, nodes.length.to!ushort, _buffer.length-ushort.sizeof);foreach(bm9kZXM;nodes){ bm9kZXM.encode(_buffer); }
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, nodes.length.to!ushort, _buffer.length-ushort.sizeof); foreach(bm9kZXM;nodes){ bm9kZXM.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -121,7 +121,7 @@ struct UpdateStats {
 		if(_buffer.length>=*_index+uint.sizeof){ uptime=peek!(uint, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+uint.sizeof){ upload=peek!(uint, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+uint.sizeof){ download=peek!(uint, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ushort.sizeof){ nodes.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }foreach(ref bm9kZXM;nodes){ bm9kZXM.decode(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ nodes.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } foreach(ref bm9kZXM;nodes){ bm9kZXM.decode(_buffer, _index); }
 		return this;
 	}
 

@@ -28,13 +28,13 @@ struct Statistic {
 	}
 
 	public ubyte[] encode(ref ubyte[] _buffer) {
-		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint);_buffer~=bmFtZQ;
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint); _buffer~=bmFtZQ;
 		_buffer~=varuint.encode(value);
 		return _buffer;
 	}
 
 	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
 		value=varuint.decode(_buffer, *_index);
 		return this;
 	}
@@ -151,18 +151,18 @@ struct Property {
 	}
 
 	public ubyte[] encode(ref ubyte[] _buffer) {
-		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint);_buffer~=bmFtZQ;
-		ubyte[] dmFsdWU=cast(ubyte[])value; _buffer~=varuint.encode(dmFsdWU.length.to!uint);_buffer~=dmFsdWU;
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint); _buffer~=bmFtZQ;
+		ubyte[] dmFsdWU=cast(ubyte[])value; _buffer~=varuint.encode(dmFsdWU.length.to!uint); _buffer~=dmFsdWU;
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, signed, _buffer.length-bool.sizeof);
-		if(signed==true){ ubyte[] c2lnbmF0dXJl=cast(ubyte[])signature; _buffer~=varuint.encode(c2lnbmF0dXJl.length.to!uint);_buffer~=c2lnbmF0dXJl; }
+		if(signed==true){ ubyte[] c2lnbmF0dXJl=cast(ubyte[])signature; _buffer~=varuint.encode(c2lnbmF0dXJl.length.to!uint); _buffer~=c2lnbmF0dXJl; }
 		return _buffer;
 	}
 
 	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
-		ubyte[] dmFsdWU; dmFsdWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dmFsdWU.length){ dmFsdWU=_buffer[*_index..*_index+dmFsdWU.length].dup; *_index+=dmFsdWU.length; }; value=cast(string)dmFsdWU;
+		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		ubyte[] dmFsdWU; dmFsdWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dmFsdWU.length){ dmFsdWU=_buffer[*_index..*_index+dmFsdWU.length].dup; *_index+=dmFsdWU.length; }; value=cast(string)dmFsdWU;
 		if(_buffer.length>=*_index+bool.sizeof){ signed=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		if(signed==true){ ubyte[] c2lnbmF0dXJl; c2lnbmF0dXJl.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c2lnbmF0dXJl.length){ c2lnbmF0dXJl=_buffer[*_index..*_index+c2lnbmF0dXJl.length].dup; *_index+=c2lnbmF0dXJl.length; }; signature=cast(string)c2lnbmF0dXJl; }
+		if(signed==true){ ubyte[] c2lnbmF0dXJl; c2lnbmF0dXJl.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c2lnbmF0dXJl.length){ c2lnbmF0dXJl=_buffer[*_index..*_index+c2lnbmF0dXJl.length].dup; *_index+=c2lnbmF0dXJl.length; }; signature=cast(string)c2lnbmF0dXJl; }
 		return this;
 	}
 
@@ -192,23 +192,23 @@ struct ListAddPlayer {
 
 	public ubyte[] encode(ref ubyte[] _buffer) {
 		_buffer~=uuid.data;
-		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint);_buffer~=bmFtZQ;
-		_buffer~=varuint.encode(properties.length.to!uint);foreach(cHJvcGVydGllcw;properties){ cHJvcGVydGllcw.encode(_buffer); }
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint); _buffer~=bmFtZQ;
+		_buffer~=varuint.encode(properties.length.to!uint); foreach(cHJvcGVydGllcw;properties){ cHJvcGVydGllcw.encode(_buffer); }
 		_buffer~=varuint.encode(gamemode);
 		_buffer~=varuint.encode(latency);
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, hasDisplayName, _buffer.length-bool.sizeof);
-		if(has_display_name==true){ ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint);_buffer~=ZGlzcGxheU5hbWU; }
+		if(has_display_name==true){ ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint); _buffer~=ZGlzcGxheU5hbWU; }
 		return _buffer;
 	}
 
 	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
 		if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
-		properties.length=varuint.decode(_buffer, *_index);foreach(ref cHJvcGVydGllcw;properties){ cHJvcGVydGllcw.decode(_buffer, _index); }
+		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		properties.length=varuint.decode(_buffer, *_index); foreach(ref cHJvcGVydGllcw;properties){ cHJvcGVydGllcw.decode(_buffer, _index); }
 		gamemode=varuint.decode(_buffer, *_index);
 		latency=varuint.decode(_buffer, *_index);
 		if(_buffer.length>=*_index+bool.sizeof){ hasDisplayName=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		if(has_display_name==true){ ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU; }
+		if(has_display_name==true){ ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU; }
 		return this;
 	}
 
@@ -260,14 +260,14 @@ struct ListUpdateDisplayName {
 	public ubyte[] encode(ref ubyte[] _buffer) {
 		_buffer~=uuid.data;
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, hasDisplayName, _buffer.length-bool.sizeof);
-		if(has_display_name==true){ ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint);_buffer~=ZGlzcGxheU5hbWU; }
+		if(has_display_name==true){ ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint); _buffer~=ZGlzcGxheU5hbWU; }
 		return _buffer;
 	}
 
 	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
 		if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
 		if(_buffer.length>=*_index+bool.sizeof){ hasDisplayName=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		if(has_display_name==true){ ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU; }
+		if(has_display_name==true){ ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU; }
 		return this;
 	}
 

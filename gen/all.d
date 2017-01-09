@@ -33,6 +33,15 @@ alias Item = Tuple!(string, "name", ushort, "id", ushort, "meta", Enchantment[],
 alias Creative = File!(Item[]);
 
 
+alias MetadataFlag = Tuple!(string, "name", string, "description", size_t, "bit");
+
+alias MetadataType = Tuple!(string, "name", string, "description", string, "type", ubyte, "id", string, "def", bool, "required", MetadataFlag[], "flags");
+
+alias Metadata = Tuple!(ubyte[string], "types", MetadataType[], "metadatas");
+
+alias Metadatas = File!Metadata;
+
+
 alias Constant = Tuple!(string, "name", string, "value");
 
 alias Field = Tuple!(string, "name", string, "type", string, "condition", string, "endianness", string, "description", Constant[], "constants");
@@ -115,6 +124,54 @@ void main(string[] args) {
 		}
 	}
 
+	// metadata
+	Metadatas[string] metadata;
+	foreach(string file ; dirEntries("../xml/metadata", SpanMode.breadth)) {
+		if(file.isFile && file.endsWith(".xml")) {
+			Metadatas m;
+			foreach(element ; new Document(cast(string)read(file)).elements) {
+				switch(element.tag.name) {
+					case "software":
+						m.software = element.text.strip;
+						break;
+					case "protocol":
+						m.protocol = element.text.strip.to!size_t;
+						break;
+					case "types":
+						foreach(t ; element.elements) {
+							if(t.tag.name == "type") {
+
+							}
+						}
+						break;
+					case "metadatas":
+						foreach(md ; element.elements) {
+							if(md.tag.name == "type") {
+								MetadataType type;
+								type.name = md.tag.attr["name"].replace("-", "_");
+								type.description = text(md);
+								type.type = md.tag.attr["type"].replace("-", "_");
+								type.id = md.tag.attr["id"].to!ubyte;
+								if("default" in md.tag.attr) type.def = md.tag.attr["default"];
+								if("required" in md.tag.attr) type.required = md.tag.attr["required"].to!bool;
+								foreach(f ; md.elements) {
+									if(f.tag.name == "flag") {
+										type.flags ~= MetadataFlag(f.tag.attr["name"].replace("-", "_"), text(f), to!size_t(f.tag.attr["bit"]));
+
+									}
+								}
+								m.data.metadatas ~= type;
+							}
+						}
+						break;
+					default:
+						break;
+				}
+			}
+			metadata[file.name!"xml"] = m;
+		}
+	}
+
 	// protocol
 	Protocols[string] protocols;
 	foreach(string file ; dirEntries("../xml/protocol", SpanMode.breadth)) {
@@ -127,19 +184,6 @@ void main(string[] args) {
 				auto a = t in aliases;
 				if(a) t = *a;
 				return t ~ type[end..$];
-			}
-			@property string text(Element element) {
-				return decode(strip((){
-					if(element.texts.length) {
-						return element.texts[0].to!string;
-					} else {
-						try {
-							return element.text;
-						} catch(DecodeException) {
-							return "";
-						}
-					}
-				}()));
 			}
 			foreach(element ; new Document(cast(string)read(file)).elements) {
 				switch(element.tag.name) {
@@ -274,17 +318,31 @@ void main(string[] args) {
 		}
 	}
 
-	d.d(attributes, protocols, creative);
+	d.d(attributes, protocols, metadata, creative);
 	java.java(attributes, protocols, creative);
 	js.js(attributes, protocols, creative);
 
-	doc.doc(attributes, protocols);
+	doc.doc(attributes, protocols, metadata);
 	json.json(attributes, protocols, creative);
 
 }
 
 @property string name(string ext)(string file) {
 	return file[file.lastIndexOf(dirSeparator)+1..$-ext.length-1];
+}
+
+@property string text(Element element) {
+	return decode(strip((){
+		if(element.texts.length) {
+			return element.texts[0].to!string;
+		} else {
+			try {
+				return element.text;
+			} catch(DecodeException) {
+				return "";
+			}
+		}
+	}()));
 }
 
 @property string toCamelCase(string str) {

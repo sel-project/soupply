@@ -64,7 +64,7 @@ struct TabComplete {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint);_buffer~=dGV4dA;
+		ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint); _buffer~=dGV4dA;
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, command, _buffer.length-bool.sizeof);
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, hasPosition, _buffer.length-bool.sizeof);
 		if(has_position==true){ _buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, block, _buffer.length-ulong.sizeof); }
@@ -77,7 +77,7 @@ struct TabComplete {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
+		ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
 		if(_buffer.length>=*_index+bool.sizeof){ command=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+bool.sizeof){ hasPosition=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		if(has_position==true){ if(_buffer.length>=*_index+ulong.sizeof){ block=peek!(ulong, Endian.bigEndian)(_buffer, _index); } }
@@ -98,7 +98,7 @@ struct ChatMessage {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint);_buffer~=dGV4dA;
+		ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint); _buffer~=dGV4dA;
 		return _buffer;
 	}
 
@@ -108,7 +108,7 @@ struct ChatMessage {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
+		ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
 		return this;
 	}
 
@@ -182,7 +182,7 @@ struct ClientSettings {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] bGFuZ3VhZ2U=cast(ubyte[])language; _buffer~=varuint.encode(bGFuZ3VhZ2U.length.to!uint);_buffer~=bGFuZ3VhZ2U;
+		ubyte[] bGFuZ3VhZ2U=cast(ubyte[])language; _buffer~=varuint.encode(bGFuZ3VhZ2U.length.to!uint); _buffer~=bGFuZ3VhZ2U;
 		_buffer~=viewDistance;
 		_buffer~=varuint.encode(chatMode);
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, chatColors, _buffer.length-bool.sizeof);
@@ -197,7 +197,7 @@ struct ClientSettings {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] bGFuZ3VhZ2U; bGFuZ3VhZ2U.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bGFuZ3VhZ2U.length){ bGFuZ3VhZ2U=_buffer[*_index..*_index+bGFuZ3VhZ2U.length].dup; *_index+=bGFuZ3VhZ2U.length; }; language=cast(string)bGFuZ3VhZ2U;
+		ubyte[] bGFuZ3VhZ2U; bGFuZ3VhZ2U.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bGFuZ3VhZ2U.length){ bGFuZ3VhZ2U=_buffer[*_index..*_index+bGFuZ3VhZ2U.length].dup; *_index+=bGFuZ3VhZ2U.length; }; language=cast(string)bGFuZ3VhZ2U;
 		if(_buffer.length>=*_index+ubyte.sizeof){ viewDistance=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		chatMode=varuint.decode(_buffer, *_index);
 		if(_buffer.length>=*_index+bool.sizeof){ chatColors=peek!(bool, Endian.bigEndian)(_buffer, _index); }
@@ -280,7 +280,7 @@ struct ClickWindow {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public ubyte[] window;
+	public ubyte window;
 	public ushort slot;
 	public ubyte button;
 	public ushort action;
@@ -290,7 +290,7 @@ struct ClickWindow {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		_buffer~=varuint.encode(window.length.to!uint);_buffer~=window;
+		_buffer~=window;
 		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, slot, _buffer.length-ushort.sizeof);
 		_buffer~=button;
 		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, action, _buffer.length-ushort.sizeof);
@@ -305,7 +305,7 @@ struct ClickWindow {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		window.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+window.length){ window=_buffer[*_index..*_index+window.length].dup; *_index+=window.length; }
+		if(_buffer.length>=*_index+ubyte.sizeof){ window=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ushort.sizeof){ slot=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ button=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ushort.sizeof){ action=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
@@ -357,7 +357,7 @@ struct PluginMessage {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] Y2hhbm5lbA=cast(ubyte[])channel; _buffer~=varuint.encode(Y2hhbm5lbA.length.to!uint);_buffer~=Y2hhbm5lbA;
+		ubyte[] Y2hhbm5lbA=cast(ubyte[])channel; _buffer~=varuint.encode(Y2hhbm5lbA.length.to!uint); _buffer~=Y2hhbm5lbA;
 		_buffer~=data;
 		return _buffer;
 	}
@@ -368,7 +368,7 @@ struct PluginMessage {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] Y2hhbm5lbA; Y2hhbm5lbA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y2hhbm5lbA.length){ Y2hhbm5lbA=_buffer[*_index..*_index+Y2hhbm5lbA.length].dup; *_index+=Y2hhbm5lbA.length; }; channel=cast(string)Y2hhbm5lbA;
+		ubyte[] Y2hhbm5lbA; Y2hhbm5lbA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y2hhbm5lbA.length){ Y2hhbm5lbA=_buffer[*_index..*_index+Y2hhbm5lbA.length].dup; *_index+=Y2hhbm5lbA.length; }; channel=cast(string)Y2hhbm5lbA;
 		data=_buffer[*_index..$].dup; *_index=buffer.length;
 		return this;
 	}
@@ -918,7 +918,7 @@ struct UpdateSign {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
 		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, position, _buffer.length-ulong.sizeof);
-		foreach(bGluZXM;lines){ ubyte[] YkdsdVpYTQ=cast(ubyte[])bGluZXM; _buffer~=varuint.encode(YkdsdVpYTQ.length.to!uint);_buffer~=YkdsdVpYTQ; }
+		foreach(bGluZXM;lines){ ubyte[] YkdsdVpYTQ=cast(ubyte[])bGluZXM; _buffer~=varuint.encode(YkdsdVpYTQ.length.to!uint); _buffer~=YkdsdVpYTQ; }
 		return _buffer;
 	}
 
@@ -929,7 +929,7 @@ struct UpdateSign {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
 		if(_buffer.length>=*_index+ulong.sizeof){ position=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
-		foreach(ref bGluZXM;lines){ ubyte[] YkdsdVpYTQ; YkdsdVpYTQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+YkdsdVpYTQ.length){ YkdsdVpYTQ=_buffer[*_index..*_index+YkdsdVpYTQ.length].dup; *_index+=YkdsdVpYTQ.length; }; bGluZXM=cast(string)YkdsdVpYTQ; }
+		foreach(ref bGluZXM;lines){ ubyte[] YkdsdVpYTQ; YkdsdVpYTQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+YkdsdVpYTQ.length){ YkdsdVpYTQ=_buffer[*_index..*_index+YkdsdVpYTQ.length].dup; *_index+=YkdsdVpYTQ.length; }; bGluZXM=cast(string)YkdsdVpYTQ; }
 		return this;
 	}
 

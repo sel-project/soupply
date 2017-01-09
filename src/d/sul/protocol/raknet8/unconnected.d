@@ -70,7 +70,7 @@ struct Pong {
 		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, pingId, _buffer.length-long.sizeof);
 		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, serverId, _buffer.length-long.sizeof);
 		_buffer~=magic;
-		ubyte[] c3RhdHVz=cast(ubyte[])status; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, c3RhdHVz.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=c3RhdHVz;
+		ubyte[] c3RhdHVz=cast(ubyte[])status; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, c3RhdHVz.length.to!ushort, _buffer.length-ushort.sizeof); _buffer~=c3RhdHVz;
 		return _buffer;
 	}
 
@@ -83,7 +83,7 @@ struct Pong {
 		if(_buffer.length>=*_index+long.sizeof){ pingId=peek!(long, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+long.sizeof){ serverId=peek!(long, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+magic.length){ magic=_buffer[*_index..*_index+magic.length].dup; *_index+=magic.length; }
-		ubyte[] c3RhdHVz; if(_buffer.length>=*_index+ushort.sizeof){ c3RhdHVz.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+c3RhdHVz.length){ c3RhdHVz=_buffer[*_index..*_index+c3RhdHVz.length].dup; *_index+=c3RhdHVz.length; }; status=cast(string)c3RhdHVz;
+		ubyte[] c3RhdHVz; if(_buffer.length>=*_index+ushort.sizeof){ c3RhdHVz.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } if(_buffer.length>=*_index+c3RhdHVz.length){ c3RhdHVz=_buffer[*_index..*_index+c3RhdHVz.length].dup; *_index+=c3RhdHVz.length; }; status=cast(string)c3RhdHVz;
 		return this;
 	}
 

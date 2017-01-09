@@ -21,19 +21,25 @@ class WindowProperty extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// property
-	public final static short FIRE_ICON = (short)0;
-	public final static short MAX_FUEL_BURN_TIME = (short)1;
-	public final static short PROGRESS_ARROW = (short)2;
-	public final static short MAX_PROGRESS = (short)3;
-	public final static short LEVEL_REQUIREMENT_TOP_ENCHANTMENT = (short)0;
-	public final static short LEVEL_REQUIREMENT_MIDDLE_ENCHANTMENT = (short)1;
-	public final static short LEVEL_REQUIREMENT_BOTTOM_ENCHANTMENT = (short)2;
+	public final static short FURNANCE_FIRE_ICON = (short)0;
+	public final static short FURNACE_MAX_FUEL_BURN_TIME = (short)1;
+	public final static short FURNACE_PROGRESS_ARROW = (short)2;
+	public final static short FURNCE_MAX_PROGRESS = (short)3;
+	public final static short ENCHANTMENT_LEVEL_REQUIREMENT_TOP = (short)0;
+	public final static short ENCHANTMENT_LEVEL_REQUIREMENT_MIDDLE = (short)1;
+	public final static short ENCHANTMENT_LEVEL_REQUIREMENT_BOTTOM = (short)2;
 	public final static short ENCHANTMENT_SEED = (short)3;
-	public final static short POWER_LEVEL = (short)0;
-	public final static short FIRST_POTION_EFFECT = (short)1;
-	public final static short SECOND_POTION_EFFECT = (short)2;
-	public final static short REPAIR_COST = (short)0;
-	public final static short BREW_TIME = (short)0;
+	public final static short ENCHANTMENT_ID_TOP = (short)4;
+	public final static short ENCHANTMENT_ID_MIDDLE = (short)5;
+	public final static short ENCHANTMENT_ID_BOTTOM = (short)6;
+	public final static short ENCHANTMENT_LEVEL_TOP = (short)7;
+	public final static short ENCHANTMENT_LEVEL_MIDDLE = (short)8;
+	public final static short ENCHANTMENT_LEVEL_BOTTOM = (short)9;
+	public final static short BEACON_POWER_LEVEL = (short)0;
+	public final static short BEACON_FIRST_EFFECT = (short)1;
+	public final static short BEACON_SECOND_EFFECT = (short)2;
+	public final static short ANVIL_REPAIR_COST = (short)0;
+	public final static short BREWING_STAND_BREW_TIME = (short)0;
 
 	public byte window;
 	public short property;

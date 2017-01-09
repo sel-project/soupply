@@ -20,7 +20,7 @@ class ClickWindow extends Packet {
 	public final static boolean CLIENTBOUND = false;
 	public final static boolean SERVERBOUND = true;
 
-	public byte[] window;
+	public byte window;
 	public short slot;
 	public byte button;
 	public short action;
@@ -29,7 +29,7 @@ class ClickWindow extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(window.length) + window.length() + Var.Uint.length(mode) + clickedItem.length() + 5;
+		return Var.Uint.length(mode) + clickedItem.length() + 6;
 	}
 
 	@Override

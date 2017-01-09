@@ -23,10 +23,11 @@ class Kick extends Packet {
 	public int hubId;
 	public String reason;
 	public boolean translation;
+	public String[] parameters;
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + Var.Uint.length(reason.getBytes(StandardCharset.UTF_8).length) + reason.getBytes(StandardCharset.UTF_8).length + 1;
+		return Var.Uint.length(hubId) + Var.Uint.length(reason.getBytes(StandardCharset.UTF_8).length) + reason.getBytes(StandardCharset.UTF_8).length + Var.Uint.length(parameters.length) + parameters.length() + 1;
 	}
 
 	@Override

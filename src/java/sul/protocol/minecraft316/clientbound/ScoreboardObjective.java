@@ -25,6 +25,10 @@ class ScoreboardObjective extends Packet {
 	public final static byte REMOVE = (byte)1;
 	public final static byte UPDATE = (byte)2;
 
+	// type
+	public final static String NUMERIC = (String)integer;
+	public final static String GRAPHIC = (String)hearts;
+
 	public String name;
 	public byte mode;
 	public String value;

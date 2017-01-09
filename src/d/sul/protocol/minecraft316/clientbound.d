@@ -200,6 +200,12 @@ struct SpawnPainting {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	// direction
+	public enum ubyte SOUTH = 0;
+	public enum ubyte WEST = 1;
+	public enum ubyte NORTH = 2;
+	public enum ubyte EAST = 3;
+
 	public uint entityId;
 	public UUID uuid;
 	public string title;
@@ -211,7 +217,7 @@ struct SpawnPainting {
 		static if(writeId){ _buffer~=varuint.encode(ID); }
 		_buffer~=varuint.encode(entityId);
 		_buffer~=uuid.data;
-		ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint);_buffer~=dGl0bGU;
+		ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint); _buffer~=dGl0bGU;
 		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, position, _buffer.length-ulong.sizeof);
 		_buffer~=direction;
 		return _buffer;
@@ -225,7 +231,7 @@ struct SpawnPainting {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
 		entityId=varuint.decode(_buffer, *_index);
 		if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
-		ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
+		ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
 		if(_buffer.length>=*_index+ulong.sizeof){ position=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ direction=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
@@ -327,7 +333,7 @@ struct Statistics {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		_buffer~=varuint.encode(statistics.length.to!uint);foreach(c3RhdGlzdGljcw;statistics){ c3RhdGlzdGljcw.encode(_buffer); }
+		_buffer~=varuint.encode(statistics.length.to!uint); foreach(c3RhdGlzdGljcw;statistics){ c3RhdGlzdGljcw.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -337,7 +343,7 @@ struct Statistics {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		statistics.length=varuint.decode(_buffer, *_index);foreach(ref c3RhdGlzdGljcw;statistics){ c3RhdGlzdGljcw.decode(_buffer, _index); }
+		statistics.length=varuint.decode(_buffer, *_index); foreach(ref c3RhdGlzdGljcw;statistics){ c3RhdGlzdGljcw.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -429,6 +435,28 @@ struct BlockAction {
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
+
+	// action
+	public enum ubyte NOTE_BLOCK_HARP = 0;
+	public enum ubyte NOTE_BLOCK_BASS_DRUM = 1;
+	public enum ubyte NOTE_BLOCK_SNARE_DRUM = 2;
+	public enum ubyte NOTE_BLOCK_CLICKS = 3;
+	public enum ubyte NOTE_BLOCK_STICKS = 3;
+	public enum ubyte NOTE_BLOCK_BASS_GUITAR = 4;
+	public enum ubyte PISTON_EXTEND = 0;
+	public enum ubyte PISTON_RETRACT = 1;
+	public enum ubyte CHEST_WATCHERS = 1;
+	public enum ubyte BEACON_RECALCULATE = 1;
+	public enum ubyte MOB_SPAWNER_RESET_DELAY = 1;
+	public enum ubyte END_GATEWAY_YELLOW_BEAM = 1;
+
+	// parameter
+	public enum ubyte PISTON_DOWN = 0;
+	public enum ubyte PISTON_UP = 1;
+	public enum ubyte PISTON_SOUTH = 2;
+	public enum ubyte PISTON_WEST = 3;
+	public enum ubyte PISTON_NORTH = 4;
+	public enum ubyte PISTON_EAST = 5;
 
 	public ulong position;
 	public ubyte action;
@@ -557,7 +585,7 @@ struct BossBar {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint);_buffer~=dGl0bGU;
+			ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint); _buffer~=dGl0bGU;
 			_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, health, _buffer.length-float.sizeof);
 			_buffer~=varuint.encode(color);
 			_buffer~=varuint.encode(division);
@@ -566,7 +594,7 @@ struct BossBar {
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
+			ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
 			if(_buffer.length>=*_index+float.sizeof){ health=peek!(float, Endian.bigEndian)(_buffer, _index); }
 			color=varuint.decode(_buffer, *_index);
 			division=varuint.decode(_buffer, *_index);
@@ -633,12 +661,12 @@ struct BossBar {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint);_buffer~=dGl0bGU;
+			ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint); _buffer~=dGl0bGU;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
+			ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
 			return this;
 		}
 
@@ -763,7 +791,7 @@ struct TabComplete {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		_buffer~=varuint.encode(matches.length.to!uint);foreach(bWF0Y2hlcw;matches){ ubyte[] YldGMFkyaGxjdw=cast(ubyte[])bWF0Y2hlcw; _buffer~=varuint.encode(YldGMFkyaGxjdw.length.to!uint);_buffer~=YldGMFkyaGxjdw; }
+		_buffer~=varuint.encode(matches.length.to!uint); foreach(bWF0Y2hlcw;matches){ ubyte[] YldGMFkyaGxjdw=cast(ubyte[])bWF0Y2hlcw; _buffer~=varuint.encode(YldGMFkyaGxjdw.length.to!uint); _buffer~=YldGMFkyaGxjdw; }
 		return _buffer;
 	}
 
@@ -773,7 +801,7 @@ struct TabComplete {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		matches.length=varuint.decode(_buffer, *_index);foreach(ref bWF0Y2hlcw;matches){ ubyte[] YldGMFkyaGxjdw; YldGMFkyaGxjdw.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+YldGMFkyaGxjdw.length){ YldGMFkyaGxjdw=_buffer[*_index..*_index+YldGMFkyaGxjdw.length].dup; *_index+=YldGMFkyaGxjdw.length; }; bWF0Y2hlcw=cast(string)YldGMFkyaGxjdw; }
+		matches.length=varuint.decode(_buffer, *_index); foreach(ref bWF0Y2hlcw;matches){ ubyte[] YldGMFkyaGxjdw; YldGMFkyaGxjdw.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+YldGMFkyaGxjdw.length){ YldGMFkyaGxjdw=_buffer[*_index..*_index+YldGMFkyaGxjdw.length].dup; *_index+=YldGMFkyaGxjdw.length; }; bWF0Y2hlcw=cast(string)YldGMFkyaGxjdw; }
 		return this;
 	}
 
@@ -797,7 +825,7 @@ struct ChatMessage {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
+		ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint); _buffer~=bWVzc2FnZQ;
 		_buffer~=position;
 		return _buffer;
 	}
@@ -808,7 +836,7 @@ struct ChatMessage {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+		ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
 		if(_buffer.length>=*_index+ubyte.sizeof){ position=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
@@ -829,7 +857,7 @@ struct MultiBlockChange {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
 		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, chunk.x, _buffer.length-int.sizeof);_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, chunk.z, _buffer.length-int.sizeof);
-		_buffer~=varuint.encode(changes.length.to!uint);foreach(Y2hhbmdlcw;changes){ Y2hhbmdlcw.encode(_buffer); }
+		_buffer~=varuint.encode(changes.length.to!uint); foreach(Y2hhbmdlcw;changes){ Y2hhbmdlcw.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -840,7 +868,7 @@ struct MultiBlockChange {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
 		if(_buffer.length>=*_index+int.sizeof){ chunk.x=peek!(int, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+int.sizeof){ chunk.z=peek!(int, Endian.bigEndian)(_buffer, _index); }
-		changes.length=varuint.decode(_buffer, *_index);foreach(ref Y2hhbmdlcw;changes){ Y2hhbmdlcw.decode(_buffer, _index); }
+		changes.length=varuint.decode(_buffer, *_index); foreach(ref Y2hhbmdlcw;changes){ Y2hhbmdlcw.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -924,8 +952,8 @@ struct OpenWindow {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
 		_buffer~=window;
-		ubyte[] dHlwZQ=cast(ubyte[])type; _buffer~=varuint.encode(dHlwZQ.length.to!uint);_buffer~=dHlwZQ;
-		ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint);_buffer~=dGl0bGU;
+		ubyte[] dHlwZQ=cast(ubyte[])type; _buffer~=varuint.encode(dHlwZQ.length.to!uint); _buffer~=dHlwZQ;
+		ubyte[] dGl0bGU=cast(ubyte[])title; _buffer~=varuint.encode(dGl0bGU.length.to!uint); _buffer~=dGl0bGU;
 		_buffer~=slots;
 		return _buffer;
 	}
@@ -937,8 +965,8 @@ struct OpenWindow {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ window=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] dHlwZQ; dHlwZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dHlwZQ.length){ dHlwZQ=_buffer[*_index..*_index+dHlwZQ.length].dup; *_index+=dHlwZQ.length; }; type=cast(string)dHlwZQ;
-		ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
+		ubyte[] dHlwZQ; dHlwZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dHlwZQ.length){ dHlwZQ=_buffer[*_index..*_index+dHlwZQ.length].dup; *_index+=dHlwZQ.length; }; type=cast(string)dHlwZQ;
+		ubyte[] dGl0bGU; dGl0bGU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dGl0bGU.length){ dGl0bGU=_buffer[*_index..*_index+dGl0bGU.length].dup; *_index+=dGl0bGU.length; }; title=cast(string)dGl0bGU;
 		if(_buffer.length>=*_index+ubyte.sizeof){ slots=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
@@ -953,15 +981,13 @@ struct WindowItems {
 	public enum bool SERVERBOUND = false;
 
 	public ubyte window;
-	public ushort count;
 	public sul.protocol.minecraft316.types.Slot[] slots;
 
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
 		_buffer~=window;
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, count, _buffer.length-ushort.sizeof);
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, slots.length.to!ushort, _buffer.length-ushort.sizeof);foreach(c2xvdHM;slots){ c2xvdHM.encode(_buffer); }
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, slots.length.to!ushort, _buffer.length-ushort.sizeof); foreach(c2xvdHM;slots){ c2xvdHM.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -972,8 +998,7 @@ struct WindowItems {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ window=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ushort.sizeof){ count=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ushort.sizeof){ slots.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }foreach(ref c2xvdHM;slots){ c2xvdHM.decode(_buffer, _index); }
+		if(_buffer.length>=*_index+ushort.sizeof){ slots.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } foreach(ref c2xvdHM;slots){ c2xvdHM.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -987,19 +1012,25 @@ struct WindowProperty {
 	public enum bool SERVERBOUND = false;
 
 	// property
-	public enum ushort FIRE_ICON = 0;
-	public enum ushort MAX_FUEL_BURN_TIME = 1;
-	public enum ushort PROGRESS_ARROW = 2;
-	public enum ushort MAX_PROGRESS = 3;
-	public enum ushort LEVEL_REQUIREMENT_TOP_ENCHANTMENT = 0;
-	public enum ushort LEVEL_REQUIREMENT_MIDDLE_ENCHANTMENT = 1;
-	public enum ushort LEVEL_REQUIREMENT_BOTTOM_ENCHANTMENT = 2;
+	public enum ushort FURNANCE_FIRE_ICON = 0;
+	public enum ushort FURNACE_MAX_FUEL_BURN_TIME = 1;
+	public enum ushort FURNACE_PROGRESS_ARROW = 2;
+	public enum ushort FURNCE_MAX_PROGRESS = 3;
+	public enum ushort ENCHANTMENT_LEVEL_REQUIREMENT_TOP = 0;
+	public enum ushort ENCHANTMENT_LEVEL_REQUIREMENT_MIDDLE = 1;
+	public enum ushort ENCHANTMENT_LEVEL_REQUIREMENT_BOTTOM = 2;
 	public enum ushort ENCHANTMENT_SEED = 3;
-	public enum ushort POWER_LEVEL = 0;
-	public enum ushort FIRST_POTION_EFFECT = 1;
-	public enum ushort SECOND_POTION_EFFECT = 2;
-	public enum ushort REPAIR_COST = 0;
-	public enum ushort BREW_TIME = 0;
+	public enum ushort ENCHANTMENT_ID_TOP = 4;
+	public enum ushort ENCHANTMENT_ID_MIDDLE = 5;
+	public enum ushort ENCHANTMENT_ID_BOTTOM = 6;
+	public enum ushort ENCHANTMENT_LEVEL_TOP = 7;
+	public enum ushort ENCHANTMENT_LEVEL_MIDDLE = 8;
+	public enum ushort ENCHANTMENT_LEVEL_BOTTOM = 9;
+	public enum ushort BEACON_POWER_LEVEL = 0;
+	public enum ushort BEACON_FIRST_EFFECT = 1;
+	public enum ushort BEACON_SECOND_EFFECT = 2;
+	public enum ushort ANVIL_REPAIR_COST = 0;
+	public enum ushort BREWING_STAND_BREW_TIME = 0;
 
 	public ubyte window;
 	public ushort property;
@@ -1106,7 +1137,7 @@ struct PluginMessage {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] Y2hhbm5lbA=cast(ubyte[])channel; _buffer~=varuint.encode(Y2hhbm5lbA.length.to!uint);_buffer~=Y2hhbm5lbA;
+		ubyte[] Y2hhbm5lbA=cast(ubyte[])channel; _buffer~=varuint.encode(Y2hhbm5lbA.length.to!uint); _buffer~=Y2hhbm5lbA;
 		_buffer~=data;
 		return _buffer;
 	}
@@ -1117,7 +1148,7 @@ struct PluginMessage {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] Y2hhbm5lbA; Y2hhbm5lbA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y2hhbm5lbA.length){ Y2hhbm5lbA=_buffer[*_index..*_index+Y2hhbm5lbA.length].dup; *_index+=Y2hhbm5lbA.length; }; channel=cast(string)Y2hhbm5lbA;
+		ubyte[] Y2hhbm5lbA; Y2hhbm5lbA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y2hhbm5lbA.length){ Y2hhbm5lbA=_buffer[*_index..*_index+Y2hhbm5lbA.length].dup; *_index+=Y2hhbm5lbA.length; }; channel=cast(string)Y2hhbm5lbA;
 		data=_buffer[*_index..$].dup; *_index=buffer.length;
 		return this;
 	}
@@ -1140,7 +1171,7 @@ struct NamedSoundEffect {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint);_buffer~=bmFtZQ;
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint); _buffer~=bmFtZQ;
 		_buffer~=varuint.encode(category);
 		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.x, _buffer.length-int.sizeof);_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.y, _buffer.length-int.sizeof);_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.z, _buffer.length-int.sizeof);
 		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, volume, _buffer.length-float.sizeof);
@@ -1154,7 +1185,7 @@ struct NamedSoundEffect {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
 		category=varuint.decode(_buffer, *_index);
 		if(_buffer.length>=*_index+int.sizeof){ position.x=peek!(int, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+int.sizeof){ position.y=peek!(int, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+int.sizeof){ position.z=peek!(int, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+float.sizeof){ volume=peek!(float, Endian.bigEndian)(_buffer, _index); }
@@ -1176,7 +1207,7 @@ struct Disconnect {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] cmVhc29u=cast(ubyte[])reason; _buffer~=varuint.encode(cmVhc29u.length.to!uint);_buffer~=cmVhc29u;
+		ubyte[] cmVhc29u=cast(ubyte[])reason; _buffer~=varuint.encode(cmVhc29u.length.to!uint); _buffer~=cmVhc29u;
 		return _buffer;
 	}
 
@@ -1186,7 +1217,7 @@ struct Disconnect {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] cmVhc29u; cmVhc29u.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+cmVhc29u.length){ cmVhc29u=_buffer[*_index..*_index+cmVhc29u.length].dup; *_index+=cmVhc29u.length; }; reason=cast(string)cmVhc29u;
+		ubyte[] cmVhc29u; cmVhc29u.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+cmVhc29u.length){ cmVhc29u=_buffer[*_index..*_index+cmVhc29u.length].dup; *_index+=cmVhc29u.length; }; reason=cast(string)cmVhc29u;
 		return this;
 	}
 
@@ -1200,8 +1231,43 @@ struct EntityStatus {
 	public enum bool SERVERBOUND = false;
 
 	// status
-	public enum ubyte HURT = 2;
-	public enum ubyte DEAD = 3;
+	public enum ubyte SPAWN_TIPPED_ARROW_PARTICLE_EFFECTS = 0;
+	public enum ubyte PLAY_JUMPING_ANIMATION_AND_PARTICLES = 1;
+	public enum ubyte RESET_SPAWNER_DELAY = 1;
+	public enum ubyte PLAY_HURT_ANIMATION_AND_SOUND = 2;
+	public enum ubyte PLAY_DEAD_ANIMATION_AND_SOUND = 3;
+	public enum ubyte PLAY_ATTACK_ANIMATION_AND_SOUND = 4;
+	public enum ubyte SPAWN_SMOKE_PARTICLES = 6;
+	public enum ubyte SPAWN_HEART_PARTICLES = 7;
+	public enum ubyte PLAY_SHAKING_WATER_ANIMATION = 8;
+	public enum ubyte FINISHED_CONSUMING = 9;
+	public enum ubyte PLAY_EATING_GRASS_ANIMATION = 10;
+	public enum ubyte IGNITE_MINECART_TNT = 10;
+	public enum ubyte HOLD_POPPY = 11;
+	public enum ubyte SPAWN_VILLAGER_MATING_HEART_PARTICLES = 12;
+	public enum ubyte SPAWN_VILLAGER_ANGRY_PARTICLES = 13;
+	public enum ubyte SPAWN_VILLAGER_HAPPY_PARTICLES = 14;
+	public enum ubyte SPAWN_WITCH_MAGIC_PARTICLES = 15;
+	public enum ubyte PLAY_ZOMBIE_CURE_FINISHED_SOUND = 16;
+	public enum ubyte SPAWN_FIREWORK_EXPLOSION_EFFECT = 17;
+	public enum ubyte SPAWN_LOVE_PARTICLES = 18;
+	public enum ubyte RESET_SQUID_ROTATION = 19;
+	public enum ubyte SPAWN_EXPLOSION_PARTICLES = 20;
+	public enum ubyte PLAY_GUARDIAN_SOUND_EFFECT = 21;
+	public enum ubyte ENABLE_REDUCED_DEBUG_SCREEN = 22;
+	public enum ubyte DISABLE_REDUCED_DEBUG_SCREEN = 23;
+	public enum ubyte SET_OP_PERMISSION_LEVEL_0 = 24;
+	public enum ubyte SET_OP_PERMISSION_LEVEL_1 = 25;
+	public enum ubyte SET_OP_PERMISSION_LEVEL_2 = 26;
+	public enum ubyte SET_OP_PERMISSION_LEVEL_3 = 27;
+	public enum ubyte SET_OP_PERMISSION_LEVEL_4 = 28;
+	public enum ubyte PLAY_SHIELD_BLOCK_SOUND = 29;
+	public enum ubyte PLAY_SHIELD_BREAK_SOUND = 30;
+	public enum ubyte HOOK_KNOCKBACK = 31;
+	public enum ubyte PLAY_HIT_SOUND = 32;
+	public enum ubyte PLAY_THORNS_HURT_ANIMATION_AND_SOUND = 33;
+	public enum ubyte REMOVE_POPPY = 34;
+	public enum ubyte PLAY_TOTEM_UNDYING_ANIMATION = 35;
 
 	public uint entityId;
 	public ubyte status;
@@ -1244,7 +1310,7 @@ struct Explosion {
 		static if(writeId){ _buffer~=varuint.encode(ID); }
 		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, position.x, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, position.y, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, position.z, _buffer.length-float.sizeof);
 		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, radius, _buffer.length-float.sizeof);
-		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, records.length.to!uint, _buffer.length-uint.sizeof);foreach(cmVjb3Jkcw;records){ cmVjb3Jkcw.encode(_buffer); }
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, records.length.to!uint, _buffer.length-uint.sizeof); foreach(cmVjb3Jkcw;records){ cmVjb3Jkcw.encode(_buffer); }
 		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, motion.x, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, motion.y, _buffer.length-float.sizeof);_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, motion.z, _buffer.length-float.sizeof);
 		return _buffer;
 	}
@@ -1257,7 +1323,7 @@ struct Explosion {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
 		if(_buffer.length>=*_index+float.sizeof){ position.x=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ position.y=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ position.z=peek!(float, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+float.sizeof){ radius=peek!(float, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+uint.sizeof){ records.length=peek!(uint, Endian.bigEndian)(_buffer, _index); }foreach(ref cmVjb3Jkcw;records){ cmVjb3Jkcw.decode(_buffer, _index); }
+		if(_buffer.length>=*_index+uint.sizeof){ records.length=peek!(uint, Endian.bigEndian)(_buffer, _index); } foreach(ref cmVjb3Jkcw;records){ cmVjb3Jkcw.decode(_buffer, _index); }
 		if(_buffer.length>=*_index+float.sizeof){ motion.x=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ motion.y=peek!(float, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+float.sizeof){ motion.z=peek!(float, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
@@ -1396,7 +1462,7 @@ struct ChunkData {
 		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.x, _buffer.length-int.sizeof);_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, position.z, _buffer.length-int.sizeof);
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, full, _buffer.length-bool.sizeof);
 		_buffer~=varuint.encode(sections);
-		_buffer~=varuint.encode(data.length.to!uint);_buffer~=data;
+		_buffer~=varuint.encode(data.length.to!uint); _buffer~=data;
 		_buffer~=tiles;
 		return _buffer;
 	}
@@ -1410,7 +1476,7 @@ struct ChunkData {
 		if(_buffer.length>=*_index+int.sizeof){ position.x=peek!(int, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+int.sizeof){ position.z=peek!(int, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+bool.sizeof){ full=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		sections=varuint.decode(_buffer, *_index);
-		data.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
+		data.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
 		tiles=_buffer[*_index..$].dup; *_index=buffer.length;
 		return this;
 	}
@@ -1423,6 +1489,55 @@ struct Effect {
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
+
+	// effect id
+	public enum uint DISPENSER_DISPENSE = 1000;
+	public enum uint DISPENSER_FAIL_DISPENSE = 1001;
+	public enum uint DISPENSER_SHOOT = 1002;
+	public enum uint ENDER_EYE_LAUNCH = 1003;
+	public enum uint FIREWORK_SHOT = 1004;
+	public enum uint IRON_DOOR_OPEN = 1005;
+	public enum uint WOODEN_DOOR_OPEN = 1006;
+	public enum uint WOODEN_TRAPDOOR_OPEN = 1007;
+	public enum uint FENCE_GATE_OPEN = 1008;
+	public enum uint FIRE_EXTINGUISH = 1009;
+	public enum uint PLAY_RECORD = 1010;
+	public enum uint IRON_DOOR_CLOSE = 1011;
+	public enum uint WOODEN_DOOR_CLOSE = 1012;
+	public enum uint WOODEN_TRAPDOOR_CLOSE = 1013;
+	public enum uint FENCE_GATE_CLOSE = 1014;
+	public enum uint GHAST_WARN = 1015;
+	public enum uint GHAST_SHOOT = 1016;
+	public enum uint ENDERDRAGON_SHOOT = 1017;
+	public enum uint BLAZE_SHOOT = 1018;
+	public enum uint ZOMBIE_ATTACK_WOOD_DOOR = 1019;
+	public enum uint ZOMBIE_ATTACK_IRON_DOOR = 1020;
+	public enum uint ZOMBIE_BREAK_WOOD_DOOR = 1021;
+	public enum uint WITHER_BREAK_BLOCK = 1022;
+	public enum uint WITHER_SPAWN = 1023;
+	public enum uint WITHER_SHOOT = 1024;
+	public enum uint BAT_TAKE_OFF = 1025;
+	public enum uint ZOMBIE_INFECT_VILLAGER = 1026;
+	public enum uint ZOMBIE_VILLAGER_CONVERT = 1027;
+	public enum uint ENDER_DRAGON_BREATH = 1028;
+	public enum uint ANVIL_BREAK = 1029;
+	public enum uint ANVIL_USE = 1030;
+	public enum uint ANVIL_LAND = 1031;
+	public enum uint PORTAL_TRAVEL = 1032;
+	public enum uint CHORUS_FLOWER_GROW = 1033;
+	public enum uint CHORUS_FLOWER_DIE = 1034;
+	public enum uint BREWING_STAND_BREW = 1035;
+	public enum uint IRON_TRAPDOOR_OPEN = 1036;
+	public enum uint IRON_TRAPDOOR_CLOSE = 1037;
+	public enum uint SPAWN_10_SMOKE_PARTICLES = 2000;
+	public enum uint BREAK_BREAK_PARTICLES_AND_SOUND = 2001;
+	public enum uint SPLASH_POTION_PARTICLES_AND_SOUND = 2002;
+	public enum uint ENDER_EYE_BREAK_PARTICLES_AND_SOUND = 2003;
+	public enum uint MOB_SPAWN_PARTICLES = 2004;
+	public enum uint BONEMEAL_PARTICLES = 2005;
+	public enum uint DRAGON_BREATH = 2006;
+	public enum uint END_GATEWAY_SPAWN = 3000;
+	public enum uint ENDERDRAGON_GROWL = 3001;
 
 	public uint effectId;
 	public ulong position;
@@ -1460,6 +1575,55 @@ struct Particle {
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
+
+	// particle id
+	public enum uint EXPLODE = 0;
+	public enum uint LARGE_EXPLOSION = 1;
+	public enum uint HUGE_EXPLOSION = 2;
+	public enum uint FIREWORK_SPARK = 3;
+	public enum uint BUBBLE = 4;
+	public enum uint SPLASH = 5;
+	public enum uint WAKE = 6;
+	public enum uint SUSPENDED = 7;
+	public enum uint DEPTH_SUSPEND = 8;
+	public enum uint CRIT = 9;
+	public enum uint MAGIC_CRIT = 10;
+	public enum uint SMOKE = 11;
+	public enum uint LARGE_SMOKE = 12;
+	public enum uint SPELL = 13;
+	public enum uint INSTANT_SPELL = 14;
+	public enum uint MOB_SPELL = 15;
+	public enum uint MOB_SPELL_AMBIENT = 16;
+	public enum uint WITCH_MAGIC = 17;
+	public enum uint DRIP_WATER = 18;
+	public enum uint DRIP_LAVA = 19;
+	public enum uint ANGRY_VILLAGER = 20;
+	public enum uint HAPPY_VILLAGER = 21;
+	public enum uint TOWN_AURA = 22;
+	public enum uint NOTE = 23;
+	public enum uint PORTAL = 24;
+	public enum uint ENCHANTMENT_TABLE = 25;
+	public enum uint FLAME = 26;
+	public enum uint LAVA = 27;
+	public enum uint FOOTSTEP = 28;
+	public enum uint CLOUD = 29;
+	public enum uint RED_DUST = 30;
+	public enum uint SNOWBALL_POOF = 31;
+	public enum uint SNOW_SHOVEL = 32;
+	public enum uint SLIME = 33;
+	public enum uint HEART = 34;
+	public enum uint BARRIER = 35;
+	public enum uint ITEM_CRACK = 36;
+	public enum uint BLOCK_CRACK = 37;
+	public enum uint BLOCK_DUST = 38;
+	public enum uint DROPLET = 39;
+	public enum uint TAKE = 40;
+	public enum uint MOB_APPEARANCE = 41;
+	public enum uint DRAGON_BREATH = 42;
+	public enum uint ENDROD = 43;
+	public enum uint DAMAGE_INDICATOR = 44;
+	public enum uint SWEEP_ATTACK = 45;
+	public enum uint FALLING_DUST = 46;
 
 	public uint particleId;
 	public bool longDistance;
@@ -1524,6 +1688,12 @@ struct JoinGame {
 	public enum ubyte NORMAL = 2;
 	public enum ubyte HARD = 3;
 
+	// level type
+	public enum string INFINITY = "default";
+	public enum string FLAT = "flat";
+	public enum string AMPLIFIED = "amplified";
+	public enum string LARGE_BIOMES = "largeBiomes";
+
 	public uint entityId;
 	public ubyte gamemode;
 	public int dimension;
@@ -1540,7 +1710,7 @@ struct JoinGame {
 		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, dimension, _buffer.length-int.sizeof);
 		_buffer~=difficulty;
 		_buffer~=maxPlayers;
-		ubyte[] bGV2ZWxUeXBl=cast(ubyte[])levelType; _buffer~=varuint.encode(bGV2ZWxUeXBl.length.to!uint);_buffer~=bGV2ZWxUeXBl;
+		ubyte[] bGV2ZWxUeXBl=cast(ubyte[])levelType; _buffer~=varuint.encode(bGV2ZWxUeXBl.length.to!uint); _buffer~=bGV2ZWxUeXBl;
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, reducedDebug, _buffer.length-bool.sizeof);
 		return _buffer;
 	}
@@ -1556,7 +1726,7 @@ struct JoinGame {
 		if(_buffer.length>=*_index+int.sizeof){ dimension=peek!(int, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ difficulty=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ maxPlayers=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] bGV2ZWxUeXBl; bGV2ZWxUeXBl.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bGV2ZWxUeXBl.length){ bGV2ZWxUeXBl=_buffer[*_index..*_index+bGV2ZWxUeXBl.length].dup; *_index+=bGV2ZWxUeXBl.length; }; levelType=cast(string)bGV2ZWxUeXBl;
+		ubyte[] bGV2ZWxUeXBl; bGV2ZWxUeXBl.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bGV2ZWxUeXBl.length){ bGV2ZWxUeXBl=_buffer[*_index..*_index+bGV2ZWxUeXBl.length].dup; *_index+=bGV2ZWxUeXBl.length; }; levelType=cast(string)bGV2ZWxUeXBl;
 		if(_buffer.length>=*_index+bool.sizeof){ reducedDebug=peek!(bool, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
@@ -1585,11 +1755,11 @@ struct Map {
 		_buffer~=varuint.encode(mapId);
 		_buffer~=scale;
 		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, showIcons, _buffer.length-bool.sizeof);
-		_buffer~=varuint.encode(icons.length.to!uint);foreach(aWNvbnM;icons){ aWNvbnM.encode(_buffer); }
+		_buffer~=varuint.encode(icons.length.to!uint); foreach(aWNvbnM;icons){ aWNvbnM.encode(_buffer); }
 		_buffer~=colums;
 		_buffer~=rows;
 		_buffer~=offset.x;_buffer~=offset.z;
-		_buffer~=varuint.encode(data.length.to!uint);_buffer~=data;
+		_buffer~=varuint.encode(data.length.to!uint); _buffer~=data;
 		return _buffer;
 	}
 
@@ -1602,11 +1772,11 @@ struct Map {
 		mapId=varuint.decode(_buffer, *_index);
 		if(_buffer.length>=*_index+ubyte.sizeof){ scale=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+bool.sizeof){ showIcons=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		icons.length=varuint.decode(_buffer, *_index);foreach(ref aWNvbnM;icons){ aWNvbnM.decode(_buffer, _index); }
+		icons.length=varuint.decode(_buffer, *_index); foreach(ref aWNvbnM;icons){ aWNvbnM.decode(_buffer, _index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ colums=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ rows=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ offset.x=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+ubyte.sizeof){ offset.z=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		data.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
+		data.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
 		return this;
 	}
 
@@ -1943,14 +2113,14 @@ struct CombatEvent {
 		public ubyte[] encode(ref ubyte[] _buffer) {
 			_buffer~=varuint.encode(playerId);
 			_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, entityId, _buffer.length-uint.sizeof);
-			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
+			ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint); _buffer~=bWVzc2FnZQ;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
 			playerId=varuint.decode(_buffer, *_index);
 			if(_buffer.length>=*_index+uint.sizeof){ entityId=peek!(uint, Endian.bigEndian)(_buffer, _index); }
-			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+			ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
 			return this;
 		}
 
@@ -1997,12 +2167,12 @@ struct PlayerListItem {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
+			_buffer~=varuint.encode(players.length.to!uint); foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
+			players.length=varuint.decode(_buffer, *_index); foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
 			return this;
 		}
 
@@ -2021,12 +2191,12 @@ struct PlayerListItem {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
+			_buffer~=varuint.encode(players.length.to!uint); foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
+			players.length=varuint.decode(_buffer, *_index); foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
 			return this;
 		}
 
@@ -2045,12 +2215,12 @@ struct PlayerListItem {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
+			_buffer~=varuint.encode(players.length.to!uint); foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
+			players.length=varuint.decode(_buffer, *_index); foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
 			return this;
 		}
 
@@ -2069,12 +2239,12 @@ struct PlayerListItem {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
+			_buffer~=varuint.encode(players.length.to!uint); foreach(cGxheWVycw;players){ cGxheWVycw.encode(_buffer); }
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
+			players.length=varuint.decode(_buffer, *_index); foreach(ref cGxheWVycw;players){ cGxheWVycw.decode(_buffer, _index); }
 			return this;
 		}
 
@@ -2093,12 +2263,12 @@ struct PlayerListItem {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ _buffer~=cGxheWVycw.data; }
+			_buffer~=varuint.encode(players.length.to!uint); foreach(cGxheWVycw;players){ _buffer~=cGxheWVycw.data; }
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ if(_buffer.length>=*_index+16){ ubyte[16] Y0d4aGVXVnljdw=buffer[*_index..*_index+16].dup; *_index+=16; cGxheWVycw=UUID(Y0d4aGVXVnljdw); } }
+			players.length=varuint.decode(_buffer, *_index); foreach(ref cGxheWVycw;players){ if(_buffer.length>=*_index+16){ ubyte[16] Y0d4aGVXVnljdw=buffer[*_index..*_index+16].dup; *_index+=16; cGxheWVycw=UUID(Y0d4aGVXVnljdw); } }
 			return this;
 		}
 
@@ -2112,6 +2282,13 @@ struct PlayerPositionAndLook {
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
+
+	// flags
+	public enum ubyte X = 1;
+	public enum ubyte Y = 2;
+	public enum ubyte Z = 4;
+	public enum ubyte Y_ROTATION = 8;
+	public enum ubyte X_ROTATION = 16;
 
 	public Tuple!(double, "x", double, "y", double, "z") position;
 	public float yaw;
@@ -2189,7 +2366,7 @@ struct DestroyEntities {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		_buffer~=varuint.encode(entityIds.length.to!uint);foreach(ZW50aXR5SWRz;entityIds){ _buffer~=varuint.encode(ZW50aXR5SWRz); }
+		_buffer~=varuint.encode(entityIds.length.to!uint); foreach(ZW50aXR5SWRz;entityIds){ _buffer~=varuint.encode(ZW50aXR5SWRz); }
 		return _buffer;
 	}
 
@@ -2199,7 +2376,7 @@ struct DestroyEntities {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		entityIds.length=varuint.decode(_buffer, *_index);foreach(ref ZW50aXR5SWRz;entityIds){ ZW50aXR5SWRz=varuint.decode(_buffer, *_index); }
+		entityIds.length=varuint.decode(_buffer, *_index); foreach(ref ZW50aXR5SWRz;entityIds){ ZW50aXR5SWRz=varuint.decode(_buffer, *_index); }
 		return this;
 	}
 
@@ -2249,8 +2426,8 @@ struct ResourcePackSend {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] dXJs=cast(ubyte[])url; _buffer~=varuint.encode(dXJs.length.to!uint);_buffer~=dXJs;
-		ubyte[] aGFzaA=cast(ubyte[])hash; _buffer~=varuint.encode(aGFzaA.length.to!uint);_buffer~=aGFzaA;
+		ubyte[] dXJs=cast(ubyte[])url; _buffer~=varuint.encode(dXJs.length.to!uint); _buffer~=dXJs;
+		ubyte[] aGFzaA=cast(ubyte[])hash; _buffer~=varuint.encode(aGFzaA.length.to!uint); _buffer~=aGFzaA;
 		return _buffer;
 	}
 
@@ -2260,8 +2437,8 @@ struct ResourcePackSend {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] dXJs; dXJs.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dXJs.length){ dXJs=_buffer[*_index..*_index+dXJs.length].dup; *_index+=dXJs.length; }; url=cast(string)dXJs;
-		ubyte[] aGFzaA; aGFzaA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+aGFzaA.length){ aGFzaA=_buffer[*_index..*_index+aGFzaA.length].dup; *_index+=aGFzaA.length; }; hash=cast(string)aGFzaA;
+		ubyte[] dXJs; dXJs.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dXJs.length){ dXJs=_buffer[*_index..*_index+dXJs.length].dup; *_index+=dXJs.length; }; url=cast(string)dXJs;
+		ubyte[] aGFzaA; aGFzaA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+aGFzaA.length){ aGFzaA=_buffer[*_index..*_index+aGFzaA.length].dup; *_index+=aGFzaA.length; }; hash=cast(string)aGFzaA;
 		return this;
 	}
 
@@ -2291,6 +2468,12 @@ struct Respawn {
 	public enum ubyte ADVENTURE = 2;
 	public enum ubyte SPECTATOR = 3;
 
+	// level type
+	public enum string INFINITY = "default";
+	public enum string FLAT = "flat";
+	public enum string AMPLIFIED = "amplified";
+	public enum string LARGE_BIOMES = "largeBiomes";
+
 	public int dimension;
 	public ubyte difficulty;
 	public ubyte gamemode;
@@ -2302,7 +2485,7 @@ struct Respawn {
 		_buffer.length+=int.sizeof; write!(int, Endian.bigEndian)(_buffer, dimension, _buffer.length-int.sizeof);
 		_buffer~=difficulty;
 		_buffer~=gamemode;
-		ubyte[] bGV2ZWxUeXBl=cast(ubyte[])levelType; _buffer~=varuint.encode(bGV2ZWxUeXBl.length.to!uint);_buffer~=bGV2ZWxUeXBl;
+		ubyte[] bGV2ZWxUeXBl=cast(ubyte[])levelType; _buffer~=varuint.encode(bGV2ZWxUeXBl.length.to!uint); _buffer~=bGV2ZWxUeXBl;
 		return _buffer;
 	}
 
@@ -2315,7 +2498,7 @@ struct Respawn {
 		if(_buffer.length>=*_index+int.sizeof){ dimension=peek!(int, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ difficulty=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ gamemode=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] bGV2ZWxUeXBl; bGV2ZWxUeXBl.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bGV2ZWxUeXBl.length){ bGV2ZWxUeXBl=_buffer[*_index..*_index+bGV2ZWxUeXBl.length].dup; *_index+=bGV2ZWxUeXBl.length; }; levelType=cast(string)bGV2ZWxUeXBl;
+		ubyte[] bGV2ZWxUeXBl; bGV2ZWxUeXBl.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bGV2ZWxUeXBl.length){ bGV2ZWxUeXBl=_buffer[*_index..*_index+bGV2ZWxUeXBl.length].dup; *_index+=bGV2ZWxUeXBl.length; }; levelType=cast(string)bGV2ZWxUeXBl;
 		return this;
 	}
 
@@ -2623,7 +2806,7 @@ struct DisplayScoreboard {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
 		_buffer~=position;
-		ubyte[] c2NvcmVOYW1l=cast(ubyte[])scoreName; _buffer~=varuint.encode(c2NvcmVOYW1l.length.to!uint);_buffer~=c2NvcmVOYW1l;
+		ubyte[] c2NvcmVOYW1l=cast(ubyte[])scoreName; _buffer~=varuint.encode(c2NvcmVOYW1l.length.to!uint); _buffer~=c2NvcmVOYW1l;
 		return _buffer;
 	}
 
@@ -2634,7 +2817,7 @@ struct DisplayScoreboard {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
 		if(_buffer.length>=*_index+ubyte.sizeof){ position=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] c2NvcmVOYW1l; c2NvcmVOYW1l.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c2NvcmVOYW1l.length){ c2NvcmVOYW1l=_buffer[*_index..*_index+c2NvcmVOYW1l.length].dup; *_index+=c2NvcmVOYW1l.length; }; scoreName=cast(string)c2NvcmVOYW1l;
+		ubyte[] c2NvcmVOYW1l; c2NvcmVOYW1l.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c2NvcmVOYW1l.length){ c2NvcmVOYW1l=_buffer[*_index..*_index+c2NvcmVOYW1l.length].dup; *_index+=c2NvcmVOYW1l.length; }; scoreName=cast(string)c2NvcmVOYW1l;
 		return this;
 	}
 
@@ -2847,6 +3030,10 @@ struct ScoreboardObjective {
 	public enum ubyte REMOVE = 1;
 	public enum ubyte UPDATE = 2;
 
+	// type
+	public enum string NUMERIC = "integer";
+	public enum string GRAPHIC = "hearts";
+
 	public string name;
 	public ubyte mode;
 	public string value;
@@ -2855,10 +3042,10 @@ struct ScoreboardObjective {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint);_buffer~=bmFtZQ;
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint); _buffer~=bmFtZQ;
 		_buffer~=mode;
-		ubyte[] dmFsdWU=cast(ubyte[])value; _buffer~=varuint.encode(dmFsdWU.length.to!uint);_buffer~=dmFsdWU;
-		ubyte[] dHlwZQ=cast(ubyte[])type; _buffer~=varuint.encode(dHlwZQ.length.to!uint);_buffer~=dHlwZQ;
+		if(mode!=1){ ubyte[] dmFsdWU=cast(ubyte[])value; _buffer~=varuint.encode(dmFsdWU.length.to!uint); _buffer~=dmFsdWU; }
+		if(mode!=1){ ubyte[] dHlwZQ=cast(ubyte[])type; _buffer~=varuint.encode(dHlwZQ.length.to!uint); _buffer~=dHlwZQ; }
 		return _buffer;
 	}
 
@@ -2868,10 +3055,10 @@ struct ScoreboardObjective {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
 		if(_buffer.length>=*_index+ubyte.sizeof){ mode=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] dmFsdWU; dmFsdWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dmFsdWU.length){ dmFsdWU=_buffer[*_index..*_index+dmFsdWU.length].dup; *_index+=dmFsdWU.length; }; value=cast(string)dmFsdWU;
-		ubyte[] dHlwZQ; dHlwZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dHlwZQ.length){ dHlwZQ=_buffer[*_index..*_index+dHlwZQ.length].dup; *_index+=dHlwZQ.length; }; type=cast(string)dHlwZQ;
+		if(mode!=1){ ubyte[] dmFsdWU; dmFsdWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dmFsdWU.length){ dmFsdWU=_buffer[*_index..*_index+dmFsdWU.length].dup; *_index+=dmFsdWU.length; }; value=cast(string)dmFsdWU; }
+		if(mode!=1){ ubyte[] dHlwZQ; dHlwZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dHlwZQ.length){ dHlwZQ=_buffer[*_index..*_index+dHlwZQ.length].dup; *_index+=dHlwZQ.length; }; type=cast(string)dHlwZQ; }
 		return this;
 	}
 
@@ -2891,7 +3078,7 @@ struct SetPassengers {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
 		_buffer~=varuint.encode(entityId);
-		_buffer~=varuint.encode(passengers.length.to!uint);foreach(cGFzc2VuZ2Vycw;passengers){ _buffer~=varuint.encode(cGFzc2VuZ2Vycw); }
+		_buffer~=varuint.encode(passengers.length.to!uint); foreach(cGFzc2VuZ2Vycw;passengers){ _buffer~=varuint.encode(cGFzc2VuZ2Vycw); }
 		return _buffer;
 	}
 
@@ -2902,7 +3089,7 @@ struct SetPassengers {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
 		entityId=varuint.decode(_buffer, *_index);
-		passengers.length=varuint.decode(_buffer, *_index);foreach(ref cGFzc2VuZ2Vycw;passengers){ cGFzc2VuZ2Vycw=varuint.decode(_buffer, *_index); }
+		passengers.length=varuint.decode(_buffer, *_index); foreach(ref cGFzc2VuZ2Vycw;passengers){ cGFzc2VuZ2Vycw=varuint.decode(_buffer, *_index); }
 		return this;
 	}
 
@@ -2921,7 +3108,7 @@ struct Teams {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint);_buffer~=bmFtZQ;
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint); _buffer~=bmFtZQ;
 		_buffer~=mode;
 		return _buffer;
 	}
@@ -2932,7 +3119,7 @@ struct Teams {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
 		if(_buffer.length>=*_index+ubyte.sizeof){ mode=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
@@ -2973,26 +3160,26 @@ struct Teams {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint);_buffer~=ZGlzcGxheU5hbWU;
-			ubyte[] cHJlZml4=cast(ubyte[])prefix; _buffer~=varuint.encode(cHJlZml4.length.to!uint);_buffer~=cHJlZml4;
-			ubyte[] c3VmZml4=cast(ubyte[])suffix; _buffer~=varuint.encode(c3VmZml4.length.to!uint);_buffer~=c3VmZml4;
+			ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint); _buffer~=ZGlzcGxheU5hbWU;
+			ubyte[] cHJlZml4=cast(ubyte[])prefix; _buffer~=varuint.encode(cHJlZml4.length.to!uint); _buffer~=cHJlZml4;
+			ubyte[] c3VmZml4=cast(ubyte[])suffix; _buffer~=varuint.encode(c3VmZml4.length.to!uint); _buffer~=c3VmZml4;
 			_buffer~=friendlyFlags;
-			ubyte[] bmFtZXRhZ1Zpc2li=cast(ubyte[])nametagVisibility; _buffer~=varuint.encode(bmFtZXRhZ1Zpc2li.length.to!uint);_buffer~=bmFtZXRhZ1Zpc2li;
-			ubyte[] Y29sbGlzaW9uUnVs=cast(ubyte[])collisionRule; _buffer~=varuint.encode(Y29sbGlzaW9uUnVs.length.to!uint);_buffer~=Y29sbGlzaW9uUnVs;
+			ubyte[] bmFtZXRhZ1Zpc2li=cast(ubyte[])nametagVisibility; _buffer~=varuint.encode(bmFtZXRhZ1Zpc2li.length.to!uint); _buffer~=bmFtZXRhZ1Zpc2li;
+			ubyte[] Y29sbGlzaW9uUnVs=cast(ubyte[])collisionRule; _buffer~=varuint.encode(Y29sbGlzaW9uUnVs.length.to!uint); _buffer~=Y29sbGlzaW9uUnVs;
 			_buffer~=color;
-			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw=cast(ubyte[])cGxheWVycw; _buffer~=varuint.encode(Y0d4aGVXVnljdw.length.to!uint);_buffer~=Y0d4aGVXVnljdw; }
+			_buffer~=varuint.encode(players.length.to!uint); foreach(cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw=cast(ubyte[])cGxheWVycw; _buffer~=varuint.encode(Y0d4aGVXVnljdw.length.to!uint); _buffer~=Y0d4aGVXVnljdw; }
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU;
-			ubyte[] cHJlZml4; cHJlZml4.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+cHJlZml4.length){ cHJlZml4=_buffer[*_index..*_index+cHJlZml4.length].dup; *_index+=cHJlZml4.length; }; prefix=cast(string)cHJlZml4;
-			ubyte[] c3VmZml4; c3VmZml4.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c3VmZml4.length){ c3VmZml4=_buffer[*_index..*_index+c3VmZml4.length].dup; *_index+=c3VmZml4.length; }; suffix=cast(string)c3VmZml4;
+			ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU;
+			ubyte[] cHJlZml4; cHJlZml4.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+cHJlZml4.length){ cHJlZml4=_buffer[*_index..*_index+cHJlZml4.length].dup; *_index+=cHJlZml4.length; }; prefix=cast(string)cHJlZml4;
+			ubyte[] c3VmZml4; c3VmZml4.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c3VmZml4.length){ c3VmZml4=_buffer[*_index..*_index+c3VmZml4.length].dup; *_index+=c3VmZml4.length; }; suffix=cast(string)c3VmZml4;
 			if(_buffer.length>=*_index+ubyte.sizeof){ friendlyFlags=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-			ubyte[] bmFtZXRhZ1Zpc2li; bmFtZXRhZ1Zpc2li.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZXRhZ1Zpc2li.length){ bmFtZXRhZ1Zpc2li=_buffer[*_index..*_index+bmFtZXRhZ1Zpc2li.length].dup; *_index+=bmFtZXRhZ1Zpc2li.length; }; nametagVisibility=cast(string)bmFtZXRhZ1Zpc2li;
-			ubyte[] Y29sbGlzaW9uUnVs; Y29sbGlzaW9uUnVs.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y29sbGlzaW9uUnVs.length){ Y29sbGlzaW9uUnVs=_buffer[*_index..*_index+Y29sbGlzaW9uUnVs.length].dup; *_index+=Y29sbGlzaW9uUnVs.length; }; collisionRule=cast(string)Y29sbGlzaW9uUnVs;
+			ubyte[] bmFtZXRhZ1Zpc2li; bmFtZXRhZ1Zpc2li.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bmFtZXRhZ1Zpc2li.length){ bmFtZXRhZ1Zpc2li=_buffer[*_index..*_index+bmFtZXRhZ1Zpc2li.length].dup; *_index+=bmFtZXRhZ1Zpc2li.length; }; nametagVisibility=cast(string)bmFtZXRhZ1Zpc2li;
+			ubyte[] Y29sbGlzaW9uUnVs; Y29sbGlzaW9uUnVs.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y29sbGlzaW9uUnVs.length){ Y29sbGlzaW9uUnVs=_buffer[*_index..*_index+Y29sbGlzaW9uUnVs.length].dup; *_index+=Y29sbGlzaW9uUnVs.length; }; collisionRule=cast(string)Y29sbGlzaW9uUnVs;
 			if(_buffer.length>=*_index+ubyte.sizeof){ color=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw; Y0d4aGVXVnljdw.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y0d4aGVXVnljdw.length){ Y0d4aGVXVnljdw=_buffer[*_index..*_index+Y0d4aGVXVnljdw.length].dup; *_index+=Y0d4aGVXVnljdw.length; }; cGxheWVycw=cast(string)Y0d4aGVXVnljdw; }
+			players.length=varuint.decode(_buffer, *_index); foreach(ref cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw; Y0d4aGVXVnljdw.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y0d4aGVXVnljdw.length){ Y0d4aGVXVnljdw=_buffer[*_index..*_index+Y0d4aGVXVnljdw.length].dup; *_index+=Y0d4aGVXVnljdw.length; }; cGxheWVycw=cast(string)Y0d4aGVXVnljdw; }
 			return this;
 		}
 
@@ -3053,23 +3240,23 @@ struct Teams {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint);_buffer~=ZGlzcGxheU5hbWU;
-			ubyte[] cHJlZml4=cast(ubyte[])prefix; _buffer~=varuint.encode(cHJlZml4.length.to!uint);_buffer~=cHJlZml4;
-			ubyte[] c3VmZml4=cast(ubyte[])suffix; _buffer~=varuint.encode(c3VmZml4.length.to!uint);_buffer~=c3VmZml4;
+			ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint); _buffer~=ZGlzcGxheU5hbWU;
+			ubyte[] cHJlZml4=cast(ubyte[])prefix; _buffer~=varuint.encode(cHJlZml4.length.to!uint); _buffer~=cHJlZml4;
+			ubyte[] c3VmZml4=cast(ubyte[])suffix; _buffer~=varuint.encode(c3VmZml4.length.to!uint); _buffer~=c3VmZml4;
 			_buffer~=friendlyFlags;
-			ubyte[] bmFtZXRhZ1Zpc2li=cast(ubyte[])nametagVisibility; _buffer~=varuint.encode(bmFtZXRhZ1Zpc2li.length.to!uint);_buffer~=bmFtZXRhZ1Zpc2li;
-			ubyte[] Y29sbGlzaW9uUnVs=cast(ubyte[])collisionRule; _buffer~=varuint.encode(Y29sbGlzaW9uUnVs.length.to!uint);_buffer~=Y29sbGlzaW9uUnVs;
+			ubyte[] bmFtZXRhZ1Zpc2li=cast(ubyte[])nametagVisibility; _buffer~=varuint.encode(bmFtZXRhZ1Zpc2li.length.to!uint); _buffer~=bmFtZXRhZ1Zpc2li;
+			ubyte[] Y29sbGlzaW9uUnVs=cast(ubyte[])collisionRule; _buffer~=varuint.encode(Y29sbGlzaW9uUnVs.length.to!uint); _buffer~=Y29sbGlzaW9uUnVs;
 			_buffer~=color;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU;
-			ubyte[] cHJlZml4; cHJlZml4.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+cHJlZml4.length){ cHJlZml4=_buffer[*_index..*_index+cHJlZml4.length].dup; *_index+=cHJlZml4.length; }; prefix=cast(string)cHJlZml4;
-			ubyte[] c3VmZml4; c3VmZml4.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c3VmZml4.length){ c3VmZml4=_buffer[*_index..*_index+c3VmZml4.length].dup; *_index+=c3VmZml4.length; }; suffix=cast(string)c3VmZml4;
+			ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU;
+			ubyte[] cHJlZml4; cHJlZml4.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+cHJlZml4.length){ cHJlZml4=_buffer[*_index..*_index+cHJlZml4.length].dup; *_index+=cHJlZml4.length; }; prefix=cast(string)cHJlZml4;
+			ubyte[] c3VmZml4; c3VmZml4.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c3VmZml4.length){ c3VmZml4=_buffer[*_index..*_index+c3VmZml4.length].dup; *_index+=c3VmZml4.length; }; suffix=cast(string)c3VmZml4;
 			if(_buffer.length>=*_index+ubyte.sizeof){ friendlyFlags=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-			ubyte[] bmFtZXRhZ1Zpc2li; bmFtZXRhZ1Zpc2li.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZXRhZ1Zpc2li.length){ bmFtZXRhZ1Zpc2li=_buffer[*_index..*_index+bmFtZXRhZ1Zpc2li.length].dup; *_index+=bmFtZXRhZ1Zpc2li.length; }; nametagVisibility=cast(string)bmFtZXRhZ1Zpc2li;
-			ubyte[] Y29sbGlzaW9uUnVs; Y29sbGlzaW9uUnVs.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y29sbGlzaW9uUnVs.length){ Y29sbGlzaW9uUnVs=_buffer[*_index..*_index+Y29sbGlzaW9uUnVs.length].dup; *_index+=Y29sbGlzaW9uUnVs.length; }; collisionRule=cast(string)Y29sbGlzaW9uUnVs;
+			ubyte[] bmFtZXRhZ1Zpc2li; bmFtZXRhZ1Zpc2li.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bmFtZXRhZ1Zpc2li.length){ bmFtZXRhZ1Zpc2li=_buffer[*_index..*_index+bmFtZXRhZ1Zpc2li.length].dup; *_index+=bmFtZXRhZ1Zpc2li.length; }; nametagVisibility=cast(string)bmFtZXRhZ1Zpc2li;
+			ubyte[] Y29sbGlzaW9uUnVs; Y29sbGlzaW9uUnVs.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y29sbGlzaW9uUnVs.length){ Y29sbGlzaW9uUnVs=_buffer[*_index..*_index+Y29sbGlzaW9uUnVs.length].dup; *_index+=Y29sbGlzaW9uUnVs.length; }; collisionRule=cast(string)Y29sbGlzaW9uUnVs;
 			if(_buffer.length>=*_index+ubyte.sizeof){ color=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 			return this;
 		}
@@ -3089,12 +3276,12 @@ struct Teams {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw=cast(ubyte[])cGxheWVycw; _buffer~=varuint.encode(Y0d4aGVXVnljdw.length.to!uint);_buffer~=Y0d4aGVXVnljdw; }
+			_buffer~=varuint.encode(players.length.to!uint); foreach(cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw=cast(ubyte[])cGxheWVycw; _buffer~=varuint.encode(Y0d4aGVXVnljdw.length.to!uint); _buffer~=Y0d4aGVXVnljdw; }
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw; Y0d4aGVXVnljdw.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y0d4aGVXVnljdw.length){ Y0d4aGVXVnljdw=_buffer[*_index..*_index+Y0d4aGVXVnljdw.length].dup; *_index+=Y0d4aGVXVnljdw.length; }; cGxheWVycw=cast(string)Y0d4aGVXVnljdw; }
+			players.length=varuint.decode(_buffer, *_index); foreach(ref cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw; Y0d4aGVXVnljdw.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y0d4aGVXVnljdw.length){ Y0d4aGVXVnljdw=_buffer[*_index..*_index+Y0d4aGVXVnljdw.length].dup; *_index+=Y0d4aGVXVnljdw.length; }; cGxheWVycw=cast(string)Y0d4aGVXVnljdw; }
 			return this;
 		}
 
@@ -3113,12 +3300,12 @@ struct Teams {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer~=varuint.encode(players.length.to!uint);foreach(cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw=cast(ubyte[])cGxheWVycw; _buffer~=varuint.encode(Y0d4aGVXVnljdw.length.to!uint);_buffer~=Y0d4aGVXVnljdw; }
+			_buffer~=varuint.encode(players.length.to!uint); foreach(cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw=cast(ubyte[])cGxheWVycw; _buffer~=varuint.encode(Y0d4aGVXVnljdw.length.to!uint); _buffer~=Y0d4aGVXVnljdw; }
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			players.length=varuint.decode(_buffer, *_index);foreach(ref cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw; Y0d4aGVXVnljdw.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y0d4aGVXVnljdw.length){ Y0d4aGVXVnljdw=_buffer[*_index..*_index+Y0d4aGVXVnljdw.length].dup; *_index+=Y0d4aGVXVnljdw.length; }; cGxheWVycw=cast(string)Y0d4aGVXVnljdw; }
+			players.length=varuint.decode(_buffer, *_index); foreach(ref cGxheWVycw;players){ ubyte[] Y0d4aGVXVnljdw; Y0d4aGVXVnljdw.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y0d4aGVXVnljdw.length){ Y0d4aGVXVnljdw=_buffer[*_index..*_index+Y0d4aGVXVnljdw.length].dup; *_index+=Y0d4aGVXVnljdw.length; }; cGxheWVycw=cast(string)Y0d4aGVXVnljdw; }
 			return this;
 		}
 
@@ -3145,10 +3332,10 @@ struct UpdateScore {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] c2NvcmVOYW1l=cast(ubyte[])scoreName; _buffer~=varuint.encode(c2NvcmVOYW1l.length.to!uint);_buffer~=c2NvcmVOYW1l;
+		ubyte[] c2NvcmVOYW1l=cast(ubyte[])scoreName; _buffer~=varuint.encode(c2NvcmVOYW1l.length.to!uint); _buffer~=c2NvcmVOYW1l;
 		_buffer~=action;
-		ubyte[] b2JqZWN0aXZlTmFt=cast(ubyte[])objectiveName; _buffer~=varuint.encode(b2JqZWN0aXZlTmFt.length.to!uint);_buffer~=b2JqZWN0aXZlTmFt;
-		if(action!=1){ _buffer~=varuint.encode(value); }
+		ubyte[] b2JqZWN0aXZlTmFt=cast(ubyte[])objectiveName; _buffer~=varuint.encode(b2JqZWN0aXZlTmFt.length.to!uint); _buffer~=b2JqZWN0aXZlTmFt;
+		if(action==0){ _buffer~=varuint.encode(value); }
 		return _buffer;
 	}
 
@@ -3158,10 +3345,10 @@ struct UpdateScore {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] c2NvcmVOYW1l; c2NvcmVOYW1l.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+c2NvcmVOYW1l.length){ c2NvcmVOYW1l=_buffer[*_index..*_index+c2NvcmVOYW1l.length].dup; *_index+=c2NvcmVOYW1l.length; }; scoreName=cast(string)c2NvcmVOYW1l;
+		ubyte[] c2NvcmVOYW1l; c2NvcmVOYW1l.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c2NvcmVOYW1l.length){ c2NvcmVOYW1l=_buffer[*_index..*_index+c2NvcmVOYW1l.length].dup; *_index+=c2NvcmVOYW1l.length; }; scoreName=cast(string)c2NvcmVOYW1l;
 		if(_buffer.length>=*_index+ubyte.sizeof){ action=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] b2JqZWN0aXZlTmFt; b2JqZWN0aXZlTmFt.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+b2JqZWN0aXZlTmFt.length){ b2JqZWN0aXZlTmFt=_buffer[*_index..*_index+b2JqZWN0aXZlTmFt.length].dup; *_index+=b2JqZWN0aXZlTmFt.length; }; objectiveName=cast(string)b2JqZWN0aXZlTmFt;
-		if(action!=1){ value=varuint.decode(_buffer, *_index); }
+		ubyte[] b2JqZWN0aXZlTmFt; b2JqZWN0aXZlTmFt.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+b2JqZWN0aXZlTmFt.length){ b2JqZWN0aXZlTmFt=_buffer[*_index..*_index+b2JqZWN0aXZlTmFt.length].dup; *_index+=b2JqZWN0aXZlTmFt.length; }; objectiveName=cast(string)b2JqZWN0aXZlTmFt;
+		if(action==0){ value=varuint.decode(_buffer, *_index); }
 		return this;
 	}
 
@@ -3265,12 +3452,12 @@ struct Title {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint);_buffer~=dGV4dA;
+			ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint); _buffer~=dGV4dA;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
+			ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
 			return this;
 		}
 
@@ -3289,12 +3476,12 @@ struct Title {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint);_buffer~=dGV4dA;
+			ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint); _buffer~=dGV4dA;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
+			ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
 			return this;
 		}
 
@@ -3313,12 +3500,12 @@ struct Title {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint);_buffer~=dGV4dA;
+			ubyte[] dGV4dA=cast(ubyte[])text; _buffer~=varuint.encode(dGV4dA.length.to!uint); _buffer~=dGV4dA;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
+			ubyte[] dGV4dA; dGV4dA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dGV4dA.length){ dGV4dA=_buffer[*_index..*_index+dGV4dA.length].dup; *_index+=dGV4dA.length; }; text=cast(string)dGV4dA;
 			return this;
 		}
 
@@ -3449,8 +3636,8 @@ struct PlayerListHeaderAndFooter {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] aGVhZGVy=cast(ubyte[])header; _buffer~=varuint.encode(aGVhZGVy.length.to!uint);_buffer~=aGVhZGVy;
-		ubyte[] Zm9vdGVy=cast(ubyte[])footer; _buffer~=varuint.encode(Zm9vdGVy.length.to!uint);_buffer~=Zm9vdGVy;
+		ubyte[] aGVhZGVy=cast(ubyte[])header; _buffer~=varuint.encode(aGVhZGVy.length.to!uint); _buffer~=aGVhZGVy;
+		ubyte[] Zm9vdGVy=cast(ubyte[])footer; _buffer~=varuint.encode(Zm9vdGVy.length.to!uint); _buffer~=Zm9vdGVy;
 		return _buffer;
 	}
 
@@ -3460,8 +3647,8 @@ struct PlayerListHeaderAndFooter {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] aGVhZGVy; aGVhZGVy.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+aGVhZGVy.length){ aGVhZGVy=_buffer[*_index..*_index+aGVhZGVy.length].dup; *_index+=aGVhZGVy.length; }; header=cast(string)aGVhZGVy;
-		ubyte[] Zm9vdGVy; Zm9vdGVy.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Zm9vdGVy.length){ Zm9vdGVy=_buffer[*_index..*_index+Zm9vdGVy.length].dup; *_index+=Zm9vdGVy.length; }; footer=cast(string)Zm9vdGVy;
+		ubyte[] aGVhZGVy; aGVhZGVy.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+aGVhZGVy.length){ aGVhZGVy=_buffer[*_index..*_index+aGVhZGVy.length].dup; *_index+=aGVhZGVy.length; }; header=cast(string)aGVhZGVy;
+		ubyte[] Zm9vdGVy; Zm9vdGVy.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Zm9vdGVy.length){ Zm9vdGVy=_buffer[*_index..*_index+Zm9vdGVy.length].dup; *_index+=Zm9vdGVy.length; }; footer=cast(string)Zm9vdGVy;
 		return this;
 	}
 
@@ -3555,7 +3742,7 @@ struct EntityProperties {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=varuint.encode(ID); }
 		_buffer~=varuint.encode(entityId);
-		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, properties.length.to!uint, _buffer.length-uint.sizeof);foreach(cHJvcGVydGllcw;properties){ cHJvcGVydGllcw.encode(_buffer); }
+		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, properties.length.to!uint, _buffer.length-uint.sizeof); foreach(cHJvcGVydGllcw;properties){ cHJvcGVydGllcw.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -3566,7 +3753,7 @@ struct EntityProperties {
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
 		entityId=varuint.decode(_buffer, *_index);
-		if(_buffer.length>=*_index+uint.sizeof){ properties.length=peek!(uint, Endian.bigEndian)(_buffer, _index); }foreach(ref cHJvcGVydGllcw;properties){ cHJvcGVydGllcw.decode(_buffer, _index); }
+		if(_buffer.length>=*_index+uint.sizeof){ properties.length=peek!(uint, Endian.bigEndian)(_buffer, _index); } foreach(ref cHJvcGVydGllcw;properties){ cHJvcGVydGllcw.decode(_buffer, _index); }
 		return this;
 	}
 

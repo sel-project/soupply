@@ -13,7 +13,7 @@ import std.stdio : writeln;
 
 import all;
 
-void doc(Attributes[string] attributes, Protocols[string] protocols) {
+void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas) {
 
 	std.file.mkdirRecurse("../doc");
 
@@ -29,9 +29,12 @@ void doc(Attributes[string] attributes, Protocols[string] protocols) {
 
 	foreach(string game, Protocols ptrs; protocols) {
 		auto attributes = game in attributes;
+		auto metadata = game in metadatas;
 		string data = "# " ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "\n\n";
 		string[] jumps = ["[Endianness](#endianness)", "[Packets](#packets)"];
 		if(ptrs.data.types.length) jumps ~= "[Types](#types)";
+		if(ptrs.data.arrays.length) jumps ~= "[Arrays](#arrays)";
+		if(metadata) jumps ~= "[Metadata](#metadata)";
 		if(attributes) jumps ~= "[Attributes](#attributes)";
 		data ~= "**Jump to**: " ~ jumps.join(", ") ~ "\n\n";
 		if(ptrs.data.released.length) {
@@ -165,6 +168,54 @@ void doc(Attributes[string] attributes, Protocols[string] protocols) {
 				data ~= "* ### " ~ pretty(toCamelCase(type.name)) ~ "\n\n";
 				if(type.description.length) data ~= "\t" ~ type.description ~ "\n\n";
 				writeFields(type.name, type.fields);
+			}
+		}
+		// arrays
+		if(ptrs.data.arrays.length) {
+			data ~= "--------\n\n";
+			data ~= "## Arrays\n\n";
+			bool e = false;
+			foreach(a ; ptrs.data.arrays) {
+				e |= a.endianness.length != 0;
+			}
+			data ~= "Base | Length" ~ (e ? " | Length's endianness" : "") ~ "\n";
+			data ~= "---|---" ~ (e ? "|---" : "") ~ "\n";
+			foreach(a ; ptrs.data.arrays) {
+				data ~= convert(toCamelCase(a.base)) ~ " | " ~ convert(toCamelCase(a.length)) ~ (e ? " | " ~ a.endianness.replace("_", " ") : "") ~ "\n";
+			}
+			data ~= "\n";
+		}
+		// metadata
+		if(metadata) {
+			data ~= "--------\n\n";
+			data ~= "## Metadata\n\n";
+			//TODO encoding
+			//TODO types
+			data ~= "Name | Type | DEC | HEX | Default | Required\n---|---|:---:|:---:|---|:---:\n";
+			foreach(meta ; (*metadata).data.metadatas) {
+				immutable name = pretty(toCamelCase(meta.name));
+				data ~= (meta.description.length || meta.flags.length ? ("[" ~ name ~ "](#" ~ link("metadata", meta.name) ~ ")") : name) ~ " | " ~ convert(toCamelCase(meta.type)) ~ " | " ~ meta.id.to!string ~ " | " ~ meta.id.to!string(16) ~ " | " ~ meta.def ~ " | " ~ (meta.required ? "✓" : "") ~ "\n";
+			}
+			data ~= "\n";
+			foreach(meta ; (*metadata).data.metadatas) {
+				if(meta.description.length || meta.flags.length) {
+					data ~= "* <a name=\"" ~ link("metadata", meta.name) ~ "\"></a>**" ~ pretty(toCamelCase(meta.name)) ~ "**\n\n";
+					if(meta.description.length) data ~= "\t" ~ meta.description ~ "\n\n";
+					if(meta.flags.length) {
+						bool description;
+						foreach(flag ; meta.flags) {
+							if(flag.description.length) {
+								description = true;
+								break;
+							}
+						}
+						data ~= "\tFlag | Bit" ~ (description ? " | Description" : "") ~ "\n\t---|:---:" ~ (description ? "|---" : "") ~ "\n";
+						foreach(flag ; meta.flags) {
+							data ~= "\t" ~ toCamelCase(flag.name) ~ " | " ~ to!string(flag.bit) ~ (description ? " | " ~ flag.description : "") ~ "\n";
+						}
+						data ~= "\n";
+					}
+				}
 			}
 		}
 		// attributes

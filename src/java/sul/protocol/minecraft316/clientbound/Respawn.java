@@ -37,6 +37,12 @@ class Respawn extends Packet {
 	public final static byte ADVENTURE = (byte)2;
 	public final static byte SPECTATOR = (byte)3;
 
+	// level type
+	public final static String INFINITY = (String)default;
+	public final static String FLAT = (String)flat;
+	public final static String AMPLIFIED = (String)amplified;
+	public final static String LARGE_BIOMES = (String)largeBiomes;
+
 	public int dimension;
 	public byte difficulty;
 	public byte gamemode;

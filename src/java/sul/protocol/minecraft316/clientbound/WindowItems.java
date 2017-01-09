@@ -21,12 +21,11 @@ class WindowItems extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	public byte window;
-	public short count;
 	public Slots slots;
 
 	@Override
 	public int length() {
-		return slots.length() + 3;
+		return slots.length() + 1;
 	}
 
 	@Override

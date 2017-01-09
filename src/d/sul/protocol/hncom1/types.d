@@ -28,14 +28,14 @@ struct Plugin {
 	}
 
 	public ubyte[] encode(ref ubyte[] _buffer) {
-		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint);_buffer~=bmFtZQ;
-		ubyte[] dmVycw=cast(ubyte[])vers; _buffer~=varuint.encode(dmVycw.length.to!uint);_buffer~=dmVycw;
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint); _buffer~=bmFtZQ;
+		ubyte[] dmVycw=cast(ubyte[])vers; _buffer~=varuint.encode(dmVycw.length.to!uint); _buffer~=dmVycw;
 		return _buffer;
 	}
 
 	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
-		ubyte[] dmVycw; dmVycw.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dmVycw.length){ dmVycw=_buffer[*_index..*_index+dmVycw.length].dup; *_index+=dmVycw.length; }; vers=cast(string)dmVycw;
+		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		ubyte[] dmVycw; dmVycw.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dmVycw.length){ dmVycw=_buffer[*_index..*_index+dmVycw.length].dup; *_index+=dmVycw.length; }; vers=cast(string)dmVycw;
 		return this;
 	}
 
@@ -64,13 +64,13 @@ struct Address {
 	}
 
 	public ubyte[] encode(ref ubyte[] _buffer) {
-		_buffer~=varuint.encode(bytes.length.to!uint);_buffer~=bytes;
+		_buffer~=varuint.encode(bytes.length.to!uint); _buffer~=bytes;
 		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, port, _buffer.length-ushort.sizeof);
 		return _buffer;
 	}
 
 	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		bytes.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bytes.length){ bytes=_buffer[*_index..*_index+bytes.length].dup; *_index+=bytes.length; }
+		bytes.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bytes.length){ bytes=_buffer[*_index..*_index+bytes.length].dup; *_index+=bytes.length; }
 		if(_buffer.length>=*_index+ushort.sizeof){ port=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
@@ -96,16 +96,16 @@ struct Game {
 
 	public ubyte[] encode(ref ubyte[] _buffer) {
 		_buffer~=type;
-		_buffer~=varuint.encode(protocols.length.to!uint);foreach(cHJvdG9jb2xz;protocols){ _buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, cHJvdG9jb2xz, _buffer.length-uint.sizeof); }
-		ubyte[] bW90ZA=cast(ubyte[])motd; _buffer~=varuint.encode(bW90ZA.length.to!uint);_buffer~=bW90ZA;
+		_buffer~=varuint.encode(protocols.length.to!uint); foreach(cHJvdG9jb2xz;protocols){ _buffer~=varuint.encode(cHJvdG9jb2xz); }
+		ubyte[] bW90ZA=cast(ubyte[])motd; _buffer~=varuint.encode(bW90ZA.length.to!uint); _buffer~=bW90ZA;
 		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, port, _buffer.length-ushort.sizeof);
 		return _buffer;
 	}
 
 	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
 		if(_buffer.length>=*_index+ubyte.sizeof){ type=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		protocols.length=varuint.decode(_buffer, *_index);foreach(ref cHJvdG9jb2xz;protocols){ if(_buffer.length>=*_index+uint.sizeof){ cHJvdG9jb2xz=peek!(uint, Endian.bigEndian)(_buffer, _index); } }
-		ubyte[] bW90ZA; bW90ZA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bW90ZA.length){ bW90ZA=_buffer[*_index..*_index+bW90ZA.length].dup; *_index+=bW90ZA.length; }; motd=cast(string)bW90ZA;
+		protocols.length=varuint.decode(_buffer, *_index); foreach(ref cHJvdG9jb2xz;protocols){ cHJvdG9jb2xz=varuint.decode(_buffer, *_index); }
+		ubyte[] bW90ZA; bW90ZA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bW90ZA.length){ bW90ZA=_buffer[*_index..*_index+bW90ZA.length].dup; *_index+=bW90ZA.length; }; motd=cast(string)bW90ZA;
 		if(_buffer.length>=*_index+ushort.sizeof){ port=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
 		return this;
 	}
@@ -124,14 +124,14 @@ struct Skin {
 	}
 
 	public ubyte[] encode(ref ubyte[] _buffer) {
-		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint);_buffer~=bmFtZQ;
-		_buffer~=varuint.encode(data.length.to!uint);_buffer~=data;
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint); _buffer~=bmFtZQ;
+		_buffer~=varuint.encode(data.length.to!uint); _buffer~=data;
 		return _buffer;
 	}
 
 	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
-		data.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
+		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		data.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+data.length){ data=_buffer[*_index..*_index+data.length].dup; *_index+=data.length; }
 		return this;
 	}
 
@@ -151,15 +151,15 @@ struct Log {
 
 	public ubyte[] encode(ref ubyte[] _buffer) {
 		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, timestamp, _buffer.length-ulong.sizeof);
-		ubyte[] bG9nZ2Vy=cast(ubyte[])logger; _buffer~=varuint.encode(bG9nZ2Vy.length.to!uint);_buffer~=bG9nZ2Vy;
-		ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint);_buffer~=bWVzc2FnZQ;
+		ubyte[] bG9nZ2Vy=cast(ubyte[])logger; _buffer~=varuint.encode(bG9nZ2Vy.length.to!uint); _buffer~=bG9nZ2Vy;
+		ubyte[] bWVzc2FnZQ=cast(ubyte[])message; _buffer~=varuint.encode(bWVzc2FnZQ.length.to!uint); _buffer~=bWVzc2FnZQ;
 		return _buffer;
 	}
 
 	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
 		if(_buffer.length>=*_index+ulong.sizeof){ timestamp=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] bG9nZ2Vy; bG9nZ2Vy.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bG9nZ2Vy.length){ bG9nZ2Vy=_buffer[*_index..*_index+bG9nZ2Vy.length].dup; *_index+=bG9nZ2Vy.length; }; logger=cast(string)bG9nZ2Vy;
-		ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
+		ubyte[] bG9nZ2Vy; bG9nZ2Vy.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bG9nZ2Vy.length){ bG9nZ2Vy=_buffer[*_index..*_index+bG9nZ2Vy.length].dup; *_index+=bG9nZ2Vy.length; }; logger=cast(string)bG9nZ2Vy;
+		ubyte[] bWVzc2FnZQ; bWVzc2FnZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bWVzc2FnZQ.length){ bWVzc2FnZQ=_buffer[*_index..*_index+bWVzc2FnZQ.length].dup; *_index+=bWVzc2FnZQ.length; }; message=cast(string)bWVzc2FnZQ;
 		return this;
 	}
 

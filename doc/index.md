@@ -14,9 +14,14 @@ Protocol | Packets | Released | From
 
 Protocol | Packets | Released | From | To
 :---:|:---:|:---:|:---:|:---:
-[210](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/210.md) | 11 | 2016/6/8 | 1.10 | 1.10.2
-[315](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/315.md) | 11 | 2016/11/14 | 1.11 | 1.11
-[316](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/316.md) | 117 | 2016/12/20 | 1.11.1 | 
+[47](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/47.md) | 108 | 2014/9/2 | 1.8 | 1.8.9
+[107](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/107.md) | 117 | 2016/2/29 | 1.9 | 1.9
+[108](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/108.md) | 117 | 2016/3/10 | 1.9.1 | 1.9.1
+[109](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/109.md) | 117 | 2016/3/30 | 1.9.2 | 1.9.2
+[110](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/110.md) | 116 | 2016/4/27 | 1.9.3 | 1.9.4
+[210](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/210.md) | 116 | 2016/6/8 | 1.10 | 1.10.2
+[315](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/315.md) | 116 | 2016/11/14 | 1.11 | 1.11
+[316](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/316.md) | 116 | 2016/12/20 | 1.11.1 | 
 
 ## Minecraft: Pocket Edition
 

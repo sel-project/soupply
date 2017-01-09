@@ -33,7 +33,7 @@ struct Logs {
 	public ubyte[] encode(bool writeId=true)() {
 		ubyte[] _buffer;
 		static if(writeId){ _buffer~=ID; }
-		_buffer~=varuint.encode(messages.length.to!uint);foreach(bWVzc2FnZXM;messages){ bWVzc2FnZXM.encode(_buffer); }
+		_buffer~=varuint.encode(messages.length.to!uint); foreach(bWVzc2FnZXM;messages){ bWVzc2FnZXM.encode(_buffer); }
 		return _buffer;
 	}
 
@@ -43,7 +43,7 @@ struct Logs {
 
 	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		messages.length=varuint.decode(_buffer, *_index);foreach(ref bWVzc2FnZXM;messages){ bWVzc2FnZXM.decode(_buffer, _index); }
+		messages.length=varuint.decode(_buffer, *_index); foreach(ref bWVzc2FnZXM;messages){ bWVzc2FnZXM.decode(_buffer, _index); }
 		return this;
 	}
 
@@ -70,7 +70,7 @@ struct RemoteCommand {
 		static if(writeId){ _buffer~=ID; }
 		_buffer~=origin;
 		sender.encode(_buffer);
-		ubyte[] Y29tbWFuZA=cast(ubyte[])command; _buffer~=varuint.encode(Y29tbWFuZA.length.to!uint);_buffer~=Y29tbWFuZA;
+		ubyte[] Y29tbWFuZA=cast(ubyte[])command; _buffer~=varuint.encode(Y29tbWFuZA.length.to!uint); _buffer~=Y29tbWFuZA;
 		return _buffer;
 	}
 
@@ -82,7 +82,7 @@ struct RemoteCommand {
 		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
 		if(_buffer.length>=*_index+ubyte.sizeof){ origin=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
 		sender.decode(_buffer, _index);
-		ubyte[] Y29tbWFuZA; Y29tbWFuZA.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+Y29tbWFuZA.length){ Y29tbWFuZA=_buffer[*_index..*_index+Y29tbWFuZA.length].dup; *_index+=Y29tbWFuZA.length; }; command=cast(string)Y29tbWFuZA;
+		ubyte[] Y29tbWFuZA; Y29tbWFuZA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y29tbWFuZA.length){ Y29tbWFuZA=_buffer[*_index..*_index+Y29tbWFuZA.length].dup; *_index+=Y29tbWFuZA.length; }; command=cast(string)Y29tbWFuZA;
 		return this;
 	}
 
@@ -165,12 +165,12 @@ struct UpdateList {
 		}
 
 		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] dXNlcm5hbWU=cast(ubyte[])username; _buffer~=varuint.encode(dXNlcm5hbWU.length.to!uint);_buffer~=dXNlcm5hbWU;
+			ubyte[] dXNlcm5hbWU=cast(ubyte[])username; _buffer~=varuint.encode(dXNlcm5hbWU.length.to!uint); _buffer~=dXNlcm5hbWU;
 			return _buffer;
 		}
 
 		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] dXNlcm5hbWU; dXNlcm5hbWU.length=varuint.decode(_buffer, *_index);if(_buffer.length>=*_index+dXNlcm5hbWU.length){ dXNlcm5hbWU=_buffer[*_index..*_index+dXNlcm5hbWU.length].dup; *_index+=dXNlcm5hbWU.length; }; username=cast(string)dXNlcm5hbWU;
+			ubyte[] dXNlcm5hbWU; dXNlcm5hbWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dXNlcm5hbWU.length){ dXNlcm5hbWU=_buffer[*_index..*_index+dXNlcm5hbWU.length].dup; *_index+=dXNlcm5hbWU.length; }; username=cast(string)dXNlcm5hbWU;
 			return this;
 		}
 

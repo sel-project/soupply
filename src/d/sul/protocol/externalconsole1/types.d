@@ -33,13 +33,13 @@ struct Game {
 
 	public ubyte[] encode(ref ubyte[] _buffer) {
 		_buffer~=type;
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, protocols.length.to!ushort, _buffer.length-ushort.sizeof);foreach(cHJvdG9jb2xz;protocols){ _buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, cHJvdG9jb2xz, _buffer.length-uint.sizeof); }
+		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, protocols.length.to!ushort, _buffer.length-ushort.sizeof); foreach(cHJvdG9jb2xz;protocols){ _buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, cHJvdG9jb2xz, _buffer.length-uint.sizeof); }
 		return _buffer;
 	}
 
 	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
 		if(_buffer.length>=*_index+ubyte.sizeof){ type=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ushort.sizeof){ protocols.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }foreach(ref cHJvdG9jb2xz;protocols){ if(_buffer.length>=*_index+uint.sizeof){ cHJvdG9jb2xz=peek!(uint, Endian.bigEndian)(_buffer, _index); } }
+		if(_buffer.length>=*_index+ushort.sizeof){ protocols.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } foreach(ref cHJvdG9jb2xz;protocols){ if(_buffer.length>=*_index+uint.sizeof){ cHJvdG9jb2xz=peek!(uint, Endian.bigEndian)(_buffer, _index); } }
 		return this;
 	}
 
@@ -59,7 +59,7 @@ struct NodeStats {
 	}
 
 	public ubyte[] encode(ref ubyte[] _buffer) {
-		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, bmFtZQ.length.to!ushort, _buffer.length-ushort.sizeof);_buffer~=bmFtZQ;
+		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, bmFtZQ.length.to!ushort, _buffer.length-ushort.sizeof); _buffer~=bmFtZQ;
 		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, tps, _buffer.length-float.sizeof);
 		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, ram, _buffer.length-ulong.sizeof);
 		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, cpu, _buffer.length-float.sizeof);
@@ -67,7 +67,7 @@ struct NodeStats {
 	}
 
 	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		ubyte[] bmFtZQ; if(_buffer.length>=*_index+ushort.sizeof){ bmFtZQ.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
+		ubyte[] bmFtZQ; if(_buffer.length>=*_index+ushort.sizeof){ bmFtZQ.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
 		if(_buffer.length>=*_index+float.sizeof){ tps=peek!(float, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+ulong.sizeof){ ram=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
 		if(_buffer.length>=*_index+float.sizeof){ cpu=peek!(float, Endian.bigEndian)(_buffer, _index); }
