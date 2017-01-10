@@ -31,7 +31,7 @@ class Auth extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeShortB((short)hash.length); for(ubyte aGFzaA:hash){ this.writeByteB(aGFzaA); }
+		this.writeShortB((short)hash.length); for(ubyte agfzaa:hash){ this.writeByteB(agfzaa); }
 		return this.buffer;
 	}
 

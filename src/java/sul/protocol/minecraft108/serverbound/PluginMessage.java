@@ -32,7 +32,7 @@ class PluginMessage extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] Y2hhbm5lbA=channel.getBytes("UTF-8"); this.writeVaruint((int)Y2hhbm5lbA.length); this.writeBytes(Y2hhbm5lbA);
+		byte[] y2hhbm5lba=channel.getBytes("UTF-8"); this.writeVaruint((int)y2hhbm5lba.length); this.writeBytes(y2hhbm5lba);
 		this.writeBytes(data);
 		return this.buffer;
 	}

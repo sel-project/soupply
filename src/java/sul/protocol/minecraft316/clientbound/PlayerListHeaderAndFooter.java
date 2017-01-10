@@ -32,8 +32,8 @@ class PlayerListHeaderAndFooter extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] aGVhZGVy=header.getBytes("UTF-8"); this.writeVaruint((int)aGVhZGVy.length); this.writeBytes(aGVhZGVy);
-		byte[] Zm9vdGVy=footer.getBytes("UTF-8"); this.writeVaruint((int)Zm9vdGVy.length); this.writeBytes(Zm9vdGVy);
+		byte[] agvhzgvy=header.getBytes("UTF-8"); this.writeVaruint((int)agvhzgvy.length); this.writeBytes(agvhzgvy);
+		byte[] zm9vdgvy=footer.getBytes("UTF-8"); this.writeVaruint((int)zm9vdgvy.length); this.writeBytes(zm9vdgvy);
 		return this.buffer;
 	}
 

@@ -36,8 +36,8 @@ class Pong extends Packet {
 		this.writeByteB(ID);
 		this.writeLongB(pingId);
 		this.writeLongB(serverId);
-		for(ubyte bWFnaWM:magic){ this.writeByteB(bWFnaWM); }
-		byte[] c3RhdHVz=status.getBytes("UTF-8"); this.writeShortB((short)c3RhdHVz.length); this.writeBytes(c3RhdHVz);
+		for(ubyte bwfnawm:magic){ this.writeByteB(bwfnawm); }
+		byte[] c3rhdhvz=status.getBytes("UTF-8"); this.writeShortB((short)c3rhdhvz.length); this.writeBytes(c3rhdhvz);
 		return this.buffer;
 	}
 

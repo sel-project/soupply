@@ -33,7 +33,7 @@ class UpdateAttributes extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeVarlong(entityId);
-		this.writeVaruint((int)attributes.length); for(attribute YXR0cmlidXRlcw:attributes){ this.writeBytes(YXR0cmlidXRlcw.encode()); }
+		this.writeVaruint((int)attributes.length); for(attribute yxr0cmlidxrlcw:attributes){ this.writeBytes(yxr0cmlidxrlcw.encode()); }
 		return this.buffer;
 	}
 

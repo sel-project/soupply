@@ -31,7 +31,7 @@ class AvailableCommands extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		byte[] Y29tbWFuZHM=commands.getBytes("UTF-8"); this.writeVaruint((int)Y29tbWFuZHM.length); this.writeBytes(Y29tbWFuZHM);
+		byte[] y29tbwfuzhm=commands.getBytes("UTF-8"); this.writeVaruint((int)y29tbwfuzhm.length); this.writeBytes(y29tbwfuzhm);
 		return this.buffer;
 	}
 

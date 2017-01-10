@@ -15,81 +15,126 @@ import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
 import std.uuid : UUID;
 
+import sul.utils.buffer;
 import sul.utils.var;
 
-import types = sul.protocol.externalconsole1.types;
+static import sul.protocol.externalconsole1.types;
 
 alias Packets = TypeTuple!(KeepAlive, UpdateNodes, UpdateStats);
 
-struct KeepAlive {
+/**
+ * Keeps the connection alive and/or calculates the latency. This packet should be
+ * sent at least every 5 seconds to avoid the disconnection by the server caused by
+ * a timeout and update the latency. The client can send this packet whenever he wants
+ * and the server must reply with the same packet with the same field's value.
+ */
+class KeepAlive : Buffer {
 
 	public enum ubyte ID = 0;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["count"];
+
+	/**
+	 * An identifier chosen by the client to calculate the latency.
+	 */
 	public uint count;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, count, _buffer.length-uint.sizeof);
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint count) {
+		this.count = count;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUint(count);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		count=readBigEndianUint();
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+uint.sizeof){ count=peek!(uint, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe KeepAlive fromBuffer(bool readId=true)(ubyte[] buffer) {
+		KeepAlive ret = new KeepAlive();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct UpdateNodes {
+/**
+ * Updates the list of the nodes connected to the hub, adding or removing one.
+ * If the server isn't built following the hub-node structure this packet is never
+ * sent.
+ */
+class UpdateNodes : Buffer {
 
 	public enum ubyte ID = 1;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	public enum string[] FIELDS = ["action", "node"];
+
 	// action
 	public enum ubyte ADD = 0;
 	public enum ubyte REMOVE = 1;
 
+	/**
+	 * Whether the node should be added or removed from the list of connected nodes.
+	 */
 	public ubyte action;
+
+	/**
+	 * Name of the node.
+	 */
 	public string node;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=action;
-		ubyte[] bm9kZQ=cast(ubyte[])node; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, bm9kZQ.length.to!ushort, _buffer.length-ushort.sizeof); _buffer~=bm9kZQ;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte action, string node=string.init) {
+		this.action = action;
+		this.node = node;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUbyte(action);
+		writeBigEndianUshort(cast(ushort)node.length); writeString(node);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		action=readBigEndianUbyte();
+		ushort bm9kzq=readBigEndianUshort(); node=readString(bm9kzq);
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+ubyte.sizeof){ action=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] bm9kZQ; if(_buffer.length>=*_index+ushort.sizeof){ bm9kZQ.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } if(_buffer.length>=*_index+bm9kZQ.length){ bm9kZQ=_buffer[*_index..*_index+bm9kZQ.length].dup; *_index+=bm9kZQ.length; }; node=cast(string)bm9kZQ;
-		return this;
+	public static pure nothrow @safe UpdateNodes fromBuffer(bool readId=true)(ubyte[] buffer) {
+		UpdateNodes ret = new UpdateNodes();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct UpdateStats {
+class UpdateStats : Buffer {
 
 	public enum ubyte ID = 2;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["onlinePlayers", "maxPlayers", "uptime", "upload", "download", "nodes"];
 
 	public uint onlinePlayers;
 	public uint maxPlayers;
@@ -98,31 +143,44 @@ struct UpdateStats {
 	public uint download;
 	public sul.protocol.externalconsole1.types.NodeStats[] nodes;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, onlinePlayers, _buffer.length-uint.sizeof);
-		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, maxPlayers, _buffer.length-uint.sizeof);
-		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, uptime, _buffer.length-uint.sizeof);
-		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, upload, _buffer.length-uint.sizeof);
-		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, download, _buffer.length-uint.sizeof);
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, nodes.length.to!ushort, _buffer.length-ushort.sizeof); foreach(bm9kZXM;nodes){ bm9kZXM.encode(_buffer); }
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint onlinePlayers, uint maxPlayers=uint.init, uint uptime=uint.init, uint upload=uint.init, uint download=uint.init, sul.protocol.externalconsole1.types.NodeStats[] nodes=(sul.protocol.externalconsole1.types.NodeStats[]).init) {
+		this.onlinePlayers = onlinePlayers;
+		this.maxPlayers = maxPlayers;
+		this.uptime = uptime;
+		this.upload = upload;
+		this.download = download;
+		this.nodes = nodes;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUint(onlinePlayers);
+		writeBigEndianUint(maxPlayers);
+		writeBigEndianUint(uptime);
+		writeBigEndianUint(upload);
+		writeBigEndianUint(download);
+		writeBigEndianUshort(cast(ushort)nodes.length); foreach(bm9kzxm;nodes){ bm9kzxm.encode(bufferInstance); }
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		onlinePlayers=readBigEndianUint();
+		maxPlayers=readBigEndianUint();
+		uptime=readBigEndianUint();
+		upload=readBigEndianUint();
+		download=readBigEndianUint();
+		nodes.length=readBigEndianUshort(); foreach(ref bm9kzxm;nodes){ bm9kzxm.decode(bufferInstance); }
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+uint.sizeof){ onlinePlayers=peek!(uint, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+uint.sizeof){ maxPlayers=peek!(uint, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+uint.sizeof){ uptime=peek!(uint, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+uint.sizeof){ upload=peek!(uint, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+uint.sizeof){ download=peek!(uint, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ushort.sizeof){ nodes.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } foreach(ref bm9kZXM;nodes){ bm9kZXM.decode(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe UpdateStats fromBuffer(bool readId=true)(ubyte[] buffer) {
+		UpdateStats ret = new UpdateStats();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }

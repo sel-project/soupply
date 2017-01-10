@@ -38,7 +38,7 @@ class ChunkData extends Packet {
 		this.writeIntB(position.x);this.writeIntB(position.z);
 		this.writeBoolB(full);
 		this.writeVaruint(sections);
-		this.writeVaruint((int)data.length); for(ubyte ZGF0YQ:data){ this.writeByteB(ZGF0YQ); }
+		this.writeVaruint((int)data.length); for(ubyte zgf0yq:data){ this.writeByteB(zgf0yq); }
 		this.writeBytes(tiles);
 		return this.buffer;
 	}

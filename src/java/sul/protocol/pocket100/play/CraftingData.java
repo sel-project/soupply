@@ -31,7 +31,7 @@ class CraftingData extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeVaruint((int)recipes.length); for(recipe cmVjaXBlcw:recipes){ this.writeBytes(cmVjaXBlcw.encode()); }
+		this.writeVaruint((int)recipes.length); for(recipe cmvjaxblcw:recipes){ this.writeBytes(cmvjaxblcw.encode()); }
 		return this.buffer;
 	}
 

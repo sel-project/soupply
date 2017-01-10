@@ -41,11 +41,11 @@ class Map extends Packet {
 		this.writeVaruint(mapId);
 		this.writeByteB(scale);
 		this.writeBoolB(showIcons);
-		this.writeVaruint((int)icons.length); for(icon aWNvbnM:icons){ this.writeBytes(aWNvbnM.encode()); }
+		this.writeVaruint((int)icons.length); for(icon awnvbnm:icons){ this.writeBytes(awnvbnm.encode()); }
 		this.writeByteB(colums);
 		this.writeByteB(rows);
 		this.writeByteB(offset.x);this.writeByteB(offset.z);
-		this.writeVaruint((int)data.length); for(ubyte ZGF0YQ:data){ this.writeByteB(ZGF0YQ); }
+		this.writeVaruint((int)data.length); for(ubyte zgf0yq:data){ this.writeByteB(zgf0yq); }
 		return this.buffer;
 	}
 

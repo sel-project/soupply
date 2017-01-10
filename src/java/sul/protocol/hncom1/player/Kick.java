@@ -35,9 +35,9 @@ class Kick extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeVaruint(hubId);
-		byte[] cmVhc29u=reason.getBytes("UTF-8"); this.writeVaruint((int)cmVhc29u.length); this.writeBytes(cmVhc29u);
+		byte[] cmvhc29u=reason.getBytes("UTF-8"); this.writeVaruint((int)cmvhc29u.length); this.writeBytes(cmvhc29u);
 		this.writeBoolB(translation);
-		if(translation==true){ this.writeVaruint((int)parameters.length); for(string cGFyYW1ldGVycw:parameters){ byte[] Y0dGeVlXMWxkR1Z5=cGFyYW1ldGVycw.getBytes("UTF-8"); this.writeVaruint((int)Y0dGeVlXMWxkR1Z5.length); this.writeBytes(Y0dGeVlXMWxkR1Z5); } }
+		if(translation==true){ this.writeVaruint((int)parameters.length); for(string cgfyyw1ldgvycw:parameters){ byte[] y2dmexl3mwxkz3z5=cgfyyw1ldgvycw.getBytes("UTF-8"); this.writeVaruint((int)y2dmexl3mwxkz3z5.length); this.writeBytes(y2dmexl3mwxkz3z5); } }
 		return this.buffer;
 	}
 

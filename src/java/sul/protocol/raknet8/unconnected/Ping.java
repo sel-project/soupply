@@ -33,7 +33,7 @@ class Ping extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeLongB(pingId);
-		for(ubyte bWFnaWM:magic){ this.writeByteB(bWFnaWM); }
+		for(ubyte bwfnawm:magic){ this.writeByteB(bwfnawm); }
 		return this.buffer;
 	}
 

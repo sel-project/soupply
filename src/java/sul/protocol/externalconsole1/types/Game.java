@@ -18,7 +18,15 @@ final class Game {
 	public final static byte POCKET = (byte)1;
 	public final static byte MINECRAFT = (byte)2;
 
+	/**
+	 * Type of the game. Minecraft indicates the java version of the game and pocket indicates
+	 * the versions running on Android, iOS, Windows Phone and Windows 10.
+	 */
 	public byte type;
+
+	/**
+	 * List of protocols accepted by the servers for the indicated game.
+	 */
 	public int[] protocols;
 
 }

@@ -14,6 +14,7 @@ import std.system : Endian;
 import std.typecons : Tuple;
 import std.uuid : UUID;
 
+import sul.utils.buffer;
 import sul.utils.var;
 
 struct Address {
@@ -23,26 +24,22 @@ struct Address {
 	public ubyte[16] ipv6;
 	public ushort port;
 
-	public ubyte[] encode() {
-		ubyte[] _buffer;
-		this.encode(_buffer);
-		return _buffer;
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(type);
+			if(type==4){ writeBytes(ipv4); }
+			if(type==6){ writeBytes(ipv6); }
+			writeBigEndianUshort(port);
+		}
 	}
 
-	public ubyte[] encode(ref ubyte[] _buffer) {
-		_buffer~=type;
-		if(type==4){ _buffer~=ipv4; }
-		if(type==6){ _buffer~=ipv6; }
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, port, _buffer.length-ushort.sizeof);
-		return _buffer;
-	}
-
-	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		if(_buffer.length>=*_index+ubyte.sizeof){ type=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		if(type==4){ if(_buffer.length>=*_index+ipv4.length){ ipv4=_buffer[*_index..*_index+ipv4.length].dup; *_index+=ipv4.length; } }
-		if(type==6){ if(_buffer.length>=*_index+ipv6.length){ ipv6=_buffer[*_index..*_index+ipv6.length].dup; *_index+=ipv6.length; } }
-		if(_buffer.length>=*_index+ushort.sizeof){ port=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			type=readBigEndianUbyte();
+			if(type==4){ if(_buffer.length>=_index+ipv4.length){ ipv4=_buffer[_index.._index+ipv4.length].dup; _index+=ipv4.length; } }
+			if(type==6){ if(_buffer.length>=_index+ipv6.length){ ipv6=_buffer[_index.._index+ipv6.length].dup; _index+=ipv6.length; } }
+			port=readBigEndianUshort();
+		}
 	}
 
 }
@@ -53,24 +50,20 @@ struct Acknowledge {
 	public int first;
 	public int last;
 
-	public ubyte[] encode() {
-		ubyte[] _buffer;
-		this.encode(_buffer);
-		return _buffer;
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianBool(unique);
+			first.encode(bufferInstance);
+			if(unique==false){ last.encode(bufferInstance); }
+		}
 	}
 
-	public ubyte[] encode(ref ubyte[] _buffer) {
-		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, unique, _buffer.length-bool.sizeof);
-		_buffer.length+=3; _buffer[$-3]=first&255; _buffer[$-2]=(first>>8)&255; _buffer[$-1]=(first>>16)&255;
-		if(unique==false){ _buffer.length+=3; _buffer[$-3]=last&255; _buffer[$-2]=(last>>8)&255; _buffer[$-1]=(last>>16)&255; }
-		return _buffer;
-	}
-
-	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		if(_buffer.length>=*_index+bool.sizeof){ unique=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+3){ first=buffer[*_index]|(buffer[*_index+1]<<8)|(buffer[*_index+2]<<16); *_index+=3; }
-		if(unique==false){ if(_buffer.length>=*_index+3){ last=buffer[*_index]|(buffer[*_index+1]<<8)|(buffer[*_index+2]<<16); *_index+=3; } }
-		return this;
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			unique=readBigEndianBool();
+			first.decode(bufferInstance);
+			if(unique==false){ last.decode(bufferInstance); }
+		}
 	}
 
 }
@@ -85,32 +78,28 @@ struct Encapsulation {
 	public sul.protocol.raknet8.types.Split split;
 	public ubyte[] payload;
 
-	public ubyte[] encode() {
-		ubyte[] _buffer;
-		this.encode(_buffer);
-		return _buffer;
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(info);
+			writeBigEndianUshort(length);
+			if((info&0x7F)>=64){ messageIndex.encode(bufferInstance); }
+			if((info&0x7F)>=96){ orderIndex.encode(bufferInstance); }
+			if((info&0x7F)>=96){ writeBigEndianUbyte(orderChannel); }
+			if((info&0x10)!=0){ split.encode(bufferInstance); }
+			writeBytes(payload);
+		}
 	}
 
-	public ubyte[] encode(ref ubyte[] _buffer) {
-		_buffer~=info;
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, length, _buffer.length-ushort.sizeof);
-		if((info&0x7F)>=64){ _buffer.length+=3; _buffer[$-3]=messageIndex&255; _buffer[$-2]=(messageIndex>>8)&255; _buffer[$-1]=(messageIndex>>16)&255; }
-		if((info&0x7F)>=96){ _buffer.length+=3; _buffer[$-3]=orderIndex&255; _buffer[$-2]=(orderIndex>>8)&255; _buffer[$-1]=(orderIndex>>16)&255; }
-		if((info&0x7F)>=96){ _buffer~=orderChannel; }
-		if((info&0x10)!=0){ split.encode(_buffer); }
-		_buffer~=payload;
-		return _buffer;
-	}
-
-	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		if(_buffer.length>=*_index+ubyte.sizeof){ info=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ushort.sizeof){ length=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
-		if((info&0x7F)>=64){ if(_buffer.length>=*_index+3){ messageIndex=buffer[*_index]|(buffer[*_index+1]<<8)|(buffer[*_index+2]<<16); *_index+=3; } }
-		if((info&0x7F)>=96){ if(_buffer.length>=*_index+3){ orderIndex=buffer[*_index]|(buffer[*_index+1]<<8)|(buffer[*_index+2]<<16); *_index+=3; } }
-		if((info&0x7F)>=96){ if(_buffer.length>=*_index+ubyte.sizeof){ orderChannel=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if((info&0x10)!=0){ split.decode(_buffer, _index); }
-		payload=_buffer[*_index..$].dup; *_index=buffer.length;
-		return this;
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			info=readBigEndianUbyte();
+			length=readBigEndianUshort();
+			if((info&0x7F)>=64){ messageIndex.decode(bufferInstance); }
+			if((info&0x7F)>=96){ orderIndex.decode(bufferInstance); }
+			if((info&0x7F)>=96){ orderChannel=readBigEndianUbyte(); }
+			if((info&0x10)!=0){ split.decode(bufferInstance); }
+			payload=_buffer[_index..$].dup; _index=buffer.length;
+		}
 	}
 
 }
@@ -121,24 +110,20 @@ struct Split {
 	public ushort id;
 	public uint order;
 
-	public ubyte[] encode() {
-		ubyte[] _buffer;
-		this.encode(_buffer);
-		return _buffer;
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUint(count);
+			writeBigEndianUshort(id);
+			writeBigEndianUint(order);
+		}
 	}
 
-	public ubyte[] encode(ref ubyte[] _buffer) {
-		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, count, _buffer.length-uint.sizeof);
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, id, _buffer.length-ushort.sizeof);
-		_buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, order, _buffer.length-uint.sizeof);
-		return _buffer;
-	}
-
-	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		if(_buffer.length>=*_index+uint.sizeof){ count=peek!(uint, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ushort.sizeof){ id=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+uint.sizeof){ order=peek!(uint, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			count=readBigEndianUint();
+			id=readBigEndianUshort();
+			order=readBigEndianUint();
+		}
 	}
 
 }

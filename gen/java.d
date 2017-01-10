@@ -347,7 +347,9 @@ string javadoc(string space, string description) {
 			search = false;
 		}
 	}
-	return space ~ "/**\n" ~ javadocImpl(space, description.split(" ")) ~ space ~ " */\n";
+	string ret;
+	foreach(s ; description.split("\n")) ret ~= javadocImpl(space, s.split(" "));
+	return space ~ "/**\n" ~ ret ~ space ~ " */\n";
 }
 
 string javadocImpl(string space, string[] words) {

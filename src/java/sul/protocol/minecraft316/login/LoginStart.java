@@ -31,7 +31,7 @@ class LoginStart extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] dXNlcm5hbWU=username.getBytes("UTF-8"); this.writeVaruint((int)dXNlcm5hbWU.length); this.writeBytes(dXNlcm5hbWU);
+		byte[] dxnlcm5hbwu=username.getBytes("UTF-8"); this.writeVaruint((int)dxnlcm5hbwu.length); this.writeBytes(dxnlcm5hbwu);
 		return this.buffer;
 	}
 

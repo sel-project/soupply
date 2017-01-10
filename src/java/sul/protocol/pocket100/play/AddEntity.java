@@ -47,9 +47,9 @@ class AddEntity extends Packet {
 		this.writeFloatlittle_endian(motion.x);this.writeFloatlittle_endian(motion.y);this.writeFloatlittle_endian(motion.z);
 		this.writeFloatlittle_endian(pitch);
 		this.writeFloatlittle_endian(yaw);
-		this.writeVaruint((int)attributes.length); for(attribute YXR0cmlidXRlcw:attributes){ this.writeBytes(YXR0cmlidXRlcw.encode()); }
+		this.writeVaruint((int)attributes.length); for(attribute yxr0cmlidxrlcw:attributes){ this.writeBytes(yxr0cmlidxrlcw.encode()); }
 		this.writeBytes(metadata.encode());
-		this.writeVaruint((int)links.length); for(varlong bGlua3M:links){ this.writeVarlong(bGlua3M); }
+		this.writeVaruint((int)links.length); for(varlong bglua3m:links){ this.writeVarlong(bglua3m); }
 		return this.buffer;
 	}
 

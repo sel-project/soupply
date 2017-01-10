@@ -15,118 +15,156 @@ import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
 import std.uuid : UUID;
 
+import sul.utils.buffer;
 import sul.utils.var;
 
-import types = sul.protocol.externalconsole1.types;
+static import sul.protocol.externalconsole1.types;
 
 alias Packets = TypeTuple!(AuthCredentials, Auth, Welcome);
 
 /**
- * Credentials for login.
+ * First packet sent by the server after the connection has been successfully established.
+ * It contains informations about how the client should authenticate.
  */
-struct AuthCredentials {
+class AuthCredentials : Buffer {
 
 	public enum ubyte ID = 0;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	public enum string[] FIELDS = ["protocol", "hashAlgorithm", "payload"];
+
 	/**
 	 * Protocol used by the server. If the client uses a different one it should close
-	 * the connection without sending any packet.
+	 * the connection without trying to perform authentication.
 	 */
 	public ubyte protocol;
 
 	/**
-	 * Algorithm used by the server to match the the hash. If empty no hashing is done
-	 * and the password is sent raw.
+	 * Algorithm used by the server to match the the hash. The value should be sent in
+	 * lowercase without any separation symbol (for example `sha256` instead of `SHA-256`).
+	 * If empty no hashing is done and the password is sent raw. See [Auth.hash](#login.auth.hash)
+	 * for more details.
 	 */
 	public string hashAlgorithm;
 
 	/**
 	 * Payload to add to the password encoded as UTF-8 (if hash algorithm is not empty)
-	 * before hashing it.
+	 * before hashing it, as described in the [Auth.hash](#login.auth.hash) field.
 	 */
 	public ubyte[16] payload;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=protocol;
-		ubyte[] aGFzaEFsZ29yaXRo=cast(ubyte[])hashAlgorithm; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, aGFzaEFsZ29yaXRo.length.to!ushort, _buffer.length-ushort.sizeof); _buffer~=aGFzaEFsZ29yaXRo;
-		_buffer~=payload;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte protocol, string hashAlgorithm=string.init, ubyte[16] payload=(ubyte[16]).init) {
+		this.protocol = protocol;
+		this.hashAlgorithm = hashAlgorithm;
+		this.payload = payload;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUbyte(protocol);
+		writeBigEndianUshort(cast(ushort)hashAlgorithm.length); writeString(hashAlgorithm);
+		writeBytes(payload);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		protocol=readBigEndianUbyte();
+		ushort agfzaefsz29yaxro=readBigEndianUshort(); hashAlgorithm=readString(agfzaefsz29yaxro);
+		if(_buffer.length>=_index+payload.length){ payload=_buffer[_index.._index+payload.length].dup; _index+=payload.length; }
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+ubyte.sizeof){ protocol=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] aGFzaEFsZ29yaXRo; if(_buffer.length>=*_index+ushort.sizeof){ aGFzaEFsZ29yaXRo.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } if(_buffer.length>=*_index+aGFzaEFsZ29yaXRo.length){ aGFzaEFsZ29yaXRo=_buffer[*_index..*_index+aGFzaEFsZ29yaXRo.length].dup; *_index+=aGFzaEFsZ29yaXRo.length; }; hashAlgorithm=cast(string)aGFzaEFsZ29yaXRo;
-		if(_buffer.length>=*_index+payload.length){ payload=_buffer[*_index..*_index+payload.length].dup; *_index+=payload.length; }
-		return this;
+	public static pure nothrow @safe AuthCredentials fromBuffer(bool readId=true)(ubyte[] buffer) {
+		AuthCredentials ret = new AuthCredentials();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct Auth {
+class Auth : Buffer {
 
 	public enum ubyte ID = 1;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["hash"];
+
 	public ubyte[] hash;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, hash.length.to!ushort, _buffer.length-ushort.sizeof); _buffer~=hash;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte[] hash) {
+		this.hash = hash;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUshort(cast(ushort)hash.length); writeBytes(hash);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		hash.length=readBigEndianUshort(); if(_buffer.length>=_index+hash.length){ hash=_buffer[_index.._index+hash.length].dup; _index+=hash.length; }
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+ushort.sizeof){ hash.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } if(_buffer.length>=*_index+hash.length){ hash=_buffer[*_index..*_index+hash.length].dup; *_index+=hash.length; }
-		return this;
+	public static pure nothrow @safe Auth fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Auth ret = new Auth();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct Welcome {
+class Welcome : Buffer {
 
 	public enum ubyte ID = 2;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	public enum string[] FIELDS = ["status"];
+
 	public ubyte status;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=status;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte status) {
+		this.status = status;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUbyte(status);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		status=readBigEndianUbyte();
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+ubyte.sizeof){ status=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe Welcome fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Welcome ret = new Welcome();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
-	public struct Accepted {
+	alias _encode = encode;
+
+	public class Accepted {
 
 		public enum typeof(status) STATUS = 0;
 
@@ -134,73 +172,77 @@ struct Welcome {
 		public string software;
 		public ubyte[3] versions;
 		public string displayName;
-		public sul.protocol.externalconsole1.types.Game[] protocols;
+		public sul.protocol.externalconsole1.types.Game[] games;
 		public string[] connectedNodes;
 
-		public ubyte[] encode() {
-			ubyte[] _buffer;
-			this.encode(_buffer);
+		public pure nothrow @safe @nogc this() {}
+
+		public pure nothrow @safe @nogc this(bool remoteCommands, string software=string.init, ubyte[3] versions=(ubyte[3]).init, string displayName=string.init, sul.protocol.externalconsole1.types.Game[] games=(sul.protocol.externalconsole1.types.Game[]).init, string[] connectedNodes=(string[]).init) {
+			this.remoteCommands = remoteCommands;
+			this.software = software;
+			this.versions = versions;
+			this.displayName = displayName;
+			this.games = games;
+			this.connectedNodes = connectedNodes;
+		}
+
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			status = 0;
+			_encode!writeId();
+			writeBigEndianBool(remoteCommands);
+			writeBigEndianUshort(cast(ushort)software.length); writeString(software);
+			writeBytes(versions);
+			writeBigEndianUshort(cast(ushort)displayName.length); writeString(displayName);
+			writeBigEndianUshort(cast(ushort)games.length); foreach(z2ftzxm;games){ z2ftzxm.encode(bufferInstance); }
+			writeBigEndianUshort(cast(ushort)connectedNodes.length); foreach(y29ubmvjdgvktm9k;connectedNodes){ writeBigEndianUshort(cast(ushort)y29ubmvjdgvktm9k.length); writeString(y29ubmvjdgvktm9k); }
 			return _buffer;
 		}
 
-		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, remoteCommands, _buffer.length-bool.sizeof);
-			ubyte[] c29mdHdhcmU=cast(ubyte[])software; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, c29mdHdhcmU.length.to!ushort, _buffer.length-ushort.sizeof); _buffer~=c29mdHdhcmU;
-			_buffer~=versions;
-			ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, ZGlzcGxheU5hbWU.length.to!ushort, _buffer.length-ushort.sizeof); _buffer~=ZGlzcGxheU5hbWU;
-			_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, protocols.length.to!ushort, _buffer.length-ushort.sizeof); foreach(cHJvdG9jb2xz;protocols){ cHJvdG9jb2xz.encode(_buffer); }
-			_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, connectedNodes.length.to!ushort, _buffer.length-ushort.sizeof); foreach(Y29ubmVjdGVkTm9k;connectedNodes){ ubyte[] WTI5dWJtVmpkR1Zr=cast(ubyte[])Y29ubmVjdGVkTm9k; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, WTI5dWJtVmpkR1Zr.length.to!ushort, _buffer.length-ushort.sizeof); _buffer~=WTI5dWJtVmpkR1Zr; }
-			return _buffer;
-		}
-
-		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			if(_buffer.length>=*_index+bool.sizeof){ remoteCommands=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-			ubyte[] c29mdHdhcmU; if(_buffer.length>=*_index+ushort.sizeof){ c29mdHdhcmU.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } if(_buffer.length>=*_index+c29mdHdhcmU.length){ c29mdHdhcmU=_buffer[*_index..*_index+c29mdHdhcmU.length].dup; *_index+=c29mdHdhcmU.length; }; software=cast(string)c29mdHdhcmU;
-			if(_buffer.length>=*_index+versions.length){ versions=_buffer[*_index..*_index+versions.length].dup; *_index+=versions.length; }
-			ubyte[] ZGlzcGxheU5hbWU; if(_buffer.length>=*_index+ushort.sizeof){ ZGlzcGxheU5hbWU.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU;
-			if(_buffer.length>=*_index+ushort.sizeof){ protocols.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } foreach(ref cHJvdG9jb2xz;protocols){ cHJvdG9jb2xz.decode(_buffer, _index); }
-			if(_buffer.length>=*_index+ushort.sizeof){ connectedNodes.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } foreach(ref Y29ubmVjdGVkTm9k;connectedNodes){ ubyte[] WTI5dWJtVmpkR1Zr; if(_buffer.length>=*_index+ushort.sizeof){ WTI5dWJtVmpkR1Zr.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } if(_buffer.length>=*_index+WTI5dWJtVmpkR1Zr.length){ WTI5dWJtVmpkR1Zr=_buffer[*_index..*_index+WTI5dWJtVmpkR1Zr.length].dup; *_index+=WTI5dWJtVmpkR1Zr.length; }; Y29ubmVjdGVkTm9k=cast(string)WTI5dWJtVmpkR1Zr; }
-			return this;
+		public pure nothrow @safe void decode() {
+			remoteCommands=readBigEndianBool();
+			ushort c29mdhdhcmu=readBigEndianUshort(); software=readString(c29mdhdhcmu);
+			if(_buffer.length>=_index+versions.length){ versions=_buffer[_index.._index+versions.length].dup; _index+=versions.length; }
+			ushort zglzcgxheu5hbwu=readBigEndianUshort(); displayName=readString(zglzcgxheu5hbwu);
+			games.length=readBigEndianUshort(); foreach(ref z2ftzxm;games){ z2ftzxm.decode(bufferInstance); }
+			connectedNodes.length=readBigEndianUshort(); foreach(ref y29ubmvjdgvktm9k;connectedNodes){ ushort eti5dwjtdmpkz3zr=readBigEndianUshort(); y29ubmvjdgvktm9k=readString(eti5dwjtdmpkz3zr); }
 		}
 
 	}
 
-	public struct WrongHash {
+		/**
+		 * Sent when [Auth](#login.auth) is received but the given password or hash doesn't
+		 * match the server's one.
+		 */
+	public class WrongHash {
 
 		public enum typeof(status) STATUS = 1;
 
-		public ubyte[] encode() {
-			ubyte[] _buffer;
-			this.encode(_buffer);
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			status = 1;
+			_encode!writeId();
 			return _buffer;
 		}
 
-		public ubyte[] encode(ref ubyte[] _buffer) {
-			return _buffer;
-		}
-
-		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			return this;
+		public pure nothrow @safe void decode() {
 		}
 
 	}
 
-	public struct TimedOut {
+		/**
+		 * Sent when [Auth](#login.auth) is not received and the server decides to close the
+		 * connection because too much time has elapsed since the creation of the socket.
+		 */
+	public class TimedOut {
 
 		public enum typeof(status) STATUS = 2;
 
-		public ubyte[] encode() {
-			ubyte[] _buffer;
-			this.encode(_buffer);
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			status = 2;
+			_encode!writeId();
 			return _buffer;
 		}
 
-		public ubyte[] encode(ref ubyte[] _buffer) {
-			return _buffer;
-		}
-
-		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			return this;
+		public pure nothrow @safe void decode() {
 		}
 
 	}

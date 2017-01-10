@@ -15,18 +15,21 @@ import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
 import std.uuid : UUID;
 
+import sul.utils.buffer;
 import sul.utils.var;
 
-import types = sul.protocol.minecraft109.types;
+static import sul.protocol.minecraft109.types;
 
 alias Packets = TypeTuple!(Handshake, Request, Response, Latency);
 
-struct Handshake {
+class Handshake : Buffer {
 
 	public enum uint ID = 0;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
+
+	public enum string[] FIELDS = ["protocol", "serverAddress", "serverPort", "next"];
 
 	// next
 	public enum uint STATUS = 1;
@@ -37,107 +40,142 @@ struct Handshake {
 	public ushort serverPort;
 	public uint next;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=varuint.encode(ID); }
-		_buffer~=varuint.encode(protocol);
-		ubyte[] c2VydmVyQWRkcmVz=cast(ubyte[])serverAddress; _buffer~=varuint.encode(c2VydmVyQWRkcmVz.length.to!uint); _buffer~=c2VydmVyQWRkcmVz;
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, serverPort, _buffer.length-ushort.sizeof);
-		_buffer~=varuint.encode(next);
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint protocol, string serverAddress=string.init, ushort serverPort=ushort.init, uint next=uint.init) {
+		this.protocol = protocol;
+		this.serverAddress = serverAddress;
+		this.serverPort = serverPort;
+		this.next = next;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBytes(varuint.encode(ID)); }
+		writeBytes(varuint.encode(protocol));
+		writeBytes(varuint.encode(cast(uint)serverAddress.length)); writeString(serverAddress);
+		writeBigEndianUshort(serverPort);
+		writeBytes(varuint.encode(next));
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
+		protocol=varuint.decode(_buffer, &_index);
+		uint c2vydmvyqwrkcmvz=varuint.decode(_buffer, &_index); serverAddress=readString(c2vydmvyqwrkcmvz);
+		serverPort=readBigEndianUshort();
+		next=varuint.decode(_buffer, &_index);
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		protocol=varuint.decode(_buffer, *_index);
-		ubyte[] c2VydmVyQWRkcmVz; c2VydmVyQWRkcmVz.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c2VydmVyQWRkcmVz.length){ c2VydmVyQWRkcmVz=_buffer[*_index..*_index+c2VydmVyQWRkcmVz.length].dup; *_index+=c2VydmVyQWRkcmVz.length; }; serverAddress=cast(string)c2VydmVyQWRkcmVz;
-		if(_buffer.length>=*_index+ushort.sizeof){ serverPort=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
-		next=varuint.decode(_buffer, *_index);
-		return this;
+	public static pure nothrow @safe Handshake fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Handshake ret = new Handshake();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct Request {
+class Request : Buffer {
 
 	public enum uint ID = 0;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=varuint.encode(ID); }
+	public enum string[] FIELDS = [];
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBytes(varuint.encode(ID)); }
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		return this;
+	public static pure nothrow @safe Request fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Request ret = new Request();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct Response {
+class Response : Buffer {
 
 	public enum uint ID = 0;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	public enum string[] FIELDS = ["json"];
+
 	public string json;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] anNvbg=cast(ubyte[])json; _buffer~=varuint.encode(anNvbg.length.to!uint); _buffer~=anNvbg;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(string json) {
+		this.json = json;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBytes(varuint.encode(ID)); }
+		writeBytes(varuint.encode(cast(uint)json.length)); writeString(json);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
+		uint annvbg=varuint.decode(_buffer, &_index); json=readString(annvbg);
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] anNvbg; anNvbg.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+anNvbg.length){ anNvbg=_buffer[*_index..*_index+anNvbg.length].dup; *_index+=anNvbg.length; }; json=cast(string)anNvbg;
-		return this;
+	public static pure nothrow @safe Response fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Response ret = new Response();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct Latency {
+class Latency : Buffer {
 
 	public enum uint ID = 1;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["id"];
+
 	public long id;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=varuint.encode(ID); }
-		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, id, _buffer.length-long.sizeof);
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(long id) {
+		this.id = id;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBytes(varuint.encode(ID)); }
+		writeBigEndianLong(id);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
+		id=readBigEndianLong();
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		if(_buffer.length>=*_index+long.sizeof){ id=peek!(long, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe Latency fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Latency ret = new Latency();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }

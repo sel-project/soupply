@@ -38,14 +38,14 @@ class CommandStep extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		byte[] Y29tbWFuZA=command.getBytes("UTF-8"); this.writeVaruint((int)Y29tbWFuZA.length); this.writeBytes(Y29tbWFuZA);
-		byte[] b3ZlcmxvYWQ=overload.getBytes("UTF-8"); this.writeVaruint((int)b3ZlcmxvYWQ.length); this.writeBytes(b3ZlcmxvYWQ);
+		byte[] y29tbwfuza=command.getBytes("UTF-8"); this.writeVaruint((int)y29tbwfuza.length); this.writeBytes(y29tbwfuza);
+		byte[] b3zlcmxvywq=overload.getBytes("UTF-8"); this.writeVaruint((int)b3zlcmxvywq.length); this.writeBytes(b3zlcmxvywq);
 		this.writeVaruint(unknown2);
 		this.writeVaruint(unknown3);
 		this.writeBoolB(isOutput);
 		this.writeVarulong(unknown5);
-		byte[] aW5wdXQ=input.getBytes("UTF-8"); this.writeVaruint((int)aW5wdXQ.length); this.writeBytes(aW5wdXQ);
-		byte[] b3V0cHV0=output.getBytes("UTF-8"); this.writeVaruint((int)b3V0cHV0.length); this.writeBytes(b3V0cHV0);
+		byte[] aw5wdxq=input.getBytes("UTF-8"); this.writeVaruint((int)aw5wdxq.length); this.writeBytes(aw5wdxq);
+		byte[] b3v0chv0=output.getBytes("UTF-8"); this.writeVaruint((int)b3v0chv0.length); this.writeBytes(b3v0chv0);
 		return this.buffer;
 	}
 

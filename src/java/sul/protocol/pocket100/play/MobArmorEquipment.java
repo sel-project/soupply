@@ -33,7 +33,7 @@ class MobArmorEquipment extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeVarlong(entityId);
-		for(slot YXJtb3I:armor){ this.writeBytes(YXJtb3I.encode()); }
+		for(slot yxjtb3i:armor){ this.writeBytes(yxjtb3i.encode()); }
 		return this.buffer;
 	}
 

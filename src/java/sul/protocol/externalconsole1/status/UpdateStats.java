@@ -41,7 +41,7 @@ class UpdateStats extends Packet {
 		this.writeIntB(uptime);
 		this.writeIntB(upload);
 		this.writeIntB(download);
-		this.writeShortB((short)nodes.length); for(node_stats bm9kZXM:nodes){ this.writeBytes(bm9kZXM.encode()); }
+		this.writeShortB((short)nodes.length); for(node_stats bm9kzxm:nodes){ this.writeBytes(bm9kzxm.encode()); }
 		return this.buffer;
 	}
 

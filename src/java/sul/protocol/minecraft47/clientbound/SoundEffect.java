@@ -34,7 +34,7 @@ class SoundEffect extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] c291bmROYW1l=soundName.getBytes("UTF-8"); this.writeVaruint((int)c291bmROYW1l.length); this.writeBytes(c291bmROYW1l);
+		byte[] c291bmroyw1l=soundName.getBytes("UTF-8"); this.writeVaruint((int)c291bmroyw1l.length); this.writeBytes(c291bmroyw1l);
 		this.writeIntB(position.x);this.writeIntB(position.y);this.writeIntB(position.z);
 		this.writeFloatB(volume);
 		this.writeByteB(pitch);

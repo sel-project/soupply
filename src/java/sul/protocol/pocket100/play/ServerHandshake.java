@@ -32,8 +32,8 @@ class ServerHandshake extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		byte[] c2VydmVyUHVibGlj=serverPublicKey.getBytes("UTF-8"); this.writeVaruint((int)c2VydmVyUHVibGlj.length); this.writeBytes(c2VydmVyUHVibGlj);
-		this.writeVaruint((int)token.length); for(ubyte dG9rZW4:token){ this.writeByteB(dG9rZW4); }
+		byte[] c2vydmvyuhvibglj=serverPublicKey.getBytes("UTF-8"); this.writeVaruint((int)c2vydmvyuhvibglj.length); this.writeBytes(c2vydmvyuhvibglj);
+		this.writeVaruint((int)token.length); for(ubyte dg9rzw4:token){ this.writeByteB(dg9rzw4); }
 		return this.buffer;
 	}
 

@@ -39,7 +39,7 @@ class Login extends Packet {
 		this.writeByteB(ID);
 		this.writeIntB(protocol);
 		this.writeByteB(edition);
-		this.writeVaruint((int)body.length); for(ubyte Ym9keQ:body){ this.writeByteB(Ym9keQ); }
+		this.writeVaruint((int)body.length); for(ubyte ym9keq:body){ this.writeByteB(ym9keq); }
 		return this.buffer;
 	}
 

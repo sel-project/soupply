@@ -33,7 +33,7 @@ class BlockEvent extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeBytes(position.encode());
-		for(varint ZGF0YQ:data){ this.writeVarint(ZGF0YQ); }
+		for(varint zgf0yq:data){ this.writeVarint(zgf0yq); }
 		return this.buffer;
 	}
 

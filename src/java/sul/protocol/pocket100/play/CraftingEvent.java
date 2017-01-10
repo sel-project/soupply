@@ -38,8 +38,8 @@ class CraftingEvent extends Packet {
 		this.writeByteB(window);
 		this.writeVarint(type);
 		this.writeLongB(uuid.getLeastSignificantBits()); this.writeLongB(uuid.getMostSignificantBits());
-		this.writeVaruint((int)input.length); for(slot aW5wdXQ:input){ this.writeBytes(aW5wdXQ.encode()); }
-		this.writeVaruint((int)output.length); for(slot b3V0cHV0:output){ this.writeBytes(b3V0cHV0.encode()); }
+		this.writeVaruint((int)input.length); for(slot aw5wdxq:input){ this.writeBytes(aw5wdxq.encode()); }
+		this.writeVaruint((int)output.length); for(slot b3v0chv0:output){ this.writeBytes(b3v0chv0.encode()); }
 		return this.buffer;
 	}
 

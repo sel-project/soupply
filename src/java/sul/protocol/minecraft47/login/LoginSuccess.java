@@ -32,8 +32,8 @@ class LoginSuccess extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] dXVpZA=uuid.getBytes("UTF-8"); this.writeVaruint((int)dXVpZA.length); this.writeBytes(dXVpZA);
-		byte[] dXNlcm5hbWU=username.getBytes("UTF-8"); this.writeVaruint((int)dXNlcm5hbWU.length); this.writeBytes(dXNlcm5hbWU);
+		byte[] dxvpza=uuid.getBytes("UTF-8"); this.writeVaruint((int)dxvpza.length); this.writeBytes(dxvpza);
+		byte[] dxnlcm5hbwu=username.getBytes("UTF-8"); this.writeVaruint((int)dxnlcm5hbwu.length); this.writeBytes(dxnlcm5hbwu);
 		return this.buffer;
 	}
 

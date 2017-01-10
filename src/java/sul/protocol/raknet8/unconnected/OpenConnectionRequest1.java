@@ -33,7 +33,7 @@ class OpenConnectionRequest1 extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		for(ubyte bWFnaWM:magic){ this.writeByteB(bWFnaWM); }
+		for(ubyte bwfnawm:magic){ this.writeByteB(bwfnawm); }
 		this.writeByteB(protocol);
 		this.writeBytes(mtu);
 		return this.buffer;

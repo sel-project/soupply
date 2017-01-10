@@ -43,10 +43,10 @@ class ScoreboardObjective extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] bmFtZQ=name.getBytes("UTF-8"); this.writeVaruint((int)bmFtZQ.length); this.writeBytes(bmFtZQ);
+		byte[] bmftzq=name.getBytes("UTF-8"); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		this.writeByteB(mode);
-		if(mode!=1){ byte[] dmFsdWU=value.getBytes("UTF-8"); this.writeVaruint((int)dmFsdWU.length); this.writeBytes(dmFsdWU); }
-		if(mode!=1){ byte[] dHlwZQ=type.getBytes("UTF-8"); this.writeVaruint((int)dHlwZQ.length); this.writeBytes(dHlwZQ); }
+		if(mode!=1){ byte[] dmfsdwu=value.getBytes("UTF-8"); this.writeVaruint((int)dmfsdwu.length); this.writeBytes(dmfsdwu); }
+		if(mode!=1){ byte[] dhlwzq=type.getBytes("UTF-8"); this.writeVaruint((int)dhlwzq.length); this.writeBytes(dhlwzq); }
 		return this.buffer;
 	}
 

@@ -31,7 +31,7 @@ class Ack extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeShortB((short)packets.length); for(acknowledge cGFja2V0cw:packets){ this.writeBytes(cGFja2V0cw.encode()); }
+		this.writeShortB((short)packets.length); for(acknowledge cgfja2v0cw:packets){ this.writeBytes(cgfja2v0cw.encode()); }
 		return this.buffer;
 	}
 

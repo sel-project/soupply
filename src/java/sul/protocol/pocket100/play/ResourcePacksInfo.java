@@ -34,8 +34,8 @@ class ResourcePacksInfo extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeBoolB(mustAccept);
-		this.writeVaruint((int)behaviourPacks.length); for(pack YmVoYXZpb3VyUGFj:behaviourPacks){ this.writeBytes(YmVoYXZpb3VyUGFj.encode()); }
-		this.writeVaruint((int)resourcePacks.length); for(pack cmVzb3VyY2VQYWNr:resourcePacks){ this.writeBytes(cmVzb3VyY2VQYWNr.encode()); }
+		this.writeVaruint((int)behaviourPacks.length); for(pack ymvoyxzpb3vyugfj:behaviourPacks){ this.writeBytes(ymvoyxzpb3vyugfj.encode()); }
+		this.writeVaruint((int)resourcePacks.length); for(pack cmvzb3vyy2vqywnr:resourcePacks){ this.writeBytes(cmvzb3vyy2vqywnr.encode()); }
 		return this.buffer;
 	}
 

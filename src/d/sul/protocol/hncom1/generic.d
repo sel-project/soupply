@@ -15,46 +15,59 @@ import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
 import std.uuid : UUID;
 
+import sul.utils.buffer;
 import sul.utils.var;
 
-import types = sul.protocol.hncom1.types;
+static import sul.protocol.hncom1.types;
 
 alias Packets = TypeTuple!(Logs, RemoteCommand, UpdateList);
 
-struct Logs {
+class Logs : Buffer {
 
 	public enum ubyte ID = 7;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["messages"];
+
 	public sul.protocol.hncom1.types.Log[] messages;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=varuint.encode(messages.length.to!uint); foreach(bWVzc2FnZXM;messages){ bWVzc2FnZXM.encode(_buffer); }
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(sul.protocol.hncom1.types.Log[] messages) {
+		this.messages = messages;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(cast(uint)messages.length)); foreach(bwvzc2fnzxm;messages){ bwvzc2fnzxm.encode(bufferInstance); }
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		messages.length=varuint.decode(_buffer, &_index); foreach(ref bwvzc2fnzxm;messages){ bwvzc2fnzxm.decode(bufferInstance); }
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		messages.length=varuint.decode(_buffer, *_index); foreach(ref bWVzc2FnZXM;messages){ bWVzc2FnZXM.decode(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe Logs fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Logs ret = new Logs();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct RemoteCommand {
+class RemoteCommand : Buffer {
 
 	public enum ubyte ID = 8;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["origin", "sender", "command"];
 
 	// origin
 	public enum ubyte HUB = 0;
@@ -65,35 +78,47 @@ struct RemoteCommand {
 	public sul.protocol.hncom1.types.Address sender;
 	public string command;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=origin;
-		sender.encode(_buffer);
-		ubyte[] Y29tbWFuZA=cast(ubyte[])command; _buffer~=varuint.encode(Y29tbWFuZA.length.to!uint); _buffer~=Y29tbWFuZA;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte origin, sul.protocol.hncom1.types.Address sender=sul.protocol.hncom1.types.Address.init, string command=string.init) {
+		this.origin = origin;
+		this.sender = sender;
+		this.command = command;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUbyte(origin);
+		sender.encode(bufferInstance);
+		writeBytes(varuint.encode(cast(uint)command.length)); writeString(command);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		origin=readBigEndianUbyte();
+		sender.decode(bufferInstance);
+		uint y29tbwfuza=varuint.decode(_buffer, &_index); command=readString(y29tbwfuza);
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+ubyte.sizeof){ origin=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		sender.decode(_buffer, _index);
-		ubyte[] Y29tbWFuZA; Y29tbWFuZA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Y29tbWFuZA.length){ Y29tbWFuZA=_buffer[*_index..*_index+Y29tbWFuZA.length].dup; *_index+=Y29tbWFuZA.length; }; command=cast(string)Y29tbWFuZA;
-		return this;
+	public static pure nothrow @safe RemoteCommand fromBuffer(bool readId=true)(ubyte[] buffer) {
+		RemoteCommand ret = new RemoteCommand();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct UpdateList {
+class UpdateList : Buffer {
 
 	public enum ubyte ID = 9;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
+
+	public enum string[] FIELDS = ["list", "action", "type"];
 
 	// list
 	public enum ubyte WHITELIST = 0;
@@ -107,76 +132,90 @@ struct UpdateList {
 	public ubyte action;
 	public ubyte type;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=list;
-		_buffer~=action;
-		_buffer~=type;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte list, ubyte action=ubyte.init, ubyte type=ubyte.init) {
+		this.list = list;
+		this.action = action;
+		this.type = type;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUbyte(list);
+		writeBigEndianUbyte(action);
+		writeBigEndianUbyte(type);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		list=readBigEndianUbyte();
+		action=readBigEndianUbyte();
+		type=readBigEndianUbyte();
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+ubyte.sizeof){ list=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ubyte.sizeof){ action=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ubyte.sizeof){ type=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe UpdateList fromBuffer(bool readId=true)(ubyte[] buffer) {
+		UpdateList ret = new UpdateList();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
-	public struct ByHubId {
+	alias _encode = encode;
+
+	public class ByHubId {
 
 		public enum typeof(type) TYPE = 0;
 
 		public uint hubId;
 
-		public ubyte[] encode() {
-			ubyte[] _buffer;
-			this.encode(_buffer);
+		public pure nothrow @safe @nogc this() {}
+
+		public pure nothrow @safe @nogc this(uint hubId) {
+			this.hubId = hubId;
+		}
+
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			type = 0;
+			_encode!writeId();
+			writeBytes(varuint.encode(hubId));
 			return _buffer;
 		}
 
-		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer~=varuint.encode(hubId);
-			return _buffer;
-		}
-
-		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			hubId=varuint.decode(_buffer, *_index);
-			return this;
+		public pure nothrow @safe void decode() {
+			hubId=varuint.decode(_buffer, &_index);
 		}
 
 	}
 
-	public struct ByName {
+	public class ByName {
 
 		public enum typeof(type) TYPE = 1;
 
 		public string username;
 
-		public ubyte[] encode() {
-			ubyte[] _buffer;
-			this.encode(_buffer);
+		public pure nothrow @safe @nogc this() {}
+
+		public pure nothrow @safe @nogc this(string username) {
+			this.username = username;
+		}
+
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			type = 1;
+			_encode!writeId();
+			writeBytes(varuint.encode(cast(uint)username.length)); writeString(username);
 			return _buffer;
 		}
 
-		public ubyte[] encode(ref ubyte[] _buffer) {
-			ubyte[] dXNlcm5hbWU=cast(ubyte[])username; _buffer~=varuint.encode(dXNlcm5hbWU.length.to!uint); _buffer~=dXNlcm5hbWU;
-			return _buffer;
-		}
-
-		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			ubyte[] dXNlcm5hbWU; dXNlcm5hbWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dXNlcm5hbWU.length){ dXNlcm5hbWU=_buffer[*_index..*_index+dXNlcm5hbWU.length].dup; *_index+=dXNlcm5hbWU.length; }; username=cast(string)dXNlcm5hbWU;
-			return this;
+		public pure nothrow @safe void decode() {
+			uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
 		}
 
 	}
 
-	public struct BySuuid {
+	public class BySuuid {
 
 		public enum typeof(type) TYPE = 2;
 
@@ -187,22 +226,24 @@ struct UpdateList {
 		public ubyte game;
 		public UUID uuid;
 
-		public ubyte[] encode() {
-			ubyte[] _buffer;
-			this.encode(_buffer);
+		public pure nothrow @safe @nogc this() {}
+
+		public pure nothrow @safe @nogc this(ubyte game, UUID uuid=UUID.init) {
+			this.game = game;
+			this.uuid = uuid;
+		}
+
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			type = 2;
+			_encode!writeId();
+			writeBigEndianUbyte(game);
+			writeBytes(uuid.data);
 			return _buffer;
 		}
 
-		public ubyte[] encode(ref ubyte[] _buffer) {
-			_buffer~=game;
-			_buffer~=uuid.data;
-			return _buffer;
-		}
-
-		public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-			if(_buffer.length>=*_index+ubyte.sizeof){ game=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-			if(_buffer.length>=*_index+16){ ubyte[16] dXVpZA=buffer[*_index..*_index+16].dup; *_index+=16; uuid=UUID(dXVpZA); }
-			return this;
+		public pure nothrow @safe void decode() {
+			game=readBigEndianUbyte();
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		}
 
 	}

@@ -38,7 +38,7 @@ class ResourcePackStatus extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] aGFzaA=hash.getBytes("UTF-8"); this.writeVaruint((int)aGFzaA.length); this.writeBytes(aGFzaA);
+		byte[] agfzaa=hash.getBytes("UTF-8"); this.writeVaruint((int)agfzaa.length); this.writeBytes(agfzaa);
 		this.writeVaruint(result);
 		return this.buffer;
 	}

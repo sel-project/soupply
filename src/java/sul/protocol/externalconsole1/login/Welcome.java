@@ -45,10 +45,18 @@ class Welcome extends Packet {
 
 	}
 
+	/**
+	 * Sent when [Auth](#login.auth) is received but the given password or hash doesn't
+	 * match the server's one.
+	 */
 	public static class WrongHash extends Welcome {
 
 	}
 
+	/**
+	 * Sent when [Auth](#login.auth) is not received and the server decides to close the
+	 * connection because too much time has elapsed since the creation of the socket.
+	 */
 	public static class TimedOut extends Welcome {
 
 	}

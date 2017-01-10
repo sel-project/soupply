@@ -33,7 +33,7 @@ class Disconnect extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeBoolB(hideDisconnectionScreen);
-		byte[] bWVzc2FnZQ=message.getBytes("UTF-8"); this.writeVaruint((int)bWVzc2FnZQ.length); this.writeBytes(bWVzc2FnZQ);
+		byte[] bwvzc2fnzq=message.getBytes("UTF-8"); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
 		return this.buffer;
 	}
 

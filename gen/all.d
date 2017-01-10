@@ -1,6 +1,6 @@
 module all;
 
-import std.algorithm : min;
+import std.algorithm : canFind, min;
 import std.base64 : Base64URL;
 import std.conv : to;
 import std.file : dirEntries, SpanMode, read, isFile, _write = write;
@@ -62,6 +62,13 @@ alias Protocols = File!Protocol;
 
 
 void main(string[] args) {
+
+	bool wd = args.canFind("d");
+	bool wjava = args.canFind("java");
+	bool wjs = args.canFind("js");
+	bool wdoc = args.canFind("doc");
+	bool wjson = args.canFind("json");
+	bool wall = !wd && !wjava && !wjs && !wdoc && !wjson;
 
 	// attributes
 	Attributes[string] attributes;
@@ -318,12 +325,12 @@ void main(string[] args) {
 		}
 	}
 
-	d.d(attributes, protocols, metadata, creative);
-	java.java(attributes, protocols, creative);
-	js.js(attributes, protocols, creative);
+	if(wall || wd) d.d(attributes, protocols, metadata, creative);
+	if(wall || wjava) java.java(attributes, protocols, creative);
+	if(wall || wjs) js.js(attributes, protocols, creative);
 
-	doc.doc(attributes, protocols, metadata);
-	json.json(attributes, protocols, creative);
+	if(wall || wdoc) doc.doc(attributes, protocols, metadata);
+	if(wall || wjson) json.json(attributes, protocols, creative);
 
 }
 
@@ -332,7 +339,7 @@ void main(string[] args) {
 }
 
 @property string text(Element element) {
-	return decode(strip((){
+	auto ret = split(strip((){
 		if(element.texts.length) {
 			return element.texts[0].to!string;
 		} else {
@@ -342,7 +349,9 @@ void main(string[] args) {
 				return "";
 			}
 		}
-	}()));
+	}()), "\n");
+	foreach(ref str ; ret) str = decode(str.strip);
+	return ret.join("\n");
 }
 
 @property string toCamelCase(string str) {
@@ -376,7 +385,7 @@ void main(string[] args) {
 }
 
 string hash(string name) {
-	return Base64URL.encode(cast(ubyte[])name).replace("-", "_").replace("=", "")[0..min($, 16)];
+	return Base64URL.encode(cast(ubyte[])name)[0..min($, 16)].toLower.replace("-", "_").replace("=", "");
 }
 
 void write(string file, string data, string from="") {

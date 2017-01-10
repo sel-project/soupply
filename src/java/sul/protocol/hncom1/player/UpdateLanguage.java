@@ -33,7 +33,7 @@ class UpdateLanguage extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeVaruint(hubId);
-		byte[] bGFuZ3VhZ2U=language.getBytes("UTF-8"); this.writeVaruint((int)bGFuZ3VhZ2U.length); this.writeBytes(bGFuZ3VhZ2U);
+		byte[] bgfuz3vhz2u=language.getBytes("UTF-8"); this.writeVaruint((int)bgfuz3vhz2u.length); this.writeBytes(bgfuz3vhz2u);
 		return this.buffer;
 	}
 

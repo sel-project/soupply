@@ -12,4 +12,4 @@ public import sul.protocol.externalconsole1.types;
 
 public import sul.protocol.externalconsole1.login;
 public import sul.protocol.externalconsole1.status;
-public import sul.protocol.externalconsole1.play;
+public import sul.protocol.externalconsole1.connected;

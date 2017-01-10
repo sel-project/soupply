@@ -36,7 +36,7 @@ class Explosion extends Packet {
 		this.writeVaruint(ID);
 		this.writeFloatB(position.x);this.writeFloatB(position.y);this.writeFloatB(position.z);
 		this.writeFloatB(radius);
-		this.writeIntB((int)records.length); for(byte<xyz> cmVjb3Jkcw:records){ this.writeBytes(cmVjb3Jkcw.encode()); }
+		this.writeIntB((int)records.length); for(byte<xyz> cmvjb3jkcw:records){ this.writeBytes(cmvjb3jkcw.encode()); }
 		this.writeFloatB(motion.x);this.writeFloatB(motion.y);this.writeFloatB(motion.z);
 		return this.buffer;
 	}

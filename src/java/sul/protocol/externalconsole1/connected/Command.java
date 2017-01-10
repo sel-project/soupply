@@ -6,7 +6,7 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/protocol/externalconsole1.xml
  */
-package sul.protocol.externalconsole1.play;
+package sul.protocol.externalconsole1.connected;
 
 import java.util.UUID;
 
@@ -14,9 +14,9 @@ import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
 /**
- * Executes a command remotely if the server allows it. If not a Permission Denied
- * is sent back. The ideal client should never send this packet if remoteCommands field
- * in Welcome.Accepted is not true.
+ * Executes a command remotely if the server allows it. If not a [Permission Denied](#connected.permission-denied)
+ * is sent back. The ideal client should never send this packet if [remoteCommands](#login.welcome.accepted.remote-commands)
+ * field in [Welcome.Accepted](#login.welcome.accepted) is not true.
  */
 class Command extends Packet {
 
@@ -26,8 +26,9 @@ class Command extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	/**
-	 * Command to be executed on the server. On SEL servers it should start with a slash
-	 * or a point (hub command) or a node name followed by the command (node command).
+	 * Command to execute on the server. On servers that based on the hub-node structure
+	 * it should start with a slash or a point (hub command) or a node name followed by
+	 * the command (node command).
 	 */
 	public String command;
 
@@ -40,7 +41,7 @@ class Command extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		byte[] Y29tbWFuZA=command.getBytes("UTF-8"); this.writeShortB((short)Y29tbWFuZA.length); this.writeBytes(Y29tbWFuZA);
+		byte[] y29tbwfuza=command.getBytes("UTF-8"); this.writeShortB((short)y29tbwfuza.length); this.writeBytes(y29tbwfuza);
 		return this.buffer;
 	}
 

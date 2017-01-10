@@ -34,7 +34,7 @@ class OpenConnectionRequest2 extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		for(ubyte bWFnaWM:magic){ this.writeByteB(bWFnaWM); }
+		for(ubyte bwfnawm:magic){ this.writeByteB(bwfnawm); }
 		this.writeBytes(serverAddress.encode());
 		this.writeShortB(mtuLength);
 		this.writeLongB(clientId);

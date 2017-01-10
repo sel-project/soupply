@@ -38,7 +38,7 @@ class DisplayScoreboard extends Packet {
 		this.index = 0;
 		this.writeVaruint(ID);
 		this.writeByteB(position);
-		byte[] c2NvcmVOYW1l=scoreName.getBytes("UTF-8"); this.writeVaruint((int)c2NvcmVOYW1l.length); this.writeBytes(c2NvcmVOYW1l);
+		byte[] c2nvcmvoyw1l=scoreName.getBytes("UTF-8"); this.writeVaruint((int)c2nvcmvoyw1l.length); this.writeBytes(c2nvcmvoyw1l);
 		return this.buffer;
 	}
 

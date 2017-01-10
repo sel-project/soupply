@@ -34,8 +34,8 @@ class FullChunkData extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeVarint(position.x);this.writeVarint(position.z);
-		this.writeVaruint((int)data.length); for(ubyte ZGF0YQ:data){ this.writeByteB(ZGF0YQ); }
-		this.writeVaruint((int)tiles.length); for(ubyte dGlsZXM:tiles){ this.writeByteB(dGlsZXM); }
+		this.writeVaruint((int)data.length); for(ubyte zgf0yq:data){ this.writeByteB(zgf0yq); }
+		this.writeVaruint((int)tiles.length); for(ubyte dglszxm:tiles){ this.writeByteB(dglszxm); }
 		return this.buffer;
 	}
 

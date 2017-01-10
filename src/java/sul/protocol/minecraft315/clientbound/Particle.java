@@ -92,7 +92,7 @@ class Particle extends Packet {
 		this.writeFloatB(offset.x);this.writeFloatB(offset.y);this.writeFloatB(offset.z);
 		this.writeFloatB(data);
 		this.writeIntB(count);
-		for(varuint YWRkaXRpb25hbERh:additionalData){ this.writeVaruint(YWRkaXRpb25hbERh); }
+		for(varuint ywrkaxrpb25hberh:additionalData){ this.writeVaruint(ywrkaxrpb25hberh); }
 		return this.buffer;
 	}
 

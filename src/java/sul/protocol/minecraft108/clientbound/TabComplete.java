@@ -31,7 +31,7 @@ class TabComplete extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		this.writeVaruint((int)matches.length); for(string bWF0Y2hlcw:matches){ byte[] YldGMFkyaGxjdw=bWF0Y2hlcw.getBytes("UTF-8"); this.writeVaruint((int)YldGMFkyaGxjdw.length); this.writeBytes(YldGMFkyaGxjdw); }
+		this.writeVaruint((int)matches.length); for(string bwf0y2hlcw:matches){ byte[] yndmmhkyagxjdw=bwf0y2hlcw.getBytes("UTF-8"); this.writeVaruint((int)yndmmhkyagxjdw.length); this.writeBytes(yndmmhkyagxjdw); }
 		return this.buffer;
 	}
 

@@ -15,194 +15,259 @@ import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
 import std.uuid : UUID;
 
+import sul.utils.buffer;
 import sul.utils.var;
 
-import types = sul.protocol.raknet8.types;
+static import sul.protocol.raknet8.types;
 
 alias Packets = TypeTuple!(Ping, Pong, OpenConnectionRequest1, OpenConnectionReply1, OpenConnectionRequest2, OpenConnectionReply2);
 
-struct Ping {
+class Ping : Buffer {
 
 	public enum ubyte ID = 1;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["pingId", "magic"];
+
 	public long pingId;
 	public ubyte[16] magic;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, pingId, _buffer.length-long.sizeof);
-		_buffer~=magic;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(long pingId, ubyte[16] magic=(ubyte[16]).init) {
+		this.pingId = pingId;
+		this.magic = magic;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianLong(pingId);
+		writeBytes(magic);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		pingId=readBigEndianLong();
+		if(_buffer.length>=_index+magic.length){ magic=_buffer[_index.._index+magic.length].dup; _index+=magic.length; }
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+long.sizeof){ pingId=peek!(long, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+magic.length){ magic=_buffer[*_index..*_index+magic.length].dup; *_index+=magic.length; }
-		return this;
+	public static pure nothrow @safe Ping fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Ping ret = new Ping();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct Pong {
+class Pong : Buffer {
 
 	public enum ubyte ID = 28;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	public enum string[] FIELDS = ["pingId", "serverId", "magic", "status"];
+
 	public long pingId;
 	public long serverId;
 	public ubyte[16] magic;
 	public string status;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, pingId, _buffer.length-long.sizeof);
-		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, serverId, _buffer.length-long.sizeof);
-		_buffer~=magic;
-		ubyte[] c3RhdHVz=cast(ubyte[])status; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, c3RhdHVz.length.to!ushort, _buffer.length-ushort.sizeof); _buffer~=c3RhdHVz;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(long pingId, long serverId=long.init, ubyte[16] magic=(ubyte[16]).init, string status=string.init) {
+		this.pingId = pingId;
+		this.serverId = serverId;
+		this.magic = magic;
+		this.status = status;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianLong(pingId);
+		writeBigEndianLong(serverId);
+		writeBytes(magic);
+		writeBigEndianUshort(cast(ushort)status.length); writeString(status);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		pingId=readBigEndianLong();
+		serverId=readBigEndianLong();
+		if(_buffer.length>=_index+magic.length){ magic=_buffer[_index.._index+magic.length].dup; _index+=magic.length; }
+		ushort c3rhdhvz=readBigEndianUshort(); status=readString(c3rhdhvz);
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+long.sizeof){ pingId=peek!(long, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+long.sizeof){ serverId=peek!(long, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+magic.length){ magic=_buffer[*_index..*_index+magic.length].dup; *_index+=magic.length; }
-		ubyte[] c3RhdHVz; if(_buffer.length>=*_index+ushort.sizeof){ c3RhdHVz.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } if(_buffer.length>=*_index+c3RhdHVz.length){ c3RhdHVz=_buffer[*_index..*_index+c3RhdHVz.length].dup; *_index+=c3RhdHVz.length; }; status=cast(string)c3RhdHVz;
-		return this;
+	public static pure nothrow @safe Pong fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Pong ret = new Pong();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct OpenConnectionRequest1 {
+class OpenConnectionRequest1 : Buffer {
 
 	public enum ubyte ID = 5;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["magic", "protocol", "mtu"];
+
 	public ubyte[16] magic;
 	public ubyte protocol;
 	public ubyte[] mtu;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=magic;
-		_buffer~=protocol;
-		_buffer~=mtu;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte[16] magic, ubyte protocol=ubyte.init, ubyte[] mtu=(ubyte[]).init) {
+		this.magic = magic;
+		this.protocol = protocol;
+		this.mtu = mtu;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(magic);
+		writeBigEndianUbyte(protocol);
+		writeBytes(mtu);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		if(_buffer.length>=_index+magic.length){ magic=_buffer[_index.._index+magic.length].dup; _index+=magic.length; }
+		protocol=readBigEndianUbyte();
+		mtu=_buffer[_index..$].dup; _index=buffer.length;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+magic.length){ magic=_buffer[*_index..*_index+magic.length].dup; *_index+=magic.length; }
-		if(_buffer.length>=*_index+ubyte.sizeof){ protocol=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		mtu=_buffer[*_index..$].dup; *_index=buffer.length;
-		return this;
+	public static pure nothrow @safe OpenConnectionRequest1 fromBuffer(bool readId=true)(ubyte[] buffer) {
+		OpenConnectionRequest1 ret = new OpenConnectionRequest1();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct OpenConnectionReply1 {
+class OpenConnectionReply1 : Buffer {
 
 	public enum ubyte ID = 6;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	public enum string[] FIELDS = ["magic", "serverId", "security", "mtuLength"];
+
 	public ubyte[16] magic;
 	public long serverId;
 	public bool security;
 	public ushort mtuLength;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=magic;
-		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, serverId, _buffer.length-long.sizeof);
-		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, security, _buffer.length-bool.sizeof);
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, mtuLength, _buffer.length-ushort.sizeof);
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte[16] magic, long serverId=long.init, bool security=bool.init, ushort mtuLength=ushort.init) {
+		this.magic = magic;
+		this.serverId = serverId;
+		this.security = security;
+		this.mtuLength = mtuLength;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(magic);
+		writeBigEndianLong(serverId);
+		writeBigEndianBool(security);
+		writeBigEndianUshort(mtuLength);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		if(_buffer.length>=_index+magic.length){ magic=_buffer[_index.._index+magic.length].dup; _index+=magic.length; }
+		serverId=readBigEndianLong();
+		security=readBigEndianBool();
+		mtuLength=readBigEndianUshort();
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+magic.length){ magic=_buffer[*_index..*_index+magic.length].dup; *_index+=magic.length; }
-		if(_buffer.length>=*_index+long.sizeof){ serverId=peek!(long, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+bool.sizeof){ security=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ushort.sizeof){ mtuLength=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe OpenConnectionReply1 fromBuffer(bool readId=true)(ubyte[] buffer) {
+		OpenConnectionReply1 ret = new OpenConnectionReply1();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct OpenConnectionRequest2 {
+class OpenConnectionRequest2 : Buffer {
 
 	public enum ubyte ID = 7;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["magic", "serverAddress", "mtuLength", "clientId"];
+
 	public ubyte[16] magic;
 	public sul.protocol.raknet8.types.Address serverAddress;
 	public ushort mtuLength;
 	public long clientId;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=magic;
-		serverAddress.encode(_buffer);
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, mtuLength, _buffer.length-ushort.sizeof);
-		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, clientId, _buffer.length-long.sizeof);
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte[16] magic, sul.protocol.raknet8.types.Address serverAddress=sul.protocol.raknet8.types.Address.init, ushort mtuLength=ushort.init, long clientId=long.init) {
+		this.magic = magic;
+		this.serverAddress = serverAddress;
+		this.mtuLength = mtuLength;
+		this.clientId = clientId;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(magic);
+		serverAddress.encode(bufferInstance);
+		writeBigEndianUshort(mtuLength);
+		writeBigEndianLong(clientId);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		if(_buffer.length>=_index+magic.length){ magic=_buffer[_index.._index+magic.length].dup; _index+=magic.length; }
+		serverAddress.decode(bufferInstance);
+		mtuLength=readBigEndianUshort();
+		clientId=readBigEndianLong();
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+magic.length){ magic=_buffer[*_index..*_index+magic.length].dup; *_index+=magic.length; }
-		serverAddress.decode(_buffer, _index);
-		if(_buffer.length>=*_index+ushort.sizeof){ mtuLength=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+long.sizeof){ clientId=peek!(long, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe OpenConnectionRequest2 fromBuffer(bool readId=true)(ubyte[] buffer) {
+		OpenConnectionRequest2 ret = new OpenConnectionRequest2();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct OpenConnectionReply2 {
+class OpenConnectionReply2 : Buffer {
 
 	public enum ubyte ID = 8;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["magic", "serverId", "serverAddress", "mtuLength", "security"];
 
 	public ubyte[16] magic;
 	public long serverId;
@@ -210,29 +275,41 @@ struct OpenConnectionReply2 {
 	public ushort mtuLength;
 	public bool security;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=magic;
-		_buffer.length+=long.sizeof; write!(long, Endian.bigEndian)(_buffer, serverId, _buffer.length-long.sizeof);
-		serverAddress.encode(_buffer);
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, mtuLength, _buffer.length-ushort.sizeof);
-		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, security, _buffer.length-bool.sizeof);
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte[16] magic, long serverId=long.init, sul.protocol.raknet8.types.Address serverAddress=sul.protocol.raknet8.types.Address.init, ushort mtuLength=ushort.init, bool security=bool.init) {
+		this.magic = magic;
+		this.serverId = serverId;
+		this.serverAddress = serverAddress;
+		this.mtuLength = mtuLength;
+		this.security = security;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(magic);
+		writeBigEndianLong(serverId);
+		serverAddress.encode(bufferInstance);
+		writeBigEndianUshort(mtuLength);
+		writeBigEndianBool(security);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		if(_buffer.length>=_index+magic.length){ magic=_buffer[_index.._index+magic.length].dup; _index+=magic.length; }
+		serverId=readBigEndianLong();
+		serverAddress.decode(bufferInstance);
+		mtuLength=readBigEndianUshort();
+		security=readBigEndianBool();
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+magic.length){ magic=_buffer[*_index..*_index+magic.length].dup; *_index+=magic.length; }
-		if(_buffer.length>=*_index+long.sizeof){ serverId=peek!(long, Endian.bigEndian)(_buffer, _index); }
-		serverAddress.decode(_buffer, _index);
-		if(_buffer.length>=*_index+ushort.sizeof){ mtuLength=peek!(ushort, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+bool.sizeof){ security=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe OpenConnectionReply2 fromBuffer(bool readId=true)(ubyte[] buffer) {
+		OpenConnectionReply2 ret = new OpenConnectionReply2();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }

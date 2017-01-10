@@ -14,6 +14,7 @@ import std.system : Endian;
 import std.typecons : Tuple;
 import std.uuid : UUID;
 
+import sul.utils.buffer;
 import sul.utils.var;
 
 struct Game {
@@ -22,56 +23,81 @@ struct Game {
 	public enum ubyte POCKET = 1;
 	public enum ubyte MINECRAFT = 2;
 
+	/**
+	 * Type of the game. Minecraft indicates the java version of the game and pocket indicates
+	 * the versions running on Android, iOS, Windows Phone and Windows 10.
+	 */
 	public ubyte type;
+
+	/**
+	 * List of protocols accepted by the servers for the indicated game.
+	 */
 	public uint[] protocols;
 
-	public ubyte[] encode() {
-		ubyte[] _buffer;
-		this.encode(_buffer);
-		return _buffer;
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(type);
+			writeBigEndianUshort(cast(ushort)protocols.length); foreach(chjvdg9jb2xz;protocols){ writeBigEndianUint(chjvdg9jb2xz); }
+		}
 	}
 
-	public ubyte[] encode(ref ubyte[] _buffer) {
-		_buffer~=type;
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, protocols.length.to!ushort, _buffer.length-ushort.sizeof); foreach(cHJvdG9jb2xz;protocols){ _buffer.length+=uint.sizeof; write!(uint, Endian.bigEndian)(_buffer, cHJvdG9jb2xz, _buffer.length-uint.sizeof); }
-		return _buffer;
-	}
-
-	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		if(_buffer.length>=*_index+ubyte.sizeof){ type=peek!(ubyte, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ushort.sizeof){ protocols.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } foreach(ref cHJvdG9jb2xz;protocols){ if(_buffer.length>=*_index+uint.sizeof){ cHJvdG9jb2xz=peek!(uint, Endian.bigEndian)(_buffer, _index); } }
-		return this;
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			type=readBigEndianUbyte();
+			protocols.length=readBigEndianUshort(); foreach(ref chjvdg9jb2xz;protocols){ chjvdg9jb2xz=readBigEndianUint(); }
+		}
 	}
 
 }
 
+/**
+ * Resource usage of a node.
+ */
 struct NodeStats {
 
+	/**
+	 * Name of the node. Should match a name given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes)
+	 * or one added using the [UpdateNodes](#status.update-nodes) packet.
+	 */
 	public string name;
+
+	/**
+	 * Ticks per second of the node in range 0..20. If the value is less than 20, the server
+	 * is lagging.
+	 */
 	public float tps;
+
+	/**
+	 * RAM allocated by the node in bytes.
+	 * If the value is 0 the node couldn't retrieve the amount of memory allocated by its
+	 * process.
+	 */
 	public ulong ram;
+
+	/**
+	 * Percentage of CPU used by the node. The value can be higher than 100 when the machine
+	 * where the node is running has more than one CPU.
+	 * If the value is `not a number` the node couldn't retrieve the amount of CPU used
+	 * by its process.
+	 */
 	public float cpu;
 
-	public ubyte[] encode() {
-		ubyte[] _buffer;
-		this.encode(_buffer);
-		return _buffer;
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUshort(cast(ushort)name.length); writeString(name);
+			writeBigEndianFloat(tps);
+			writeBigEndianUlong(ram);
+			writeBigEndianFloat(cpu);
+		}
 	}
 
-	public ubyte[] encode(ref ubyte[] _buffer) {
-		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, bmFtZQ.length.to!ushort, _buffer.length-ushort.sizeof); _buffer~=bmFtZQ;
-		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, tps, _buffer.length-float.sizeof);
-		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, ram, _buffer.length-ulong.sizeof);
-		_buffer.length+=float.sizeof; write!(float, Endian.bigEndian)(_buffer, cpu, _buffer.length-float.sizeof);
-		return _buffer;
-	}
-
-	public typeof(this) decode(ubyte[] _buffer, size_t* _index) {
-		ubyte[] bmFtZQ; if(_buffer.length>=*_index+ushort.sizeof){ bmFtZQ.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
-		if(_buffer.length>=*_index+float.sizeof){ tps=peek!(float, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+ulong.sizeof){ ram=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+float.sizeof){ cpu=peek!(float, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			ushort bmftzq=readBigEndianUshort(); name=readString(bmftzq);
+			tps=readBigEndianFloat();
+			ram=readBigEndianUlong();
+			cpu=readBigEndianFloat();
+		}
 	}
 
 }

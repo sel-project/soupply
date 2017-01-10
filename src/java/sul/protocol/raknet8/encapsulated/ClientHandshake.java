@@ -35,7 +35,7 @@ class ClientHandshake extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeBytes(clientAddress.encode());
-		for(address c3lzdGVtQWRkcmVz:systemAddresses){ this.writeBytes(c3lzdGVtQWRkcmVz.encode()); }
+		for(address c3lzdgvtqwrkcmvz:systemAddresses){ this.writeBytes(c3lzdgvtqwrkcmvz.encode()); }
 		this.writeLongB(pingId);
 		this.writeLongB(clientId);
 		return this.buffer;

@@ -15,95 +15,127 @@ import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
 import std.uuid : UUID;
 
+import sul.utils.buffer;
 import sul.utils.var;
 
-import types = sul.protocol.raknet8.types;
+static import sul.protocol.raknet8.types;
 
 alias Packets = TypeTuple!(Ack, Nack, Encapsulated);
 
-struct Ack {
+class Ack : Buffer {
 
 	public enum ubyte ID = 192;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["packets"];
+
 	public sul.protocol.raknet8.types.Acknowledge[] packets;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, packets.length.to!ushort, _buffer.length-ushort.sizeof); foreach(cGFja2V0cw;packets){ cGFja2V0cw.encode(_buffer); }
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(sul.protocol.raknet8.types.Acknowledge[] packets) {
+		this.packets = packets;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUshort(cast(ushort)packets.length); foreach(cgfja2v0cw;packets){ cgfja2v0cw.encode(bufferInstance); }
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		packets.length=readBigEndianUshort(); foreach(ref cgfja2v0cw;packets){ cgfja2v0cw.decode(bufferInstance); }
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+ushort.sizeof){ packets.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } foreach(ref cGFja2V0cw;packets){ cGFja2V0cw.decode(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe Ack fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Ack ret = new Ack();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct Nack {
+class Nack : Buffer {
 
 	public enum ubyte ID = 160;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["packets"];
+
 	public sul.protocol.raknet8.types.Acknowledge[] packets;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=ushort.sizeof; write!(ushort, Endian.bigEndian)(_buffer, packets.length.to!ushort, _buffer.length-ushort.sizeof); foreach(cGFja2V0cw;packets){ cGFja2V0cw.encode(_buffer); }
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(sul.protocol.raknet8.types.Acknowledge[] packets) {
+		this.packets = packets;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUshort(cast(ushort)packets.length); foreach(cgfja2v0cw;packets){ cgfja2v0cw.encode(bufferInstance); }
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		packets.length=readBigEndianUshort(); foreach(ref cgfja2v0cw;packets){ cgfja2v0cw.decode(bufferInstance); }
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+ushort.sizeof){ packets.length=peek!(ushort, Endian.bigEndian)(_buffer, _index); } foreach(ref cGFja2V0cw;packets){ cGFja2V0cw.decode(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe Nack fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Nack ret = new Nack();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct Encapsulated {
+class Encapsulated : Buffer {
 
 	public enum ubyte ID = 132;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["count", "encapsulation"];
+
 	public int count;
 	public sul.protocol.raknet8.types.Encapsulation encapsulation;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=3; _buffer[$-3]=count&255; _buffer[$-2]=(count>>8)&255; _buffer[$-1]=(count>>16)&255;
-		encapsulation.encode(_buffer);
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(int count, sul.protocol.raknet8.types.Encapsulation encapsulation=sul.protocol.raknet8.types.Encapsulation.init) {
+		this.count = count;
+		this.encapsulation = encapsulation;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		count.encode(bufferInstance);
+		encapsulation.encode(bufferInstance);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		count.decode(bufferInstance);
+		encapsulation.decode(bufferInstance);
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+3){ count=buffer[*_index]|(buffer[*_index+1]<<8)|(buffer[*_index+2]<<16); *_index+=3; }
-		encapsulation.decode(_buffer, _index);
-		return this;
+	public static pure nothrow @safe Encapsulated fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Encapsulated ret = new Encapsulated();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }

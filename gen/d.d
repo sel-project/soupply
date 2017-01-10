@@ -127,6 +127,49 @@ alias varulong = var!ulong;
 	
 	//TODO creative inventory
 
+	// io utils
+	string io = "module sul.utils.buffer;\n\nimport std.bitmanip;\nimport std.system : Endian;\n\n";
+	io ~= "class Buffer {\n\n";
+	io ~= "\tpublic ubyte[] _buffer;\n";
+	io ~= "\tpublic size_t _index;\n\n";
+	io ~= "\tpublic pure nothrow @property @safe @nogc Buffer bufferInstance() {\n\t\treturn this;\n\t}\n\n";
+	io ~= "\tpublic pure nothrow @safe void writeBytes(ubyte[] bytes) {\n";
+	io ~= "\t\tthis._buffer ~= bytes;\n";
+	io ~= "\t}\n\n";
+	io ~= "\tpublic pure nothrow @trusted void writeString(string str) {\n\t\tthis.writeBytes(cast(ubyte[])str);\n\t}\n\n";
+	io ~= "\tpublic pure nothrow @safe ubyte[] readBytes(size_t length) {\n";
+	io ~= "\t\timmutable end = this._index + length;\n";
+	io ~= "\t\tif(this._buffer.length < end) return (ubyte[]).init;\n";
+	io ~= "\t\tauto ret = this._buffer[this._index..end].dup;\n";
+	io ~= "\t\tthis._index = end;\n";
+	io ~= "\t\treturn ret;\n";
+	io ~= "\t}\n\n";
+	io ~= "\tpublic pure nothrow @trusted string readString(size_t length) {\n\t\treturn cast(string)this.readBytes(length);\n\t}\n\n";
+	foreach(type ; [tuple("bool", 1, "bool"), tuple("byte", 1, "byte"), tuple("short", 2, "short"), tuple("triad", 3, "int"), tuple("int", 4, "int"), tuple("long", 8, "long"), tuple("float", 4, "float"), tuple("double", 8, "double")]) {
+		string[] types = [""];
+		if(["byte", "short", "int", "long"].canFind(type[0])) types ~= "u";
+		foreach(p ; types) {
+			foreach(e ; ["BigEndian", "LittleEndian"]) {
+				// write
+				io ~= "\tpublic pure nothrow @safe void write" ~ e ~ capitalize(p ~ type[0]) ~ "(" ~ p ~ type[2] ~ " a) {\n";
+				if(type[1] == 1) io ~= "\t\tthis._buffer ~= a;\n";
+				else io ~= "\t\tthis._buffer ~= nativeTo" ~ e ~ "!" ~ p ~ type[2] ~ "(a)[$-" ~ to!string(type[1]) ~ "..$];\n";
+				io ~= "\t}\n\n";
+				// read
+				io ~= "\tpublic pure nothrow @safe " ~ p ~ type[2] ~ " read" ~ e ~ capitalize(p ~ type[0]) ~ "() {\n";
+				io ~= "\t\timmutable end = this._index + " ~ to!string(type[1]) ~ ";\n";
+				io ~= "\t\tif(this._buffer.length < end) return " ~ type[2] ~ ".init;\n";
+				io ~= "\t\tubyte[" ~ type[2] ~ ".sizeof] bytes = this._buffer[this._index..end];\n";
+				io ~= "\t\tthis._index = end;\n";
+				if(type[1] == 1) io ~= "\t\treturn " ~ (type[2] == "ubyte" ? "" : ("cast(" ~ type[2] ~ ")")) ~ "bytes[0];\n";
+				else io ~= "\t\treturn " ~ toLower(e[0..1]) ~ e[1..$] ~ "ToNative!" ~ type[2] ~ "(bytes);\n";
+				io ~= "\t}\n\n";
+			}
+		}
+	}
+	io ~= "}";
+	write("../src/d/sul/utils/buffer.d", io);
+
 	// protocol
 	foreach(string game, Protocols prts; protocols) {
 
@@ -168,12 +211,12 @@ alias varulong = var!ulong;
 		immutable id = convertType(prts.data.id);
 		immutable arrayLength = convertType(prts.data.arrayLength);
 
-		immutable defaultEndianness = "Endian." ~ toCamelCase(prts.data.endianness["*"]);
+		immutable defaultEndianness = toPascalCase(prts.data.endianness["*"]);
 
 		string endiannessOf(string type, string over="") {
-			if(over.length) return "Endian." ~ toCamelCase(over);
+			if(over.length) return toPascalCase(over);
 			auto e = type in prts.data.endianness;
-			if(e) return "Endian." ~ toCamelCase(*e);
+			if(e) return toPascalCase(*e);
 			else return defaultEndianness;
 		}
 
@@ -188,13 +231,13 @@ alias varulong = var!ulong;
 					auto ca = type in prts.data.arrays;
 					if(ca) {
 						auto c = *ca;
-						ret ~= createEncoding(c.length, name ~ ".length.to!" ~ convertType(c.length), c.endianness);
+						ret ~= createEncoding(c.length, "cast(" ~ convertType(c.length) ~ ")" ~ name ~ ".length", c.endianness);
 					} else {
-						ret ~= createEncoding(prts.data.arrayLength, name ~ ".length.to!" ~ arrayLength);
+						ret ~= createEncoding(prts.data.arrayLength, "cast(" ~ arrayLength ~ ")" ~ name ~ ".length");
 					}
 					ret ~= " ";
 				}
-				if(nt == "ubyte") return ret ~= "_buffer~=" ~ name ~ ";";
+				if(nt == "ubyte") return ret ~= "writeBytes(" ~ name ~ ");";
 				else return ret ~ "foreach(" ~ hash(name) ~ ";" ~ name ~ "){ " ~ createEncoding(type[0..lo], hash(name)) ~ " }";
 			}
 			auto ts = conv.lastIndexOf("<");
@@ -208,13 +251,12 @@ alias varulong = var!ulong;
 				return ret;
 			}
 			type = conv;
-			if(type.startsWith("var")) return "_buffer~=" ~ type ~ ".encode(" ~ name ~ ");";
-			else if(type == "string") return "ubyte[] " ~ hash(name) ~ "=cast(ubyte[])" ~ name ~ "; " ~ createEncoding("ubyte[]", hash(name));
-			else if(type == "uuid") return "_buffer~=" ~ name ~ ".data;";
-			else if(type == "bytes" || type == "ubyte") return "_buffer~=" ~ name ~ ";";
-			else if(type == "triad") return "_buffer.length+=3; " ~ (endiannessOf("triad", e) == "bigEndian" ? ("_buffer[$-1]=" ~ name ~ "&255; _buffer[$-2]=(" ~ name ~ ">>8)&255; _buffer[$-3]=(" ~ name ~ ">>16)&255"): ("_buffer[$-3]=" ~ name ~ "&255; _buffer[$-2]=(" ~ name ~ ">>8)&255; _buffer[$-1]=(" ~ name ~ ">>16)&255")) ~ ";";
-			else if(defaultTypes.canFind(type)) return "_buffer.length+=" ~ type ~ ".sizeof; write!(" ~ type ~ ", " ~ endiannessOf(type, e) ~ ")(_buffer, " ~ name ~ ", _buffer.length-" ~ type ~ ".sizeof);";
-			else return name ~ ".encode(_buffer);";
+			if(type.startsWith("var")) return "writeBytes(" ~ type ~ ".encode(" ~ name ~ "));";
+			else if(type == "string") return createEncoding(prts.data.arrayLength, "cast(" ~ arrayLength ~")" ~ name ~ ".length") ~ " writeString(" ~ name ~ ");";
+			else if(type == "uuid") return "writeBytes(" ~ name ~ ".data);";
+			else if(type == "bytes") return "writeBytes(" ~ name ~ ");";
+			else if(defaultTypes.canFind(type)) return "write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ");";
+			else return name ~ ".encode(bufferInstance);";
 		}
 
 		string createDecoding(string type, string name, string e="") {
@@ -234,7 +276,7 @@ alias varulong = var!ulong;
 					ret ~= " ";
 				}
 				string nt = conv[0..lo];
-				if(nt == "ubyte") return ret ~= "if(_buffer.length>=*_index+" ~ name ~ ".length){ " ~ name ~ "=_buffer[*_index..*_index+" ~ name ~ ".length].dup; *_index+=" ~ name ~ ".length; }";
+				if(nt == "ubyte") return ret ~= "if(_buffer.length>=_index+" ~ name ~ ".length){ " ~ name ~ "=_buffer[_index.._index+" ~ name ~ ".length].dup; _index+=" ~ name ~ ".length; }";
 				else return ret ~ "foreach(ref " ~ hash(name) ~ ";" ~ name ~ "){ " ~ createDecoding(type[0..lo], hash(name)) ~ " }";
 			}
 			auto ts = conv.lastIndexOf("<");
@@ -248,16 +290,29 @@ alias varulong = var!ulong;
 				return ret;
 			}
 			type = conv;
-			if(type.startsWith("var")) return name ~ "=" ~ type ~ ".decode(_buffer, *_index);";
-			else if(type == "string") return "ubyte[] " ~ hash(name) ~ "; " ~ createDecoding("ubyte[]", hash(name)) ~ "; " ~ name ~ "=cast(string)" ~ hash(name) ~ ";";
-			else if(type == "uuid") return "if(_buffer.length>=*_index+16){ ubyte[16] " ~ hash(name) ~ "=buffer[*_index..*_index+16].dup; *_index+=16; " ~ name ~ "=UUID(" ~ hash(name) ~ "); }";
-			else if(type == "bytes") return name ~ "=_buffer[*_index..$].dup; *_index=buffer.length;";
-			else if(type == "triad") return "if(_buffer.length>=*_index+3){ " ~ name ~ "=" ~ (endiannessOf(e) == "bigEndian" ? "_buffer[_*index+2]|(buffer[*_index+1]<<8)|(buffer[*_index]<<16)" : "buffer[*_index]|(buffer[*_index+1]<<8)|(buffer[*_index+2]<<16)") ~ "; *_index+=3; }";
-			else if(defaultTypes.canFind(type)) return "if(_buffer.length>=*_index+" ~ type ~ ".sizeof){ " ~ name ~ "=peek!(" ~ type ~ ", " ~ endiannessOf(type, e) ~ ")(_buffer, _index); }";
-			else return name ~ ".decode(_buffer, _index);";
+			if(type.startsWith("var")) return name ~ "=" ~ type ~ ".decode(_buffer, &_index);";
+			else if(type == "string") return createDecoding(prts.data.arrayLength, arrayLength ~ " " ~ hash(name)) ~ " " ~ name ~ "=readString(" ~ hash(name) ~ ");";
+			else if(type == "uuid") return "if(_buffer.length>=_index+16){ ubyte[16] " ~ hash(name) ~ "=buffer[_index.._index+16].dup; _index+=16; " ~ name ~ "=UUID(" ~ hash(name) ~ "); }";
+			else if(type == "bytes") return name ~ "=_buffer[_index..$].dup; _index=buffer.length;";
+			else if(defaultTypes.canFind(type)) return name ~ "=read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "();";
+			else return name ~ ".decode(bufferInstance);";
+		}
+		
+		void createEncodings(string space, ref string data, Field[] fields) {
+			foreach(i, field; fields) {
+				bool c = field.condition.length != 0;
+				data ~= space ~ (c ? "if(" ~ field.condition ~ "){ " : "") ~ createEncoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
+			}
+		}
+		
+		void createDecodings(string space, ref string data, Field[] fields) {
+			foreach(i, field; fields) {
+				bool c = field.condition.length != 0;
+				data ~= space ~ (c ? "if(" ~ field.condition ~ "){ " : "") ~ createDecoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
+			}
 		}
 
-		void writeFields(ref string data, string space, Field[] fields, bool hasId) { // hasId is true when fields belong to a packet, false when a type
+		void writeFields(ref string data, string space, Field[] fields, bool isClass) {
 			// constants
 			foreach(field ; fields) {
 				if(field.constants.length) {
@@ -277,44 +332,39 @@ alias varulong = var!ulong;
 				data ~= space ~ "public " ~ convertType(field.type) ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ ";\n";
 				if(i == fields.length - 1) data ~= "\n";
 			}
-			// encoding
-			if(hasId) {
-				data ~= space ~ "public ubyte[] encode(bool writeId=true)() {\n";
-				data ~= space ~ "\tubyte[] _buffer;\n";
-				data ~= space ~ "\tstatic if(writeId){ " ~ createEncoding(prts.data.id, "ID") ~ " }\n";
-			} else {
-				data ~= space ~ "public ubyte[] encode() {\n" ~ space ~ "\tubyte[] _buffer;\n";
-				data ~= space ~ "\tthis.encode(_buffer);\n";
-				data ~= space ~ "\treturn _buffer;\n" ~ space ~ "}\n\n";
-				data ~= space ~ "public ubyte[] encode(ref ubyte[] _buffer) {\n";
+			// constructors
+			if(isClass && fields.length) {
+				data ~= space ~ "public pure nothrow @safe @nogc this() {}\n\n";
+				string[] args;
+				foreach(i, field; fields) {
+					immutable type = convertType(field.type);
+					immutable p = type.canFind('[');
+					args ~= type ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ (i ? ("=" ~ (p ? "(" : "") ~ type ~ (p ? ")" : "") ~ ".init") : "");
+				}
+				data ~= space ~ "public pure nothrow @safe @nogc this(" ~ args.join(", ") ~ ") {\n";
+				foreach(i, field; fields) {
+					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
+					data ~= space ~ "\tthis." ~ name ~ " = " ~ name ~ ";\n";
+				}
+				data ~= space ~ "}\n\n";
 			}
-			foreach(i, field; fields) {
-				bool c = field.condition.length != 0;
-				data ~= space ~ "\t" ~ (c ? "if(" ~ field.condition ~ "){ " : "") ~ createEncoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
-			}
-			data ~= space ~ "\treturn _buffer;\n" ~ space ~ "}\n\n";
-			// decoding
-			if(hasId) {
-				data ~= space ~ "public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {\n" ~ space ~ "\treturn this.decode!readId(_buffer, &_index);\n" ~ space ~ "}\n\n";
-				data ~= space ~ "public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {\n";
-				data ~= space ~ "\tstatic if(readId){ typeof(ID) _id; " ~ createDecoding(prts.data.id, "_id") ~ " }\n";
-			} else {
-				data ~= space ~ "public typeof(this) decode(ubyte[] _buffer, size_t* _index) {\n";
-			}
-			foreach(i, field; fields) {
-				bool c = field.condition.length != 0;
-				data ~= space ~ "\t" ~ (c ? "if(" ~ field.condition ~ "){ " : "") ~ createDecoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
-			}
-			data ~= space ~ "\treturn this;\n" ~ space ~ "}\n\n";
 		}
 
 		// types
 		string t = "module sul.protocol." ~ game ~ ".types;\n\n";
-		t ~= "import std.bitmanip : write, peek;\nimport std.conv : to;\nimport std.system : Endian;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\nimport sul.utils.var;\n\n";
+		t ~= "import std.bitmanip : write, peek;\nimport std.conv : to;\nimport std.system : Endian;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\nimport sul.utils.buffer;\nimport sul.utils.var;\n\n";
 		foreach(type ; prts.data.types) {
 			if(type.description.length) t ~= ddoc("", type.description);
 			t ~= "struct " ~ toPascalCase(type.name) ~ " {\n\n";
 			writeFields(t, "\t", type.fields, false);
+			// encoding
+			t ~= "\tpublic pure nothrow @safe void encode(Buffer buffer) {\n\t\twith(buffer) {\n";
+			createEncodings("\t\t\t", t, type.fields);
+			t ~= "\t\t}\n\t}\n\n";
+			// decoding
+			t ~= "\tpublic pure nothrow @safe void decode(Buffer buffer) {\n\t\twith(buffer) {\n";
+			createDecodings("\t\t\t", t, type.fields);
+			t ~= "\t\t}\n\t}\n\n";
 			t ~= "}\n\n";
 		}
 		write("../src/d/sul/protocol/" ~ game ~ "/types.d", t, "protocol/" ~ game);
@@ -325,23 +375,58 @@ alias varulong = var!ulong;
 			s ~= "public import sul.protocol." ~ game ~ "." ~ section.name ~ ";\n";
 			string data = "module sul.protocol." ~ game ~ "." ~ section.name ~ ";\n\n";
 			data ~= "import std.bitmanip : write, peek;\nimport std.conv : to;\nimport std.system : Endian;\nimport std.typetuple : TypeTuple;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\n";
-			data ~= "import sul.utils.var;\n\nimport types = sul.protocol." ~ game ~ ".types;\n\n";
+			data ~= "import sul.utils.buffer;\nimport sul.utils.var;\n\nstatic import sul.protocol." ~ game ~ ".types;\n\n";
 			string[] names;
 			foreach(packet ; section.packets) names ~= toPascalCase(packet.name);
 			data ~= "alias Packets = TypeTuple!(" ~ names.join(", ") ~ ");\n\n";
 			foreach(packet ; section.packets) {
 				if(packet.description.length) data ~= ddoc("", packet.description);
-				data ~= "struct " ~ toPascalCase(packet.name) ~ " {\n\n";
+				data ~= "class " ~ toPascalCase(packet.name) ~ " : Buffer {\n\n";
 				data ~= "\tpublic enum " ~ id ~ " ID = " ~ to!string(packet.id) ~ ";\n\n";
 				data ~= "\tpublic enum bool CLIENTBOUND = " ~ to!string(packet.clientbound) ~ ";\n";
 				data ~= "\tpublic enum bool SERVERBOUND = " ~ to!string(packet.serverbound) ~ ";\n\n";
+				string[] fn;
+				foreach(i, field; packet.fields) fn ~= field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
+				data ~= "\tpublic enum string[] FIELDS = " ~ to!string(fn) ~ ";\n\n";
 				writeFields(data, "\t", packet.fields, true);
-				foreach(variant ; packet.variants) {
-					if(variant.description.length) data ~= ddoc("\t\t", variant.description);
-					data ~= "\tpublic struct " ~ toPascalCase(variant.name) ~ " {\n\n";
-					data ~= "\t\tpublic enum typeof(" ~ convertName(packet.variantField) ~ ") " ~ toUpper(packet.variantField) ~ " = " ~ variant.value ~ ";\n\n";
-					writeFields(data, "\t\t", variant.fields, false);
-					data ~= "\t}\n\n";
+				// encoding
+				data ~= "\tpublic pure nothrow @safe ubyte[] encode(bool writeId=true)() {\n";
+				data ~= "\t\t_buffer.length = 0;\n";
+				data ~= "\t\tstatic if(writeId){ " ~ createEncoding(prts.data.id, "ID") ~ " }\n";
+				createEncodings("\t\t", data, packet.fields);
+				data ~= "\t\treturn _buffer;\n";
+				data ~= "\t}\n\n";
+				// decoding
+				data ~= "\tpublic pure nothrow @safe void decode(bool readId=true)() {\n";
+				data ~= "\t\tstatic if(readId){ " ~ id ~ " _id; " ~ createDecoding(prts.data.id, "_id") ~ " }\n";
+				createDecodings("\t\t", data, packet.fields);
+				data ~= "\t}\n\n";
+				// static decoding
+				data ~= "\tpublic static pure nothrow @safe " ~ toPascalCase(packet.name) ~ " fromBuffer(bool readId=true)(ubyte[] buffer) {\n";
+				data ~= "\t\t" ~ toPascalCase(packet.name) ~ " ret = new " ~ toPascalCase(packet.name) ~ "();\n";
+				data ~= "\t\tret._buffer = buffer;\n";
+				data ~= "\t\tret.decode!readId();\n";
+				data ~= "\t\treturn ret;\n";
+				data ~= "\t}\n\n";
+				// variants
+				if(packet.variants.length) {
+					data ~= "\talias _encode = encode;\n\n";
+					foreach(variant ; packet.variants) {
+						if(variant.description.length) data ~= ddoc("\t\t", variant.description);
+						data ~= "\tpublic class " ~ toPascalCase(variant.name) ~ " {\n\n";
+						data ~= "\t\tpublic enum typeof(" ~ convertName(packet.variantField) ~ ") " ~ toUpper(packet.variantField) ~ " = " ~ variant.value ~ ";\n\n";
+						writeFields(data, "\t\t", variant.fields, true);
+						// encode
+						data ~= "\t\tpublic pure nothrow @safe ubyte[] encode(bool writeId=true)() {\n";
+						data ~= "\t\t\t" ~ convertName(packet.variantField) ~ " = " ~ variant.value ~ ";\n\t\t\t_encode!writeId();\n";
+						createEncodings("\t\t\t", data, variant.fields);
+						data ~= "\t\t\treturn _buffer;\n\t\t}\n\n";
+						// decode
+						data ~= "\t\tpublic pure nothrow @safe void decode() {\n";
+						createDecodings("\t\t\t", data, variant.fields);
+						data ~= "\t\t}\n\n";
+						data ~= "\t}\n\n";
+					}
 				}
 				data ~= "}\n\n";
 			}
@@ -407,7 +492,9 @@ string ddoc(string space, string description) {
 			search = false;
 		}
 	}
-	return space ~ "/**\n" ~ ddocImpl(space, description.split(" ")) ~ space ~ " */\n";
+	string ret;
+	foreach(s ; description.split("\n")) ret ~= ddocImpl(space, s.split(" "));
+	return space ~ "/**\n" ~ ret ~ space ~ " */\n";
 }
 
 string ddocImpl(string space, string[] words) {

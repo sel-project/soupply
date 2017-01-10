@@ -37,7 +37,7 @@ class Nodes extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeByteB(action);
-		byte[] bm9kZQ=node.getBytes("UTF-8"); this.writeVaruint((int)bm9kZQ.length); this.writeBytes(bm9kZQ);
+		byte[] bm9kzq=node.getBytes("UTF-8"); this.writeVaruint((int)bm9kzq.length); this.writeBytes(bm9kzq);
 		return this.buffer;
 	}
 

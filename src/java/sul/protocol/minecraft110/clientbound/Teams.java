@@ -32,7 +32,7 @@ class Teams extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] bmFtZQ=name.getBytes("UTF-8"); this.writeVaruint((int)bmFtZQ.length); this.writeBytes(bmFtZQ);
+		byte[] bmftzq=name.getBytes("UTF-8"); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		this.writeByteB(mode);
 		return this.buffer;
 	}

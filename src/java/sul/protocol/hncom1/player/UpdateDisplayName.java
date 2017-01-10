@@ -33,7 +33,7 @@ class UpdateDisplayName extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeVaruint(hubId);
-		byte[] ZGlzcGxheU5hbWU=displayName.getBytes("UTF-8"); this.writeVaruint((int)ZGlzcGxheU5hbWU.length); this.writeBytes(ZGlzcGxheU5hbWU);
+		byte[] zglzcgxheu5hbwu=displayName.getBytes("UTF-8"); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
 		return this.buffer;
 	}
 

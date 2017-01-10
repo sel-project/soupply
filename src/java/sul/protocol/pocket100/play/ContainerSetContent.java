@@ -34,8 +34,8 @@ class ContainerSetContent extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeByteB(window);
-		this.writeVaruint((int)slots.length); for(slot c2xvdHM:slots){ this.writeBytes(c2xvdHM.encode()); }
-		this.writeVaruint((int)hotbar.length); for(varint aG90YmFy:hotbar){ this.writeVarint(aG90YmFy); }
+		this.writeVaruint((int)slots.length); for(slot c2xvdhm:slots){ this.writeBytes(c2xvdhm.encode()); }
+		this.writeVaruint((int)hotbar.length); for(varint ag90ymfy:hotbar){ this.writeVarint(ag90ymfy); }
 		return this.buffer;
 	}
 

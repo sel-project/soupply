@@ -31,7 +31,7 @@ class Logs extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeVaruint((int)messages.length); for(log bWVzc2FnZXM:messages){ this.writeBytes(bWVzc2FnZXM.encode()); }
+		this.writeVaruint((int)messages.length); for(log bwvzc2fnzxm:messages){ this.writeBytes(bwvzc2fnzxm.encode()); }
 		return this.buffer;
 	}
 

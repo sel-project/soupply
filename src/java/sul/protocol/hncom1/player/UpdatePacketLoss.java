@@ -33,7 +33,7 @@ class UpdatePacketLoss extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeVaruint(hubId);
-		this.writeFloatB(packetLoss);
+		this.writeFloatlittle_endian(packetLoss);
 		return this.buffer;
 	}
 

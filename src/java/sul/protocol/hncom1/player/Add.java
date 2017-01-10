@@ -54,15 +54,15 @@ class Add extends Packet {
 		this.writeVaruint(hubId);
 		this.writeByteB(reason);
 		this.writeVaruint(protocol);
-		byte[] dXNlcm5hbWU=username.getBytes("UTF-8"); this.writeVaruint((int)dXNlcm5hbWU.length); this.writeBytes(dXNlcm5hbWU);
-		byte[] ZGlzcGxheU5hbWU=displayName.getBytes("UTF-8"); this.writeVaruint((int)ZGlzcGxheU5hbWU.length); this.writeBytes(ZGlzcGxheU5hbWU);
+		byte[] dxnlcm5hbwu=username.getBytes("UTF-8"); this.writeVaruint((int)dxnlcm5hbwu.length); this.writeBytes(dxnlcm5hbwu);
+		byte[] zglzcgxheu5hbwu=displayName.getBytes("UTF-8"); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
 		this.writeBytes(address.encode());
 		this.writeByteB(game);
 		this.writeLongB(uuid.getLeastSignificantBits()); this.writeLongB(uuid.getMostSignificantBits());
 		this.writeBytes(skin.encode());
 		this.writeVaruint(latency);
-		this.writeFloatB(packetLoss);
-		byte[] bGFuZ3VhZ2U=language.getBytes("UTF-8"); this.writeVaruint((int)bGFuZ3VhZ2U.length); this.writeBytes(bGFuZ3VhZ2U);
+		this.writeFloatlittle_endian(packetLoss);
+		byte[] bgfuz3vhz2u=language.getBytes("UTF-8"); this.writeVaruint((int)bgfuz3vhz2u.length); this.writeBytes(bgfuz3vhz2u);
 		return this.buffer;
 	}
 

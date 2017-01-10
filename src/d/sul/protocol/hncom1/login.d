@@ -15,18 +15,21 @@ import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
 import std.uuid : UUID;
 
+import sul.utils.buffer;
 import sul.utils.var;
 
-import types = sul.protocol.hncom1.types;
+static import sul.protocol.hncom1.types;
 
 alias Packets = TypeTuple!(Connection, ConnectionResponse, Info, Ready);
 
-struct Connection {
+class Connection : Buffer {
 
 	public enum ubyte ID = 0;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
+
+	public enum string[] FIELDS = ["protocol", "name", "mainNode"];
 
 	/**
 	 * Version of the protocol used by the client that must match the hub's one
@@ -44,66 +47,89 @@ struct Connection {
 	 */
 	public bool mainNode;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=varuint.encode(protocol);
-		ubyte[] bmFtZQ=cast(ubyte[])name; _buffer~=varuint.encode(bmFtZQ.length.to!uint); _buffer~=bmFtZQ;
-		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, mainNode, _buffer.length-bool.sizeof);
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint protocol, string name=string.init, bool mainNode=bool.init) {
+		this.protocol = protocol;
+		this.name = name;
+		this.mainNode = mainNode;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(protocol));
+		writeBytes(varuint.encode(cast(uint)name.length)); writeString(name);
+		writeBigEndianBool(mainNode);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		protocol=varuint.decode(_buffer, &_index);
+		uint bmftzq=varuint.decode(_buffer, &_index); name=readString(bmftzq);
+		mainNode=readBigEndianBool();
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		protocol=varuint.decode(_buffer, *_index);
-		ubyte[] bmFtZQ; bmFtZQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bmFtZQ.length){ bmFtZQ=_buffer[*_index..*_index+bmFtZQ.length].dup; *_index+=bmFtZQ.length; }; name=cast(string)bmFtZQ;
-		if(_buffer.length>=*_index+bool.sizeof){ mainNode=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe Connection fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Connection ret = new Connection();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct ConnectionResponse {
+class ConnectionResponse : Buffer {
 
 	public enum ubyte ID = 1;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	public enum string[] FIELDS = ["protocolAccepted", "nameAccepted"];
+
 	public bool protocolAccepted;
 	public bool nameAccepted;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, protocolAccepted, _buffer.length-bool.sizeof);
-		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, nameAccepted, _buffer.length-bool.sizeof);
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(bool protocolAccepted, bool nameAccepted=bool.init) {
+		this.protocolAccepted = protocolAccepted;
+		this.nameAccepted = nameAccepted;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianBool(protocolAccepted);
+		writeBigEndianBool(nameAccepted);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		protocolAccepted=readBigEndianBool();
+		nameAccepted=readBigEndianBool();
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+bool.sizeof){ protocolAccepted=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		if(_buffer.length>=*_index+bool.sizeof){ nameAccepted=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe ConnectionResponse fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ConnectionResponse ret = new ConnectionResponse();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct Info {
+class Info : Buffer {
 
 	public enum ubyte ID = 2;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["serverId", "displayName", "onlineMode", "games", "online", "max", "language", "acceptedLanguages", "nodes", "socialJson", "additionalJson"];
 
 	public ulong serverId;
 	public string displayName;
@@ -117,69 +143,97 @@ struct Info {
 	public string socialJson;
 	public string additionalJson;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer.length+=ulong.sizeof; write!(ulong, Endian.bigEndian)(_buffer, serverId, _buffer.length-ulong.sizeof);
-		ubyte[] ZGlzcGxheU5hbWU=cast(ubyte[])displayName; _buffer~=varuint.encode(ZGlzcGxheU5hbWU.length.to!uint); _buffer~=ZGlzcGxheU5hbWU;
-		_buffer.length+=bool.sizeof; write!(bool, Endian.bigEndian)(_buffer, onlineMode, _buffer.length-bool.sizeof);
-		_buffer~=varuint.encode(games.length.to!uint); foreach(Z2FtZXM;games){ Z2FtZXM.encode(_buffer); }
-		_buffer~=varuint.encode(online);
-		_buffer~=varuint.encode(max);
-		ubyte[] bGFuZ3VhZ2U=cast(ubyte[])language; _buffer~=varuint.encode(bGFuZ3VhZ2U.length.to!uint); _buffer~=bGFuZ3VhZ2U;
-		_buffer~=varuint.encode(acceptedLanguages.length.to!uint); foreach(YWNjZXB0ZWRMYW5n;acceptedLanguages){ ubyte[] WVdOalpYQjBaV1JN=cast(ubyte[])YWNjZXB0ZWRMYW5n; _buffer~=varuint.encode(WVdOalpYQjBaV1JN.length.to!uint); _buffer~=WVdOalpYQjBaV1JN; }
-		_buffer~=varuint.encode(nodes.length.to!uint); foreach(bm9kZXM;nodes){ ubyte[] Ym05a1pYTQ=cast(ubyte[])bm9kZXM; _buffer~=varuint.encode(Ym05a1pYTQ.length.to!uint); _buffer~=Ym05a1pYTQ; }
-		ubyte[] c29jaWFsSnNvbg=cast(ubyte[])socialJson; _buffer~=varuint.encode(c29jaWFsSnNvbg.length.to!uint); _buffer~=c29jaWFsSnNvbg;
-		ubyte[] YWRkaXRpb25hbEpz=cast(ubyte[])additionalJson; _buffer~=varuint.encode(YWRkaXRpb25hbEpz.length.to!uint); _buffer~=YWRkaXRpb25hbEpz;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ulong serverId, string displayName=string.init, bool onlineMode=bool.init, sul.protocol.hncom1.types.Game[] games=(sul.protocol.hncom1.types.Game[]).init, uint online=uint.init, uint max=uint.init, string language=string.init, string[] acceptedLanguages=(string[]).init, string[] nodes=(string[]).init, string socialJson=string.init, string additionalJson=string.init) {
+		this.serverId = serverId;
+		this.displayName = displayName;
+		this.onlineMode = onlineMode;
+		this.games = games;
+		this.online = online;
+		this.max = max;
+		this.language = language;
+		this.acceptedLanguages = acceptedLanguages;
+		this.nodes = nodes;
+		this.socialJson = socialJson;
+		this.additionalJson = additionalJson;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeLittleEndianUlong(serverId);
+		writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName);
+		writeBigEndianBool(onlineMode);
+		writeBytes(varuint.encode(cast(uint)games.length)); foreach(z2ftzxm;games){ z2ftzxm.encode(bufferInstance); }
+		writeBytes(varuint.encode(online));
+		writeBytes(varuint.encode(max));
+		writeBytes(varuint.encode(cast(uint)language.length)); writeString(language);
+		writeBytes(varuint.encode(cast(uint)acceptedLanguages.length)); foreach(ywnjzxb0zwrmyw5n;acceptedLanguages){ writeBytes(varuint.encode(cast(uint)ywnjzxb0zwrmyw5n.length)); writeString(ywnjzxb0zwrmyw5n); }
+		writeBytes(varuint.encode(cast(uint)nodes.length)); foreach(bm9kzxm;nodes){ writeBytes(varuint.encode(cast(uint)bm9kzxm.length)); writeString(bm9kzxm); }
+		writeBytes(varuint.encode(cast(uint)socialJson.length)); writeString(socialJson);
+		writeBytes(varuint.encode(cast(uint)additionalJson.length)); writeString(additionalJson);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		serverId=readLittleEndianUlong();
+		uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu);
+		onlineMode=readBigEndianBool();
+		games.length=varuint.decode(_buffer, &_index); foreach(ref z2ftzxm;games){ z2ftzxm.decode(bufferInstance); }
+		online=varuint.decode(_buffer, &_index);
+		max=varuint.decode(_buffer, &_index);
+		uint bgfuz3vhz2u=varuint.decode(_buffer, &_index); language=readString(bgfuz3vhz2u);
+		acceptedLanguages.length=varuint.decode(_buffer, &_index); foreach(ref ywnjzxb0zwrmyw5n;acceptedLanguages){ uint exduanp4yjb6d3jt=varuint.decode(_buffer, &_index); ywnjzxb0zwrmyw5n=readString(exduanp4yjb6d3jt); }
+		nodes.length=varuint.decode(_buffer, &_index); foreach(ref bm9kzxm;nodes){ uint ym05a3p4bq=varuint.decode(_buffer, &_index); bm9kzxm=readString(ym05a3p4bq); }
+		uint c29jawfssnnvbg=varuint.decode(_buffer, &_index); socialJson=readString(c29jawfssnnvbg);
+		uint ywrkaxrpb25hbepz=varuint.decode(_buffer, &_index); additionalJson=readString(ywrkaxrpb25hbepz);
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		if(_buffer.length>=*_index+ulong.sizeof){ serverId=peek!(ulong, Endian.bigEndian)(_buffer, _index); }
-		ubyte[] ZGlzcGxheU5hbWU; ZGlzcGxheU5hbWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+ZGlzcGxheU5hbWU.length){ ZGlzcGxheU5hbWU=_buffer[*_index..*_index+ZGlzcGxheU5hbWU.length].dup; *_index+=ZGlzcGxheU5hbWU.length; }; displayName=cast(string)ZGlzcGxheU5hbWU;
-		if(_buffer.length>=*_index+bool.sizeof){ onlineMode=peek!(bool, Endian.bigEndian)(_buffer, _index); }
-		games.length=varuint.decode(_buffer, *_index); foreach(ref Z2FtZXM;games){ Z2FtZXM.decode(_buffer, _index); }
-		online=varuint.decode(_buffer, *_index);
-		max=varuint.decode(_buffer, *_index);
-		ubyte[] bGFuZ3VhZ2U; bGFuZ3VhZ2U.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+bGFuZ3VhZ2U.length){ bGFuZ3VhZ2U=_buffer[*_index..*_index+bGFuZ3VhZ2U.length].dup; *_index+=bGFuZ3VhZ2U.length; }; language=cast(string)bGFuZ3VhZ2U;
-		acceptedLanguages.length=varuint.decode(_buffer, *_index); foreach(ref YWNjZXB0ZWRMYW5n;acceptedLanguages){ ubyte[] WVdOalpYQjBaV1JN; WVdOalpYQjBaV1JN.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+WVdOalpYQjBaV1JN.length){ WVdOalpYQjBaV1JN=_buffer[*_index..*_index+WVdOalpYQjBaV1JN.length].dup; *_index+=WVdOalpYQjBaV1JN.length; }; YWNjZXB0ZWRMYW5n=cast(string)WVdOalpYQjBaV1JN; }
-		nodes.length=varuint.decode(_buffer, *_index); foreach(ref bm9kZXM;nodes){ ubyte[] Ym05a1pYTQ; Ym05a1pYTQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+Ym05a1pYTQ.length){ Ym05a1pYTQ=_buffer[*_index..*_index+Ym05a1pYTQ.length].dup; *_index+=Ym05a1pYTQ.length; }; bm9kZXM=cast(string)Ym05a1pYTQ; }
-		ubyte[] c29jaWFsSnNvbg; c29jaWFsSnNvbg.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c29jaWFsSnNvbg.length){ c29jaWFsSnNvbg=_buffer[*_index..*_index+c29jaWFsSnNvbg.length].dup; *_index+=c29jaWFsSnNvbg.length; }; socialJson=cast(string)c29jaWFsSnNvbg;
-		ubyte[] YWRkaXRpb25hbEpz; YWRkaXRpb25hbEpz.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+YWRkaXRpb25hbEpz.length){ YWRkaXRpb25hbEpz=_buffer[*_index..*_index+YWRkaXRpb25hbEpz.length].dup; *_index+=YWRkaXRpb25hbEpz.length; }; additionalJson=cast(string)YWRkaXRpb25hbEpz;
-		return this;
+	public static pure nothrow @safe Info fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Info ret = new Info();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct Ready {
+class Ready : Buffer {
 
 	public enum ubyte ID = 3;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["plugins"];
+
 	public sul.protocol.hncom1.types.Plugin[] plugins;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=ID; }
-		_buffer~=varuint.encode(plugins.length.to!uint); foreach(cGx1Z2lucw;plugins){ cGx1Z2lucw.encode(_buffer); }
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(sul.protocol.hncom1.types.Plugin[] plugins) {
+		this.plugins = plugins;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(cast(uint)plugins.length)); foreach(cgx1z2lucw;plugins){ cgx1z2lucw.encode(bufferInstance); }
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		plugins.length=varuint.decode(_buffer, &_index); foreach(ref cgx1z2lucw;plugins){ cgx1z2lucw.decode(bufferInstance); }
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; if(_buffer.length>=*_index+ubyte.sizeof){ _id=peek!(ubyte, Endian.bigEndian)(_buffer, _index); } }
-		plugins.length=varuint.decode(_buffer, *_index); foreach(ref cGx1Z2lucw;plugins){ cGx1Z2lucw.decode(_buffer, _index); }
-		return this;
+	public static pure nothrow @safe Ready fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Ready ret = new Ready();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }

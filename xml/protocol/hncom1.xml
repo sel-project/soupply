@@ -18,6 +18,12 @@
 
 		<endianness type="*" value="big-endian" />
 
+		<endianness type="ulong" value="little-endian" />
+
+		<endianness type="long" value="little-endian" />
+
+		<endianness type="float" value="little-endian" />
+
 		<alias name="hub-id" type="varuint" />
 
 		<type name="plugin">

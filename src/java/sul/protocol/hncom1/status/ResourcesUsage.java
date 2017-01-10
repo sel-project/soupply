@@ -33,9 +33,9 @@ class ResourcesUsage extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeFloatB(tps);
+		this.writeFloatlittle_endian(tps);
 		this.writeVarulong(ram);
-		this.writeFloatB(cpu);
+		this.writeFloatlittle_endian(cpu);
 		return this.buffer;
 	}
 

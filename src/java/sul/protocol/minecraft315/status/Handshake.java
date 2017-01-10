@@ -39,7 +39,7 @@ class Handshake extends Packet {
 		this.index = 0;
 		this.writeVaruint(ID);
 		this.writeVaruint(protocol);
-		byte[] c2VydmVyQWRkcmVz=serverAddress.getBytes("UTF-8"); this.writeVaruint((int)c2VydmVyQWRkcmVz.length); this.writeBytes(c2VydmVyQWRkcmVz);
+		byte[] c2vydmvyqwrkcmvz=serverAddress.getBytes("UTF-8"); this.writeVaruint((int)c2vydmvyqwrkcmvz.length); this.writeBytes(c2vydmvyqwrkcmvz);
 		this.writeShortB(serverPort);
 		this.writeVaruint(next);
 		return this.buffer;

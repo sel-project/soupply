@@ -32,8 +32,8 @@ class EncryptionResponse extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		this.writeVaruint((int)sharedSecret.length); for(ubyte c2hhcmVkU2VjcmV0:sharedSecret){ this.writeByteB(c2hhcmVkU2VjcmV0); }
-		this.writeVaruint((int)verifyToken.length); for(ubyte dmVyaWZ5VG9rZW4:verifyToken){ this.writeByteB(dmVyaWZ5VG9rZW4); }
+		this.writeVaruint((int)sharedSecret.length); for(ubyte c2hhcmvku2vjcmv0:sharedSecret){ this.writeByteB(c2hhcmvku2vjcmv0); }
+		this.writeVaruint((int)verifyToken.length); for(ubyte dmvyawz5vg9rzw4:verifyToken){ this.writeByteB(dmvyawz5vg9rzw4); }
 		return this.buffer;
 	}
 

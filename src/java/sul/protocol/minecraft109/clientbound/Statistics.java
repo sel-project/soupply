@@ -31,7 +31,7 @@ class Statistics extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		this.writeVaruint((int)statistics.length); for(statistic c3RhdGlzdGljcw:statistics){ this.writeBytes(c3RhdGlzdGljcw.encode()); }
+		this.writeVaruint((int)statistics.length); for(statistic c3rhdglzdgljcw:statistics){ this.writeBytes(c3rhdglzdgljcw.encode()); }
 		return this.buffer;
 	}
 

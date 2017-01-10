@@ -39,7 +39,7 @@ class AddPainting extends Packet {
 		this.writeVarlong(runtimeId);
 		this.writeBytes(position.encode());
 		this.writeVarint(direction);
-		byte[] dGl0bGU=title.getBytes("UTF-8"); this.writeVaruint((int)dGl0bGU.length); this.writeBytes(dGl0bGU);
+		byte[] dgl0bgu=title.getBytes("UTF-8"); this.writeVaruint((int)dgl0bgu.length); this.writeBytes(dgl0bgu);
 		return this.buffer;
 	}
 

@@ -103,7 +103,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 				foreach(field ; fields) {
 					if(field.description.length || field.constants.length) {
 						data ~= space ~ "* <a name=\"" ~ link(namespace, field.name) ~ "\"></a>**" ~ toCamelCase(field.name) ~ "**\n\n";
-						if(field.description.length) data ~= space ~ "\t" ~ field.description ~ "\n\n";
+						if(field.description.length) data ~= space ~ "\t" ~ field.description.replace("\n", "\n\n\t" ~ space) ~ "\n\n";
 						if(field.constants.length) {
 							data ~= space ~ "\t**Constants**:\n\n";
 							data ~= space ~ "\tName | Value\n" ~ space ~ "\t---|:---:\n";
@@ -124,27 +124,28 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			if(type != "*") data ~= convert(type) ~ ": " ~ end.replace("_", " ") ~ "\n\n";
 		}
 		data ~= "--------\n\n";
-		// packets
+		// sections (legend)
 		data ~= "## Packets\n\nSection | Packets\n---|:---:\n";
 		foreach(section ; ptrs.data.sections) {
 			data ~= "[" ~ pretty(toCamelCase(section.name)) ~ "](#" ~ section.name.replace("_", "-") ~ ") | " ~ to!string(section.packets.length) ~ "\n";
 		}
 		data ~= "\n";
+		// sections
 		foreach(section ; ptrs.data.sections) {
-			//data ~= "<a name=\"" ~ link(section.name) ~ "\"></a>\n";
 			data ~= "### " ~ pretty(toCamelCase(section.name)) ~ "\n\n";
 			data ~= "Packet | DEC | HEX | Clientbound | Serverbound\n---|:---:|:---:|:---:|:---:\n";
 			foreach(packet ; section.packets) {
 				data ~= "[" ~ pretty(toCamelCase(packet.name)) ~ "](#" ~ link(section.name, packet.name) ~ ") | " ~ packet.id.to!string ~ " | " ~ packet.id.to!string(16) ~ " | " ~ (packet.clientbound ? "✓" : "") ~ " | " ~ (packet.serverbound ? "✓" : "") ~ "\n";
 			}
 			data ~= "\n";
+			// packets
 			foreach(packet ; section.packets) {
 				data ~= "<a name=\"" ~ link(section.name, packet.name) ~ "\"></a>\n";
 				data ~= "* ### " ~ pretty(toCamelCase(packet.name)) ~ "\n\n";
 				data ~= "\t**ID**: " ~ to!string(packet.id) ~ "\n\n";
 				data ~= "\t**Clientbound**: " ~ (packet.clientbound ? "yes" : "no") ~ "\n\n";
 				data ~= "\t**Serverbound**: " ~ (packet.serverbound ? "yes" : "no") ~ "\n\n";
-				if(packet.description.length) data ~= "\t" ~ packet.description ~ "\n\n";
+				if(packet.description.length) data ~= "\t" ~ packet.description.replace("\n", "\t\n") ~ "\n\n";
 				writeFields(link(section.name, packet.name), packet.fields);
 				if(packet.variants.length) {
 					data ~= "\t**Variants**:\n\n";
@@ -155,6 +156,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 					data ~= "\n";
 					foreach(variant ; packet.variants) {
 						data ~= "\t* <a name=\"" ~ link(section.name, packet.name, variant.name) ~ "\"></a>**" ~ pretty(toCamelCase(variant.name)) ~ "**\n\n";
+						if(variant.description.length) data ~= "\t\t" ~ variant.description.replace("\n", "\t\t\n") ~ "\n\n";
 						writeFields(link(section.name, packet.name, variant.name), variant.fields, 2, "Additional Fields");
 					}
 				}
@@ -167,7 +169,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			foreach(type ; ptrs.data.types) {
 				data ~= "<a name=\"" ~ link("types", type.name) ~ "\"></a>\n";
 				data ~= "* ### " ~ pretty(toCamelCase(type.name)) ~ "\n\n";
-				if(type.description.length) data ~= "\t" ~ type.description ~ "\n\n";
+				if(type.description.length) data ~= "\t" ~ type.description.replace("\n", "\n\t") ~ "\n\n";
 				writeFields(type.name, type.fields);
 			}
 		}

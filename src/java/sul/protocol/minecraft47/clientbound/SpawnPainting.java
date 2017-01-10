@@ -41,7 +41,7 @@ class SpawnPainting extends Packet {
 		this.index = 0;
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
-		byte[] dGl0bGU=title.getBytes("UTF-8"); this.writeVaruint((int)dGl0bGU.length); this.writeBytes(dGl0bGU);
+		byte[] dgl0bgu=title.getBytes("UTF-8"); this.writeVaruint((int)dgl0bgu.length); this.writeBytes(dgl0bgu);
 		this.writeLongB(position);
 		this.writeByteB(direction);
 		return this.buffer;

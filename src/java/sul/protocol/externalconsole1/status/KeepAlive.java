@@ -13,6 +13,12 @@ import java.util.UUID;
 import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
+/**
+ * Keeps the connection alive and/or calculates the latency. This packet should be
+ * sent at least every 5 seconds to avoid the disconnection by the server caused by
+ * a timeout and update the latency. The client can send this packet whenever he wants
+ * and the server must reply with the same packet with the same field's value.
+ */
 class KeepAlive extends Packet {
 
 	public final static byte ID = (byte)0;
@@ -20,6 +26,9 @@ class KeepAlive extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = true;
 
+	/**
+	 * An identifier chosen by the client to calculate the latency.
+	 */
 	public int count;
 
 	@Override

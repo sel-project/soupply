@@ -46,7 +46,7 @@ class Connection extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeVaruint(protocol);
-		byte[] bmFtZQ=name.getBytes("UTF-8"); this.writeVaruint((int)bmFtZQ.length); this.writeBytes(bmFtZQ);
+		byte[] bmftzq=name.getBytes("UTF-8"); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		this.writeBoolB(mainNode);
 		return this.buffer;
 	}

@@ -14,7 +14,8 @@ import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
 /**
- * Credentials for login.
+ * First packet sent by the server after the connection has been successfully established.
+ * It contains informations about how the client should authenticate.
  */
 class AuthCredentials extends Packet {
 
@@ -25,19 +26,21 @@ class AuthCredentials extends Packet {
 
 	/**
 	 * Protocol used by the server. If the client uses a different one it should close
-	 * the connection without sending any packet.
+	 * the connection without trying to perform authentication.
 	 */
 	public byte protocol;
 
 	/**
-	 * Algorithm used by the server to match the the hash. If empty no hashing is done
-	 * and the password is sent raw.
+	 * Algorithm used by the server to match the the hash. The value should be sent in
+	 * lowercase without any separation symbol (for example `sha256` instead of `SHA-256`).
+	 * If empty no hashing is done and the password is sent raw. See [Auth.hash](#login.auth.hash)
+	 * for more details.
 	 */
 	public String hashAlgorithm;
 
 	/**
 	 * Payload to add to the password encoded as UTF-8 (if hash algorithm is not empty)
-	 * before hashing it.
+	 * before hashing it, as described in the [Auth.hash](#login.auth.hash) field.
 	 */
 	public byte[16] payload;
 
@@ -51,8 +54,8 @@ class AuthCredentials extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeByteB(protocol);
-		byte[] aGFzaEFsZ29yaXRo=hashAlgorithm.getBytes("UTF-8"); this.writeShortB((short)aGFzaEFsZ29yaXRo.length); this.writeBytes(aGFzaEFsZ29yaXRo);
-		for(ubyte cGF5bG9hZA:payload){ this.writeByteB(cGF5bG9hZA); }
+		byte[] agfzaefsz29yaxro=hashAlgorithm.getBytes("UTF-8"); this.writeShortB((short)agfzaefsz29yaxro.length); this.writeBytes(agfzaefsz29yaxro);
+		for(ubyte cgf5bg9hza:payload){ this.writeByteB(cgf5bg9hza); }
 		return this.buffer;
 	}
 

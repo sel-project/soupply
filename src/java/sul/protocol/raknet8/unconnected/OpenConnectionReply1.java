@@ -34,7 +34,7 @@ class OpenConnectionReply1 extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		for(ubyte bWFnaWM:magic){ this.writeByteB(bWFnaWM); }
+		for(ubyte bwfnawm:magic){ this.writeByteB(bwfnawm); }
 		this.writeLongB(serverId);
 		this.writeBoolB(security);
 		this.writeShortB(mtuLength);

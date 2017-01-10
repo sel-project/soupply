@@ -32,8 +32,8 @@ class ResourcePackSend extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] dXJs=url.getBytes("UTF-8"); this.writeVaruint((int)dXJs.length); this.writeBytes(dXJs);
-		byte[] aGFzaA=hash.getBytes("UTF-8"); this.writeVaruint((int)aGFzaA.length); this.writeBytes(aGFzaA);
+		byte[] dxjs=url.getBytes("UTF-8"); this.writeVaruint((int)dxjs.length); this.writeBytes(dxjs);
+		byte[] agfzaa=hash.getBytes("UTF-8"); this.writeVaruint((int)agfzaa.length); this.writeBytes(agfzaa);
 		return this.buffer;
 	}
 

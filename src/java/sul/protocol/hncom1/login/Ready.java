@@ -31,7 +31,7 @@ class Ready extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeVaruint((int)plugins.length); for(plugin cGx1Z2lucw:plugins){ this.writeBytes(cGx1Z2lucw.encode()); }
+		this.writeVaruint((int)plugins.length); for(plugin cgx1z2lucw:plugins){ this.writeBytes(cgx1z2lucw.encode()); }
 		return this.buffer;
 	}
 

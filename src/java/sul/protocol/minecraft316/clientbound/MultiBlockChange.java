@@ -33,7 +33,7 @@ class MultiBlockChange extends Packet {
 		this.index = 0;
 		this.writeVaruint(ID);
 		this.writeIntB(chunk.x);this.writeIntB(chunk.z);
-		this.writeVaruint((int)changes.length); for(block_change Y2hhbmdlcw:changes){ this.writeBytes(Y2hhbmdlcw.encode()); }
+		this.writeVaruint((int)changes.length); for(block_change y2hhbmdlcw:changes){ this.writeBytes(y2hhbmdlcw.encode()); }
 		return this.buffer;
 	}
 

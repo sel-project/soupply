@@ -65,7 +65,7 @@ class JoinGame extends Packet {
 		this.writeByteB(dimension);
 		this.writeByteB(difficulty);
 		this.writeByteB(maxPlayers);
-		byte[] bGV2ZWxUeXBl=levelType.getBytes("UTF-8"); this.writeVaruint((int)bGV2ZWxUeXBl.length); this.writeBytes(bGV2ZWxUeXBl);
+		byte[] bgv2zwxuexbl=levelType.getBytes("UTF-8"); this.writeVaruint((int)bgv2zwxuexbl.length); this.writeBytes(bgv2zwxuexbl);
 		this.writeBoolB(reducedDebug);
 		return this.buffer;
 	}

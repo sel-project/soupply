@@ -92,8 +92,8 @@ class StartGame extends Packet {
 		this.writeFloatlittle_endian(lightingLevel);
 		this.writeBoolB(cheatsEnabled);
 		this.writeBoolB(textureRequired);
-		byte[] bGV2ZWxJZA=levelId.getBytes("UTF-8"); this.writeVaruint((int)bGV2ZWxJZA.length); this.writeBytes(bGV2ZWxJZA);
-		byte[] d29ybGROYW1l=worldName.getBytes("UTF-8"); this.writeVaruint((int)d29ybGROYW1l.length); this.writeBytes(d29ybGROYW1l);
+		byte[] bgv2zwxjza=levelId.getBytes("UTF-8"); this.writeVaruint((int)bgv2zwxjza.length); this.writeBytes(bgv2zwxjza);
+		byte[] d29ybgroyw1l=worldName.getBytes("UTF-8"); this.writeVaruint((int)d29ybgroyw1l.length); this.writeBytes(d29ybgroyw1l);
 		return this.buffer;
 	}
 

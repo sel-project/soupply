@@ -38,9 +38,9 @@ class UpdateScore extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] c2NvcmVOYW1l=scoreName.getBytes("UTF-8"); this.writeVaruint((int)c2NvcmVOYW1l.length); this.writeBytes(c2NvcmVOYW1l);
+		byte[] c2nvcmvoyw1l=scoreName.getBytes("UTF-8"); this.writeVaruint((int)c2nvcmvoyw1l.length); this.writeBytes(c2nvcmvoyw1l);
 		this.writeByteB(action);
-		byte[] b2JqZWN0aXZlTmFt=objectiveName.getBytes("UTF-8"); this.writeVaruint((int)b2JqZWN0aXZlTmFt.length); this.writeBytes(b2JqZWN0aXZlTmFt);
+		byte[] b2jqzwn0axzltmft=objectiveName.getBytes("UTF-8"); this.writeVaruint((int)b2jqzwn0axzltmft.length); this.writeBytes(b2jqzwn0axzltmft);
 		if(action==0){ this.writeVaruint(value); }
 		return this.buffer;
 	}

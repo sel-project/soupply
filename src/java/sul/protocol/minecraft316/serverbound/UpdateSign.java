@@ -33,7 +33,7 @@ class UpdateSign extends Packet {
 		this.index = 0;
 		this.writeVaruint(ID);
 		this.writeLongB(position);
-		for(string bGluZXM:lines){ byte[] YkdsdVpYTQ=bGluZXM.getBytes("UTF-8"); this.writeVaruint((int)YkdsdVpYTQ.length); this.writeBytes(YkdsdVpYTQ); }
+		for(string bgluzxm:lines){ byte[] ymdsdxp4bq=bgluzxm.getBytes("UTF-8"); this.writeVaruint((int)ymdsdxp4bq.length); this.writeBytes(ymdsdxp4bq); }
 		return this.buffer;
 	}
 

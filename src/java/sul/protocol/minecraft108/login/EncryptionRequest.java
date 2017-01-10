@@ -33,9 +33,9 @@ class EncryptionRequest extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] c2VydmVySWQ=serverId.getBytes("UTF-8"); this.writeVaruint((int)c2VydmVySWQ.length); this.writeBytes(c2VydmVySWQ);
-		this.writeVaruint((int)publicKey.length); for(ubyte cHVibGljS2V5:publicKey){ this.writeByteB(cHVibGljS2V5); }
-		this.writeVaruint((int)verifyToken.length); for(ubyte dmVyaWZ5VG9rZW4:verifyToken){ this.writeByteB(dmVyaWZ5VG9rZW4); }
+		byte[] c2vydmvyswq=serverId.getBytes("UTF-8"); this.writeVaruint((int)c2vydmvyswq.length); this.writeBytes(c2vydmvyswq);
+		this.writeVaruint((int)publicKey.length); for(ubyte chvibgljs2v5:publicKey){ this.writeByteB(chvibgljs2v5); }
+		this.writeVaruint((int)verifyToken.length); for(ubyte dmvyawz5vg9rzw4:verifyToken){ this.writeByteB(dmvyawz5vg9rzw4); }
 		return this.buffer;
 	}
 

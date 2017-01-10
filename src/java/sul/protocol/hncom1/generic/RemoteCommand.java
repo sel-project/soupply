@@ -40,7 +40,7 @@ class RemoteCommand extends Packet {
 		this.writeByteB(ID);
 		this.writeByteB(origin);
 		this.writeBytes(sender.encode());
-		byte[] Y29tbWFuZA=command.getBytes("UTF-8"); this.writeVaruint((int)Y29tbWFuZA.length); this.writeBytes(Y29tbWFuZA);
+		byte[] y29tbwfuza=command.getBytes("UTF-8"); this.writeVaruint((int)y29tbwfuza.length); this.writeBytes(y29tbwfuza);
 		return this.buffer;
 	}
 

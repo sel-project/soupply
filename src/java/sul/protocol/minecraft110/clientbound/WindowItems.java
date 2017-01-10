@@ -33,7 +33,7 @@ class WindowItems extends Packet {
 		this.index = 0;
 		this.writeVaruint(ID);
 		this.writeByteB(window);
-		this.writeShortB((short)slots.length); for(slot c2xvdHM:slots){ this.writeBytes(c2xvdHM.encode()); }
+		this.writeShortB((short)slots.length); for(slot c2xvdhm:slots){ this.writeBytes(c2xvdhm.encode()); }
 		return this.buffer;
 	}
 

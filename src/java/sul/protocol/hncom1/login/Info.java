@@ -41,17 +41,17 @@ class Info extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeLongB(serverId);
-		byte[] ZGlzcGxheU5hbWU=displayName.getBytes("UTF-8"); this.writeVaruint((int)ZGlzcGxheU5hbWU.length); this.writeBytes(ZGlzcGxheU5hbWU);
+		this.writeLonglittle_endian(serverId);
+		byte[] zglzcgxheu5hbwu=displayName.getBytes("UTF-8"); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
 		this.writeBoolB(onlineMode);
-		this.writeVaruint((int)games.length); for(game Z2FtZXM:games){ this.writeBytes(Z2FtZXM.encode()); }
+		this.writeVaruint((int)games.length); for(game z2ftzxm:games){ this.writeBytes(z2ftzxm.encode()); }
 		this.writeVaruint(online);
 		this.writeVaruint(max);
-		byte[] bGFuZ3VhZ2U=language.getBytes("UTF-8"); this.writeVaruint((int)bGFuZ3VhZ2U.length); this.writeBytes(bGFuZ3VhZ2U);
-		this.writeVaruint((int)acceptedLanguages.length); for(string YWNjZXB0ZWRMYW5n:acceptedLanguages){ byte[] WVdOalpYQjBaV1JN=YWNjZXB0ZWRMYW5n.getBytes("UTF-8"); this.writeVaruint((int)WVdOalpYQjBaV1JN.length); this.writeBytes(WVdOalpYQjBaV1JN); }
-		this.writeVaruint((int)nodes.length); for(string bm9kZXM:nodes){ byte[] Ym05a1pYTQ=bm9kZXM.getBytes("UTF-8"); this.writeVaruint((int)Ym05a1pYTQ.length); this.writeBytes(Ym05a1pYTQ); }
-		byte[] c29jaWFsSnNvbg=socialJson.getBytes("UTF-8"); this.writeVaruint((int)c29jaWFsSnNvbg.length); this.writeBytes(c29jaWFsSnNvbg);
-		byte[] YWRkaXRpb25hbEpz=additionalJson.getBytes("UTF-8"); this.writeVaruint((int)YWRkaXRpb25hbEpz.length); this.writeBytes(YWRkaXRpb25hbEpz);
+		byte[] bgfuz3vhz2u=language.getBytes("UTF-8"); this.writeVaruint((int)bgfuz3vhz2u.length); this.writeBytes(bgfuz3vhz2u);
+		this.writeVaruint((int)acceptedLanguages.length); for(string ywnjzxb0zwrmyw5n:acceptedLanguages){ byte[] exduanp4yjb6d3jt=ywnjzxb0zwrmyw5n.getBytes("UTF-8"); this.writeVaruint((int)exduanp4yjb6d3jt.length); this.writeBytes(exduanp4yjb6d3jt); }
+		this.writeVaruint((int)nodes.length); for(string bm9kzxm:nodes){ byte[] ym05a3p4bq=bm9kzxm.getBytes("UTF-8"); this.writeVaruint((int)ym05a3p4bq.length); this.writeBytes(ym05a3p4bq); }
+		byte[] c29jawfssnnvbg=socialJson.getBytes("UTF-8"); this.writeVaruint((int)c29jawfssnnvbg.length); this.writeBytes(c29jawfssnnvbg);
+		byte[] ywrkaxrpb25hbepz=additionalJson.getBytes("UTF-8"); this.writeVaruint((int)ywrkaxrpb25hbepz.length); this.writeBytes(ywrkaxrpb25hbepz);
 		return this.buffer;
 	}
 

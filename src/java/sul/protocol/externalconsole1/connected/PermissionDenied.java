@@ -6,7 +6,7 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/protocol/externalconsole1.xml
  */
-package sul.protocol.externalconsole1.play;
+package sul.protocol.externalconsole1.connected;
 
 import java.util.UUID;
 
@@ -14,10 +14,10 @@ import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
 /**
- * Bodyless packet only sent in response to Command when the server doesn't allow the
- * execution of remote commands through the External Console protocol. The ideal client
- * should never receive this packet avoiding the use of Command if the remoteCommands
- * field in Welcome.Accepted is not true.
+ * Bodyless packet only sent in response to [Command](#connected.command) when the
+ * server doesn't allow the execution of remote commands through the External Console.
+ * A well-implemented client should never receive this packet avoiding the use of [Command](#connected.command)
+ * if the [remoteCommands](#login.welcome.accepted.remote-command) field is false.
  */
 class PermissionDenied extends Packet {
 

@@ -13,6 +13,11 @@ import java.util.UUID;
 import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
+/**
+ * Updates the list of the nodes connected to the hub, adding or removing one.
+ * If the server isn't built following the hub-node structure this packet is never
+ * sent.
+ */
 class UpdateNodes extends Packet {
 
 	public final static byte ID = (byte)1;
@@ -24,7 +29,14 @@ class UpdateNodes extends Packet {
 	public static immutable byte ADD = 0;
 	public static immutable byte REMOVE = 1;
 
+	/**
+	 * Whether the node should be added or removed from the list of connected nodes.
+	 */
 	public byte action;
+
+	/**
+	 * Name of the node.
+	 */
 	public String node;
 
 	@Override
@@ -37,7 +49,7 @@ class UpdateNodes extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeByteB(action);
-		byte[] bm9kZQ=node.getBytes("UTF-8"); this.writeShortB((short)bm9kZQ.length); this.writeBytes(bm9kZQ);
+		byte[] bm9kzq=node.getBytes("UTF-8"); this.writeShortB((short)bm9kzq.length); this.writeBytes(bm9kzq);
 		return this.buffer;
 	}
 

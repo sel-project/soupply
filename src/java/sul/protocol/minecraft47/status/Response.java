@@ -31,7 +31,7 @@ class Response extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeVaruint(ID);
-		byte[] anNvbg=json.getBytes("UTF-8"); this.writeVaruint((int)anNvbg.length); this.writeBytes(anNvbg);
+		byte[] annvbg=json.getBytes("UTF-8"); this.writeVaruint((int)annvbg.length); this.writeBytes(annvbg);
 		return this.buffer;
 	}
 

@@ -36,8 +36,8 @@ class OpenWindow extends Packet {
 		this.index = 0;
 		this.writeVaruint(ID);
 		this.writeByteB(window);
-		byte[] dHlwZQ=type.getBytes("UTF-8"); this.writeVaruint((int)dHlwZQ.length); this.writeBytes(dHlwZQ);
-		byte[] dGl0bGU=title.getBytes("UTF-8"); this.writeVaruint((int)dGl0bGU.length); this.writeBytes(dGl0bGU);
+		byte[] dhlwzq=type.getBytes("UTF-8"); this.writeVaruint((int)dhlwzq.length); this.writeBytes(dhlwzq);
+		byte[] dgl0bgu=title.getBytes("UTF-8"); this.writeVaruint((int)dgl0bgu.length); this.writeBytes(dgl0bgu);
 		this.writeByteB(slots);
 		this.writeIntB(horseId);
 		return this.buffer;

@@ -35,7 +35,7 @@ class Explode extends Packet {
 		this.writeByteB(ID);
 		this.writeFloatlittle_endian(position.x);this.writeFloatlittle_endian(position.y);this.writeFloatlittle_endian(position.z);
 		this.writeFloatlittle_endian(radius);
-		this.writeVaruint((int)destroyedBlocks.length); for(block_position ZGVzdHJveWVkQmxv:destroyedBlocks){ this.writeBytes(ZGVzdHJveWVkQmxv.encode()); }
+		this.writeVaruint((int)destroyedBlocks.length); for(block_position zgvzdhjvewvkqmxv:destroyedBlocks){ this.writeBytes(zgvzdhjvewvkqmxv.encode()); }
 		return this.buffer;
 	}
 

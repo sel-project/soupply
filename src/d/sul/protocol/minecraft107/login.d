@@ -15,188 +15,253 @@ import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
 import std.uuid : UUID;
 
+import sul.utils.buffer;
 import sul.utils.var;
 
-import types = sul.protocol.minecraft107.types;
+static import sul.protocol.minecraft107.types;
 
 alias Packets = TypeTuple!(Disconnect, LoginStart, EncryptionRequest, EncryptionResponse, LoginSuccess, SetCompression);
 
-struct Disconnect {
+class Disconnect : Buffer {
 
 	public enum uint ID = 0;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	public enum string[] FIELDS = ["reason"];
+
 	public string reason;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] cmVhc29u=cast(ubyte[])reason; _buffer~=varuint.encode(cmVhc29u.length.to!uint); _buffer~=cmVhc29u;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(string reason) {
+		this.reason = reason;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBytes(varuint.encode(ID)); }
+		writeBytes(varuint.encode(cast(uint)reason.length)); writeString(reason);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
+		uint cmvhc29u=varuint.decode(_buffer, &_index); reason=readString(cmvhc29u);
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] cmVhc29u; cmVhc29u.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+cmVhc29u.length){ cmVhc29u=_buffer[*_index..*_index+cmVhc29u.length].dup; *_index+=cmVhc29u.length; }; reason=cast(string)cmVhc29u;
-		return this;
+	public static pure nothrow @safe Disconnect fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Disconnect ret = new Disconnect();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct LoginStart {
+class LoginStart : Buffer {
 
 	public enum uint ID = 0;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["username"];
+
 	public string username;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] dXNlcm5hbWU=cast(ubyte[])username; _buffer~=varuint.encode(dXNlcm5hbWU.length.to!uint); _buffer~=dXNlcm5hbWU;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(string username) {
+		this.username = username;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBytes(varuint.encode(ID)); }
+		writeBytes(varuint.encode(cast(uint)username.length)); writeString(username);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
+		uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] dXNlcm5hbWU; dXNlcm5hbWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dXNlcm5hbWU.length){ dXNlcm5hbWU=_buffer[*_index..*_index+dXNlcm5hbWU.length].dup; *_index+=dXNlcm5hbWU.length; }; username=cast(string)dXNlcm5hbWU;
-		return this;
+	public static pure nothrow @safe LoginStart fromBuffer(bool readId=true)(ubyte[] buffer) {
+		LoginStart ret = new LoginStart();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct EncryptionRequest {
+class EncryptionRequest : Buffer {
 
 	public enum uint ID = 1;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["serverId", "publicKey", "verifyToken"];
 
 	public string serverId;
 	public ubyte[] publicKey;
 	public ubyte[] verifyToken;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] c2VydmVySWQ=cast(ubyte[])serverId; _buffer~=varuint.encode(c2VydmVySWQ.length.to!uint); _buffer~=c2VydmVySWQ;
-		_buffer~=varuint.encode(publicKey.length.to!uint); _buffer~=publicKey;
-		_buffer~=varuint.encode(verifyToken.length.to!uint); _buffer~=verifyToken;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(string serverId, ubyte[] publicKey=(ubyte[]).init, ubyte[] verifyToken=(ubyte[]).init) {
+		this.serverId = serverId;
+		this.publicKey = publicKey;
+		this.verifyToken = verifyToken;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBytes(varuint.encode(ID)); }
+		writeBytes(varuint.encode(cast(uint)serverId.length)); writeString(serverId);
+		writeBytes(varuint.encode(cast(uint)publicKey.length)); writeBytes(publicKey);
+		writeBytes(varuint.encode(cast(uint)verifyToken.length)); writeBytes(verifyToken);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
+		uint c2vydmvyswq=varuint.decode(_buffer, &_index); serverId=readString(c2vydmvyswq);
+		publicKey.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+publicKey.length){ publicKey=_buffer[_index.._index+publicKey.length].dup; _index+=publicKey.length; }
+		verifyToken.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+verifyToken.length){ verifyToken=_buffer[_index.._index+verifyToken.length].dup; _index+=verifyToken.length; }
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] c2VydmVySWQ; c2VydmVySWQ.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+c2VydmVySWQ.length){ c2VydmVySWQ=_buffer[*_index..*_index+c2VydmVySWQ.length].dup; *_index+=c2VydmVySWQ.length; }; serverId=cast(string)c2VydmVySWQ;
-		publicKey.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+publicKey.length){ publicKey=_buffer[*_index..*_index+publicKey.length].dup; *_index+=publicKey.length; }
-		verifyToken.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+verifyToken.length){ verifyToken=_buffer[*_index..*_index+verifyToken.length].dup; *_index+=verifyToken.length; }
-		return this;
+	public static pure nothrow @safe EncryptionRequest fromBuffer(bool readId=true)(ubyte[] buffer) {
+		EncryptionRequest ret = new EncryptionRequest();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct EncryptionResponse {
+class EncryptionResponse : Buffer {
 
 	public enum uint ID = 1;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
+	public enum string[] FIELDS = ["sharedSecret", "verifyToken"];
+
 	public ubyte[] sharedSecret;
 	public ubyte[] verifyToken;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=varuint.encode(ID); }
-		_buffer~=varuint.encode(sharedSecret.length.to!uint); _buffer~=sharedSecret;
-		_buffer~=varuint.encode(verifyToken.length.to!uint); _buffer~=verifyToken;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte[] sharedSecret, ubyte[] verifyToken=(ubyte[]).init) {
+		this.sharedSecret = sharedSecret;
+		this.verifyToken = verifyToken;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBytes(varuint.encode(ID)); }
+		writeBytes(varuint.encode(cast(uint)sharedSecret.length)); writeBytes(sharedSecret);
+		writeBytes(varuint.encode(cast(uint)verifyToken.length)); writeBytes(verifyToken);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
+		sharedSecret.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+sharedSecret.length){ sharedSecret=_buffer[_index.._index+sharedSecret.length].dup; _index+=sharedSecret.length; }
+		verifyToken.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+verifyToken.length){ verifyToken=_buffer[_index.._index+verifyToken.length].dup; _index+=verifyToken.length; }
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		sharedSecret.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+sharedSecret.length){ sharedSecret=_buffer[*_index..*_index+sharedSecret.length].dup; *_index+=sharedSecret.length; }
-		verifyToken.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+verifyToken.length){ verifyToken=_buffer[*_index..*_index+verifyToken.length].dup; *_index+=verifyToken.length; }
-		return this;
+	public static pure nothrow @safe EncryptionResponse fromBuffer(bool readId=true)(ubyte[] buffer) {
+		EncryptionResponse ret = new EncryptionResponse();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct LoginSuccess {
+class LoginSuccess : Buffer {
 
 	public enum uint ID = 2;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	public enum string[] FIELDS = ["uuid", "username"];
+
 	public string uuid;
 	public string username;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=varuint.encode(ID); }
-		ubyte[] dXVpZA=cast(ubyte[])uuid; _buffer~=varuint.encode(dXVpZA.length.to!uint); _buffer~=dXVpZA;
-		ubyte[] dXNlcm5hbWU=cast(ubyte[])username; _buffer~=varuint.encode(dXNlcm5hbWU.length.to!uint); _buffer~=dXNlcm5hbWU;
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(string uuid, string username=string.init) {
+		this.uuid = uuid;
+		this.username = username;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBytes(varuint.encode(ID)); }
+		writeBytes(varuint.encode(cast(uint)uuid.length)); writeString(uuid);
+		writeBytes(varuint.encode(cast(uint)username.length)); writeString(username);
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
+		uint dxvpza=varuint.decode(_buffer, &_index); uuid=readString(dxvpza);
+		uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		ubyte[] dXVpZA; dXVpZA.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dXVpZA.length){ dXVpZA=_buffer[*_index..*_index+dXVpZA.length].dup; *_index+=dXVpZA.length; }; uuid=cast(string)dXVpZA;
-		ubyte[] dXNlcm5hbWU; dXNlcm5hbWU.length=varuint.decode(_buffer, *_index); if(_buffer.length>=*_index+dXNlcm5hbWU.length){ dXNlcm5hbWU=_buffer[*_index..*_index+dXNlcm5hbWU.length].dup; *_index+=dXNlcm5hbWU.length; }; username=cast(string)dXNlcm5hbWU;
-		return this;
+	public static pure nothrow @safe LoginSuccess fromBuffer(bool readId=true)(ubyte[] buffer) {
+		LoginSuccess ret = new LoginSuccess();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
 
-struct SetCompression {
+class SetCompression : Buffer {
 
 	public enum uint ID = 3;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	public enum string[] FIELDS = ["thresold"];
+
 	public uint thresold;
 
-	public ubyte[] encode(bool writeId=true)() {
-		ubyte[] _buffer;
-		static if(writeId){ _buffer~=varuint.encode(ID); }
-		_buffer~=varuint.encode(thresold);
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint thresold) {
+		this.thresold = thresold;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBytes(varuint.encode(ID)); }
+		writeBytes(varuint.encode(thresold));
 		return _buffer;
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t _index=0) {
-		return this.decode!readId(_buffer, &_index);
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
+		thresold=varuint.decode(_buffer, &_index);
 	}
 
-	public typeof(this) decode(bool readId=true)(ubyte[] _buffer, size_t* _index) {
-		static if(readId){ typeof(ID) _id; _id=varuint.decode(_buffer, *_index); }
-		thresold=varuint.decode(_buffer, *_index);
-		return this;
+	public static pure nothrow @safe SetCompression fromBuffer(bool readId=true)(ubyte[] buffer) {
+		SetCompression ret = new SetCompression();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }
