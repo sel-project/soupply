@@ -7,12 +7,46 @@
 	"encoding": {
 
 		"endianness": {
-			"*": "big-endian"
+			"*": "big_endian"
 		},
 
 		"id": "ubyte",
 
-		"array_length": "ushort"
+		"array_length": "ushort",
+
+		"types": {
+
+			"game": [
+				{
+					"name": "type",
+					"type": "ubyte"
+				},
+				{
+					"name": "protocols",
+					"type": "uint[]"
+				}
+			],
+
+			"node_stats": [
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "tps",
+					"type": "float"
+				},
+				{
+					"name": "ram",
+					"type": "ulong"
+				},
+				{
+					"name": "cpu",
+					"type": "float"
+				}
+			]
+
+		}
 
 	},
 
@@ -81,12 +115,12 @@
 									"type": "ubyte[3]"
 								},
 								{
-									"name": "pocket_protocols",
-									"type": "uint[]"
+									"name": "display_name",
+									"type": "string"
 								},
 								{
-									"name": "minecraft_protocols",
-									"type": "uint[]"
+									"name": "games",
+									"type": "game[]"
 								},
 								{
 									"name": "connected_nodes",
@@ -144,10 +178,6 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "display_name",
-						"type": "string"
-					},
-					{
 						"name": "online_players",
 						"type": "uint"
 					},
@@ -166,13 +196,17 @@
 					{
 						"name": "download",
 						"type": "uint"
+					},
+					{
+						"name": "nodes",
+						"type": "node_stats[]"
 					}
 				]
 			}
 
 		},
 
-		"play": {
+		"connected": {
 
 			"console_message": {
 				"id": 3,

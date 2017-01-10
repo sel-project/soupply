@@ -1,13 +1,16 @@
 {
 
-	"__software": "SEL hub-node communication",
+	"__software": "Hub-Node Communication",
 	"__protocol": 1,
 	"__website": "https://github.com/sel-project/sel-utils",
 
 	"encoding": {
 
 		"endianness": {
-			"*": "big-endian"
+			"*": "big_endian",
+			"ulong": "little_endian",
+			"long": "little_endian",
+			"float": "little_endian"
 		},
 
 		"id": "ubyte",
@@ -15,90 +18,73 @@
 		"array_length": "varuint",
 
 		"types": {
-			
-			"hub_id": "varuint",
 
-			"plugin": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"name": "version",
-						"type": "string"
-					}
-				]
-			},
+			"plugin": [
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "version",
+					"type": "string"
+				}
+			],
 
-			"address": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "bytes",
-						"type": "ubyte[]"
-					},
-					{
-						"name": "port",
-						"type": "ushort"
-					}
-				]
-			},
+			"address": [
+				{
+					"name": "bytes",
+					"type": "ubyte[]"
+				},
+				{
+					"name": "port",
+					"type": "ushort"
+				}
+			],
 
-			"game": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "type",
-						"type": "ubyte"
-					},
-					{
-						"name": "protocols",
-						"type": "uint[]"
-					},
-					{
-						"name": "motd",
-						"type": "string"
-					},
-					{
-						"name": "port",
-						"type": "ushort"
-					}
-				]
-			},
+			"game": [
+				{
+					"name": "type",
+					"type": "ubyte"
+				},
+				{
+					"name": "protocols",
+					"type": "varuint[]"
+				},
+				{
+					"name": "motd",
+					"type": "string"
+				},
+				{
+					"name": "port",
+					"type": "ushort"
+				}
+			],
 
-			"skin": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"name": "data",
-						"type": "ubyte[]"
-					}
-				]
-			},
+			"skin": [
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "data",
+					"type": "ubyte[]"
+				}
+			],
 
-			"log": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "timestamp",
-						"type": "ulong"
-					},
-					{
-						"name": "logger",
-						"type": "string"
-					},
-					{
-						"name": "message",
-						"type": "string"
-					}
-				]
-			}
+			"log": [
+				{
+					"name": "timestamp",
+					"type": "ulong"
+				},
+				{
+					"name": "logger",
+					"type": "string"
+				},
+				{
+					"name": "message",
+					"type": "string"
+				}
+			]
 
 		}
 
@@ -151,15 +137,15 @@
 				"fields": [
 					{
 						"name": "server_id",
-						"type": "long"
-					},
-					{
-						"name": "online_mode",
-						"type": "bool"
+						"type": "ulong"
 					},
 					{
 						"name": "display_name",
 						"type": "string"
+					},
+					{
+						"name": "online_mode",
+						"type": "bool"
 					},
 					{
 						"name": "games",
@@ -234,7 +220,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "type",
+						"name": "action",
 						"type": "ubyte"
 					},
 					{
@@ -254,18 +240,18 @@
 						"type": "float"
 					},
 					{
-						"name": "ram_used",
+						"name": "ram",
 						"type": "varulong"
 					},
 					{
-						"name": "cpu_used",
+						"name": "cpu",
 						"type": "float"
 					}
 				]
 			}
-			
+
 		},
-		
+
 		"generic": {
 
 			"logs": {
@@ -299,7 +285,7 @@
 					}
 				]
 			},
-			
+
 			"update_list": {
 				"id": 9,
 				"clientbound": false,
@@ -326,7 +312,7 @@
 							"fields": [
 								{
 									"name": "hub_id",
-									"type": "hub_id"
+									"type": "varuint"
 								}
 							]
 						},
@@ -367,7 +353,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "hub_id"
+						"type": "varuint"
 					},
 					{
 						"name": "reason",
@@ -423,7 +409,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "hub_id"
+						"type": "varuint"
 					},
 					{
 						"name": "reason",
@@ -439,7 +425,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "hub_id"
+						"type": "varuint"
 					},
 					{
 						"name": "reason",
@@ -448,6 +434,11 @@
 					{
 						"name": "translation",
 						"type": "bool"
+					},
+					{
+						"name": "parameters",
+						"type": "string[]",
+						"when": "translation==true"
 					}
 				]
 			},
@@ -459,7 +450,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "hub_id"
+						"type": "varuint"
 					},
 					{
 						"name": "node",
@@ -475,7 +466,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "hub_id"
+						"type": "varuint"
 					},
 					{
 						"name": "language",
@@ -491,7 +482,7 @@
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "hub_id"
+						"type": "varuint"
 					},
 					{
 						"name": "display_name",
@@ -500,50 +491,14 @@
 				]
 			},
 
-			"game_packet": {
-				"id": 16,
-				"clientbound": true,
-				"serverbound": true,
-				"fields": [
-					{
-						"name": "hub_id",
-						"type": "hub_id"
-					},
-					{
-						"name": "packet",
-						"type": "remaining_bytes"
-					}
-				]
-			},
-
-			"ordered_game_packet": {
-				"id": 17,
-				"clientbound": false,
-				"serverbound": true,
-				"fields": [
-					{
-						"name": "hub_id",
-						"type": "hub_id"
-					},
-					{
-						"name": "order",
-						"type": "varuint"
-					},
-					{
-						"name": "packet",
-						"type": "remaining_bytes"
-					}
-				]
-			},
-
 			"update_latency": {
-				"id": 18,
+				"id": 16,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "hub_id"
+						"type": "varuint"
 					},
 					{
 						"name": "latency",
@@ -553,17 +508,53 @@
 			},
 
 			"update_packet_loss": {
-				"id": 19,
+				"id": 17,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
 						"name": "hub_id",
-						"type": "hub_id"
+						"type": "varuint"
 					},
 					{
 						"name": "packet_loss",
 						"type": "float"
+					}
+				]
+			},
+
+			"game_packet": {
+				"id": 18,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "packet",
+						"type": "bytes"
+					}
+				]
+			},
+
+			"ordered_game_packet": {
+				"id": 19,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "order",
+						"type": "varuint"
+					},
+					{
+						"name": "packet",
+						"type": "bytes"
 					}
 				]
 			}

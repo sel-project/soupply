@@ -14,9 +14,9 @@ import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
 /**
- * Executes a command remotely if the server allows it. If not a [Permission Denied](#connected.permission-denied)
- * is sent back. The ideal client should never send this packet if [remoteCommands](#login.welcome.accepted.remote-commands)
- * field in [Welcome.Accepted](#login.welcome.accepted) is not true.
+ * Executes a command remotely if the server allows it. If not a Permission Denied
+ * is sent back. The ideal client should never send this packet if remoteCommands field
+ * in Welcome.Accepted is not true.
  */
 class Command extends Packet {
 

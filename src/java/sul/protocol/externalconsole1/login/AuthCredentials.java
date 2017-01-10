@@ -33,14 +33,14 @@ class AuthCredentials extends Packet {
 	/**
 	 * Algorithm used by the server to match the the hash. The value should be sent in
 	 * lowercase without any separation symbol (for example `sha256` instead of `SHA-256`).
-	 * If empty no hashing is done and the password is sent raw. See [Auth.hash](#login.auth.hash)
-	 * for more details.
+	 * If empty no hashing is done and the password is sent raw. See Auth.hash for more
+	 * details.
 	 */
 	public String hashAlgorithm;
 
 	/**
 	 * Payload to add to the password encoded as UTF-8 (if hash algorithm is not empty)
-	 * before hashing it, as described in the [Auth.hash](#login.auth.hash) field.
+	 * before hashing it, as described in the Auth.hash field.
 	 */
 	public byte[16] payload;
 

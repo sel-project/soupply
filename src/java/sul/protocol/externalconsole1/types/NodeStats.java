@@ -19,7 +19,7 @@ final class NodeStats {
 
 	/**
 	 * Name of the node. Should match a name given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes)
-	 * or one added using the [UpdateNodes](#status.update-nodes) packet.
+	 * or one added using the UpdateNodes packet.
 	 */
 	public String name;
 

@@ -1,7 +1,7 @@
 {
 
 	"__software": "Minecraft",
-	"__protocol": 315,
+	"__protocol": 110,
 	"__website": "https://github.com/sel-project/sel-utils",
 
 	"encoding": {
@@ -427,7 +427,7 @@
 					},
 					{
 						"name": "type",
-						"type": "varuint"
+						"type": "ubyte"
 					},
 					{
 						"name": "position",
@@ -937,7 +937,7 @@
 					},
 					{
 						"name": "pitch",
-						"type": "float"
+						"type": "ubyte"
 					}
 				]
 			},
@@ -2065,17 +2065,8 @@
 								}
 							]
 						},
-						"set_action_bar": {
-							"value": 2,
-							"fields": [
-								{
-									"name": "text",
-									"type": "string"
-								}
-							]
-						},
 						"set_timings": {
-							"value": 3,
+							"value": 2,
 							"fields": [
 								{
 									"name": "fade_in",
@@ -2092,11 +2083,11 @@
 							]
 						},
 						"hide": {
-							"value": 4,
+							"value": 3,
 							"fields": []
 						},
 						"reset": {
-							"value": 5,
+							"value": 4,
 							"fields": []
 						}
 					}
@@ -2126,7 +2117,7 @@
 					},
 					{
 						"name": "pitch",
-						"type": "float"
+						"type": "ubyte"
 					}
 				]
 			},
@@ -2158,10 +2149,6 @@
 					},
 					{
 						"name": "collector",
-						"type": "varuint"
-					},
-					{
-						"name": "count",
 						"type": "varuint"
 					}
 				]
@@ -2233,8 +2220,8 @@
 						"type": "varuint"
 					},
 					{
-						"name": "flags",
-						"type": "ubyte"
+						"name": "show_particles",
+						"type": "bool"
 					}
 				]
 			}
@@ -2665,6 +2652,10 @@
 				"serverbound": true,
 				"fields": [
 					{
+						"name": "hash",
+						"type": "string"
+					},
+					{
 						"name": "result",
 						"type": "varuint"
 					}
@@ -2758,7 +2749,7 @@
 					},
 					{
 						"name": "cursor_position",
-						"type": "float<xyz>"
+						"type": "ubyte<xyz>"
 					}
 				]
 			},

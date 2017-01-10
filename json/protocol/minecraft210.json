@@ -1,229 +1,186 @@
 {
-	
-	"__game": "Minecraft",
+
+	"__software": "Minecraft",
 	"__protocol": 210,
 	"__website": "https://github.com/sel-project/sel-utils",
-	
+
 	"encoding": {
-	
+
 		"endianness": {
-			"*": "big-endian"
+			"*": "big_endian"
 		},
-		
+
 		"id": "varuint",
-		
+
 		"array_length": "varuint",
-		
+
 		"types": {
-		
-			"entity_id": "varuint",
 
-			"angle": "ubyte",
+			"statistic": [
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "value",
+					"type": "varuint"
+				}
+			],
 
-			"statistic": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"name": "value",
-						"type": "varuint"
-					}
-				]
-			},
+			"block_change": [
+				{
+					"name": "xz",
+					"type": "ubyte"
+				},
+				{
+					"name": "y",
+					"type": "ubyte"
+				},
+				{
+					"name": "block",
+					"type": "varuint"
+				}
+			],
 
-			"block_change": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "xz",
-						"type": "ubyte"
-					},
-					{
-						"name": "y",
-						"type": "ubyte"
-					},
-					{
-						"name": "block",
-						"type": "varuint"
-					}
-				]
-			},
+			"slot": [
+				{
+					"name": "id",
+					"type": "short"
+				},
+				{
+					"name": "count",
+					"type": "ubyte",
+					"when": "id>0"
+				},
+				{
+					"name": "damage",
+					"type": "ushort",
+					"when": "id>0"
+				},
+				{
+					"name": "nbt",
+					"type": "bytes",
+					"when": "id>0"
+				}
+			],
 
-			"slot": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "id",
-						"type": "short"
-					},
-					{
-						"name": "count",
-						"type": "ubyte",
-						"when": "id>0"
-					},
-					{
-						"name": "damage",
-						"type": "ushort",
-						"when": "id>0"
-					},
-					{
-						"name": "nbt",
-						"type": "remaining_bytes",
-						"when": "id>0"
-					}
-				]
-			},
+			"icon": [
+				{
+					"name": "direction_and_type",
+					"type": "ubyte"
+				},
+				{
+					"name": "position",
+					"type": "ubyte<xz>"
+				}
+			],
+
+			"property": [
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "value",
+					"type": "string"
+				},
+				{
+					"name": "signed",
+					"type": "bool"
+				},
+				{
+					"name": "signature",
+					"type": "string",
+					"when": "signed==true"
+				}
+			],
+
+			"list_add_player": [
+				{
+					"name": "uuid",
+					"type": "uuid"
+				},
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "properties",
+					"type": "property[]"
+				},
+				{
+					"name": "gamemode",
+					"type": "varuint"
+				},
+				{
+					"name": "latency",
+					"type": "varuint"
+				},
+				{
+					"name": "has_display_name",
+					"type": "bool"
+				},
+				{
+					"name": "display_name",
+					"type": "string",
+					"when": "has_display_name==true"
+				}
+			],
+
+			"list_update_gamemode": [
+				{
+					"name": "uuid",
+					"type": "uuid"
+				},
+				{
+					"name": "gamemode",
+					"type": "varuint"
+				}
+			],
+
+			"list_update_display_name": [
+				{
+					"name": "uuid",
+					"type": "uuid"
+				},
+				{
+					"name": "has_display_name",
+					"type": "bool"
+				},
+				{
+					"name": "display_name",
+					"type": "string",
+					"when": "has_display_name==true"
+				}
+			]
+
+		},
+
+		"arrays": {
 
 			"slots": {
-				"type": "array",
 				"base": "slot",
 				"length": "ushort"
 			},
 
 			"explosion_records": {
-				"type": "array",
 				"base": "byte<xyz>",
 				"length": "uint"
 			},
 
-			"icon": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "direction_and_type",
-						"type": "ubyte"
-					},
-					{
-						"name": "position",
-						"type": "ubyte<xz>"
-					}
-				]
-			},
-
-			"property": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"name": "value",
-						"type": "string"
-					},
-					{
-						"name": "signed",
-						"type": "bool"
-					},
-					{
-						"name": "signature",
-						"type": "string",
-						"when": "signed==true"
-					}
-				]
-			},
-
 			"properties": {
-				"type": "array",
 				"base": "property",
 				"length": "uint"
-			},
+			}
 
-			"list_add_player": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "uuid",
-						"type": "uuid"
-					},
-					{
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"name": "properties",
-						"type": "property[]"
-					},
-					{
-						"name": "gamemode",
-						"type": "varuint"
-					},
-					{
-						"name": "latency",
-						"type": "varuint"
-					},
-					{
-						"name": "has_display_name",
-						"type": "bool"
-					},
-					{
-						"name": "display_name",
-						"type": "string",
-						"when": "has_display_name==true"
-					}
-				]
-			},
-
-			"list_update_gamemode": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "uuid",
-						"type": "uuid"
-					},
-					{
-						"name": "gamemode",
-						"type": "varuint"
-					}
-				]
-			},
-
-			"list_update_latency": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "uuid",
-						"type": "uuid"
-					},
-					{
-						"name": "latency",
-						"type": "varuint"
-					}
-				]
-			},
-
-			"list_update_display_name": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "uuid",
-						"type": "uuid"
-					},
-					{
-						"name": "has_display_name",
-						"type": "bool"
-					},
-					{
-						"name": "display_name",
-						"type": "string",
-						"when": "has_display_name==true"
-					}
-				]
-			},
-
-			"metadata": "remaining_bytes"
-		
 		}
-	
+
 	},
-	
+
 	"packets": {
-		
+
 		"status": {
-		
+
 			"handshake": {
 				"id": 0,
 				"clientbound": false,
@@ -247,8 +204,15 @@
 					}
 				]
 			},
-			
-			"status": {
+
+			"request": {
+				"id": 0,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": []
+			},
+
+			"response": {
 				"id": 0,
 				"clientbound": true,
 				"serverbound": false,
@@ -259,35 +223,23 @@
 					}
 				]
 			},
-			
-			"ping": {
+
+			"latency": {
 				"id": 1,
-				"clientbound": false,
+				"clientbound": true,
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "time",
-						"type": "ulong"
-					}
-				]
-			},
-			
-			"pong": {
-				"id": 1,
-				"clientbound": true,
-				"serverbound": false,
-				"fields": [
-					{
-						"name": "time",
-						"type": "ulong"
+						"name": "id",
+						"type": "long"
 					}
 				]
 			}
-		
+
 		},
-		
+
 		"login": {
-		
+
 			"disconnect": {
 				"id": 0,
 				"clientbound": true,
@@ -299,7 +251,7 @@
 					}
 				]
 			},
-			
+
 			"login_start": {
 				"id": 0,
 				"clientbound": false,
@@ -311,7 +263,7 @@
 					}
 				]
 			},
-			
+
 			"encryption_request": {
 				"id": 1,
 				"clientbound": true,
@@ -331,7 +283,7 @@
 					}
 				]
 			},
-			
+
 			"encryption_response": {
 				"id": 1,
 				"clientbound": false,
@@ -347,7 +299,7 @@
 					}
 				]
 			},
-			
+
 			"login_success": {
 				"id": 2,
 				"clientbound": true,
@@ -363,7 +315,7 @@
 					}
 				]
 			},
-			
+
 			"set_compression": {
 				"id": 3,
 				"clientbound": true,
@@ -375,10 +327,10 @@
 					}
 				]
 			}
-		
+
 		},
-		
-		"play": {
+
+		"clientbound": {
 
 			"spawn_object": {
 				"id": 0,
@@ -387,7 +339,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "uuid",
@@ -403,11 +355,11 @@
 					},
 					{
 						"name": "pitch",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "yaw",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "data",
@@ -427,7 +379,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "position",
@@ -447,7 +399,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "type",
@@ -467,7 +419,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "uuid",
@@ -483,15 +435,15 @@
 					},
 					{
 						"name": "yaw",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "pitch",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "head_pitch",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "velocity",
@@ -511,7 +463,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "uuid",
@@ -539,7 +491,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "uuid",
@@ -551,11 +503,11 @@
 					},
 					{
 						"name": "yaw",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "pitch",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "metadata",
@@ -564,14 +516,14 @@
 				]
 			},
 
-			"animation_clientbound": {
+			"animation": {
 				"id": 6,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "animation",
@@ -599,7 +551,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "position",
@@ -627,7 +579,7 @@
 					},
 					{
 						"name": "nbt",
-						"type": "remaining_bytes"
+						"type": "bytes"
 					}
 				]
 			},
@@ -642,8 +594,12 @@
 						"type": "ulong"
 					},
 					{
-						"name": "actions",
-						"type": "ubyte[2]"
+						"name": "action",
+						"type": "ubyte"
+					},
+					{
+						"name": "parameter",
+						"type": "ubyte"
 					},
 					{
 						"name": "block_type",
@@ -770,7 +726,7 @@
 				]
 			},
 
-			"tab_complete_clientbound": {
+			"tab_complete": {
 				"id": 14,
 				"clientbound": true,
 				"serverbound": false,
@@ -782,7 +738,7 @@
 				]
 			},
 
-			"chat_message_clientbound": {
+			"chat_message": {
 				"id": 15,
 				"clientbound": true,
 				"serverbound": false,
@@ -814,7 +770,7 @@
 				]
 			},
 
-			"confirm_transaction_clientbound": {
+			"confirm_transaction": {
 				"id": 17,
 				"clientbound": true,
 				"serverbound": false,
@@ -834,7 +790,7 @@
 				]
 			},
 
-			"close_window_clientbound": {
+			"close_window": {
 				"id": 18,
 				"clientbound": true,
 				"serverbound": false,
@@ -878,10 +834,6 @@
 					{
 						"name": "window",
 						"type": "ubyte"
-					},
-					{
-						"name": "count",
-						"type": "ushort"
 					},
 					{
 						"name": "slots",
@@ -940,13 +892,13 @@
 						"type": "varuint"
 					},
 					{
-						"name": "cooldown_ticks",
+						"name": "cooldown",
 						"type": "varuint"
 					}
 				]
 			},
 
-			"plugin_message_clientbound": {
+			"plugin_message": {
 				"id": 24,
 				"clientbound": true,
 				"serverbound": false,
@@ -957,7 +909,7 @@
 					},
 					{
 						"name": "data",
-						"type": "remaining_bytes"
+						"type": "bytes"
 					}
 				]
 			},
@@ -1069,8 +1021,8 @@
 					}
 				]
 			},
-		
-			"keep_alive_clientbound": {
+
+			"keep_alive": {
 				"id": 31,
 				"clientbound": true,
 				"serverbound": false,
@@ -1105,7 +1057,7 @@
 					},
 					{
 						"name": "tiles",
-						"type": "remaining_bytes[]"
+						"type": "bytes"
 					}
 				]
 			},
@@ -1116,7 +1068,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "effect_id",
 						"type": "uint"
 					},
 					{
@@ -1140,7 +1092,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "particle_id",
 						"type": "uint"
 					},
 					{
@@ -1253,7 +1205,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "delta",
@@ -1273,7 +1225,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "delta",
@@ -1281,11 +1233,11 @@
 					},
 					{
 						"name": "yaw",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "pitch",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "on_ground",
@@ -1301,15 +1253,15 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "yaw",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "pitch",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "on_ground",
@@ -1325,12 +1277,12 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					}
 				]
 			},
 
-			"vehicle_move_clientbound": {
+			"vehicle_move": {
 				"id": 41,
 				"clientbound": true,
 				"serverbound": false,
@@ -1388,12 +1340,12 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "event",
+						"name": "event_id",
 						"type": "ubyte"
 					}
 				],
 				"variants": {
-					"field": "event",
+					"field": "event-id",
 					"values": {
 						"enter_combat": {
 							"value": 0,
@@ -1417,7 +1369,7 @@
 							"fields": [
 								{
 									"name": "player_id",
-									"type": "entity_id"
+									"type": "varuint"
 								},
 								{
 									"name": "entity_id",
@@ -1495,7 +1447,7 @@
 				}
 			},
 
-			"player_position_and_look_clientbound": {
+			"player_position_and_look": {
 				"id": 46,
 				"clientbound": true,
 				"serverbound": false,
@@ -1530,7 +1482,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "position",
@@ -1546,7 +1498,7 @@
 				"fields": [
 					{
 						"name": "entity_ids",
-						"type": "entity_id[]"
+						"type": "varuint[]"
 					}
 				]
 			},
@@ -1558,10 +1510,10 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
-						"name": "effect",
+						"name": "effect_id",
 						"type": "ubyte"
 					}
 				]
@@ -1614,11 +1566,11 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "head_yaw",
-						"type": "angle"
+						"type": "ubyte"
 					}
 				]
 			},
@@ -1667,7 +1619,7 @@
 							"fields": [
 								{
 									"name": "center",
-									"type": "double<xz>"
+									"type": "double<xyz>"
 								}
 							]
 						},
@@ -1676,7 +1628,7 @@
 							"fields": [
 								{
 									"name": "center",
-									"type": "double<xz>"
+									"type": "double<xyz>"
 								},
 								{
 									"name": "old_diameter",
@@ -1733,12 +1685,12 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					}
 				]
 			},
 
-			"held_item_change_clientbound": {
+			"held_item_change": {
 				"id": 55,
 				"clientbound": true,
 				"serverbound": false,
@@ -1773,7 +1725,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "metadata",
@@ -1805,7 +1757,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "velocity",
@@ -1821,7 +1773,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "slot",
@@ -1889,11 +1841,13 @@
 					},
 					{
 						"name": "value",
-						"type": "string"
+						"type": "string",
+						"when": "mode!=1"
 					},
 					{
 						"name": "type",
-						"type": "string"
+						"type": "string",
+						"when": "mode!=1"
 					}
 				]
 			},
@@ -1905,11 +1859,11 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "passengers",
-						"type": "entity_id[]"
+						"type": "varuint[]"
 					}
 				]
 			},
@@ -1951,7 +1905,7 @@
 									"type": "ubyte"
 								},
 								{
-									"name": "nametags_visibility",
+									"name": "nametag_visibility",
 									"type": "string"
 								},
 								{
@@ -1992,7 +1946,7 @@
 									"type": "ubyte"
 								},
 								{
-									"name": "nametags_visibility",
+									"name": "nametag_visibility",
 									"type": "string"
 								},
 								{
@@ -2046,7 +2000,8 @@
 					},
 					{
 						"name": "value",
-						"type": "varuint"
+						"type": "varuint",
+						"when": "action==0"
 					}
 				]
 			},
@@ -2145,7 +2100,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "id",
+						"name": "sound_id",
 						"type": "varuint"
 					},
 					{
@@ -2184,29 +2139,29 @@
 			},
 
 			"collect_item": {
-				"id": 72,
+				"id": 71,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
 						"name": "collected",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "collector",
-						"type": "entity_id"
+						"type": "varuint"
 					}
 				]
 			},
 
 			"entity_teleport": {
-				"id": 73,
+				"id": 71,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "position",
@@ -2214,11 +2169,11 @@
 					},
 					{
 						"name": "yaw",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "pitch",
-						"type": "angle"
+						"type": "ubyte"
 					},
 					{
 						"name": "on_ground",
@@ -2228,13 +2183,13 @@
 			},
 
 			"entity_properties": {
-				"id": 74,
+				"id": 71,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "properties",
@@ -2244,16 +2199,16 @@
 			},
 
 			"entity_effect": {
-				"id": 75,
+				"id": 71,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
-						"name": "effect",
+						"name": "effect_id",
 						"type": "ubyte"
 					},
 					{
@@ -2269,7 +2224,11 @@
 						"type": "ubyte"
 					}
 				]
-			},
+			}
+
+		},
+
+		"serverbound": {
 
 			"teleport_confirm": {
 				"id": 0,
@@ -2283,7 +2242,7 @@
 				]
 			},
 
-			"tab_complete_serverbound": {
+			"tab_complete": {
 				"id": 1,
 				"clientbound": false,
 				"serverbound": true,
@@ -2301,13 +2260,14 @@
 						"type": "bool"
 					},
 					{
-						"name": "looked_at_block",
-						"type": "ulong"
+						"name": "block",
+						"type": "ulong",
+						"when": "has_position==true"
 					}
 				]
 			},
 
-			"chat_message_serverbound": {
+			"chat_message": {
 				"id": 2,
 				"clientbound": false,
 				"serverbound": true,
@@ -2358,12 +2318,12 @@
 					},
 					{
 						"name": "main_hand",
-						"type": "varuint"
+						"type": "ubyte"
 					}
 				]
 			},
 
-			"confirm_transaction_serverbound": {
+			"confirm_transaction": {
 				"id": 5,
 				"clientbound": false,
 				"serverbound": true,
@@ -2431,7 +2391,7 @@
 				]
 			},
 
-			"close_window_serverboound": {
+			"close_window": {
 				"id": 8,
 				"clientbound": false,
 				"serverbound": true,
@@ -2443,7 +2403,7 @@
 				]
 			},
 
-			"plugin_message_serverbound": {
+			"plugin_message": {
 				"id": 9,
 				"clientbound": false,
 				"serverbound": true,
@@ -2454,7 +2414,7 @@
 					},
 					{
 						"name": "data",
-						"type": "remaining_bytes"
+						"type": "bytes"
 					}
 				]
 			},
@@ -2466,24 +2426,26 @@
 				"fields": [
 					{
 						"name": "target",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "type",
 						"type": "varuint"
 					},
 					{
-						"name": "position",
-						"type": "float<xyz>"
+						"name": "target_position",
+						"type": "float<xyz>",
+						"when": "type==2"
 					},
 					{
 						"name": "hand",
-						"type": "varuint"
+						"type": "varuint",
+						"when": "type==2"
 					}
 				]
 			},
-			
-			"keep_alive_serverbound": {
+
+			"keep_alive": {
 				"id": 11,
 				"clientbound": false,
 				"serverbound": true,
@@ -2511,7 +2473,7 @@
 				]
 			},
 
-			"player_position_and_look_serverbound": {
+			"position": {
 				"id": 13,
 				"clientbound": false,
 				"serverbound": true,
@@ -2567,7 +2529,7 @@
 				]
 			},
 
-			"vehicle_move_serverbound": {
+			"vehicle_move": {
 				"id": 16,
 				"clientbound": false,
 				"serverbound": true,
@@ -2603,7 +2565,7 @@
 				]
 			},
 
-			"player_abilities_serverbound": {
+			"player_abilities": {
 				"id": 18,
 				"clientbound": false,
 				"serverbound": true,
@@ -2650,7 +2612,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varuint"
 					},
 					{
 						"name": "action",
@@ -2658,7 +2620,8 @@
 					},
 					{
 						"name": "jump_boost",
-						"type": "varuint"
+						"type": "varuint",
+						"when": "action==5"
 					}
 				]
 			},
@@ -2695,7 +2658,7 @@
 				]
 			},
 
-			"held_item_change_serverbound": {
+			"held_item_change": {
 				"id": 23,
 				"clientbound": false,
 				"serverbound": true,
@@ -2739,7 +2702,7 @@
 				]
 			},
 
-			"animation_serverbound": {
+			"animation": {
 				"id": 26,
 				"clientbound": false,
 				"serverbound": true,
@@ -2781,7 +2744,7 @@
 						"type": "varuint"
 					},
 					{
-						"name": "cursor",
+						"name": "cursor_position",
 						"type": "ubyte<xyz>"
 					}
 				]
@@ -2798,9 +2761,9 @@
 					}
 				]
 			}
-		
+
 		}
-		
+
 	}
 
 }

@@ -44,14 +44,14 @@ class AuthCredentials : Buffer {
 	/**
 	 * Algorithm used by the server to match the the hash. The value should be sent in
 	 * lowercase without any separation symbol (for example `sha256` instead of `SHA-256`).
-	 * If empty no hashing is done and the password is sent raw. See [Auth.hash](#login.auth.hash)
-	 * for more details.
+	 * If empty no hashing is done and the password is sent raw. See Auth.hash for more
+	 * details.
 	 */
 	public string hashAlgorithm;
 
 	/**
 	 * Payload to add to the password encoded as UTF-8 (if hash algorithm is not empty)
-	 * before hashing it, as described in the [Auth.hash](#login.auth.hash) field.
+	 * before hashing it, as described in the Auth.hash field.
 	 */
 	public ubyte[16] payload;
 
@@ -210,8 +210,8 @@ class Welcome : Buffer {
 	}
 
 		/**
-		 * Sent when [Auth](#login.auth) is received but the given password or hash doesn't
-		 * match the server's one.
+		 * Sent when Auth is received but the given password or hash doesn't match the server's
+		 * one.
 		 */
 	public class WrongHash {
 
@@ -229,8 +229,8 @@ class Welcome : Buffer {
 	}
 
 		/**
-		 * Sent when [Auth](#login.auth) is not received and the server decides to close the
-		 * connection because too much time has elapsed since the creation of the socket.
+		 * Sent when Auth is not received and the server decides to close the connection because
+		 * too much time has elapsed since the creation of the socket.
 		 */
 	public class TimedOut {
 

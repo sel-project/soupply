@@ -103,9 +103,9 @@ class ConsoleMessage : Buffer {
 }
 
 /**
- * Executes a command remotely if the server allows it. If not a [Permission Denied](#connected.permission-denied)
- * is sent back. The ideal client should never send this packet if [remoteCommands](#login.welcome.accepted.remote-commands)
- * field in [Welcome.Accepted](#login.welcome.accepted) is not true.
+ * Executes a command remotely if the server allows it. If not a Permission Denied
+ * is sent back. The ideal client should never send this packet if remoteCommands field
+ * in Welcome.Accepted is not true.
  */
 class Command : Buffer {
 
@@ -151,10 +151,10 @@ class Command : Buffer {
 }
 
 /**
- * Bodyless packet only sent in response to [Command](#connected.command) when the
- * server doesn't allow the execution of remote commands through the External Console.
- * A well-implemented client should never receive this packet avoiding the use of [Command](#connected.command)
- * if the [remoteCommands](#login.welcome.accepted.remote-command) field is false.
+ * Bodyless packet only sent in response to Command when the server doesn't allow the
+ * execution of remote commands through the External Console. A well-implemented client
+ * should never receive this packet avoiding the use of Command if the remoteCommands
+ * field is false.
  */
 class PermissionDenied : Buffer {
 

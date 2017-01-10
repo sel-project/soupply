@@ -14,10 +14,10 @@ import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
 /**
- * Bodyless packet only sent in response to [Command](#connected.command) when the
- * server doesn't allow the execution of remote commands through the External Console.
- * A well-implemented client should never receive this packet avoiding the use of [Command](#connected.command)
- * if the [remoteCommands](#login.welcome.accepted.remote-command) field is false.
+ * Bodyless packet only sent in response to Command when the server doesn't allow the
+ * execution of remote commands through the External Console. A well-implemented client
+ * should never receive this packet avoiding the use of Command if the remoteCommands
+ * field is false.
  */
 class PermissionDenied extends Packet {
 

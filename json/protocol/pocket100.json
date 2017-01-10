@@ -1,16 +1,14 @@
 {
 
-	"__game": "Minecraft: Pocket Edition",
+	"__software": "Minecraft: Pocket Edition",
 	"__protocol": 100,
 	"__website": "https://github.com/sel-project/sel-utils",
 
 	"encoding": {
 
 		"endianness": {
-
-			"*": "big-endian",
-			"float": "little-endian"
-
+			"*": "big_endian",
+			"float": "little_endian"
 		},
 
 		"id": "ubyte",
@@ -19,177 +17,114 @@
 
 		"types": {
 
-			"entity_id": "varlong",
+			"pack": [
+				{
+					"name": "id",
+					"type": "string"
+				},
+				{
+					"name": "version",
+					"type": "string"
+				},
+				{
+					"name": "size",
+					"type": "ulong"
+				}
+			],
 
-			"pack": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "id",
-						"type": "string"
-					},
-					{
-						"name": "version",
-						"type": "string"
-					},
-					{
-						"name": "size",
-						"type": "ulong"
-					}
-				]
-			},
+			"block_position": [
+				{
+					"name": "x",
+					"type": "varint"
+				},
+				{
+					"name": "y",
+					"type": "varuint"
+				},
+				{
+					"name": "z",
+					"type": "varint"
+				}
+			],
 
-			"block_position": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "x",
-						"type": "varint"
-					},
-					{
-						"name": "y",
-						"type": "varuint"
-					},
-					{
-						"name": "z",
-						"type": "varint"
-					}
-				]
-			},
+			"slot": [
+				{
+					"name": "id",
+					"type": "varint"
+				},
+				{
+					"name": "meta_and_count",
+					"type": "varint",
+					"when": "id>0"
+				},
+				{
+					"name": "nbt",
+					"type": "slot_nbt",
+					"when": "id>0"
+				}
+			],
 
-			"slot": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "id",
-						"type": "varint"
-					},
-					{
-						"name": "meta_and_count",
-						"when": "id>0",
-						"type": "varint"
-					},
-					{
-						"name": "nbt",
-						"when": "id>0",
-						"type": "slot_nbt"
-					}
-				]
-			},
+			"attribute": [
+				{
+					"name": "min",
+					"type": "float"
+				},
+				{
+					"name": "max",
+					"type": "float"
+				},
+				{
+					"name": "value",
+					"type": "float"
+				},
+				{
+					"name": "default",
+					"type": "float"
+				},
+				{
+					"name": "name",
+					"type": "string"
+				}
+			],
 
-			"slot_nbt": {
-				"type": "array",
-				"base": "ubyte",
-				"length": "ushort",
-				"endianness": "little-endian"
-			},
+			"skin": [
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "data",
+					"type": "ubyte[]"
+				}
+			],
 
-			"attribute": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "min",
-						"type": "float"
-					},
-					{
-						"name": "max",
-						"type": "float"
-					},
-					{
-						"name": "value",
-						"type": "float"
-					},
-					{
-						"name": "default",
-						"type": "float"
-					},
-					{
-						"name": "name",
-						"type": "string"
-					}
-				]
-			},
-
-			"skin": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"name": "data",
-						"type": "ubyte[]"
-					}
-				]
-			},
-
-			"player_list": {
-				"type": "struct",
-				"fields": [
-					{
-						"name": "uuid",
-						"type": "uuid"
-					},
-					{
-						"name": "entity_id",
-						"type": "entity_id"
-					},
-					{
-						"name": "display_name",
-						"type": "string"
-					},
-					{
-						"name": "skin",
-						"type": "skin"
-					}
-				]
-			},
-
-			"chunk": {
-				"type": "struct",
-				"fields": []
-			},
-
-			"recipe": {
-				"type": "struct",
-				"fields": []
-			},
-
-			"metadata": {
-				"type": "struct",
-				"fields": []
-			}
+			"player_list": [
+				{
+					"name": "uuid",
+					"type": "uuid"
+				},
+				{
+					"name": "entity_id",
+					"type": "varlong"
+				},
+				{
+					"name": "display_name",
+					"type": "string"
+				},
+				{
+					"name": "skin",
+					"type": "skin"
+				}
+			]
 
 		},
 
-		"metadata": {
+		"arrays": {
 
-			"endianness": {
-				"short": "little-endian"
-			},
-
-			"length": "varuint",
-
-			"end": null,
-
-			"header": {
-				"id": "varuint",
-				"type": "varuint"
-			},
-
-			"types": {
-
-				"byte": 0,
-				"short": 1,
-				"varint": 2,
-				"float": 3,
-				"string": 4,
-				"slot": 5,
-				"int<xyz>": 6,
-				"varlong": 7,
-				"float<xyz>": 8
-
+			"slot_nbt": {
+				"base": "ubyte",
+				"length": "ushort",
+				"endianness": "little_endian"
 			}
 
 		}
@@ -302,8 +237,6 @@
 					}
 				]
 			},
-
-			"resource_pack_stack": null,
 
 			"resource_pack_client_response": {
 				"id": 9,
@@ -427,7 +360,7 @@
 						"type": "varint"
 					},
 					{
-						"name": "do_daylight_cycle",
+						"name": "daylight_cycle",
 						"type": "bool"
 					}
 				]
@@ -440,11 +373,11 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "runtime_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "position",
@@ -491,8 +424,8 @@
 						"type": "varint"
 					},
 					{
-						"name": "education_mode",
-						"type": "bool"
+						"name": "edition",
+						"type": "ubyte"
 					},
 					{
 						"name": "rain_level",
@@ -527,7 +460,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "player_uuid",
+						"name": "uuid",
 						"type": "uuid"
 					},
 					{
@@ -536,11 +469,11 @@
 					},
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "runtime_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "position",
@@ -580,11 +513,11 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "runtime_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "type",
@@ -616,7 +549,7 @@
 					},
 					{
 						"name": "links",
-						"type": "entity_id[]"
+						"type": "varlong[]"
 					}
 				]
 			},
@@ -628,7 +561,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					}
 				]
 			},
@@ -640,11 +573,11 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "runtime_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "item",
@@ -668,18 +601,18 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "runtime_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "position",
 						"type": "block_position"
 					},
 					{
-						"name": "unknown",
+						"name": "?",
 						"type": "varint"
 					}
 				]
@@ -691,12 +624,12 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "entity_taken",
-						"type": "entity_id"
+						"name": "taken",
+						"type": "varlong"
 					},
 					{
 						"name": "collector",
-						"type": "entity_id"
+						"type": "varlong"
 					}
 				]
 			},
@@ -708,7 +641,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "position",
@@ -716,15 +649,15 @@
 					},
 					{
 						"name": "pitch",
-						"type": "byte"
+						"type": "float"
 					},
 					{
 						"name": "head_yaw",
-						"type": "ubyte"
+						"type": "float"
 					},
 					{
 						"name": "yaw",
-						"type": "ubyte"
+						"type": "float"
 					}
 				]
 			},
@@ -736,7 +669,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "position",
@@ -755,7 +688,7 @@
 						"type": "float"
 					},
 					{
-						"name": "mode",
+						"name": "animation",
 						"type": "ubyte"
 					},
 					{
@@ -772,7 +705,7 @@
 				"fields": [
 					{
 						"name": "rider",
-						"type": "entity_id"
+						"type": "varlong"
 					}
 				]
 			},
@@ -816,11 +749,11 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "runtime_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "position",
@@ -879,7 +812,7 @@
 						"type": "varint"
 					},
 					{
-						"name": "unknown",
+						"name": "?",
 						"type": "bool"
 					}
 				]
@@ -921,7 +854,6 @@
 				]
 			},
 
-
 			"entity_event": {
 				"id": 29,
 				"clientbound": true,
@@ -929,14 +861,14 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "event_id",
 						"type": "ubyte"
 					},
 					{
-						"name": "unknown",
+						"name": "?",
 						"type": "varint"
 					}
 				]
@@ -949,43 +881,29 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
-						"name": "event",
+						"name": "event_id",
 						"type": "ubyte"
+					},
+					{
+						"name": "effect",
+						"type": "varint"
+					},
+					{
+						"name": "amplifier",
+						"type": "varint"
+					},
+					{
+						"name": "particles",
+						"type": "bool"
+					},
+					{
+						"name": "duration",
+						"type": "varint"
 					}
-				],
-				"variants": {
-					"field": "event",
-					"values": {
-						"add": {
-							"value": 0,
-							"fields": [
-								{
-									"name": "effect",
-									"type": "varint"
-								},
-								{
-									"name": "amplifier",
-									"type": "varint"
-								},
-								{
-									"name": "particles",
-									"type": "bool"
-								},
-								{
-									"name": "duration",
-									"type": "varint"
-								}
-							]
-						},
-						"remove": {
-							"value": 2,
-							"fields": []
-						}
-					}
-				}
+				]
 			},
 
 			"update_attributes": {
@@ -995,7 +913,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "attributes",
@@ -1011,7 +929,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "item",
@@ -1026,7 +944,7 @@
 						"type": "ubyte"
 					},
 					{
-						"name": "unknown",
+						"name": "?",
 						"type": "ubyte"
 					}
 				]
@@ -1039,23 +957,11 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
-						"name": "helmet",
-						"type": "slot"
-					},
-					{
-						"name": "chestplate",
-						"type": "slot"
-					},
-					{
-						"name": "leggings",
-						"type": "slot"
-					},
-					{
-						"name": "boots",
-						"type": "slot"
+						"name": "armor",
+						"type": "slot[4]"
 					}
 				]
 			},
@@ -1071,7 +977,7 @@
 					},
 					{
 						"name": "target",
-						"type": "entity_id"
+						"type": "varlong"
 					}
 				]
 			},
@@ -1098,7 +1004,7 @@
 						"type": "float<xyz>"
 					},
 					{
-						"name": "player_position",
+						"name": "position",
 						"type": "float<xyz>"
 					},
 					{
@@ -1119,7 +1025,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "action",
@@ -1135,7 +1041,7 @@
 					}
 				]
 			},
-			
+
 			"player_fall": {
 				"id": 37,
 				"clientbound": false,
@@ -1167,7 +1073,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "metadata",
@@ -1183,7 +1089,7 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "motion",
@@ -1199,14 +1105,14 @@
 				"fields": [
 					{
 						"name": "from",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "to",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
-						"name": "type",
+						"name": "action",
 						"type": "ubyte"
 					}
 				]
@@ -1230,7 +1136,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "unknown",
+						"name": "?",
 						"type": "varint"
 					},
 					{
@@ -1238,7 +1144,7 @@
 						"type": "block_position"
 					},
 					{
-						"name": "unknown_bool",
+						"name": "?",
 						"type": "bool"
 					}
 				]
@@ -1255,7 +1161,7 @@
 					},
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					}
 				]
 			},
@@ -1278,7 +1184,7 @@
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "type",
+						"name": "action",
 						"type": "ubyte"
 					},
 					{
@@ -1327,7 +1233,7 @@
 					},
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					}
 				]
 			},
@@ -1347,7 +1253,7 @@
 			"container_set_slot": {
 				"id": 50,
 				"clientbound": true,
-				"serverbound": true,
+				"serverbound": false,
 				"fields": [
 					{
 						"name": "window",
@@ -1366,7 +1272,7 @@
 						"type": "slot"
 					},
 					{
-						"name": "unknown",
+						"name": "?",
 						"type": "ubyte"
 					}
 				]
@@ -1415,7 +1321,7 @@
 			"crafting_data": {
 				"id": 53,
 				"clientbound": true,
-				"serverbound": false,
+				"serverbound": true,
 				"fields": [
 					{
 						"name": "recipes",
@@ -1478,8 +1384,8 @@
 						"type": "block_position"
 					},
 					{
-						"name": "metadata",
-						"type": "metadata"
+						"name": "nbt",
+						"type": "bytes"
 					}
 				]
 			},
@@ -1491,14 +1397,14 @@
 				"fields": [
 					{
 						"name": "motion",
-						"type": "float<xz>"
+						"type": "float<xyz>"
 					},
 					{
 						"name": "flags",
 						"type": "ubyte"
 					},
 					{
-						"name": "unknown",
+						"name": "?",
 						"type": "bool"
 					}
 				]
@@ -1519,12 +1425,12 @@
 					},
 					{
 						"name": "tiles",
-						"type": "ubyte[][]"
+						"type": "ubyte[]"
 					}
 				]
 			},
 
-			"set_cheats": {
+			"set_cheats_enabled": {
 				"id": 59,
 				"clientbound": true,
 				"serverbound": false,
@@ -1562,7 +1468,7 @@
 						"type": "float<xyz>"
 					},
 					{
-						"name": "unknown",
+						"name": "?",
 						"type": "bool"
 					}
 				]
@@ -1586,12 +1492,12 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "type",
+						"name": "action",
 						"type": "ubyte"
 					}
 				],
 				"variants": {
-					"field": "type",
+					"field": "action",
 					"values": {
 						"add": {
 							"value": 0,
@@ -1614,9 +1520,7 @@
 					}
 				}
 			},
-			
-			"telemetry_event": null,
-			
+
 			"spawn_experience_orb": {
 				"id": 65,
 				"clientbound": true,
@@ -1632,9 +1536,7 @@
 					}
 				]
 			},
-			
-			"clientbound_map_item_data": null,
-			
+
 			"map_info_request": {
 				"id": 67,
 				"clientbound": false,
@@ -1642,11 +1544,11 @@
 				"fields": [
 					{
 						"name": "map_id",
-						"type": "entity_id"
+						"type": "varlong"
 					}
 				]
 			},
-			
+
 			"request_chunk_radius": {
 				"id": 68,
 				"clientbound": false,
@@ -1658,7 +1560,7 @@
 					}
 				]
 			},
-			
+
 			"chunk_radius_updated": {
 				"id": 69,
 				"clientbound": true,
@@ -1670,7 +1572,7 @@
 					}
 				]
 			},
-			
+
 			"item_frame_drop_item": {
 				"id": 70,
 				"clientbound": true,
@@ -1686,7 +1588,7 @@
 					}
 				]
 			},
-			
+
 			"replace_selected_item": {
 				"id": 71,
 				"clientbound": false,
@@ -1698,9 +1600,7 @@
 					}
 				]
 			},
-			
-			"game_rules_changed": null,
-			
+
 			"camera": {
 				"id": 73,
 				"clientbound": true,
@@ -1708,15 +1608,15 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
 						"name": "runtime_id",
-						"type": "entity_id"
+						"type": "varlong"
 					}
 				]
 			},
-			
+
 			"add_item": {
 				"id": 74,
 				"clientbound": true,
@@ -1728,7 +1628,7 @@
 					}
 				]
 			},
-			
+
 			"boss_event": {
 				"id": 75,
 				"clientbound": true,
@@ -1736,10 +1636,10 @@
 				"fields": [
 					{
 						"name": "entity_id",
-						"type": "entity_id"
+						"type": "varlong"
 					},
 					{
-						"name": "event",
+						"name": "event_id",
 						"type": "varuint"
 					}
 				]
@@ -1751,7 +1651,7 @@
 				"serverbound": false,
 				"fields": []
 			},
-			
+
 			"available_commands": {
 				"id": 77,
 				"clientbound": true,
@@ -1763,7 +1663,7 @@
 					}
 				]
 			},
-			
+
 			"command_step": {
 				"id": 78,
 				"clientbound": false,
@@ -1778,11 +1678,11 @@
 						"type": "string"
 					},
 					{
-						"name": "unknown1",
+						"name": "?",
 						"type": "varuint"
 					},
 					{
-						"name": "unknown2",
+						"name": "?",
 						"type": "varuint"
 					},
 					{
@@ -1790,7 +1690,7 @@
 						"type": "bool"
 					},
 					{
-						"name": "unknown3",
+						"name": "?",
 						"type": "varulong"
 					},
 					{
@@ -1802,14 +1702,8 @@
 						"type": "string"
 					}
 				]
-			},
-			
-			"resource_pack_data_info": null,
-			
-			"resource_pack_chunk_data": null,
-			
-			"resource_pack_chunk_request": null
-				
+			}
+
 		}
 
 	}

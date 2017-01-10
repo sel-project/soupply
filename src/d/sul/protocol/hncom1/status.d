@@ -114,8 +114,8 @@ class ResourcesUsage : Buffer {
 
 	public enum ubyte ID = 6;
 
-	public enum bool CLIENTBOUND = true;
-	public enum bool SERVERBOUND = false;
+	public enum bool CLIENTBOUND = false;
+	public enum bool SERVERBOUND = true;
 
 	public enum string[] FIELDS = ["tps", "ram", "cpu"];
 
