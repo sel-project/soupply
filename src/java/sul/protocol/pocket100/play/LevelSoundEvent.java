@@ -21,7 +21,7 @@ class LevelSoundEvent extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	// sound
-	public static immutable byte NOTE = 16;
+	public static immutable byte NOTE = 60;
 
 	public byte sound;
 	public Tuples.FloatXYZ position;

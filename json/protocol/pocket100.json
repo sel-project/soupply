@@ -860,7 +860,7 @@
 						"name": "sound",
 						"type": "ubyte",
 						"constants": {
-							"note": 16
+							"note": 60
 						}
 					},
 					{

@@ -1464,7 +1464,7 @@ class LevelSoundEvent : Buffer {
 	public enum string[] FIELDS = ["sound", "position", "volume", "pitch", "unknown4"];
 
 	// sound
-	public enum ubyte NOTE = 16;
+	public enum ubyte NOTE = 60;
 
 	public ubyte sound;
 	public Tuple!(float, "x", float, "y", float, "z") position;

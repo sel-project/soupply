@@ -13,7 +13,7 @@ import java.util.UUID;
 import sul.protocol.minecraft210.types.*;
 import sul.utils.*;
 
-class Position extends Packet {
+class PlayerPositionAndLook extends Packet {
 
 	public final static int ID = (int)13;
 

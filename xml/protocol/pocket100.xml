@@ -314,7 +314,7 @@
 
 			<packet name="level-sound-event" id="26" clientbound="true" serverbound="true">
 				<field name="sound" type="ubyte">
-					<constant name="note" value="16" />
+					<constant name="note" value="60" />
 				</field>
 				<field name="position" type="entity-position" />
 				<field name="volume" type="varuint" />

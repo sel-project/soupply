@@ -22,7 +22,7 @@ static import sul.protocol.minecraft316.types;
 
 import sul.metadata.minecraft316;
 
-alias Packets = TypeTuple!(TeleportConfirm, TabComplete, ChatMessage, ClientStatus, ClientSettings, ConfirmTransaction, EnchantItem, ClickWindow, CloseWindow, PluginMessage, UseEntity, KeepAlive, PlayerPosition, Position, PlayerLook, Player, VehicleMove, SteerBoat, PlayerAbilities, PlayerDigging, EntityAction, SteerVehicle, ResourcePackStatus, HeldItemChange, CreativeInventoryAction, UpdateSign, Animation, Spectate, PlayerBlockPlacement, UseItem);
+alias Packets = TypeTuple!(TeleportConfirm, TabComplete, ChatMessage, ClientStatus, ClientSettings, ConfirmTransaction, EnchantItem, ClickWindow, CloseWindow, PluginMessage, UseEntity, KeepAlive, PlayerPosition, PlayerPositionAndLook, PlayerLook, Player, VehicleMove, SteerBoat, PlayerAbilities, PlayerDigging, EntityAction, SteerVehicle, ResourcePackStatus, HeldItemChange, CreativeInventoryAction, UpdateSign, Animation, Spectate, PlayerBlockPlacement, UseItem);
 
 class TeleportConfirm : Buffer {
 
@@ -634,7 +634,7 @@ class PlayerPosition : Buffer {
 
 }
 
-class Position : Buffer {
+class PlayerPositionAndLook : Buffer {
 
 	public enum uint ID = 13;
 
@@ -675,8 +675,8 @@ class Position : Buffer {
 		onGround=readBigEndianBool();
 	}
 
-	public static pure nothrow @safe Position fromBuffer(bool readId=true)(ubyte[] buffer) {
-		Position ret = new Position();
+	public static pure nothrow @safe PlayerPositionAndLook fromBuffer(bool readId=true)(ubyte[] buffer) {
+		PlayerPositionAndLook ret = new PlayerPositionAndLook();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;

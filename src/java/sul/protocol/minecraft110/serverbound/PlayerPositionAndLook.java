@@ -4,16 +4,16 @@
  *
  * License: https://github.com/sel-project/sel-utils/blob/master/LICENSE
  * Repository: https://github.com/sel-project/sel-utils
- * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/protocol/minecraft109.xml
+ * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/protocol/minecraft110.xml
  */
-package sul.protocol.minecraft109.serverbound;
+package sul.protocol.minecraft110.serverbound;
 
 import java.util.UUID;
 
-import sul.protocol.minecraft109.types.*;
+import sul.protocol.minecraft110.types.*;
 import sul.utils.*;
 
-class Position extends Packet {
+class PlayerPositionAndLook extends Packet {
 
 	public final static int ID = (int)13;
 

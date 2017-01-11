@@ -2912,7 +2912,7 @@
 				]
 			},
 
-			"position": {
+			"player_position_and_look": {
 				"id": 13,
 				"clientbound": false,
 				"serverbound": true,

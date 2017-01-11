@@ -1199,7 +1199,7 @@
 				<field name="on-ground" type="bool" />
 			</packet>
 
-			<packet name="position" id="13" clientbound="false" serverbound="true">
+			<packet name="player-position-and-look" id="13" clientbound="false" serverbound="true">
 				<field name="position" type="entity-position" />
 				<field name="yaw" type="float" />
 				<field name="pitch" type="float" />

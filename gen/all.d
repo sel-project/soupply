@@ -333,6 +333,7 @@ void main(string[] args) {
 								protocol.data.sections ~= section;
 							}
 						}
+						break;
 					default:
 						break;
 				}
