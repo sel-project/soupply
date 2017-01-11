@@ -1573,7 +1573,7 @@ class EntityStatus : Buffer {
 	public enum ubyte PLAY_JUMPING_ANIMATION_AND_PARTICLES = 1;
 	public enum ubyte RESET_SPAWNER_DELAY = 1;
 	public enum ubyte PLAY_HURT_ANIMATION_AND_SOUND = 2;
-	public enum ubyte PLAY_DEAD_ANIMATION_AND_SOUND = 3;
+	public enum ubyte PLAY_DEATH_ANIMATION_AND_SOUND = 3;
 	public enum ubyte PLAY_ATTACK_ANIMATION_AND_SOUND = 4;
 	public enum ubyte SPAWN_SMOKE_PARTICLES = 6;
 	public enum ubyte SPAWN_HEART_PARTICLES = 7;
@@ -1668,7 +1668,7 @@ class Explosion : Buffer {
 		static if(writeId){ writeBytes(varuint.encode(ID)); }
 		writeBigEndianFloat(position.x);writeBigEndianFloat(position.y);writeBigEndianFloat(position.z);
 		writeBigEndianFloat(radius);
-		writeBigEndianUint(cast(uint)records.length); foreach(cmvjb3jkcw;records){ cmvjb3jkcw.encode(bufferInstance); }
+		writeBigEndianUint(cast(uint)records.length); foreach(cmvjb3jkcw;records){ writeBigEndianByte(cmvjb3jkcw.x);writeBigEndianByte(cmvjb3jkcw.y);writeBigEndianByte(cmvjb3jkcw.z); }
 		writeBigEndianFloat(motion.x);writeBigEndianFloat(motion.y);writeBigEndianFloat(motion.z);
 		return _buffer;
 	}
@@ -1677,7 +1677,7 @@ class Explosion : Buffer {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		position.x=readBigEndianFloat();position.y=readBigEndianFloat();position.z=readBigEndianFloat();
 		radius=readBigEndianFloat();
-		records.length=readBigEndianUint(); foreach(ref cmvjb3jkcw;records){ cmvjb3jkcw.decode(bufferInstance); }
+		records.length=readBigEndianUint(); foreach(ref cmvjb3jkcw;records){ cmvjb3jkcw.x=readBigEndianByte();cmvjb3jkcw.y=readBigEndianByte();cmvjb3jkcw.z=readBigEndianByte(); }
 		motion.x=readBigEndianFloat();motion.y=readBigEndianFloat();motion.z=readBigEndianFloat();
 	}
 

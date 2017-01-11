@@ -25,7 +25,7 @@ class EntityStatus extends Packet {
 	public static immutable byte PLAY_JUMPING_ANIMATION_AND_PARTICLES = 1;
 	public static immutable byte RESET_SPAWNER_DELAY = 1;
 	public static immutable byte PLAY_HURT_ANIMATION_AND_SOUND = 2;
-	public static immutable byte PLAY_DEAD_ANIMATION_AND_SOUND = 3;
+	public static immutable byte PLAY_DEATH_ANIMATION_AND_SOUND = 3;
 	public static immutable byte PLAY_ATTACK_ANIMATION_AND_SOUND = 4;
 	public static immutable byte SPAWN_SMOKE_PARTICLES = 6;
 	public static immutable byte SPAWN_HEART_PARTICLES = 7;

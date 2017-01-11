@@ -197,13 +197,14 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 		// arrays
 		if(ptrs.data.arrays.length) {
 			data ~= "--------\n\n";
+			foreach(name, a ; ptrs.data.arrays) {
+				data ~= "<a name\"" ~ link("types", name) ~ "\"></a>";
+			}
+			data ~= "\n";
 			data ~= "## Arrays\n\n";
 			bool e = false;
 			foreach(a ; ptrs.data.arrays) {
 				e |= a.endianness.length != 0;
-			}
-			foreach(name, a ; ptrs.data.arrays) {
-				data ~= "<a name\"" ~ link("types", name) ~ "\"></a>";
 			}
 			data ~= "\n";
 			data ~= "Name | Base | Length" ~ (e ? " | Length's endianness" : "") ~ "\n";

@@ -1156,7 +1156,7 @@
 							"play_jumping_animation_and_particles": 1,
 							"reset_spawner_delay": 1,
 							"play_hurt_animation_and_sound": 2,
-							"play_dead_animation_and_sound": 3,
+							"play_death_animation_and_sound": 3,
 							"play_attack_animation_and_sound": 4,
 							"spawn_smoke_particles": 6,
 							"spawn_heart_particles": 7,

@@ -470,7 +470,7 @@
 					<constant name="play-jumping-animation-and-particles" value="1" />
 					<constant name="reset-spawner-delay" value="1" />
 					<constant name="play-hurt-animation-and-sound" value="2" />
-					<constant name="play-dead-animation-and-sound" value="3" />
+					<constant name="play-death-animation-and-sound" value="3" />
 					<constant name="play-attack-animation-and-sound" value="4" />
 					<constant name="spawn-smoke-particles" value="6" />
 					<constant name="spawn-heart-particles" value="7" />

@@ -272,7 +272,7 @@ alias varulong = var!ulong;
 					ret ~= " ";
 				}
 				if(nt == "ubyte") return ret ~= "writeBytes(" ~ name ~ ");";
-				else return ret ~ "foreach(" ~ hash(name) ~ ";" ~ name ~ "){ " ~ createEncoding(type[0..lo], hash(name)) ~ " }";
+				else return ret ~ "foreach(" ~ hash(name) ~ ";" ~ name ~ "){ " ~ createEncoding(nt, hash(name)) ~ " }";
 			}
 			auto ts = conv.lastIndexOf("<");
 			if(ts > 0) {
@@ -312,7 +312,7 @@ alias varulong = var!ulong;
 				}
 				string nt = conv[0..lo];
 				if(nt == "ubyte") return ret ~= "if(_buffer.length>=_index+" ~ name ~ ".length){ " ~ name ~ "=_buffer[_index.._index+" ~ name ~ ".length].dup; _index+=" ~ name ~ ".length; }";
-				else return ret ~ "foreach(ref " ~ hash(name) ~ ";" ~ name ~ "){ " ~ createDecoding(type[0..lo], hash(name)) ~ " }";
+				else return ret ~ "foreach(ref " ~ hash(name) ~ ";" ~ name ~ "){ " ~ createDecoding(nt, hash(name)) ~ " }";
 			}
 			auto ts = conv.lastIndexOf("<");
 			if(ts > 0) {
