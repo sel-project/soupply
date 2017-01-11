@@ -17,6 +17,8 @@ import std.uuid : UUID;
 import sul.utils.buffer;
 import sul.utils.var;
 
+import sul.metadata.pocket100;
+
 struct Pack {
 
 	public string id;
@@ -158,10 +160,35 @@ struct PlayerList {
 
 	public pure nothrow @safe void decode(Buffer buffer) {
 		with(buffer) {
-			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 			entityId=varlong.decode(_buffer, &_index);
 			uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu);
 			skin.decode(bufferInstance);
+		}
+	}
+
+}
+
+struct Recipe {
+
+	// type
+	public enum int SHAPELESS = 0;
+	public enum int SHAPED = 1;
+	public enum int FURNACE = 2;
+	public enum int FURNACE_DATA = 3;
+	public enum int MULTI = 4;
+
+	public int type;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBytes(varint.encode(type));
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			type=varint.decode(_buffer, &_index);
 		}
 	}
 

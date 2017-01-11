@@ -53,16 +53,16 @@ struct Acknowledge {
 	public pure nothrow @safe void encode(Buffer buffer) {
 		with(buffer) {
 			writeBigEndianBool(unique);
-			first.encode(bufferInstance);
-			if(unique==false){ last.encode(bufferInstance); }
+			writeLittleEndianTriad(first);
+			if(unique==false){ writeLittleEndianTriad(last); }
 		}
 	}
 
 	public pure nothrow @safe void decode(Buffer buffer) {
 		with(buffer) {
 			unique=readBigEndianBool();
-			first.decode(bufferInstance);
-			if(unique==false){ last.decode(bufferInstance); }
+			first=readLittleEndianTriad();
+			if(unique==false){ last=readLittleEndianTriad(); }
 		}
 	}
 
@@ -82,8 +82,8 @@ struct Encapsulation {
 		with(buffer) {
 			writeBigEndianUbyte(info);
 			writeBigEndianUshort(length);
-			if((info&0x7F)>=64){ messageIndex.encode(bufferInstance); }
-			if((info&0x7F)>=96){ orderIndex.encode(bufferInstance); }
+			if((info&0x7F)>=64){ writeLittleEndianTriad(messageIndex); }
+			if((info&0x7F)>=96){ writeLittleEndianTriad(orderIndex); }
 			if((info&0x7F)>=96){ writeBigEndianUbyte(orderChannel); }
 			if((info&0x10)!=0){ split.encode(bufferInstance); }
 			writeBytes(payload);
@@ -94,11 +94,11 @@ struct Encapsulation {
 		with(buffer) {
 			info=readBigEndianUbyte();
 			length=readBigEndianUshort();
-			if((info&0x7F)>=64){ messageIndex.decode(bufferInstance); }
-			if((info&0x7F)>=96){ orderIndex.decode(bufferInstance); }
+			if((info&0x7F)>=64){ messageIndex=readLittleEndianTriad(); }
+			if((info&0x7F)>=96){ orderIndex=readLittleEndianTriad(); }
 			if((info&0x7F)>=96){ orderChannel=readBigEndianUbyte(); }
 			if((info&0x10)!=0){ split.decode(bufferInstance); }
-			payload=_buffer[_index..$].dup; _index=buffer.length;
+			payload=_buffer[_index..$].dup; _index=_buffer.length;
 		}
 	}
 

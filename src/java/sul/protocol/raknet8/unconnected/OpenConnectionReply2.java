@@ -22,7 +22,7 @@ class OpenConnectionReply2 extends Packet {
 
 	public byte[16] magic;
 	public long serverId;
-	public Address serverAddress;
+	public Address clientAddress;
 	public short mtuLength;
 	public boolean security;
 
@@ -37,7 +37,7 @@ class OpenConnectionReply2 extends Packet {
 		this.writeByteB(ID);
 		for(ubyte bwfnawm:magic){ this.writeByteB(bwfnawm); }
 		this.writeLongB(serverId);
-		this.writeBytes(serverAddress.encode());
+		this.writeBytes(clientAddress.encode());
 		this.writeShortB(mtuLength);
 		this.writeBoolB(security);
 		return this.buffer;

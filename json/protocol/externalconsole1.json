@@ -19,7 +19,11 @@
 			"game": [
 				{
 					"name": "type",
-					"type": "ubyte"
+					"type": "ubyte",
+					"constants": {
+						"pocket": 1,
+						"minecraft": 2
+					}
 				},
 				{
 					"name": "protocols",
@@ -163,7 +167,11 @@
 				"fields": [
 					{
 						"name": "action",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"add": 0,
+							"remove": 1
+						}
 					},
 					{
 						"name": "node",

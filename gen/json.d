@@ -77,9 +77,20 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Creative[s
 			foreach(i, field; fields) {
 				data ~= space ~ "{\n";
 				data ~= space ~ "\t\"name\": " ~ JSONValue(field.name).toString() ~ ",\n";
-				data ~= space ~ "\t\"type\": " ~ JSONValue(field.type).toString() ~ (field.condition.length || field.endianness.length ? "," : "") ~ "\n";
-				if(field.condition.length) data ~= space ~ "\t\"when\": " ~ JSONValue(field.condition).toString() ~ (field.endianness.length ? "," : "") ~ "\n";
-				if(field.endianness.length) data ~= space ~ "\t\"endianness\": \"" ~ field.endianness ~ "\"\n";
+				data ~= space ~ "\t\"type\": " ~ JSONValue(field.type).toString() ~ (field.condition.length || field.endianness.length || field.constants.length ? "," : "") ~ "\n";
+				if(field.condition.length) data ~= space ~ "\t\"when\": " ~ JSONValue(field.condition).toString() ~ (field.endianness.length || field.constants.length ? "," : "") ~ "\n";
+				if(field.endianness.length) data ~= space ~ "\t\"endianness\": \"" ~ field.endianness ~ "\"" ~ (field.constants.length ? "," : "") ~ "\n";
+				if(field.constants.length) {
+					data ~= space ~ "\t\"constants\": {\n";
+					foreach(j, constant; field.constants) {
+						string value = JSONValue(constant.value).toString();
+						try {
+							value = JSONValue(to!size_t(constant.value)).toString();
+						} catch(Exception) {}
+						data ~= space ~ "\t\t" ~ JSONValue(constant.name).toString() ~ ": " ~ value ~ (j != field.constants.length - 1 ? "," : "") ~ "\n";
+					}
+					data ~= space ~ "\t}\n";
+				}
 				data ~= space ~ "}" ~ (i != fields.length - 1 ? "," : "") ~ "\n";
 			}
 		}

@@ -115,6 +115,20 @@
 					"name": "skin",
 					"type": "skin"
 				}
+			],
+
+			"recipe": [
+				{
+					"name": "type",
+					"type": "varint",
+					"constants": {
+						"shapeless": 0,
+						"shaped": 1,
+						"furnace": 2,
+						"furnace_data": 3,
+						"multi": 4
+					}
+				}
 			]
 
 		},
@@ -146,7 +160,11 @@
 					},
 					{
 						"name": "edition",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"classic": 0,
+							"education": 1
+						}
 					},
 					{
 						"name": "body",
@@ -162,7 +180,15 @@
 				"fields": [
 					{
 						"name": "status",
-						"type": "uint"
+						"type": "uint",
+						"constants": {
+							"ok": 0,
+							"outdated_client": 1,
+							"outdated_server": 2,
+							"spawned": 3,
+							"invalid_tenant": 4,
+							"edition_mismatch": 5
+						}
 					}
 				]
 			},
@@ -397,19 +423,39 @@
 					},
 					{
 						"name": "dimension",
-						"type": "varint"
+						"type": "varint",
+						"constants": {
+							"overworld": 0,
+							"nether": 1,
+							"end": 2
+						}
 					},
 					{
 						"name": "generator",
-						"type": "varint"
+						"type": "varint",
+						"constants": {
+							"old": 0,
+							"infinite": 1,
+							"flat": 2
+						}
 					},
 					{
 						"name": "world_gamemode",
-						"type": "varint"
+						"type": "varint",
+						"constants": {
+							"survival": 0,
+							"creative": 1
+						}
 					},
 					{
 						"name": "difficulty",
-						"type": "varint"
+						"type": "varint",
+						"constants": {
+							"peaceful": 0,
+							"easy": 1,
+							"normal": 2,
+							"hard": 3
+						}
 					},
 					{
 						"name": "spawn_position",
@@ -425,7 +471,11 @@
 					},
 					{
 						"name": "edition",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"classic": 0,
+							"education": 1
+						}
 					},
 					{
 						"name": "rain_level",
@@ -689,7 +739,12 @@
 					},
 					{
 						"name": "animation",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"full": 0,
+							"none": 1,
+							"rotation": 2
+						}
 					},
 					{
 						"name": "on_ground",
@@ -737,7 +792,13 @@
 					},
 					{
 						"name": "flags_and_meta",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"neighbors": 1,
+							"network": 2,
+							"no_graphic": 4,
+							"priority": 8
+						}
 					}
 				]
 			},
@@ -797,7 +858,10 @@
 				"fields": [
 					{
 						"name": "sound",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"note": 16
+						}
 					},
 					{
 						"name": "position",
@@ -825,7 +889,57 @@
 				"fields": [
 					{
 						"name": "event_id",
-						"type": "varint"
+						"type": "varint",
+						"constants": {
+							"start_rain": 3001,
+							"start_thunder": 3002,
+							"stop_rain": 3003,
+							"stop_thunder": 3004,
+							"set_data": 4000,
+							"players_sleeping": 9800,
+							"bubble": 16385,
+							"critical": 16386,
+							"block_force_field": 16387,
+							"smoke": 16388,
+							"explode": 16389,
+							"evaporation": 16390,
+							"flame": 16391,
+							"lava": 16392,
+							"large_smoke": 16393,
+							"redstone": 16394,
+							"rising_red_dust": 16395,
+							"item_break": 16396,
+							"snowball_poof": 16397,
+							"huge_explode": 16398,
+							"huge_explode_seed": 16399,
+							"mob_flame": 16400,
+							"heart": 16401,
+							"terrain": 16402,
+							"town_aura": 16403,
+							"portal": 16404,
+							"water_splash": 16405,
+							"water_wake": 16406,
+							"drip_water": 16407,
+							"drip_lava": 16408,
+							"falling_dust": 16409,
+							"mob_spell": 16410,
+							"mob_spell_ambient": 16411,
+							"mob_spell_instantaneous": 16412,
+							"ink": 16413,
+							"slime": 16414,
+							"rain_splash": 16415,
+							"villager_angry": 16416,
+							"villager_happy": 16417,
+							"enchantment_table": 16418,
+							"tracking_emitter": 16419,
+							"note": 16420,
+							"witch_spell": 16421,
+							"carrot": 16422,
+							"end_rod": 16424,
+							"dragon_breath": 16425,
+							"shoot": 2000,
+							"destroy": 2001
+						}
 					},
 					{
 						"name": "position",
@@ -865,7 +979,23 @@
 					},
 					{
 						"name": "event_id",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"hurt_animation": 2,
+							"death_animation": 3,
+							"tame_fail": 6,
+							"tame_success": 7,
+							"shake_wet": 8,
+							"use_item": 9,
+							"eat_grass_animation": 10,
+							"fish_hook_bubbles": 11,
+							"fish_hook_position": 12,
+							"fish_hook_hook": 13,
+							"fish_hook_tease": 14,
+							"squid_ink_cloud": 15,
+							"ambient_sound": 16,
+							"respawn": 17
+						}
 					},
 					{
 						"name": "?",
@@ -885,7 +1015,12 @@
 					},
 					{
 						"name": "event_id",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"add": 0,
+							"modify": 1,
+							"remove": 2
+						}
 					},
 					{
 						"name": "effect",
@@ -973,7 +1108,13 @@
 				"fields": [
 					{
 						"name": "action",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"attack": 1,
+							"interact": 2,
+							"leave_vehicle": 3,
+							"hover": 4
+						}
 					},
 					{
 						"name": "target",
@@ -1029,7 +1170,24 @@
 					},
 					{
 						"name": "action",
-						"type": "varint"
+						"type": "varint",
+						"constants": {
+							"start_break": 0,
+							"abort_break": 1,
+							"stop_break": 2,
+							"release_item": 5,
+							"stop_sleeping": 6,
+							"respawn": 7,
+							"jump": 8,
+							"start_sprint": 9,
+							"stop_sprint": 10,
+							"start_sneak": 11,
+							"stop_sneak": 12,
+							"dimension_change": 13,
+							"abort_dimension_change": 14,
+							"start_gliding": 15,
+							"stop_gliding": 16
+						}
 					},
 					{
 						"name": "position",
@@ -1113,7 +1271,11 @@
 					},
 					{
 						"name": "action",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"add": 0,
+							"remove": 1
+						}
 					}
 				]
 			},
@@ -1157,7 +1319,11 @@
 				"fields": [
 					{
 						"name": "action",
-						"type": "varint"
+						"type": "varint",
+						"constants": {
+							"breaking": 1,
+							"wake_up": 3
+						}
 					},
 					{
 						"name": "entity_id",
@@ -1185,7 +1351,10 @@
 				"fields": [
 					{
 						"name": "action",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"drop": 0
+						}
 					},
 					{
 						"name": "item",
@@ -1365,11 +1534,29 @@
 				"fields": [
 					{
 						"name": "flags",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"immutable_world": 1,
+							"pvp_disabled": 2,
+							"pvm_disabled": 4,
+							"mvp_disbaled": 8,
+							"evp_disabled": 16,
+							"auto_jump": 32,
+							"allow_flight": 64,
+							"no_clip": 256,
+							"flying": 1024
+						}
 					},
 					{
 						"name": "permissions",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"user": 0,
+							"operator": 1,
+							"host": 2,
+							"automation": 3,
+							"admin": 4
+						}
 					}
 				]
 			},
@@ -1449,7 +1636,13 @@
 				"fields": [
 					{
 						"name": "difficulty",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"peaceful": 0,
+							"easy": 1,
+							"normal": 2,
+							"hard": 3
+						}
 					}
 				]
 			},
@@ -1461,7 +1654,12 @@
 				"fields": [
 					{
 						"name": "dimension",
-						"type": "varint"
+						"type": "varint",
+						"constants": {
+							"overworld": 0,
+							"nether": 1,
+							"end": 2
+						}
 					},
 					{
 						"name": "position",
@@ -1481,7 +1679,11 @@
 				"fields": [
 					{
 						"name": "gametype",
-						"type": "varint"
+						"type": "varint",
+						"constants": {
+							"survival": 0,
+							"creative": 1
+						}
 					}
 				]
 			},
@@ -1640,7 +1842,12 @@
 					},
 					{
 						"name": "event_id",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"add": 0,
+							"update": 1,
+							"remove": 2
+						}
 					}
 				]
 			},

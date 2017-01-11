@@ -44,7 +44,11 @@
 			"game": [
 				{
 					"name": "type",
-					"type": "ubyte"
+					"type": "ubyte",
+					"constants": {
+						"pocket": 1,
+						"minecraft": 2
+					}
 				},
 				{
 					"name": "protocols",
@@ -172,6 +176,10 @@
 						"type": "string[]"
 					},
 					{
+						"name": "uuid_pool",
+						"type": "ulong"
+					},
+					{
 						"name": "social_json",
 						"type": "string"
 					},
@@ -221,7 +229,11 @@
 				"fields": [
 					{
 						"name": "action",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"add": 0,
+							"remove": 1
+						}
 					},
 					{
 						"name": "node",
@@ -273,7 +285,12 @@
 				"fields": [
 					{
 						"name": "origin",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"hub": 0,
+							"external_console": 1,
+							"rcon": 2
+						}
 					},
 					{
 						"name": "sender",
@@ -293,11 +310,19 @@
 				"fields": [
 					{
 						"name": "list",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"whitelist": 0,
+							"blacklist": 1
+						}
 					},
 					{
 						"name": "action",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"add": 0,
+							"remove": 1
+						}
 					},
 					{
 						"name": "type",
@@ -330,7 +355,11 @@
 							"fields": [
 								{
 									"name": "game",
-									"type": "ubyte"
+									"type": "ubyte",
+									"constants": {
+										"pocket": 1,
+										"minecraft": 2
+									}
 								},
 								{
 									"name": "uuid",
@@ -357,7 +386,12 @@
 					},
 					{
 						"name": "reason",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"first_join": 0,
+							"transferred": 1,
+							"forcibly_transferred": 2
+						}
 					},
 					{
 						"name": "protocol",
@@ -377,7 +411,11 @@
 					},
 					{
 						"name": "game",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"pocket": 1,
+							"minecraft": 2
+						}
 					},
 					{
 						"name": "uuid",
@@ -413,7 +451,13 @@
 					},
 					{
 						"name": "reason",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"left": 0,
+							"timed_out": 1,
+							"kicked": 2,
+							"transferred": 3
+						}
 					}
 				]
 			},

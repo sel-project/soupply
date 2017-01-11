@@ -8,44 +8,628 @@
  */
 module sul.metadata.pocket100;
 
-static import sul.protocol.pocket100.types;struct Metadata {
+import std.typecons : Tuple;
 
-	public int variant;
+static import sul.protocol.pocket100.types;
 
-	public byte color;
+alias Changed(T) = Tuple!(T, "value", bool, "changed");
 
-	public string nametag;
+class Metadata {
 
-	public long owner = -1;
+	private Changed!(long) _entityFlags;
 
-	public short air = 300;
+	public pure nothrow @property @safe @nogc long entityFlags() {
+		return _entityFlags.value;
+	}
 
-	public int potionColor;
+	public pure nothrow @property @safe @nogc long entityFlags(long value) {
+		_entityFlags.changed = true;
+		return _entityFlags.value = value;
+	}
 
-	public byte potionAmbient;
+	public pure nothrow @property @safe @nogc bool onFire() {
+		return (_entityFlags.value >>> 0) & 1;
+	}
 
-	public byte size;
+	public pure nothrow @property @safe @nogc bool onFire(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 0);
+		else _entityFlags.value &= ~(cast(long)true << 0);
+		return value;
+	}
 
-	public int playerIndex;
+	public pure nothrow @property @safe @nogc bool sneaking() {
+		return (_entityFlags.value >>> 1) & 1;
+	}
 
-	public Tuple!(int, "x", int, "y", int, "z") bedPosition;
+	public pure nothrow @property @safe @nogc bool sneaking(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 1);
+		else _entityFlags.value &= ~(cast(long)true << 1);
+		return value;
+	}
 
-	public long leadHolder = -1;
+	public pure nothrow @property @safe @nogc bool riding() {
+		return (_entityFlags.value >>> 2) & 1;
+	}
 
-	public float scale = 1;
+	public pure nothrow @property @safe @nogc bool riding(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 2);
+		else _entityFlags.value &= ~(cast(long)true << 2);
+		return value;
+	}
 
-	public string interactiveTag;
+	public pure nothrow @property @safe @nogc bool sprinting() {
+		return (_entityFlags.value >>> 3) & 1;
+	}
 
-	public string interactiveTagUrl;
+	public pure nothrow @property @safe @nogc bool sprinting(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 3);
+		else _entityFlags.value &= ~(cast(long)true << 3);
+		return value;
+	}
 
-	public short maxAir;
+	public pure nothrow @property @safe @nogc bool usingItem() {
+		return (_entityFlags.value >>> 4) & 1;
+	}
 
-	public int markVariant;
+	public pure nothrow @property @safe @nogc bool usingItem(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 4);
+		else _entityFlags.value &= ~(cast(long)true << 4);
+		return value;
+	}
 
-	public float boundingBoxWidth;
+	public pure nothrow @property @safe @nogc bool invisible() {
+		return (_entityFlags.value >>> 5) & 1;
+	}
 
-	public float boundingBoxHeight;
+	public pure nothrow @property @safe @nogc bool invisible(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 5);
+		else _entityFlags.value &= ~(cast(long)true << 5);
+		return value;
+	}
 
-	public int fuseLength;
+	public pure nothrow @property @safe @nogc bool tempted() {
+		return (_entityFlags.value >>> 6) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool tempted(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 6);
+		else _entityFlags.value &= ~(cast(long)true << 6);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool inLove() {
+		return (_entityFlags.value >>> 7) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool inLove(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 7);
+		else _entityFlags.value &= ~(cast(long)true << 7);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool saddled() {
+		return (_entityFlags.value >>> 8) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool saddled(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 8);
+		else _entityFlags.value &= ~(cast(long)true << 8);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool powered() {
+		return (_entityFlags.value >>> 9) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool powered(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 9);
+		else _entityFlags.value &= ~(cast(long)true << 9);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool ignited() {
+		return (_entityFlags.value >>> 10) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool ignited(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 10);
+		else _entityFlags.value &= ~(cast(long)true << 10);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool baby() {
+		return (_entityFlags.value >>> 11) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool baby(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 11);
+		else _entityFlags.value &= ~(cast(long)true << 11);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool converting() {
+		return (_entityFlags.value >>> 12) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool converting(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 12);
+		else _entityFlags.value &= ~(cast(long)true << 12);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool critical() {
+		return (_entityFlags.value >>> 13) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool critical(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 13);
+		else _entityFlags.value &= ~(cast(long)true << 13);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool showNametag() {
+		return (_entityFlags.value >>> 14) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool showNametag(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 14);
+		else _entityFlags.value &= ~(cast(long)true << 14);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool alwaysShowNametag() {
+		return (_entityFlags.value >>> 15) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool alwaysShowNametag(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 15);
+		else _entityFlags.value &= ~(cast(long)true << 15);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool noAi() {
+		return (_entityFlags.value >>> 16) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool noAi(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 16);
+		else _entityFlags.value &= ~(cast(long)true << 16);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool silent() {
+		return (_entityFlags.value >>> 17) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool silent(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 17);
+		else _entityFlags.value &= ~(cast(long)true << 17);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool climbingWall() {
+		return (_entityFlags.value >>> 18) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool climbingWall(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 18);
+		else _entityFlags.value &= ~(cast(long)true << 18);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool resting() {
+		return (_entityFlags.value >>> 19) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool resting(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 19);
+		else _entityFlags.value &= ~(cast(long)true << 19);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool sitting() {
+		return (_entityFlags.value >>> 20) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool sitting(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 20);
+		else _entityFlags.value &= ~(cast(long)true << 20);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool angry() {
+		return (_entityFlags.value >>> 21) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool angry(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 21);
+		else _entityFlags.value &= ~(cast(long)true << 21);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool interested() {
+		return (_entityFlags.value >>> 22) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool interested(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 22);
+		else _entityFlags.value &= ~(cast(long)true << 22);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool charged() {
+		return (_entityFlags.value >>> 23) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool charged(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 23);
+		else _entityFlags.value &= ~(cast(long)true << 23);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool tamed() {
+		return (_entityFlags.value >>> 24) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool tamed(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 24);
+		else _entityFlags.value &= ~(cast(long)true << 24);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool leashed() {
+		return (_entityFlags.value >>> 25) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool leashed(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 25);
+		else _entityFlags.value &= ~(cast(long)true << 25);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool sheared() {
+		return (_entityFlags.value >>> 26) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool sheared(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 26);
+		else _entityFlags.value &= ~(cast(long)true << 26);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool gliding() {
+		return (_entityFlags.value >>> 27) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool gliding(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 27);
+		else _entityFlags.value &= ~(cast(long)true << 27);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool elder() {
+		return (_entityFlags.value >>> 28) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool elder(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 28);
+		else _entityFlags.value &= ~(cast(long)true << 28);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool moving() {
+		return (_entityFlags.value >>> 29) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool moving(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 29);
+		else _entityFlags.value &= ~(cast(long)true << 29);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool breathing() {
+		return (_entityFlags.value >>> 30) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool breathing(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 30);
+		else _entityFlags.value &= ~(cast(long)true << 30);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool chested() {
+		return (_entityFlags.value >>> 31) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool chested(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 31);
+		else _entityFlags.value &= ~(cast(long)true << 31);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool stackable() {
+		return (_entityFlags.value >>> 32) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool stackable(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 32);
+		else _entityFlags.value &= ~(cast(long)true << 32);
+		return value;
+	}
+
+	public pure nothrow @property @safe @nogc bool idling() {
+		return (_entityFlags.value >>> 36) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool idling(bool value) {
+		_entityFlags.changed = true;
+		if(value) _entityFlags.value |= (cast(long)true << 36);
+		else _entityFlags.value &= ~(cast(long)true << 36);
+		return value;
+	}
+
+	private Changed!(int) _variant;
+
+	public pure nothrow @property @safe @nogc int variant() {
+		return _variant.value;
+	}
+
+	public pure nothrow @property @safe @nogc int variant(int value) {
+		_variant.changed = true;
+		return _variant.value = value;
+	}
+
+	private Changed!(byte) _color;
+
+	public pure nothrow @property @safe @nogc byte color() {
+		return _color.value;
+	}
+
+	public pure nothrow @property @safe @nogc byte color(byte value) {
+		_color.changed = true;
+		return _color.value = value;
+	}
+
+	private Changed!(string) _nametag;
+
+	public pure nothrow @property @safe @nogc string nametag() {
+		return _nametag.value;
+	}
+
+	public pure nothrow @property @safe @nogc string nametag(string value) {
+		_nametag.changed = true;
+		return _nametag.value = value;
+	}
+
+	private Changed!(long) _owner;
+
+	public pure nothrow @property @safe @nogc long owner() {
+		return _owner.value;
+	}
+
+	public pure nothrow @property @safe @nogc long owner(long value) {
+		_owner.changed = true;
+		return _owner.value = value;
+	}
+
+	private Changed!(short) _air;
+
+	public pure nothrow @property @safe @nogc short air() {
+		return _air.value;
+	}
+
+	public pure nothrow @property @safe @nogc short air(short value) {
+		_air.changed = true;
+		return _air.value = value;
+	}
+
+	private Changed!(int) _potionColor;
+
+	public pure nothrow @property @safe @nogc int potionColor() {
+		return _potionColor.value;
+	}
+
+	public pure nothrow @property @safe @nogc int potionColor(int value) {
+		_potionColor.changed = true;
+		return _potionColor.value = value;
+	}
+
+	private Changed!(byte) _potionAmbient;
+
+	public pure nothrow @property @safe @nogc byte potionAmbient() {
+		return _potionAmbient.value;
+	}
+
+	public pure nothrow @property @safe @nogc byte potionAmbient(byte value) {
+		_potionAmbient.changed = true;
+		return _potionAmbient.value = value;
+	}
+
+	private Changed!(byte) _size;
+
+	public pure nothrow @property @safe @nogc byte size() {
+		return _size.value;
+	}
+
+	public pure nothrow @property @safe @nogc byte size(byte value) {
+		_size.changed = true;
+		return _size.value = value;
+	}
+
+	private Changed!(byte) _playerFlags;
+
+	public pure nothrow @property @safe @nogc byte playerFlags() {
+		return _playerFlags.value;
+	}
+
+	public pure nothrow @property @safe @nogc byte playerFlags(byte value) {
+		_playerFlags.changed = true;
+		return _playerFlags.value = value;
+	}
+
+	public pure nothrow @property @safe @nogc bool asleep() {
+		return (_playerFlags.value >>> 1) & 1;
+	}
+
+	public pure nothrow @property @safe @nogc bool asleep(bool value) {
+		_playerFlags.changed = true;
+		if(value) _playerFlags.value |= (cast(byte)true << 1);
+		else _playerFlags.value &= ~(cast(byte)true << 1);
+		return value;
+	}
+
+	private Changed!(int) _playerIndex;
+
+	public pure nothrow @property @safe @nogc int playerIndex() {
+		return _playerIndex.value;
+	}
+
+	public pure nothrow @property @safe @nogc int playerIndex(int value) {
+		_playerIndex.changed = true;
+		return _playerIndex.value = value;
+	}
+
+	private Changed!(sul.protocol.pocket100.types.BlockPosition) _bedPosition;
+
+	public pure nothrow @property @safe @nogc sul.protocol.pocket100.types.BlockPosition bedPosition() {
+		return _bedPosition.value;
+	}
+
+	public pure nothrow @property @safe @nogc sul.protocol.pocket100.types.BlockPosition bedPosition(sul.protocol.pocket100.types.BlockPosition value) {
+		_bedPosition.changed = true;
+		return _bedPosition.value = value;
+	}
+
+	private Changed!(long) _leadHolder;
+
+	public pure nothrow @property @safe @nogc long leadHolder() {
+		return _leadHolder.value;
+	}
+
+	public pure nothrow @property @safe @nogc long leadHolder(long value) {
+		_leadHolder.changed = true;
+		return _leadHolder.value = value;
+	}
+
+	private Changed!(float) _scale;
+
+	public pure nothrow @property @safe @nogc float scale() {
+		return _scale.value;
+	}
+
+	public pure nothrow @property @safe @nogc float scale(float value) {
+		_scale.changed = true;
+		return _scale.value = value;
+	}
+
+	private Changed!(string) _interactiveTag;
+
+	public pure nothrow @property @safe @nogc string interactiveTag() {
+		return _interactiveTag.value;
+	}
+
+	public pure nothrow @property @safe @nogc string interactiveTag(string value) {
+		_interactiveTag.changed = true;
+		return _interactiveTag.value = value;
+	}
+
+	private Changed!(string) _interactiveTagUrl;
+
+	public pure nothrow @property @safe @nogc string interactiveTagUrl() {
+		return _interactiveTagUrl.value;
+	}
+
+	public pure nothrow @property @safe @nogc string interactiveTagUrl(string value) {
+		_interactiveTagUrl.changed = true;
+		return _interactiveTagUrl.value = value;
+	}
+
+	private Changed!(short) _maxAir;
+
+	public pure nothrow @property @safe @nogc short maxAir() {
+		return _maxAir.value;
+	}
+
+	public pure nothrow @property @safe @nogc short maxAir(short value) {
+		_maxAir.changed = true;
+		return _maxAir.value = value;
+	}
+
+	private Changed!(int) _markVariant;
+
+	public pure nothrow @property @safe @nogc int markVariant() {
+		return _markVariant.value;
+	}
+
+	public pure nothrow @property @safe @nogc int markVariant(int value) {
+		_markVariant.changed = true;
+		return _markVariant.value = value;
+	}
+
+	private Changed!(float) _boundingBoxWidth;
+
+	public pure nothrow @property @safe @nogc float boundingBoxWidth() {
+		return _boundingBoxWidth.value;
+	}
+
+	public pure nothrow @property @safe @nogc float boundingBoxWidth(float value) {
+		_boundingBoxWidth.changed = true;
+		return _boundingBoxWidth.value = value;
+	}
+
+	private Changed!(float) _boundingBoxHeight;
+
+	public pure nothrow @property @safe @nogc float boundingBoxHeight() {
+		return _boundingBoxHeight.value;
+	}
+
+	public pure nothrow @property @safe @nogc float boundingBoxHeight(float value) {
+		_boundingBoxHeight.changed = true;
+		return _boundingBoxHeight.value = value;
+	}
+
+	private Changed!(int) _fuseLength;
+
+	public pure nothrow @property @safe @nogc int fuseLength() {
+		return _fuseLength.value;
+	}
+
+	public pure nothrow @property @safe @nogc int fuseLength(int value) {
+		_fuseLength.changed = true;
+		return _fuseLength.value = value;
+	}
 
 }

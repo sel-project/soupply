@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<metadata>
+
+	<software>Minecraft</software>
+
+	<protocol>316</protocol>
+
+	<types>
+
+		<type name="byte" type="byte" id="0" />
+		<type name="int" type="varuint" id="1" />
+		<type name="float" type="float" id="2" />
+		<type name="string" type="string" id="3" />
+		<type name="chat" type="string" id="4" />
+		<type name="slot" type="slot" id="5" />
+		<type name="bool" type="bool" id="6" />
+		<type name="rotation" type="float<xyz>" id="7" />
+		<type name="position" type="ulong" id="8" />
+		<type name="optional-position" type="optional-position" id="9" />
+		<type name="direction" type="varuint" id="10" />
+		<type name="uuid" type="optional-uuid" id="11" />
+		<type name="block" type="varuint" id="12" />
+
+	</types>
+
+	<metadatas>
+
+		<!-- TODO -->
+
+	</metadatas>
+
+</metadata>

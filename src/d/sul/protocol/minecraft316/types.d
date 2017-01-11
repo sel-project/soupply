@@ -17,6 +17,8 @@ import std.uuid : UUID;
 import sul.utils.buffer;
 import sul.utils.var;
 
+import sul.metadata.minecraft316;
+
 struct Statistic {
 
 	public string name;
@@ -83,7 +85,7 @@ struct Slot {
 			id=readBigEndianShort();
 			if(id>0){ count=readBigEndianUbyte(); }
 			if(id>0){ damage=readBigEndianUshort(); }
-			if(id>0){ nbt=_buffer[_index..$].dup; _index=buffer.length; }
+			if(id>0){ nbt=_buffer[_index..$].dup; _index=_buffer.length; }
 		}
 	}
 
@@ -173,19 +175,19 @@ struct ListAddPlayer {
 			writeBytes(varuint.encode(gamemode));
 			writeBytes(varuint.encode(latency));
 			writeBigEndianBool(hasDisplayName);
-			if(has_display_name==true){ writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName); }
+			if(hasDisplayName==true){ writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName); }
 		}
 	}
 
 	public pure nothrow @safe void decode(Buffer buffer) {
 		with(buffer) {
-			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 			uint bmftzq=varuint.decode(_buffer, &_index); name=readString(bmftzq);
 			properties.length=varuint.decode(_buffer, &_index); foreach(ref chjvcgvydgllcw;properties){ chjvcgvydgllcw.decode(bufferInstance); }
 			gamemode=varuint.decode(_buffer, &_index);
 			latency=varuint.decode(_buffer, &_index);
 			hasDisplayName=readBigEndianBool();
-			if(has_display_name==true){ uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu); }
+			if(hasDisplayName==true){ uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu); }
 		}
 	}
 
@@ -211,8 +213,29 @@ struct ListUpdateGamemode {
 
 	public pure nothrow @safe void decode(Buffer buffer) {
 		with(buffer) {
-			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 			gamemode=varuint.decode(_buffer, &_index);
+		}
+	}
+
+}
+
+struct ListUpdateLatency {
+
+	public UUID uuid;
+	public uint latency;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBytes(uuid.data);
+			writeBytes(varuint.encode(latency));
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+			latency=varuint.decode(_buffer, &_index);
 		}
 	}
 
@@ -228,15 +251,57 @@ struct ListUpdateDisplayName {
 		with(buffer) {
 			writeBytes(uuid.data);
 			writeBigEndianBool(hasDisplayName);
-			if(has_display_name==true){ writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName); }
+			if(hasDisplayName==true){ writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName); }
 		}
 	}
 
 	public pure nothrow @safe void decode(Buffer buffer) {
 		with(buffer) {
-			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 			hasDisplayName=readBigEndianBool();
-			if(has_display_name==true){ uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu); }
+			if(hasDisplayName==true){ uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu); }
+		}
+	}
+
+}
+
+struct OptionalPosition {
+
+	public bool hasPosition;
+	public ulong position;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianBool(hasPosition);
+			if(hasPosition==true){ writeBigEndianUlong(position); }
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			hasPosition=readBigEndianBool();
+			if(hasPosition==true){ position=readBigEndianUlong(); }
+		}
+	}
+
+}
+
+struct OptionalUuid {
+
+	public bool hasUuid;
+	public UUID uuid;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianBool(hasUuid);
+			writeBytes(uuid.data);
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			hasUuid=readBigEndianBool();
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		}
 	}
 

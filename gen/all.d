@@ -47,11 +47,13 @@ alias Item = Tuple!(string, "name", ushort, "id", ushort, "meta", Enchantment[],
 alias Creative = File!(Item[]);
 
 
+alias MetadataType = Tuple!(string, "name", string, "type", ubyte, "id");
+
 alias MetadataFlag = Tuple!(string, "name", string, "description", size_t, "bit");
 
-alias MetadataType = Tuple!(string, "name", string, "description", string, "type", ubyte, "id", string, "def", bool, "required", MetadataFlag[], "flags");
+alias MetadataData = Tuple!(string, "name", string, "description", string, "type", ubyte, "id", string, "def", bool, "required", MetadataFlag[], "flags");
 
-alias Metadata = Tuple!(ubyte[string], "types", MetadataType[], "metadatas");
+alias Metadata = Tuple!(MetadataType[], "types", MetadataData[], "data");
 
 alias Metadatas = File!Metadata;
 
@@ -161,27 +163,27 @@ void main(string[] args) {
 					case "types":
 						foreach(t ; element.elements) {
 							if(t.tag.name == "type") {
-
+								m.data.types ~= MetadataType(t.tag.attr["name"].replace("-", "_"), t.tag.attr["type"].replace("-", "_"), t.tag.attr["id"].to!ubyte);
 							}
 						}
 						break;
 					case "metadatas":
 						foreach(md ; element.elements) {
 							if(md.tag.name == "type") {
-								MetadataType type;
-								type.name = md.tag.attr["name"].replace("-", "_");
-								type.description = text(md);
-								type.type = md.tag.attr["type"].replace("-", "_");
-								type.id = md.tag.attr["id"].to!ubyte;
-								if("default" in md.tag.attr) type.def = md.tag.attr["default"];
-								if("required" in md.tag.attr) type.required = md.tag.attr["required"].to!bool;
+								MetadataData data;
+								data.name = md.tag.attr["name"].replace("-", "_");
+								data.description = text(md);
+								data.type = md.tag.attr["type"].replace("-", "_");
+								data.id = md.tag.attr["id"].to!ubyte;
+								if("default" in md.tag.attr) data.def = md.tag.attr["default"];
+								if("required" in md.tag.attr) data.required = md.tag.attr["required"].to!bool;
 								foreach(f ; md.elements) {
 									if(f.tag.name == "flag") {
-										type.flags ~= MetadataFlag(f.tag.attr["name"].replace("-", "_"), text(f), to!size_t(f.tag.attr["bit"]));
+										data.flags ~= MetadataFlag(f.tag.attr["name"].replace("-", "_"), text(f), to!size_t(f.tag.attr["bit"]));
 
 									}
 								}
-								m.data.metadatas ~= type;
+								m.data.data ~= data;
 							}
 						}
 						break;
@@ -297,7 +299,7 @@ void main(string[] args) {
 												}
 												packet.fields ~= field;
 											} else if(fv.tag.name == "variants") {
-												packet.variantField = fv.tag.attr["field"];
+												packet.variantField = fv.tag.attr["field"].replace("-", "_");
 												foreach(v ; fv.elements) {
 													if(v.tag.name == "variant") {
 														Variant variant;

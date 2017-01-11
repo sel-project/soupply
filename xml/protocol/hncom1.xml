@@ -95,6 +95,7 @@
 				<field name="language" type="string" />
 				<field name="accepted-languages" type="string[]" />
 				<field name="nodes" type="string[]" />
+				<field name="uuid-pool" type="ulong" />
 				<field name="social-json" type="string" />
 				<field name="additional-json" type="string" />
 			</packet>

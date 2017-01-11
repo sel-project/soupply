@@ -148,7 +148,7 @@ class OpenConnectionRequest1 : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		if(_buffer.length>=_index+magic.length){ magic=_buffer[_index.._index+magic.length].dup; _index+=magic.length; }
 		protocol=readBigEndianUbyte();
-		mtu=_buffer[_index..$].dup; _index=buffer.length;
+		mtu=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe OpenConnectionRequest1 fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -267,20 +267,20 @@ class OpenConnectionReply2 : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["magic", "serverId", "serverAddress", "mtuLength", "security"];
+	public enum string[] FIELDS = ["magic", "serverId", "clientAddress", "mtuLength", "security"];
 
 	public ubyte[16] magic;
 	public long serverId;
-	public sul.protocol.raknet8.types.Address serverAddress;
+	public sul.protocol.raknet8.types.Address clientAddress;
 	public ushort mtuLength;
 	public bool security;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(ubyte[16] magic, long serverId=long.init, sul.protocol.raknet8.types.Address serverAddress=sul.protocol.raknet8.types.Address.init, ushort mtuLength=ushort.init, bool security=bool.init) {
+	public pure nothrow @safe @nogc this(ubyte[16] magic, long serverId=long.init, sul.protocol.raknet8.types.Address clientAddress=sul.protocol.raknet8.types.Address.init, ushort mtuLength=ushort.init, bool security=bool.init) {
 		this.magic = magic;
 		this.serverId = serverId;
-		this.serverAddress = serverAddress;
+		this.clientAddress = clientAddress;
 		this.mtuLength = mtuLength;
 		this.security = security;
 	}
@@ -290,7 +290,7 @@ class OpenConnectionReply2 : Buffer {
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(magic);
 		writeBigEndianLong(serverId);
-		serverAddress.encode(bufferInstance);
+		clientAddress.encode(bufferInstance);
 		writeBigEndianUshort(mtuLength);
 		writeBigEndianBool(security);
 		return _buffer;
@@ -300,7 +300,7 @@ class OpenConnectionReply2 : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		if(_buffer.length>=_index+magic.length){ magic=_buffer[_index.._index+magic.length].dup; _index+=magic.length; }
 		serverId=readBigEndianLong();
-		serverAddress.decode(bufferInstance);
+		clientAddress.decode(bufferInstance);
 		mtuLength=readBigEndianUshort();
 		security=readBigEndianBool();
 	}

@@ -67,7 +67,16 @@
 			"icon": [
 				{
 					"name": "direction_and_type",
-					"type": "ubyte"
+					"type": "ubyte",
+					"constants": {
+						"white_arrow": 0,
+						"green_arrow": 1,
+						"red_arrow": 2,
+						"blue_arrow": 3,
+						"white_cross": 4,
+						"red_pointer": 5,
+						"white_circle": 6
+					}
 				},
 				{
 					"name": "position",
@@ -110,7 +119,13 @@
 				},
 				{
 					"name": "gamemode",
-					"type": "varuint"
+					"type": "varuint",
+					"constants": {
+						"survival": 0,
+						"creative": 1,
+						"adventure": 2,
+						"spectator": 3
+					}
 				},
 				{
 					"name": "latency",
@@ -134,6 +149,23 @@
 				},
 				{
 					"name": "gamemode",
+					"type": "varuint",
+					"constants": {
+						"survival": 0,
+						"creative": 1,
+						"adventure": 2,
+						"spectator": 3
+					}
+				}
+			],
+
+			"list_update_latency": [
+				{
+					"name": "uuid",
+					"type": "uuid"
+				},
+				{
+					"name": "latency",
 					"type": "varuint"
 				}
 			],
@@ -200,7 +232,11 @@
 					},
 					{
 						"name": "next",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"status": 1,
+							"login": 2
+						}
 					}
 				]
 			},
@@ -403,7 +439,10 @@
 					},
 					{
 						"name": "type",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"thunderbolt": 1
+						}
 					},
 					{
 						"name": "position",
@@ -479,7 +518,13 @@
 					},
 					{
 						"name": "direction",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"north": 0,
+							"west": 1,
+							"south": 2,
+							"east": 3
+						}
 					}
 				]
 			},
@@ -527,7 +572,15 @@
 					},
 					{
 						"name": "animation",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"swing_arm": 0,
+							"take_damage": 1,
+							"leave_bed": 2,
+							"eat_food": 3,
+							"critical_effect": 4,
+							"magical_critical_effect": 5
+						}
 					}
 				]
 			},
@@ -575,7 +628,15 @@
 					},
 					{
 						"name": "action",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"mob_spawner_data": 1,
+							"command_block_text": 2,
+							"beacon_powers": 3,
+							"mob_head_data": 4,
+							"flower_pot_flower": 5,
+							"banner_data": 6
+						}
 					},
 					{
 						"name": "nbt",
@@ -595,11 +656,33 @@
 					},
 					{
 						"name": "action",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"note_block_harp": 0,
+							"note_block_bass_drum": 1,
+							"note_block_snare_drum": 2,
+							"note_block_clicks": 3,
+							"note_block_sticks": 3,
+							"note_block_bass_guitar": 4,
+							"piston_extend": 0,
+							"piston_retract": 1,
+							"chest_watchers": 1,
+							"beacon_recalculate": 1,
+							"mob_spawner_reset_delay": 1,
+							"end_gateway_yellow_beam": 1
+						}
 					},
 					{
 						"name": "parameter",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"piston_down": 0,
+							"piston_up": 1,
+							"piston_south": 2,
+							"piston_west": 3,
+							"piston_north": 4,
+							"piston_east": 5
+						}
 					},
 					{
 						"name": "block_type",
@@ -654,15 +737,35 @@
 								},
 								{
 									"name": "color",
-									"type": "varuint"
+									"type": "varuint",
+									"constants": {
+										"pink": 0,
+										"blue": 1,
+										"red": 2,
+										"green": 3,
+										"yellow": 4,
+										"purple": 5,
+										"white": 6
+									}
 								},
 								{
 									"name": "division",
-									"type": "varuint"
+									"type": "varuint",
+									"constants": {
+										"no_division": 0,
+										"six_notches": 1,
+										"ten_notches": 2,
+										"twelve_notches": 3,
+										"twenty_notches": 4
+									}
 								},
 								{
 									"name": "flags",
-									"type": "ubyte"
+									"type": "ubyte",
+									"constants": {
+										"dark_sky": 1,
+										"is_dragon_bar": 2
+									}
 								}
 							]
 						},
@@ -693,11 +796,27 @@
 							"fields": [
 								{
 									"name": "color",
-									"type": "varuint"
+									"type": "varuint",
+									"constants": {
+										"pink": 0,
+										"blue": 1,
+										"red": 2,
+										"green": 3,
+										"yellow": 4,
+										"purple": 5,
+										"white": 6
+									}
 								},
 								{
 									"name": "division",
-									"type": "varuint"
+									"type": "varuint",
+									"constants": {
+										"no_division": 0,
+										"six_notches": 1,
+										"ten_notches": 2,
+										"twelve_notches": 3,
+										"twenty_notches": 4
+									}
 								}
 							]
 						},
@@ -706,7 +825,11 @@
 							"fields": [
 								{
 									"name": "flags",
-									"type": "ubyte"
+									"type": "ubyte",
+									"constants": {
+										"dark_sky": 1,
+										"is_dragon_bar": 2
+									}
 								}
 							]
 						}
@@ -721,7 +844,13 @@
 				"fields": [
 					{
 						"name": "difficulty",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"peaceful": 0,
+							"easy": 1,
+							"normal": 2,
+							"hard": 3
+						}
 					}
 				]
 			},
@@ -749,7 +878,12 @@
 					},
 					{
 						"name": "position",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"chat": 0,
+							"system_message": 1,
+							"above_hotbar": 2
+						}
 					}
 				]
 			},
@@ -853,7 +987,28 @@
 					},
 					{
 						"name": "property",
-						"type": "ushort"
+						"type": "ushort",
+						"constants": {
+							"furnance_fire_icon": 0,
+							"furnace_max_fuel_burn_time": 1,
+							"furnace_progress_arrow": 2,
+							"furnce_max_progress": 3,
+							"enchantment_level_requirement_top": 0,
+							"enchantment_level_requirement_middle": 1,
+							"enchantment_level_requirement_bottom": 2,
+							"enchantment_seed": 3,
+							"enchantment_id_top": 4,
+							"enchantment_id_middle": 5,
+							"enchantment_id_bottom": 6,
+							"enchantment_level_top": 7,
+							"enchantment_level_middle": 8,
+							"enchantment_level_bottom": 9,
+							"beacon_power_level": 0,
+							"beacon_first_effect": 1,
+							"beacon_second_effect": 2,
+							"anvil_repair_cost": 0,
+							"brewing_stand_brew_time": 0
+						}
 					},
 					{
 						"name": "value",
@@ -965,7 +1120,39 @@
 					},
 					{
 						"name": "status",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"spawn_tipped_arrow_particle_effects": 0,
+							"play_jumping_animation_and_particles": 1,
+							"reset_spawner_delay": 1,
+							"play_hurt_animation_and_sound": 2,
+							"play_dead_animation_and_sound": 3,
+							"play_attack_animation_and_sound": 4,
+							"spawn_smoke_particles": 6,
+							"spawn_heart_particles": 7,
+							"play_shaking_water_animation": 8,
+							"finished_consuming": 9,
+							"play_eating_grass_animation": 10,
+							"ignite_minecart_tnt": 10,
+							"hold_poppy": 11,
+							"spawn_villager_mating_heart_particles": 12,
+							"spawn_villager_angry_particles": 13,
+							"spawn_villager_happy_particles": 14,
+							"spawn_witch_magic_particles": 15,
+							"play_zombie_cure_finished_sound": 16,
+							"spawn_firework_explosion_effect": 17,
+							"spawn_love_particles": 18,
+							"reset_squid_rotation": 19,
+							"spawn_explosion_particles": 20,
+							"play_guardian_sound_effect": 21,
+							"enable_reduced_debug_screen": 22,
+							"disable_reduced_debug_screen": 23,
+							"set_op_permission_level_0": 24,
+							"set_op_permission_level_1": 25,
+							"set_op_permission_level_2": 26,
+							"set_op_permission_level_3": 27,
+							"set_op_permission_level_4": 28
+						}
 					}
 				]
 			},
@@ -1013,11 +1200,35 @@
 				"fields": [
 					{
 						"name": "reason",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"invalid_bed": 0,
+							"end_raining": 1,
+							"begin_raining": 2,
+							"change_gamemode": 3,
+							"exit_end": 4,
+							"demo_message": 5,
+							"arrow_hitting_player": 6,
+							"fade_value": 7,
+							"fade_time": 8,
+							"play_mob_appearance": 10
+						}
 					},
 					{
 						"name": "value",
-						"type": "float"
+						"type": "float",
+						"constants": {
+							"survival": 0,
+							"creative": 1,
+							"adventure": 2,
+							"spectator": 3,
+							"show_demo_screen": 0,
+							"tell_movement_controls": 101,
+							"tell_jump_controls": 102,
+							"tell_inventory_controls": 103,
+							"bright": 0,
+							"dark": 1
+						}
 					}
 				]
 			},
@@ -1065,7 +1276,34 @@
 				"fields": [
 					{
 						"name": "effect_id",
-						"type": "uint"
+						"type": "uint",
+						"constants": {
+							"dispenser_dispense": 1000,
+							"dispenser_fail_dispense": 1001,
+							"dispenser_shoot": 1002,
+							"door_open_or_close": 1003,
+							"firework_shot": 1004,
+							"play_disc": 1005,
+							"ghast_warn": 1007,
+							"ghast_shoot": 1008,
+							"zombie_attack_wood_door": 1010,
+							"zombie_attack_iron_door": 1011,
+							"zombie_break_wood_door": 1012,
+							"wither_spawn": 1013,
+							"wither_shoot": 1014,
+							"bat_take_off": 1015,
+							"zombie_infect_villager": 1016,
+							"zombie_villager_convert": 1017,
+							"anvil_break": 1019,
+							"anvil_use": 1020,
+							"anvil_land": 1021,
+							"spawn_10_smoke_particles": 2000,
+							"break_break_particles": 2001,
+							"splash_potion_particles_and_sound": 2002,
+							"ender_eye_break_particles_and_sound": 2003,
+							"mob_spawn_particles": 2004,
+							"bonemeal_particles": 2005
+						}
 					},
 					{
 						"name": "position",
@@ -1089,7 +1327,55 @@
 				"fields": [
 					{
 						"name": "particle_id",
-						"type": "uint"
+						"type": "uint",
+						"constants": {
+							"explode": 0,
+							"large_explosion": 1,
+							"huge_explosion": 2,
+							"firework_spark": 3,
+							"bubble": 4,
+							"splash": 5,
+							"wake": 6,
+							"suspended": 7,
+							"depth_suspend": 8,
+							"crit": 9,
+							"magic_crit": 10,
+							"smoke": 11,
+							"large_smoke": 12,
+							"spell": 13,
+							"instant_spell": 14,
+							"mob_spell": 15,
+							"mob_spell_ambient": 16,
+							"witch_magic": 17,
+							"drip_water": 18,
+							"drip_lava": 19,
+							"angry_villager": 20,
+							"happy_villager": 21,
+							"town_aura": 22,
+							"note": 23,
+							"portal": 24,
+							"enchantment_table": 25,
+							"flame": 26,
+							"lava": 27,
+							"footstep": 28,
+							"cloud": 29,
+							"red_dust": 30,
+							"snowball_poof": 31,
+							"snow_shovel": 32,
+							"slime": 33,
+							"heart": 34,
+							"barrier": 35,
+							"item_crack": 36,
+							"block_crack": 37,
+							"block_dust": 38,
+							"droplet": 39,
+							"take": 40,
+							"mob_appearance": 41,
+							"dragon_breath": 42,
+							"endrod": 43,
+							"damage_indicator": 44,
+							"sweep_attack": 45
+						}
 					},
 					{
 						"name": "long_distance",
@@ -1129,15 +1415,32 @@
 					},
 					{
 						"name": "gamemode",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"survival": 0,
+							"creative": 1,
+							"adventure": 2,
+							"spectator": 3
+						}
 					},
 					{
 						"name": "dimension",
-						"type": "byte"
+						"type": "byte",
+						"constants": {
+							"end": "-1",
+							"overworld": 0,
+							"nether": 1
+						}
 					},
 					{
 						"name": "difficulty",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"peaceful": 0,
+							"easy": 1,
+							"normal": 2,
+							"hard": 3
+						}
 					},
 					{
 						"name": "max_players",
@@ -1145,7 +1448,13 @@
 					},
 					{
 						"name": "level_type",
-						"type": "string"
+						"type": "string",
+						"constants": {
+							"infinity": "default",
+							"flat": "flat",
+							"amplified": "amplified",
+							"large_biomes": "largeBiomes"
+						}
 					},
 					{
 						"name": "reduced_debug",
@@ -1317,7 +1626,13 @@
 				"fields": [
 					{
 						"name": "flags",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"invulnerable": 1,
+							"flying": 2,
+							"allow_flying": 4,
+							"creative_mode": 8
+						}
 					},
 					{
 						"name": "flying_speed",
@@ -1341,7 +1656,7 @@
 					}
 				],
 				"variants": {
-					"field": "event-id",
+					"field": "event_id",
 					"values": {
 						"enter_combat": {
 							"value": 0,
@@ -1462,7 +1777,14 @@
 					},
 					{
 						"name": "flags",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"x": 1,
+							"y": 2,
+							"z": 4,
+							"y_rotation": 8,
+							"x_rotation": 16
+						}
 					},
 					{
 						"name": "teleport_id",
@@ -1538,19 +1860,42 @@
 				"fields": [
 					{
 						"name": "dimension",
-						"type": "int"
+						"type": "int",
+						"constants": {
+							"end": "-1",
+							"overworld": 0,
+							"nether": 1
+						}
 					},
 					{
 						"name": "difficulty",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"peaceful": 0,
+							"easy": 1,
+							"normal": 2,
+							"hard": 3
+						}
 					},
 					{
 						"name": "gamemode",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"survival": 0,
+							"creative": 1,
+							"adventure": 2,
+							"spectator": 3
+						}
 					},
 					{
 						"name": "level_type",
-						"type": "string"
+						"type": "string",
+						"constants": {
+							"infinity": "default",
+							"flat": "flat",
+							"amplified": "amplified",
+							"large_biomes": "largeBiomes"
+						}
 					}
 				]
 			},
@@ -1705,7 +2050,12 @@
 				"fields": [
 					{
 						"name": "position",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"list": 0,
+							"sidebar": 1,
+							"below_name": 2
+						}
 					},
 					{
 						"name": "score_name",
@@ -1833,7 +2183,12 @@
 					},
 					{
 						"name": "mode",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"create": 0,
+							"remove": 1,
+							"update": 2
+						}
 					},
 					{
 						"name": "value",
@@ -1843,7 +2198,11 @@
 					{
 						"name": "type",
 						"type": "string",
-						"when": "mode!=1"
+						"when": "mode!=1",
+						"constants": {
+							"numeric": "integer",
+							"graphic": "hearts"
+						}
 					}
 				]
 			},
@@ -1898,15 +2257,31 @@
 								},
 								{
 									"name": "friendly_flags",
-									"type": "ubyte"
+									"type": "ubyte",
+									"constants": {
+										"friendly_fire": 1,
+										"see_team_invisible_players": 2
+									}
 								},
 								{
 									"name": "nametag_visibility",
-									"type": "string"
+									"type": "string",
+									"constants": {
+										"always_hide": "always",
+										"hide_other_teams": "hideOtherTeams",
+										"hide_own_team": "hideOwnTeam",
+										"never_hide": "never"
+									}
 								},
 								{
 									"name": "collision_rule",
-									"type": "string"
+									"type": "string",
+									"constants": {
+										"always_push": "always",
+										"push_other_teams": "pushOtherTeams",
+										"push_own_team": "pushOwnTeam",
+										"never_push": "never"
+									}
 								},
 								{
 									"name": "color",
@@ -1939,15 +2314,31 @@
 								},
 								{
 									"name": "friendly_flags",
-									"type": "ubyte"
+									"type": "ubyte",
+									"constants": {
+										"friendly_fire": 1,
+										"see_team_invisible_players": 2
+									}
 								},
 								{
 									"name": "nametag_visibility",
-									"type": "string"
+									"type": "string",
+									"constants": {
+										"always_hide": "always",
+										"hide_other_teams": "hideOtherTeams",
+										"hide_own_team": "hideOwnTeam",
+										"never_hide": "never"
+									}
 								},
 								{
 									"name": "collision_rule",
-									"type": "string"
+									"type": "string",
+									"constants": {
+										"always_push": "always",
+										"push_other_teams": "pushOtherTeams",
+										"push_own_team": "pushOwnTeam",
+										"never_push": "never"
+									}
 								},
 								{
 									"name": "color",
@@ -1988,7 +2379,11 @@
 					},
 					{
 						"name": "action",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"update": 0,
+							"remove": 1
+						}
 					},
 					{
 						"name": "objective_name",
@@ -2298,7 +2693,12 @@
 				"fields": [
 					{
 						"name": "action",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"respawn": 0,
+							"request_stats": 1,
+							"open_inventory": 2
+						}
 					}
 				]
 			},
@@ -2318,7 +2718,12 @@
 					},
 					{
 						"name": "chat_mode",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"enabled": 0,
+							"commands_only": 1,
+							"disabled": 2
+						}
 					},
 					{
 						"name": "chat_colors",
@@ -2326,11 +2731,24 @@
 					},
 					{
 						"name": "displayed_skin_parts",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"cape": 1,
+							"jacket": 2,
+							"left_sleeve": 4,
+							"right_sleeve": 8,
+							"left_pants": 16,
+							"right_pants": 32,
+							"hat": 64
+						}
 					},
 					{
 						"name": "main_hand",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"right": 0,
+							"left": 1
+						}
 					}
 				]
 			},
@@ -2442,7 +2860,12 @@
 					},
 					{
 						"name": "type",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"interact": 0,
+							"attack": 1,
+							"interact_at": 2
+						}
 					},
 					{
 						"name": "target_position",
@@ -2452,7 +2875,11 @@
 					{
 						"name": "hand",
 						"type": "varuint",
-						"when": "type==2"
+						"when": "type==2",
+						"constants": {
+							"main_hand": 0,
+							"off_hand": 1
+						}
 					}
 				]
 			},
@@ -2584,7 +3011,13 @@
 				"fields": [
 					{
 						"name": "flags",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"creative_mode": 1,
+							"flying": 2,
+							"allow_flying": 4,
+							"invincible": 8
+						}
 					},
 					{
 						"name": "flying_speed",
@@ -2604,7 +3037,17 @@
 				"fields": [
 					{
 						"name": "status",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"start_digging": 0,
+							"cancel_digging": 1,
+							"finish_digging": 2,
+							"drop_item_stack": 3,
+							"drop_item": 4,
+							"shoot_arrow": 5,
+							"finish_eating": 5,
+							"swap_item_in_hand": 6
+						}
 					},
 					{
 						"name": "position",
@@ -2628,7 +3071,18 @@
 					},
 					{
 						"name": "action",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"start_sneaking": 0,
+							"stop_sneaking": 1,
+							"leave_bed": 2,
+							"start_sprinting": 3,
+							"stop_sprinting": 4,
+							"start_horse_jump": 5,
+							"stop_horse_jump": 6,
+							"open_horse_inventory": 7,
+							"start_elytra_flying": 8
+						}
 					},
 					{
 						"name": "jump_boost",
@@ -2653,7 +3107,11 @@
 					},
 					{
 						"name": "flags",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"jump": 1,
+							"unmount": 2
+						}
 					}
 				]
 			},
@@ -2669,7 +3127,13 @@
 					},
 					{
 						"name": "result",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"loaded": 0,
+							"declined": 1,
+							"failed": 2,
+							"accepted": 3
+						}
 					}
 				]
 			},
@@ -2725,7 +3189,11 @@
 				"fields": [
 					{
 						"name": "hand",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"main_hand": 0,
+							"off_hand": 1
+						}
 					}
 				]
 			},
@@ -2757,7 +3225,11 @@
 					},
 					{
 						"name": "hand",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"main_hand": 0,
+							"off_hand": 1
+						}
 					},
 					{
 						"name": "cursor_position",
@@ -2773,7 +3245,11 @@
 				"fields": [
 					{
 						"name": "hand",
-						"type": "varuint"
+						"type": "varuint",
+						"constants": {
+							"main_hand": 0,
+							"off_hand": 1
+						}
 					}
 				]
 			}

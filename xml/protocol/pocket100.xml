@@ -62,6 +62,17 @@
 			<field name="skin" type="skin" />
 		</type>
 
+		<type name="recipe">
+			<field name="type" type="varint">
+				<constant name="shapeless" value="0" />
+				<constant name="shaped" value="1" />
+				<constant name="furnace" value="2" />
+				<constant name="furnace-data" value="3" />
+				<constant name="multi" value="4" />
+			</field>
+			<!-- TODO -->
+		</type>
+
 	</encoding>
 
 	<packets>

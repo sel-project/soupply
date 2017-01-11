@@ -129,7 +129,7 @@ class Info : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["serverId", "displayName", "onlineMode", "games", "online", "max", "language", "acceptedLanguages", "nodes", "socialJson", "additionalJson"];
+	public enum string[] FIELDS = ["serverId", "displayName", "onlineMode", "games", "online", "max", "language", "acceptedLanguages", "nodes", "uuidPool", "socialJson", "additionalJson"];
 
 	public ulong serverId;
 	public string displayName;
@@ -140,12 +140,13 @@ class Info : Buffer {
 	public string language;
 	public string[] acceptedLanguages;
 	public string[] nodes;
+	public ulong uuidPool;
 	public string socialJson;
 	public string additionalJson;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(ulong serverId, string displayName=string.init, bool onlineMode=bool.init, sul.protocol.hncom1.types.Game[] games=(sul.protocol.hncom1.types.Game[]).init, uint online=uint.init, uint max=uint.init, string language=string.init, string[] acceptedLanguages=(string[]).init, string[] nodes=(string[]).init, string socialJson=string.init, string additionalJson=string.init) {
+	public pure nothrow @safe @nogc this(ulong serverId, string displayName=string.init, bool onlineMode=bool.init, sul.protocol.hncom1.types.Game[] games=(sul.protocol.hncom1.types.Game[]).init, uint online=uint.init, uint max=uint.init, string language=string.init, string[] acceptedLanguages=(string[]).init, string[] nodes=(string[]).init, ulong uuidPool=ulong.init, string socialJson=string.init, string additionalJson=string.init) {
 		this.serverId = serverId;
 		this.displayName = displayName;
 		this.onlineMode = onlineMode;
@@ -155,6 +156,7 @@ class Info : Buffer {
 		this.language = language;
 		this.acceptedLanguages = acceptedLanguages;
 		this.nodes = nodes;
+		this.uuidPool = uuidPool;
 		this.socialJson = socialJson;
 		this.additionalJson = additionalJson;
 	}
@@ -171,6 +173,7 @@ class Info : Buffer {
 		writeBytes(varuint.encode(cast(uint)language.length)); writeString(language);
 		writeBytes(varuint.encode(cast(uint)acceptedLanguages.length)); foreach(ywnjzxb0zwrmyw5n;acceptedLanguages){ writeBytes(varuint.encode(cast(uint)ywnjzxb0zwrmyw5n.length)); writeString(ywnjzxb0zwrmyw5n); }
 		writeBytes(varuint.encode(cast(uint)nodes.length)); foreach(bm9kzxm;nodes){ writeBytes(varuint.encode(cast(uint)bm9kzxm.length)); writeString(bm9kzxm); }
+		writeLittleEndianUlong(uuidPool);
 		writeBytes(varuint.encode(cast(uint)socialJson.length)); writeString(socialJson);
 		writeBytes(varuint.encode(cast(uint)additionalJson.length)); writeString(additionalJson);
 		return _buffer;
@@ -187,6 +190,7 @@ class Info : Buffer {
 		uint bgfuz3vhz2u=varuint.decode(_buffer, &_index); language=readString(bgfuz3vhz2u);
 		acceptedLanguages.length=varuint.decode(_buffer, &_index); foreach(ref ywnjzxb0zwrmyw5n;acceptedLanguages){ uint exduanp4yjb6d3jt=varuint.decode(_buffer, &_index); ywnjzxb0zwrmyw5n=readString(exduanp4yjb6d3jt); }
 		nodes.length=varuint.decode(_buffer, &_index); foreach(ref bm9kzxm;nodes){ uint ym05a3p4bq=varuint.decode(_buffer, &_index); bm9kzxm=readString(ym05a3p4bq); }
+		uuidPool=readLittleEndianUlong();
 		uint c29jawfssnnvbg=varuint.decode(_buffer, &_index); socialJson=readString(c29jawfssnnvbg);
 		uint ywrkaxrpb25hbepz=varuint.decode(_buffer, &_index); additionalJson=readString(ywrkaxrpb25hbepz);
 	}

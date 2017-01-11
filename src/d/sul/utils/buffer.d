@@ -46,7 +46,7 @@ class Buffer {
 	public pure nothrow @safe bool readBigEndianBool() {
 		immutable end = this._index + 1;
 		if(this._buffer.length < end) return bool.init;
-		ubyte[bool.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[1] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return cast(bool)bytes[0];
 	}
@@ -58,7 +58,7 @@ class Buffer {
 	public pure nothrow @safe bool readLittleEndianBool() {
 		immutable end = this._index + 1;
 		if(this._buffer.length < end) return bool.init;
-		ubyte[bool.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[1] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return cast(bool)bytes[0];
 	}
@@ -70,7 +70,7 @@ class Buffer {
 	public pure nothrow @safe byte readBigEndianByte() {
 		immutable end = this._index + 1;
 		if(this._buffer.length < end) return byte.init;
-		ubyte[byte.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[1] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return cast(byte)bytes[0];
 	}
@@ -82,7 +82,7 @@ class Buffer {
 	public pure nothrow @safe byte readLittleEndianByte() {
 		immutable end = this._index + 1;
 		if(this._buffer.length < end) return byte.init;
-		ubyte[byte.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[1] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return cast(byte)bytes[0];
 	}
@@ -94,7 +94,7 @@ class Buffer {
 	public pure nothrow @safe ubyte readBigEndianUbyte() {
 		immutable end = this._index + 1;
 		if(this._buffer.length < end) return byte.init;
-		ubyte[byte.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[1] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return cast(byte)bytes[0];
 	}
@@ -106,55 +106,55 @@ class Buffer {
 	public pure nothrow @safe ubyte readLittleEndianUbyte() {
 		immutable end = this._index + 1;
 		if(this._buffer.length < end) return byte.init;
-		ubyte[byte.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[1] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return cast(byte)bytes[0];
 	}
 
 	public pure nothrow @safe void writeBigEndianShort(short a) {
-		this._buffer ~= nativeToBigEndian!short(a)[$-2..$];
+		this._buffer ~= nativeToBigEndian!short(a);
 	}
 
 	public pure nothrow @safe short readBigEndianShort() {
 		immutable end = this._index + 2;
 		if(this._buffer.length < end) return short.init;
-		ubyte[short.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[2] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return bigEndianToNative!short(bytes);
 	}
 
 	public pure nothrow @safe void writeLittleEndianShort(short a) {
-		this._buffer ~= nativeToLittleEndian!short(a)[$-2..$];
+		this._buffer ~= nativeToLittleEndian!short(a);
 	}
 
 	public pure nothrow @safe short readLittleEndianShort() {
 		immutable end = this._index + 2;
 		if(this._buffer.length < end) return short.init;
-		ubyte[short.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[2] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return littleEndianToNative!short(bytes);
 	}
 
 	public pure nothrow @safe void writeBigEndianUshort(ushort a) {
-		this._buffer ~= nativeToBigEndian!ushort(a)[$-2..$];
+		this._buffer ~= nativeToBigEndian!ushort(a);
 	}
 
 	public pure nothrow @safe ushort readBigEndianUshort() {
 		immutable end = this._index + 2;
 		if(this._buffer.length < end) return short.init;
-		ubyte[short.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[2] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return bigEndianToNative!short(bytes);
 	}
 
 	public pure nothrow @safe void writeLittleEndianUshort(ushort a) {
-		this._buffer ~= nativeToLittleEndian!ushort(a)[$-2..$];
+		this._buffer ~= nativeToLittleEndian!ushort(a);
 	}
 
 	public pure nothrow @safe ushort readLittleEndianUshort() {
 		immutable end = this._index + 2;
 		if(this._buffer.length < end) return short.init;
-		ubyte[short.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[2] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return littleEndianToNative!short(bytes);
 	}
@@ -166,163 +166,163 @@ class Buffer {
 	public pure nothrow @safe int readBigEndianTriad() {
 		immutable end = this._index + 3;
 		if(this._buffer.length < end) return int.init;
-		ubyte[int.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[4] bytes = new ubyte[1] ~ this._buffer[this._index..end];
 		this._index = end;
 		return bigEndianToNative!int(bytes);
 	}
 
 	public pure nothrow @safe void writeLittleEndianTriad(int a) {
-		this._buffer ~= nativeToLittleEndian!int(a)[$-3..$];
+		this._buffer ~= nativeToLittleEndian!int(a)[0..$-1];
 	}
 
 	public pure nothrow @safe int readLittleEndianTriad() {
 		immutable end = this._index + 3;
 		if(this._buffer.length < end) return int.init;
-		ubyte[int.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[4] bytes = this._buffer[this._index..end] ~ new ubyte[1];
 		this._index = end;
 		return littleEndianToNative!int(bytes);
 	}
 
 	public pure nothrow @safe void writeBigEndianInt(int a) {
-		this._buffer ~= nativeToBigEndian!int(a)[$-4..$];
+		this._buffer ~= nativeToBigEndian!int(a);
 	}
 
 	public pure nothrow @safe int readBigEndianInt() {
 		immutable end = this._index + 4;
 		if(this._buffer.length < end) return int.init;
-		ubyte[int.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[4] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return bigEndianToNative!int(bytes);
 	}
 
 	public pure nothrow @safe void writeLittleEndianInt(int a) {
-		this._buffer ~= nativeToLittleEndian!int(a)[$-4..$];
+		this._buffer ~= nativeToLittleEndian!int(a);
 	}
 
 	public pure nothrow @safe int readLittleEndianInt() {
 		immutable end = this._index + 4;
 		if(this._buffer.length < end) return int.init;
-		ubyte[int.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[4] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return littleEndianToNative!int(bytes);
 	}
 
 	public pure nothrow @safe void writeBigEndianUint(uint a) {
-		this._buffer ~= nativeToBigEndian!uint(a)[$-4..$];
+		this._buffer ~= nativeToBigEndian!uint(a);
 	}
 
 	public pure nothrow @safe uint readBigEndianUint() {
 		immutable end = this._index + 4;
 		if(this._buffer.length < end) return int.init;
-		ubyte[int.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[4] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return bigEndianToNative!int(bytes);
 	}
 
 	public pure nothrow @safe void writeLittleEndianUint(uint a) {
-		this._buffer ~= nativeToLittleEndian!uint(a)[$-4..$];
+		this._buffer ~= nativeToLittleEndian!uint(a);
 	}
 
 	public pure nothrow @safe uint readLittleEndianUint() {
 		immutable end = this._index + 4;
 		if(this._buffer.length < end) return int.init;
-		ubyte[int.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[4] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return littleEndianToNative!int(bytes);
 	}
 
 	public pure nothrow @safe void writeBigEndianLong(long a) {
-		this._buffer ~= nativeToBigEndian!long(a)[$-8..$];
+		this._buffer ~= nativeToBigEndian!long(a);
 	}
 
 	public pure nothrow @safe long readBigEndianLong() {
 		immutable end = this._index + 8;
 		if(this._buffer.length < end) return long.init;
-		ubyte[long.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[8] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return bigEndianToNative!long(bytes);
 	}
 
 	public pure nothrow @safe void writeLittleEndianLong(long a) {
-		this._buffer ~= nativeToLittleEndian!long(a)[$-8..$];
+		this._buffer ~= nativeToLittleEndian!long(a);
 	}
 
 	public pure nothrow @safe long readLittleEndianLong() {
 		immutable end = this._index + 8;
 		if(this._buffer.length < end) return long.init;
-		ubyte[long.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[8] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return littleEndianToNative!long(bytes);
 	}
 
 	public pure nothrow @safe void writeBigEndianUlong(ulong a) {
-		this._buffer ~= nativeToBigEndian!ulong(a)[$-8..$];
+		this._buffer ~= nativeToBigEndian!ulong(a);
 	}
 
 	public pure nothrow @safe ulong readBigEndianUlong() {
 		immutable end = this._index + 8;
 		if(this._buffer.length < end) return long.init;
-		ubyte[long.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[8] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return bigEndianToNative!long(bytes);
 	}
 
 	public pure nothrow @safe void writeLittleEndianUlong(ulong a) {
-		this._buffer ~= nativeToLittleEndian!ulong(a)[$-8..$];
+		this._buffer ~= nativeToLittleEndian!ulong(a);
 	}
 
 	public pure nothrow @safe ulong readLittleEndianUlong() {
 		immutable end = this._index + 8;
 		if(this._buffer.length < end) return long.init;
-		ubyte[long.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[8] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return littleEndianToNative!long(bytes);
 	}
 
 	public pure nothrow @safe void writeBigEndianFloat(float a) {
-		this._buffer ~= nativeToBigEndian!float(a)[$-4..$];
+		this._buffer ~= nativeToBigEndian!float(a);
 	}
 
 	public pure nothrow @safe float readBigEndianFloat() {
 		immutable end = this._index + 4;
 		if(this._buffer.length < end) return float.init;
-		ubyte[float.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[4] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return bigEndianToNative!float(bytes);
 	}
 
 	public pure nothrow @safe void writeLittleEndianFloat(float a) {
-		this._buffer ~= nativeToLittleEndian!float(a)[$-4..$];
+		this._buffer ~= nativeToLittleEndian!float(a);
 	}
 
 	public pure nothrow @safe float readLittleEndianFloat() {
 		immutable end = this._index + 4;
 		if(this._buffer.length < end) return float.init;
-		ubyte[float.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[4] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return littleEndianToNative!float(bytes);
 	}
 
 	public pure nothrow @safe void writeBigEndianDouble(double a) {
-		this._buffer ~= nativeToBigEndian!double(a)[$-8..$];
+		this._buffer ~= nativeToBigEndian!double(a);
 	}
 
 	public pure nothrow @safe double readBigEndianDouble() {
 		immutable end = this._index + 8;
 		if(this._buffer.length < end) return double.init;
-		ubyte[double.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[8] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return bigEndianToNative!double(bytes);
 	}
 
 	public pure nothrow @safe void writeLittleEndianDouble(double a) {
-		this._buffer ~= nativeToLittleEndian!double(a)[$-8..$];
+		this._buffer ~= nativeToLittleEndian!double(a);
 	}
 
 	public pure nothrow @safe double readLittleEndianDouble() {
 		immutable end = this._index + 8;
 		if(this._buffer.length < end) return double.init;
-		ubyte[double.sizeof] bytes = this._buffer[this._index..end];
+		ubyte[8] bytes = this._buffer[this._index..end];
 		this._index = end;
 		return littleEndianToNative!double(bytes);
 	}

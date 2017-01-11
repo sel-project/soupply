@@ -20,6 +20,8 @@ import sul.utils.var;
 
 static import sul.protocol.minecraft316.types;
 
+import sul.metadata.minecraft316;
+
 alias Packets = TypeTuple!(TeleportConfirm, TabComplete, ChatMessage, ClientStatus, ClientSettings, ConfirmTransaction, EnchantItem, ClickWindow, CloseWindow, PluginMessage, UseEntity, KeepAlive, PlayerPosition, Position, PlayerLook, Player, VehicleMove, SteerBoat, PlayerAbilities, PlayerDigging, EntityAction, SteerVehicle, ResourcePackStatus, HeldItemChange, CreativeInventoryAction, UpdateSign, Animation, Spectate, PlayerBlockPlacement, UseItem);
 
 class TeleportConfirm : Buffer {
@@ -89,7 +91,7 @@ class TabComplete : Buffer {
 		writeBytes(varuint.encode(cast(uint)text.length)); writeString(text);
 		writeBigEndianBool(command);
 		writeBigEndianBool(hasPosition);
-		if(has_position==true){ writeBigEndianUlong(block); }
+		if(hasPosition==true){ writeBigEndianUlong(block); }
 		return _buffer;
 	}
 
@@ -98,7 +100,7 @@ class TabComplete : Buffer {
 		uint dgv4da=varuint.decode(_buffer, &_index); text=readString(dgv4da);
 		command=readBigEndianBool();
 		hasPosition=readBigEndianBool();
-		if(has_position==true){ block=readBigEndianUlong(); }
+		if(hasPosition==true){ block=readBigEndianUlong(); }
 	}
 
 	public static pure nothrow @safe TabComplete fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -481,7 +483,7 @@ class PluginMessage : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		uint y2hhbm5lba=varuint.decode(_buffer, &_index); channel=readString(y2hhbm5lba);
-		data=_buffer[_index..$].dup; _index=buffer.length;
+		data=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe PluginMessage fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -1303,7 +1305,7 @@ class Spectate : Buffer {
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
-		if(_buffer.length>=_index+16){ ubyte[16] cgxhewvy=buffer[_index.._index+16].dup; _index+=16; player=UUID(cgxhewvy); }
+		if(_buffer.length>=_index+16){ ubyte[16] cgxhewvy=_buffer[_index.._index+16].dup; _index+=16; player=UUID(cgxhewvy); }
 	}
 
 	public static pure nothrow @safe Spectate fromBuffer(bool readId=true)(ubyte[] buffer) {

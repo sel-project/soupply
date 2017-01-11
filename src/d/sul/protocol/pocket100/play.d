@@ -20,6 +20,8 @@ import sul.utils.var;
 
 static import sul.protocol.pocket100.types;
 
+import sul.metadata.pocket100;
+
 alias Packets = TypeTuple!(Login, PlayStatus, ServerHandshake, ClientMagic, Disconnect, Batch, ResourcePacksInfo, ResourcePackClientResponse, Text, SetTime, StartGame, AddPlayer, AddEntity, RemoveEntity, AddItemEntity, AddHangingEntity, TakeItemEntity, MoveEntity, MovePlayer, RiderJump, RemoveBlock, UpdateBlock, AddPainting, Explode, LevelSoundEvent, LevelEvent, BlockEvent, EntityEvent, MobEffect, UpdateAttributes, MobEquipment, MobArmorEquipment, Interact, UseItem, PlayerAction, PlayerFall, HurtArmor, SetEntityData, SetEntityMotion, SetEntityLink, SetHealth, SetSpawnPosition, Animate, Respawn, DropItem, InventoryAction, ContainerOpen, ContainerClose, ContainerSetSlot, ContainerSetData, ContainerSetContent, CraftingData, CraftingEvent, AdventureSettings, BlockEntityData, PlayerInput, FullChunkData, SetCheatsEnabled, SetDifficulty, ChangeDimension, SetPlayerGametype, PlayerList, SpawnExperienceOrb, MapInfoRequest, RequestChunkRadius, ChunkRadiusUpdated, ItemFrameDropItem, ReplaceSelectedItem, Camera, AddItem, BossEvent, ShowCredits, AvailableCommands, CommandStep);
 
 class Login : Buffer {
@@ -786,11 +788,11 @@ class AddPlayer : Buffer {
 	public float headYaw;
 	public float yaw;
 	public sul.protocol.pocket100.types.Slot heldItem;
-	public sul.protocol.pocket100.types.Metadata metadata;
+	public Metadata metadata;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(UUID uuid, string username=string.init, long entityId=long.init, long runtimeId=long.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, Tuple!(float, "x", float, "y", float, "z") motion=Tuple!(float, "x", float, "y", float, "z").init, float pitch=float.init, float headYaw=float.init, float yaw=float.init, sul.protocol.pocket100.types.Slot heldItem=sul.protocol.pocket100.types.Slot.init, sul.protocol.pocket100.types.Metadata metadata=sul.protocol.pocket100.types.Metadata.init) {
+	public pure nothrow @safe @nogc this(UUID uuid, string username=string.init, long entityId=long.init, long runtimeId=long.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, Tuple!(float, "x", float, "y", float, "z") motion=Tuple!(float, "x", float, "y", float, "z").init, float pitch=float.init, float headYaw=float.init, float yaw=float.init, sul.protocol.pocket100.types.Slot heldItem=sul.protocol.pocket100.types.Slot.init, Metadata metadata=Metadata.init) {
 		this.uuid = uuid;
 		this.username = username;
 		this.entityId = entityId;
@@ -817,13 +819,13 @@ class AddPlayer : Buffer {
 		writeLittleEndianFloat(headYaw);
 		writeLittleEndianFloat(yaw);
 		heldItem.encode(bufferInstance);
-		metadata.encode(bufferInstance);
+		//TODO
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
 		entityId=varlong.decode(_buffer, &_index);
 		runtimeId=varlong.decode(_buffer, &_index);
@@ -833,7 +835,7 @@ class AddPlayer : Buffer {
 		headYaw=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		heldItem.decode(bufferInstance);
-		metadata.decode(bufferInstance);
+		//TODO
 	}
 
 	public static pure nothrow @safe AddPlayer fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -862,12 +864,12 @@ class AddEntity : Buffer {
 	public float pitch;
 	public float yaw;
 	public sul.protocol.pocket100.types.Attribute[] attributes;
-	public sul.protocol.pocket100.types.Metadata metadata;
+	public Metadata metadata;
 	public long[] links;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init, uint type=uint.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, Tuple!(float, "x", float, "y", float, "z") motion=Tuple!(float, "x", float, "y", float, "z").init, float pitch=float.init, float yaw=float.init, sul.protocol.pocket100.types.Attribute[] attributes=(sul.protocol.pocket100.types.Attribute[]).init, sul.protocol.pocket100.types.Metadata metadata=sul.protocol.pocket100.types.Metadata.init, long[] links=(long[]).init) {
+	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init, uint type=uint.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, Tuple!(float, "x", float, "y", float, "z") motion=Tuple!(float, "x", float, "y", float, "z").init, float pitch=float.init, float yaw=float.init, sul.protocol.pocket100.types.Attribute[] attributes=(sul.protocol.pocket100.types.Attribute[]).init, Metadata metadata=Metadata.init, long[] links=(long[]).init) {
 		this.entityId = entityId;
 		this.runtimeId = runtimeId;
 		this.type = type;
@@ -891,7 +893,7 @@ class AddEntity : Buffer {
 		writeLittleEndianFloat(pitch);
 		writeLittleEndianFloat(yaw);
 		writeBytes(varuint.encode(cast(uint)attributes.length)); foreach(yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.encode(bufferInstance); }
-		metadata.encode(bufferInstance);
+		//TODO
 		writeBytes(varuint.encode(cast(uint)links.length)); foreach(bglua3m;links){ writeBytes(varlong.encode(bglua3m)); }
 		return _buffer;
 	}
@@ -906,7 +908,7 @@ class AddEntity : Buffer {
 		pitch=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		attributes.length=varuint.decode(_buffer, &_index); foreach(ref yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.decode(bufferInstance); }
-		metadata.decode(bufferInstance);
+		//TODO
 		links.length=varuint.decode(_buffer, &_index); foreach(ref bglua3m;links){ bglua3m=varlong.decode(_buffer, &_index); }
 	}
 
@@ -2173,11 +2175,11 @@ class SetEntityData : Buffer {
 	public enum string[] FIELDS = ["entityId", "metadata"];
 
 	public long entityId;
-	public sul.protocol.pocket100.types.Metadata metadata;
+	public Metadata metadata;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long entityId, sul.protocol.pocket100.types.Metadata metadata=sul.protocol.pocket100.types.Metadata.init) {
+	public pure nothrow @safe @nogc this(long entityId, Metadata metadata=Metadata.init) {
 		this.entityId = entityId;
 		this.metadata = metadata;
 	}
@@ -2186,14 +2188,14 @@ class SetEntityData : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varlong.encode(entityId));
-		metadata.encode(bufferInstance);
+		//TODO
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		entityId=varlong.decode(_buffer, &_index);
-		metadata.decode(bufferInstance);
+		//TODO
 	}
 
 	public static pure nothrow @safe SetEntityData fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -2868,7 +2870,7 @@ class CraftingEvent : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		window=readBigEndianUbyte();
 		type=varint.decode(_buffer, &_index);
-		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		input.length=varuint.decode(_buffer, &_index); foreach(ref aw5wdxq;input){ aw5wdxq.decode(bufferInstance); }
 		output.length=varuint.decode(_buffer, &_index); foreach(ref b3v0chv0;output){ b3v0chv0.decode(bufferInstance); }
 	}
@@ -2972,7 +2974,7 @@ class BlockEntityData : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		position.decode(bufferInstance);
-		nbt=_buffer[_index..$].dup; _index=buffer.length;
+		nbt=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe BlockEntityData fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -3334,7 +3336,7 @@ class PlayerList : Buffer {
 		}
 
 		public pure nothrow @safe void decode() {
-			players.length=varuint.decode(_buffer, &_index); foreach(ref cgxhewvycw;players){ if(_buffer.length>=_index+16){ ubyte[16] y2d4agv3dnljdw=buffer[_index.._index+16].dup; _index+=16; cgxhewvycw=UUID(y2d4agv3dnljdw); } }
+			players.length=varuint.decode(_buffer, &_index); foreach(ref cgxhewvycw;players){ if(_buffer.length>=_index+16){ ubyte[16] y2d4agv3dnljdw=_buffer[_index.._index+16].dup; _index+=16; cgxhewvycw=UUID(y2d4agv3dnljdw); } }
 		}
 
 	}

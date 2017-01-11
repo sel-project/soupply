@@ -250,7 +250,7 @@
 						"type": "ubyte[16]"
 					},
 					{
-						"name": "serverAddress",
+						"name": "server_address",
 						"type": "address"
 					},
 					{
@@ -278,7 +278,7 @@
 						"type": "long"
 					},
 					{
-						"name": "server_address",
+						"name": "client_address",
 						"type": "address"
 					},
 					{

@@ -8,21 +8,21 @@
 
 	<types>
 
-		<type type="byte" id="0" />
-		<type type="short" id="1" />
-		<type type="varint" id="2" />
-		<type type="float" id="3" />
-		<type type="string" id="4" />
-		<type type="slot" id="5" />
-		<type type="varint<xyz>" id="6" />
-		<type type="varlong" id="7" />
-		<type type="float<xyz>" id="8" />
+		<type name="byte" type="byte" id="0" />
+		<type name="short" type="short" id="1" />
+		<type name="int" type="varint" id="2" />
+		<type name="float" type="float" id="3" />
+		<type name="string" type="string" id="4" />
+		<type name="slot" type="slot" id="5" />
+		<type name="block-position" type="block-position" id="6" />
+		<type name="long" type="varlong" id="7" />
+		<type name="entity-position" type="float<xyz>" id="8" />
 
 	</types>
 
 	<metadatas>
 
-		<type name="entity-flags" type="varlong" id="0" default="1073741824" required="true">
+		<type name="entity-flags" type="long" id="0" default="1073741824" required="true">
 			<flag name="on-fire" bit="0" />
 			<flag name="sneaking" bit="1" />
 			<flag name="riding" bit="2" />
@@ -59,17 +59,17 @@
 			<flag name="idling" bit="36" />
 		</type>
 
-		<type name="variant" type="varint" id="2" />
+		<type name="variant" type="int" id="2" />
 
 		<type name="color" type="byte" id="3" />
 
 		<type name="nametag" type="string" id="4" />
 
-		<type name="owner" type="varlong" id="5" default="-1" />
+		<type name="owner" type="long" id="5" default="-1" />
 
 		<type name="air" type="short" id="7" default="300" />
 
-		<type name="potion-color" type="varint" id="8" />
+		<type name="potion-color" type="int" id="8" />
 
 		<type name="potion-ambient" type="byte" id="9" />
 
@@ -79,11 +79,11 @@
 			<flag name="asleep" bit="1" />
 		</type>
 
-		<type name="player-index" type="varint" id="28" />
+		<type name="player-index" type="int" id="28" />
 
-		<type name="bed-position" type="varint<xyz>" id="29" />
+		<type name="bed-position" type="block-position" id="29" />
 
-		<type name="lead-holder" type="varlong" id="38" default="-1" required="true" />
+		<type name="lead-holder" type="long" id="38" default="-1" required="true" />
 
 		<type name="scale" type="float" id="39" default="1" />
 
@@ -93,13 +93,13 @@
 
 		<type name="max-air" type="short" id="44" />
 
-		<type name="mark-variant" type="varint" id="45" />
+		<type name="mark-variant" type="int" id="45" />
 
 		<type name="bounding-box-width" type="float" id="54" />
 
 		<type name="bounding-box-height" type="float" id="55" />
 
-		<type name="fuse-length" type="varint" id="56" />
+		<type name="fuse-length" type="int" id="56" />
 
 	</metadatas>
 

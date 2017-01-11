@@ -646,11 +646,11 @@ class SpawnPlayer : Buffer {
 	public ubyte yaw;
 	public ubyte pitch;
 	public ushort currentItem;
-	public sul.protocol.minecraft47.types.Metadata metadata;
+	public Metadata metadata;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint entityId, UUID uuid=UUID.init, Tuple!(int, "x", int, "y", int, "z") position=Tuple!(int, "x", int, "y", int, "z").init, ubyte yaw=ubyte.init, ubyte pitch=ubyte.init, ushort currentItem=ushort.init, sul.protocol.minecraft47.types.Metadata metadata=sul.protocol.minecraft47.types.Metadata.init) {
+	public pure nothrow @safe @nogc this(uint entityId, UUID uuid=UUID.init, Tuple!(int, "x", int, "y", int, "z") position=Tuple!(int, "x", int, "y", int, "z").init, ubyte yaw=ubyte.init, ubyte pitch=ubyte.init, ushort currentItem=ushort.init, Metadata metadata=Metadata.init) {
 		this.entityId = entityId;
 		this.uuid = uuid;
 		this.position = position;
@@ -669,19 +669,19 @@ class SpawnPlayer : Buffer {
 		writeBigEndianUbyte(yaw);
 		writeBigEndianUbyte(pitch);
 		writeBigEndianUshort(currentItem);
-		metadata.encode(bufferInstance);
+		//TODO
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		entityId=varuint.decode(_buffer, &_index);
-		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		position.x=readBigEndianInt();position.y=readBigEndianInt();position.z=readBigEndianInt();
 		yaw=readBigEndianUbyte();
 		pitch=readBigEndianUbyte();
 		currentItem=readBigEndianUshort();
-		metadata.decode(bufferInstance);
+		//TODO
 	}
 
 	public static pure nothrow @safe SpawnPlayer fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -813,11 +813,11 @@ class SpawnMob : Buffer {
 	public ubyte pitch;
 	public ubyte headPitch;
 	public Tuple!(short, "x", short, "y", short, "z") velocity;
-	public sul.protocol.minecraft47.types.Metadata metadata;
+	public Metadata metadata;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint entityId, ubyte type=ubyte.init, Tuple!(int, "x", int, "y", int, "z") position=Tuple!(int, "x", int, "y", int, "z").init, ubyte yaw=ubyte.init, ubyte pitch=ubyte.init, ubyte headPitch=ubyte.init, Tuple!(short, "x", short, "y", short, "z") velocity=Tuple!(short, "x", short, "y", short, "z").init, sul.protocol.minecraft47.types.Metadata metadata=sul.protocol.minecraft47.types.Metadata.init) {
+	public pure nothrow @safe @nogc this(uint entityId, ubyte type=ubyte.init, Tuple!(int, "x", int, "y", int, "z") position=Tuple!(int, "x", int, "y", int, "z").init, ubyte yaw=ubyte.init, ubyte pitch=ubyte.init, ubyte headPitch=ubyte.init, Tuple!(short, "x", short, "y", short, "z") velocity=Tuple!(short, "x", short, "y", short, "z").init, Metadata metadata=Metadata.init) {
 		this.entityId = entityId;
 		this.type = type;
 		this.position = position;
@@ -838,7 +838,7 @@ class SpawnMob : Buffer {
 		writeBigEndianUbyte(pitch);
 		writeBigEndianUbyte(headPitch);
 		writeBigEndianShort(velocity.x);writeBigEndianShort(velocity.y);writeBigEndianShort(velocity.z);
-		metadata.encode(bufferInstance);
+		//TODO
 		return _buffer;
 	}
 
@@ -851,7 +851,7 @@ class SpawnMob : Buffer {
 		pitch=readBigEndianUbyte();
 		headPitch=readBigEndianUbyte();
 		velocity.x=readBigEndianShort();velocity.y=readBigEndianShort();velocity.z=readBigEndianShort();
-		metadata.decode(bufferInstance);
+		//TODO
 	}
 
 	public static pure nothrow @safe SpawnMob fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -1454,11 +1454,11 @@ class EntityMetadata : Buffer {
 	public enum string[] FIELDS = ["entityId", "metadata"];
 
 	public uint entityId;
-	public sul.protocol.minecraft47.types.Metadata metadata;
+	public Metadata metadata;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint entityId, sul.protocol.minecraft47.types.Metadata metadata=sul.protocol.minecraft47.types.Metadata.init) {
+	public pure nothrow @safe @nogc this(uint entityId, Metadata metadata=Metadata.init) {
 		this.entityId = entityId;
 		this.metadata = metadata;
 	}
@@ -1467,14 +1467,14 @@ class EntityMetadata : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBytes(varuint.encode(ID)); }
 		writeBytes(varuint.encode(entityId));
-		metadata.encode(bufferInstance);
+		//TODO
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		entityId=varuint.decode(_buffer, &_index);
-		metadata.decode(bufferInstance);
+		//TODO
 	}
 
 	public static pure nothrow @safe EntityMetadata fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -2759,7 +2759,7 @@ class UpdateBlockEntity : Buffer {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		position=readBigEndianUlong();
 		action=readBigEndianUbyte();
-		nbt=_buffer[_index..$].dup; _index=buffer.length;
+		nbt=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe UpdateBlockEntity fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -3005,7 +3005,7 @@ class PlayerListItem : Buffer {
 		}
 
 		public pure nothrow @safe void decode() {
-			players.length=varuint.decode(_buffer, &_index); foreach(ref cgxhewvycw;players){ if(_buffer.length>=_index+16){ ubyte[16] y2d4agv3dnljdw=buffer[_index.._index+16].dup; _index+=16; cgxhewvycw=UUID(y2d4agv3dnljdw); } }
+			players.length=varuint.decode(_buffer, &_index); foreach(ref cgxhewvycw;players){ if(_buffer.length>=_index+16){ ubyte[16] y2d4agv3dnljdw=_buffer[_index.._index+16].dup; _index+=16; cgxhewvycw=UUID(y2d4agv3dnljdw); } }
 		}
 
 	}
@@ -3313,16 +3313,16 @@ class Teams : Buffer {
 		public enum ubyte SEE_TEAM_INVISIBLE_PLAYERS = 2;
 
 		// nametag visibility
-		public enum string ALWAYS = "always";
+		public enum string ALWAYS_HIDE = "always";
 		public enum string HIDE_OTHER_TEAMS = "hideOtherTeams";
 		public enum string HIDE_OWN_TEAM = "hideOwnTeam";
-		public enum string NEVEN = "never";
+		public enum string NEVER_HIDE = "never";
 
 		// collision rule
-		public enum string ALWAYS = "always";
+		public enum string ALWAYS_PUSH = "always";
 		public enum string PUSH_OTHER_TEAMS = "pushOtherTeams";
 		public enum string PUSH_OWN_TEAM = "pushOwnTeam";
-		public enum string NEVEN = "never";
+		public enum string NEVER_PUSH = "never";
 
 		public string displayName;
 		public string prefix;
@@ -3397,16 +3397,16 @@ class Teams : Buffer {
 		public enum ubyte SEE_TEAM_INVISIBLE_PLAYERS = 2;
 
 		// nametag visibility
-		public enum string ALWAYS = "always";
+		public enum string ALWAYS_HIDE = "always";
 		public enum string HIDE_OTHER_TEAMS = "hideOtherTeams";
 		public enum string HIDE_OWN_TEAM = "hideOwnTeam";
-		public enum string NEVEN = "never";
+		public enum string NEVER_HIDE = "never";
 
 		// collision rule
-		public enum string ALWAYS = "always";
+		public enum string ALWAYS_PUSH = "always";
 		public enum string PUSH_OTHER_TEAMS = "pushOtherTeams";
 		public enum string PUSH_OWN_TEAM = "pushOwnTeam";
-		public enum string NEVEN = "never";
+		public enum string NEVER_PUSH = "never";
 
 		public string displayName;
 		public string prefix;
@@ -3535,7 +3535,7 @@ class PluginMessage : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		uint y2hhbm5lba=varuint.decode(_buffer, &_index); channel=readString(y2hhbm5lba);
-		data=_buffer[_index..$].dup; _index=buffer.length;
+		data=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe PluginMessage fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -3669,7 +3669,7 @@ class CombatEvent : Buffer {
 
 	public class EnterCombat {
 
-		public enum typeof(eventId) EVENT-ID = 0;
+		public enum typeof(eventId) EVENT_ID = 0;
 
 		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 			eventId = 0;
@@ -3684,7 +3684,7 @@ class CombatEvent : Buffer {
 
 	public class EndCombat {
 
-		public enum typeof(eventId) EVENT-ID = 1;
+		public enum typeof(eventId) EVENT_ID = 1;
 
 		public uint duration;
 		public uint entityId;
@@ -3713,7 +3713,7 @@ class CombatEvent : Buffer {
 
 	public class EntityDead {
 
-		public enum typeof(eventId) EVENT-ID = 2;
+		public enum typeof(eventId) EVENT_ID = 2;
 
 		public uint playerId;
 		public uint entityId;
@@ -4273,7 +4273,7 @@ class UpdateEntityNbt : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		entityId=varuint.decode(_buffer, &_index);
-		nbt=_buffer[_index..$].dup; _index=buffer.length;
+		nbt=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe UpdateEntityNbt fromBuffer(bool readId=true)(ubyte[] buffer) {

@@ -95,6 +95,11 @@
 			</field>
 		</type>
 
+		<type name="list-update-latency">
+			<field name="uuid" type="uuid" />
+			<field name="latency" type="varuint" />
+		</type>
+
 		<type name="list-update-display-name">
 			<field name="uuid" type="uuid" />
 			<field name="has-display-name" type="bool" />
@@ -963,16 +968,16 @@
 							<constant name="see-team-invisible-players" value="2" />
 						</field>
 						<field name="nametag-visibility" type="string">
-							<constant name="always" value="always" />
+							<constant name="always-hide" value="always" />
 							<constant name="hide-other-teams" value="hideOtherTeams" />
 							<constant name="hide-own-team" value="hideOwnTeam" />
-							<constant name="neven" value="never" />
+							<constant name="never-hide" value="never" />
 						</field>
 						<field name="collision-rule" type="string">
-							<constant name="always" value="always" />
+							<constant name="always-push" value="always" />
 							<constant name="push-other-teams" value="pushOtherTeams" />
 							<constant name="push-own-team" value="pushOwnTeam" />
-							<constant name="neven" value="never" />
+							<constant name="never-push" value="never" />
 						</field>
 						<field name="color" type="ubyte" />
 						<field name="players" type="string[]" />
@@ -987,16 +992,16 @@
 							<constant name="see-team-invisible-players" value="2" />
 						</field>
 						<field name="nametag-visibility" type="string">
-							<constant name="always" value="always" />
+							<constant name="always-hide" value="always" />
 							<constant name="hide-other-teams" value="hideOtherTeams" />
 							<constant name="hide-own-team" value="hideOwnTeam" />
-							<constant name="neven" value="never" />
+							<constant name="never-hide" value="never" />
 						</field>
 						<field name="collision-rule" type="string">
-							<constant name="always" value="always" />
+							<constant name="always-push" value="always" />
 							<constant name="push-other-teams" value="pushOtherTeams" />
 							<constant name="push-own-team" value="pushOwnTeam" />
-							<constant name="neven" value="never" />
+							<constant name="never-push" value="never" />
 						</field>
 						<field name="color" type="ubyte" />
 					</variant>

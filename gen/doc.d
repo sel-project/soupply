@@ -180,6 +180,13 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 		if(ptrs.data.types.length) {
 			data ~= "--------\n\n";
 			data ~= "## Types\n\n";
+			if(ptrs.data.types.length > 3) {
+				string[] jt;
+				foreach(type ; ptrs.data.types) {
+					jt ~= "[" ~ pretty(toCamelCase(type.name)) ~ "](#" ~ link("types", type.name) ~ ")";
+				}
+				data ~= "**Jump to**: " ~ jt.join(", ") ~ "\n\n";
+			}
 			foreach(type ; ptrs.data.types) {
 				data ~= "<a name=\"" ~ link("types", type.name) ~ "\"></a>\n";
 				data ~= "* ### " ~ pretty(toCamelCase(type.name)) ~ "\n\n";
@@ -195,10 +202,14 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			foreach(a ; ptrs.data.arrays) {
 				e |= a.endianness.length != 0;
 			}
+			foreach(name, a ; ptrs.data.arrays) {
+				data ~= "<a name\"" ~ link("types", name) ~ "\"></a>";
+			}
+			data ~= "\n";
 			data ~= "Name | Base | Length" ~ (e ? " | Length's endianness" : "") ~ "\n";
 			data ~= "---|---" ~ (e ? "|---" : "") ~ "\n";
 			foreach(name, a ; ptrs.data.arrays) {
-				data ~= "<a name\"" ~ link("types", name) ~ "\"></a>" ~ toCamelCase(name) ~ " | " ~ convert(a.base) ~ " | " ~ convert(a.length) ~ (e ? " | " ~ a.endianness.replace("_", " ") : "") ~ "\n";
+				data ~= toCamelCase(name) ~ " | " ~ convert(a.base) ~ " | " ~ convert(a.length) ~ (e ? " | " ~ a.endianness.replace("_", " ") : "") ~ "\n";
 			}
 			data ~= "\n";
 		}
@@ -206,15 +217,22 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 		if(metadata) {
 			data ~= "--------\n\n";
 			data ~= "## Metadata\n\n";
-			//TODO encoding
-			//TODO types
-			data ~= "Name | Type | DEC | HEX | Default | Required\n---|---|:---:|:---:|---|:---:\n";
-			foreach(meta ; (*metadata).data.metadatas) {
+			// type
+			data ~= "#### Types\n\n";
+			data ~= "Name | Type | Id\n---|---|:---:\n";
+			foreach(type ; (*metadata).data.types) {
+				data ~= toCamelCase(type.name) ~ " | " ~ convert(type.type) ~ " | " ~ type.id.to!string ~ "\n";
+			}
+			data ~= "\n";
+			// data
+			data ~= "#### Data\n\n";
+			data ~= "Name | Type | DEC | HEX | Default | Required\n---|---|:---:|:---:|:---:|:---:\n";
+			foreach(meta ; (*metadata).data.data) {
 				immutable name = pretty(toCamelCase(meta.name));
 				data ~= (meta.description.length || meta.flags.length ? ("[" ~ name ~ "](#" ~ link("metadata", meta.name) ~ ")") : name) ~ " | " ~ convert(meta.type) ~ " | " ~ meta.id.to!string ~ " | " ~ meta.id.to!string(16) ~ " | " ~ meta.def ~ " | " ~ (meta.required ? "✓" : "") ~ "\n";
 			}
 			data ~= "\n";
-			foreach(meta ; (*metadata).data.metadatas) {
+			foreach(meta ; (*metadata).data.data) {
 				if(meta.description.length || meta.flags.length) {
 					data ~= "* <a name=\"" ~ link("metadata", meta.name) ~ "\"></a>**" ~ pretty(toCamelCase(meta.name)) ~ "**\n\n";
 					if(meta.description.length) data ~= "\t" ~ meta.description ~ "\n\n";

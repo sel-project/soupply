@@ -20,6 +20,8 @@ import sul.utils.var;
 
 static import sul.protocol.minecraft316.types;
 
+import sul.metadata.minecraft316;
+
 alias Packets = TypeTuple!(Disconnect, LoginStart, EncryptionRequest, EncryptionResponse, LoginSuccess, SetCompression);
 
 class Disconnect : Buffer {

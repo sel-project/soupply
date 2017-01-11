@@ -97,7 +97,7 @@ class Add : Buffer {
 		uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu);
 		address.decode(bufferInstance);
 		game=readBigEndianUbyte();
-		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		skin.decode(bufferInstance);
 		latency=varuint.decode(_buffer, &_index);
 		packetLoss=readLittleEndianFloat();
@@ -451,7 +451,7 @@ class GamePacket : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		hubId=varuint.decode(_buffer, &_index);
-		packet=_buffer[_index..$].dup; _index=buffer.length;
+		packet=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe GamePacket fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -497,7 +497,7 @@ class OrderedGamePacket : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		hubId=varuint.decode(_buffer, &_index);
 		order=varuint.decode(_buffer, &_index);
-		packet=_buffer[_index..$].dup; _index=buffer.length;
+		packet=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe OrderedGamePacket fromBuffer(bool readId=true)(ubyte[] buffer) {

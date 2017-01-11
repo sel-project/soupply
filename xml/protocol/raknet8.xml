@@ -101,7 +101,7 @@
 
 			<packet name="open-connection-request-2" id="7" clientbound="false" serverbound="true">
 				<field name="magic" type="magic" />
-				<field name="serverAddress" type="address" />
+				<field name="server-address" type="address" />
 				<field name="mtu-length" type="ushort" />
 				<field name="client-id" type="long" />
 			</packet>
@@ -109,7 +109,7 @@
 			<packet name="open-connection-reply-2" id="8" clientbound="true" serverbound="false">
 				<field name="magic" type="magic" />
 				<field name="server-id" type="long" />
-				<field name="server-address" type="address" />
+				<field name="client-address" type="address" />
 				<field name="mtu-length" type="ushort" />
 				<field name="security" type="bool" />
 			</packet>

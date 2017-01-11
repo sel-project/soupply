@@ -243,7 +243,7 @@ class UpdateList : Buffer {
 
 		public pure nothrow @safe void decode() {
 			game=readBigEndianUbyte();
-			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		}
 
 	}

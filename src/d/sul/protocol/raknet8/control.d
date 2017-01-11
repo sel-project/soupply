@@ -120,14 +120,14 @@ class Encapsulated : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		count.encode(bufferInstance);
+		writeLittleEndianTriad(count);
 		encapsulation.encode(bufferInstance);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		count.decode(bufferInstance);
+		count=readLittleEndianTriad();
 		encapsulation.decode(bufferInstance);
 	}
 

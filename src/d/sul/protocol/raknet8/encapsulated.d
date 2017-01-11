@@ -298,7 +298,7 @@ class Mcpe : Buffer {
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		packet=_buffer[_index..$].dup; _index=buffer.length;
+		packet=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe Mcpe fromBuffer(bool readId=true)(ubyte[] buffer) {

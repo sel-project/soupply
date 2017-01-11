@@ -70,7 +70,7 @@ class SpawnObject : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		entityId=varuint.decode(_buffer, &_index);
-		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		type=readBigEndianUbyte();
 		position.x=readBigEndianDouble();position.y=readBigEndianDouble();position.z=readBigEndianDouble();
 		pitch=readBigEndianUbyte();
@@ -200,11 +200,11 @@ class SpawnMob : Buffer {
 	public ubyte pitch;
 	public ubyte headPitch;
 	public Tuple!(short, "x", short, "y", short, "z") velocity;
-	public sul.protocol.minecraft315.types.Metadata metadata;
+	public Metadata metadata;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint entityId, UUID uuid=UUID.init, uint type=uint.init, Tuple!(double, "x", double, "y", double, "z") position=Tuple!(double, "x", double, "y", double, "z").init, ubyte yaw=ubyte.init, ubyte pitch=ubyte.init, ubyte headPitch=ubyte.init, Tuple!(short, "x", short, "y", short, "z") velocity=Tuple!(short, "x", short, "y", short, "z").init, sul.protocol.minecraft315.types.Metadata metadata=sul.protocol.minecraft315.types.Metadata.init) {
+	public pure nothrow @safe @nogc this(uint entityId, UUID uuid=UUID.init, uint type=uint.init, Tuple!(double, "x", double, "y", double, "z") position=Tuple!(double, "x", double, "y", double, "z").init, ubyte yaw=ubyte.init, ubyte pitch=ubyte.init, ubyte headPitch=ubyte.init, Tuple!(short, "x", short, "y", short, "z") velocity=Tuple!(short, "x", short, "y", short, "z").init, Metadata metadata=Metadata.init) {
 		this.entityId = entityId;
 		this.uuid = uuid;
 		this.type = type;
@@ -227,21 +227,21 @@ class SpawnMob : Buffer {
 		writeBigEndianUbyte(pitch);
 		writeBigEndianUbyte(headPitch);
 		writeBigEndianShort(velocity.x);writeBigEndianShort(velocity.y);writeBigEndianShort(velocity.z);
-		metadata.encode(bufferInstance);
+		//TODO
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		entityId=varuint.decode(_buffer, &_index);
-		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		type=varuint.decode(_buffer, &_index);
 		position.x=readBigEndianDouble();position.y=readBigEndianDouble();position.z=readBigEndianDouble();
 		yaw=readBigEndianUbyte();
 		pitch=readBigEndianUbyte();
 		headPitch=readBigEndianUbyte();
 		velocity.x=readBigEndianShort();velocity.y=readBigEndianShort();velocity.z=readBigEndianShort();
-		metadata.decode(bufferInstance);
+		//TODO
 	}
 
 	public static pure nothrow @safe SpawnMob fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -298,7 +298,7 @@ class SpawnPainting : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		entityId=varuint.decode(_buffer, &_index);
-		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		uint dgl0bgu=varuint.decode(_buffer, &_index); title=readString(dgl0bgu);
 		position=readBigEndianUlong();
 		direction=readBigEndianUbyte();
@@ -327,11 +327,11 @@ class SpawnPlayer : Buffer {
 	public Tuple!(double, "x", double, "y", double, "z") position;
 	public ubyte yaw;
 	public ubyte pitch;
-	public sul.protocol.minecraft315.types.Metadata metadata;
+	public Metadata metadata;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint entityId, UUID uuid=UUID.init, Tuple!(double, "x", double, "y", double, "z") position=Tuple!(double, "x", double, "y", double, "z").init, ubyte yaw=ubyte.init, ubyte pitch=ubyte.init, sul.protocol.minecraft315.types.Metadata metadata=sul.protocol.minecraft315.types.Metadata.init) {
+	public pure nothrow @safe @nogc this(uint entityId, UUID uuid=UUID.init, Tuple!(double, "x", double, "y", double, "z") position=Tuple!(double, "x", double, "y", double, "z").init, ubyte yaw=ubyte.init, ubyte pitch=ubyte.init, Metadata metadata=Metadata.init) {
 		this.entityId = entityId;
 		this.uuid = uuid;
 		this.position = position;
@@ -348,18 +348,18 @@ class SpawnPlayer : Buffer {
 		writeBigEndianDouble(position.x);writeBigEndianDouble(position.y);writeBigEndianDouble(position.z);
 		writeBigEndianUbyte(yaw);
 		writeBigEndianUbyte(pitch);
-		metadata.encode(bufferInstance);
+		//TODO
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		entityId=varuint.decode(_buffer, &_index);
-		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		position.x=readBigEndianDouble();position.y=readBigEndianDouble();position.z=readBigEndianDouble();
 		yaw=readBigEndianUbyte();
 		pitch=readBigEndianUbyte();
-		metadata.decode(bufferInstance);
+		//TODO
 	}
 
 	public static pure nothrow @safe SpawnPlayer fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -551,7 +551,7 @@ class UpdateBlockEntity : Buffer {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		position=readBigEndianUlong();
 		action=readBigEndianUbyte();
-		nbt=_buffer[_index..$].dup; _index=buffer.length;
+		nbt=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe UpdateBlockEntity fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -706,7 +706,7 @@ class BossBar : Buffer {
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
-		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		action=varuint.decode(_buffer, &_index);
 	}
 
@@ -1453,7 +1453,7 @@ class PluginMessage : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		uint y2hhbm5lba=varuint.decode(_buffer, &_index); channel=readString(y2hhbm5lba);
-		data=_buffer[_index..$].dup; _index=buffer.length;
+		data=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe PluginMessage fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -1874,7 +1874,7 @@ class ChunkData : Buffer {
 		full=readBigEndianBool();
 		sections=varuint.decode(_buffer, &_index);
 		data.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+data.length){ data=_buffer[_index.._index+data.length].dup; _index+=data.length; }
-		tiles=_buffer[_index..$].dup; _index=buffer.length;
+		tiles=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe ChunkData fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -2611,7 +2611,7 @@ class CombatEvent : Buffer {
 
 	public class EnterCombat {
 
-		public enum typeof(eventId) EVENT-ID = 0;
+		public enum typeof(eventId) EVENT_ID = 0;
 
 		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 			eventId = 0;
@@ -2626,7 +2626,7 @@ class CombatEvent : Buffer {
 
 	public class EndCombat {
 
-		public enum typeof(eventId) EVENT-ID = 1;
+		public enum typeof(eventId) EVENT_ID = 1;
 
 		public uint duration;
 		public uint entityId;
@@ -2655,7 +2655,7 @@ class CombatEvent : Buffer {
 
 	public class EntityDead {
 
-		public enum typeof(eventId) EVENT-ID = 2;
+		public enum typeof(eventId) EVENT_ID = 2;
 
 		public uint playerId;
 		public uint entityId;
@@ -2846,7 +2846,7 @@ class PlayerListItem : Buffer {
 		}
 
 		public pure nothrow @safe void decode() {
-			players.length=varuint.decode(_buffer, &_index); foreach(ref cgxhewvycw;players){ if(_buffer.length>=_index+16){ ubyte[16] y2d4agv3dnljdw=buffer[_index.._index+16].dup; _index+=16; cgxhewvycw=UUID(y2d4agv3dnljdw); } }
+			players.length=varuint.decode(_buffer, &_index); foreach(ref cgxhewvycw;players){ if(_buffer.length>=_index+16){ ubyte[16] y2d4agv3dnljdw=_buffer[_index.._index+16].dup; _index+=16; cgxhewvycw=UUID(y2d4agv3dnljdw); } }
 		}
 
 	}
@@ -3548,11 +3548,11 @@ class EntityMetadata : Buffer {
 	public enum string[] FIELDS = ["entityId", "metadata"];
 
 	public uint entityId;
-	public sul.protocol.minecraft315.types.Metadata metadata;
+	public Metadata metadata;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint entityId, sul.protocol.minecraft315.types.Metadata metadata=sul.protocol.minecraft315.types.Metadata.init) {
+	public pure nothrow @safe @nogc this(uint entityId, Metadata metadata=Metadata.init) {
 		this.entityId = entityId;
 		this.metadata = metadata;
 	}
@@ -3561,14 +3561,14 @@ class EntityMetadata : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBytes(varuint.encode(ID)); }
 		writeBytes(varuint.encode(entityId));
-		metadata.encode(bufferInstance);
+		//TODO
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		entityId=varuint.decode(_buffer, &_index);
-		metadata.decode(bufferInstance);
+		//TODO
 	}
 
 	public static pure nothrow @safe EntityMetadata fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -3954,16 +3954,16 @@ class Teams : Buffer {
 		public enum ubyte SEE_TEAM_INVISIBLE_PLAYERS = 2;
 
 		// nametag visibility
-		public enum string ALWAYS = "always";
+		public enum string ALWAYS_HIDE = "always";
 		public enum string HIDE_OTHER_TEAMS = "hideOtherTeams";
 		public enum string HIDE_OWN_TEAM = "hideOwnTeam";
-		public enum string NEVEN = "never";
+		public enum string NEVER_HIDE = "never";
 
 		// collision rule
-		public enum string ALWAYS = "always";
+		public enum string ALWAYS_PUSH = "always";
 		public enum string PUSH_OTHER_TEAMS = "pushOtherTeams";
 		public enum string PUSH_OWN_TEAM = "pushOwnTeam";
-		public enum string NEVEN = "never";
+		public enum string NEVER_PUSH = "never";
 
 		public string displayName;
 		public string prefix;
@@ -4038,16 +4038,16 @@ class Teams : Buffer {
 		public enum ubyte SEE_TEAM_INVISIBLE_PLAYERS = 2;
 
 		// nametag visibility
-		public enum string ALWAYS = "always";
+		public enum string ALWAYS_HIDE = "always";
 		public enum string HIDE_OTHER_TEAMS = "hideOtherTeams";
 		public enum string HIDE_OWN_TEAM = "hideOwnTeam";
-		public enum string NEVEN = "never";
+		public enum string NEVER_HIDE = "never";
 
 		// collision rule
-		public enum string ALWAYS = "always";
+		public enum string ALWAYS_PUSH = "always";
 		public enum string PUSH_OTHER_TEAMS = "pushOtherTeams";
 		public enum string PUSH_OWN_TEAM = "pushOwnTeam";
-		public enum string NEVEN = "never";
+		public enum string NEVER_PUSH = "never";
 
 		public string displayName;
 		public string prefix;
