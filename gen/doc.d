@@ -206,9 +206,8 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			foreach(a ; ptrs.data.arrays) {
 				e |= a.endianness.length != 0;
 			}
-			data ~= "\n";
 			data ~= "Name | Base | Length" ~ (e ? " | Length's endianness" : "") ~ "\n";
-			data ~= "---|---" ~ (e ? "|---" : "") ~ "\n";
+			data ~= "---|---|---" ~ (e ? "|---" : "") ~ "\n";
 			foreach(name, a ; ptrs.data.arrays) {
 				data ~= toCamelCase(name) ~ " | " ~ convert(a.base) ~ " | " ~ convert(a.length) ~ (e ? " | " ~ a.endianness.replace("_", " ") : "") ~ "\n";
 			}

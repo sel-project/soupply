@@ -278,11 +278,11 @@ alias varulong = var!ulong;
 			if(ts > 0) {
 				auto te = conv.lastIndexOf(">");
 				string nt = conv[0..ts];
-				string ret;
+				string[] ret;
 				foreach(i ; conv[ts+1..te]) {
 					ret ~= createEncoding(nt, name ~ "." ~ i);
 				}
-				return ret;
+				return ret.join(" ");
 			}
 			type = conv;
 			if(type.startsWith("var")) return "writeBytes(" ~ type ~ ".encode(" ~ name ~ "));";
@@ -318,11 +318,11 @@ alias varulong = var!ulong;
 			if(ts > 0) {
 				auto te = conv.lastIndexOf(">");
 				string nt = conv[0..ts];
-				string ret;
+				string[] ret;
 				foreach(i ; conv[ts+1..te]) {
 					ret ~= createDecoding(nt, name ~ "." ~ i);
 				}
-				return ret;
+				return ret.join(" ");
 			}
 			type = conv;
 			if(type.startsWith("var")) return name ~ "=" ~ type ~ ".decode(_buffer, &_index);";

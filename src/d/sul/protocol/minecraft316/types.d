@@ -111,14 +111,14 @@ struct Icon {
 	public pure nothrow @safe void encode(Buffer buffer) {
 		with(buffer) {
 			writeBigEndianUbyte(directionAndType);
-			writeBigEndianUbyte(position.x);writeBigEndianUbyte(position.z);
+			writeBigEndianUbyte(position.x); writeBigEndianUbyte(position.z);
 		}
 	}
 
 	public pure nothrow @safe void decode(Buffer buffer) {
 		with(buffer) {
 			directionAndType=readBigEndianUbyte();
-			position.x=readBigEndianUbyte();position.z=readBigEndianUbyte();
+			position.x=readBigEndianUbyte(); position.z=readBigEndianUbyte();
 		}
 	}
 

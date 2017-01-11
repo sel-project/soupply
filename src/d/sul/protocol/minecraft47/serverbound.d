@@ -129,7 +129,7 @@ class UseEntity : Buffer {
 		static if(writeId){ writeBytes(varuint.encode(ID)); }
 		writeBytes(varuint.encode(target));
 		writeBytes(varuint.encode(type));
-		if(type==2){ writeBigEndianFloat(targetPosition.x);writeBigEndianFloat(targetPosition.y);writeBigEndianFloat(targetPosition.z); }
+		if(type==2){ writeBigEndianFloat(targetPosition.x); writeBigEndianFloat(targetPosition.y); writeBigEndianFloat(targetPosition.z); }
 		return _buffer;
 	}
 
@@ -137,7 +137,7 @@ class UseEntity : Buffer {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		target=varuint.decode(_buffer, &_index);
 		type=varuint.decode(_buffer, &_index);
-		if(type==2){ targetPosition.x=readBigEndianFloat();targetPosition.y=readBigEndianFloat();targetPosition.z=readBigEndianFloat(); }
+		if(type==2){ targetPosition.x=readBigEndianFloat(); targetPosition.y=readBigEndianFloat(); targetPosition.z=readBigEndianFloat(); }
 	}
 
 	public static pure nothrow @safe UseEntity fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -209,14 +209,14 @@ class PlayerPosition : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBytes(varuint.encode(ID)); }
-		writeBigEndianDouble(position.x);writeBigEndianDouble(position.y);writeBigEndianDouble(position.z);
+		writeBigEndianDouble(position.x); writeBigEndianDouble(position.y); writeBigEndianDouble(position.z);
 		writeBigEndianBool(onGround);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
-		position.x=readBigEndianDouble();position.y=readBigEndianDouble();position.z=readBigEndianDouble();
+		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		onGround=readBigEndianBool();
 	}
 
@@ -301,7 +301,7 @@ class PlayerPositionAndLook : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBytes(varuint.encode(ID)); }
-		writeBigEndianDouble(position.x);writeBigEndianDouble(position.y);writeBigEndianDouble(position.z);
+		writeBigEndianDouble(position.x); writeBigEndianDouble(position.y); writeBigEndianDouble(position.z);
 		writeBigEndianFloat(yaw);
 		writeBigEndianFloat(pitch);
 		writeBigEndianBool(onGround);
@@ -310,7 +310,7 @@ class PlayerPositionAndLook : Buffer {
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
-		position.x=readBigEndianDouble();position.y=readBigEndianDouble();position.z=readBigEndianDouble();
+		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		yaw=readBigEndianFloat();
 		pitch=readBigEndianFloat();
 		onGround=readBigEndianBool();
@@ -409,7 +409,7 @@ class PlayerBlockPlacement : Buffer {
 		writeBigEndianUlong(position);
 		writeBigEndianUbyte(face);
 		heldItem.encode(bufferInstance);
-		writeBigEndianUbyte(cursorPosition.x);writeBigEndianUbyte(cursorPosition.y);writeBigEndianUbyte(cursorPosition.z);
+		writeBigEndianUbyte(cursorPosition.x); writeBigEndianUbyte(cursorPosition.y); writeBigEndianUbyte(cursorPosition.z);
 		return _buffer;
 	}
 
@@ -418,7 +418,7 @@ class PlayerBlockPlacement : Buffer {
 		position=readBigEndianUlong();
 		face=readBigEndianUbyte();
 		heldItem.decode(bufferInstance);
-		cursorPosition.x=readBigEndianUbyte();cursorPosition.y=readBigEndianUbyte();cursorPosition.z=readBigEndianUbyte();
+		cursorPosition.x=readBigEndianUbyte(); cursorPosition.y=readBigEndianUbyte(); cursorPosition.z=readBigEndianUbyte();
 	}
 
 	public static pure nothrow @safe PlayerBlockPlacement fromBuffer(bool readId=true)(ubyte[] buffer) {

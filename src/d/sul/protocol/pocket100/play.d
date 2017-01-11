@@ -715,7 +715,7 @@ class StartGame : Buffer {
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varlong.encode(entityId));
 		writeBytes(varlong.encode(runtimeId));
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
 		writeLittleEndianFloat(yaw);
 		writeLittleEndianFloat(pitch);
 		writeBytes(varint.encode(seed));
@@ -723,7 +723,7 @@ class StartGame : Buffer {
 		writeBytes(varint.encode(generator));
 		writeBytes(varint.encode(worldGamemode));
 		writeBytes(varint.encode(difficulty));
-		writeBytes(varint.encode(spawnPosition.x));writeBytes(varint.encode(spawnPosition.y));writeBytes(varint.encode(spawnPosition.z));
+		writeBytes(varint.encode(spawnPosition.x)); writeBytes(varint.encode(spawnPosition.y)); writeBytes(varint.encode(spawnPosition.z));
 		writeBigEndianBool(loadedInCreative);
 		writeBytes(varint.encode(time));
 		writeBigEndianUbyte(edition);
@@ -740,7 +740,7 @@ class StartGame : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		entityId=varlong.decode(_buffer, &_index);
 		runtimeId=varlong.decode(_buffer, &_index);
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		seed=varint.decode(_buffer, &_index);
@@ -748,7 +748,7 @@ class StartGame : Buffer {
 		generator=varint.decode(_buffer, &_index);
 		worldGamemode=varint.decode(_buffer, &_index);
 		difficulty=varint.decode(_buffer, &_index);
-		spawnPosition.x=varint.decode(_buffer, &_index);spawnPosition.y=varint.decode(_buffer, &_index);spawnPosition.z=varint.decode(_buffer, &_index);
+		spawnPosition.x=varint.decode(_buffer, &_index); spawnPosition.y=varint.decode(_buffer, &_index); spawnPosition.z=varint.decode(_buffer, &_index);
 		loadedInCreative=readBigEndianBool();
 		time=varint.decode(_buffer, &_index);
 		edition=readBigEndianUbyte();
@@ -813,8 +813,8 @@ class AddPlayer : Buffer {
 		writeBytes(varuint.encode(cast(uint)username.length)); writeString(username);
 		writeBytes(varlong.encode(entityId));
 		writeBytes(varlong.encode(runtimeId));
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
-		writeLittleEndianFloat(motion.x);writeLittleEndianFloat(motion.y);writeLittleEndianFloat(motion.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(motion.x); writeLittleEndianFloat(motion.y); writeLittleEndianFloat(motion.z);
 		writeLittleEndianFloat(pitch);
 		writeLittleEndianFloat(headYaw);
 		writeLittleEndianFloat(yaw);
@@ -829,8 +829,8 @@ class AddPlayer : Buffer {
 		uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
 		entityId=varlong.decode(_buffer, &_index);
 		runtimeId=varlong.decode(_buffer, &_index);
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
-		motion.x=readLittleEndianFloat();motion.y=readLittleEndianFloat();motion.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		headYaw=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
@@ -888,8 +888,8 @@ class AddEntity : Buffer {
 		writeBytes(varlong.encode(entityId));
 		writeBytes(varlong.encode(runtimeId));
 		writeBytes(varuint.encode(type));
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
-		writeLittleEndianFloat(motion.x);writeLittleEndianFloat(motion.y);writeLittleEndianFloat(motion.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(motion.x); writeLittleEndianFloat(motion.y); writeLittleEndianFloat(motion.z);
 		writeLittleEndianFloat(pitch);
 		writeLittleEndianFloat(yaw);
 		writeBytes(varuint.encode(cast(uint)attributes.length)); foreach(yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.encode(bufferInstance); }
@@ -903,8 +903,8 @@ class AddEntity : Buffer {
 		entityId=varlong.decode(_buffer, &_index);
 		runtimeId=varlong.decode(_buffer, &_index);
 		type=varuint.decode(_buffer, &_index);
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
-		motion.x=readLittleEndianFloat();motion.y=readLittleEndianFloat();motion.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		attributes.length=varuint.decode(_buffer, &_index); foreach(ref yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.decode(bufferInstance); }
@@ -990,8 +990,8 @@ class AddItemEntity : Buffer {
 		writeBytes(varlong.encode(entityId));
 		writeBytes(varlong.encode(runtimeId));
 		item.encode(bufferInstance);
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
-		writeLittleEndianFloat(motion.x);writeLittleEndianFloat(motion.y);writeLittleEndianFloat(motion.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(motion.x); writeLittleEndianFloat(motion.y); writeLittleEndianFloat(motion.z);
 		return _buffer;
 	}
 
@@ -1000,8 +1000,8 @@ class AddItemEntity : Buffer {
 		entityId=varlong.decode(_buffer, &_index);
 		runtimeId=varlong.decode(_buffer, &_index);
 		item.decode(bufferInstance);
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
-		motion.x=readLittleEndianFloat();motion.y=readLittleEndianFloat();motion.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 	}
 
 	public static pure nothrow @safe AddItemEntity fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -1134,7 +1134,7 @@ class MoveEntity : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varlong.encode(entityId));
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
 		writeLittleEndianFloat(pitch);
 		writeLittleEndianFloat(headYaw);
 		writeLittleEndianFloat(yaw);
@@ -1144,7 +1144,7 @@ class MoveEntity : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		entityId=varlong.decode(_buffer, &_index);
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		headYaw=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
@@ -1197,7 +1197,7 @@ class MovePlayer : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varlong.encode(entityId));
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
 		writeLittleEndianFloat(pitch);
 		writeLittleEndianFloat(headYaw);
 		writeLittleEndianFloat(yaw);
@@ -1209,7 +1209,7 @@ class MovePlayer : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		entityId=varlong.decode(_buffer, &_index);
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		headYaw=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
@@ -1432,7 +1432,7 @@ class Explode : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
 		writeLittleEndianFloat(radius);
 		writeBytes(varuint.encode(cast(uint)destroyedBlocks.length)); foreach(zgvzdhjvewvkqmxv;destroyedBlocks){ zgvzdhjvewvkqmxv.encode(bufferInstance); }
 		return _buffer;
@@ -1440,7 +1440,7 @@ class Explode : Buffer {
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		radius=readLittleEndianFloat();
 		destroyedBlocks.length=varuint.decode(_buffer, &_index); foreach(ref zgvzdhjvewvkqmxv;destroyedBlocks){ zgvzdhjvewvkqmxv.decode(bufferInstance); }
 	}
@@ -1486,7 +1486,7 @@ class LevelSoundEvent : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBigEndianUbyte(sound);
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
 		writeBytes(varuint.encode(volume));
 		writeBytes(varint.encode(pitch));
 		writeBigEndianBool(unknown4);
@@ -1496,7 +1496,7 @@ class LevelSoundEvent : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		sound=readBigEndianUbyte();
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		volume=varuint.decode(_buffer, &_index);
 		pitch=varint.decode(_buffer, &_index);
 		unknown4=readBigEndianBool();
@@ -1586,7 +1586,7 @@ class LevelEvent : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varint.encode(eventId));
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
 		writeBytes(varint.encode(data));
 		return _buffer;
 	}
@@ -1594,7 +1594,7 @@ class LevelEvent : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		eventId=varint.decode(_buffer, &_index);
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		data=varint.decode(_buffer, &_index);
 	}
 
@@ -1995,8 +1995,8 @@ class UseItem : Buffer {
 		blockPosition.encode(bufferInstance);
 		writeBytes(varuint.encode(hotbarSlot));
 		writeBytes(varint.encode(face));
-		writeLittleEndianFloat(facePosition.x);writeLittleEndianFloat(facePosition.y);writeLittleEndianFloat(facePosition.z);
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(facePosition.x); writeLittleEndianFloat(facePosition.y); writeLittleEndianFloat(facePosition.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
 		writeBytes(varint.encode(slot));
 		item.encode(bufferInstance);
 		return _buffer;
@@ -2007,8 +2007,8 @@ class UseItem : Buffer {
 		blockPosition.decode(bufferInstance);
 		hotbarSlot=varuint.decode(_buffer, &_index);
 		face=varint.decode(_buffer, &_index);
-		facePosition.x=readLittleEndianFloat();facePosition.y=readLittleEndianFloat();facePosition.z=readLittleEndianFloat();
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
+		facePosition.x=readLittleEndianFloat(); facePosition.y=readLittleEndianFloat(); facePosition.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		slot=varint.decode(_buffer, &_index);
 		item.decode(bufferInstance);
 	}
@@ -2230,14 +2230,14 @@ class SetEntityMotion : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varlong.encode(entityId));
-		writeLittleEndianFloat(motion.x);writeLittleEndianFloat(motion.y);writeLittleEndianFloat(motion.z);
+		writeLittleEndianFloat(motion.x); writeLittleEndianFloat(motion.y); writeLittleEndianFloat(motion.z);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		entityId=varlong.decode(_buffer, &_index);
-		motion.x=readLittleEndianFloat();motion.y=readLittleEndianFloat();motion.z=readLittleEndianFloat();
+		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 	}
 
 	public static pure nothrow @safe SetEntityMotion fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -2449,13 +2449,13 @@ class Respawn : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 	}
 
 	public static pure nothrow @safe Respawn fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -3010,7 +3010,7 @@ class PlayerInput : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeLittleEndianFloat(motion.x);writeLittleEndianFloat(motion.y);writeLittleEndianFloat(motion.z);
+		writeLittleEndianFloat(motion.x); writeLittleEndianFloat(motion.y); writeLittleEndianFloat(motion.z);
 		writeBigEndianUbyte(flags);
 		writeBigEndianBool(unknown2);
 		return _buffer;
@@ -3018,7 +3018,7 @@ class PlayerInput : Buffer {
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		motion.x=readLittleEndianFloat();motion.y=readLittleEndianFloat();motion.z=readLittleEndianFloat();
+		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 		flags=readBigEndianUbyte();
 		unknown2=readBigEndianBool();
 	}
@@ -3056,7 +3056,7 @@ class FullChunkData : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varint.encode(position.x));writeBytes(varint.encode(position.z));
+		writeBytes(varint.encode(position.x)); writeBytes(varint.encode(position.z));
 		writeBytes(varuint.encode(cast(uint)data.length)); writeBytes(data);
 		writeBytes(varuint.encode(cast(uint)tiles.length)); writeBytes(tiles);
 		return _buffer;
@@ -3064,7 +3064,7 @@ class FullChunkData : Buffer {
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		position.x=varint.decode(_buffer, &_index);position.z=varint.decode(_buffer, &_index);
+		position.x=varint.decode(_buffer, &_index); position.z=varint.decode(_buffer, &_index);
 		data.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+data.length){ data=_buffer[_index.._index+data.length].dup; _index+=data.length; }
 		tiles.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+tiles.length){ tiles=_buffer[_index.._index+tiles.length].dup; _index+=tiles.length; }
 	}
@@ -3190,7 +3190,7 @@ class ChangeDimension : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varint.encode(dimension));
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
 		writeBigEndianBool(unknown2);
 		return _buffer;
 	}
@@ -3198,7 +3198,7 @@ class ChangeDimension : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		dimension=varint.decode(_buffer, &_index);
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		unknown2=readBigEndianBool();
 	}
 
@@ -3365,14 +3365,14 @@ class SpawnExperienceOrb : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeLittleEndianFloat(position.x);writeLittleEndianFloat(position.y);writeLittleEndianFloat(position.z);
+		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
 		writeBytes(varint.encode(count));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		position.x=readLittleEndianFloat();position.y=readLittleEndianFloat();position.z=readLittleEndianFloat();
+		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		count=varint.decode(_buffer, &_index);
 	}
 
