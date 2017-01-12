@@ -21,7 +21,7 @@ import sul.utils.*;
  */
 class PermissionDenied extends Packet {
 
-	public final static byte ID = (byte)5;
+	public final static byte ID = (byte)6;
 
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;

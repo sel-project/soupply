@@ -33,5 +33,5 @@ Protocol | Packets | From
 
 Protocol | Packets
 :---:|:---:
-[1](https://github.com/sel-project/sel-utils/tree/master/doc/externalconsole/1.md) | 9
+[1](https://github.com/sel-project/sel-utils/tree/master/doc/externalconsole/1.md) | 10
 

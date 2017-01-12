@@ -7,10 +7,7 @@
 	"encoding": {
 
 		"endianness": {
-			"*": "big_endian",
-			"ulong": "little_endian",
-			"long": "little_endian",
-			"float": "little_endian"
+			"*": "big_endian"
 		},
 
 		"id": "ubyte",
@@ -112,7 +109,7 @@
 						"type": "string"
 					},
 					{
-						"name": "main_node",
+						"name": "main",
 						"type": "bool"
 					}
 				]
@@ -124,7 +121,11 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "protocol_accepted",
+						"name": "protocol_matches",
+						"type": "bool"
+					},
+					{
+						"name": "name_valid",
 						"type": "bool"
 					},
 					{
@@ -247,6 +248,10 @@
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
+					{
+						"name": "time",
+						"type": "varulong"
+					},
 					{
 						"name": "tps",
 						"type": "float"

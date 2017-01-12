@@ -12,9 +12,20 @@ import java.util.UUID;
 
 import sul.utils.*;
 
+/**
+ * A plugin loaded on the node. It may be used by the hub to display the plugins loaded
+ * on the server in queries.
+ */
 final class Plugin {
 
+	/**
+	 * Name of the plugin.
+	 */
 	public String name;
+
+	/**
+	 * Version of the plugin, usually in the format `major.minor[.release] [alpha|beta]`.
+	 */
 	public String version;
 
 }

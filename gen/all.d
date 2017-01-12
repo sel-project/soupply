@@ -53,7 +53,7 @@ alias MetadataFlag = Tuple!(string, "name", string, "description", size_t, "bit"
 
 alias MetadataData = Tuple!(string, "name", string, "description", string, "type", ubyte, "id", string, "def", bool, "required", MetadataFlag[], "flags");
 
-alias Metadata = Tuple!(MetadataType[], "types", MetadataData[], "data");
+alias Metadata = Tuple!(string, "prefix", string, "length", string, "suffix", string, "type", string, "id", MetadataType[], "types", MetadataData[], "data");
 
 alias Metadatas = File!Metadata;
 
@@ -68,7 +68,7 @@ alias Packet = Tuple!(string, "name", size_t, "id", bool, "clientbound", bool, "
 
 alias Type = Tuple!(string, "name", string, "description", Field[], "fields");
 
-alias Section = Tuple!(string, "name", Packet[], "packets");
+alias Section = Tuple!(string, "name", string, "description", Packet[], "packets");
 
 alias Array = Tuple!(string, "base", string, "length", string, "endianness");
 
@@ -160,7 +160,12 @@ void main(string[] args) {
 					case "protocol":
 						m.protocol = element.text.strip.to!size_t;
 						break;
-					case "types":
+					case "encoding":
+						if("prefix" in element.tag.attr) m.data.prefix = element.tag.attr["prefix"];
+						if("length" in element.tag.attr) m.data.length = element.tag.attr["length"];
+						if("suffix" in element.tag.attr) m.data.suffix = element.tag.attr["suffix"];
+						m.data.type = element.tag.attr["types"];
+						m.data.id = element.tag.attr["ids"];
 						foreach(t ; element.elements) {
 							if(t.tag.name == "type") {
 								m.data.types ~= MetadataType(t.tag.attr["name"].replace("-", "_"), t.tag.attr["type"].replace("-", "_"), t.tag.attr["id"].to!ubyte);
@@ -276,6 +281,7 @@ void main(string[] args) {
 							if(s.tag.name == "section") {
 								Section section;
 								section.name = s.tag.attr["name"].replace("-", "_");
+								section.description = text(s);
 								foreach(pk ; s.elements) {
 									if(pk.tag.name == "packet") {
 										Packet packet;

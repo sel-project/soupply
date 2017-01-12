@@ -20,6 +20,7 @@ import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
 import std.json;
 import std.path : dirSeparator;
+import std.regex : ctRegex, replaceAll, matchFirst;
 import std.string;
 import std.typecons;
 
@@ -290,7 +291,6 @@ alias varulong = var!ulong;
 			else if(type == "uuid") return "writeBytes(" ~ name ~ ".data);";
 			else if(type == "bytes") return "writeBytes(" ~ name ~ ");";
 			else if(defaultTypes.canFind(type) || type == "triad") return "write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ");";
-			else if(type == "metadata") return "//TODO";
 			else return name ~ ".encode(bufferInstance);";
 		}
 
@@ -359,6 +359,10 @@ alias varulong = var!ulong;
 					data ~= "\n";
 				}
 			}
+			// fields' names
+			string[] fn;
+			foreach(i, field; fields) fn ~= field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
+			data ~= space ~ "public enum string[] FIELDS = " ~ to!string(fn) ~ ";\n\n";
 			// fields
 			foreach(i, field; fields) {
 				if(field.description.length) {
@@ -407,10 +411,14 @@ alias varulong = var!ulong;
 		write("../src/d/sul/protocol/" ~ game ~ "/types.d", t, "protocol/" ~ game);
 
 		// sections
-		string s = "module sul.protocol." ~ game ~ ";\n\npublic import sul.protocol." ~ game ~ ".types;\n\n";
+		string s;
+		if(prts.data.description.length) s ~= ddoc("", prts.data.description);
+		s ~= "module sul.protocol." ~ game ~ ";\n\npublic import sul.protocol." ~ game ~ ".types;\n\n";
 		foreach(section ; prts.data.sections) {
 			s ~= "public import sul.protocol." ~ game ~ "." ~ section.name ~ ";\n";
-			string data = "module sul.protocol." ~ game ~ "." ~ section.name ~ ";\n\n";
+			string data;
+			if(section.description.length) data ~= ddoc("", section.description);
+			data ~= "module sul.protocol." ~ game ~ "." ~ section.name ~ ";\n\n";
 			data ~= "import std.bitmanip : write, peek;\nimport std.conv : to;\nimport std.system : Endian;\nimport std.typetuple : TypeTuple;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\n";
 			data ~= "import sul.utils.buffer;\nimport sul.utils.var;\n\nstatic import sul.protocol." ~ game ~ ".types;\n\n";
 			if(game in metadatas) data ~= "import sul.metadata." ~ game ~ ";\n\n";
@@ -423,9 +431,6 @@ alias varulong = var!ulong;
 				data ~= "\tpublic enum " ~ id ~ " ID = " ~ to!string(packet.id) ~ ";\n\n";
 				data ~= "\tpublic enum bool CLIENTBOUND = " ~ to!string(packet.clientbound) ~ ";\n";
 				data ~= "\tpublic enum bool SERVERBOUND = " ~ to!string(packet.serverbound) ~ ";\n\n";
-				string[] fn;
-				foreach(i, field; packet.fields) fn ~= field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
-				data ~= "\tpublic enum string[] FIELDS = " ~ to!string(fn) ~ ";\n\n";
 				writeFields(data, "\t", packet.fields, true);
 				// encoding
 				data ~= "\tpublic pure nothrow @safe ubyte[] encode(bool writeId=true)() {\n";
@@ -449,6 +454,12 @@ alias varulong = var!ulong;
 				// variants
 				if(packet.variants.length) {
 					data ~= "\talias _encode = encode;\n\n";
+					data ~= "\tenum string variantField = \"" ~ convertName(packet.variantField) ~ "\";\n\n";
+					string[] v;
+					foreach(variant ; packet.variants) {
+						v ~= toPascalCase(variant.name);
+					}
+					data ~= "\talias Variants = TypeTuple!(" ~ v.join(", ") ~ ");\n\n";
 					foreach(variant ; packet.variants) {
 						if(variant.description.length) data ~= ddoc("\t\t", variant.description);
 						data ~= "\tpublic class " ~ toPascalCase(variant.name) ~ " {\n\n";
@@ -477,6 +488,7 @@ alias varulong = var!ulong;
 		if(m) {
 			string data = "module sul.metadata." ~ game ~ ";\n\n";
 			data ~= "import std.typecons : Tuple;\n\n";
+			data ~= "import sul.utils.buffer : Buffer;\n\n";
 			data ~= "static import sul.protocol." ~ game ~ ".types;\n\n";
 			data ~= "alias Changed(T) = Tuple!(T, \"value\", bool, \"changed\");\n\n";
 			data ~= "class Metadata {\n\n";
@@ -506,59 +518,23 @@ alias varulong = var!ulong;
 					data ~= "\t}\n\n";
 				}
 			}
+			data ~= "\tpublic pure nothrow @safe encode(Buffer buffer) {\n";
+			data ~= "\t\twith(buffer) {\n";
+			if(m.data.prefix.length) data ~= "\t\t\t" ~ createEncoding("ubyte", m.data.prefix) ~ "\n";
+
+			if(m.data.suffix.length) data ~= "\t\t\t" ~ createEncoding("ubyte", m.data.suffix) ~ "\n";
+			data ~= "\t\t}\n";
+			data ~= "\t}\n\n";
 			data ~= "}";
 			write("../src/d/sul/metadata/" ~ game ~ ".d", data, "metadata/" ~ game);
 		}
 
 	}
 
-	// metadata
-	/+foreach(string game, Metadatas m; metadatas) {
-
-		@property string convertType(string type) {
-			string ret, t = type;
-			auto array = type.indexOf("[");
-			if(array >= 0) {
-				t = type[0..array];
-			}
-			auto vector = type.indexOf("<");
-			if(vector >= 0) {
-				string tt = convertType(type[0..vector]);
-				t = "Tuple!(";
-				foreach(char c ; type[vector+1..type.indexOf(">")]) {
-					t ~= tt ~ `, "` ~ c ~ `", `;
-				}
-				ret = t[0..$-2] ~ ")";
-			} else if(t in defaultAliases) {
-				return convertType(defaultAliases[t] ~ (array >= 0 ? type[array..$] : ""));
-			} else if(defaultTypes.canFind(t)) {
-				ret = t;
-			}
-			if(ret == "") ret = "sul.protocol." ~ game ~ ".types." ~ toPascalCase(t);
-			return ret ~ (array >= 0 ? type[array..$] : "");
-		}
-
-		string data = "module sul.metadata." ~ game ~ ";\n\n";
-		data ~= "static import sul.protocol." ~ game ~ ".types;";
-		//TODO types
-		//TODO encoding
-		data ~= "struct Metadata {\n\n";
-		foreach(type ; m.data.metadatas) {
-			if(type.flags.length) {
-
-			} else {
-				data ~= "\tpublic " ~ convertType(type.type) ~ " " ~ toCamelCase(type.name) ~ (type.def.length ? " = " ~ type.def : "") ~ ";\n\n";
-			}
-		}
-		data ~= "}";
-		write("../src/d/sul/metadata/" ~ game ~ ".d", data, "metadata/" ~ game);
-	}+/
-
 }
 
 
 string ddoc(string space, string description) {
-	import std.regex : matchFirst, ctRegex;
 	bool search = true;
 	while(search) {
 		auto m = matchFirst(description, ctRegex!`\[[a-zA-Z0-9 \.]{2,30}\]\([a-zA-Z0-9\#\.:\/-]{2,64}\)`);
@@ -569,7 +545,16 @@ string ddoc(string space, string description) {
 		}
 	}
 	string ret;
-	foreach(s ; description.split("\n")) ret ~= ddocImpl(space, s.split(" "));
+	foreach(s ; description.split("\n")) {
+		string h = "######";
+		while((h = h[1..$]).length) {
+			if(s.startsWith(h)) {
+				ret ~= space ~ " * <h" ~ to!string(h.length) ~ ">" ~ s[h.length..$].strip ~ "</h" ~ to!string(h.length) ~ ">\n";
+				break;
+			}
+		}
+		if(!h.length) ret ~= ddocImpl(space, s.split(" "));
+	}
 	return space ~ "/**\n" ~ ret ~ space ~ " */\n";
 }
 
@@ -577,7 +562,7 @@ string ddocImpl(string space, string[] words) {
 	size_t length;
 	string[] ret;
 	while(length < 80 && words.length) {
-		ret ~= words[0];
+		ret ~= words[0].replaceAll(ctRegex!"```[a-z]{0,8}", "---");
 		length += words[0].length + 1;
 		words = words[1..$];
 	}

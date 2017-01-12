@@ -61,7 +61,7 @@ class Add extends Packet {
 		this.writeLongB(uuid.getLeastSignificantBits()); this.writeLongB(uuid.getMostSignificantBits());
 		this.writeBytes(skin.encode());
 		this.writeVaruint(latency);
-		this.writeFloatlittle_endian(packetLoss);
+		this.writeFloatB(packetLoss);
 		byte[] bgfuz3vhz2u=language.getBytes("UTF-8"); this.writeVaruint((int)bgfuz3vhz2u.length); this.writeBytes(bgfuz3vhz2u);
 		return this.buffer;
 	}

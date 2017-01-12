@@ -67,12 +67,12 @@ class RemoteCommand : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["origin", "sender", "command"];
-
 	// origin
 	public enum ubyte HUB = 0;
 	public enum ubyte EXTERNAL_CONSOLE = 1;
 	public enum ubyte RCON = 2;
+
+	public enum string[] FIELDS = ["origin", "sender", "command"];
 
 	public ubyte origin;
 	public sul.protocol.hncom1.types.Address sender;
@@ -118,8 +118,6 @@ class UpdateList : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["list", "action", "type"];
-
 	// list
 	public enum ubyte WHITELIST = 0;
 	public enum ubyte BLACKLIST = 1;
@@ -127,6 +125,8 @@ class UpdateList : Buffer {
 	// action
 	public enum ubyte ADD = 0;
 	public enum ubyte REMOVE = 1;
+
+	public enum string[] FIELDS = ["list", "action", "type"];
 
 	public ubyte list;
 	public ubyte action;
@@ -165,9 +165,15 @@ class UpdateList : Buffer {
 
 	alias _encode = encode;
 
+	enum string variantField = "type";
+
+	alias Variants = TypeTuple!(ByHubId, ByName, BySuuid);
+
 	public class ByHubId {
 
 		public enum typeof(type) TYPE = 0;
+
+		public enum string[] FIELDS = ["hubId"];
 
 		public uint hubId;
 
@@ -193,6 +199,8 @@ class UpdateList : Buffer {
 	public class ByName {
 
 		public enum typeof(type) TYPE = 1;
+
+		public enum string[] FIELDS = ["username"];
 
 		public string username;
 
@@ -222,6 +230,8 @@ class UpdateList : Buffer {
 		// game
 		public enum ubyte POCKET = 1;
 		public enum ubyte MINECRAFT = 2;
+
+		public enum string[] FIELDS = ["game", "uuid"];
 
 		public ubyte game;
 		public UUID uuid;

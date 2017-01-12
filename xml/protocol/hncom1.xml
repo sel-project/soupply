@@ -18,17 +18,16 @@
 
 		<endianness type="*" value="big-endian" />
 
-		<endianness type="ulong" value="little-endian" />
-
-		<endianness type="long" value="little-endian" />
-
-		<endianness type="float" value="little-endian" />
-
 		<alias name="hub-id" type="varuint" />
 
 		<type name="plugin">
-			<field name="name" type="string" />
-			<field name="version" type="string" />
+			A plugin loaded on the node. It may be used by the hub to display the plugins loaded on the server in queries.
+			<field name="name" type="string">
+				Name of the plugin.
+			</field>
+			<field name="version" type="string">
+				Version of the plugin, usually in the format `major.minor[.release] [alpha|beta]`.
+			</field>
 		</type>
 
 		<type name="address">
@@ -42,24 +41,45 @@
 		</type>
 
 		<type name="game">
+			Indicates a game and informations about it.
 			<field name="type" type="ubyte">
+				Type of the game.
 				<constant name="pocket" value="1" />
 				<constant name="minecraft" value="2" />
 			</field>
-			<field name="protocols" type="varuint[]" />
-			<field name="motd" type="string" />
-			<field name="port" type="ushort" />
+			<field name="protocols" type="varuint[]">
+				Protocols accepted by the server for the game. They should be ordered from oldest to newest.
+			</field>
+			<field name="motd" type="string">
+				"Message of the day" which is displayed in the game's server list. It may contain Minecraft formatting codes.
+			</field>
+			<field name="port" type="ushort">
+				Port, or main port if the server allows the connection from multiple ports, where the socket is listening for connections.
+			</field>
 		</type>
 
 		<type name="skin">
-			<field name="name" type="string" />
-			<field name="data" type="ubyte[]" />
+			Player's skin to be sent to Minecraft: Pocket Edition clients.
+			If the server only allows Minecraft player to connect the following fields should be empty.
+			<field name="name" type="string">
+				Name of the skin.
+			</field>
+			<field name="data" type="ubyte[]">
+				RGBA map of the skin colours. Length should be, if the skin is not empty, 8192 or 16384.
+			</field>
 		</type>
 
 		<type name="log">
-			<field name="timestamp" type="ulong" />
-			<field name="logger" type="string" />
-			<field name="message" type="string" />
+			Indicates a log.
+			<field name="timestamp" type="ulong">
+				Unix time (in milliseconds) that indicates the exact creation time of the log.
+			</field>
+			<field name="logger" type="string">
+				Name of the logger (world, plugin or module/packet) thas has generated the log.
+			</field>
+			<field name="message" type="string">
+				Logged message. It may contain Minecraft formatting codes.
+			</field>
 		</type>
 
 	</encoding>
@@ -68,21 +88,32 @@
 
 		<section name="login">
 
+			Packets used during the authentication process to exchange informations.
+
 			<packet name="connection" id="0" clientbound="false" serverbound="true">
+				First real packet sent by the client with its informations.
 				<field name="protocol" type="varuint">
 					Version of the protocol used by the client that must match the hub's one
 				</field>
 				<field name="name" type="string">
-					Name of the node that will be validated by the hub.
+					Name of the node that will be validated by the hub. It should always be lowercase and only contain letters, numbers and basic punctuation symbols.
 				</field>
-				<field name="main-node" type="bool">
+				<field name="main" type="bool">
 					Indicates whether the node accepts clients when they first connect to the hub or exclusively when they are manually transferred.
 				</field>
 			</packet>
 
 			<packet name="connection-response" id="1" clientbound="true" serverbound="false">
-				<field name="protocol-accepted" type="bool" />
-				<field name="name-accepted" type="bool" />
+				Reply always sent after the [Connection](#login.connection) packet. It indicates the status of the connection, which is accepted only when every field of the packet is true.
+				<field name="protocol-matches" type="bool">
+					Indicates whether the protocol given at [Connection.protocol](#login.connection.protocol) is equals to the server's one.
+				</field>
+				<field name="name-valid" type="bool">
+					Indicates whether the name has passed the server's validation process.
+				</field>
+				<field name="name-accepted" type="bool">
+					Indicates whether the name can be used. The value is false when there's already a node connected with the same name.
+				</field>
 			</packet>
 
 			<packet name="info" id="2" clientbound="true" serverbound="false">
@@ -122,6 +153,7 @@
 			</packet>
 
 			<packet name="resources-usage" id="6" clientbound="false" serverbound="true">
+				<field name="time" type="varulong" />
 				<field name="tps" type="float" />
 				<field name="ram" type="varulong" />
 				<field name="cpu" type="float" />

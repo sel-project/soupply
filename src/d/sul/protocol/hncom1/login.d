@@ -6,6 +6,9 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
+/**
+ * Packets used during the authentication process to exchange informations.
+ */
 module sul.protocol.hncom1.login;
 
 import std.bitmanip : write, peek;
@@ -22,6 +25,9 @@ static import sul.protocol.hncom1.types;
 
 alias Packets = TypeTuple!(Connection, ConnectionResponse, Info, Ready);
 
+/**
+ * First real packet sent by the client with its informations.
+ */
 class Connection : Buffer {
 
 	public enum ubyte ID = 0;
@@ -29,7 +35,7 @@ class Connection : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["protocol", "name", "mainNode"];
+	public enum string[] FIELDS = ["protocol", "name", "main"];
 
 	/**
 	 * Version of the protocol used by the client that must match the hub's one
@@ -37,7 +43,8 @@ class Connection : Buffer {
 	public uint protocol;
 
 	/**
-	 * Name of the node that will be validated by the hub.
+	 * Name of the node that will be validated by the hub. It should always be lowercase
+	 * and only contain letters, numbers and basic punctuation symbols.
 	 */
 	public string name;
 
@@ -45,14 +52,14 @@ class Connection : Buffer {
 	 * Indicates whether the node accepts clients when they first connect to the hub or
 	 * exclusively when they are manually transferred.
 	 */
-	public bool mainNode;
+	public bool main;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint protocol, string name=string.init, bool mainNode=bool.init) {
+	public pure nothrow @safe @nogc this(uint protocol, string name=string.init, bool main=bool.init) {
 		this.protocol = protocol;
 		this.name = name;
-		this.mainNode = mainNode;
+		this.main = main;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
@@ -60,7 +67,7 @@ class Connection : Buffer {
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(protocol));
 		writeBytes(varuint.encode(cast(uint)name.length)); writeString(name);
-		writeBigEndianBool(mainNode);
+		writeBigEndianBool(main);
 		return _buffer;
 	}
 
@@ -68,7 +75,7 @@ class Connection : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		protocol=varuint.decode(_buffer, &_index);
 		uint bmftzq=varuint.decode(_buffer, &_index); name=readString(bmftzq);
-		mainNode=readBigEndianBool();
+		main=readBigEndianBool();
 	}
 
 	public static pure nothrow @safe Connection fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -80,6 +87,10 @@ class Connection : Buffer {
 
 }
 
+/**
+ * Reply always sent after the Connection packet. It indicates the status of the connection,
+ * which is accepted only when every field of the packet is true.
+ */
 class ConnectionResponse : Buffer {
 
 	public enum ubyte ID = 1;
@@ -87,29 +98,46 @@ class ConnectionResponse : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["protocolAccepted", "nameAccepted"];
+	public enum string[] FIELDS = ["protocolMatches", "nameValid", "nameAccepted"];
 
-	public bool protocolAccepted;
+	/**
+	 * Indicates whether the protocol given at Connection.protocol is equals to the server's
+	 * one.
+	 */
+	public bool protocolMatches;
+
+	/**
+	 * Indicates whether the name has passed the server's validation process.
+	 */
+	public bool nameValid;
+
+	/**
+	 * Indicates whether the name can be used. The value is false when there's already
+	 * a node connected with the same name.
+	 */
 	public bool nameAccepted;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(bool protocolAccepted, bool nameAccepted=bool.init) {
-		this.protocolAccepted = protocolAccepted;
+	public pure nothrow @safe @nogc this(bool protocolMatches, bool nameValid=bool.init, bool nameAccepted=bool.init) {
+		this.protocolMatches = protocolMatches;
+		this.nameValid = nameValid;
 		this.nameAccepted = nameAccepted;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBigEndianBool(protocolAccepted);
+		writeBigEndianBool(protocolMatches);
+		writeBigEndianBool(nameValid);
 		writeBigEndianBool(nameAccepted);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		protocolAccepted=readBigEndianBool();
+		protocolMatches=readBigEndianBool();
+		nameValid=readBigEndianBool();
 		nameAccepted=readBigEndianBool();
 	}
 
@@ -164,7 +192,7 @@ class Info : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeLittleEndianUlong(serverId);
+		writeBigEndianUlong(serverId);
 		writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName);
 		writeBigEndianBool(onlineMode);
 		writeBytes(varuint.encode(cast(uint)games.length)); foreach(z2ftzxm;games){ z2ftzxm.encode(bufferInstance); }
@@ -173,7 +201,7 @@ class Info : Buffer {
 		writeBytes(varuint.encode(cast(uint)language.length)); writeString(language);
 		writeBytes(varuint.encode(cast(uint)acceptedLanguages.length)); foreach(ywnjzxb0zwrmyw5n;acceptedLanguages){ writeBytes(varuint.encode(cast(uint)ywnjzxb0zwrmyw5n.length)); writeString(ywnjzxb0zwrmyw5n); }
 		writeBytes(varuint.encode(cast(uint)nodes.length)); foreach(bm9kzxm;nodes){ writeBytes(varuint.encode(cast(uint)bm9kzxm.length)); writeString(bm9kzxm); }
-		writeLittleEndianUlong(uuidPool);
+		writeBigEndianUlong(uuidPool);
 		writeBytes(varuint.encode(cast(uint)socialJson.length)); writeString(socialJson);
 		writeBytes(varuint.encode(cast(uint)additionalJson.length)); writeString(additionalJson);
 		return _buffer;
@@ -181,7 +209,7 @@ class Info : Buffer {
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		serverId=readLittleEndianUlong();
+		serverId=readBigEndianUlong();
 		uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu);
 		onlineMode=readBigEndianBool();
 		games.length=varuint.decode(_buffer, &_index); foreach(ref z2ftzxm;games){ z2ftzxm.decode(bufferInstance); }
@@ -190,7 +218,7 @@ class Info : Buffer {
 		uint bgfuz3vhz2u=varuint.decode(_buffer, &_index); language=readString(bgfuz3vhz2u);
 		acceptedLanguages.length=varuint.decode(_buffer, &_index); foreach(ref ywnjzxb0zwrmyw5n;acceptedLanguages){ uint exduanp4yjb6d3jt=varuint.decode(_buffer, &_index); ywnjzxb0zwrmyw5n=readString(exduanp4yjb6d3jt); }
 		nodes.length=varuint.decode(_buffer, &_index); foreach(ref bm9kzxm;nodes){ uint ym05a3p4bq=varuint.decode(_buffer, &_index); bm9kzxm=readString(ym05a3p4bq); }
-		uuidPool=readLittleEndianUlong();
+		uuidPool=readBigEndianUlong();
 		uint c29jawfssnnvbg=varuint.decode(_buffer, &_index); socialJson=readString(c29jawfssnnvbg);
 		uint ywrkaxrpb25hbepz=varuint.decode(_buffer, &_index); additionalJson=readString(ywrkaxrpb25hbepz);
 	}

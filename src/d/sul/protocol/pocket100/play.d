@@ -31,11 +31,11 @@ class Login : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["protocol", "edition", "body_"];
-
 	// edition
 	public enum ubyte CLASSIC = 0;
 	public enum ubyte EDUCATION = 1;
+
+	public enum string[] FIELDS = ["protocol", "edition", "body_"];
 
 	public uint protocol;
 	public ubyte edition;
@@ -81,8 +81,6 @@ class PlayStatus : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["status"];
-
 	// status
 	public enum uint OK = 0;
 	public enum uint OUTDATED_CLIENT = 1;
@@ -90,6 +88,8 @@ class PlayStatus : Buffer {
 	public enum uint SPAWNED = 3;
 	public enum uint INVALID_TENANT = 4;
 	public enum uint EDITION_MISMATCH = 5;
+
+	public enum string[] FIELDS = ["status"];
 
 	public uint status;
 
@@ -396,9 +396,15 @@ class Text : Buffer {
 
 	alias _encode = encode;
 
+	enum string variantField = "type";
+
+	alias Variants = TypeTuple!(Raw, Chat, Translation, Popup, Tip, System, Whisper);
+
 	public class Raw {
 
 		public enum typeof(type) TYPE = 0;
+
+		public enum string[] FIELDS = ["message"];
 
 		public string message;
 
@@ -424,6 +430,8 @@ class Text : Buffer {
 	public class Chat {
 
 		public enum typeof(type) TYPE = 1;
+
+		public enum string[] FIELDS = ["sender", "message"];
 
 		public string sender;
 		public string message;
@@ -454,6 +462,8 @@ class Text : Buffer {
 
 		public enum typeof(type) TYPE = 2;
 
+		public enum string[] FIELDS = ["message", "parameters"];
+
 		public string message;
 		public string[] parameters;
 
@@ -482,6 +492,8 @@ class Text : Buffer {
 	public class Popup {
 
 		public enum typeof(type) TYPE = 3;
+
+		public enum string[] FIELDS = ["title", "subtitle"];
 
 		public string title;
 		public string subtitle;
@@ -512,6 +524,8 @@ class Text : Buffer {
 
 		public enum typeof(type) TYPE = 4;
 
+		public enum string[] FIELDS = ["message"];
+
 		public string message;
 
 		public pure nothrow @safe @nogc this() {}
@@ -537,6 +551,8 @@ class Text : Buffer {
 
 		public enum typeof(type) TYPE = 5;
 
+		public enum string[] FIELDS = ["message"];
+
 		public string message;
 
 		public pure nothrow @safe @nogc this() {}
@@ -561,6 +577,8 @@ class Text : Buffer {
 	public class Whisper {
 
 		public enum typeof(type) TYPE = 6;
+
+		public enum string[] FIELDS = ["sender", "message"];
 
 		public string sender;
 		public string message;
@@ -638,8 +656,6 @@ class StartGame : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["entityId", "runtimeId", "position", "yaw", "pitch", "seed", "dimension", "generator", "worldGamemode", "difficulty", "spawnPosition", "loadedInCreative", "time", "edition", "rainLevel", "lightingLevel", "cheatsEnabled", "textureRequired", "levelId", "worldName"];
-
 	// dimension
 	public enum int OVERWORLD = 0;
 	public enum int NETHER = 1;
@@ -663,6 +679,8 @@ class StartGame : Buffer {
 	// edition
 	public enum ubyte CLASSIC = 0;
 	public enum ubyte EDUCATION = 1;
+
+	public enum string[] FIELDS = ["entityId", "runtimeId", "position", "yaw", "pitch", "seed", "dimension", "generator", "worldGamemode", "difficulty", "spawnPosition", "loadedInCreative", "time", "edition", "rainLevel", "lightingLevel", "cheatsEnabled", "textureRequired", "levelId", "worldName"];
 
 	public long entityId;
 	public long runtimeId;
@@ -819,7 +837,7 @@ class AddPlayer : Buffer {
 		writeLittleEndianFloat(headYaw);
 		writeLittleEndianFloat(yaw);
 		heldItem.encode(bufferInstance);
-		//TODO
+		metadata.encode(bufferInstance);
 		return _buffer;
 	}
 
@@ -893,7 +911,7 @@ class AddEntity : Buffer {
 		writeLittleEndianFloat(pitch);
 		writeLittleEndianFloat(yaw);
 		writeBytes(varuint.encode(cast(uint)attributes.length)); foreach(yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.encode(bufferInstance); }
-		//TODO
+		metadata.encode(bufferInstance);
 		writeBytes(varuint.encode(cast(uint)links.length)); foreach(bglua3m;links){ writeBytes(varlong.encode(bglua3m)); }
 		return _buffer;
 	}
@@ -1166,12 +1184,12 @@ class MovePlayer : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["entityId", "position", "pitch", "headYaw", "yaw", "animation", "onGround"];
-
 	// animation
 	public enum ubyte FULL = 0;
 	public enum ubyte NONE = 1;
 	public enum ubyte ROTATION = 2;
+
+	public enum string[] FIELDS = ["entityId", "position", "pitch", "headYaw", "yaw", "animation", "onGround"];
 
 	public long entityId;
 	public Tuple!(float, "x", float, "y", float, "z") position;
@@ -1309,13 +1327,13 @@ class UpdateBlock : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["position", "block", "flagsAndMeta"];
-
 	// flags and meta
 	public enum uint NEIGHBORS = 1;
 	public enum uint NETWORK = 2;
 	public enum uint NO_GRAPHIC = 4;
 	public enum uint PRIORITY = 8;
+
+	public enum string[] FIELDS = ["position", "block", "flagsAndMeta"];
 
 	public sul.protocol.pocket100.types.BlockPosition position;
 	public uint block;
@@ -1461,10 +1479,10 @@ class LevelSoundEvent : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["sound", "position", "volume", "pitch", "unknown4"];
-
 	// sound
 	public enum ubyte NOTE = 60;
+
+	public enum string[] FIELDS = ["sound", "position", "volume", "pitch", "unknown4"];
 
 	public ubyte sound;
 	public Tuple!(float, "x", float, "y", float, "z") position;
@@ -1518,8 +1536,6 @@ class LevelEvent : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["eventId", "position", "data"];
-
 	// event id
 	public enum int START_RAIN = 3001;
 	public enum int START_THUNDER = 3002;
@@ -1569,6 +1585,8 @@ class LevelEvent : Buffer {
 	public enum int DRAGON_BREATH = 16425;
 	public enum int SHOOT = 2000;
 	public enum int DESTROY = 2001;
+
+	public enum string[] FIELDS = ["eventId", "position", "data"];
 
 	public int eventId;
 	public Tuple!(float, "x", float, "y", float, "z") position;
@@ -1656,8 +1674,6 @@ class EntityEvent : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["entityId", "eventId", "unknown2"];
-
 	// event id
 	public enum ubyte HURT_ANIMATION = 2;
 	public enum ubyte DEATH_ANIMATION = 3;
@@ -1673,6 +1689,8 @@ class EntityEvent : Buffer {
 	public enum ubyte SQUID_INK_CLOUD = 15;
 	public enum ubyte AMBIENT_SOUND = 16;
 	public enum ubyte RESPAWN = 17;
+
+	public enum string[] FIELDS = ["entityId", "eventId", "unknown2"];
 
 	public long entityId;
 	public ubyte eventId;
@@ -1718,12 +1736,12 @@ class MobEffect : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["entityId", "eventId", "effect", "amplifier", "particles", "duration"];
-
 	// event id
 	public enum ubyte ADD = 0;
 	public enum ubyte MODIFY = 1;
 	public enum ubyte REMOVE = 2;
+
+	public enum string[] FIELDS = ["entityId", "eventId", "effect", "amplifier", "particles", "duration"];
 
 	public long entityId;
 	public ubyte eventId;
@@ -1919,13 +1937,13 @@ class Interact : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["action", "target"];
-
 	// action
 	public enum ubyte ATTACK = 1;
 	public enum ubyte INTERACT = 2;
 	public enum ubyte LEAVE_VEHICLE = 3;
 	public enum ubyte HOVER = 4;
+
+	public enum string[] FIELDS = ["action", "target"];
 
 	public ubyte action;
 	public long target;
@@ -2029,8 +2047,6 @@ class PlayerAction : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["entityId", "action", "position", "face"];
-
 	// action
 	public enum int START_BREAK = 0;
 	public enum int ABORT_BREAK = 1;
@@ -2047,6 +2063,8 @@ class PlayerAction : Buffer {
 	public enum int ABORT_DIMENSION_CHANGE = 14;
 	public enum int START_GLIDING = 15;
 	public enum int STOP_GLIDING = 16;
+
+	public enum string[] FIELDS = ["entityId", "action", "position", "face"];
 
 	public long entityId;
 	public int action;
@@ -2188,7 +2206,7 @@ class SetEntityData : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varlong.encode(entityId));
-		//TODO
+		metadata.encode(bufferInstance);
 		return _buffer;
 	}
 
@@ -2256,11 +2274,11 @@ class SetEntityLink : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["from", "to", "action"];
-
 	// action
 	public enum ubyte ADD = 0;
 	public enum ubyte REMOVE = 1;
+
+	public enum string[] FIELDS = ["from", "to", "action"];
 
 	public long from;
 	public long to;
@@ -2390,11 +2408,11 @@ class Animate : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["action", "entityId"];
-
 	// action
 	public enum int BREAKING = 1;
 	public enum int WAKE_UP = 3;
+
+	public enum string[] FIELDS = ["action", "entityId"];
 
 	public int action;
 	public long entityId;
@@ -2474,10 +2492,10 @@ class DropItem : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["action", "item"];
-
 	// action
 	public enum ubyte DROP = 0;
+
+	public enum string[] FIELDS = ["action", "item"];
 
 	public ubyte action;
 	public sul.protocol.pocket100.types.Slot item;
@@ -2891,8 +2909,6 @@ class AdventureSettings : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["flags", "permissions"];
-
 	// flags
 	public enum uint IMMUTABLE_WORLD = 1;
 	public enum uint PVP_DISABLED = 2;
@@ -2910,6 +2926,8 @@ class AdventureSettings : Buffer {
 	public enum uint HOST = 2;
 	public enum uint AUTOMATION = 3;
 	public enum uint ADMIN = 4;
+
+	public enum string[] FIELDS = ["flags", "permissions"];
 
 	public uint flags;
 	public uint permissions;
@@ -3123,13 +3141,13 @@ class SetDifficulty : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["difficulty"];
-
 	// difficulty
 	public enum uint PEACEFUL = 0;
 	public enum uint EASY = 1;
 	public enum uint NORMAL = 2;
 	public enum uint HARD = 3;
+
+	public enum string[] FIELDS = ["difficulty"];
 
 	public uint difficulty;
 
@@ -3167,12 +3185,12 @@ class ChangeDimension : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["dimension", "position", "unknown2"];
-
 	// dimension
 	public enum int OVERWORLD = 0;
 	public enum int NETHER = 1;
 	public enum int END = 2;
+
+	public enum string[] FIELDS = ["dimension", "position", "unknown2"];
 
 	public int dimension;
 	public Tuple!(float, "x", float, "y", float, "z") position;
@@ -3218,11 +3236,11 @@ class SetPlayerGametype : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["gametype"];
-
 	// gametype
 	public enum int SURVIVAL = 0;
 	public enum int CREATIVE = 1;
+
+	public enum string[] FIELDS = ["gametype"];
 
 	public int gametype;
 
@@ -3291,9 +3309,15 @@ class PlayerList : Buffer {
 
 	alias _encode = encode;
 
+	enum string variantField = "action";
+
+	alias Variants = TypeTuple!(Add, Remove);
+
 	public class Add {
 
 		public enum typeof(action) ACTION = 0;
+
+		public enum string[] FIELDS = ["players"];
 
 		public sul.protocol.pocket100.types.PlayerList[] players;
 
@@ -3319,6 +3343,8 @@ class PlayerList : Buffer {
 	public class Remove {
 
 		public enum typeof(action) ACTION = 1;
+
+		public enum string[] FIELDS = ["players"];
 
 		public UUID[] players;
 
@@ -3666,12 +3692,12 @@ class BossEvent : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["entityId", "eventId"];
-
 	// event id
 	public enum uint ADD = 0;
 	public enum uint UPDATE = 1;
 	public enum uint REMOVE = 2;
+
+	public enum string[] FIELDS = ["entityId", "eventId"];
 
 	public long entityId;
 	public uint eventId;

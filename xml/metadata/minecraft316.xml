@@ -6,7 +6,7 @@
 
 	<protocol>316</protocol>
 
-	<types>
+	<encoding suffix="255" types="ubyte" ids="ubyte">
 
 		<type name="byte" type="byte" id="0" />
 		<type name="int" type="varuint" id="1" />
@@ -22,7 +22,7 @@
 		<type name="uuid" type="optional-uuid" id="11" />
 		<type name="block" type="varuint" id="12" />
 
-	</types>
+	</encoding>
 
 	<metadatas>
 

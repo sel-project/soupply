@@ -29,8 +29,6 @@ class Add : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["hubId", "reason", "protocol", "username", "displayName", "address", "game", "uuid", "skin", "latency", "packetLoss", "language"];
-
 	// reason
 	public enum ubyte FIRST_JOIN = 0;
 	public enum ubyte TRANSFERRED = 1;
@@ -39,6 +37,8 @@ class Add : Buffer {
 	// game
 	public enum ubyte POCKET = 1;
 	public enum ubyte MINECRAFT = 2;
+
+	public enum string[] FIELDS = ["hubId", "reason", "protocol", "username", "displayName", "address", "game", "uuid", "skin", "latency", "packetLoss", "language"];
 
 	public uint hubId;
 	public ubyte reason;
@@ -83,7 +83,7 @@ class Add : Buffer {
 		writeBytes(uuid.data);
 		skin.encode(bufferInstance);
 		writeBytes(varuint.encode(latency));
-		writeLittleEndianFloat(packetLoss);
+		writeBigEndianFloat(packetLoss);
 		writeBytes(varuint.encode(cast(uint)language.length)); writeString(language);
 		return _buffer;
 	}
@@ -100,7 +100,7 @@ class Add : Buffer {
 		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		skin.decode(bufferInstance);
 		latency=varuint.decode(_buffer, &_index);
-		packetLoss=readLittleEndianFloat();
+		packetLoss=readBigEndianFloat();
 		uint bgfuz3vhz2u=varuint.decode(_buffer, &_index); language=readString(bgfuz3vhz2u);
 	}
 
@@ -120,13 +120,13 @@ class Remove : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["hubId", "reason"];
-
 	// reason
 	public enum ubyte LEFT = 0;
 	public enum ubyte TIMED_OUT = 1;
 	public enum ubyte KICKED = 2;
 	public enum ubyte TRANSFERRED = 3;
+
+	public enum string[] FIELDS = ["hubId", "reason"];
 
 	public uint hubId;
 	public ubyte reason;
@@ -402,14 +402,14 @@ class UpdatePacketLoss : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(hubId));
-		writeLittleEndianFloat(packetLoss);
+		writeBigEndianFloat(packetLoss);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		hubId=varuint.decode(_buffer, &_index);
-		packetLoss=readLittleEndianFloat();
+		packetLoss=readBigEndianFloat();
 	}
 
 	public static pure nothrow @safe UpdatePacketLoss fromBuffer(bool readId=true)(ubyte[] buffer) {

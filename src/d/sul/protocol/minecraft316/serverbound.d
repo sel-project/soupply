@@ -157,12 +157,12 @@ class ClientStatus : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["action"];
-
 	// action
 	public enum uint RESPAWN = 0;
 	public enum uint REQUEST_STATS = 1;
 	public enum uint OPEN_INVENTORY = 2;
+
+	public enum string[] FIELDS = ["action"];
 
 	public uint action;
 
@@ -200,8 +200,6 @@ class ClientSettings : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["language", "viewDistance", "chatMode", "chatColors", "displayedSkinParts", "mainHand"];
-
 	// chat mode
 	public enum uint ENABLED = 0;
 	public enum uint COMMANDS_ONLY = 1;
@@ -219,6 +217,8 @@ class ClientSettings : Buffer {
 	// main hand
 	public enum ubyte RIGHT = 0;
 	public enum ubyte LEFT = 1;
+
+	public enum string[] FIELDS = ["language", "viewDistance", "chatMode", "chatColors", "displayedSkinParts", "mainHand"];
 
 	public string language;
 	public ubyte viewDistance;
@@ -502,8 +502,6 @@ class UseEntity : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["target", "type", "targetPosition", "hand"];
-
 	// type
 	public enum uint INTERACT = 0;
 	public enum uint ATTACK = 1;
@@ -512,6 +510,8 @@ class UseEntity : Buffer {
 	// hand
 	public enum uint MAIN_HAND = 0;
 	public enum uint OFF_HAND = 1;
+
+	public enum string[] FIELDS = ["target", "type", "targetPosition", "hand"];
 
 	public uint target;
 	public uint type;
@@ -863,13 +863,13 @@ class PlayerAbilities : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["flags", "flyingSpeed", "walkingSpeed"];
-
 	// flags
 	public enum ubyte CREATIVE_MODE = 1;
 	public enum ubyte FLYING = 2;
 	public enum ubyte ALLOW_FLYING = 4;
 	public enum ubyte INVINCIBLE = 8;
+
+	public enum string[] FIELDS = ["flags", "flyingSpeed", "walkingSpeed"];
 
 	public ubyte flags;
 	public float flyingSpeed;
@@ -915,8 +915,6 @@ class PlayerDigging : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["status", "position", "face"];
-
 	// status
 	public enum uint START_DIGGING = 0;
 	public enum uint CANCEL_DIGGING = 1;
@@ -926,6 +924,8 @@ class PlayerDigging : Buffer {
 	public enum uint SHOOT_ARROW = 5;
 	public enum uint FINISH_EATING = 5;
 	public enum uint SWAP_ITEM_IN_HAND = 6;
+
+	public enum string[] FIELDS = ["status", "position", "face"];
 
 	public uint status;
 	public ulong position;
@@ -971,8 +971,6 @@ class EntityAction : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["entityId", "action", "jumpBoost"];
-
 	// action
 	public enum uint START_SNEAKING = 0;
 	public enum uint STOP_SNEAKING = 1;
@@ -983,6 +981,8 @@ class EntityAction : Buffer {
 	public enum uint STOP_HORSE_JUMP = 6;
 	public enum uint OPEN_HORSE_INVENTORY = 7;
 	public enum uint START_ELYTRA_FLYING = 8;
+
+	public enum string[] FIELDS = ["entityId", "action", "jumpBoost"];
 
 	public uint entityId;
 	public uint action;
@@ -1028,11 +1028,11 @@ class SteerVehicle : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["sideways", "forward", "flags"];
-
 	// flags
 	public enum ubyte JUMP = 1;
 	public enum ubyte UNMOUNT = 2;
+
+	public enum string[] FIELDS = ["sideways", "forward", "flags"];
 
 	public float sideways;
 	public float forward;
@@ -1078,13 +1078,13 @@ class ResourcePackStatus : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["result"];
-
 	// result
 	public enum uint LOADED = 0;
 	public enum uint DECLINED = 1;
 	public enum uint FAILED = 2;
 	public enum uint ACCEPTED = 3;
+
+	public enum string[] FIELDS = ["result"];
 
 	public uint result;
 
@@ -1244,11 +1244,11 @@ class Animation : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["hand"];
-
 	// hand
 	public enum uint MAIN_HAND = 0;
 	public enum uint OFF_HAND = 1;
+
+	public enum string[] FIELDS = ["hand"];
 
 	public uint hand;
 
@@ -1324,11 +1324,11 @@ class PlayerBlockPlacement : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["position", "face", "hand", "cursorPosition"];
-
 	// hand
 	public enum uint MAIN_HAND = 0;
 	public enum uint OFF_HAND = 1;
+
+	public enum string[] FIELDS = ["position", "face", "hand", "cursorPosition"];
 
 	public ulong position;
 	public uint face;
@@ -1378,11 +1378,11 @@ class UseItem : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["hand"];
-
 	// hand
 	public enum uint MAIN_HAND = 0;
 	public enum uint OFF_HAND = 1;
+
+	public enum string[] FIELDS = ["hand"];
 
 	public uint hand;
 

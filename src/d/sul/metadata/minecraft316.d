@@ -10,10 +10,18 @@ module sul.metadata.minecraft316;
 
 import std.typecons : Tuple;
 
+import sul.utils.buffer : Buffer;
+
 static import sul.protocol.minecraft316.types;
 
 alias Changed(T) = Tuple!(T, "value", bool, "changed");
 
 class Metadata {
+
+	public pure nothrow @safe encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(255);
+		}
+	}
 
 }

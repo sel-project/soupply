@@ -12,15 +12,36 @@ import java.util.UUID;
 
 import sul.utils.*;
 
+/**
+ * Indicates a game and informations about it.
+ */
 final class Game {
 
 	// type
 	public final static byte POCKET = (byte)1;
 	public final static byte MINECRAFT = (byte)2;
 
+	/**
+	 * Type of the game.
+	 */
 	public byte type;
+
+	/**
+	 * Protocols accepted by the server for the game. They should be ordered from oldest
+	 * to newest.
+	 */
 	public int[] protocols;
+
+	/**
+	 * "Message of the day" which is displayed in the game's server list. It may contain
+	 * Minecraft formatting codes.
+	 */
 	public String motd;
+
+	/**
+	 * Port, or main port if the server allows the connection from multiple ports, where
+	 * the socket is listening for connections.
+	 */
 	public short port;
 
 }

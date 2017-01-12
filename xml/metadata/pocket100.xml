@@ -6,7 +6,7 @@
 
 	<protocol>100</protocol>
 
-	<types>
+	<encoding length="varuint" types="varuint" ids="varuint">
 
 		<type name="byte" type="byte" id="0" />
 		<type name="short" type="short" id="1" />
@@ -18,7 +18,7 @@
 		<type name="long" type="varlong" id="7" />
 		<type name="entity-position" type="float<xyz>" id="8" />
 
-	</types>
+	</encoding>
 
 	<metadatas>
 

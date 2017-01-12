@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
+/**
+ * Indicates the status of the authentication process.
+ */
 class Welcome extends Packet {
 
 	public final static byte ID = (byte)2;
@@ -41,6 +44,10 @@ class Welcome extends Packet {
 		this.index = 0;
 	}
 
+	/**
+	 * Sent when the hash sent in Auth matched the server's and the external console can
+	 * now use the other features available in the protocol.
+	 */
 	public static class Accepted extends Welcome {
 
 	}

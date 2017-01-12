@@ -10,6 +10,8 @@ module sul.metadata.pocket100;
 
 import std.typecons : Tuple;
 
+import sul.utils.buffer : Buffer;
+
 static import sul.protocol.pocket100.types;
 
 alias Changed(T) = Tuple!(T, "value", bool, "changed");
@@ -630,6 +632,11 @@ class Metadata {
 	public pure nothrow @property @safe @nogc int fuseLength(int value) {
 		_fuseLength.changed = true;
 		return _fuseLength.value = value;
+	}
+
+	public pure nothrow @safe encode(Buffer buffer) {
+		with(buffer) {
+		}
 	}
 
 }

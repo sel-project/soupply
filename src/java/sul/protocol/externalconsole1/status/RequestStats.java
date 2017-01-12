@@ -14,22 +14,15 @@ import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
 /**
- * Keeps the connection alive and/or calculates the latency. This packet should be
- * sent at least every 5 seconds to avoid the disconnection by timeout and update the
- * latency. The client can send this packet whenever he wants and the server must reply
- * with the same packet with the same field's value.
+ * Requests an UpdateStats packet to the server, which should sent it immediately instead
+ * of waiting for the next automatic update.
  */
-class KeepAlive extends Packet {
+class RequestStats extends Packet {
 
-	public final static byte ID = (byte)0;
+	public final static byte ID = (byte)2;
 
-	public final static boolean CLIENTBOUND = true;
+	public final static boolean CLIENTBOUND = false;
 	public final static boolean SERVERBOUND = true;
-
-	/**
-	 * An identifier chosen by the client to calculate the latency.
-	 */
-	public int count;
 
 	@Override
 	public int length() {
@@ -40,7 +33,6 @@ class KeepAlive extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeIntB(count);
 		return this.buffer;
 	}
 

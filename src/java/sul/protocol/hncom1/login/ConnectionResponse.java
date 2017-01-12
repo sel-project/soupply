@@ -13,6 +13,10 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Reply always sent after the Connection packet. It indicates the status of the connection,
+ * which is accepted only when every field of the packet is true.
+ */
 class ConnectionResponse extends Packet {
 
 	public final static byte ID = (byte)1;
@@ -20,7 +24,21 @@ class ConnectionResponse extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
-	public boolean protocolAccepted;
+	/**
+	 * Indicates whether the protocol given at Connection.protocol is equals to the server's
+	 * one.
+	 */
+	public boolean protocolMatches;
+
+	/**
+	 * Indicates whether the name has passed the server's validation process.
+	 */
+	public boolean nameValid;
+
+	/**
+	 * Indicates whether the name can be used. The value is false when there's already
+	 * a node connected with the same name.
+	 */
 	public boolean nameAccepted;
 
 	@Override
@@ -32,7 +50,8 @@ class ConnectionResponse extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeBoolB(protocolAccepted);
+		this.writeBoolB(protocolMatches);
+		this.writeBoolB(nameValid);
 		this.writeBoolB(nameAccepted);
 		return this.buffer;
 	}

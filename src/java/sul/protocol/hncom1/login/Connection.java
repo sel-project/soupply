@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * First real packet sent by the client with its informations.
+ */
 class Connection extends Packet {
 
 	public final static byte ID = (byte)0;
@@ -26,7 +29,8 @@ class Connection extends Packet {
 	public int protocol;
 
 	/**
-	 * Name of the node that will be validated by the hub.
+	 * Name of the node that will be validated by the hub. It should always be lowercase
+	 * and only contain letters, numbers and basic punctuation symbols.
 	 */
 	public String name;
 
@@ -34,7 +38,7 @@ class Connection extends Packet {
 	 * Indicates whether the node accepts clients when they first connect to the hub or
 	 * exclusively when they are manually transferred.
 	 */
-	public boolean mainNode;
+	public boolean main;
 
 	@Override
 	public int length() {
@@ -47,7 +51,7 @@ class Connection extends Packet {
 		this.writeByteB(ID);
 		this.writeVaruint(protocol);
 		byte[] bmftzq=name.getBytes("UTF-8"); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
-		this.writeBoolB(mainNode);
+		this.writeBoolB(main);
 		return this.buffer;
 	}
 

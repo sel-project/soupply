@@ -13,18 +13,50 @@ import java.util.UUID;
 import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
+/**
+ * Updates the statistics about the usage of the server and, eventually, the connected
+ * nodes.
+ * This packet is sent in response to RequestStats and every time the server retains
+ * that the stats should be updated (usually in a range of 5 to 30 seconds).
+ */
 class UpdateStats extends Packet {
 
-	public final static byte ID = (byte)2;
+	public final static byte ID = (byte)3;
 
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
+	/**
+	 * Number of players currently online on the server. Players that are performing authentication
+	 * are not included in the count.
+	 */
 	public int onlinePlayers;
+
+	/**
+	 * Highest number of players that can join the server simultaneously. If 0, there is
+	 * not maximum number of players.
+	 */
 	public int maxPlayers;
+
+	/**
+	 * Milliseconds since the server has started.
+	 */
 	public int uptime;
+
+	/**
+	 * Average amount of bytes sent every second.
+	 */
 	public int upload;
+
+	/**
+	 * Average amount of bytes sent every second.
+	 */
 	public int download;
+
+	/**
+	 * Resources usage of the connected nodes, if the server uses the hub-node layout,
+	 * or an empty list.
+	 */
 	public NodeStats[] nodes;
 
 	@Override

@@ -20,13 +20,13 @@ import sul.utils.var;
 
 static import sul.protocol.externalconsole1.types;
 
-alias Packets = TypeTuple!(KeepAlive, UpdateNodes, UpdateStats);
+alias Packets = TypeTuple!(KeepAlive, UpdateNodes, RequestStats, UpdateStats);
 
 /**
  * Keeps the connection alive and/or calculates the latency. This packet should be
- * sent at least every 5 seconds to avoid the disconnection by the server caused by
- * a timeout and update the latency. The client can send this packet whenever he wants
- * and the server must reply with the same packet with the same field's value.
+ * sent at least every 5 seconds to avoid the disconnection by timeout and update the
+ * latency. The client can send this packet whenever he wants and the server must reply
+ * with the same packet with the same field's value.
  */
 class KeepAlive : Buffer {
 
@@ -71,8 +71,7 @@ class KeepAlive : Buffer {
 
 /**
  * Updates the list of the nodes connected to the hub, adding or removing one.
- * If the server isn't built following the hub-node structure this packet is never
- * sent.
+ * If the server isn't built following the hub-node layout this packet is never sent.
  */
 class UpdateNodes : Buffer {
 
@@ -81,11 +80,11 @@ class UpdateNodes : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["action", "node"];
-
 	// action
 	public enum ubyte ADD = 0;
 	public enum ubyte REMOVE = 1;
+
+	public enum string[] FIELDS = ["action", "node"];
 
 	/**
 	 * Whether the node should be added or removed from the list of connected nodes.
@@ -127,20 +126,84 @@ class UpdateNodes : Buffer {
 
 }
 
-class UpdateStats : Buffer {
+/**
+ * Requests an UpdateStats packet to the server, which should sent it immediately instead
+ * of waiting for the next automatic update.
+ */
+class RequestStats : Buffer {
 
 	public enum ubyte ID = 2;
+
+	public enum bool CLIENTBOUND = false;
+	public enum bool SERVERBOUND = true;
+
+	public enum string[] FIELDS = [];
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+	}
+
+	public static pure nothrow @safe RequestStats fromBuffer(bool readId=true)(ubyte[] buffer) {
+		RequestStats ret = new RequestStats();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
+/**
+ * Updates the statistics about the usage of the server and, eventually, the connected
+ * nodes.
+ * This packet is sent in response to RequestStats and every time the server retains
+ * that the stats should be updated (usually in a range of 5 to 30 seconds).
+ */
+class UpdateStats : Buffer {
+
+	public enum ubyte ID = 3;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
 	public enum string[] FIELDS = ["onlinePlayers", "maxPlayers", "uptime", "upload", "download", "nodes"];
 
+	/**
+	 * Number of players currently online on the server. Players that are performing authentication
+	 * are not included in the count.
+	 */
 	public uint onlinePlayers;
+
+	/**
+	 * Highest number of players that can join the server simultaneously. If 0, there is
+	 * not maximum number of players.
+	 */
 	public uint maxPlayers;
+
+	/**
+	 * Milliseconds since the server has started.
+	 */
 	public uint uptime;
+
+	/**
+	 * Average amount of bytes sent every second.
+	 */
 	public uint upload;
+
+	/**
+	 * Average amount of bytes sent every second.
+	 */
 	public uint download;
+
+	/**
+	 * Resources usage of the connected nodes, if the server uses the hub-node layout,
+	 * or an empty list.
+	 */
 	public sul.protocol.externalconsole1.types.NodeStats[] nodes;
 
 	public pure nothrow @safe @nogc this() {}

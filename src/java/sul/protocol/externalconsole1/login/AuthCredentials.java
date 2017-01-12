@@ -31,16 +31,21 @@ class AuthCredentials extends Packet {
 	public byte protocol;
 
 	/**
-	 * Algorithm used by the server to match the the hash. The value should be sent in
-	 * lowercase without any separation symbol (for example `sha256` instead of `SHA-256`).
-	 * If empty no hashing is done and the password is sent raw. See Auth.hash for more
-	 * details.
+	 * Whether or not to perform hashing on the password.
+	 */
+	public boolean hash;
+
+	/**
+	 * Algorithm used by the server to hash the concatenation of password and payload.
+	 * The value should be sent in lowercase without any separation symbol (for example
+	 * `md5` instead of `MD5`, `sha256` instead of `SHA-256`).
+	 * See Auth.hash for more details.
 	 */
 	public String hashAlgorithm;
 
 	/**
-	 * Payload to add to the password encoded as UTF-8 (if hash algorithm is not empty)
-	 * before hashing it, as described in the Auth.hash field.
+	 * Payload to cancatenate with the password encoded as UTF-8 before hashing it, as
+	 * described in the Auth.hash's field description.
 	 */
 	public byte[16] payload;
 
@@ -54,8 +59,9 @@ class AuthCredentials extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeByteB(protocol);
-		byte[] agfzaefsz29yaxro=hashAlgorithm.getBytes("UTF-8"); this.writeShortB((short)agfzaefsz29yaxro.length); this.writeBytes(agfzaefsz29yaxro);
-		for(ubyte cgf5bg9hza:payload){ this.writeByteB(cgf5bg9hza); }
+		this.writeBoolB(hash);
+		if(hash==true){ byte[] agfzaefsz29yaxro=hashAlgorithm.getBytes("UTF-8"); this.writeShortB((short)agfzaefsz29yaxro.length); this.writeBytes(agfzaefsz29yaxro); }
+		if(hash==true){ for(ubyte cgf5bg9hza:payload){ this.writeByteB(cgf5bg9hza); } }
 		return this.buffer;
 	}
 

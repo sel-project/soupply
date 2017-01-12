@@ -21,6 +21,8 @@ import sul.metadata.minecraft316;
 
 struct Statistic {
 
+	public enum string[] FIELDS = ["name", "value"];
+
 	public string name;
 	public uint value;
 
@@ -41,6 +43,8 @@ struct Statistic {
 }
 
 struct BlockChange {
+
+	public enum string[] FIELDS = ["xz", "y", "block"];
 
 	public ubyte xz;
 	public ubyte y;
@@ -65,6 +69,8 @@ struct BlockChange {
 }
 
 struct Slot {
+
+	public enum string[] FIELDS = ["id", "count", "damage", "nbt"];
 
 	public short id;
 	public ubyte count;
@@ -105,6 +111,8 @@ struct Icon {
 	public enum ubyte MANSION = 8;
 	public enum ubyte TEMPLE = 9;
 
+	public enum string[] FIELDS = ["directionAndType", "position"];
+
 	public ubyte directionAndType;
 	public Tuple!(ubyte, "x", ubyte, "z") position;
 
@@ -125,6 +133,8 @@ struct Icon {
 }
 
 struct Property {
+
+	public enum string[] FIELDS = ["name", "value", "signed", "signature"];
 
 	public string name;
 	public string value;
@@ -158,6 +168,8 @@ struct ListAddPlayer {
 	public enum uint CREATIVE = 1;
 	public enum uint ADVENTURE = 2;
 	public enum uint SPECTATOR = 3;
+
+	public enum string[] FIELDS = ["uuid", "name", "properties", "gamemode", "latency", "hasDisplayName", "displayName"];
 
 	public UUID uuid;
 	public string name;
@@ -201,6 +213,8 @@ struct ListUpdateGamemode {
 	public enum uint ADVENTURE = 2;
 	public enum uint SPECTATOR = 3;
 
+	public enum string[] FIELDS = ["uuid", "gamemode"];
+
 	public UUID uuid;
 	public uint gamemode;
 
@@ -222,6 +236,8 @@ struct ListUpdateGamemode {
 
 struct ListUpdateLatency {
 
+	public enum string[] FIELDS = ["uuid", "latency"];
+
 	public UUID uuid;
 	public uint latency;
 
@@ -242,6 +258,8 @@ struct ListUpdateLatency {
 }
 
 struct ListUpdateDisplayName {
+
+	public enum string[] FIELDS = ["uuid", "hasDisplayName", "displayName"];
 
 	public UUID uuid;
 	public bool hasDisplayName;
@@ -267,6 +285,8 @@ struct ListUpdateDisplayName {
 
 struct OptionalPosition {
 
+	public enum string[] FIELDS = ["hasPosition", "position"];
+
 	public bool hasPosition;
 	public ulong position;
 
@@ -287,6 +307,8 @@ struct OptionalPosition {
 }
 
 struct OptionalUuid {
+
+	public enum string[] FIELDS = ["hasUuid", "uuid"];
 
 	public bool hasUuid;
 	public UUID uuid;

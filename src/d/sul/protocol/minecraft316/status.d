@@ -31,11 +31,11 @@ class Handshake : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["protocol", "serverAddress", "serverPort", "next"];
-
 	// next
 	public enum uint STATUS = 1;
 	public enum uint LOGIN = 2;
+
+	public enum string[] FIELDS = ["protocol", "serverAddress", "serverPort", "next"];
 
 	public uint protocol;
 	public string serverAddress;

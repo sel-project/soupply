@@ -12,10 +12,24 @@ import java.util.UUID;
 
 import sul.utils.*;
 
+/**
+ * Indicates a log.
+ */
 final class Log {
 
+	/**
+	 * Unix time (in milliseconds) that indicates the exact creation time of the log.
+	 */
 	public long timestamp;
+
+	/**
+	 * Name of the logger (world, plugin or module/packet) thas has generated the log.
+	 */
 	public String logger;
+
+	/**
+	 * Logged message. It may contain Minecraft formatting codes.
+	 */
 	public String message;
 
 }

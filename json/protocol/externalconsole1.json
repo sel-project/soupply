@@ -68,12 +68,18 @@
 						"type": "ubyte"
 					},
 					{
+						"name": "hash",
+						"type": "bool"
+					},
+					{
 						"name": "hash_algorithm",
-						"type": "string"
+						"type": "string",
+						"when": "hash==true"
 					},
 					{
 						"name": "payload",
-						"type": "ubyte[16]"
+						"type": "ubyte[16]",
+						"when": "hash==true"
 					}
 				]
 			},
@@ -180,8 +186,15 @@
 				]
 			},
 
-			"update_stats": {
+			"request_stats": {
 				"id": 2,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": []
+			},
+
+			"update_stats": {
+				"id": 3,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -217,7 +230,7 @@
 		"connected": {
 
 			"console_message": {
-				"id": 3,
+				"id": 4,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -241,7 +254,7 @@
 			},
 
 			"command": {
-				"id": 4,
+				"id": 5,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -253,7 +266,7 @@
 			},
 
 			"permission_denied": {
-				"id": 5,
+				"id": 6,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": []

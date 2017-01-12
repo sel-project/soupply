@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
+/**
+ * Performs authentication following the directives given by the AuthCredentials packet.
+ */
 class Auth extends Packet {
 
 	public final static byte ID = (byte)1;
@@ -20,6 +23,22 @@ class Auth extends Packet {
 	public final static boolean CLIENTBOUND = false;
 	public final static boolean SERVERBOUND = true;
 
+	/**
+	 * Pasword encoded as UTF-8 if AuthCredentials.hash is `false` or the hash (specified
+	 * in AuthCredentials.hashAlgorithm) of the password encoded as UTF-8 and the bytes
+	 * from AuthCredentials.payload if `true`.
+	 * The hash can be done with a function (if hashAlgorithm is `sha1`) in D:
+	 * ```d
+	 * sha1Of(cast(ubyte[])authCredentials.payload ~ password);
+	 * ```
+	 * Or using `MessageDigest` in Java:
+	 * ```java
+	 * MessageDigest md = MessageDigest.getInstance(authCredentials.hashAlgorithm);
+	 * md.update(password.getBytes(StandardCharsets.UTF_8));
+	 * md.update(authCredentials.payload);
+	 * byte[] hash = md.digest();
+	 * ```
+	 */
 	public byte[] hash;
 
 	@Override

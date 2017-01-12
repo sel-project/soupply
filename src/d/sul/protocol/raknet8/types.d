@@ -19,6 +19,8 @@ import sul.utils.var;
 
 struct Address {
 
+	public enum string[] FIELDS = ["type", "ipv4", "ipv6", "port"];
+
 	public ubyte type;
 	public ubyte[4] ipv4;
 	public ubyte[16] ipv6;
@@ -46,6 +48,8 @@ struct Address {
 
 struct Acknowledge {
 
+	public enum string[] FIELDS = ["unique", "first", "last"];
+
 	public bool unique;
 	public int first;
 	public int last;
@@ -69,6 +73,8 @@ struct Acknowledge {
 }
 
 struct Encapsulation {
+
+	public enum string[] FIELDS = ["info", "length", "messageIndex", "orderIndex", "orderChannel", "split", "payload"];
 
 	public ubyte info;
 	public ushort length;
@@ -105,6 +111,8 @@ struct Encapsulation {
 }
 
 struct Split {
+
+	public enum string[] FIELDS = ["count", "id", "order"];
 
 	public uint count;
 	public ushort id;

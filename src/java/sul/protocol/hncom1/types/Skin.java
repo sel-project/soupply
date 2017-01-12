@@ -12,9 +12,22 @@ import java.util.UUID;
 
 import sul.utils.*;
 
+/**
+ * Player's skin to be sent to Minecraft: Pocket Edition clients.
+ * If the server only allows Minecraft player to connect the following fields should
+ * be empty.
+ */
 final class Skin {
 
+	/**
+	 * Name of the skin.
+	 */
 	public String name;
+
+	/**
+	 * RGBA map of the skin colours. Length should be, if the skin is not empty, 8192 or
+	 * 16384.
+	 */
 	public byte[] data;
 
 }

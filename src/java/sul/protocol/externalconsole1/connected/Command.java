@@ -20,15 +20,15 @@ import sul.utils.*;
  */
 class Command extends Packet {
 
-	public final static byte ID = (byte)4;
+	public final static byte ID = (byte)5;
 
 	public final static boolean CLIENTBOUND = false;
 	public final static boolean SERVERBOUND = true;
 
 	/**
-	 * Command to execute on the server. On servers that based on the hub-node structure
-	 * it should start with a slash or a point (hub command) or a node name followed by
-	 * the command (node command).
+	 * Command to execute on the server. On servers that based on the hub-node layout it
+	 * should start with a slash or a point (hub command) or a node name followed by the
+	 * command (node command).
 	 */
 	public String command;
 

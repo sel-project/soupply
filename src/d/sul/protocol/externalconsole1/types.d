@@ -23,6 +23,8 @@ struct Game {
 	public enum ubyte POCKET = 1;
 	public enum ubyte MINECRAFT = 2;
 
+	public enum string[] FIELDS = ["type", "protocols"];
+
 	/**
 	 * Type of the game. Minecraft indicates the java version of the game and pocket indicates
 	 * the versions running on Android, iOS, Windows Phone and Windows 10.
@@ -54,6 +56,8 @@ struct Game {
  * Resource usage of a node.
  */
 struct NodeStats {
+
+	public enum string[] FIELDS = ["name", "tps", "ram", "cpu"];
 
 	/**
 	 * Name of the node. Should match a name given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes)

@@ -6,6 +6,9 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/protocol/externalconsole1.xml
  */
+/**
+ * Packets used during the authentication process.
+ */
 module sul.protocol.externalconsole1.login;
 
 import std.bitmanip : write, peek;
@@ -33,7 +36,7 @@ class AuthCredentials : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["protocol", "hashAlgorithm", "payload"];
+	public enum string[] FIELDS = ["protocol", "hash", "hashAlgorithm", "payload"];
 
 	/**
 	 * Protocol used by the server. If the client uses a different one it should close
@@ -42,23 +45,29 @@ class AuthCredentials : Buffer {
 	public ubyte protocol;
 
 	/**
-	 * Algorithm used by the server to match the the hash. The value should be sent in
-	 * lowercase without any separation symbol (for example `sha256` instead of `SHA-256`).
-	 * If empty no hashing is done and the password is sent raw. See Auth.hash for more
-	 * details.
+	 * Whether or not to perform hashing on the password.
+	 */
+	public bool hash;
+
+	/**
+	 * Algorithm used by the server to hash the concatenation of password and payload.
+	 * The value should be sent in lowercase without any separation symbol (for example
+	 * `md5` instead of `MD5`, `sha256` instead of `SHA-256`).
+	 * See Auth.hash for more details.
 	 */
 	public string hashAlgorithm;
 
 	/**
-	 * Payload to add to the password encoded as UTF-8 (if hash algorithm is not empty)
-	 * before hashing it, as described in the Auth.hash field.
+	 * Payload to cancatenate with the password encoded as UTF-8 before hashing it, as
+	 * described in the Auth.hash's field description.
 	 */
 	public ubyte[16] payload;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(ubyte protocol, string hashAlgorithm=string.init, ubyte[16] payload=(ubyte[16]).init) {
+	public pure nothrow @safe @nogc this(ubyte protocol, bool hash=bool.init, string hashAlgorithm=string.init, ubyte[16] payload=(ubyte[16]).init) {
 		this.protocol = protocol;
+		this.hash = hash;
 		this.hashAlgorithm = hashAlgorithm;
 		this.payload = payload;
 	}
@@ -67,16 +76,18 @@ class AuthCredentials : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBigEndianUbyte(protocol);
-		writeBigEndianUshort(cast(ushort)hashAlgorithm.length); writeString(hashAlgorithm);
-		writeBytes(payload);
+		writeBigEndianBool(hash);
+		if(hash==true){ writeBigEndianUshort(cast(ushort)hashAlgorithm.length); writeString(hashAlgorithm); }
+		if(hash==true){ writeBytes(payload); }
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		protocol=readBigEndianUbyte();
-		ushort agfzaefsz29yaxro=readBigEndianUshort(); hashAlgorithm=readString(agfzaefsz29yaxro);
-		if(_buffer.length>=_index+payload.length){ payload=_buffer[_index.._index+payload.length].dup; _index+=payload.length; }
+		hash=readBigEndianBool();
+		if(hash==true){ ushort agfzaefsz29yaxro=readBigEndianUshort(); hashAlgorithm=readString(agfzaefsz29yaxro); }
+		if(hash==true){ if(_buffer.length>=_index+payload.length){ payload=_buffer[_index.._index+payload.length].dup; _index+=payload.length; } }
 	}
 
 	public static pure nothrow @safe AuthCredentials fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -88,6 +99,9 @@ class AuthCredentials : Buffer {
 
 }
 
+/**
+ * Performs authentication following the directives given by the AuthCredentials packet.
+ */
 class Auth : Buffer {
 
 	public enum ubyte ID = 1;
@@ -97,6 +111,22 @@ class Auth : Buffer {
 
 	public enum string[] FIELDS = ["hash"];
 
+	/**
+	 * Pasword encoded as UTF-8 if AuthCredentials.hash is `false` or the hash (specified
+	 * in AuthCredentials.hashAlgorithm) of the password encoded as UTF-8 and the bytes
+	 * from AuthCredentials.payload if `true`.
+	 * The hash can be done with a function (if hashAlgorithm is `sha1`) in D:
+	 * ---
+	 * sha1Of(cast(ubyte[])authCredentials.payload ~ password);
+	 * ---
+	 * Or using `MessageDigest` in Java:
+	 * ---
+	 * MessageDigest md = MessageDigest.getInstance(authCredentials.hashAlgorithm);
+	 * md.update(password.getBytes(StandardCharsets.UTF_8));
+	 * md.update(authCredentials.payload);
+	 * byte[] hash = md.digest();
+	 * ---
+	 */
 	public ubyte[] hash;
 
 	public pure nothrow @safe @nogc this() {}
@@ -126,6 +156,9 @@ class Auth : Buffer {
 
 }
 
+/**
+ * Indicates the status of the authentication process.
+ */
 class Welcome : Buffer {
 
 	public enum ubyte ID = 2;
@@ -164,15 +197,50 @@ class Welcome : Buffer {
 
 	alias _encode = encode;
 
+	enum string variantField = "status";
+
+	alias Variants = TypeTuple!(Accepted, WrongHash, TimedOut);
+
+		/**
+		 * Sent when the hash sent in Auth matched the server's and the external console can
+		 * now use the other features available in the protocol.
+		 */
 	public class Accepted {
 
 		public enum typeof(status) STATUS = 0;
 
+		public enum string[] FIELDS = ["remoteCommands", "software", "versions", "displayName", "games", "connectedNodes"];
+
+		/**
+		 * Indicates whether the external console can execute command remotely through the
+		 * Command packet.
+		 */
 		public bool remoteCommands;
+
+		/**
+		 * The server's software as a formatted string (without the version).
+		 */
 		public string software;
+
+		/**
+		 * Versions of the server in 3-btyes array readed as [major, minor, release].
+		 */
 		public ubyte[3] versions;
+
+		/**
+		 * Name of the server (not the game's MOTD!).
+		 */
 		public string displayName;
+
+		/**
+		 * Informations about the game and protocols supported by the server.
+		 */
 		public sul.protocol.externalconsole1.types.Game[] games;
+
+		/**
+		 * List of names of the nodes connected to the server, if it uses the hub-node layout,
+		 * or an empty list.
+		 */
 		public string[] connectedNodes;
 
 		public pure nothrow @safe @nogc this() {}
@@ -217,6 +285,8 @@ class Welcome : Buffer {
 
 		public enum typeof(status) STATUS = 1;
 
+		public enum string[] FIELDS = [];
+
 		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 			status = 1;
 			_encode!writeId();
@@ -235,6 +305,8 @@ class Welcome : Buffer {
 	public class TimedOut {
 
 		public enum typeof(status) STATUS = 2;
+
+		public enum string[] FIELDS = [];
 
 		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 			status = 2;

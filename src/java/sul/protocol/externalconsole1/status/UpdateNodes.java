@@ -15,8 +15,7 @@ import sul.utils.*;
 
 /**
  * Updates the list of the nodes connected to the hub, adding or removing one.
- * If the server isn't built following the hub-node structure this packet is never
- * sent.
+ * If the server isn't built following the hub-node layout this packet is never sent.
  */
 class UpdateNodes extends Packet {
 

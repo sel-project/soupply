@@ -21,6 +21,8 @@ import sul.metadata.pocket100;
 
 struct Pack {
 
+	public enum string[] FIELDS = ["id", "vers", "size"];
+
 	public string id;
 	public string vers;
 	public ulong size;
@@ -44,6 +46,8 @@ struct Pack {
 }
 
 struct BlockPosition {
+
+	public enum string[] FIELDS = ["x", "y", "z"];
 
 	public int x;
 	public uint y;
@@ -69,6 +73,8 @@ struct BlockPosition {
 
 struct Slot {
 
+	public enum string[] FIELDS = ["id", "metaAndCount", "nbt"];
+
 	public int id;
 	public int metaAndCount;
 	public ubyte[] nbt;
@@ -92,6 +98,8 @@ struct Slot {
 }
 
 struct Attribute {
+
+	public enum string[] FIELDS = ["min", "max", "value", "def", "name"];
 
 	public float min;
 	public float max;
@@ -123,6 +131,8 @@ struct Attribute {
 
 struct Skin {
 
+	public enum string[] FIELDS = ["name", "data"];
+
 	public string name;
 	public ubyte[] data;
 
@@ -143,6 +153,8 @@ struct Skin {
 }
 
 struct PlayerList {
+
+	public enum string[] FIELDS = ["uuid", "entityId", "displayName", "skin"];
 
 	public UUID uuid;
 	public long entityId;
@@ -177,6 +189,8 @@ struct Recipe {
 	public enum int FURNACE = 2;
 	public enum int FURNACE_DATA = 3;
 	public enum int MULTI = 4;
+
+	public enum string[] FIELDS = ["type"];
 
 	public int type;
 

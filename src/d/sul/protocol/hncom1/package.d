@@ -6,6 +6,9 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
+/**
+ * Communication between hub and nodes.
+ */
 module sul.protocol.hncom1;
 
 public import sul.protocol.hncom1.types;

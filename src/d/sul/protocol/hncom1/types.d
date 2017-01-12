@@ -17,9 +17,22 @@ import std.uuid : UUID;
 import sul.utils.buffer;
 import sul.utils.var;
 
+/**
+ * A plugin loaded on the node. It may be used by the hub to display the plugins loaded
+ * on the server in queries.
+ */
 struct Plugin {
 
+	public enum string[] FIELDS = ["name", "vers"];
+
+	/**
+	 * Name of the plugin.
+	 */
 	public string name;
+
+	/**
+	 * Version of the plugin, usually in the format `major.minor[.release] [alpha|beta]`.
+	 */
 	public string vers;
 
 	public pure nothrow @safe void encode(Buffer buffer) {
@@ -42,6 +55,8 @@ struct Plugin {
  * Internet protocol address. Could be either version 4 and 6.
  */
 struct Address {
+
+	public enum string[] FIELDS = ["bytes", "port"];
 
 	/**
 	 * Bytes of the address. The length may be 4 (for ipv4 addresses) or 16 (for ipv6 addresses).
@@ -70,15 +85,38 @@ struct Address {
 
 }
 
+/**
+ * Indicates a game and informations about it.
+ */
 struct Game {
 
 	// type
 	public enum ubyte POCKET = 1;
 	public enum ubyte MINECRAFT = 2;
 
+	public enum string[] FIELDS = ["type", "protocols", "motd", "port"];
+
+	/**
+	 * Type of the game.
+	 */
 	public ubyte type;
+
+	/**
+	 * Protocols accepted by the server for the game. They should be ordered from oldest
+	 * to newest.
+	 */
 	public uint[] protocols;
+
+	/**
+	 * "Message of the day" which is displayed in the game's server list. It may contain
+	 * Minecraft formatting codes.
+	 */
 	public string motd;
+
+	/**
+	 * Port, or main port if the server allows the connection from multiple ports, where
+	 * the socket is listening for connections.
+	 */
 	public ushort port;
 
 	public pure nothrow @safe void encode(Buffer buffer) {
@@ -101,9 +139,24 @@ struct Game {
 
 }
 
+/**
+ * Player's skin to be sent to Minecraft: Pocket Edition clients.
+ * If the server only allows Minecraft player to connect the following fields should
+ * be empty.
+ */
 struct Skin {
 
+	public enum string[] FIELDS = ["name", "data"];
+
+	/**
+	 * Name of the skin.
+	 */
 	public string name;
+
+	/**
+	 * RGBA map of the skin colours. Length should be, if the skin is not empty, 8192 or
+	 * 16384.
+	 */
 	public ubyte[] data;
 
 	public pure nothrow @safe void encode(Buffer buffer) {
@@ -122,15 +175,31 @@ struct Skin {
 
 }
 
+/**
+ * Indicates a log.
+ */
 struct Log {
 
+	public enum string[] FIELDS = ["timestamp", "logger", "message"];
+
+	/**
+	 * Unix time (in milliseconds) that indicates the exact creation time of the log.
+	 */
 	public ulong timestamp;
+
+	/**
+	 * Name of the logger (world, plugin or module/packet) thas has generated the log.
+	 */
 	public string logger;
+
+	/**
+	 * Logged message. It may contain Minecraft formatting codes.
+	 */
 	public string message;
 
 	public pure nothrow @safe void encode(Buffer buffer) {
 		with(buffer) {
-			writeLittleEndianUlong(timestamp);
+			writeBigEndianUlong(timestamp);
 			writeBytes(varuint.encode(cast(uint)logger.length)); writeString(logger);
 			writeBytes(varuint.encode(cast(uint)message.length)); writeString(message);
 		}
@@ -138,7 +207,7 @@ struct Log {
 
 	public pure nothrow @safe void decode(Buffer buffer) {
 		with(buffer) {
-			timestamp=readLittleEndianUlong();
+			timestamp=readBigEndianUlong();
 			uint bg9nz2vy=varuint.decode(_buffer, &_index); logger=readString(bg9nz2vy);
 			uint bwvzc2fnzq=varuint.decode(_buffer, &_index); message=readString(bwvzc2fnzq);
 		}
