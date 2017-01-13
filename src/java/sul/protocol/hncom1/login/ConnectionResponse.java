@@ -14,8 +14,8 @@ import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
 /**
- * Reply always sent after the Connection packet. It indicates the status of the connection,
- * which is accepted only when every field of the packet is true.
+ * Reply always sent after the ConnectionRequest packet. It indicates the status of
+ * the connection, which is accepted only when every field of the packet is true.
  */
 class ConnectionResponse extends Packet {
 
@@ -24,21 +24,27 @@ class ConnectionResponse extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
-	/**
-	 * Indicates whether the protocol given at Connection.protocol is equals to the server's
-	 * one.
-	 */
-	public boolean protocolAccepted;
+	// status
+	public static immutable byte OK = 0;
+	public static immutable byte OUTDATED_HUB = 1;
+	public static immutable byte OUTDATED_NODE = 2;
+	public static immutable byte PASSWORD_REQUIRED = 3;
+	public static immutable byte WRONG_PASSWORD = 4;
+	public static immutable byte INVALID_NAME_LENGTH = 5;
+	public static immutable byte INVALID_NAME_CHARACTERS = 6;
+	public static immutable byte NAME_ALREADY_USED = 7;
+	public static immutable byte NAME_RESERVED = 8;
 
 	/**
-	 * Indicates whether the name has passed the server's validation process.
+	 * Protocol used by the hub. It must match the node's one otherwise the connection
+	 * cannot be established.
 	 */
-	public boolean nameAccepted;
+	public int protocol;
 
 	/**
-	 * If the nameAccepted is false, indicates the reason why it isn't valid.
+	 * Indicates the status of connection. If not 0, it indicates an error.
 	 */
-	public String reason;
+	public byte status;
 
 	@Override
 	public int length() {
@@ -49,9 +55,8 @@ class ConnectionResponse extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeBoolB(protocolAccepted);
-		this.writeBoolB(nameAccepted);
-		if(name_accepted==false){ byte[] cmvhc29u=reason.getBytes("UTF-8"); this.writeVaruint((int)cmvhc29u.length); this.writeBytes(cmvhc29u); }
+		this.writeVaruint(protocol);
+		this.writeByteB(status);
 		return this.buffer;
 	}
 

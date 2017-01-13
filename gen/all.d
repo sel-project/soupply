@@ -58,7 +58,7 @@ alias Metadata = Tuple!(string, "prefix", string, "length", string, "suffix", st
 alias Metadatas = File!Metadata;
 
 
-alias Constant = Tuple!(string, "name", string, "value");
+alias Constant = Tuple!(string, "name", string, "description", string, "value");
 
 alias Field = Tuple!(string, "name", string, "type", string, "condition", string, "endianness", string, "description", Constant[], "constants");
 
@@ -260,7 +260,7 @@ void main(string[] args) {
 											}
 											foreach(c ; f.elements) {
 												if(c.tag.name == "constant") {
-													field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), c.tag.attr["value"]);
+													field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), text(c), c.tag.attr["value"]);
 												}
 											}
 											type.fields ~= field;
@@ -300,7 +300,7 @@ void main(string[] args) {
 												if("when" in fv.tag.attr) field.condition = fv.tag.attr["when"].replace("-", "_");
 												foreach(c ; fv.elements) {
 													if(c.tag.name == "constant") {
-														field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), c.tag.attr["value"]);
+														field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), text(c), c.tag.attr["value"]);
 													}
 												}
 												packet.fields ~= field;
@@ -322,7 +322,7 @@ void main(string[] args) {
 																if("when" in f.tag.attr) field.condition = f.tag.attr["when"].replace("-", "_");
 																foreach(c ; f.elements) {
 																	if(c.tag.name == "constant") {
-																		field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), c.tag.attr["value"]);
+																		field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), text(c), c.tag.attr["value"]);
 																	}
 																}
 																variant.fields ~= field;

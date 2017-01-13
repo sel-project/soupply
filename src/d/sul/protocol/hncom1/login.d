@@ -23,24 +23,29 @@ import sul.utils.var;
 
 static import sul.protocol.hncom1.types;
 
-alias Packets = TypeTuple!(Connection, ConnectionResponse, Info, Ready);
+alias Packets = TypeTuple!(ConnectionRequest, ConnectionResponse, Info, Ready);
 
 /**
  * First real packet sent by the client with its informations.
  */
-class Connection : Buffer {
+class ConnectionRequest : Buffer {
 
 	public enum ubyte ID = 0;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["protocol", "name", "main"];
+	public enum string[] FIELDS = ["protocol", "password", "name", "main"];
 
 	/**
 	 * Version of the protocol used by the client that must match the hub's one
 	 */
 	public uint protocol;
+
+	/**
+	 * Password, if the hub requires one, or an empty string.
+	 */
+	public string password;
 
 	/**
 	 * Name of the node that will be validated by the hub. It should always be lowercase
@@ -56,8 +61,9 @@ class Connection : Buffer {
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint protocol, string name=string.init, bool main=bool.init) {
+	public pure nothrow @safe @nogc this(uint protocol, string password=string.init, string name=string.init, bool main=bool.init) {
 		this.protocol = protocol;
+		this.password = password;
 		this.name = name;
 		this.main = main;
 	}
@@ -66,6 +72,7 @@ class Connection : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(protocol));
+		writeBytes(varuint.encode(cast(uint)password.length)); writeString(password);
 		writeBytes(varuint.encode(cast(uint)name.length)); writeString(name);
 		writeBigEndianBool(main);
 		return _buffer;
@@ -74,12 +81,13 @@ class Connection : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		protocol=varuint.decode(_buffer, &_index);
+		uint cgfzc3dvcmq=varuint.decode(_buffer, &_index); password=readString(cgfzc3dvcmq);
 		uint bmftzq=varuint.decode(_buffer, &_index); name=readString(bmftzq);
 		main=readBigEndianBool();
 	}
 
-	public static pure nothrow @safe Connection fromBuffer(bool readId=true)(ubyte[] buffer) {
-		Connection ret = new Connection();
+	public static pure nothrow @safe ConnectionRequest fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ConnectionRequest ret = new ConnectionRequest();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
@@ -88,8 +96,8 @@ class Connection : Buffer {
 }
 
 /**
- * Reply always sent after the Connection packet. It indicates the status of the connection,
- * which is accepted only when every field of the packet is true.
+ * Reply always sent after the ConnectionRequest packet. It indicates the status of
+ * the connection, which is accepted only when every field of the packet is true.
  */
 class ConnectionResponse : Buffer {
 
@@ -98,46 +106,49 @@ class ConnectionResponse : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["protocolAccepted", "nameAccepted", "reason"];
+	// status
+	public enum ubyte OK = 0;
+	public enum ubyte OUTDATED_HUB = 1;
+	public enum ubyte OUTDATED_NODE = 2;
+	public enum ubyte PASSWORD_REQUIRED = 3;
+	public enum ubyte WRONG_PASSWORD = 4;
+	public enum ubyte INVALID_NAME_LENGTH = 5;
+	public enum ubyte INVALID_NAME_CHARACTERS = 6;
+	public enum ubyte NAME_ALREADY_USED = 7;
+	public enum ubyte NAME_RESERVED = 8;
+
+	public enum string[] FIELDS = ["protocol", "status"];
 
 	/**
-	 * Indicates whether the protocol given at Connection.protocol is equals to the server's
-	 * one.
+	 * Protocol used by the hub. It must match the node's one otherwise the connection
+	 * cannot be established.
 	 */
-	public bool protocolAccepted;
+	public uint protocol;
 
 	/**
-	 * Indicates whether the name has passed the server's validation process.
+	 * Indicates the status of connection. If not 0, it indicates an error.
 	 */
-	public bool nameAccepted;
-
-	/**
-	 * If the nameAccepted is false, indicates the reason why it isn't valid.
-	 */
-	public string reason;
+	public ubyte status;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(bool protocolAccepted, bool nameAccepted=bool.init, string reason=string.init) {
-		this.protocolAccepted = protocolAccepted;
-		this.nameAccepted = nameAccepted;
-		this.reason = reason;
+	public pure nothrow @safe @nogc this(uint protocol, ubyte status=ubyte.init) {
+		this.protocol = protocol;
+		this.status = status;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBigEndianBool(protocolAccepted);
-		writeBigEndianBool(nameAccepted);
-		if(nameAccepted==false){ writeBytes(varuint.encode(cast(uint)reason.length)); writeString(reason); }
+		writeBytes(varuint.encode(protocol));
+		writeBigEndianUbyte(status);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		protocolAccepted=readBigEndianBool();
-		nameAccepted=readBigEndianBool();
-		if(nameAccepted==false){ uint cmvhc29u=varuint.decode(_buffer, &_index); reason=readString(cmvhc29u); }
+		protocol=varuint.decode(_buffer, &_index);
+		status=readBigEndianUbyte();
 	}
 
 	public static pure nothrow @safe ConnectionResponse fromBuffer(bool readId=true)(ubyte[] buffer) {

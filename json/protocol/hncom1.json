@@ -95,7 +95,7 @@
 
 		"login": {
 
-			"connection": {
+			"connection_request": {
 				"id": 0,
 				"clientbound": false,
 				"serverbound": true,
@@ -103,6 +103,10 @@
 					{
 						"name": "protocol",
 						"type": "varuint"
+					},
+					{
+						"name": "password",
+						"type": "string"
 					},
 					{
 						"name": "name",
@@ -121,17 +125,23 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "protocol_accepted",
-						"type": "bool"
+						"name": "protocol",
+						"type": "varuint"
 					},
 					{
-						"name": "name_accepted",
-						"type": "bool"
-					},
-					{
-						"name": "reason",
-						"type": "string",
-						"when": "name_accepted==false"
+						"name": "status",
+						"type": "ubyte",
+						"constants": {
+							"ok": 0,
+							"outdated_hub": 1,
+							"outdated_node": 2,
+							"password_required": 3,
+							"wrong_password": 4,
+							"invalid_name_length": 5,
+							"invalid_name_characters": 6,
+							"name_already_used": 7,
+							"name_reserved": 8
+						}
 					}
 				]
 			},

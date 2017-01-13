@@ -119,10 +119,17 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 						data ~= space ~ "* <a name=\"" ~ link(namespace, field.name) ~ "\"></a>**" ~ toCamelCase(field.name) ~ "**\n\n";
 						if(field.description.length) data ~= space ~ "\t" ~ desc(space ~ "\t", field.description) ~ "\n\n";
 						if(field.constants.length) {
-							data ~= space ~ "\t**Constants**:\n\n";
-							data ~= space ~ "\tName | Value\n" ~ space ~ "\t---|:---:\n";
+							bool notes;
 							foreach(constant ; field.constants) {
-								data ~= space ~ "\t" ~ toCamelCase(constant.name) ~ " | " ~ constant.value ~ "\n";
+								if(constant.description.length) {
+									notes = true;
+									break;
+								}
+							}
+							data ~= space ~ "\t**Constants**:\n\n";
+							data ~= space ~ "\tName | Value" ~ (notes ? " | " : "") ~ "\n" ~ space ~ "\t---|:---:" ~ (notes ? "|---" : "") ~ "\n";
+							foreach(constant ; field.constants) {
+								data ~= space ~ "\t" ~ toCamelCase(constant.name) ~ " | " ~ constant.value ~ (notes ? " | " ~ constant.description : "") ~ "\n";
 							}
 							data ~= "\n";
 						}

@@ -16,7 +16,7 @@ import sul.utils.*;
 /**
  * First real packet sent by the client with its informations.
  */
-class Connection extends Packet {
+class ConnectionRequest extends Packet {
 
 	public final static byte ID = (byte)0;
 
@@ -27,6 +27,11 @@ class Connection extends Packet {
 	 * Version of the protocol used by the client that must match the hub's one
 	 */
 	public int protocol;
+
+	/**
+	 * Password, if the hub requires one, or an empty string.
+	 */
+	public String password;
 
 	/**
 	 * Name of the node that will be validated by the hub. It should always be lowercase
@@ -50,6 +55,7 @@ class Connection extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeVaruint(protocol);
+		byte[] cgfzc3dvcmq=password.getBytes("UTF-8"); this.writeVaruint((int)cgfzc3dvcmq.length); this.writeBytes(cgfzc3dvcmq);
 		byte[] bmftzq=name.getBytes("UTF-8"); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		this.writeBoolB(main);
 		return this.buffer;

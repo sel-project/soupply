@@ -90,10 +90,13 @@
 
 			Packets used during the authentication process to exchange informations.
 
-			<packet name="connection" id="0" clientbound="false" serverbound="true">
+			<packet name="connection-request" id="0" clientbound="false" serverbound="true">
 				First real packet sent by the client with its informations.
 				<field name="protocol" type="varuint">
 					Version of the protocol used by the client that must match the hub's one
+				</field>
+				<field name="password" type="string">
+					Password, if the hub requires one, or an empty string.
 				</field>
 				<field name="name" type="string">
 					Name of the node that will be validated by the hub. It should always be lowercase and only contain letters, numbers and basic punctuation symbols.
@@ -104,15 +107,37 @@
 			</packet>
 
 			<packet name="connection-response" id="1" clientbound="true" serverbound="false">
-				Reply always sent after the [Connection](#login.connection) packet. It indicates the status of the connection, which is accepted only when every field of the packet is true.
-				<field name="protocol-accepted" type="bool">
-					Indicates whether the protocol given at [Connection.protocol](#login.connection.protocol) is equals to the server's one.
+				Reply always sent after the [ConnectionRequest](#login.connection-request) packet. It indicates the status of the connection, which is accepted only when every field of the packet is true.
+				<field name="protocol" type="varuint">
+					Protocol used by the hub. It must match the node's one otherwise the connection cannot be established.
 				</field>
-				<field name="name-accepted" type="bool">
-					Indicates whether the name has passed the server's validation process.
-				</field>
-				<field name="reason" type="string" when="name-accepted==false">
-					If the nameAccepted is false, indicates the reason why it isn't valid.
+				<field name="status" type="ubyte">
+					Indicates the status of connection. If not 0, it indicates an error.
+					<constant name="ok" value="0" />
+					<constant name="outdated-hub" value="1">
+						The hub uses an old version of hncom
+					</constant>
+					<constant name="outdated-node" value="2">
+						The node uses an old version of hncom
+					</constant>
+					<constant name="password-required" value="3">
+						A password is required to connect
+					</constant>
+					<constant name="wrong-password" value="4">
+						The password doesn't match the hub's
+					</constant>
+					<constant name="invalid-name-length" value="5">
+						The name is too short or too long
+					</constant>
+					<constant name="invalid-name-characters" value="6">
+						The name contains invalid characters
+					</constant>
+					<constant name="name-already-used" value="7">
+						There's already a node connected with the same name
+					</constant>
+					<constant name="name-reserved" value="8">
+						The name cannot be used because the hub has reserved it for something else
+					</constant>
 				</field>
 			</packet>
 
