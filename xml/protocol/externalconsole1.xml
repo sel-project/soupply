@@ -77,7 +77,7 @@
 					Protocol used by the server. If the client uses a different one it should close the connection without trying to perform authentication.
 				</field>
 				<field name="hash" type="bool">
-					Whether or not to perform hashing on the password.
+					Whether to perform hashing on the password.
 				</field>
 				<field name="hash-algorithm" type="string" when="hash==true">
 					Algorithm used by the server to hash the concatenation of password and payload. The value should be sent in lowercase without any separation symbol (for example `md5` instead of `MD5`, `sha256` instead of `SHA-256`).

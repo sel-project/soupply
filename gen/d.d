@@ -461,7 +461,7 @@ alias varulong = var!ulong;
 					}
 					data ~= "\talias Variants = TypeTuple!(" ~ v.join(", ") ~ ");\n\n";
 					foreach(variant ; packet.variants) {
-						if(variant.description.length) data ~= ddoc("\t\t", variant.description);
+						if(variant.description.length) data ~= ddoc("\t", variant.description);
 						data ~= "\tpublic class " ~ toPascalCase(variant.name) ~ " {\n\n";
 						data ~= "\t\tpublic enum typeof(" ~ convertName(packet.variantField) ~ ") " ~ toUpper(packet.variantField) ~ " = " ~ variant.value ~ ";\n\n";
 						writeFields(data, "\t\t", variant.fields, true);

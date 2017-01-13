@@ -20,7 +20,7 @@ import sul.utils.var;
 
 static import sul.protocol.hncom1.types;
 
-alias Packets = TypeTuple!(Logs, RemoteCommand, UpdateList);
+alias Packets = TypeTuple!(Logs, RemoteCommand, UpdateList, Reload);
 
 class Logs : Buffer {
 
@@ -256,6 +256,34 @@ class UpdateList : Buffer {
 			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		}
 
+	}
+
+}
+
+class Reload : Buffer {
+
+	public enum ubyte ID = 10;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = [];
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+	}
+
+	public static pure nothrow @safe Reload fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Reload ret = new Reload();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
 	}
 
 }

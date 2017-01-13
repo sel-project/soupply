@@ -45,7 +45,7 @@ class AuthCredentials : Buffer {
 	public ubyte protocol;
 
 	/**
-	 * Whether or not to perform hashing on the password.
+	 * Whether to perform hashing on the password.
 	 */
 	public bool hash;
 
@@ -201,10 +201,10 @@ class Welcome : Buffer {
 
 	alias Variants = TypeTuple!(Accepted, WrongHash, TimedOut);
 
-		/**
-		 * Sent when the hash sent in Auth matched the server's and the external console can
-		 * now use the other features available in the protocol.
-		 */
+	/**
+	 * Sent when the hash sent in Auth matched the server's and the external console can
+	 * now use the other features available in the protocol.
+	 */
 	public class Accepted {
 
 		public enum typeof(status) STATUS = 0;
@@ -277,10 +277,10 @@ class Welcome : Buffer {
 
 	}
 
-		/**
-		 * Sent when Auth is received but the given password or hash doesn't match the server's
-		 * one.
-		 */
+	/**
+	 * Sent when Auth is received but the given password or hash doesn't match the server's
+	 * one.
+	 */
 	public class WrongHash {
 
 		public enum typeof(status) STATUS = 1;
@@ -298,10 +298,10 @@ class Welcome : Buffer {
 
 	}
 
-		/**
-		 * Sent when Auth is not received and the server decides to close the connection because
-		 * too much time has elapsed since the creation of the socket.
-		 */
+	/**
+	 * Sent when Auth is not received and the server decides to close the connection because
+	 * too much time has elapsed since the creation of the socket.
+	 */
 	public class TimedOut {
 
 		public enum typeof(status) STATUS = 2;

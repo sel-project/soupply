@@ -15,7 +15,7 @@ import sul.utils.*;
 
 class GamePacket extends Packet {
 
-	public final static byte ID = (byte)18;
+	public final static byte ID = (byte)19;
 
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = true;

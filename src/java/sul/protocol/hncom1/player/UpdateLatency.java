@@ -15,7 +15,7 @@ import sul.utils.*;
 
 class UpdateLatency extends Packet {
 
-	public final static byte ID = (byte)16;
+	public final static byte ID = (byte)17;
 
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;

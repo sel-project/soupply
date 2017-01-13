@@ -6,28 +6,19 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
-package sul.protocol.hncom1.player;
+package sul.protocol.hncom1.generic;
 
 import java.util.UUID;
 
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
-class Remove extends Packet {
+class Reload extends Packet {
 
-	public final static byte ID = (byte)12;
+	public final static byte ID = (byte)10;
 
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
-
-	// reason
-	public static immutable byte LEFT = 0;
-	public static immutable byte TIMED_OUT = 1;
-	public static immutable byte KICKED = 2;
-	public static immutable byte TRANSFERRED = 3;
-
-	public int hubId;
-	public byte reason;
 
 	@Override
 	public int length() {
@@ -38,8 +29,6 @@ class Remove extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeVaruint(hubId);
-		this.writeByteB(reason);
 		return this.buffer;
 	}
 

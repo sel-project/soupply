@@ -111,7 +111,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 					data ~= space;
 					if(field.description.length || field.constants.length) data ~= "[" ~ toCamelCase(field.name) ~ "](#" ~ link(namespace, field.name) ~ ")";
 					else data ~= toCamelCase(field.name);
-					data ~= " | " ~ convert(field.type) ~ (endianness ? " | " ~ field.endianness.replace("_", " ") : "") ~ (condition ? " | " ~ (field.condition.length ? "`" ~ toCamelCase(field.condition) ~ "`" : "") : "") ~ "\n";
+					data ~= " | " ~ convert(field.type) ~ (endianness ? " | " ~ field.endianness.replace("_", " ") : "") ~ (condition ? " | " ~ (field.condition.length ? cond(toCamelCase(field.condition)) : "") : "") ~ "\n";
 				}
 				data ~= "\n";
 				foreach(field ; fields) {
@@ -343,4 +343,21 @@ string desc(string space, string d) {
 		}
 	}
 	return ret.join("```").strip;
+}
+
+string cond(string c) {
+	c = "`" ~ c
+		.replace("&", " & ")
+		.replace("|", " | ")
+		.replace("& &", "&&")
+		.replace("| |", "||")
+		.replace("==true", "` is `true")
+		.replace("==false", "` is `false")
+		.replace("==", "` is equal to `")
+		.replace("!=", "` is not equal to `")
+		.replace(">=", "` is greater than or equal to `")
+		.replace("<=", "` is less than or equal to `")
+		.replace(">", "` is greater than `")
+		.replace("<", "` is less than `") ~ "`";
+	return c.replace("`(", "`").replace(")`", "`");
 }

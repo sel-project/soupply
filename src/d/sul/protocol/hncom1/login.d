@@ -98,47 +98,46 @@ class ConnectionResponse : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["protocolMatches", "nameValid", "nameAccepted"];
+	public enum string[] FIELDS = ["protocolAccepted", "nameAccepted", "reason"];
 
 	/**
 	 * Indicates whether the protocol given at Connection.protocol is equals to the server's
 	 * one.
 	 */
-	public bool protocolMatches;
+	public bool protocolAccepted;
 
 	/**
 	 * Indicates whether the name has passed the server's validation process.
 	 */
-	public bool nameValid;
+	public bool nameAccepted;
 
 	/**
-	 * Indicates whether the name can be used. The value is false when there's already
-	 * a node connected with the same name.
+	 * If the nameAccepted is false, indicates the reason why it isn't valid.
 	 */
-	public bool nameAccepted;
+	public string reason;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(bool protocolMatches, bool nameValid=bool.init, bool nameAccepted=bool.init) {
-		this.protocolMatches = protocolMatches;
-		this.nameValid = nameValid;
+	public pure nothrow @safe @nogc this(bool protocolAccepted, bool nameAccepted=bool.init, string reason=string.init) {
+		this.protocolAccepted = protocolAccepted;
 		this.nameAccepted = nameAccepted;
+		this.reason = reason;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBigEndianBool(protocolMatches);
-		writeBigEndianBool(nameValid);
+		writeBigEndianBool(protocolAccepted);
 		writeBigEndianBool(nameAccepted);
+		if(nameAccepted==false){ writeBytes(varuint.encode(cast(uint)reason.length)); writeString(reason); }
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		protocolMatches=readBigEndianBool();
-		nameValid=readBigEndianBool();
+		protocolAccepted=readBigEndianBool();
 		nameAccepted=readBigEndianBool();
+		if(nameAccepted==false){ uint cmvhc29u=varuint.decode(_buffer, &_index); reason=readString(cmvhc29u); }
 	}
 
 	public static pure nothrow @safe ConnectionResponse fromBuffer(bool readId=true)(ubyte[] buffer) {

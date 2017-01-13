@@ -31,7 +31,7 @@ class AuthCredentials extends Packet {
 	public byte protocol;
 
 	/**
-	 * Whether or not to perform hashing on the password.
+	 * Whether to perform hashing on the password.
 	 */
 	public boolean hash;
 

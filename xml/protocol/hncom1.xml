@@ -105,14 +105,14 @@
 
 			<packet name="connection-response" id="1" clientbound="true" serverbound="false">
 				Reply always sent after the [Connection](#login.connection) packet. It indicates the status of the connection, which is accepted only when every field of the packet is true.
-				<field name="protocol-matches" type="bool">
+				<field name="protocol-accepted" type="bool">
 					Indicates whether the protocol given at [Connection.protocol](#login.connection.protocol) is equals to the server's one.
 				</field>
-				<field name="name-valid" type="bool">
+				<field name="name-accepted" type="bool">
 					Indicates whether the name has passed the server's validation process.
 				</field>
-				<field name="name-accepted" type="bool">
-					Indicates whether the name can be used. The value is false when there's already a node connected with the same name.
+				<field name="reason" type="string" when="name-accepted==false">
+					If the nameAccepted is false, indicates the reason why it isn't valid.
 				</field>
 			</packet>
 
@@ -204,11 +204,15 @@
 				</variants>
 			</packet>
 
+			<packet name="reload" id="10" clientbound="true" serverbound="false">
+
+			</packet>
+
 		</section>
 
 		<section name="player">
 
-			<packet name="add" id="10" clientbound="true" serverbound="false">
+			<packet name="add" id="11" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="ubyte">
 					<constant name="first-join" value="0" />
@@ -230,7 +234,7 @@
 				<field name="language" type="string" />
 			</packet>
 
-			<packet name="remove" id="11" clientbound="true" serverbound="false">
+			<packet name="remove" id="12" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="ubyte">
 					<constant name="left" value="0" />
@@ -240,44 +244,44 @@
 				</field>
 			</packet>
 
-			<packet name="kick" id="12" clientbound="false" serverbound="true">
+			<packet name="kick" id="13" clientbound="false" serverbound="true">
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="string" />
 				<field name="translation" type="bool" />
 				<field name="parameters" type="string[]" when="translation==true" />
 			</packet>
 
-			<packet name="transfer" id="13" clientbound="false" serverbound="true">
+			<packet name="transfer" id="14" clientbound="false" serverbound="true">
 				<field name="hub-id" type="hub-id" />
 				<field name="node" type="string" />
 			</packet>
 
-			<packet name="update-language" id="14" clientbound="false" serverbound="true">
+			<packet name="update-language" id="15" clientbound="false" serverbound="true">
 				<field name="hub-id" type="hub-id" />
 				<field name="language" type="string" />
 			</packet>
 
-			<packet name="update-display-name" id="15" clientbound="false" serverbound="true">
+			<packet name="update-display-name" id="16" clientbound="false" serverbound="true">
 				<field name="hub-id" type="hub-id" />
 				<field name="display-name" type="string" />
 			</packet>
 
-			<packet name="update-latency" id="16" clientbound="true" serverbound="false">
+			<packet name="update-latency" id="17" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 				<field name="latency" type="varuint" />
 			</packet>
 
-			<packet name="update-packet-loss" id="17" clientbound="true" serverbound="false">
+			<packet name="update-packet-loss" id="18" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 				<field name="packet-loss" type="float" />
 			</packet>
 
-			<packet name="game-packet" id="18" clientbound="true" serverbound="true">
+			<packet name="game-packet" id="19" clientbound="true" serverbound="true">
 				<field name="hub-id" type="hub-id" />
 				<field name="packet" type="bytes" />
 			</packet>
 
-			<packet name="ordered-game-packet" id="19" clientbound="false" serverbound="true">
+			<packet name="ordered-game-packet" id="20" clientbound="false" serverbound="true">
 				<field name="hub-id" type="hub-id" />
 				<field name="order" type="varuint" />
 				<field name="packet" type="bytes" />

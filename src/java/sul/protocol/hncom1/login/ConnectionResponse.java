@@ -28,18 +28,17 @@ class ConnectionResponse extends Packet {
 	 * Indicates whether the protocol given at Connection.protocol is equals to the server's
 	 * one.
 	 */
-	public boolean protocolMatches;
+	public boolean protocolAccepted;
 
 	/**
 	 * Indicates whether the name has passed the server's validation process.
 	 */
-	public boolean nameValid;
+	public boolean nameAccepted;
 
 	/**
-	 * Indicates whether the name can be used. The value is false when there's already
-	 * a node connected with the same name.
+	 * If the nameAccepted is false, indicates the reason why it isn't valid.
 	 */
-	public boolean nameAccepted;
+	public String reason;
 
 	@Override
 	public int length() {
@@ -50,9 +49,9 @@ class ConnectionResponse extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeBoolB(protocolMatches);
-		this.writeBoolB(nameValid);
+		this.writeBoolB(protocolAccepted);
 		this.writeBoolB(nameAccepted);
+		if(name_accepted==false){ byte[] cmvhc29u=reason.getBytes("UTF-8"); this.writeVaruint((int)cmvhc29u.length); this.writeBytes(cmvhc29u); }
 		return this.buffer;
 	}
 
