@@ -127,7 +127,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 								}
 							}
 							data ~= space ~ "\t**Constants**:\n\n";
-							data ~= space ~ "\tName | Value" ~ (notes ? " | " : "") ~ "\n" ~ space ~ "\t---|:---:" ~ (notes ? "|---" : "") ~ "\n";
+							data ~= space ~ "\tName | Value" ~ (notes ? " | |" : "") ~ "\n" ~ space ~ "\t---|:---:" ~ (notes ? "|---" : "") ~ "\n";
 							foreach(constant ; field.constants) {
 								data ~= space ~ "\t" ~ toCamelCase(constant.name) ~ " | " ~ constant.value ~ (notes ? " | " ~ constant.description : "") ~ "\n";
 							}

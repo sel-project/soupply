@@ -4,15 +4,15 @@
  *
  * License: https://github.com/sel-project/sel-utils/blob/master/LICENSE
  * Repository: https://github.com/sel-project/sel-utils
- * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/metadata/minecraft316.xml
+ * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/metadata/minecraft315.xml
  */
-module sul.metadata.minecraft316;
+module sul.metadata.minecraft315;
 
 import std.typecons : Tuple;
 
 import sul.utils.buffer : Buffer;
 
-static import sul.protocol.minecraft316.types;
+static import sul.protocol.minecraft315.types;
 
 alias Changed(T) = Tuple!(T, "value", bool, "changed");
 
@@ -156,13 +156,13 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.Slot) _potion;
+	private Changed!(sul.protocol.minecraft315.types.Slot) _potion;
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot potion() {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.Slot potion() {
 		return _potion.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot potion(sul.protocol.minecraft316.types.Slot value) {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.Slot potion(sul.protocol.minecraft315.types.Slot value) {
 		_potion.changed = true;
 		_potion.value = value;
 		return value;
@@ -359,13 +359,13 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.OptionalPosition) _beamTarget;
+	private Changed!(sul.protocol.minecraft315.types.OptionalPosition) _beamTarget;
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition beamTarget() {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.OptionalPosition beamTarget() {
 		return _beamTarget.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition beamTarget(sul.protocol.minecraft316.types.OptionalPosition value) {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.OptionalPosition beamTarget(sul.protocol.minecraft315.types.OptionalPosition value) {
 		_beamTarget.changed = true;
 		_beamTarget.value = value;
 		return value;
@@ -383,37 +383,25 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.Slot) _firework;
+	private Changed!(sul.protocol.minecraft315.types.Slot) _firework;
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot firework() {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.Slot firework() {
 		return _firework.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot firework(sul.protocol.minecraft316.types.Slot value) {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.Slot firework(sul.protocol.minecraft315.types.Slot value) {
 		_firework.changed = true;
 		_firework.value = value;
 		return value;
 	}
 
-	private Changed!(uint) _fireworkThrower;
+	private Changed!(sul.protocol.minecraft315.types.Slot) _item;
 
-	public pure nothrow @property @safe @nogc uint fireworkThrower() {
-		return _fireworkThrower.value;
-	}
-
-	public pure nothrow @property @safe @nogc uint fireworkThrower(uint value) {
-		_fireworkThrower.changed = true;
-		_fireworkThrower.value = value;
-		return value;
-	}
-
-	private Changed!(sul.protocol.minecraft316.types.Slot) _item;
-
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot item() {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.Slot item() {
 		return _item.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot item(sul.protocol.minecraft316.types.Slot value) {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.Slot item(sul.protocol.minecraft315.types.Slot value) {
 		_item.changed = true;
 		_item.value = value;
 		return value;
@@ -902,13 +890,13 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.OptionalUuid) _ownerUuid;
+	private Changed!(sul.protocol.minecraft315.types.OptionalUuid) _ownerUuid;
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalUuid ownerUuid() {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.OptionalUuid ownerUuid() {
 		return _ownerUuid.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalUuid ownerUuid(sul.protocol.minecraft316.types.OptionalUuid value) {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.OptionalUuid ownerUuid(sul.protocol.minecraft315.types.OptionalUuid value) {
 		_ownerUuid.changed = true;
 		_ownerUuid.value = value;
 		return value;
@@ -995,18 +983,6 @@ class Metadata {
 	public pure nothrow @property @safe @nogc bool pigSaddled(bool value) {
 		_pigSaddled.changed = true;
 		_pigSaddled.value = value;
-		return value;
-	}
-
-	private Changed!(uint) _carrotBoost;
-
-	public pure nothrow @property @safe @nogc uint carrotBoost() {
-		return _carrotBoost.value;
-	}
-
-	public pure nothrow @property @safe @nogc uint carrotBoost(uint value) {
-		_carrotBoost.changed = true;
-		_carrotBoost.value = value;
 		return value;
 	}
 
@@ -1209,13 +1185,13 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.OptionalPosition) _shulkerAttachment;
+	private Changed!(sul.protocol.minecraft315.types.OptionalPosition) _shulkerAttachment;
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition shulkerAttachment() {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.OptionalPosition shulkerAttachment() {
 		return _shulkerAttachment.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition shulkerAttachment(sul.protocol.minecraft316.types.OptionalPosition value) {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft315.types.OptionalPosition shulkerAttachment(sul.protocol.minecraft315.types.OptionalPosition value) {
 		_shulkerAttachment.changed = true;
 		_shulkerAttachment.value = value;
 		return value;

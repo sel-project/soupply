@@ -4,7 +4,7 @@
 
 	<software>Minecraft</software>
 
-	<protocol>316</protocol>
+	<protocol>315</protocol>
 
 	<encoding suffix="255" types="ubyte" ids="ubyte">
 
@@ -51,7 +51,7 @@
 
 		<type name="radius" type="float" id="6" default="0.5" />
 
-		<type name="color" type="int" id="7" default="-1" />
+		<type name="color" type="int" id="7" />
 
 		<type name="is-single-point" type="bool" id="8" />
 
@@ -84,8 +84,6 @@
 		<type name="show-bottom" type="bool" id="7" />
 
 		<type name="firework" type="slot" id="6" />
-
-		<type name="firework-thrower" type="int" id="7" />
 
 		<type name="item" type="slot" id="6" />
 
@@ -172,8 +170,6 @@
 		<type name="llama-variant" type="int" id="18" />
 
 		<type name="pig-saddled" type="bool" id="13" />
-
-		<type name="carrot-boost" type="int" id="14" />
 
 		<type name="rabbit-variant" type="int" id="13" />
 

@@ -26,7 +26,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc long entityFlags(long value) {
 		_entityFlags.changed = true;
-		return _entityFlags.value = value;
+		_entityFlags.value = value;
+		return value;
 	}
 
 	public pure nothrow @property @safe @nogc bool onFire() {
@@ -227,11 +228,11 @@ class Metadata {
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool climbingWall() {
+	public pure nothrow @property @safe @nogc bool climbing() {
 		return (_entityFlags.value >>> 18) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool climbingWall(bool value) {
+	public pure nothrow @property @safe @nogc bool climbing(bool value) {
 		_entityFlags.changed = true;
 		if(value) _entityFlags.value |= (cast(long)true << 18);
 		else _entityFlags.value &= ~(cast(long)true << 18);
@@ -411,7 +412,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc int variant(int value) {
 		_variant.changed = true;
-		return _variant.value = value;
+		_variant.value = value;
+		return value;
 	}
 
 	private Changed!(byte) _color;
@@ -422,7 +424,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc byte color(byte value) {
 		_color.changed = true;
-		return _color.value = value;
+		_color.value = value;
+		return value;
 	}
 
 	private Changed!(string) _nametag;
@@ -433,7 +436,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc string nametag(string value) {
 		_nametag.changed = true;
-		return _nametag.value = value;
+		_nametag.value = value;
+		return value;
 	}
 
 	private Changed!(long) _owner;
@@ -444,7 +448,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc long owner(long value) {
 		_owner.changed = true;
-		return _owner.value = value;
+		_owner.value = value;
+		return value;
 	}
 
 	private Changed!(short) _air;
@@ -455,7 +460,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc short air(short value) {
 		_air.changed = true;
-		return _air.value = value;
+		_air.value = value;
+		return value;
 	}
 
 	private Changed!(int) _potionColor;
@@ -466,7 +472,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc int potionColor(int value) {
 		_potionColor.changed = true;
-		return _potionColor.value = value;
+		_potionColor.value = value;
+		return value;
 	}
 
 	private Changed!(byte) _potionAmbient;
@@ -477,18 +484,20 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc byte potionAmbient(byte value) {
 		_potionAmbient.changed = true;
-		return _potionAmbient.value = value;
+		_potionAmbient.value = value;
+		return value;
 	}
 
-	private Changed!(byte) _size;
+	private Changed!(byte) _slimeSize;
 
-	public pure nothrow @property @safe @nogc byte size() {
-		return _size.value;
+	public pure nothrow @property @safe @nogc byte slimeSize() {
+		return _slimeSize.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte size(byte value) {
-		_size.changed = true;
-		return _size.value = value;
+	public pure nothrow @property @safe @nogc byte slimeSize(byte value) {
+		_slimeSize.changed = true;
+		_slimeSize.value = value;
+		return value;
 	}
 
 	private Changed!(byte) _playerFlags;
@@ -499,7 +508,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc byte playerFlags(byte value) {
 		_playerFlags.changed = true;
-		return _playerFlags.value = value;
+		_playerFlags.value = value;
+		return value;
 	}
 
 	public pure nothrow @property @safe @nogc bool asleep() {
@@ -521,7 +531,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc int playerIndex(int value) {
 		_playerIndex.changed = true;
-		return _playerIndex.value = value;
+		_playerIndex.value = value;
+		return value;
 	}
 
 	private Changed!(sul.protocol.pocket100.types.BlockPosition) _bedPosition;
@@ -532,7 +543,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc sul.protocol.pocket100.types.BlockPosition bedPosition(sul.protocol.pocket100.types.BlockPosition value) {
 		_bedPosition.changed = true;
-		return _bedPosition.value = value;
+		_bedPosition.value = value;
+		return value;
 	}
 
 	private Changed!(long) _leadHolder;
@@ -543,7 +555,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc long leadHolder(long value) {
 		_leadHolder.changed = true;
-		return _leadHolder.value = value;
+		_leadHolder.value = value;
+		return value;
 	}
 
 	private Changed!(float) _scale;
@@ -554,7 +567,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc float scale(float value) {
 		_scale.changed = true;
-		return _scale.value = value;
+		_scale.value = value;
+		return value;
 	}
 
 	private Changed!(string) _interactiveTag;
@@ -565,7 +579,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc string interactiveTag(string value) {
 		_interactiveTag.changed = true;
-		return _interactiveTag.value = value;
+		_interactiveTag.value = value;
+		return value;
 	}
 
 	private Changed!(string) _interactiveTagUrl;
@@ -576,7 +591,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc string interactiveTagUrl(string value) {
 		_interactiveTagUrl.changed = true;
-		return _interactiveTagUrl.value = value;
+		_interactiveTagUrl.value = value;
+		return value;
 	}
 
 	private Changed!(short) _maxAir;
@@ -587,7 +603,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc short maxAir(short value) {
 		_maxAir.changed = true;
-		return _maxAir.value = value;
+		_maxAir.value = value;
+		return value;
 	}
 
 	private Changed!(int) _markVariant;
@@ -598,7 +615,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc int markVariant(int value) {
 		_markVariant.changed = true;
-		return _markVariant.value = value;
+		_markVariant.value = value;
+		return value;
 	}
 
 	private Changed!(float) _boundingBoxWidth;
@@ -609,7 +627,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc float boundingBoxWidth(float value) {
 		_boundingBoxWidth.changed = true;
-		return _boundingBoxWidth.value = value;
+		_boundingBoxWidth.value = value;
+		return value;
 	}
 
 	private Changed!(float) _boundingBoxHeight;
@@ -620,7 +639,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc float boundingBoxHeight(float value) {
 		_boundingBoxHeight.changed = true;
-		return _boundingBoxHeight.value = value;
+		_boundingBoxHeight.value = value;
+		return value;
 	}
 
 	private Changed!(int) _fuseLength;
@@ -631,7 +651,8 @@ class Metadata {
 
 	public pure nothrow @property @safe @nogc int fuseLength(int value) {
 		_fuseLength.changed = true;
-		return _fuseLength.value = value;
+		_fuseLength.value = value;
+		return value;
 	}
 
 	public pure nothrow @safe encode(Buffer buffer) {

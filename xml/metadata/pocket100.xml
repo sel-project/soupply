@@ -41,7 +41,7 @@
 			<flag name="always-show-nametag" bit="15" />
 			<flag name="no-ai" bit="16" />
 			<flag name="silent" bit="17" />
-			<flag name="climbing-wall" bit="18" />
+			<flag name="climbing" bit="18" />
 			<flag name="resting" bit="19" />
 			<flag name="sitting" bit="20" />
 			<flag name="angry" bit="21" />
@@ -73,7 +73,7 @@
 
 		<type name="potion-ambient" type="byte" id="9" />
 
-		<type name="size" type="byte" id="16" />
+		<type name="slime-size" type="byte" id="16" default="1" />
 
 		<type name="player-flags" type="byte" id="27">
 			<flag name="asleep" bit="1" />

@@ -503,7 +503,8 @@ alias varulong = var!ulong;
 				data ~= "\tpublic pure nothrow @property @safe @nogc " ~ tp ~ " " ~ name ~ "() {\n\t\treturn _" ~ name ~ ".value;\n\t}\n\n";
 				data ~= "\tpublic pure nothrow @property @safe @nogc " ~ tp ~ " " ~ name ~ "(" ~ tp ~ " value) {\n";
 				data ~= "\t\t_" ~ name ~ ".changed = true;\n";
-				data ~= "\t\treturn _" ~ name ~ ".value = value;\n";
+				data ~= "\t\t_" ~ name ~ ".value = value;\n";
+				data ~= "\t\treturn value;\n";
 				data ~= "\t}\n\n";
 				foreach(flag ; d.flags) {
 					immutable fname = convertName(flag.name);

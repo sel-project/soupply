@@ -20,6 +20,8 @@ import sul.utils.var;
 
 static import sul.protocol.minecraft210.types;
 
+import sul.metadata.minecraft210;
+
 alias Packets = TypeTuple!(Handshake, Request, Response, Latency);
 
 class Handshake : Buffer {

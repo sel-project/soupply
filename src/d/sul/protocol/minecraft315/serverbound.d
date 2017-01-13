@@ -20,6 +20,8 @@ import sul.utils.var;
 
 static import sul.protocol.minecraft315.types;
 
+import sul.metadata.minecraft315;
+
 alias Packets = TypeTuple!(TeleportConfirm, TabComplete, ChatMessage, ClientStatus, ClientSettings, ConfirmTransaction, EnchantItem, ClickWindow, CloseWindow, PluginMessage, UseEntity, KeepAlive, PlayerPosition, PlayerPositionAndLook, PlayerLook, Player, VehicleMove, SteerBoat, PlayerAbilities, PlayerDigging, EntityAction, SteerVehicle, ResourcePackStatus, HeldItemChange, CreativeInventoryAction, UpdateSign, Animation, Spectate, PlayerBlockPlacement, UseItem);
 
 class TeleportConfirm : Buffer {

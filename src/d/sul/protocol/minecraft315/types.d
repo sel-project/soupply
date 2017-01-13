@@ -17,6 +17,8 @@ import std.uuid : UUID;
 import sul.utils.buffer;
 import sul.utils.var;
 
+import sul.metadata.minecraft315;
+
 struct Statistic {
 
 	public enum string[] FIELDS = ["name", "value"];

@@ -4,15 +4,15 @@
  *
  * License: https://github.com/sel-project/sel-utils/blob/master/LICENSE
  * Repository: https://github.com/sel-project/sel-utils
- * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/metadata/minecraft316.xml
+ * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/metadata/minecraft210.xml
  */
-module sul.metadata.minecraft316;
+module sul.metadata.minecraft210;
 
 import std.typecons : Tuple;
 
 import sul.utils.buffer : Buffer;
 
-static import sul.protocol.minecraft316.types;
+static import sul.protocol.minecraft210.types;
 
 alias Changed(T) = Tuple!(T, "value", bool, "changed");
 
@@ -156,13 +156,13 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.Slot) _potion;
+	private Changed!(sul.protocol.minecraft210.types.Slot) _potion;
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot potion() {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft210.types.Slot potion() {
 		return _potion.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot potion(sul.protocol.minecraft316.types.Slot value) {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft210.types.Slot potion(sul.protocol.minecraft210.types.Slot value) {
 		_potion.changed = true;
 		_potion.value = value;
 		return value;
@@ -359,13 +359,13 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.OptionalPosition) _beamTarget;
+	private Changed!(sul.protocol.minecraft210.types.OptionalPosition) _beamTarget;
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition beamTarget() {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft210.types.OptionalPosition beamTarget() {
 		return _beamTarget.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition beamTarget(sul.protocol.minecraft316.types.OptionalPosition value) {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft210.types.OptionalPosition beamTarget(sul.protocol.minecraft210.types.OptionalPosition value) {
 		_beamTarget.changed = true;
 		_beamTarget.value = value;
 		return value;
@@ -383,37 +383,25 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.Slot) _firework;
+	private Changed!(sul.protocol.minecraft210.types.Slot) _firework;
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot firework() {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft210.types.Slot firework() {
 		return _firework.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot firework(sul.protocol.minecraft316.types.Slot value) {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft210.types.Slot firework(sul.protocol.minecraft210.types.Slot value) {
 		_firework.changed = true;
 		_firework.value = value;
 		return value;
 	}
 
-	private Changed!(uint) _fireworkThrower;
+	private Changed!(sul.protocol.minecraft210.types.Slot) _item;
 
-	public pure nothrow @property @safe @nogc uint fireworkThrower() {
-		return _fireworkThrower.value;
-	}
-
-	public pure nothrow @property @safe @nogc uint fireworkThrower(uint value) {
-		_fireworkThrower.changed = true;
-		_fireworkThrower.value = value;
-		return value;
-	}
-
-	private Changed!(sul.protocol.minecraft316.types.Slot) _item;
-
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot item() {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft210.types.Slot item() {
 		return _item.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot item(sul.protocol.minecraft316.types.Slot value) {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft210.types.Slot item(sul.protocol.minecraft210.types.Slot value) {
 		_item.changed = true;
 		_item.value = value;
 		return value;
@@ -902,18 +890,6 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.OptionalUuid) _ownerUuid;
-
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalUuid ownerUuid() {
-		return _ownerUuid.value;
-	}
-
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalUuid ownerUuid(sul.protocol.minecraft316.types.OptionalUuid value) {
-		_ownerUuid.changed = true;
-		_ownerUuid.value = value;
-		return value;
-	}
-
 	private Changed!(uint) _horseVariant;
 
 	public pure nothrow @property @safe @nogc uint horseVariant() {
@@ -923,6 +899,18 @@ class Metadata {
 	public pure nothrow @property @safe @nogc uint horseVariant(uint value) {
 		_horseVariant.changed = true;
 		_horseVariant.value = value;
+		return value;
+	}
+
+	private Changed!(uint) _ownerUuid;
+
+	public pure nothrow @property @safe @nogc uint ownerUuid() {
+		return _ownerUuid.value;
+	}
+
+	public pure nothrow @property @safe @nogc uint ownerUuid(uint value) {
+		_ownerUuid.changed = true;
+		_ownerUuid.value = value;
 		return value;
 	}
 
@@ -938,54 +926,6 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(bool) _chested;
-
-	public pure nothrow @property @safe @nogc bool chested() {
-		return _chested.value;
-	}
-
-	public pure nothrow @property @safe @nogc bool chested(bool value) {
-		_chested.changed = true;
-		_chested.value = value;
-		return value;
-	}
-
-	private Changed!(uint) _llamaStrength;
-
-	public pure nothrow @property @safe @nogc uint llamaStrength() {
-		return _llamaStrength.value;
-	}
-
-	public pure nothrow @property @safe @nogc uint llamaStrength(uint value) {
-		_llamaStrength.changed = true;
-		_llamaStrength.value = value;
-		return value;
-	}
-
-	private Changed!(uint) _carpetColor;
-
-	public pure nothrow @property @safe @nogc uint carpetColor() {
-		return _carpetColor.value;
-	}
-
-	public pure nothrow @property @safe @nogc uint carpetColor(uint value) {
-		_carpetColor.changed = true;
-		_carpetColor.value = value;
-		return value;
-	}
-
-	private Changed!(uint) _llamaVariant;
-
-	public pure nothrow @property @safe @nogc uint llamaVariant() {
-		return _llamaVariant.value;
-	}
-
-	public pure nothrow @property @safe @nogc uint llamaVariant(uint value) {
-		_llamaVariant.changed = true;
-		_llamaVariant.value = value;
-		return value;
-	}
-
 	private Changed!(bool) _pigSaddled;
 
 	public pure nothrow @property @safe @nogc bool pigSaddled() {
@@ -995,18 +935,6 @@ class Metadata {
 	public pure nothrow @property @safe @nogc bool pigSaddled(bool value) {
 		_pigSaddled.changed = true;
 		_pigSaddled.value = value;
-		return value;
-	}
-
-	private Changed!(uint) _carrotBoost;
-
-	public pure nothrow @property @safe @nogc uint carrotBoost() {
-		return _carrotBoost.value;
-	}
-
-	public pure nothrow @property @safe @nogc uint carrotBoost(uint value) {
-		_carrotBoost.changed = true;
-		_carrotBoost.value = value;
 		return value;
 	}
 
@@ -1209,13 +1137,13 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.OptionalPosition) _shulkerAttachment;
+	private Changed!(sul.protocol.minecraft210.types.OptionalPosition) _shulkerAttachment;
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition shulkerAttachment() {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft210.types.OptionalPosition shulkerAttachment() {
 		return _shulkerAttachment.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition shulkerAttachment(sul.protocol.minecraft316.types.OptionalPosition value) {
+	public pure nothrow @property @safe @nogc sul.protocol.minecraft210.types.OptionalPosition shulkerAttachment(sul.protocol.minecraft210.types.OptionalPosition value) {
 		_shulkerAttachment.changed = true;
 		_shulkerAttachment.value = value;
 		return value;
@@ -1230,18 +1158,6 @@ class Metadata {
 	public pure nothrow @property @safe @nogc byte shulkerShieldHeight(byte value) {
 		_shulkerShieldHeight.changed = true;
 		_shulkerShieldHeight.value = value;
-		return value;
-	}
-
-	private Changed!(byte) _shulkerColor;
-
-	public pure nothrow @property @safe @nogc byte shulkerColor() {
-		return _shulkerColor.value;
-	}
-
-	public pure nothrow @property @safe @nogc byte shulkerColor(byte value) {
-		_shulkerColor.changed = true;
-		_shulkerColor.value = value;
 		return value;
 	}
 
@@ -1314,30 +1230,6 @@ class Metadata {
 	public pure nothrow @property @safe @nogc uint guardianTarget(uint value) {
 		_guardianTarget.changed = true;
 		_guardianTarget.value = value;
-		return value;
-	}
-
-	private Changed!(byte) _spell;
-
-	public pure nothrow @property @safe @nogc byte spell() {
-		return _spell.value;
-	}
-
-	public pure nothrow @property @safe @nogc byte spell(byte value) {
-		_spell.changed = true;
-		_spell.value = value;
-		return value;
-	}
-
-	private Changed!(byte) _attackMode;
-
-	public pure nothrow @property @safe @nogc byte attackMode() {
-		return _attackMode.value;
-	}
-
-	public pure nothrow @property @safe @nogc byte attackMode(byte value) {
-		_attackMode.changed = true;
-		_attackMode.value = value;
 		return value;
 	}
 
