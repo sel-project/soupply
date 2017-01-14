@@ -13,14 +13,16 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
-class Info extends Packet {
+class HubInfo extends Packet {
 
 	public final static byte ID = (byte)2;
 
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
+	public long time;
 	public long serverId;
+	public long reservedUuids;
 	public String displayName;
 	public boolean onlineMode;
 	public Game[] games;
@@ -29,7 +31,6 @@ class Info extends Packet {
 	public String language;
 	public String[] acceptedLanguages;
 	public String[] nodes;
-	public long uuidPool;
 	public String socialJson;
 	public String additionalJson;
 
@@ -42,7 +43,9 @@ class Info extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeLongB(serverId);
+		this.writeVarulong(time);
+		this.writeVarulong(serverId);
+		this.writeVarulong(reservedUuids);
 		byte[] zglzcgxheu5hbwu=displayName.getBytes("UTF-8"); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
 		this.writeBoolB(onlineMode);
 		this.writeVaruint((int)games.length); for(game z2ftzxm:games){ this.writeBytes(z2ftzxm.encode()); }
@@ -51,7 +54,6 @@ class Info extends Packet {
 		byte[] bgfuz3vhz2u=language.getBytes("UTF-8"); this.writeVaruint((int)bgfuz3vhz2u.length); this.writeBytes(bgfuz3vhz2u);
 		this.writeVaruint((int)acceptedLanguages.length); for(string ywnjzxb0zwrmyw5n:acceptedLanguages){ byte[] exduanp4yjb6d3jt=ywnjzxb0zwrmyw5n.getBytes("UTF-8"); this.writeVaruint((int)exduanp4yjb6d3jt.length); this.writeBytes(exduanp4yjb6d3jt); }
 		this.writeVaruint((int)nodes.length); for(string bm9kzxm:nodes){ byte[] ym05a3p4bq=bm9kzxm.getBytes("UTF-8"); this.writeVaruint((int)ym05a3p4bq.length); this.writeBytes(ym05a3p4bq); }
-		this.writeLongB(uuidPool);
 		byte[] c29jawfssnnvbg=socialJson.getBytes("UTF-8"); this.writeVaruint((int)c29jawfssnnvbg.length); this.writeBytes(c29jawfssnnvbg);
 		byte[] ywrkaxrpb25hbepz=additionalJson.getBytes("UTF-8"); this.writeVaruint((int)ywrkaxrpb25hbepz.length); this.writeBytes(ywrkaxrpb25hbepz);
 		return this.buffer;

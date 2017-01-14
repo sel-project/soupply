@@ -146,14 +146,22 @@
 				]
 			},
 
-			"info": {
+			"hub_info": {
 				"id": 2,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
 					{
+						"name": "time",
+						"type": "varulong"
+					},
+					{
 						"name": "server_id",
-						"type": "ulong"
+						"type": "varulong"
+					},
+					{
+						"name": "reserved_uuids",
+						"type": "varulong"
 					},
 					{
 						"name": "display_name",
@@ -188,10 +196,6 @@
 						"type": "string[]"
 					},
 					{
-						"name": "uuid_pool",
-						"type": "ulong"
-					},
-					{
 						"name": "social_json",
 						"type": "string"
 					},
@@ -202,11 +206,15 @@
 				]
 			},
 
-			"ready": {
+			"node_info": {
 				"id": 3,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
+					{
+						"name": "time",
+						"type": "varulong"
+					},
 					{
 						"name": "plugins",
 						"type": "plugin[]"
@@ -259,10 +267,6 @@
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
-					{
-						"name": "time",
-						"type": "varulong"
-					},
 					{
 						"name": "tps",
 						"type": "float"

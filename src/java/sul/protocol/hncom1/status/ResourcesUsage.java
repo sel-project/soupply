@@ -20,7 +20,6 @@ class ResourcesUsage extends Packet {
 	public final static boolean CLIENTBOUND = false;
 	public final static boolean SERVERBOUND = true;
 
-	public long time;
 	public float tps;
 	public long ram;
 	public float cpu;
@@ -34,7 +33,6 @@ class ResourcesUsage extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
-		this.writeVarulong(time);
 		this.writeFloatB(tps);
 		this.writeVarulong(ram);
 		this.writeFloatB(cpu);

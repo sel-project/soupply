@@ -76,7 +76,7 @@ struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
 		size_t j, k;
 		do {
 			k = buffer[*index];
-			unsigned |= (k & 0x7F) << (j++ * 7);
+			unsigned |= cast(U)(k & 0x7F) << (j++ * 7);
 		} while(++*index < buffer.length && j < MAX_BYTES && (k & 0x80) != 0);
 		static if(isUnsigned!T) {
 			return unsigned;

@@ -13,13 +13,14 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
-class Ready extends Packet {
+class NodeInfo extends Packet {
 
 	public final static byte ID = (byte)3;
 
 	public final static boolean CLIENTBOUND = false;
 	public final static boolean SERVERBOUND = true;
 
+	public long time;
 	public Plugin[] plugins;
 
 	@Override
@@ -31,6 +32,7 @@ class Ready extends Packet {
 		this.buffer = new byte[this.length()];
 		this.index = 0;
 		this.writeByteB(ID);
+		this.writeVarulong(time);
 		this.writeVaruint((int)plugins.length); for(plugin cgx1z2lucw:plugins){ this.writeBytes(cgx1z2lucw.encode()); }
 		return this.buffer;
 	}

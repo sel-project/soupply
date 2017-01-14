@@ -117,17 +117,15 @@ class ResourcesUsage : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["time", "tps", "ram", "cpu"];
+	public enum string[] FIELDS = ["tps", "ram", "cpu"];
 
-	public ulong time;
 	public float tps;
 	public ulong ram;
 	public float cpu;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(ulong time, float tps=float.init, ulong ram=ulong.init, float cpu=float.init) {
-		this.time = time;
+	public pure nothrow @safe @nogc this(float tps, ulong ram=ulong.init, float cpu=float.init) {
 		this.tps = tps;
 		this.ram = ram;
 		this.cpu = cpu;
@@ -136,7 +134,6 @@ class ResourcesUsage : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varulong.encode(time));
 		writeBigEndianFloat(tps);
 		writeBytes(varulong.encode(ram));
 		writeBigEndianFloat(cpu);
@@ -145,7 +142,6 @@ class ResourcesUsage : Buffer {
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		time=varulong.decode(_buffer, &_index);
 		tps=readBigEndianFloat();
 		ram=varulong.decode(_buffer, &_index);
 		cpu=readBigEndianFloat();

@@ -23,7 +23,7 @@ import sul.utils.var;
 
 static import sul.protocol.hncom1.types;
 
-alias Packets = TypeTuple!(ConnectionRequest, ConnectionResponse, Info, Ready);
+alias Packets = TypeTuple!(ConnectionRequest, ConnectionResponse, HubInfo, NodeInfo);
 
 /**
  * First real packet sent by the client with its informations.
@@ -160,16 +160,18 @@ class ConnectionResponse : Buffer {
 
 }
 
-class Info : Buffer {
+class HubInfo : Buffer {
 
 	public enum ubyte ID = 2;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["serverId", "displayName", "onlineMode", "games", "online", "max", "language", "acceptedLanguages", "nodes", "uuidPool", "socialJson", "additionalJson"];
+	public enum string[] FIELDS = ["time", "serverId", "reservedUuids", "displayName", "onlineMode", "games", "online", "max", "language", "acceptedLanguages", "nodes", "socialJson", "additionalJson"];
 
+	public ulong time;
 	public ulong serverId;
+	public ulong reservedUuids;
 	public string displayName;
 	public bool onlineMode;
 	public sul.protocol.hncom1.types.Game[] games;
@@ -178,14 +180,15 @@ class Info : Buffer {
 	public string language;
 	public string[] acceptedLanguages;
 	public string[] nodes;
-	public ulong uuidPool;
 	public string socialJson;
 	public string additionalJson;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(ulong serverId, string displayName=string.init, bool onlineMode=bool.init, sul.protocol.hncom1.types.Game[] games=(sul.protocol.hncom1.types.Game[]).init, uint online=uint.init, uint max=uint.init, string language=string.init, string[] acceptedLanguages=(string[]).init, string[] nodes=(string[]).init, ulong uuidPool=ulong.init, string socialJson=string.init, string additionalJson=string.init) {
+	public pure nothrow @safe @nogc this(ulong time, ulong serverId=ulong.init, ulong reservedUuids=ulong.init, string displayName=string.init, bool onlineMode=bool.init, sul.protocol.hncom1.types.Game[] games=(sul.protocol.hncom1.types.Game[]).init, uint online=uint.init, uint max=uint.init, string language=string.init, string[] acceptedLanguages=(string[]).init, string[] nodes=(string[]).init, string socialJson=string.init, string additionalJson=string.init) {
+		this.time = time;
 		this.serverId = serverId;
+		this.reservedUuids = reservedUuids;
 		this.displayName = displayName;
 		this.onlineMode = onlineMode;
 		this.games = games;
@@ -194,7 +197,6 @@ class Info : Buffer {
 		this.language = language;
 		this.acceptedLanguages = acceptedLanguages;
 		this.nodes = nodes;
-		this.uuidPool = uuidPool;
 		this.socialJson = socialJson;
 		this.additionalJson = additionalJson;
 	}
@@ -202,7 +204,9 @@ class Info : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBigEndianUlong(serverId);
+		writeBytes(varulong.encode(time));
+		writeBytes(varulong.encode(serverId));
+		writeBytes(varulong.encode(reservedUuids));
 		writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName);
 		writeBigEndianBool(onlineMode);
 		writeBytes(varuint.encode(cast(uint)games.length)); foreach(z2ftzxm;games){ z2ftzxm.encode(bufferInstance); }
@@ -211,7 +215,6 @@ class Info : Buffer {
 		writeBytes(varuint.encode(cast(uint)language.length)); writeString(language);
 		writeBytes(varuint.encode(cast(uint)acceptedLanguages.length)); foreach(ywnjzxb0zwrmyw5n;acceptedLanguages){ writeBytes(varuint.encode(cast(uint)ywnjzxb0zwrmyw5n.length)); writeString(ywnjzxb0zwrmyw5n); }
 		writeBytes(varuint.encode(cast(uint)nodes.length)); foreach(bm9kzxm;nodes){ writeBytes(varuint.encode(cast(uint)bm9kzxm.length)); writeString(bm9kzxm); }
-		writeBigEndianUlong(uuidPool);
 		writeBytes(varuint.encode(cast(uint)socialJson.length)); writeString(socialJson);
 		writeBytes(varuint.encode(cast(uint)additionalJson.length)); writeString(additionalJson);
 		return _buffer;
@@ -219,7 +222,9 @@ class Info : Buffer {
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		serverId=readBigEndianUlong();
+		time=varulong.decode(_buffer, &_index);
+		serverId=varulong.decode(_buffer, &_index);
+		reservedUuids=varulong.decode(_buffer, &_index);
 		uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu);
 		onlineMode=readBigEndianBool();
 		games.length=varuint.decode(_buffer, &_index); foreach(ref z2ftzxm;games){ z2ftzxm.decode(bufferInstance); }
@@ -228,13 +233,12 @@ class Info : Buffer {
 		uint bgfuz3vhz2u=varuint.decode(_buffer, &_index); language=readString(bgfuz3vhz2u);
 		acceptedLanguages.length=varuint.decode(_buffer, &_index); foreach(ref ywnjzxb0zwrmyw5n;acceptedLanguages){ uint exduanp4yjb6d3jt=varuint.decode(_buffer, &_index); ywnjzxb0zwrmyw5n=readString(exduanp4yjb6d3jt); }
 		nodes.length=varuint.decode(_buffer, &_index); foreach(ref bm9kzxm;nodes){ uint ym05a3p4bq=varuint.decode(_buffer, &_index); bm9kzxm=readString(ym05a3p4bq); }
-		uuidPool=readBigEndianUlong();
 		uint c29jawfssnnvbg=varuint.decode(_buffer, &_index); socialJson=readString(c29jawfssnnvbg);
 		uint ywrkaxrpb25hbepz=varuint.decode(_buffer, &_index); additionalJson=readString(ywrkaxrpb25hbepz);
 	}
 
-	public static pure nothrow @safe Info fromBuffer(bool readId=true)(ubyte[] buffer) {
-		Info ret = new Info();
+	public static pure nothrow @safe HubInfo fromBuffer(bool readId=true)(ubyte[] buffer) {
+		HubInfo ret = new HubInfo();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
@@ -242,37 +246,41 @@ class Info : Buffer {
 
 }
 
-class Ready : Buffer {
+class NodeInfo : Buffer {
 
 	public enum ubyte ID = 3;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["plugins"];
+	public enum string[] FIELDS = ["time", "plugins"];
 
+	public ulong time;
 	public sul.protocol.hncom1.types.Plugin[] plugins;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(sul.protocol.hncom1.types.Plugin[] plugins) {
+	public pure nothrow @safe @nogc this(ulong time, sul.protocol.hncom1.types.Plugin[] plugins=(sul.protocol.hncom1.types.Plugin[]).init) {
+		this.time = time;
 		this.plugins = plugins;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varulong.encode(time));
 		writeBytes(varuint.encode(cast(uint)plugins.length)); foreach(cgx1z2lucw;plugins){ cgx1z2lucw.encode(bufferInstance); }
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		time=varulong.decode(_buffer, &_index);
 		plugins.length=varuint.decode(_buffer, &_index); foreach(ref cgx1z2lucw;plugins){ cgx1z2lucw.decode(bufferInstance); }
 	}
 
-	public static pure nothrow @safe Ready fromBuffer(bool readId=true)(ubyte[] buffer) {
-		Ready ret = new Ready();
+	public static pure nothrow @safe NodeInfo fromBuffer(bool readId=true)(ubyte[] buffer) {
+		NodeInfo ret = new NodeInfo();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;

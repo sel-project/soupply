@@ -141,8 +141,10 @@
 				</field>
 			</packet>
 
-			<packet name="info" id="2" clientbound="true" serverbound="false">
-				<field name="server-id" type="ulong" />
+			<packet name="hub-info" id="2" clientbound="true" serverbound="false">
+				<field name="time" type="varulong" />
+				<field name="server-id" type="varulong" />
+				<field name="reserved-uuids" type="varulong" />
 				<field name="display-name" type="string" />
 				<field name="online-mode" type="bool" />
 				<field name="games" type="game[]" />
@@ -151,12 +153,12 @@
 				<field name="language" type="string" />
 				<field name="accepted-languages" type="string[]" />
 				<field name="nodes" type="string[]" />
-				<field name="uuid-pool" type="ulong" />
 				<field name="social-json" type="string" />
 				<field name="additional-json" type="string" />
 			</packet>
 
-			<packet name="ready" id="3" clientbound="false" serverbound="true">
+			<packet name="node-info" id="3" clientbound="false" serverbound="true">
+				<field name="time" type="varulong" />
 				<field name="plugins" type="plugin[]" />
 			</packet>
 
@@ -178,7 +180,6 @@
 			</packet>
 
 			<packet name="resources-usage" id="6" clientbound="false" serverbound="true">
-				<field name="time" type="varulong" />
 				<field name="tps" type="float" />
 				<field name="ram" type="varulong" />
 				<field name="cpu" type="float" />
