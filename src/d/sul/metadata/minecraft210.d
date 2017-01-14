@@ -8,9 +8,10 @@
  */
 module sul.metadata.minecraft210;
 
-import std.typecons : Tuple;
+import std.typecons : Tuple, tuple;
 
 import sul.utils.buffer : Buffer;
+import sul.utils.var;
 
 static import sul.protocol.minecraft210.types;
 
@@ -96,7 +97,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(uint) _air;
+	private Changed!(uint) _air = tuple(cast(uint)300, false);
 
 	public pure nothrow @property @safe @nogc uint air() {
 		return _air.value;
@@ -180,7 +181,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(float) _radius;
+	private Changed!(float) _radius = tuple(cast(float)0.5, false);
 
 	public pure nothrow @property @safe @nogc float radius() {
 		return _radius.value;
@@ -299,7 +300,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(uint) _forwardDirection;
+	private Changed!(uint) _forwardDirection = tuple(cast(uint)1, false);
 
 	public pure nothrow @property @safe @nogc uint forwardDirection() {
 		return _forwardDirection.value;
@@ -311,7 +312,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(float) _damageTaken;
+	private Changed!(float) _damageTaken = tuple(cast(float)0, false);
 
 	public pure nothrow @property @safe @nogc float damageTaken() {
 		return _damageTaken.value;
@@ -453,7 +454,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(float) _health;
+	private Changed!(float) _health = tuple(cast(float)1, false);
 
 	public pure nothrow @property @safe @nogc float health() {
 		return _health.value;
@@ -501,7 +502,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(float) _additionalHearts;
+	private Changed!(float) _additionalHearts = tuple(cast(float)0, false);
 
 	public pure nothrow @property @safe @nogc float additionalHearts() {
 		return _additionalHearts.value;
@@ -525,7 +526,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(byte) _skinParts;
+	private Changed!(byte) _skinParts = tuple(cast(byte)0, false);
 
 	public pure nothrow @property @safe @nogc byte skinParts() {
 		return _skinParts.value;
@@ -614,7 +615,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(byte) _mainHand;
+	private Changed!(byte) _mainHand = tuple(cast(byte)1, false);
 
 	public pure nothrow @property @safe @nogc byte mainHand() {
 		return _mainHand.value;
@@ -1066,7 +1067,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(uint) _collarColor;
+	private Changed!(uint) _collarColor = tuple(cast(uint)14, false);
 
 	public pure nothrow @property @safe @nogc uint collarColor() {
 		return _collarColor.value;
@@ -1173,7 +1174,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(uint) _creeperState;
+	private Changed!(uint) _creeperState = tuple(cast(uint)-1, false);
 
 	public pure nothrow @property @safe @nogc uint creeperState() {
 		return _creeperState.value;
@@ -1389,7 +1390,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(uint) _slimeSize;
+	private Changed!(uint) _slimeSize = tuple(cast(uint)1, false);
 
 	public pure nothrow @property @safe @nogc uint slimeSize() {
 		return _slimeSize.value;
@@ -1425,7 +1426,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(float) _shakingMultiplier;
+	private Changed!(float) _shakingMultiplier = tuple(cast(float)0, false);
 
 	public pure nothrow @property @safe @nogc float shakingMultiplier() {
 		return _shakingMultiplier.value;
@@ -1449,7 +1450,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(uint) _minecartBlockPosition;
+	private Changed!(uint) _minecartBlockPosition = tuple(cast(uint)6, false);
 
 	public pure nothrow @property @safe @nogc uint minecartBlockPosition() {
 		return _minecartBlockPosition.value;
@@ -1523,6 +1524,101 @@ class Metadata {
 
 	public pure nothrow @safe encode(Buffer buffer) {
 		with(buffer) {
+			{ writeBigEndianByte(entityFlags); }
+			if(this._air.changed){ writeBytes(varuint.encode(air)); }
+			if(this._nametag.changed){ writeBytes(varuint.encode(cast(uint)nametag.length)); writeString(nametag); }
+			if(this._showNametag.changed){ writeBigEndianBool(showNametag); }
+			if(this._silent.changed){ writeBigEndianBool(silent); }
+			if(this._noGravity.changed){ writeBigEndianBool(noGravity); }
+			if(this._potion.changed){ potion.encode(bufferInstance); }
+			if(this._spawnPosition.changed){ writeBigEndianUlong(spawnPosition); }
+			if(this._radius.changed){ writeBigEndianFloat(radius); }
+			if(this._color.changed){ writeBytes(varuint.encode(color)); }
+			if(this._isSinglePoint.changed){ writeBigEndianBool(isSinglePoint); }
+			if(this._particleId.changed){ writeBytes(varuint.encode(particleId)); }
+			if(this._particleParameter1.changed){ writeBytes(varuint.encode(particleParameter1)); }
+			if(this._particleParameter2.changed){ writeBytes(varuint.encode(particleParameter2)); }
+			if(this._hookedEntity.changed){ writeBytes(varuint.encode(hookedEntity)); }
+			if(this._arrowFlags.changed){ writeBigEndianByte(arrowFlags); }
+			if(this._timeSinceLastHit.changed){ writeBytes(varuint.encode(timeSinceLastHit)); }
+			if(this._forwardDirection.changed){ writeBytes(varuint.encode(forwardDirection)); }
+			if(this._damageTaken.changed){ writeBigEndianFloat(damageTaken); }
+			if(this._boatVariant.changed){ writeBytes(varuint.encode(boatVariant)); }
+			if(this._rightPaddleTurning.changed){ writeBigEndianBool(rightPaddleTurning); }
+			if(this._leftPaddleTurning.changed){ writeBigEndianBool(leftPaddleTurning); }
+			if(this._beamTarget.changed){ beamTarget.encode(bufferInstance); }
+			if(this._showBottom.changed){ writeBigEndianBool(showBottom); }
+			if(this._firework.changed){ firework.encode(bufferInstance); }
+			if(this._item.changed){ item.encode(bufferInstance); }
+			if(this._rotation.changed){ writeBytes(varuint.encode(rotation)); }
+			if(this._livingFlags.changed){ writeBigEndianByte(livingFlags); }
+			if(this._health.changed){ writeBigEndianFloat(health); }
+			if(this._potionColor.changed){ writeBytes(varuint.encode(potionColor)); }
+			if(this._potionAmbient.changed){ writeBigEndianBool(potionAmbient); }
+			if(this._arrows.changed){ writeBytes(varuint.encode(arrows)); }
+			if(this._additionalHearts.changed){ writeBigEndianFloat(additionalHearts); }
+			if(this._score.changed){ writeBytes(varuint.encode(score)); }
+			if(this._skinParts.changed){ writeBigEndianByte(skinParts); }
+			if(this._mainHand.changed){ writeBigEndianByte(mainHand); }
+			if(this._armorStandFlags.changed){ writeBigEndianByte(armorStandFlags); }
+			if(this._headRotation.changed){ writeBigEndianFloat(headRotation.x); writeBigEndianFloat(headRotation.y); writeBigEndianFloat(headRotation.z); }
+			if(this._bodyRotation.changed){ writeBigEndianFloat(bodyRotation.x); writeBigEndianFloat(bodyRotation.y); writeBigEndianFloat(bodyRotation.z); }
+			if(this._leftArmRotation.changed){ writeBigEndianFloat(leftArmRotation.x); writeBigEndianFloat(leftArmRotation.y); writeBigEndianFloat(leftArmRotation.z); }
+			if(this._rightArmRotation.changed){ writeBigEndianFloat(rightArmRotation.x); writeBigEndianFloat(rightArmRotation.y); writeBigEndianFloat(rightArmRotation.z); }
+			if(this._leftLegRotation.changed){ writeBigEndianFloat(leftLegRotation.x); writeBigEndianFloat(leftLegRotation.y); writeBigEndianFloat(leftLegRotation.z); }
+			if(this._rightLegRotation.changed){ writeBigEndianFloat(rightLegRotation.x); writeBigEndianFloat(rightLegRotation.y); writeBigEndianFloat(rightLegRotation.z); }
+			if(this._instentientFlags.changed){ writeBigEndianByte(instentientFlags); }
+			if(this._hanging.changed){ writeBigEndianByte(hanging); }
+			if(this._baby.changed){ writeBigEndianBool(baby); }
+			if(this._horseFlags.changed){ writeBigEndianByte(horseFlags); }
+			if(this._horseVariant.changed){ writeBytes(varuint.encode(horseVariant)); }
+			if(this._ownerUuid.changed){ writeBytes(varuint.encode(ownerUuid)); }
+			if(this._horseArmor.changed){ writeBytes(varuint.encode(horseArmor)); }
+			if(this._pigSaddled.changed){ writeBigEndianBool(pigSaddled); }
+			if(this._rabbitVariant.changed){ writeBytes(varuint.encode(rabbitVariant)); }
+			if(this._standingUp.changed){ writeBigEndianBool(standingUp); }
+			if(this._sheepFlagsAndColor.changed){ writeBigEndianByte(sheepFlagsAndColor); }
+			if(this._tameableFlags.changed){ writeBigEndianByte(tameableFlags); }
+			if(this._ocelotVariant.changed){ writeBytes(varuint.encode(ocelotVariant)); }
+			if(this._wolfHealth.changed){ writeBigEndianFloat(wolfHealth); }
+			if(this._begging.changed){ writeBigEndianBool(begging); }
+			if(this._collarColor.changed){ writeBytes(varuint.encode(collarColor)); }
+			if(this._profession.changed){ writeBytes(varuint.encode(profession)); }
+			if(this._createdByPlayer.changed){ writeBigEndianByte(createdByPlayer); }
+			if(this._snowmanFlags.changed){ writeBigEndianByte(snowmanFlags); }
+			if(this._shulkerDirection.changed){ writeBytes(varuint.encode(shulkerDirection)); }
+			if(this._shulkerAttachment.changed){ shulkerAttachment.encode(bufferInstance); }
+			if(this._shulkerShieldHeight.changed){ writeBigEndianByte(shulkerShieldHeight); }
+			if(this._blazeOnFire.changed){ writeBigEndianByte(blazeOnFire); }
+			if(this._creeperState.changed){ writeBytes(varuint.encode(creeperState)); }
+			if(this._charged.changed){ writeBigEndianBool(charged); }
+			if(this._ignited.changed){ writeBigEndianBool(ignited); }
+			if(this._rectractingSpikes.changed){ writeBigEndianBool(rectractingSpikes); }
+			if(this._guardianTarget.changed){ writeBytes(varuint.encode(guardianTarget)); }
+			if(this._swingingArms.changed){ writeBigEndianBool(swingingArms); }
+			if(this._climbing.changed){ writeBigEndianByte(climbing); }
+			if(this._centerHeadTarget.changed){ writeBytes(varuint.encode(centerHeadTarget)); }
+			if(this._leftHeadTarget.changed){ writeBytes(varuint.encode(leftHeadTarget)); }
+			if(this._rightHeadTarget.changed){ writeBytes(varuint.encode(rightHeadTarget)); }
+			if(this._invulnerableTime.changed){ writeBytes(varuint.encode(invulnerableTime)); }
+			if(this._handsHeldUp.changed){ writeBigEndianBool(handsHeldUp); }
+			if(this._converting.changed){ writeBigEndianBool(converting); }
+			if(this._zombieVillagerProfession.changed){ writeBytes(varuint.encode(zombieVillagerProfession)); }
+			if(this._carriedBlock.changed){ writeBytes(varuint.encode(carriedBlock)); }
+			if(this._screaming.changed){ writeBigEndianBool(screaming); }
+			if(this._dragonPhase.changed){ writeBytes(varuint.encode(dragonPhase)); }
+			if(this._ghastAttacking.changed){ writeBigEndianBool(ghastAttacking); }
+			if(this._slimeSize.changed){ writeBytes(varuint.encode(slimeSize)); }
+			if(this._shakingPower.changed){ writeBytes(varuint.encode(shakingPower)); }
+			if(this._shakingDirection.changed){ writeBytes(varuint.encode(shakingDirection)); }
+			if(this._shakingMultiplier.changed){ writeBigEndianFloat(shakingMultiplier); }
+			if(this._minecartBlock.changed){ writeBytes(varuint.encode(minecartBlock)); }
+			if(this._minecartBlockPosition.changed){ writeBytes(varuint.encode(minecartBlockPosition)); }
+			if(this._minecartCustomBlock.changed){ writeBigEndianBool(minecartCustomBlock); }
+			if(this._furnacePowered.changed){ writeBigEndianBool(furnacePowered); }
+			if(this._command.changed){ writeBytes(varuint.encode(cast(uint)command.length)); writeString(command); }
+			if(this._lastOutput.changed){ writeBytes(varuint.encode(cast(uint)lastOutput.length)); writeString(lastOutput); }
+			if(this._fuseTime.changed){ writeBytes(varuint.encode(fuseTime)); }
 			writeBigEndianUbyte(255);
 		}
 	}

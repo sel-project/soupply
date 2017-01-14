@@ -279,3 +279,49 @@ struct ListUpdateDisplayName {
 	}
 
 }
+
+struct OptionalPosition {
+
+	public enum string[] FIELDS = ["hasPosition", "position"];
+
+	public bool hasPosition;
+	public ulong position;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianBool(hasPosition);
+			if(hasPosition==true){ writeBigEndianUlong(position); }
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			hasPosition=readBigEndianBool();
+			if(hasPosition==true){ position=readBigEndianUlong(); }
+		}
+	}
+
+}
+
+struct OptionalUuid {
+
+	public enum string[] FIELDS = ["hasUuid", "uuid"];
+
+	public bool hasUuid;
+	public UUID uuid;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianBool(hasUuid);
+			writeBytes(uuid.data);
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			hasUuid=readBigEndianBool();
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		}
+	}
+
+}

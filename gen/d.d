@@ -487,8 +487,8 @@ alias varulong = var!ulong;
 		auto m = game in metadatas;
 		if(m) {
 			string data = "module sul.metadata." ~ game ~ ";\n\n";
-			data ~= "import std.typecons : Tuple;\n\n";
-			data ~= "import sul.utils.buffer : Buffer;\n\n";
+			data ~= "import std.typecons : Tuple, tuple;\n\n";
+			data ~= "import sul.utils.buffer : Buffer;\nimport sul.utils.var;\n\n";
 			data ~= "static import sul.protocol." ~ game ~ ".types;\n\n";
 			data ~= "alias Changed(T) = Tuple!(T, \"value\", bool, \"changed\");\n\n";
 			data ~= "class Metadata {\n\n";
@@ -499,7 +499,7 @@ alias varulong = var!ulong;
 			foreach(d ; m.data.data) {
 				immutable name = convertName(d.name);
 				immutable tp = convertType(ctable[d.type]);
-				data ~= "\tprivate Changed!(" ~ tp ~ ") _" ~ name ~ ";\n\n";
+				data ~= "\tprivate Changed!(" ~ tp ~ ") _" ~ name ~ (d.def.length ? " = tuple(cast(" ~ tp ~ ")" ~ d.def ~ ", false)" : "") ~ ";\n\n";
 				data ~= "\tpublic pure nothrow @property @safe @nogc " ~ tp ~ " " ~ name ~ "() {\n\t\treturn _" ~ name ~ ".value;\n\t}\n\n";
 				data ~= "\tpublic pure nothrow @property @safe @nogc " ~ tp ~ " " ~ name ~ "(" ~ tp ~ " value) {\n";
 				data ~= "\t\t_" ~ name ~ ".changed = true;\n";
@@ -522,7 +522,18 @@ alias varulong = var!ulong;
 			data ~= "\tpublic pure nothrow @safe encode(Buffer buffer) {\n";
 			data ~= "\t\twith(buffer) {\n";
 			if(m.data.prefix.length) data ~= "\t\t\t" ~ createEncoding("ubyte", m.data.prefix) ~ "\n";
-
+			if(m.data.length.length) data ~= "\t\t\timmutable _length = _buffer.length;\n\t\t\t" ~ convertType(m.data.length) ~ " _count;\n";
+			foreach(d ; m.data.data) {
+				immutable name = convertName(d.name);
+				data ~= "\t\t\t" ~ (d.required ? "" : "if(this._" ~ name ~ ".changed)") ~ "{ " ~ createEncoding(ctable[d.type], name) ~ (m.data.length.length ? " _count++;" : "") ~ " }\n";
+			}
+			if(m.data.length.length) {
+				if(m.data.length.startsWith("var")) {
+					data ~= "\t\t\t_buffer = _buffer[0.._length] ~ " ~ m.data.length ~ ".encode(_count) ~ _buffer[_length..$];\n";
+				} else {
+					//TODO
+				}
+			}
 			if(m.data.suffix.length) data ~= "\t\t\t" ~ createEncoding("ubyte", m.data.suffix) ~ "\n";
 			data ~= "\t\t}\n";
 			data ~= "\t}\n\n";

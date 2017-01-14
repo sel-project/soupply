@@ -187,6 +187,29 @@
 					"type": "string",
 					"when": "has_display_name==true"
 				}
+			],
+
+			"optional_position": [
+				{
+					"name": "has_position",
+					"type": "bool"
+				},
+				{
+					"name": "position",
+					"type": "ulong",
+					"when": "has_position==true"
+				}
+			],
+
+			"optional_uuid": [
+				{
+					"name": "has_uuid",
+					"type": "bool"
+				},
+				{
+					"name": "uuid",
+					"type": "uuid"
+				}
 			]
 
 		},

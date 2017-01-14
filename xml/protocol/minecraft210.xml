@@ -106,6 +106,16 @@
 			<field name="display-name" type="string" when="has-display-name==true" />
 		</type>
 
+		<type name="optional-position">
+			<field name="has-position" type="bool" />
+			<field name="position" type="block-position" when="has-position==true" />
+		</type>
+
+		<type name="optional-uuid">
+			<field name="has-uuid" type="bool" />
+			<field name="uuid" type="uuid" />
+		</type>
+
 	</encoding>
 
 	<packets>
