@@ -4616,7 +4616,7 @@ class PlayerListHeaderAndFooter : Buffer {
 
 class CollectItem : Buffer {
 
-	public enum uint ID = 71;
+	public enum uint ID = 72;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -4658,7 +4658,7 @@ class CollectItem : Buffer {
 
 class EntityTeleport : Buffer {
 
-	public enum uint ID = 71;
+	public enum uint ID = 73;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -4712,7 +4712,7 @@ class EntityTeleport : Buffer {
 
 class EntityProperties : Buffer {
 
-	public enum uint ID = 71;
+	public enum uint ID = 74;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -4720,11 +4720,11 @@ class EntityProperties : Buffer {
 	public enum string[] FIELDS = ["entityId", "attributes"];
 
 	public uint entityId;
-	public sul.protocol.minecraft210.types.Property[] attributes;
+	public sul.protocol.minecraft210.types.Attribute[] attributes;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint entityId, sul.protocol.minecraft210.types.Property[] attributes=(sul.protocol.minecraft210.types.Property[]).init) {
+	public pure nothrow @safe @nogc this(uint entityId, sul.protocol.minecraft210.types.Attribute[] attributes=(sul.protocol.minecraft210.types.Attribute[]).init) {
 		this.entityId = entityId;
 		this.attributes = attributes;
 	}
@@ -4754,7 +4754,7 @@ class EntityProperties : Buffer {
 
 class EntityEffect : Buffer {
 
-	public enum uint ID = 71;
+	public enum uint ID = 75;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;

@@ -120,7 +120,7 @@
 			<field name="modifiers" type="modifier[]" />
 		</type>
 
-		<array name="attributes" base="property" length="uint" />
+		<array name="attributes" base="attribute" length="uint" />
 
 		<type name="optional-position">
 			<field name="has-position" type="bool" />
@@ -1096,12 +1096,12 @@
 				<field name="footer" type="string" />
 			</packet>
 
-			<packet name="collect-item" id="72" id="71" clientbound="true" serverbound="false">
+			<packet name="collect-item" id="72" clientbound="true" serverbound="false">
 				<field name="collected" type="entity-id" />
 				<field name="collector" type="entity-id" />
 			</packet>
 
-			<packet name="entity-teleport" id="73" id="71" clientbound="true" serverbound="false">
+			<packet name="entity-teleport" id="73" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="position" type="double<xyz>" />
 				<field name="yaw" type="angle" />
@@ -1109,12 +1109,12 @@
 				<field name="on-ground" type="bool" />
 			</packet>
 
-			<packet name="entity-properties" id="74" id="71" clientbound="true" serverbound="false">
+			<packet name="entity-properties" id="74" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="attributes" type="attributes" />
 			</packet>
 
-			<packet name="entity-effect" id="75" id="71" clientbound="true" serverbound="false">
+			<packet name="entity-effect" id="75" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="effect-id" type="ubyte" />
 				<field name="amplifier" type="ubyte" />

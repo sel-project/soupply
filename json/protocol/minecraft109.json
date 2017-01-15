@@ -249,7 +249,7 @@
 		"arrays": {
 
 			"attributes": {
-				"base": "property",
+				"base": "attribute",
 				"length": "uint"
 			},
 

@@ -468,6 +468,10 @@
 									"type": "varlong"
 								},
 								{
+									"name": "edu",
+									"type": "bool"
+								},
+								{
 									"name": "packet_loss",
 									"type": "float"
 								}

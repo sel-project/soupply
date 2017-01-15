@@ -257,6 +257,7 @@
 				<variants field="game">
 					<variant name="pocket" value="1">
 						<field name="xuid" type="varlong" />
+						<field name="edu" type="bool" />
 						<field name="packet-loss" type="float" />
 					</variant>
 					<variant name="minecraft" value="2">

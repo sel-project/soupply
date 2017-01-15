@@ -249,7 +249,7 @@
 		"arrays": {
 
 			"attributes": {
-				"base": "property",
+				"base": "attribute",
 				"length": "uint"
 			},
 
@@ -1210,8 +1210,8 @@
 						"type": "varuint"
 					},
 					{
-						"name": "properties",
-						"type": "properties"
+						"name": "attributes",
+						"type": "attributes"
 					}
 				]
 			},

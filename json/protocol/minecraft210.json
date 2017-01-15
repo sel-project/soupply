@@ -249,7 +249,7 @@
 		"arrays": {
 
 			"attributes": {
-				"base": "property",
+				"base": "attribute",
 				"length": "uint"
 			},
 
@@ -2627,7 +2627,7 @@
 			},
 
 			"collect_item": {
-				"id": 71,
+				"id": 72,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -2643,7 +2643,7 @@
 			},
 
 			"entity_teleport": {
-				"id": 71,
+				"id": 73,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -2671,7 +2671,7 @@
 			},
 
 			"entity_properties": {
-				"id": 71,
+				"id": 74,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -2687,7 +2687,7 @@
 			},
 
 			"entity_effect": {
-				"id": 71,
+				"id": 75,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [

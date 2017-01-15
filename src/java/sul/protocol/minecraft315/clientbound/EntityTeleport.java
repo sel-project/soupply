@@ -15,7 +15,7 @@ import sul.utils.*;
 
 class EntityTeleport extends Packet {
 
-	public final static int ID = (int)71;
+	public final static int ID = (int)73;
 
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;

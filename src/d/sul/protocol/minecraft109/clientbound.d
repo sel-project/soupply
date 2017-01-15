@@ -4752,11 +4752,11 @@ class EntityProperties : Buffer {
 	public enum string[] FIELDS = ["entityId", "attributes"];
 
 	public uint entityId;
-	public sul.protocol.minecraft109.types.Property[] attributes;
+	public sul.protocol.minecraft109.types.Attribute[] attributes;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint entityId, sul.protocol.minecraft109.types.Property[] attributes=(sul.protocol.minecraft109.types.Property[]).init) {
+	public pure nothrow @safe @nogc this(uint entityId, sul.protocol.minecraft109.types.Attribute[] attributes=(sul.protocol.minecraft109.types.Attribute[]).init) {
 		this.entityId = entityId;
 		this.attributes = attributes;
 	}

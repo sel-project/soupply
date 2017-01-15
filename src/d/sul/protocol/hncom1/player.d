@@ -113,15 +113,17 @@ class Add : Buffer {
 
 		public enum typeof(game) GAME = 1;
 
-		public enum string[] FIELDS = ["xuid", "packetLoss"];
+		public enum string[] FIELDS = ["xuid", "edu", "packetLoss"];
 
 		public long xuid;
+		public bool edu;
 		public float packetLoss;
 
 		public pure nothrow @safe @nogc this() {}
 
-		public pure nothrow @safe @nogc this(long xuid, float packetLoss=float.init) {
+		public pure nothrow @safe @nogc this(long xuid, bool edu=bool.init, float packetLoss=float.init) {
 			this.xuid = xuid;
+			this.edu = edu;
 			this.packetLoss = packetLoss;
 		}
 
@@ -129,12 +131,14 @@ class Add : Buffer {
 			game = 1;
 			_encode!writeId();
 			writeBytes(varlong.encode(xuid));
+			writeBigEndianBool(edu);
 			writeBigEndianFloat(packetLoss);
 			return _buffer;
 		}
 
 		public pure nothrow @safe void decode() {
 			xuid=varlong.decode(_buffer, &_index);
+			edu=readBigEndianBool();
 			packetLoss=readBigEndianFloat();
 		}
 
