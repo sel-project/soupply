@@ -26,13 +26,12 @@ struct Game {
 	public enum string[] FIELDS = ["type", "protocols"];
 
 	/**
-	 * Type of the game. Minecraft indicates the java version of the game and pocket indicates
-	 * the versions running on Android, iOS, Windows Phone and Windows 10.
+	 * Variant of the game.
 	 */
 	public ubyte type;
 
 	/**
-	 * List of protocols accepted by the servers for the indicated game.
+	 * List of protocols supported by the server for the indicated game.
 	 */
 	public uint[] protocols;
 
@@ -53,21 +52,23 @@ struct Game {
 }
 
 /**
- * Resource usage of a node.
+ * Resources usage of a node.
  */
 struct NodeStats {
 
 	public enum string[] FIELDS = ["name", "tps", "ram", "cpu"];
 
 	/**
-	 * Name of the node. Should match a name given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes)
+	 * Name of the node. Should match one of the names given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes)
 	 * or one added using the UpdateNodes packet.
+	 * If the server isn't built on the hub-node layout the name is an empty string and
+	 * the following values are for the whole server and not for a node.
 	 */
 	public string name;
 
 	/**
-	 * Ticks per second of the node in range 0..20. If the value is less than 20, the server
-	 * is lagging.
+	 * Ticks per second of the node in range 0 to 20. If the value is less than 20, the
+	 * server is lagging.
 	 */
 	public float tps;
 

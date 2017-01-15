@@ -78,7 +78,7 @@
 					},
 					{
 						"name": "payload",
-						"type": "ubyte[16]",
+						"type": "ubyte[]",
 						"when": "hash==true"
 					}
 				]

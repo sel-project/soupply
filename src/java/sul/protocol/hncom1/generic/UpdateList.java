@@ -61,7 +61,7 @@ class UpdateList extends Packet {
 
 	}
 
-	public static class BySuuid extends UpdateList {
+	public static class ByUuid extends UpdateList {
 
 	}
 

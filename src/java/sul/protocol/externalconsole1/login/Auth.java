@@ -14,7 +14,8 @@ import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
 /**
- * Performs authentication following the directives given by the AuthCredentials packet.
+ * Performs authentication following the instruncions given by the AuthCredentials
+ * packet.
  */
 class Auth extends Packet {
 
@@ -25,11 +26,11 @@ class Auth extends Packet {
 
 	/**
 	 * Pasword encoded as UTF-8 if AuthCredentials.hash is `false` or the hash (specified
-	 * in AuthCredentials.hashAlgorithm) of the password encoded as UTF-8 and the bytes
-	 * from AuthCredentials.payload if `true`.
+	 * in AuthCredentials.hashAlgorithm) of the password encoded as UTF-8 concatenated
+	 * with the bytes from AuthCredentials.payload if `true`.
 	 * The hash can be done with a function (if hashAlgorithm is `sha1`) in D:
 	 * ```d
-	 * sha1Of(cast(ubyte[])authCredentials.payload ~ password);
+	 * sha1Of(cast(ubyte[])password ~ authCredentials.payload);
 	 * ```
 	 * Or using `MessageDigest` in Java:
 	 * ```java

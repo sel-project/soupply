@@ -25,21 +25,16 @@ class Add extends Packet {
 	public static immutable byte TRANSFERRED = 1;
 	public static immutable byte FORCIBLY_TRANSFERRED = 2;
 
-	// game
-	public static immutable byte POCKET = 1;
-	public static immutable byte MINECRAFT = 2;
-
 	public int hubId;
 	public byte reason;
+	public byte game;
 	public int protocol;
 	public String username;
 	public String displayName;
 	public Address address;
-	public byte game;
 	public UUID uuid;
 	public Skin skin;
 	public int latency;
-	public float packetLoss;
 	public String language;
 
 	@Override
@@ -53,15 +48,14 @@ class Add extends Packet {
 		this.writeByteB(ID);
 		this.writeVaruint(hubId);
 		this.writeByteB(reason);
+		this.writeByteB(game);
 		this.writeVaruint(protocol);
 		byte[] dxnlcm5hbwu=username.getBytes("UTF-8"); this.writeVaruint((int)dxnlcm5hbwu.length); this.writeBytes(dxnlcm5hbwu);
 		byte[] zglzcgxheu5hbwu=displayName.getBytes("UTF-8"); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
 		this.writeBytes(address.encode());
-		this.writeByteB(game);
 		this.writeLongB(uuid.getLeastSignificantBits()); this.writeLongB(uuid.getMostSignificantBits());
 		this.writeBytes(skin.encode());
 		this.writeVaruint(latency);
-		this.writeFloatB(packetLoss);
 		byte[] bgfuz3vhz2u=language.getBytes("UTF-8"); this.writeVaruint((int)bgfuz3vhz2u.length); this.writeBytes(bgfuz3vhz2u);
 		return this.buffer;
 	}
@@ -70,6 +64,14 @@ class Add extends Packet {
 	public void decode(byte[] buffer) {
 		this.buffer = buffer;
 		this.index = 0;
+	}
+
+	public static class Pocket extends Add {
+
+	}
+
+	public static class Minecraft extends Add {
+
 	}
 
 }

@@ -6,7 +6,7 @@
 
 	<protocol>1</protocol>
 
-	<!--<released>2017/1/15</released>-->
+	<released>2017/1/15</released>
 
 	<from>1.0.0</from>
 
@@ -220,7 +220,7 @@
 					<variant name="by-name" value="1">
 						<field name="username" type="string" />
 					</variant>
-					<variant name="by-suuid" value="2">
+					<variant name="by-uuid" value="2">
 						<field name="game" type="ubyte">
 							<constant name="pocket" value="1" />
 							<constant name="minecraft" value="2" />
@@ -245,19 +245,24 @@
 					<constant name="transferred" value="1" />
 					<constant name="forcibly-transferred" value="2" />
 				</field>
+				<field name="game" type="ubyte" />
 				<field name="protocol" type="varuint" />
 				<field name="username" type="string" />
 				<field name="display-name" type="string" />
 				<field name="address" type="address" />
-				<field name="game" type="ubyte">
-					<constant name="pocket" value="1" />
-					<constant name="minecraft" value="2" />
-				</field>
 				<field name="uuid" type="uuid" />
 				<field name="skin" type="skin" />
 				<field name="latency" type="varuint" />
-				<field name="packet-loss" type="float" />
 				<field name="language" type="string" />
+				<variants field="game">
+					<variant name="pocket" value="1">
+						<field name="xuid" type="varlong" />
+						<field name="packet-loss" type="float" />
+					</variant>
+					<variant name="minecraft" value="2">
+
+					</variant>
+				</variants>
 			</packet>
 
 			<packet name="remove" id="12" clientbound="true" serverbound="false">

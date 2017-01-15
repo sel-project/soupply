@@ -167,7 +167,7 @@ class UpdateList : Buffer {
 
 	enum string variantField = "type";
 
-	alias Variants = TypeTuple!(ByHubId, ByName, BySuuid);
+	alias Variants = TypeTuple!(ByHubId, ByName, ByUuid);
 
 	public class ByHubId {
 
@@ -223,7 +223,7 @@ class UpdateList : Buffer {
 
 	}
 
-	public class BySuuid {
+	public class ByUuid {
 
 		public enum typeof(type) TYPE = 2;
 

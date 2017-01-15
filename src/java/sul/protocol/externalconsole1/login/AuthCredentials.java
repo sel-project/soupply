@@ -14,8 +14,8 @@ import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
 /**
- * First packet sent by the server after the connection has been successfully established.
- * It contains informations about how the client should authenticate.
+ * First packet sent by the server when the connection is successfully established.
+ * It contains informations about how the external console shall authenticate itself.
  */
 class AuthCredentials extends Packet {
 
@@ -31,23 +31,23 @@ class AuthCredentials extends Packet {
 	public byte protocol;
 
 	/**
-	 * Whether to perform hashing on the password.
+	 * Whether to perform hashing on the password or not.
 	 */
 	public boolean hash;
 
 	/**
-	 * Algorithm used by the server to hash the concatenation of password and payload.
-	 * The value should be sent in lowercase without any separation symbol (for example
+	 * Algorithm used by the server to hash the concatenation of the password and the payload.
+	 * The value should be sent in lower case without any separation symbol (for example
 	 * `md5` instead of `MD5`, `sha256` instead of `SHA-256`).
 	 * See Auth.hash for more details.
 	 */
 	public String hashAlgorithm;
 
 	/**
-	 * Payload to cancatenate with the password encoded as UTF-8 before hashing it, as
-	 * described in the Auth.hash's field description.
+	 * Payload to cancatenate to the password before hashing it, as described in the Auth.hash's
+	 * field description.
 	 */
-	public byte[16] payload;
+	public byte[] payload;
 
 	@Override
 	public int length() {
@@ -61,7 +61,7 @@ class AuthCredentials extends Packet {
 		this.writeByteB(protocol);
 		this.writeBoolB(hash);
 		if(hash==true){ byte[] agfzaefsz29yaxro=hashAlgorithm.getBytes("UTF-8"); this.writeShortB((short)agfzaefsz29yaxro.length); this.writeBytes(agfzaefsz29yaxro); }
-		if(hash==true){ for(ubyte cgf5bg9hza:payload){ this.writeByteB(cgf5bg9hza); } }
+		if(hash==true){ this.writeShortB((short)payload.length); for(ubyte cgf5bg9hza:payload){ this.writeByteB(cgf5bg9hza); } }
 		return this.buffer;
 	}
 

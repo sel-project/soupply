@@ -15,9 +15,9 @@ import sul.utils.*;
 
 /**
  * Keeps the connection alive and/or calculates the latency. This packet should be
- * sent at least every 5 seconds to avoid the disconnection by timeout and update the
- * latency. The client can send this packet whenever he wants and the server must reply
- * with the same packet with the same field's value.
+ * sent at least every 5 seconds to avoid the disconnection caused by timeout and update
+ * the latency. The external console can send this packet whenever it wants it and
+ * the server must reply with the same packet with the same field's value.
  */
 class KeepAlive extends Packet {
 
@@ -27,7 +27,7 @@ class KeepAlive extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	/**
-	 * An identifier chosen by the client to calculate the latency.
+	 * An identifier chosen by the external console to uniquely identify the packet.
 	 */
 	public int count;
 

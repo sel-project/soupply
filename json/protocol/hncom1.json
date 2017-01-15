@@ -370,7 +370,7 @@
 								}
 							]
 						},
-						"by_suuid": {
+						"by_uuid": {
 							"value": 2,
 							"fields": [
 								{
@@ -421,6 +421,10 @@
 						}
 					},
 					{
+						"name": "game",
+						"type": "ubyte"
+					},
+					{
 						"name": "protocol",
 						"type": "varuint"
 					},
@@ -437,14 +441,6 @@
 						"type": "address"
 					},
 					{
-						"name": "game",
-						"type": "ubyte",
-						"constants": {
-							"pocket": 1,
-							"minecraft": 2
-						}
-					},
-					{
 						"name": "uuid",
 						"type": "uuid"
 					},
@@ -457,14 +453,32 @@
 						"type": "varuint"
 					},
 					{
-						"name": "packet_loss",
-						"type": "float"
-					},
-					{
 						"name": "language",
 						"type": "string"
 					}
-				]
+				],
+				"variants": {
+					"field": "game",
+					"values": {
+						"pocket": {
+							"value": 1,
+							"fields": [
+								{
+									"name": "xuid",
+									"type": "varlong"
+								},
+								{
+									"name": "packet_loss",
+									"type": "float"
+								}
+							]
+						},
+						"minecraft": {
+							"value": 2,
+							"fields": []
+						}
+					}
+				}
 			},
 
 			"remove": {

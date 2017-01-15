@@ -13,19 +13,21 @@ import java.util.UUID;
 import sul.utils.*;
 
 /**
- * Resource usage of a node.
+ * Resources usage of a node.
  */
 final class NodeStats {
 
 	/**
-	 * Name of the node. Should match a name given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes)
+	 * Name of the node. Should match one of the names given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes)
 	 * or one added using the UpdateNodes packet.
+	 * If the server isn't built on the hub-node layout the name is an empty string and
+	 * the following values are for the whole server and not for a node.
 	 */
 	public String name;
 
 	/**
-	 * Ticks per second of the node in range 0..20. If the value is less than 20, the server
-	 * is lagging.
+	 * Ticks per second of the node in range 0 to 20. If the value is less than 20, the
+	 * server is lagging.
 	 */
 	public float tps;
 

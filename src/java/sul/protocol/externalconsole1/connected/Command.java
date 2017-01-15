@@ -15,8 +15,8 @@ import sul.utils.*;
 
 /**
  * Executes a command remotely if the server allows it. If not a Permission Denied
- * is sent back. The ideal client should never send this packet if remoteCommands field
- * in Welcome.Accepted is not true.
+ * is sent back. A good implementation of the external console client should never
+ * send this packet if remoteCommands field in Welcome.Accepted is not true.
  */
 class Command extends Packet {
 
@@ -26,9 +26,7 @@ class Command extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	/**
-	 * Command to execute on the server. On servers that based on the hub-node layout it
-	 * should start with a slash or a point (hub command) or a node name followed by the
-	 * command (node command).
+	 * Command to execute on the server.
 	 */
 	public String command;
 

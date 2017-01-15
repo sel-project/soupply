@@ -15,7 +15,7 @@ import sul.utils.*;
 
 /**
  * Requests an UpdateStats packet to the server, which should sent it immediately instead
- * of waiting for the next automatic update.
+ * of waiting for the next automatic update (if the server does one).
  */
 class RequestStats extends Packet {
 

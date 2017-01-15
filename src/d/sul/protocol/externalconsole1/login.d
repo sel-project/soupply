@@ -7,7 +7,8 @@
  * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/protocol/externalconsole1.xml
  */
 /**
- * Packets used during the authentication process.
+ * Packets used during the authentication process and to exhange the initial server's
+ * informations.
  */
 module sul.protocol.externalconsole1.login;
 
@@ -26,8 +27,8 @@ static import sul.protocol.externalconsole1.types;
 alias Packets = TypeTuple!(AuthCredentials, Auth, Welcome);
 
 /**
- * First packet sent by the server after the connection has been successfully established.
- * It contains informations about how the client should authenticate.
+ * First packet sent by the server when the connection is successfully established.
+ * It contains informations about how the external console shall authenticate itself.
  */
 class AuthCredentials : Buffer {
 
@@ -45,27 +46,27 @@ class AuthCredentials : Buffer {
 	public ubyte protocol;
 
 	/**
-	 * Whether to perform hashing on the password.
+	 * Whether to perform hashing on the password or not.
 	 */
 	public bool hash;
 
 	/**
-	 * Algorithm used by the server to hash the concatenation of password and payload.
-	 * The value should be sent in lowercase without any separation symbol (for example
+	 * Algorithm used by the server to hash the concatenation of the password and the payload.
+	 * The value should be sent in lower case without any separation symbol (for example
 	 * `md5` instead of `MD5`, `sha256` instead of `SHA-256`).
 	 * See Auth.hash for more details.
 	 */
 	public string hashAlgorithm;
 
 	/**
-	 * Payload to cancatenate with the password encoded as UTF-8 before hashing it, as
-	 * described in the Auth.hash's field description.
+	 * Payload to cancatenate to the password before hashing it, as described in the Auth.hash's
+	 * field description.
 	 */
-	public ubyte[16] payload;
+	public ubyte[] payload;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(ubyte protocol, bool hash=bool.init, string hashAlgorithm=string.init, ubyte[16] payload=(ubyte[16]).init) {
+	public pure nothrow @safe @nogc this(ubyte protocol, bool hash=bool.init, string hashAlgorithm=string.init, ubyte[] payload=(ubyte[]).init) {
 		this.protocol = protocol;
 		this.hash = hash;
 		this.hashAlgorithm = hashAlgorithm;
@@ -78,7 +79,7 @@ class AuthCredentials : Buffer {
 		writeBigEndianUbyte(protocol);
 		writeBigEndianBool(hash);
 		if(hash==true){ writeBigEndianUshort(cast(ushort)hashAlgorithm.length); writeString(hashAlgorithm); }
-		if(hash==true){ writeBytes(payload); }
+		if(hash==true){ writeBigEndianUshort(cast(ushort)payload.length); writeBytes(payload); }
 		return _buffer;
 	}
 
@@ -87,7 +88,7 @@ class AuthCredentials : Buffer {
 		protocol=readBigEndianUbyte();
 		hash=readBigEndianBool();
 		if(hash==true){ ushort agfzaefsz29yaxro=readBigEndianUshort(); hashAlgorithm=readString(agfzaefsz29yaxro); }
-		if(hash==true){ if(_buffer.length>=_index+payload.length){ payload=_buffer[_index.._index+payload.length].dup; _index+=payload.length; } }
+		if(hash==true){ payload.length=readBigEndianUshort(); if(_buffer.length>=_index+payload.length){ payload=_buffer[_index.._index+payload.length].dup; _index+=payload.length; } }
 	}
 
 	public static pure nothrow @safe AuthCredentials fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -100,7 +101,8 @@ class AuthCredentials : Buffer {
 }
 
 /**
- * Performs authentication following the directives given by the AuthCredentials packet.
+ * Performs authentication following the instruncions given by the AuthCredentials
+ * packet.
  */
 class Auth : Buffer {
 
@@ -113,11 +115,11 @@ class Auth : Buffer {
 
 	/**
 	 * Pasword encoded as UTF-8 if AuthCredentials.hash is `false` or the hash (specified
-	 * in AuthCredentials.hashAlgorithm) of the password encoded as UTF-8 and the bytes
-	 * from AuthCredentials.payload if `true`.
+	 * in AuthCredentials.hashAlgorithm) of the password encoded as UTF-8 concatenated
+	 * with the bytes from AuthCredentials.payload if `true`.
 	 * The hash can be done with a function (if hashAlgorithm is `sha1`) in D:
 	 * ---
-	 * sha1Of(cast(ubyte[])authCredentials.payload ~ password);
+	 * sha1Of(cast(ubyte[])password ~ authCredentials.payload);
 	 * ---
 	 * Or using `MessageDigest` in Java:
 	 * ---
@@ -202,8 +204,7 @@ class Welcome : Buffer {
 	alias Variants = TypeTuple!(Accepted, WrongHash, TimedOut);
 
 	/**
-	 * Sent when the hash sent in Auth matched the server's and the external console can
-	 * now use the other features available in the protocol.
+	 * Sent when the hash sent in Auth matches the server's.
 	 */
 	public class Accepted {
 
@@ -223,17 +224,18 @@ class Welcome : Buffer {
 		public string software;
 
 		/**
-		 * Versions of the server in 3-btyes array readed as [major, minor, release].
+		 * Versions of the server in a 3-btyes array readed as [major, minor, release].
 		 */
 		public ubyte[3] versions;
 
 		/**
-		 * Name of the server (not the game's MOTD!).
+		 * Name of the server (not the game's MOTD!). It shouldn't contain Minecraft formatting
+		 * codes.
 		 */
 		public string displayName;
 
 		/**
-		 * Informations about the game and protocols supported by the server.
+		 * Informations about the games and their protocols supported by the server.
 		 */
 		public sul.protocol.externalconsole1.types.Game[] games;
 

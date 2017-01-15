@@ -11,7 +11,7 @@
  * Sockets.
  * 
  * <h2>Features</h2>
- * + Organized remote logs
+ * + Organised remote logs
  * + Execution of remote commands (if the server allows it)
  * + Authentication using password hashing (optional)
  * + Server's resources usage
@@ -22,16 +22,37 @@
  * <h3>Using raw TCP sockets</h3>
  * The raw TCP protocol, also referred as "classic", uses a stream-oriented TCP connection.
  * This means that packets are not prefixed with their length and every packet's length
- * is fixed or can be calculated at runtime.
- * The connection starts with a client sending the string `classic` encoded in UTF-8
+ * is fixed or can be retrieved at runtime.
+ * The connection starts with the client sending the string `classic` encoded as UTF-8
  * to the server, which replies with an AuthCredentials packet and waits for the client
  * to authenticate.
  * 
  * <h3>Using Web Sockets</h3>
  * The websocket protocol uses json packets instead of binary ones and encodes the
- * byte arrays into strings using base64.
+ * arrays of bytes (AuthCredentials.payload and Auth.hash) into strings using base64.
  * 
  * <h2>Authenticating</h2>
+ * After receiving the AuthCredentials packet, the external console, if able to perform
+ * authentication, has to send the password or its hash through the Auth packet and
+ * waits for a response, given by the Welcome packet. If the server accepts the external
+ * console the status in the packet will be "accepted", the additional fields of the
+ * Welcome.Accepted packet can be read and the external console can proceed keeping
+ * the connection alive, sending commands, receiving logs and other updates.
+ * 
+ * <h2>Keeping the connection alive</h2>
+ * The server may disconnect the external console after a period of inactivity (which
+ * shouldn't be shorter than 8 seconds). For this reason the external console needs
+ * to send a KeepAlive packet to notify the server that it is still perfectly connected.
+ * 
+ * <h2>Server's logs</h2>
+ * Every time a log is created on the server it sends a ConsoleMessage to the external
+ * console that contains informations about when the log was generated, from whom was
+ * generated and the log itself.
+ * 
+ * <h2>Executing commands</h2>
+ * If the remoteCommand field in the Welcome.Accepted packet is true, the server allows
+ * the execution of commands from the external console. That's done using the Command
+ * packet, which has only one field that is the raw command.
  */
 module sul.protocol.externalconsole1;
 

@@ -6,13 +6,13 @@
 
 	<protocol>1</protocol>
 
-	<!--<released>2017/1/15</released>-->
+	<released>2017/1/15</released>
 
 	<description>
 		Protocol used to communicate with external sources using a raw TCP protocol or [Web Sockets](https://en.wikipedia.org/wiki/WebSocket).
 
 		## Features
-		+ Organized remote logs
+		+ Organised remote logs
 		+ Execution of remote commands (if the server allows it)
 		+ Authentication using password hashing (optional)
 		+ Server's resources usage
@@ -21,13 +21,23 @@
 		## Connecting
 
 		### Using raw TCP sockets
-		The raw TCP protocol, also referred as "classic", uses a stream-oriented TCP connection. This means that packets are not prefixed with their length and every packet's length is fixed or can be calculated at runtime.
-		The connection starts with a client sending the string `classic` encoded in UTF-8 to the server, which replies with an [AuthCredentials](#login.auth-credentials) packet and waits for the client to authenticate.
+		The raw TCP protocol, also referred as "classic", uses a stream-oriented TCP connection. This means that packets are not prefixed with their length and every packet's length is fixed or can be retrieved at runtime.
+		The connection starts with the client sending the string `classic` encoded as UTF-8 to the server, which replies with an [AuthCredentials](#login.auth-credentials) packet and waits for the client to authenticate.
 
 		### Using Web Sockets
-		The websocket protocol uses json packets instead of binary ones and encodes the byte arrays into strings using base64.
+		The websocket protocol uses json packets instead of binary ones and encodes the arrays of bytes ([AuthCredentials.payload](#login.auth-credentials.payload) and [Auth.hash](#login.auth.hash)) into strings using base64.
 
 		## Authenticating
+		After receiving the [AuthCredentials](#login.auth-credentials) packet, the external console, if able to perform authentication, has to send the password or its hash through the [Auth](#login.auth) packet and waits for a response, given by the [Welcome](#login.welcome) packet. If the server accepts the external console the status in the packet will be "accepted", the additional fields of the [Welcome.Accepted](#login.welcome.accepted) packet can be read and the external console can proceed keeping the connection alive, sending commands, receiving logs and other updates.
+
+		## Keeping the connection alive
+		The server may disconnect the external console after a period of inactivity (which shouldn't be shorter than 8 seconds). For this reason the external console needs to send a [KeepAlive](#status.keep-alive) packet to notify the server that it is still perfectly connected.
+
+		## Server's logs
+		Every time a log is created on the server it sends a [ConsoleMessage](#connected.console-message) to the external console that contains informations about when the log was generated, from whom was generated and the log itself.
+
+		## Executing commands
+		If the [remoteCommand](#login.welcome.accepted.remote-command) field in the [Welcome.Accepted](#login.welcome.accepted) packet is true, the server allows the execution of commands from the external console. That's done using the [Command](#connected.command) packet, which has only one field that is the raw command.
 	</description>
 
 	<encoding id="ubyte" arraylength="ushort">
@@ -36,22 +46,27 @@
 		
 		<type name="game">
 			<field name="type" type="ubyte">
-				Type of the game. Minecraft indicates the java version of the game and pocket indicates the versions running on Android, iOS, Windows Phone and Windows 10.
-				<constant name="pocket" value="1" />
-				<constant name="minecraft" value="2" />
+				Variant of the game.
+				<constant name="pocket" value="1">
+					Minecraft: Pocket Edition and derivated
+				</constant>
+				<constant name="minecraft" value="2">
+					Classic minecraft (Java version)
+				</constant>
 			</field>
 			<field name="protocols" type="uint[]">
-				List of protocols accepted by the servers for the indicated game.
+				List of protocols supported by the server for the indicated game.
 			</field>
 		</type>
 
 		<type name="node-stats">
-			Resource usage of a node.
+			Resources usage of a node.
 			<field name="name" type="string">
-				Name of the node. Should match a name given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes) or one added using the [UpdateNodes](#status.update-nodes) packet.
+				Name of the node. Should match one of the names given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes) or one added using the [UpdateNodes](#status.update-nodes) packet.
+				If the server isn't built on the hub-node layout the name is an empty string and the following values are for the whole server and not for a node.
 			</field>
 			<field name="tps" type="float">
-				Ticks per second of the node in range 0..20. If the value is less than 20, the server is lagging.
+				Ticks per second of the node in range 0 to 20. If the value is less than 20, the server is lagging.
 			</field>
 			<field name="ram" type="ulong">
 				RAM allocated by the node in bytes.
@@ -69,32 +84,32 @@
 
 		<section name="login">
 
-			Packets used during the authentication process.
+			Packets used during the authentication process and to exhange the initial server's informations.
 
 			<packet name="auth-credentials" id="0" clientbound="true" serverbound="false">
-				First packet sent by the server after the connection has been successfully established. It contains informations about how the client should authenticate.
+				First packet sent by the server when the connection is successfully established. It contains informations about how the external console shall authenticate itself.
 				<field name="protocol" type="ubyte">
 					Protocol used by the server. If the client uses a different one it should close the connection without trying to perform authentication.
 				</field>
 				<field name="hash" type="bool">
-					Whether to perform hashing on the password.
+					Whether to perform hashing on the password or not.
 				</field>
 				<field name="hash-algorithm" type="string" when="hash==true">
-					Algorithm used by the server to hash the concatenation of password and payload. The value should be sent in lowercase without any separation symbol (for example `md5` instead of `MD5`, `sha256` instead of `SHA-256`).
+					Algorithm used by the server to hash the concatenation of the password and the [payload](#login.auth-credentials.payload). The value should be sent in lower case without any separation symbol (for example `md5` instead of `MD5`, `sha256` instead of `SHA-256`).
 					See [Auth.hash](#login.auth.hash) for more details.
 				</field>
-				<field name="payload" type="ubyte[16]" when="hash==true">
-					Payload to cancatenate with the password encoded as UTF-8 before hashing it, as described in the [Auth.hash](#login.auth.hash)'s field description.
+				<field name="payload" type="ubyte[]" when="hash==true">
+					Payload to cancatenate to the password before hashing it, as described in the [Auth.hash](#login.auth.hash)'s field description.
 				</field>
 			</packet>
 
 			<packet name="auth" id="1" clientbound="false" serverbound="true">
-				Performs authentication following the directives given by the [AuthCredentials](#login.auth-credentials) packet.
+				Performs authentication following the instruncions given by the [AuthCredentials](#login.auth-credentials) packet.
 				<field name="hash" type="ubyte[]">
-					Pasword encoded as UTF-8 if [AuthCredentials.hash](#login.auth-credentials.auth) is `false` or the hash (specified in [AuthCredentials.hashAlgorithm](#login.auth-credentials.hash-algorithm)) of the password encoded as UTF-8 and the bytes from [AuthCredentials.payload](#login.auth-credentials.payload) if `true`.
+					Pasword encoded as UTF-8 if [AuthCredentials.hash](#login.auth-credentials.auth) is `false` or the hash (specified in [AuthCredentials.hashAlgorithm](#login.auth-credentials.hash-algorithm)) of the password encoded as UTF-8 concatenated with the bytes from [AuthCredentials.payload](#login.auth-credentials.payload) if `true`.
 					The hash can be done with a function (if hashAlgorithm is `sha1`) in D:
 					```d
-					sha1Of(cast(ubyte[])authCredentials.payload ~ password);
+					sha1Of(cast(ubyte[])password ~ authCredentials.payload);
 					```
 					Or using `MessageDigest` in Java:
 					```java
@@ -111,7 +126,7 @@
 				<field name="status" type="ubyte"></field>
 				<variants field="status">
 					<variant name="accepted" value="0">
-						Sent when the hash sent in [Auth](#login.auth) matched the server's and the external console can now use the other features available in the protocol.
+						Sent when the hash sent in [Auth](#login.auth) matches the server's.
 						<field name="remote-commands" type="bool">
 							Indicates whether the external console can execute command remotely through the [Command](#connected.command) packet.
 						</field>
@@ -119,13 +134,13 @@
 							The server's software as a formatted string (without the version).
 						</field>
 						<field name="versions" type="ubyte[3]">
-							Versions of the server in 3-btyes array readed as [major, minor, release].
+							Versions of the server in a 3-btyes array readed as [major, minor, release].
 						</field>
 						<field name="display-name" type="string">
-							Name of the server (not the game's MOTD!).
+							Name of the server (not the game's MOTD!). It shouldn't contain Minecraft formatting codes.
 						</field>
 						<field name="games" type="game[]">
-							Informations about the game and protocols supported by the server.
+							Informations about the games and their protocols supported by the server.
 						</field>
 						<field name="connected-nodes" type="string[]">
 							List of names of the nodes connected to the server, if it uses the hub-node layout, or an empty list.
@@ -145,15 +160,15 @@
 		<section name="status">
 
 			<packet name="keep-alive" id="0" clientbound="true" serverbound="true">
-				Keeps the connection alive and/or calculates the latency. This packet should be sent at least every 5 seconds to avoid the disconnection by timeout and update the latency. The client can send this packet whenever he wants and the server must reply with the same packet with the same field's value.
+				Keeps the connection alive and/or calculates the latency. This packet should be sent at least every 5 seconds to avoid the disconnection caused by timeout and update the latency. The external console can send this packet whenever it wants it and the server must reply with the same packet with the same field's value.
 				<field name="count" type="uint">
-					An identifier chosen by the client to calculate the latency.
+					An identifier chosen by the external console to uniquely identify the packet.
 				</field>
 			</packet>
 
 			<packet name="update-nodes" id="1" clientbound="true" serverbound="false">
 				Updates the list of the nodes connected to the hub, adding or removing one.
-				If the server isn't built following the hub-node layout this packet is never sent.
+				If the server isn't built on the hub-node layout this packet is never sent.
 				<field name="action" type="ubyte">
 					Whether the node should be added or removed from the list of connected nodes.
 					<constant name="add" value="0" />
@@ -165,7 +180,7 @@
 			</packet>
 
 			<packet name="request-stats" id="2" clientbound="false" serverbound="true">
-				Requests an [UpdateStats](#stats.update-stats) packet to the server, which should sent it immediately instead of waiting for the next automatic update.
+				Requests an [UpdateStats](#stats.update-stats) packet to the server, which should sent it immediately instead of waiting for the next automatic update (if the server does one).
 			</packet>
 
 			<packet name="update-stats" id="3" clientbound="true" serverbound="false">
@@ -198,29 +213,29 @@
 			<packet name="console-message" id="4" clientbound="true" serverbound="false">
 				Logs a message from the server's console. It may be the output of a command, a debug message or any other message that the server retains able to be seen by the External Console.
 				<field name="node" type="string">
-					Name of the node that created the log or an empty string if the log was created by the hub or by a server implementation that isn't based on the hub-node layout.
+					Name of the node that created the log or an empty string if the log was created by the hub or by a server that isn't based on the hub-node layout.
 				</field>
 				<field name="timestamp" type="ulong">
-					Unix timestamp in milliseconds that indicates the exact time when the log has been generated by the server.
-					The logs may not arrive in order when the server uses the hub-node layout or another kind of proxy because the logs created by the nodes have to travel a longer distance, which requires more time.
+					Unix timestamp in milliseconds that indicates the exact time when the log was generated by the server.
+					The logs may not arrive in order when the server uses the hub-node layout or some other kind of proxy because the logs created by the nodes have an additional latency (the one between the hub, or proxy, and the node).
 				</field>
 				<field name="logger" type="string">
-					Name of the logger. It may be the world name if the log has been generated by a world's message (like a broadcast or a chat message), the name of plugin (for example `plugin\test`) or the name of the package/module/class that has generated the log (like `math.vector` or `event.world.player`).
+					Name of the logger. It may be the world name if the log was generated by a world's message (like a broadcast or a chat message), the name of plugin (for example `plugin\test`) or the name of the package/module/class that generated the log (like `math.vector` or `event.world.player`).
 				</field>
 				<field name="message" type="string">
-					The logged message. It may contain Minecraft's formatting codes which should be translated into appropriate colours and formatting by the client implementation of the console.
+					The logged message. It may contain Minecraft's formatting codes which should be translated into appropriate colours and formatting (bold, italic and strikethrough) by the client implementation of the external console.
 				</field>
 			</packet>
 
 			<packet name="command" id="5" clientbound="false" serverbound="true">
-				Executes a command remotely if the server allows it. If not a [Permission Denied](#connected.permission-denied) is sent back. The ideal client should never send this packet if [remoteCommands](#login.welcome.accepted.remote-commands) field in [Welcome.Accepted](#login.welcome.accepted) is not true.
+				Executes a command remotely if the server allows it. If not a [Permission Denied](#connected.permission-denied) is sent back. A good implementation of the external console client should never send this packet if [remoteCommands](#login.welcome.accepted.remote-commands) field in [Welcome.Accepted](#login.welcome.accepted) is not true.
 				<field name="command" type="string">
-					Command to execute on the server. On servers that based on the hub-node layout it should start with a slash or a point (hub command) or a node name followed by the command (node command).
+					Command to execute on the server.
 				</field>
 			</packet>
 
 			<packet name="permission-denied" id="6" clientbound="true" serverbound="false">
-				Bodyless packet only sent in response to [Command](#connected.command) when the server doesn't allow the execution of remote commands through the External Console. A well-implemented client should never receive this packet avoiding the use of [Command](#connected.command) if the [remoteCommands](#login.welcome.accepted.remote-command) field is false.
+				Bodyless packet only sent in response to [Command](#connected.command) when the server doesn't allow the execution of remote commands through the external console. A good implementation of the external console client should never receive this packet avoiding the use of the [Command](#connected.command) packet when the [remoteCommands](#login.welcome.accepted.remote-command) field is false.
 			</packet>
 
 		</section>

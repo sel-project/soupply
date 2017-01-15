@@ -15,9 +15,9 @@ import sul.utils.*;
 
 /**
  * Bodyless packet only sent in response to Command when the server doesn't allow the
- * execution of remote commands through the External Console. A well-implemented client
- * should never receive this packet avoiding the use of Command if the remoteCommands
- * field is false.
+ * execution of remote commands through the external console. A good implementation
+ * of the external console client should never receive this packet avoiding the use
+ * of the Command packet when the remoteCommands field is false.
  */
 class PermissionDenied extends Packet {
 

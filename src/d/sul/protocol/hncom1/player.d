@@ -34,39 +34,33 @@ class Add : Buffer {
 	public enum ubyte TRANSFERRED = 1;
 	public enum ubyte FORCIBLY_TRANSFERRED = 2;
 
-	// game
-	public enum ubyte POCKET = 1;
-	public enum ubyte MINECRAFT = 2;
-
-	public enum string[] FIELDS = ["hubId", "reason", "protocol", "username", "displayName", "address", "game", "uuid", "skin", "latency", "packetLoss", "language"];
+	public enum string[] FIELDS = ["hubId", "reason", "game", "protocol", "username", "displayName", "address", "uuid", "skin", "latency", "language"];
 
 	public uint hubId;
 	public ubyte reason;
+	public ubyte game;
 	public uint protocol;
 	public string username;
 	public string displayName;
 	public sul.protocol.hncom1.types.Address address;
-	public ubyte game;
 	public UUID uuid;
 	public sul.protocol.hncom1.types.Skin skin;
 	public uint latency;
-	public float packetLoss;
 	public string language;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, uint protocol=uint.init, string username=string.init, string displayName=string.init, sul.protocol.hncom1.types.Address address=sul.protocol.hncom1.types.Address.init, ubyte game=ubyte.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, uint latency=uint.init, float packetLoss=float.init, string language=string.init) {
+	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, ubyte game=ubyte.init, uint protocol=uint.init, string username=string.init, string displayName=string.init, sul.protocol.hncom1.types.Address address=sul.protocol.hncom1.types.Address.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, uint latency=uint.init, string language=string.init) {
 		this.hubId = hubId;
 		this.reason = reason;
+		this.game = game;
 		this.protocol = protocol;
 		this.username = username;
 		this.displayName = displayName;
 		this.address = address;
-		this.game = game;
 		this.uuid = uuid;
 		this.skin = skin;
 		this.latency = latency;
-		this.packetLoss = packetLoss;
 		this.language = language;
 	}
 
@@ -75,15 +69,14 @@ class Add : Buffer {
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(hubId));
 		writeBigEndianUbyte(reason);
+		writeBigEndianUbyte(game);
 		writeBytes(varuint.encode(protocol));
 		writeBytes(varuint.encode(cast(uint)username.length)); writeString(username);
 		writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName);
 		address.encode(bufferInstance);
-		writeBigEndianUbyte(game);
 		writeBytes(uuid.data);
 		skin.encode(bufferInstance);
 		writeBytes(varuint.encode(latency));
-		writeBigEndianFloat(packetLoss);
 		writeBytes(varuint.encode(cast(uint)language.length)); writeString(language);
 		return _buffer;
 	}
@@ -92,15 +85,14 @@ class Add : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		hubId=varuint.decode(_buffer, &_index);
 		reason=readBigEndianUbyte();
+		game=readBigEndianUbyte();
 		protocol=varuint.decode(_buffer, &_index);
 		uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
 		uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu);
 		address.decode(bufferInstance);
-		game=readBigEndianUbyte();
 		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		skin.decode(bufferInstance);
 		latency=varuint.decode(_buffer, &_index);
-		packetLoss=readBigEndianFloat();
 		uint bgfuz3vhz2u=varuint.decode(_buffer, &_index); language=readString(bgfuz3vhz2u);
 	}
 
@@ -109,6 +101,60 @@ class Add : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	alias _encode = encode;
+
+	enum string variantField = "game";
+
+	alias Variants = TypeTuple!(Pocket, Minecraft);
+
+	public class Pocket {
+
+		public enum typeof(game) GAME = 1;
+
+		public enum string[] FIELDS = ["xuid", "packetLoss"];
+
+		public long xuid;
+		public float packetLoss;
+
+		public pure nothrow @safe @nogc this() {}
+
+		public pure nothrow @safe @nogc this(long xuid, float packetLoss=float.init) {
+			this.xuid = xuid;
+			this.packetLoss = packetLoss;
+		}
+
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			game = 1;
+			_encode!writeId();
+			writeBytes(varlong.encode(xuid));
+			writeBigEndianFloat(packetLoss);
+			return _buffer;
+		}
+
+		public pure nothrow @safe void decode() {
+			xuid=varlong.decode(_buffer, &_index);
+			packetLoss=readBigEndianFloat();
+		}
+
+	}
+
+	public class Minecraft {
+
+		public enum typeof(game) GAME = 2;
+
+		public enum string[] FIELDS = [];
+
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			game = 2;
+			_encode!writeId();
+			return _buffer;
+		}
+
+		public pure nothrow @safe void decode() {
+		}
+
 	}
 
 }

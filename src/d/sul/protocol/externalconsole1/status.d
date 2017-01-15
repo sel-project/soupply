@@ -24,9 +24,9 @@ alias Packets = TypeTuple!(KeepAlive, UpdateNodes, RequestStats, UpdateStats);
 
 /**
  * Keeps the connection alive and/or calculates the latency. This packet should be
- * sent at least every 5 seconds to avoid the disconnection by timeout and update the
- * latency. The client can send this packet whenever he wants and the server must reply
- * with the same packet with the same field's value.
+ * sent at least every 5 seconds to avoid the disconnection caused by timeout and update
+ * the latency. The external console can send this packet whenever it wants it and
+ * the server must reply with the same packet with the same field's value.
  */
 class KeepAlive : Buffer {
 
@@ -38,7 +38,7 @@ class KeepAlive : Buffer {
 	public enum string[] FIELDS = ["count"];
 
 	/**
-	 * An identifier chosen by the client to calculate the latency.
+	 * An identifier chosen by the external console to uniquely identify the packet.
 	 */
 	public uint count;
 
@@ -71,7 +71,7 @@ class KeepAlive : Buffer {
 
 /**
  * Updates the list of the nodes connected to the hub, adding or removing one.
- * If the server isn't built following the hub-node layout this packet is never sent.
+ * If the server isn't built on the hub-node layout this packet is never sent.
  */
 class UpdateNodes : Buffer {
 
@@ -128,7 +128,7 @@ class UpdateNodes : Buffer {
 
 /**
  * Requests an UpdateStats packet to the server, which should sent it immediately instead
- * of waiting for the next automatic update.
+ * of waiting for the next automatic update (if the server does one).
  */
 class RequestStats : Buffer {
 

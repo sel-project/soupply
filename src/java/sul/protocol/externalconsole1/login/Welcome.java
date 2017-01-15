@@ -45,8 +45,7 @@ class Welcome extends Packet {
 	}
 
 	/**
-	 * Sent when the hash sent in Auth matched the server's and the external console can
-	 * now use the other features available in the protocol.
+	 * Sent when the hash sent in Auth matches the server's.
 	 */
 	public static class Accepted extends Welcome {
 
