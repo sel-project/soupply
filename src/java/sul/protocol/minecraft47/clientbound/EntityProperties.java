@@ -33,7 +33,7 @@ class EntityProperties extends Packet {
 		this.index = 0;
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
-		this.writeIntB((int)properties.length); for(property chjvcgvydgllcw:properties){ this.writeBytes(chjvcgvydgllcw.encode()); }
+		this.writeBytes(properties.encode());
 		return this.buffer;
 	}
 

@@ -277,3 +277,106 @@ struct ListUpdateDisplayName {
 	}
 
 }
+
+struct Modifier {
+
+	// operation
+	public enum ubyte ADD_SUBSTRACT_AMOUNT = 0;
+	public enum ubyte ADD_SUBSTRACT_AMOUNT_PERCENTAGE = 1;
+	public enum ubyte MULTIPLY_AMOUNT_PERCENTAGE = 2;
+
+	public enum string[] FIELDS = ["uuid", "amount", "operation"];
+
+	public UUID uuid;
+	public double amount;
+	public ubyte operation;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBytes(uuid.data);
+			writeBigEndianDouble(amount);
+			writeBigEndianUbyte(operation);
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+			amount=readBigEndianDouble();
+			operation=readBigEndianUbyte();
+		}
+	}
+
+}
+
+struct Attribute {
+
+	public enum string[] FIELDS = ["key", "value", "modifiers"];
+
+	public string key;
+	public double value;
+	public sul.protocol.minecraft107.types.Modifier[] modifiers;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBytes(varuint.encode(cast(uint)key.length)); writeString(key);
+			writeBigEndianDouble(value);
+			writeBytes(varuint.encode(cast(uint)modifiers.length)); foreach(bw9kawzpzxjz;modifiers){ bw9kawzpzxjz.encode(bufferInstance); }
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			uint a2v5=varuint.decode(_buffer, &_index); key=readString(a2v5);
+			value=readBigEndianDouble();
+			modifiers.length=varuint.decode(_buffer, &_index); foreach(ref bw9kawzpzxjz;modifiers){ bw9kawzpzxjz.decode(bufferInstance); }
+		}
+	}
+
+}
+
+struct OptionalPosition {
+
+	public enum string[] FIELDS = ["hasPosition", "position"];
+
+	public bool hasPosition;
+	public ulong position;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianBool(hasPosition);
+			if(hasPosition==true){ writeBigEndianUlong(position); }
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			hasPosition=readBigEndianBool();
+			if(hasPosition==true){ position=readBigEndianUlong(); }
+		}
+	}
+
+}
+
+struct OptionalUuid {
+
+	public enum string[] FIELDS = ["hasUuid", "uuid"];
+
+	public bool hasUuid;
+	public UUID uuid;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianBool(hasUuid);
+			writeBytes(uuid.data);
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			hasUuid=readBigEndianBool();
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		}
+	}
+
+}

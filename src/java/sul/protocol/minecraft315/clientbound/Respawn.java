@@ -21,9 +21,9 @@ class Respawn extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// dimension
-	public static immutable int END = -1;
+	public static immutable int NETHER = -1;
 	public static immutable int OVERWORLD = 0;
-	public static immutable int NETHER = 1;
+	public static immutable int END = 1;
 
 	// difficulty
 	public static immutable byte PEACEFUL = 0;

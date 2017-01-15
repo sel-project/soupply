@@ -68,8 +68,6 @@
 			<field name="signature" type="string" when="signed==true" />
 		</type>
 
-		<array name="properties" base="property" length="uint" />
-
 		<type name="list-add-player">
 			<field name="uuid" type="uuid" />
 			<field name="name" type="string" />
@@ -104,6 +102,34 @@
 			<field name="uuid" type="uuid" />
 			<field name="has-display-name" type="bool" />
 			<field name="display-name" type="string" when="has-display-name==true" />
+		</type>
+
+		<type name="modifier">
+			<field name="uuid" type="uuid" />
+			<field name="amount" type="double" />
+			<field name="operation" type="ubyte">
+				<constant name="add-substract-amount" value="0" />
+				<constant name="add-substract-amount-percentage" value="1" />
+				<constant name="multiply-amount-percentage" value="2" />
+			</field>
+		</type>
+
+		<type name="attribute">
+			<field name="key" type="string" />
+			<field name="value" type="double" />
+			<field name="modifiers" type="modifier[]" />
+		</type>
+
+		<array name="attributes" base="property" length="uint" />
+
+		<type name="optional-position">
+			<field name="has-position" type="bool" />
+			<field name="position" type="block-position" when="has-position==true" />
+		</type>
+
+		<type name="optional-uuid">
+			<field name="has-uuid" type="bool" />
+			<field name="uuid" type="uuid" />
 		</type>
 
 	</encoding>

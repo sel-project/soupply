@@ -1638,11 +1638,11 @@ class EntityProperties : Buffer {
 	public enum string[] FIELDS = ["entityId", "properties"];
 
 	public uint entityId;
-	public sul.protocol.minecraft47.types.Property[] properties;
+	public sul.protocol.minecraft47.types.Properties properties;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint entityId, sul.protocol.minecraft47.types.Property[] properties=(sul.protocol.minecraft47.types.Property[]).init) {
+	public pure nothrow @safe @nogc this(uint entityId, sul.protocol.minecraft47.types.Properties properties=sul.protocol.minecraft47.types.Properties.init) {
 		this.entityId = entityId;
 		this.properties = properties;
 	}
@@ -1651,14 +1651,14 @@ class EntityProperties : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBytes(varuint.encode(ID)); }
 		writeBytes(varuint.encode(entityId));
-		writeBigEndianUint(cast(uint)properties.length); foreach(chjvcgvydgllcw;properties){ chjvcgvydgllcw.encode(bufferInstance); }
+		properties.encode(bufferInstance);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		entityId=varuint.decode(_buffer, &_index);
-		properties.length=readBigEndianUint(); foreach(ref chjvcgvydgllcw;properties){ chjvcgvydgllcw.decode(bufferInstance); }
+		properties.decode(bufferInstance);
 	}
 
 	public static pure nothrow @safe EntityProperties fromBuffer(bool readId=true)(ubyte[] buffer) {

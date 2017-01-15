@@ -27,9 +27,9 @@ class JoinGame extends Packet {
 	public static immutable byte SPECTATOR = 3;
 
 	// dimension
-	public static immutable byte END = -1;
+	public static immutable byte NETHER = -1;
 	public static immutable byte OVERWORLD = 0;
-	public static immutable byte NETHER = 1;
+	public static immutable byte END = 1;
 
 	// difficulty
 	public static immutable byte PEACEFUL = 0;

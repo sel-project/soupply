@@ -189,6 +189,41 @@
 				}
 			],
 
+			"modifier": [
+				{
+					"name": "uuid",
+					"type": "uuid"
+				},
+				{
+					"name": "amount",
+					"type": "double"
+				},
+				{
+					"name": "operation",
+					"type": "ubyte",
+					"constants": {
+						"add_substract_amount": 0,
+						"add_substract_amount_percentage": 1,
+						"multiply_amount_percentage": 2
+					}
+				}
+			],
+
+			"attribute": [
+				{
+					"name": "key",
+					"type": "string"
+				},
+				{
+					"name": "value",
+					"type": "double"
+				},
+				{
+					"name": "modifiers",
+					"type": "modifier[]"
+				}
+			],
+
 			"optional_position": [
 				{
 					"name": "has_position",
@@ -216,6 +251,11 @@
 
 		"arrays": {
 
+			"attributes": {
+				"base": "property",
+				"length": "uint"
+			},
+
 			"slots": {
 				"base": "slot",
 				"length": "ushort"
@@ -223,11 +263,6 @@
 
 			"explosion_records": {
 				"base": "byte<xyz>",
-				"length": "uint"
-			},
-
-			"properties": {
-				"base": "property",
 				"length": "uint"
 			}
 
@@ -1493,9 +1528,9 @@
 						"name": "dimension",
 						"type": "int",
 						"constants": {
-							"end": "-1",
+							"nether": "-1",
 							"overworld": 0,
-							"nether": 1
+							"end": 1
 						}
 					},
 					{
@@ -1928,9 +1963,9 @@
 						"name": "dimension",
 						"type": "int",
 						"constants": {
-							"end": "-1",
+							"nether": "-1",
 							"overworld": 0,
-							"nether": 1
+							"end": 1
 						}
 					},
 					{
@@ -2662,8 +2697,8 @@
 						"type": "varuint"
 					},
 					{
-						"name": "properties",
-						"type": "properties"
+						"name": "attributes",
+						"type": "attributes"
 					}
 				]
 			},

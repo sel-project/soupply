@@ -184,11 +184,74 @@
 					"type": "string",
 					"when": "has_display_name==true"
 				}
+			],
+
+			"modifier": [
+				{
+					"name": "uuid",
+					"type": "uuid"
+				},
+				{
+					"name": "amount",
+					"type": "double"
+				},
+				{
+					"name": "operation",
+					"type": "ubyte",
+					"constants": {
+						"add_substract_amount": 0,
+						"add_substract_amount_percentage": 1,
+						"multiply_amount_percentage": 2
+					}
+				}
+			],
+
+			"attribute": [
+				{
+					"name": "key",
+					"type": "string"
+				},
+				{
+					"name": "value",
+					"type": "double"
+				},
+				{
+					"name": "modifiers",
+					"type": "modifier[]"
+				}
+			],
+
+			"optional_position": [
+				{
+					"name": "has_position",
+					"type": "bool"
+				},
+				{
+					"name": "position",
+					"type": "ulong",
+					"when": "has_position==true"
+				}
+			],
+
+			"optional_uuid": [
+				{
+					"name": "has_uuid",
+					"type": "bool"
+				},
+				{
+					"name": "uuid",
+					"type": "uuid"
+				}
 			]
 
 		},
 
 		"arrays": {
+
+			"attributes": {
+				"base": "property",
+				"length": "uint"
+			},
 
 			"slots": {
 				"base": "slot",
@@ -197,11 +260,6 @@
 
 			"explosion_records": {
 				"base": "byte<xyz>",
-				"length": "uint"
-			},
-
-			"properties": {
-				"base": "property",
 				"length": "uint"
 			}
 

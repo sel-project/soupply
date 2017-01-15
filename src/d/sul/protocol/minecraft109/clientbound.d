@@ -2117,9 +2117,9 @@ class JoinGame : Buffer {
 	public enum ubyte SPECTATOR = 3;
 
 	// dimension
-	public enum int END = -1;
+	public enum int NETHER = -1;
 	public enum int OVERWORLD = 0;
-	public enum int NETHER = 1;
+	public enum int END = 1;
 
 	// difficulty
 	public enum ubyte PEACEFUL = 0;
@@ -3117,9 +3117,9 @@ class Respawn : Buffer {
 	public enum bool SERVERBOUND = false;
 
 	// dimension
-	public enum int END = -1;
+	public enum int NETHER = -1;
 	public enum int OVERWORLD = 0;
-	public enum int NETHER = 1;
+	public enum int END = 1;
 
 	// difficulty
 	public enum ubyte PEACEFUL = 0;
@@ -4749,30 +4749,30 @@ class EntityProperties : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["entityId", "properties"];
+	public enum string[] FIELDS = ["entityId", "attributes"];
 
 	public uint entityId;
-	public sul.protocol.minecraft109.types.Property[] properties;
+	public sul.protocol.minecraft109.types.Property[] attributes;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint entityId, sul.protocol.minecraft109.types.Property[] properties=(sul.protocol.minecraft109.types.Property[]).init) {
+	public pure nothrow @safe @nogc this(uint entityId, sul.protocol.minecraft109.types.Property[] attributes=(sul.protocol.minecraft109.types.Property[]).init) {
 		this.entityId = entityId;
-		this.properties = properties;
+		this.attributes = attributes;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBytes(varuint.encode(ID)); }
 		writeBytes(varuint.encode(entityId));
-		writeBigEndianUint(cast(uint)properties.length); foreach(chjvcgvydgllcw;properties){ chjvcgvydgllcw.encode(bufferInstance); }
+		writeBigEndianUint(cast(uint)attributes.length); foreach(yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.encode(bufferInstance); }
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		entityId=varuint.decode(_buffer, &_index);
-		properties.length=readBigEndianUint(); foreach(ref chjvcgvydgllcw;properties){ chjvcgvydgllcw.decode(bufferInstance); }
+		attributes.length=readBigEndianUint(); foreach(ref yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.decode(bufferInstance); }
 	}
 
 	public static pure nothrow @safe EntityProperties fromBuffer(bool readId=true)(ubyte[] buffer) {
