@@ -19,7 +19,7 @@ alias Changed(T) = Tuple!(T, "value", bool, "changed");
 
 class Metadata {
 
-	private Changed!(long) _entityFlags = tuple(cast(long)1073741824, false);
+	private Changed!(long) _entityFlags = tuple(cast(long)0, false);
 
 	public pure nothrow @property @safe @nogc long entityFlags() {
 		return _entityFlags.value;
@@ -453,7 +453,7 @@ class Metadata {
 		return value;
 	}
 
-	private Changed!(short) _air = tuple(cast(short)300, false);
+	private Changed!(short) _air = tuple(cast(short)0, false);
 
 	public pure nothrow @property @safe @nogc short air() {
 		return _air.value;
@@ -660,27 +660,27 @@ class Metadata {
 		with(buffer) {
 			immutable _length = _buffer.length;
 			uint _count;
-			{ writeBytes(varlong.encode(entityFlags)); _count++; }
-			if(this._variant.changed){ writeBytes(varint.encode(variant)); _count++; }
-			if(this._color.changed){ writeBigEndianByte(color); _count++; }
-			if(this._nametag.changed){ writeBytes(varuint.encode(cast(uint)nametag.length)); writeString(nametag); _count++; }
-			if(this._owner.changed){ writeBytes(varlong.encode(owner)); _count++; }
-			if(this._air.changed){ writeBigEndianShort(air); _count++; }
-			if(this._potionColor.changed){ writeBytes(varint.encode(potionColor)); _count++; }
-			if(this._potionAmbient.changed){ writeBigEndianByte(potionAmbient); _count++; }
-			if(this._slimeSize.changed){ writeBigEndianByte(slimeSize); _count++; }
-			if(this._playerFlags.changed){ writeBigEndianByte(playerFlags); _count++; }
-			if(this._playerIndex.changed){ writeBytes(varint.encode(playerIndex)); _count++; }
-			if(this._bedPosition.changed){ bedPosition.encode(bufferInstance); _count++; }
-			{ writeBytes(varlong.encode(leadHolder)); _count++; }
-			if(this._scale.changed){ writeLittleEndianFloat(scale); _count++; }
-			if(this._interactiveTag.changed){ writeBytes(varuint.encode(cast(uint)interactiveTag.length)); writeString(interactiveTag); _count++; }
-			if(this._interactiveTagUrl.changed){ writeBytes(varuint.encode(cast(uint)interactiveTagUrl.length)); writeString(interactiveTagUrl); _count++; }
-			if(this._maxAir.changed){ writeBigEndianShort(maxAir); _count++; }
-			if(this._markVariant.changed){ writeBytes(varint.encode(markVariant)); _count++; }
-			if(this._boundingBoxWidth.changed){ writeLittleEndianFloat(boundingBoxWidth); _count++; }
-			if(this._boundingBoxHeight.changed){ writeLittleEndianFloat(boundingBoxHeight); _count++; }
-			if(this._fuseLength.changed){ writeBytes(varint.encode(fuseLength)); _count++; }
+			{ writeBytes(varuint.encode(0)); writeBytes(varuint.encode(7)); writeBytes(varlong.encode(entityFlags)); _count++; }
+			if(this._variant.changed){ writeBytes(varuint.encode(2)); writeBytes(varuint.encode(2)); writeBytes(varint.encode(variant)); _count++; }
+			if(this._color.changed){ writeBytes(varuint.encode(3)); writeBytes(varuint.encode(0)); writeBigEndianByte(color); _count++; }
+			if(this._nametag.changed){ writeBytes(varuint.encode(4)); writeBytes(varuint.encode(4)); writeBytes(varuint.encode(cast(uint)nametag.length)); writeString(nametag); _count++; }
+			if(this._owner.changed){ writeBytes(varuint.encode(5)); writeBytes(varuint.encode(7)); writeBytes(varlong.encode(owner)); _count++; }
+			{ writeBytes(varuint.encode(7)); writeBytes(varuint.encode(1)); writeLittleEndianShort(air); _count++; }
+			if(this._potionColor.changed){ writeBytes(varuint.encode(8)); writeBytes(varuint.encode(2)); writeBytes(varint.encode(potionColor)); _count++; }
+			if(this._potionAmbient.changed){ writeBytes(varuint.encode(9)); writeBytes(varuint.encode(0)); writeBigEndianByte(potionAmbient); _count++; }
+			if(this._slimeSize.changed){ writeBytes(varuint.encode(16)); writeBytes(varuint.encode(0)); writeBigEndianByte(slimeSize); _count++; }
+			if(this._playerFlags.changed){ writeBytes(varuint.encode(27)); writeBytes(varuint.encode(0)); writeBigEndianByte(playerFlags); _count++; }
+			if(this._playerIndex.changed){ writeBytes(varuint.encode(28)); writeBytes(varuint.encode(2)); writeBytes(varint.encode(playerIndex)); _count++; }
+			if(this._bedPosition.changed){ writeBytes(varuint.encode(29)); writeBytes(varuint.encode(6)); bedPosition.encode(bufferInstance); _count++; }
+			{ writeBytes(varuint.encode(38)); writeBytes(varuint.encode(7)); writeBytes(varlong.encode(leadHolder)); _count++; }
+			if(this._scale.changed){ writeBytes(varuint.encode(39)); writeBytes(varuint.encode(3)); writeLittleEndianFloat(scale); _count++; }
+			if(this._interactiveTag.changed){ writeBytes(varuint.encode(40)); writeBytes(varuint.encode(4)); writeBytes(varuint.encode(cast(uint)interactiveTag.length)); writeString(interactiveTag); _count++; }
+			if(this._interactiveTagUrl.changed){ writeBytes(varuint.encode(43)); writeBytes(varuint.encode(4)); writeBytes(varuint.encode(cast(uint)interactiveTagUrl.length)); writeString(interactiveTagUrl); _count++; }
+			if(this._maxAir.changed){ writeBytes(varuint.encode(44)); writeBytes(varuint.encode(1)); writeLittleEndianShort(maxAir); _count++; }
+			if(this._markVariant.changed){ writeBytes(varuint.encode(45)); writeBytes(varuint.encode(2)); writeBytes(varint.encode(markVariant)); _count++; }
+			if(this._boundingBoxWidth.changed){ writeBytes(varuint.encode(54)); writeBytes(varuint.encode(3)); writeLittleEndianFloat(boundingBoxWidth); _count++; }
+			if(this._boundingBoxHeight.changed){ writeBytes(varuint.encode(55)); writeBytes(varuint.encode(3)); writeLittleEndianFloat(boundingBoxHeight); _count++; }
+			if(this._fuseLength.changed){ writeBytes(varuint.encode(56)); writeBytes(varuint.encode(2)); writeBytes(varint.encode(fuseLength)); _count++; }
 			_buffer = _buffer[0.._length] ~ varuint.encode(_count) ~ _buffer[_length..$];
 		}
 	}

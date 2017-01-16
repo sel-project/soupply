@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Adds a player to the node.
+ */
 class Add extends Packet {
 
 	public final static byte ID = (byte)11;
@@ -25,11 +28,35 @@ class Add extends Packet {
 	public static immutable byte TRANSFERRED = 1;
 	public static immutable byte FORCIBLY_TRANSFERRED = 2;
 
+	/**
+	 * A unique identifier given by the hub that is never changed while the player is connected.
+	 */
 	public int hubId;
+
+	/**
+	 * Reason why the player has joined the node.
+	 */
 	public byte reason;
-	public byte game;
+
+	/**
+	 * Game of the client, which could either be Minecraft or Minecraft: Pocket Edition.
+	 */
+	public byte type;
+
+	/**
+	 * Version of the protocol used by the client.
+	 */
 	public int protocol;
+
+	/**
+	 * Username of the player.
+	 */
 	public String username;
+
+	/**
+	 * Display name of the player, which can contain formatting codes. It can be updated
+	 * by the node.
+	 */
 	public String displayName;
 	public Address address;
 	public UUID uuid;
@@ -48,7 +75,7 @@ class Add extends Packet {
 		this.writeByteB(ID);
 		this.writeVaruint(hubId);
 		this.writeByteB(reason);
-		this.writeByteB(game);
+		this.writeByteB(type);
 		this.writeVaruint(protocol);
 		byte[] dxnlcm5hbwu=username.getBytes("UTF-8"); this.writeVaruint((int)dxnlcm5hbwu.length); this.writeBytes(dxnlcm5hbwu);
 		byte[] zglzcgxheu5hbwu=displayName.getBytes("UTF-8"); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);

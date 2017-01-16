@@ -9,7 +9,7 @@
 	<encoding length="varuint" types="varuint" ids="varuint">
 
 		<type name="byte" type="byte" id="0" />
-		<type name="short" type="short" id="1" />
+		<type name="short" type="short" id="1" endianness="little-endian" />
 		<type name="int" type="varint" id="2" />
 		<type name="float" type="float" id="3" />
 		<type name="string" type="string" id="4" />
@@ -22,7 +22,7 @@
 
 	<metadatas>
 
-		<type name="entity-flags" type="long" id="0" default="1073741824" required="true">
+		<type name="entity-flags" type="long" id="0" default="0" required="true">
 			<flag name="on-fire" bit="0" />
 			<flag name="sneaking" bit="1" />
 			<flag name="riding" bit="2" />
@@ -67,7 +67,9 @@
 
 		<type name="owner" type="long" id="5" default="-1" />
 
-		<type name="air" type="short" id="7" default="300" />
+		<type name="air" type="short" id="7" default="0" required="true">
+			Indicates the percentage of the air for the entity (and shows the right amount of bubbles). 0 means out of water or drowning (no bubbles) and 300 means underwater with full air.
+		</type>
 
 		<type name="potion-color" type="int" id="8" />
 

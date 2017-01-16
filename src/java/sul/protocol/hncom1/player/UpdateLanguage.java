@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Updates the player language after the client has changed it.
+ */
 class UpdateLanguage extends Packet {
 
 	public final static byte ID = (byte)15;

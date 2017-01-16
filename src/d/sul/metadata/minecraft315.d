@@ -1608,108 +1608,108 @@ class Metadata {
 
 	public pure nothrow @safe encode(Buffer buffer) {
 		with(buffer) {
-			{ writeBigEndianByte(entityFlags); }
-			if(this._air.changed){ writeBytes(varuint.encode(air)); }
-			if(this._nametag.changed){ writeBytes(varuint.encode(cast(uint)nametag.length)); writeString(nametag); }
-			if(this._showNametag.changed){ writeBigEndianBool(showNametag); }
-			if(this._silent.changed){ writeBigEndianBool(silent); }
-			if(this._noGravity.changed){ writeBigEndianBool(noGravity); }
-			if(this._potion.changed){ potion.encode(bufferInstance); }
-			if(this._spawnPosition.changed){ writeBigEndianUlong(spawnPosition); }
-			if(this._radius.changed){ writeBigEndianFloat(radius); }
-			if(this._color.changed){ writeBytes(varuint.encode(color)); }
-			if(this._isSinglePoint.changed){ writeBigEndianBool(isSinglePoint); }
-			if(this._particleId.changed){ writeBytes(varuint.encode(particleId)); }
-			if(this._particleParameter1.changed){ writeBytes(varuint.encode(particleParameter1)); }
-			if(this._particleParameter2.changed){ writeBytes(varuint.encode(particleParameter2)); }
-			if(this._hookedEntity.changed){ writeBytes(varuint.encode(hookedEntity)); }
-			if(this._arrowFlags.changed){ writeBigEndianByte(arrowFlags); }
-			if(this._timeSinceLastHit.changed){ writeBytes(varuint.encode(timeSinceLastHit)); }
-			if(this._forwardDirection.changed){ writeBytes(varuint.encode(forwardDirection)); }
-			if(this._damageTaken.changed){ writeBigEndianFloat(damageTaken); }
-			if(this._boatVariant.changed){ writeBytes(varuint.encode(boatVariant)); }
-			if(this._rightPaddleTurning.changed){ writeBigEndianBool(rightPaddleTurning); }
-			if(this._leftPaddleTurning.changed){ writeBigEndianBool(leftPaddleTurning); }
-			if(this._beamTarget.changed){ beamTarget.encode(bufferInstance); }
-			if(this._showBottom.changed){ writeBigEndianBool(showBottom); }
-			if(this._firework.changed){ firework.encode(bufferInstance); }
-			if(this._item.changed){ item.encode(bufferInstance); }
-			if(this._rotation.changed){ writeBytes(varuint.encode(rotation)); }
-			if(this._livingFlags.changed){ writeBigEndianByte(livingFlags); }
-			if(this._health.changed){ writeBigEndianFloat(health); }
-			if(this._potionColor.changed){ writeBytes(varuint.encode(potionColor)); }
-			if(this._potionAmbient.changed){ writeBigEndianBool(potionAmbient); }
-			if(this._arrows.changed){ writeBytes(varuint.encode(arrows)); }
-			if(this._additionalHearts.changed){ writeBigEndianFloat(additionalHearts); }
-			if(this._score.changed){ writeBytes(varuint.encode(score)); }
-			if(this._skinParts.changed){ writeBigEndianByte(skinParts); }
-			if(this._mainHand.changed){ writeBigEndianByte(mainHand); }
-			if(this._armorStandFlags.changed){ writeBigEndianByte(armorStandFlags); }
-			if(this._headRotation.changed){ writeBigEndianFloat(headRotation.x); writeBigEndianFloat(headRotation.y); writeBigEndianFloat(headRotation.z); }
-			if(this._bodyRotation.changed){ writeBigEndianFloat(bodyRotation.x); writeBigEndianFloat(bodyRotation.y); writeBigEndianFloat(bodyRotation.z); }
-			if(this._leftArmRotation.changed){ writeBigEndianFloat(leftArmRotation.x); writeBigEndianFloat(leftArmRotation.y); writeBigEndianFloat(leftArmRotation.z); }
-			if(this._rightArmRotation.changed){ writeBigEndianFloat(rightArmRotation.x); writeBigEndianFloat(rightArmRotation.y); writeBigEndianFloat(rightArmRotation.z); }
-			if(this._leftLegRotation.changed){ writeBigEndianFloat(leftLegRotation.x); writeBigEndianFloat(leftLegRotation.y); writeBigEndianFloat(leftLegRotation.z); }
-			if(this._rightLegRotation.changed){ writeBigEndianFloat(rightLegRotation.x); writeBigEndianFloat(rightLegRotation.y); writeBigEndianFloat(rightLegRotation.z); }
-			if(this._instentientFlags.changed){ writeBigEndianByte(instentientFlags); }
-			if(this._hanging.changed){ writeBigEndianByte(hanging); }
-			if(this._baby.changed){ writeBigEndianBool(baby); }
-			if(this._horseFlags.changed){ writeBigEndianByte(horseFlags); }
-			if(this._ownerUuid.changed){ ownerUuid.encode(bufferInstance); }
-			if(this._horseVariant.changed){ writeBytes(varuint.encode(horseVariant)); }
-			if(this._horseArmor.changed){ writeBytes(varuint.encode(horseArmor)); }
-			if(this._chested.changed){ writeBigEndianBool(chested); }
-			if(this._llamaStrength.changed){ writeBytes(varuint.encode(llamaStrength)); }
-			if(this._carpetColor.changed){ writeBytes(varuint.encode(carpetColor)); }
-			if(this._llamaVariant.changed){ writeBytes(varuint.encode(llamaVariant)); }
-			if(this._pigSaddled.changed){ writeBigEndianBool(pigSaddled); }
-			if(this._rabbitVariant.changed){ writeBytes(varuint.encode(rabbitVariant)); }
-			if(this._standingUp.changed){ writeBigEndianBool(standingUp); }
-			if(this._sheepFlagsAndColor.changed){ writeBigEndianByte(sheepFlagsAndColor); }
-			if(this._tameableFlags.changed){ writeBigEndianByte(tameableFlags); }
-			if(this._ocelotVariant.changed){ writeBytes(varuint.encode(ocelotVariant)); }
-			if(this._wolfHealth.changed){ writeBigEndianFloat(wolfHealth); }
-			if(this._begging.changed){ writeBigEndianBool(begging); }
-			if(this._collarColor.changed){ writeBytes(varuint.encode(collarColor)); }
-			if(this._profession.changed){ writeBytes(varuint.encode(profession)); }
-			if(this._createdByPlayer.changed){ writeBigEndianByte(createdByPlayer); }
-			if(this._snowmanFlags.changed){ writeBigEndianByte(snowmanFlags); }
-			if(this._shulkerDirection.changed){ writeBytes(varuint.encode(shulkerDirection)); }
-			if(this._shulkerAttachment.changed){ shulkerAttachment.encode(bufferInstance); }
-			if(this._shulkerShieldHeight.changed){ writeBigEndianByte(shulkerShieldHeight); }
-			if(this._shulkerColor.changed){ writeBigEndianByte(shulkerColor); }
-			if(this._blazeOnFire.changed){ writeBigEndianByte(blazeOnFire); }
-			if(this._creeperState.changed){ writeBytes(varuint.encode(creeperState)); }
-			if(this._charged.changed){ writeBigEndianBool(charged); }
-			if(this._ignited.changed){ writeBigEndianBool(ignited); }
-			if(this._rectractingSpikes.changed){ writeBigEndianBool(rectractingSpikes); }
-			if(this._guardianTarget.changed){ writeBytes(varuint.encode(guardianTarget)); }
-			if(this._spell.changed){ writeBigEndianByte(spell); }
-			if(this._attackMode.changed){ writeBigEndianByte(attackMode); }
-			if(this._swingingArms.changed){ writeBigEndianBool(swingingArms); }
-			if(this._climbing.changed){ writeBigEndianByte(climbing); }
-			if(this._centerHeadTarget.changed){ writeBytes(varuint.encode(centerHeadTarget)); }
-			if(this._leftHeadTarget.changed){ writeBytes(varuint.encode(leftHeadTarget)); }
-			if(this._rightHeadTarget.changed){ writeBytes(varuint.encode(rightHeadTarget)); }
-			if(this._invulnerableTime.changed){ writeBytes(varuint.encode(invulnerableTime)); }
-			if(this._handsHeldUp.changed){ writeBigEndianBool(handsHeldUp); }
-			if(this._converting.changed){ writeBigEndianBool(converting); }
-			if(this._zombieVillagerProfession.changed){ writeBytes(varuint.encode(zombieVillagerProfession)); }
-			if(this._carriedBlock.changed){ writeBytes(varuint.encode(carriedBlock)); }
-			if(this._screaming.changed){ writeBigEndianBool(screaming); }
-			if(this._dragonPhase.changed){ writeBytes(varuint.encode(dragonPhase)); }
-			if(this._ghastAttacking.changed){ writeBigEndianBool(ghastAttacking); }
-			if(this._slimeSize.changed){ writeBytes(varuint.encode(slimeSize)); }
-			if(this._shakingPower.changed){ writeBytes(varuint.encode(shakingPower)); }
-			if(this._shakingDirection.changed){ writeBytes(varuint.encode(shakingDirection)); }
-			if(this._shakingMultiplier.changed){ writeBigEndianFloat(shakingMultiplier); }
-			if(this._minecartBlock.changed){ writeBytes(varuint.encode(minecartBlock)); }
-			if(this._minecartBlockPosition.changed){ writeBytes(varuint.encode(minecartBlockPosition)); }
-			if(this._minecartCustomBlock.changed){ writeBigEndianBool(minecartCustomBlock); }
-			if(this._furnacePowered.changed){ writeBigEndianBool(furnacePowered); }
-			if(this._command.changed){ writeBytes(varuint.encode(cast(uint)command.length)); writeString(command); }
-			if(this._lastOutput.changed){ writeBytes(varuint.encode(cast(uint)lastOutput.length)); writeString(lastOutput); }
-			if(this._fuseTime.changed){ writeBytes(varuint.encode(fuseTime)); }
+			{ writeBigEndianUbyte(0); writeBigEndianUbyte(0); writeBigEndianByte(entityFlags); }
+			if(this._air.changed){ writeBigEndianUbyte(1); writeBigEndianUbyte(1); writeBytes(varuint.encode(air)); }
+			if(this._nametag.changed){ writeBigEndianUbyte(2); writeBigEndianUbyte(3); writeBytes(varuint.encode(cast(uint)nametag.length)); writeString(nametag); }
+			if(this._showNametag.changed){ writeBigEndianUbyte(3); writeBigEndianUbyte(6); writeBigEndianBool(showNametag); }
+			if(this._silent.changed){ writeBigEndianUbyte(4); writeBigEndianUbyte(6); writeBigEndianBool(silent); }
+			if(this._noGravity.changed){ writeBigEndianUbyte(5); writeBigEndianUbyte(6); writeBigEndianBool(noGravity); }
+			if(this._potion.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(5); potion.encode(bufferInstance); }
+			if(this._spawnPosition.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(8); writeBigEndianUlong(spawnPosition); }
+			if(this._radius.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(2); writeBigEndianFloat(radius); }
+			if(this._color.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(1); writeBytes(varuint.encode(color)); }
+			if(this._isSinglePoint.changed){ writeBigEndianUbyte(8); writeBigEndianUbyte(6); writeBigEndianBool(isSinglePoint); }
+			if(this._particleId.changed){ writeBigEndianUbyte(9); writeBigEndianUbyte(1); writeBytes(varuint.encode(particleId)); }
+			if(this._particleParameter1.changed){ writeBigEndianUbyte(10); writeBigEndianUbyte(1); writeBytes(varuint.encode(particleParameter1)); }
+			if(this._particleParameter2.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(1); writeBytes(varuint.encode(particleParameter2)); }
+			if(this._hookedEntity.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(1); writeBytes(varuint.encode(hookedEntity)); }
+			if(this._arrowFlags.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(0); writeBigEndianByte(arrowFlags); }
+			if(this._timeSinceLastHit.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(1); writeBytes(varuint.encode(timeSinceLastHit)); }
+			if(this._forwardDirection.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(1); writeBytes(varuint.encode(forwardDirection)); }
+			if(this._damageTaken.changed){ writeBigEndianUbyte(8); writeBigEndianUbyte(2); writeBigEndianFloat(damageTaken); }
+			if(this._boatVariant.changed){ writeBigEndianUbyte(9); writeBigEndianUbyte(1); writeBytes(varuint.encode(boatVariant)); }
+			if(this._rightPaddleTurning.changed){ writeBigEndianUbyte(10); writeBigEndianUbyte(6); writeBigEndianBool(rightPaddleTurning); }
+			if(this._leftPaddleTurning.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(6); writeBigEndianBool(leftPaddleTurning); }
+			if(this._beamTarget.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(9); beamTarget.encode(bufferInstance); }
+			if(this._showBottom.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(6); writeBigEndianBool(showBottom); }
+			if(this._firework.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(5); firework.encode(bufferInstance); }
+			if(this._item.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(5); item.encode(bufferInstance); }
+			if(this._rotation.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(1); writeBytes(varuint.encode(rotation)); }
+			if(this._livingFlags.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(0); writeBigEndianByte(livingFlags); }
+			if(this._health.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(2); writeBigEndianFloat(health); }
+			if(this._potionColor.changed){ writeBigEndianUbyte(8); writeBigEndianUbyte(1); writeBytes(varuint.encode(potionColor)); }
+			if(this._potionAmbient.changed){ writeBigEndianUbyte(9); writeBigEndianUbyte(6); writeBigEndianBool(potionAmbient); }
+			if(this._arrows.changed){ writeBigEndianUbyte(10); writeBigEndianUbyte(1); writeBytes(varuint.encode(arrows)); }
+			if(this._additionalHearts.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(2); writeBigEndianFloat(additionalHearts); }
+			if(this._score.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(1); writeBytes(varuint.encode(score)); }
+			if(this._skinParts.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(0); writeBigEndianByte(skinParts); }
+			if(this._mainHand.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(0); writeBigEndianByte(mainHand); }
+			if(this._armorStandFlags.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(0); writeBigEndianByte(armorStandFlags); }
+			if(this._headRotation.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(7); writeBigEndianFloat(headRotation.x); writeBigEndianFloat(headRotation.y); writeBigEndianFloat(headRotation.z); }
+			if(this._bodyRotation.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(7); writeBigEndianFloat(bodyRotation.x); writeBigEndianFloat(bodyRotation.y); writeBigEndianFloat(bodyRotation.z); }
+			if(this._leftArmRotation.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(7); writeBigEndianFloat(leftArmRotation.x); writeBigEndianFloat(leftArmRotation.y); writeBigEndianFloat(leftArmRotation.z); }
+			if(this._rightArmRotation.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(7); writeBigEndianFloat(rightArmRotation.x); writeBigEndianFloat(rightArmRotation.y); writeBigEndianFloat(rightArmRotation.z); }
+			if(this._leftLegRotation.changed){ writeBigEndianUbyte(16); writeBigEndianUbyte(7); writeBigEndianFloat(leftLegRotation.x); writeBigEndianFloat(leftLegRotation.y); writeBigEndianFloat(leftLegRotation.z); }
+			if(this._rightLegRotation.changed){ writeBigEndianUbyte(17); writeBigEndianUbyte(7); writeBigEndianFloat(rightLegRotation.x); writeBigEndianFloat(rightLegRotation.y); writeBigEndianFloat(rightLegRotation.z); }
+			if(this._instentientFlags.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(0); writeBigEndianByte(instentientFlags); }
+			if(this._hanging.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(hanging); }
+			if(this._baby.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(6); writeBigEndianBool(baby); }
+			if(this._horseFlags.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(0); writeBigEndianByte(horseFlags); }
+			if(this._ownerUuid.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(11); ownerUuid.encode(bufferInstance); }
+			if(this._horseVariant.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(1); writeBytes(varuint.encode(horseVariant)); }
+			if(this._horseArmor.changed){ writeBigEndianUbyte(16); writeBigEndianUbyte(1); writeBytes(varuint.encode(horseArmor)); }
+			if(this._chested.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(6); writeBigEndianBool(chested); }
+			if(this._llamaStrength.changed){ writeBigEndianUbyte(16); writeBigEndianUbyte(1); writeBytes(varuint.encode(llamaStrength)); }
+			if(this._carpetColor.changed){ writeBigEndianUbyte(17); writeBigEndianUbyte(1); writeBytes(varuint.encode(carpetColor)); }
+			if(this._llamaVariant.changed){ writeBigEndianUbyte(18); writeBigEndianUbyte(1); writeBytes(varuint.encode(llamaVariant)); }
+			if(this._pigSaddled.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(6); writeBigEndianBool(pigSaddled); }
+			if(this._rabbitVariant.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(1); writeBytes(varuint.encode(rabbitVariant)); }
+			if(this._standingUp.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(6); writeBigEndianBool(standingUp); }
+			if(this._sheepFlagsAndColor.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(0); writeBigEndianByte(sheepFlagsAndColor); }
+			if(this._tameableFlags.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(0); writeBigEndianByte(tameableFlags); }
+			if(this._ocelotVariant.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(1); writeBytes(varuint.encode(ocelotVariant)); }
+			if(this._wolfHealth.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(2); writeBigEndianFloat(wolfHealth); }
+			if(this._begging.changed){ writeBigEndianUbyte(16); writeBigEndianUbyte(6); writeBigEndianBool(begging); }
+			if(this._collarColor.changed){ writeBigEndianUbyte(17); writeBigEndianUbyte(1); writeBytes(varuint.encode(collarColor)); }
+			if(this._profession.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(1); writeBytes(varuint.encode(profession)); }
+			if(this._createdByPlayer.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(createdByPlayer); }
+			if(this._snowmanFlags.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(snowmanFlags); }
+			if(this._shulkerDirection.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(10); writeBytes(varuint.encode(shulkerDirection)); }
+			if(this._shulkerAttachment.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(9); shulkerAttachment.encode(bufferInstance); }
+			if(this._shulkerShieldHeight.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(0); writeBigEndianByte(shulkerShieldHeight); }
+			if(this._shulkerColor.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(0); writeBigEndianByte(shulkerColor); }
+			if(this._blazeOnFire.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(blazeOnFire); }
+			if(this._creeperState.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(1); writeBytes(varuint.encode(creeperState)); }
+			if(this._charged.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(6); writeBigEndianBool(charged); }
+			if(this._ignited.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(6); writeBigEndianBool(ignited); }
+			if(this._rectractingSpikes.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(6); writeBigEndianBool(rectractingSpikes); }
+			if(this._guardianTarget.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(1); writeBytes(varuint.encode(guardianTarget)); }
+			if(this._spell.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(spell); }
+			if(this._attackMode.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(attackMode); }
+			if(this._swingingArms.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(6); writeBigEndianBool(swingingArms); }
+			if(this._climbing.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(climbing); }
+			if(this._centerHeadTarget.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(1); writeBytes(varuint.encode(centerHeadTarget)); }
+			if(this._leftHeadTarget.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(1); writeBytes(varuint.encode(leftHeadTarget)); }
+			if(this._rightHeadTarget.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(1); writeBytes(varuint.encode(rightHeadTarget)); }
+			if(this._invulnerableTime.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(1); writeBytes(varuint.encode(invulnerableTime)); }
+			if(this._handsHeldUp.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(6); writeBigEndianBool(handsHeldUp); }
+			if(this._converting.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(6); writeBigEndianBool(converting); }
+			if(this._zombieVillagerProfession.changed){ writeBigEndianUbyte(16); writeBigEndianUbyte(1); writeBytes(varuint.encode(zombieVillagerProfession)); }
+			if(this._carriedBlock.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(12); writeBytes(varuint.encode(carriedBlock)); }
+			if(this._screaming.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(6); writeBigEndianBool(screaming); }
+			if(this._dragonPhase.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(1); writeBytes(varuint.encode(dragonPhase)); }
+			if(this._ghastAttacking.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(6); writeBigEndianBool(ghastAttacking); }
+			if(this._slimeSize.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(1); writeBytes(varuint.encode(slimeSize)); }
+			if(this._shakingPower.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(1); writeBytes(varuint.encode(shakingPower)); }
+			if(this._shakingDirection.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(1); writeBytes(varuint.encode(shakingDirection)); }
+			if(this._shakingMultiplier.changed){ writeBigEndianUbyte(8); writeBigEndianUbyte(2); writeBigEndianFloat(shakingMultiplier); }
+			if(this._minecartBlock.changed){ writeBigEndianUbyte(9); writeBigEndianUbyte(1); writeBytes(varuint.encode(minecartBlock)); }
+			if(this._minecartBlockPosition.changed){ writeBigEndianUbyte(10); writeBigEndianUbyte(1); writeBytes(varuint.encode(minecartBlockPosition)); }
+			if(this._minecartCustomBlock.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(6); writeBigEndianBool(minecartCustomBlock); }
+			if(this._furnacePowered.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(6); writeBigEndianBool(furnacePowered); }
+			if(this._command.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(3); writeBytes(varuint.encode(cast(uint)command.length)); writeString(command); }
+			if(this._lastOutput.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(4); writeBytes(varuint.encode(cast(uint)lastOutput.length)); writeString(lastOutput); }
+			if(this._fuseTime.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(1); writeBytes(varuint.encode(fuseTime)); }
 			writeBigEndianUbyte(255);
 		}
 	}

@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Informations about the node.
+ */
 class NodeInfo extends Packet {
 
 	public final static byte ID = (byte)3;
@@ -20,7 +23,11 @@ class NodeInfo extends Packet {
 	public final static boolean CLIENTBOUND = false;
 	public final static boolean SERVERBOUND = true;
 
+	// max
+	public static immutable int UNLIMITED = 0;
+
 	public long time;
+	public int max;
 	public Plugin[] plugins;
 
 	@Override
@@ -33,6 +40,7 @@ class NodeInfo extends Packet {
 		this.index = 0;
 		this.writeByteB(ID);
 		this.writeVarulong(time);
+		this.writeVaruint(max);
 		this.writeVaruint((int)plugins.length); for(plugin cgx1z2lucw:plugins){ this.writeBytes(cgx1z2lucw.encode()); }
 		return this.buffer;
 	}

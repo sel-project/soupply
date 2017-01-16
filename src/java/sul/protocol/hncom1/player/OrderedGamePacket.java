@@ -13,6 +13,10 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Sends data to the client but order it because it could be sent by the node unordered,
+ * due to compressed packet sent delayed.
+ */
 class OrderedGamePacket extends Packet {
 
 	public final static byte ID = (byte)20;

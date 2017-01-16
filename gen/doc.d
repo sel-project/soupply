@@ -140,10 +140,46 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 		}
 		// endianness
 		data ~= "## Endianness\n\n";
-		if("*" in ptrs.data.endianness) data ~= "every type: " ~ ptrs.data.endianness["*"].replace("_", " ") ~ "\n\n";
+		data ~= "Endianness | Types\n---|---\n";
+		string def = "big_endian";
+		string[string] change;
 		foreach(string type, string end; ptrs.data.endianness) {
-			if(type != "*") data ~= convert(type) ~ ": " ~ end.replace("_", " ") ~ "\n\n";
+			if(type != "*") change[type] = end;
 		}
+		string[] be, le;
+		string[] used;
+		foreach(string type ; ["byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double"]) {
+			(){
+				bool checkImpl(string ft) {
+					auto t = ft in ptrs.data.arrays;
+					if(t ? (*t).base.startsWith(type) || (*t).length.startsWith(type) : ft.startsWith(type)) {
+						auto e = type in change ? change[type] : def;
+						if(e == "big_endian") be ~= type;
+						else le ~= type;
+						return true;
+					}
+					return false;
+				}
+				bool check(Field field) {
+					return !field.endianness.length && checkImpl(field.type);
+				}
+				if(checkImpl(ptrs.data.id)) return;
+				if(checkImpl(ptrs.data.arrayLength)) return;
+				foreach(type ; ptrs.data.types) {
+					foreach(field ; type.fields) if(check(field)) return;
+				}
+				foreach(section ; ptrs.data.sections) {
+					foreach(packet ; section.packets) {
+						foreach(field ; packet.fields) if(check(field)) return;
+						foreach(variant ; packet.variants) {
+							foreach(field ; variant.fields) if(check(field)) return;
+						}
+					}
+				}
+			}();
+		}
+		data ~= "big endian | " ~ be.join(", ") ~ "\n";
+		data ~= "little endian | " ~ le.join(", ") ~ "\n\n";
 		data ~= "--------\n\n";
 		// sections (legend)
 		data ~= "## Packets\n\nSection | Packets\n---|:---:\n";

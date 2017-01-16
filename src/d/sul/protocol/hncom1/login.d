@@ -160,6 +160,9 @@ class ConnectionResponse : Buffer {
 
 }
 
+/**
+ * Informations about the hub.
+ */
 class HubInfo : Buffer {
 
 	public enum ubyte ID = 2;
@@ -246,6 +249,9 @@ class HubInfo : Buffer {
 
 }
 
+/**
+ * Informations about the node.
+ */
 class NodeInfo : Buffer {
 
 	public enum ubyte ID = 3;
@@ -253,15 +259,20 @@ class NodeInfo : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["time", "plugins"];
+	// max
+	public enum uint UNLIMITED = 0;
+
+	public enum string[] FIELDS = ["time", "max", "plugins"];
 
 	public ulong time;
+	public uint max;
 	public sul.protocol.hncom1.types.Plugin[] plugins;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(ulong time, sul.protocol.hncom1.types.Plugin[] plugins=(sul.protocol.hncom1.types.Plugin[]).init) {
+	public pure nothrow @safe @nogc this(ulong time, uint max=uint.init, sul.protocol.hncom1.types.Plugin[] plugins=(sul.protocol.hncom1.types.Plugin[]).init) {
 		this.time = time;
+		this.max = max;
 		this.plugins = plugins;
 	}
 
@@ -269,6 +280,7 @@ class NodeInfo : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varulong.encode(time));
+		writeBytes(varuint.encode(max));
 		writeBytes(varuint.encode(cast(uint)plugins.length)); foreach(cgx1z2lucw;plugins){ cgx1z2lucw.encode(bufferInstance); }
 		return _buffer;
 	}
@@ -276,6 +288,7 @@ class NodeInfo : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		time=varulong.decode(_buffer, &_index);
+		max=varuint.decode(_buffer, &_index);
 		plugins.length=varuint.decode(_buffer, &_index); foreach(ref cgx1z2lucw;plugins){ cgx1z2lucw.decode(bufferInstance); }
 	}
 

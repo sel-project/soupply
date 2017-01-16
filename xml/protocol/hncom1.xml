@@ -142,6 +142,7 @@
 			</packet>
 
 			<packet name="hub-info" id="2" clientbound="true" serverbound="false">
+				Informations about the hub.
 				<field name="time" type="varulong" />
 				<field name="server-id" type="varulong" />
 				<field name="reserved-uuids" type="varulong" />
@@ -158,7 +159,11 @@
 			</packet>
 
 			<packet name="node-info" id="3" clientbound="false" serverbound="true">
+				Informations about the node.
 				<field name="time" type="varulong" />
+				<field name="max" type="varuint">
+					<constant name="unlimited" value="0" />
+				</field>
 				<field name="plugins" type="plugin[]" />
 			</packet>
 
@@ -167,11 +172,13 @@
 		<section name="status">
 
 			<packet name="players" id="4" clientbound="true" serverbound="false">
+				Updates the number of players on the server.
 				<field name="online" type="varuint" />
 				<field name="max" type="varuint" />
 			</packet>
 
 			<packet name="nodes" id="5" clientbound="true" serverbound="false">
+				Adds or remove a node.
 				<field name="action" type="ubyte">
 					<constant name="add" value="0" />
 					<constant name="remove" value="1" />
@@ -180,6 +187,7 @@
 			</packet>
 
 			<packet name="resources-usage" id="6" clientbound="false" serverbound="true">
+				Updates the usage of the resources in the node.
 				<field name="tps" type="float" />
 				<field name="ram" type="varulong" />
 				<field name="cpu" type="float" />
@@ -190,10 +198,12 @@
 		<section name="generic">
 
 			<packet name="logs" id="7" clientbound="false" serverbound="true">
+				Sends node logs to the hub.
 				<field name="messages" type="log[]" />
 			</packet>
 
 			<packet name="remote-command" id="8" clientbound="true" serverbound="false">
+				Executes a command on the node.
 				<field name="origin" type="ubyte">
 					<constant name="hub" value="0" />
 					<constant name="external-console" value="1" />
@@ -204,6 +214,7 @@
 			</packet>
 
 			<packet name="update-list" id="9" clientbound="false" serverbound="true">
+				Updates a list.
 				<field name="list" type="ubyte">
 					<constant name="whitelist" value="0" />
 					<constant name="blacklist" value="1" />
@@ -239,22 +250,40 @@
 		<section name="player">
 
 			<packet name="add" id="11" clientbound="true" serverbound="false">
-				<field name="hub-id" type="hub-id" />
-				<field name="reason" type="ubyte">
-					<constant name="first-join" value="0" />
-					<constant name="transferred" value="1" />
-					<constant name="forcibly-transferred" value="2" />
+				Adds a player to the node.
+				<field name="hub-id" type="hub-id">
+					A unique identifier given by the hub that is never changed while the player is connected.
 				</field>
-				<field name="game" type="ubyte" />
-				<field name="protocol" type="varuint" />
-				<field name="username" type="string" />
-				<field name="display-name" type="string" />
+				<field name="reason" type="ubyte">
+					Reason why the player has joined the node.
+					<constant name="first-join" value="0">
+						The player has been automatically put on this node because it's a non-full main node
+					</constant>
+					<constant name="transferred" value="1">
+						The player has been transferred to this node
+					</constant>
+					<constant name="forcibly-transferred" value="2">
+						The player was on a node that has disconnected and the player has been transferred to the first non-full main node
+					</constant>
+				</field>
+				<field name="type" type="ubyte">
+					Game of the client, which could either be Minecraft or Minecraft: Pocket Edition.
+				</field>
+				<field name="protocol" type="varuint">
+					Version of the protocol used by the client.
+				</field>
+				<field name="username" type="string">
+					Username of the player.
+				</field>
+				<field name="display-name" type="string">
+					Display name of the player, which can contain formatting codes. It can be updated by the node.
+				</field>
 				<field name="address" type="address" />
 				<field name="uuid" type="uuid" />
 				<field name="skin" type="skin" />
 				<field name="latency" type="varuint" />
 				<field name="language" type="string" />
-				<variants field="game">
+				<variants field="type">
 					<variant name="pocket" value="1">
 						<field name="xuid" type="varlong" />
 						<field name="edu" type="bool" />
@@ -267,6 +296,7 @@
 			</packet>
 
 			<packet name="remove" id="12" clientbound="true" serverbound="false">
+				Removes a player from the node.
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="ubyte">
 					<constant name="left" value="0" />
@@ -277,6 +307,7 @@
 			</packet>
 
 			<packet name="kick" id="13" clientbound="false" serverbound="true">
+				Kicks a player from the node and the whole server. When a player is disconnected from the node using this packet the hub will not send the [Remove](#player.remove) packet.
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="string" />
 				<field name="translation" type="bool" />
@@ -284,11 +315,13 @@
 			</packet>
 
 			<packet name="transfer" id="14" clientbound="false" serverbound="true">
+				Transfers a player to another node. When a player is transferred from the node the hub will not send the [Remove](#login.remove) packet and there's no way, for the node, to know whether the player was disconnected or successfully transferred.
 				<field name="hub-id" type="hub-id" />
 				<field name="node" type="string" />
 			</packet>
 
 			<packet name="update-language" id="15" clientbound="false" serverbound="true">
+				Updates the player language after the client has changed it.
 				<field name="hub-id" type="hub-id" />
 				<field name="language" type="string" />
 			</packet>
@@ -309,11 +342,13 @@
 			</packet>
 
 			<packet name="game-packet" id="19" clientbound="true" serverbound="true">
+				Sends data to client or handles data received from the client.
 				<field name="hub-id" type="hub-id" />
 				<field name="packet" type="bytes" />
 			</packet>
 
 			<packet name="ordered-game-packet" id="20" clientbound="false" serverbound="true">
+				Sends data to the client but order it because it could be sent by the node unordered, due to compressed packet sent delayed.
 				<field name="hub-id" type="hub-id" />
 				<field name="order" type="varuint" />
 				<field name="packet" type="bytes" />

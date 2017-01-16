@@ -216,6 +216,13 @@
 						"type": "varulong"
 					},
 					{
+						"name": "max",
+						"type": "varuint",
+						"constants": {
+							"unlimited": 0
+						}
+					},
+					{
 						"name": "plugins",
 						"type": "plugin[]"
 					}
@@ -421,7 +428,7 @@
 						}
 					},
 					{
-						"name": "game",
+						"name": "type",
 						"type": "ubyte"
 					},
 					{
@@ -458,7 +465,7 @@
 					}
 				],
 				"variants": {
-					"field": "game",
+					"field": "type",
 					"values": {
 						"pocket": {
 							"value": 1,

@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Informations about the hub.
+ */
 class HubInfo extends Packet {
 
 	public final static byte ID = (byte)2;

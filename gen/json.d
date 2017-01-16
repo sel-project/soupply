@@ -20,7 +20,7 @@ import std.json;
 
 import all;
 
-void json(Attributes[string] attributes, Protocols[string] protocols, Creative[string] creative) {
+void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative) {
 
 	// attributes
 	mkdirRecurse("../json/attributes");
@@ -67,6 +67,47 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Creative[s
 		}
 		data ~= "\t]\n\n}\n";
 		_write("../json/creative/" ~ game ~ ".json", data);
+	}
+
+	// metadata
+	mkdirRecurse("../json/metadata");
+	foreach(string game, Metadatas m; metadatas) {
+		string data = "{\n\n\t\"__software\": " ~ JSONValue(m.software).toString() ~ ",\n\t\"__protocol\": " ~ m.protocol.to!string ~ ",\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
+		data ~= "\t\"encoding\": {\n\n";
+		if(m.data.prefix.length) data ~= "\t\t\"prefix\": " ~ m.data.prefix ~ ",\n\n";
+		if(m.data.length.length) data ~= "\t\t\"length\": " ~ JSONValue(m.data.length).toString() ~ ",\n\n";
+		if(m.data.suffix.length) data ~= "\t\t\"suffix\": " ~ m.data.suffix ~ ",\n\n";
+		data ~= "\t\t\"types\": " ~ JSONValue(m.data.type).toString() ~ ",\n\n";
+		data ~= "\t\t\"ids\": " ~ JSONValue(m.data.id).toString() ~ "\n\n";
+		data ~= "\t},\n\n";
+		data ~= "\t\"types\": {\n\n";
+		foreach(i, type; m.data.types) {
+			data ~= "\t\t" ~ JSONValue(type.name).toString() ~ ": {\n";
+			data ~= "\t\t\t\"type\": " ~ JSONValue(type.type).toString() ~ ",\n";
+			data ~= "\t\t\t\"id\": " ~ to!string(type.id) ~ (type.endianness.length ? "," : "") ~ "\n";
+			if(type.endianness.length) data ~= "\t\t\t\"endianness\": \"" ~ type.endianness ~ "\"\n";
+			data ~= "\t\t}" ~ (i != m.data.types.length - 1 ? "," : "") ~ "\n\n";
+		}
+		data ~= "\t},\n\n";
+		data ~= "\t\"metadata\": {\n\n";
+		foreach(i, metadata; m.data.data) {
+			data ~= "\t\t" ~ JSONValue(metadata.name).toString() ~ ": {\n";
+			data ~= "\t\t\t\"type\": " ~ JSONValue(metadata.type).toString() ~ ",\n";
+			data ~= "\t\t\t\"id\": " ~ to!string(metadata.id) ~ ",\n";
+			data ~= "\t\t\t\"required\": " ~ to!string(metadata.required) ~ (metadata.def.length || metadata.flags.length ? "," : "") ~ "\n";
+			if(metadata.def.length) data ~= "\t\t\t\"default\": " ~ metadata.def ~ (metadata.flags.length ? "," : "") ~ "\n";
+			if(metadata.flags.length) {
+				data ~= "\t\t\t\"flags\": {\n";
+				foreach(j, flag; metadata.flags) {
+					data ~= "\t\t\t\t" ~ JSONValue(flag.name).toString() ~ ": " ~ to!string(flag.bit) ~ (j != metadata.flags.length - 1 ? "," : "") ~ "\n";
+				}
+				data ~= "\t\t\t}\n";
+			}
+			data ~= "\t\t}" ~ (i != m.data.data.length - 1 ? "," : "") ~ "\n\n";
+		}
+		data ~= "\t}\n\n";
+		data ~= "}\n";
+		_write("../json/metadata/" ~ game ~ ".json", data);
 	}
 
 	// protocol

@@ -25,7 +25,16 @@
 		The connection starts with the client sending the string `classic` encoded as UTF-8 to the server, which replies with an [AuthCredentials](#login.auth-credentials) packet and waits for the client to authenticate.
 
 		### Using Web Sockets
-		The websocket protocol uses json packets instead of binary ones and encodes the arrays of bytes ([AuthCredentials.payload](#login.auth-credentials.payload) and [Auth.hash](#login.auth.hash)) into strings using base64.
+		The websocket protocol uses json packets instead of binary ones (with the keys in snake case) and encodes the arrays of bytes ([AuthCredentials.payload](#login.auth-credentials.payload) and [Auth.hash](#login.auth.hash)) into strings using base64. The connection is established like every web socket connection and, if successfull, continues with the [AuthCredentials](#login.auth-credentials) packet sent by the server.
+		Example of a connection in javascript:
+		```javascript
+		var socket = new WebSocket("example.com:19134");
+		socket.onmessage = function(event){
+			var json = JSON.parse(event.data);
+			if(json.hash) console.log("Server's requires hash " + json.hash_algorithm);
+			else console.log("The server doesn't require hashing");
+		}
+		```
 
 		## Authenticating
 		After receiving the [AuthCredentials](#login.auth-credentials) packet, the external console, if able to perform authentication, has to send the password or its hash through the [Auth](#login.auth) packet and waits for a response, given by the [Welcome](#login.welcome) packet. If the server accepts the external console the status in the packet will be "accepted", the additional fields of the [Welcome.Accepted](#login.welcome.accepted) packet can be read and the external console can proceed keeping the connection alive, sending commands, receiving logs and other updates.
@@ -159,6 +168,8 @@
 
 		<section name="status">
 
+			Packets about the informations and the usage of the server.
+
 			<packet name="keep-alive" id="0" clientbound="true" serverbound="true">
 				Keeps the connection alive and/or calculates the latency. This packet should be sent at least every 5 seconds to avoid the disconnection caused by timeout and update the latency. The external console can send this packet whenever it wants it and the server must reply with the same packet with the same field's value.
 				<field name="count" type="uint">
@@ -209,6 +220,8 @@
 		</section>
 
 		<section name="connected">
+
+			Packets regarding the server's console and commands.
 
 			<packet name="console-message" id="4" clientbound="true" serverbound="false">
 				Logs a message from the server's console. It may be the output of a command, a debug message or any other message that the server retains able to be seen by the External Console.

@@ -22,6 +22,9 @@ static import sul.protocol.hncom1.types;
 
 alias Packets = TypeTuple!(Add, Remove, Kick, Transfer, UpdateLanguage, UpdateDisplayName, UpdateLatency, UpdatePacketLoss, GamePacket, OrderedGamePacket);
 
+/**
+ * Adds a player to the node.
+ */
 class Add : Buffer {
 
 	public enum ubyte ID = 11;
@@ -34,13 +37,37 @@ class Add : Buffer {
 	public enum ubyte TRANSFERRED = 1;
 	public enum ubyte FORCIBLY_TRANSFERRED = 2;
 
-	public enum string[] FIELDS = ["hubId", "reason", "game", "protocol", "username", "displayName", "address", "uuid", "skin", "latency", "language"];
+	public enum string[] FIELDS = ["hubId", "reason", "type", "protocol", "username", "displayName", "address", "uuid", "skin", "latency", "language"];
 
+	/**
+	 * A unique identifier given by the hub that is never changed while the player is connected.
+	 */
 	public uint hubId;
+
+	/**
+	 * Reason why the player has joined the node.
+	 */
 	public ubyte reason;
-	public ubyte game;
+
+	/**
+	 * Game of the client, which could either be Minecraft or Minecraft: Pocket Edition.
+	 */
+	public ubyte type;
+
+	/**
+	 * Version of the protocol used by the client.
+	 */
 	public uint protocol;
+
+	/**
+	 * Username of the player.
+	 */
 	public string username;
+
+	/**
+	 * Display name of the player, which can contain formatting codes. It can be updated
+	 * by the node.
+	 */
 	public string displayName;
 	public sul.protocol.hncom1.types.Address address;
 	public UUID uuid;
@@ -50,10 +77,10 @@ class Add : Buffer {
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, ubyte game=ubyte.init, uint protocol=uint.init, string username=string.init, string displayName=string.init, sul.protocol.hncom1.types.Address address=sul.protocol.hncom1.types.Address.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, uint latency=uint.init, string language=string.init) {
+	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, ubyte type=ubyte.init, uint protocol=uint.init, string username=string.init, string displayName=string.init, sul.protocol.hncom1.types.Address address=sul.protocol.hncom1.types.Address.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, uint latency=uint.init, string language=string.init) {
 		this.hubId = hubId;
 		this.reason = reason;
-		this.game = game;
+		this.type = type;
 		this.protocol = protocol;
 		this.username = username;
 		this.displayName = displayName;
@@ -69,7 +96,7 @@ class Add : Buffer {
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(hubId));
 		writeBigEndianUbyte(reason);
-		writeBigEndianUbyte(game);
+		writeBigEndianUbyte(type);
 		writeBytes(varuint.encode(protocol));
 		writeBytes(varuint.encode(cast(uint)username.length)); writeString(username);
 		writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName);
@@ -85,7 +112,7 @@ class Add : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		hubId=varuint.decode(_buffer, &_index);
 		reason=readBigEndianUbyte();
-		game=readBigEndianUbyte();
+		type=readBigEndianUbyte();
 		protocol=varuint.decode(_buffer, &_index);
 		uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
 		uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu);
@@ -105,13 +132,13 @@ class Add : Buffer {
 
 	alias _encode = encode;
 
-	enum string variantField = "game";
+	enum string variantField = "type";
 
 	alias Variants = TypeTuple!(Pocket, Minecraft);
 
 	public class Pocket {
 
-		public enum typeof(game) GAME = 1;
+		public enum typeof(type) TYPE = 1;
 
 		public enum string[] FIELDS = ["xuid", "edu", "packetLoss"];
 
@@ -128,7 +155,7 @@ class Add : Buffer {
 		}
 
 		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
-			game = 1;
+			type = 1;
 			_encode!writeId();
 			writeBytes(varlong.encode(xuid));
 			writeBigEndianBool(edu);
@@ -146,12 +173,12 @@ class Add : Buffer {
 
 	public class Minecraft {
 
-		public enum typeof(game) GAME = 2;
+		public enum typeof(type) TYPE = 2;
 
 		public enum string[] FIELDS = [];
 
 		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
-			game = 2;
+			type = 2;
 			_encode!writeId();
 			return _buffer;
 		}
@@ -163,6 +190,9 @@ class Add : Buffer {
 
 }
 
+/**
+ * Removes a player from the node.
+ */
 class Remove : Buffer {
 
 	public enum ubyte ID = 12;
@@ -211,6 +241,10 @@ class Remove : Buffer {
 
 }
 
+/**
+ * Kicks a player from the node and the whole server. When a player is disconnected
+ * from the node using this packet the hub will not send the Remove packet.
+ */
 class Kick : Buffer {
 
 	public enum ubyte ID = 13;
@@ -261,6 +295,11 @@ class Kick : Buffer {
 
 }
 
+/**
+ * Transfers a player to another node. When a player is transferred from the node the
+ * hub will not send the Remove packet and there's no way, for the node, to know whether
+ * the player was disconnected or successfully transferred.
+ */
 class Transfer : Buffer {
 
 	public enum ubyte ID = 14;
@@ -303,6 +342,9 @@ class Transfer : Buffer {
 
 }
 
+/**
+ * Updates the player language after the client has changed it.
+ */
 class UpdateLanguage : Buffer {
 
 	public enum ubyte ID = 15;
@@ -471,6 +513,9 @@ class UpdatePacketLoss : Buffer {
 
 }
 
+/**
+ * Sends data to client or handles data received from the client.
+ */
 class GamePacket : Buffer {
 
 	public enum ubyte ID = 19;
@@ -513,6 +558,10 @@ class GamePacket : Buffer {
 
 }
 
+/**
+ * Sends data to the client but order it because it could be sent by the node unordered,
+ * due to compressed packet sent delayed.
+ */
 class OrderedGamePacket : Buffer {
 
 	public enum ubyte ID = 20;

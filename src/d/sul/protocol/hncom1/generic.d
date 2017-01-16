@@ -22,6 +22,9 @@ static import sul.protocol.hncom1.types;
 
 alias Packets = TypeTuple!(Logs, RemoteCommand, UpdateList, Reload);
 
+/**
+ * Sends node logs to the hub.
+ */
 class Logs : Buffer {
 
 	public enum ubyte ID = 7;
@@ -60,6 +63,9 @@ class Logs : Buffer {
 
 }
 
+/**
+ * Executes a command on the node.
+ */
 class RemoteCommand : Buffer {
 
 	public enum ubyte ID = 8;
@@ -111,6 +117,9 @@ class RemoteCommand : Buffer {
 
 }
 
+/**
+ * Updates a list.
+ */
 class UpdateList : Buffer {
 
 	public enum ubyte ID = 9;

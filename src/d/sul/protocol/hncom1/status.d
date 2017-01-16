@@ -22,6 +22,9 @@ static import sul.protocol.hncom1.types;
 
 alias Packets = TypeTuple!(Players, Nodes, ResourcesUsage);
 
+/**
+ * Updates the number of players on the server.
+ */
 class Players : Buffer {
 
 	public enum ubyte ID = 4;
@@ -64,6 +67,9 @@ class Players : Buffer {
 
 }
 
+/**
+ * Adds or remove a node.
+ */
 class Nodes : Buffer {
 
 	public enum ubyte ID = 5;
@@ -110,6 +116,9 @@ class Nodes : Buffer {
 
 }
 
+/**
+ * Updates the usage of the resources in the node.
+ */
 class ResourcesUsage : Buffer {
 
 	public enum ubyte ID = 6;

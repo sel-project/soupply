@@ -47,7 +47,7 @@ alias Item = Tuple!(string, "name", ushort, "id", ushort, "meta", Enchantment[],
 alias Creative = File!(Item[]);
 
 
-alias MetadataType = Tuple!(string, "name", string, "type", ubyte, "id");
+alias MetadataType = Tuple!(string, "name", string, "type", ubyte, "id", string, "endianness");
 
 alias MetadataFlag = Tuple!(string, "name", string, "description", size_t, "bit");
 
@@ -168,7 +168,8 @@ void main(string[] args) {
 						m.data.id = element.tag.attr["ids"];
 						foreach(t ; element.elements) {
 							if(t.tag.name == "type") {
-								m.data.types ~= MetadataType(t.tag.attr["name"].replace("-", "_"), t.tag.attr["type"].replace("-", "_"), t.tag.attr["id"].to!ubyte);
+								auto e = "endianness" in t.tag.attr;
+								m.data.types ~= MetadataType(t.tag.attr["name"].replace("-", "_"), t.tag.attr["type"].replace("-", "_"), t.tag.attr["id"].to!ubyte, e ? *e : "");
 							}
 						}
 						break;
@@ -353,7 +354,7 @@ void main(string[] args) {
 	if(wall || wjs) js.js(attributes, protocols, creative);
 
 	if(wall || wdoc) doc.doc(attributes, protocols, metadata);
-	if(wall || wjson) json.json(attributes, protocols, creative);
+	if(wall || wjson) json.json(attributes, protocols, metadata, creative);
 
 }
 

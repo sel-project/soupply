@@ -13,6 +13,10 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Kicks a player from the node and the whole server. When a player is disconnected
+ * from the node using this packet the hub will not send the Remove packet.
+ */
 class Kick extends Packet {
 
 	public final static byte ID = (byte)13;

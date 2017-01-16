@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Updates the number of players on the server.
+ */
 class Players extends Packet {
 
 	public final static byte ID = (byte)4;

@@ -13,6 +13,11 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Transfers a player to another node. When a player is transferred from the node the
+ * hub will not send the Remove packet and there's no way, for the node, to know whether
+ * the player was disconnected or successfully transferred.
+ */
 class Transfer extends Packet {
 
 	public final static byte ID = (byte)14;

@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Sends data to client or handles data received from the client.
+ */
 class GamePacket extends Packet {
 
 	public final static byte ID = (byte)19;

@@ -22,9 +22,9 @@ class MoveEntity extends Packet {
 
 	public long entityId;
 	public Tuples.FloatXYZ position;
-	public float pitch;
-	public float headYaw;
-	public float yaw;
+	public byte pitch;
+	public byte headYaw;
+	public byte yaw;
 
 	@Override
 	public int length() {
@@ -37,9 +37,9 @@ class MoveEntity extends Packet {
 		this.writeByteB(ID);
 		this.writeVarlong(entityId);
 		this.writeFloatlittle_endian(position.x);this.writeFloatlittle_endian(position.y);this.writeFloatlittle_endian(position.z);
-		this.writeFloatlittle_endian(pitch);
-		this.writeFloatlittle_endian(headYaw);
-		this.writeFloatlittle_endian(yaw);
+		this.writeByteB(pitch);
+		this.writeByteB(headYaw);
+		this.writeByteB(yaw);
 		return this.buffer;
 	}
 

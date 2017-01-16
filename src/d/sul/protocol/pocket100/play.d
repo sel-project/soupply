@@ -1134,13 +1134,13 @@ class MoveEntity : Buffer {
 
 	public long entityId;
 	public Tuple!(float, "x", float, "y", float, "z") position;
-	public float pitch;
-	public float headYaw;
-	public float yaw;
+	public ubyte pitch;
+	public ubyte headYaw;
+	public ubyte yaw;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long entityId, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, float pitch=float.init, float headYaw=float.init, float yaw=float.init) {
+	public pure nothrow @safe @nogc this(long entityId, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, ubyte pitch=ubyte.init, ubyte headYaw=ubyte.init, ubyte yaw=ubyte.init) {
 		this.entityId = entityId;
 		this.position = position;
 		this.pitch = pitch;
@@ -1153,9 +1153,9 @@ class MoveEntity : Buffer {
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varlong.encode(entityId));
 		writeLittleEndianFloat(position.x); writeLittleEndianFloat(position.y); writeLittleEndianFloat(position.z);
-		writeLittleEndianFloat(pitch);
-		writeLittleEndianFloat(headYaw);
-		writeLittleEndianFloat(yaw);
+		writeBigEndianUbyte(pitch);
+		writeBigEndianUbyte(headYaw);
+		writeBigEndianUbyte(yaw);
 		return _buffer;
 	}
 
@@ -1163,9 +1163,9 @@ class MoveEntity : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		entityId=varlong.decode(_buffer, &_index);
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
-		pitch=readLittleEndianFloat();
-		headYaw=readLittleEndianFloat();
-		yaw=readLittleEndianFloat();
+		pitch=readBigEndianUbyte();
+		headYaw=readBigEndianUbyte();
+		yaw=readBigEndianUbyte();
 	}
 
 	public static pure nothrow @safe MoveEntity fromBuffer(bool readId=true)(ubyte[] buffer) {

@@ -6,6 +6,9 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generator: https://github.com/sel-project/sel-utils/blob/master/xml/protocol/externalconsole1.xml
  */
+/**
+ * Packets regarding the server's console and commands.
+ */
 module sul.protocol.externalconsole1.connected;
 
 import std.bitmanip : write, peek;

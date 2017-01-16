@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Updates the usage of the resources in the node.
+ */
 class ResourcesUsage extends Packet {
 
 	public final static byte ID = (byte)6;

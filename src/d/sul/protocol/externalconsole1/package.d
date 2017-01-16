@@ -28,8 +28,19 @@
  * to authenticate.
  * 
  * <h3>Using Web Sockets</h3>
- * The websocket protocol uses json packets instead of binary ones and encodes the
- * arrays of bytes (AuthCredentials.payload and Auth.hash) into strings using base64.
+ * The websocket protocol uses json packets instead of binary ones (with the keys in
+ * snake case) and encodes the arrays of bytes (AuthCredentials.payload and Auth.hash)
+ * into strings using base64. The connection is established like every web socket connection
+ * and, if successfull, continues with the AuthCredentials packet sent by the server.
+ * Example of a connection in javascript:
+ * ---pt
+ * var socket = new WebSocket("example.com:19134");
+ * socket.onmessage = function(event){
+ * var json = JSON.parse(event.data);
+ * if(json.hash) console.log("Server's requires hash " + json.hash_algorithm);
+ * else console.log("The server doesn't require hashing");
+ * }
+ * ---
  * 
  * <h2>Authenticating</h2>
  * After receiving the AuthCredentials packet, the external console, if able to perform

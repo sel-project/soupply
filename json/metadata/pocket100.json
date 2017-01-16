@@ -1,28 +1,76 @@
 {
 
-	"__game": "Minecraft: Pocket Edition",
+	"__software": "Minecraft: Pocket Edition",
 	"__protocol": 100,
 	"__website": "https://github.com/sel-project/sel-utils",
-	
+
+	"encoding": {
+
+		"length": "varuint",
+
+		"types": "varuint",
+
+		"ids": "varuint"
+
+	},
+
 	"types": {
 
-		"byte": 0,
-		"short": 1,
-		"varint": 2,
-		"float": 3,
-		"string": 4,
-		"slot": 5,
-		"varint<xyz>": 6,
-		"varlong": 7,
-		"float<xyz>": 8
+		"byte": {
+			"type": "byte",
+			"id": 0
+		},
+
+		"short": {
+			"type": "short",
+			"id": 1,
+			"endianness": "little-endian"
+		},
+
+		"int": {
+			"type": "varint",
+			"id": 2
+		},
+
+		"float": {
+			"type": "float",
+			"id": 3
+		},
+
+		"string": {
+			"type": "string",
+			"id": 4
+		},
+
+		"slot": {
+			"type": "slot",
+			"id": 5
+		},
+
+		"block_position": {
+			"type": "block_position",
+			"id": 6
+		},
+
+		"long": {
+			"type": "varlong",
+			"id": 7
+		},
+
+		"entity_position": {
+			"type": "float<xyz>",
+			"id": 8
+		}
 
 	},
 
 	"metadata": {
 
 		"entity_flags": {
-			"type": "varlong",
+			"type": "long",
 			"id": 0,
+			"required": true,
+			"default": 0,
 			"flags": {
 				"on_fire": 0,
 				"sneaking": 1,
@@ -42,7 +90,7 @@
 				"always_show_nametag": 15,
 				"no_ai": 16,
 				"silent": 17,
-				"wall_climbing": 18,
+				"climbing": 18,
 				"resting": 19,
 				"sitting": 20,
 				"angry": 21,
@@ -62,77 +110,131 @@
 		},
 
 		"variant": {
-			"type": "varint",
-			"default": 0,
-			"id": 2
+			"type": "int",
+			"id": 2,
+			"required": false
 		},
 
 		"color": {
 			"type": "byte",
-			"id": 3
+			"id": 3,
+			"required": false
 		},
 
 		"nametag": {
 			"type": "string",
-			"default": "",
-			"id": 4
+			"id": 4,
+			"required": false
 		},
 
 		"owner": {
-			"type": "varlong",
-			"default": -1,
-			"id": 5
+			"type": "long",
+			"id": 5,
+			"required": false,
+			"default": -1
 		},
 
 		"air": {
 			"type": "short",
-			"default": 300,
-			"id": 7
+			"id": 7,
+			"required": true,
+			"default": 0
 		},
 
 		"potion_color": {
-			"type": "varint",
-			"id": 8
+			"type": "int",
+			"id": 8,
+			"required": false
 		},
 
 		"potion_ambient": {
 			"type": "byte",
-			"id": 9
+			"id": 9,
+			"required": false
+		},
+
+		"slime_size": {
+			"type": "byte",
+			"id": 16,
+			"required": false,
+			"default": 1
+		},
+
+		"player_flags": {
+			"type": "byte",
+			"id": 27,
+			"required": false,
+			"flags": {
+				"asleep": 1
+			}
+		},
+
+		"player_index": {
+			"type": "int",
+			"id": 28,
+			"required": false
+		},
+
+		"bed_position": {
+			"type": "block_position",
+			"id": 29,
+			"required": false
 		},
 
 		"lead_holder": {
-			"type": "varlong",
-			"default": -1,
+			"type": "long",
 			"id": 38,
-			"always": true
+			"required": true,
+			"default": -1
 		},
 
 		"scale": {
 			"type": "float",
-			"default": 1,
-			"id": 39
+			"id": 39,
+			"required": false,
+			"default": 1
 		},
 
 		"interactive_tag": {
 			"type": "string",
-			"id": 40
+			"id": 40,
+			"required": false
 		},
 
 		"interactive_tag_url": {
 			"type": "string",
-			"id": 43
+			"id": 43,
+			"required": false
+		},
+
+		"max_air": {
+			"type": "short",
+			"id": 44,
+			"required": false
+		},
+
+		"mark_variant": {
+			"type": "int",
+			"id": 45,
+			"required": false
 		},
 
 		"bounding_box_width": {
 			"type": "float",
-			"default": 0,
-			"id": 53
+			"id": 54,
+			"required": false
 		},
 
 		"bounding_box_height": {
 			"type": "float",
-			"default": 0,
-			"id": 54
+			"id": 55,
+			"required": false
+		},
+
+		"fuse_length": {
+			"type": "int",
+			"id": 56,
+			"required": false
 		}
 
 	}

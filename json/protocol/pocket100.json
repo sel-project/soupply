@@ -699,15 +699,15 @@
 					},
 					{
 						"name": "pitch",
-						"type": "float"
+						"type": "ubyte"
 					},
 					{
 						"name": "head_yaw",
-						"type": "float"
+						"type": "ubyte"
 					},
 					{
 						"name": "yaw",
-						"type": "float"
+						"type": "ubyte"
 					}
 				]
 			},

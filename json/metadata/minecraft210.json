@@ -1,74 +1,726 @@
 {
-	
-	"__game": "Minecraft",
-	"__protocol": 210,
+
+	"__software": "Minecraft",
+	"__protocol": 316,
 	"__website": "https://github.com/sel-project/sel-utils",
-	
-	"types": {
-		
-		"byte": 0,
-		"varint": 1,
-		"float": 2,
-		"string": 3,
-		"chat": 4,
-		"slot": 5,
-		"bool": 6,
-		"rotation": 7,
-		"position": 8,
-		"optional_position": 9,
-		"direction": 10,
-		"optional_uuid": 11,
-		"block": 12
-		
+
+	"encoding": {
+
+		"suffix": 255,
+
+		"types": "ubyte",
+
+		"ids": "ubyte"
+
 	},
-	
+
+	"types": {
+
+		"byte": {
+			"type": "byte",
+			"id": 0
+		},
+
+		"int": {
+			"type": "varuint",
+			"id": 1
+		},
+
+		"float": {
+			"type": "float",
+			"id": 2
+		},
+
+		"string": {
+			"type": "string",
+			"id": 3
+		},
+
+		"chat": {
+			"type": "string",
+			"id": 4
+		},
+
+		"slot": {
+			"type": "slot",
+			"id": 5
+		},
+
+		"bool": {
+			"type": "bool",
+			"id": 6
+		},
+
+		"rotation": {
+			"type": "float<xyz>",
+			"id": 7
+		},
+
+		"position": {
+			"type": "ulong",
+			"id": 8
+		},
+
+		"optional_position": {
+			"type": "optional_position",
+			"id": 9
+		},
+
+		"direction": {
+			"type": "varuint",
+			"id": 10
+		},
+
+		"uuid": {
+			"type": "optional_uuid",
+			"id": 11
+		},
+
+		"block": {
+			"type": "varuint",
+			"id": 12
+		}
+
+	},
+
 	"metadata": {
 
 		"entity_flags": {
 			"type": "byte",
 			"id": 0,
+			"required": true,
 			"flags": {
 				"on_fire": 0,
 				"sneaking": 1,
 				"sprinting": 3,
-				"using_item": 4,
 				"invisible": 5,
 				"glowing": 6,
-				"flying_elytra": 7
+				"gliding": 7
 			}
 		},
-		
+
 		"air": {
-			"type": "varint",
-			"default": 300,
-			"id": 1
+			"type": "int",
+			"id": 1,
+			"required": false,
+			"default": 300
 		},
-		
-		"custom_name": {
+
+		"nametag": {
 			"type": "string",
-			"id": 2
+			"id": 2,
+			"required": false
 		},
-		
-		"custom_name_visible": {
+
+		"show_nametag": {
 			"type": "bool",
-			"id": 3
+			"id": 3,
+			"required": false
 		},
-		
+
 		"silent": {
 			"type": "bool",
-			"id": 4
+			"id": 4,
+			"required": false
 		},
-		
+
 		"no_gravity": {
 			"type": "bool",
-			"id": 5
+			"id": 5,
+			"required": false
+		},
+
+		"potion": {
+			"type": "slot",
+			"id": 6,
+			"required": false
+		},
+
+		"spawn_position": {
+			"type": "position",
+			"id": 7,
+			"required": false
+		},
+
+		"radius": {
+			"type": "float",
+			"id": 6,
+			"required": false,
+			"default": 0.5
+		},
+
+		"color": {
+			"type": "int",
+			"id": 7,
+			"required": false
+		},
+
+		"is_single_point": {
+			"type": "bool",
+			"id": 8,
+			"required": false
+		},
+
+		"particle_id": {
+			"type": "int",
+			"id": 9,
+			"required": false
+		},
+
+		"particle_parameter_1": {
+			"type": "int",
+			"id": 10,
+			"required": false
+		},
+
+		"particle_parameter_2": {
+			"type": "int",
+			"id": 11,
+			"required": false
+		},
+
+		"hooked_entity": {
+			"type": "int",
+			"id": 6,
+			"required": false
+		},
+
+		"arrow_flags": {
+			"type": "byte",
+			"id": 6,
+			"required": false,
+			"flags": {
+				"critical": 0
+			}
+		},
+
+		"time_since_last_hit": {
+			"type": "int",
+			"id": 6,
+			"required": false
+		},
+
+		"forward_direction": {
+			"type": "int",
+			"id": 7,
+			"required": false,
+			"default": 1
+		},
+
+		"damage_taken": {
+			"type": "float",
+			"id": 8,
+			"required": false,
+			"default": 0
+		},
+
+		"boat_variant": {
+			"type": "int",
+			"id": 9,
+			"required": false
+		},
+
+		"right_paddle_turning": {
+			"type": "bool",
+			"id": 10,
+			"required": false
+		},
+
+		"left_paddle_turning": {
+			"type": "bool",
+			"id": 11,
+			"required": false
+		},
+
+		"beam_target": {
+			"type": "optional_position",
+			"id": 6,
+			"required": false
+		},
+
+		"show_bottom": {
+			"type": "bool",
+			"id": 7,
+			"required": false
+		},
+
+		"firework": {
+			"type": "slot",
+			"id": 6,
+			"required": false
 		},
 
 		"item": {
 			"type": "slot",
-			"id": 6
+			"id": 6,
+			"required": false
+		},
+
+		"rotation": {
+			"type": "int",
+			"id": 7,
+			"required": false
+		},
+
+		"living_flags": {
+			"type": "byte",
+			"id": 6,
+			"required": false,
+			"flags": {
+				"hand_active": 0,
+				"offhand": 1
+			}
+		},
+
+		"health": {
+			"type": "float",
+			"id": 7,
+			"required": false,
+			"default": 1
+		},
+
+		"potion_color": {
+			"type": "int",
+			"id": 8,
+			"required": false
+		},
+
+		"potion_ambient": {
+			"type": "bool",
+			"id": 9,
+			"required": false
+		},
+
+		"arrows": {
+			"type": "int",
+			"id": 10,
+			"required": false
+		},
+
+		"additional_hearts": {
+			"type": "float",
+			"id": 11,
+			"required": false,
+			"default": 0
+		},
+
+		"score": {
+			"type": "int",
+			"id": 12,
+			"required": false
+		},
+
+		"skin_parts": {
+			"type": "byte",
+			"id": 13,
+			"required": false,
+			"default": 0,
+			"flags": {
+				"cape": 0,
+				"jacket": 1,
+				"left_sleeve": 2,
+				"right_sleeve": 3,
+				"left_pants": 4,
+				"right_pants": 5,
+				"hat": 6
+			}
+		},
+
+		"main_hand": {
+			"type": "byte",
+			"id": 14,
+			"required": false,
+			"default": 1
+		},
+
+		"armor_stand_flags": {
+			"type": "byte",
+			"id": 11,
+			"required": false,
+			"flags": {
+				"is_small": 0,
+				"has_arms": 2,
+				"no_base_plate": 3,
+				"set_marker": 4
+			}
+		},
+
+		"head_rotation": {
+			"type": "rotation",
+			"id": 12,
+			"required": false
+		},
+
+		"body_rotation": {
+			"type": "rotation",
+			"id": 13,
+			"required": false
+		},
+
+		"left_arm_rotation": {
+			"type": "rotation",
+			"id": 14,
+			"required": false
+		},
+
+		"right_arm_rotation": {
+			"type": "rotation",
+			"id": 15,
+			"required": false
+		},
+
+		"left_leg_rotation": {
+			"type": "rotation",
+			"id": 16,
+			"required": false
+		},
+
+		"right_leg_rotation": {
+			"type": "rotation",
+			"id": 17,
+			"required": false
+		},
+
+		"instentient_flags": {
+			"type": "byte",
+			"id": 11,
+			"required": false,
+			"flags": {
+				"no_ai": 0,
+				"left_handed": 1
+			}
+		},
+
+		"hanging": {
+			"type": "byte",
+			"id": 12,
+			"required": false
+		},
+
+		"baby": {
+			"type": "bool",
+			"id": 12,
+			"required": false
+		},
+
+		"horse_flags": {
+			"type": "byte",
+			"id": 13,
+			"required": false,
+			"flags": {
+				"horse_tamed": 1,
+				"horse_saddled": 2,
+				"horse_chested": 3,
+				"horse_eating": 5,
+				"horse_rearing": 6,
+				"mouth_open": 7
+			}
+		},
+
+		"horse_variant": {
+			"type": "int",
+			"id": 14,
+			"required": false
+		},
+
+		"owner_uuid": {
+			"type": "int",
+			"id": 15,
+			"required": false
+		},
+
+		"horse_armor": {
+			"type": "int",
+			"id": 16,
+			"required": false
+		},
+
+		"pig_saddled": {
+			"type": "bool",
+			"id": 13,
+			"required": false
+		},
+
+		"rabbit_variant": {
+			"type": "int",
+			"id": 13,
+			"required": false
+		},
+
+		"standing_up": {
+			"type": "bool",
+			"id": 13,
+			"required": false
+		},
+
+		"sheep_flags_and_color": {
+			"type": "byte",
+			"id": 13,
+			"required": false,
+			"flags": {
+				"sheared": 7
+			}
+		},
+
+		"tameable_flags": {
+			"type": "byte",
+			"id": 13,
+			"required": false,
+			"flags": {
+				"sitting": 0,
+				"angry": 1,
+				"tamed": 2
+			}
+		},
+
+		"ocelot_variant": {
+			"type": "int",
+			"id": 15,
+			"required": false
+		},
+
+		"wolf_health": {
+			"type": "float",
+			"id": 15,
+			"required": false
+		},
+
+		"begging": {
+			"type": "bool",
+			"id": 16,
+			"required": false
+		},
+
+		"collar_color": {
+			"type": "int",
+			"id": 17,
+			"required": false,
+			"default": 14
+		},
+
+		"profession": {
+			"type": "int",
+			"id": 13,
+			"required": false
+		},
+
+		"created_by_player": {
+			"type": "byte",
+			"id": 12,
+			"required": false
+		},
+
+		"snowman_flags": {
+			"type": "byte",
+			"id": 12,
+			"required": false,
+			"flags": {
+				"pumpkinless": 4
+			}
+		},
+
+		"shulker_direction": {
+			"type": "direction",
+			"id": 12,
+			"required": false
+		},
+
+		"shulker_attachment": {
+			"type": "optional_position",
+			"id": 13,
+			"required": false
+		},
+
+		"shulker_shield_height": {
+			"type": "byte",
+			"id": 14,
+			"required": false
+		},
+
+		"blaze_on_fire": {
+			"type": "byte",
+			"id": 12,
+			"required": false
+		},
+
+		"creeper_state": {
+			"type": "int",
+			"id": 12,
+			"required": false,
+			"default": -1
+		},
+
+		"charged": {
+			"type": "bool",
+			"id": 13,
+			"required": false
+		},
+
+		"ignited": {
+			"type": "bool",
+			"id": 14,
+			"required": false
+		},
+
+		"rectracting_spikes": {
+			"type": "bool",
+			"id": 12,
+			"required": false
+		},
+
+		"guardian_target": {
+			"type": "int",
+			"id": 13,
+			"required": false
+		},
+
+		"swinging_arms": {
+			"type": "bool",
+			"id": 12,
+			"required": false
+		},
+
+		"climbing": {
+			"type": "byte",
+			"id": 12,
+			"required": false
+		},
+
+		"center_head_target": {
+			"type": "int",
+			"id": 12,
+			"required": false
+		},
+
+		"left_head_target": {
+			"type": "int",
+			"id": 13,
+			"required": false
+		},
+
+		"right_head_target": {
+			"type": "int",
+			"id": 14,
+			"required": false
+		},
+
+		"invulnerable_time": {
+			"type": "int",
+			"id": 15,
+			"required": false
+		},
+
+		"hands_held_up": {
+			"type": "bool",
+			"id": 14,
+			"required": false
+		},
+
+		"converting": {
+			"type": "bool",
+			"id": 15,
+			"required": false
+		},
+
+		"zombie_villager_profession": {
+			"type": "int",
+			"id": 16,
+			"required": false
+		},
+
+		"carried_block": {
+			"type": "block",
+			"id": 12,
+			"required": false
+		},
+
+		"screaming": {
+			"type": "bool",
+			"id": 13,
+			"required": false
+		},
+
+		"dragon_phase": {
+			"type": "int",
+			"id": 12,
+			"required": false
+		},
+
+		"ghast_attacking": {
+			"type": "bool",
+			"id": 12,
+			"required": false
+		},
+
+		"slime_size": {
+			"type": "int",
+			"id": 12,
+			"required": false,
+			"default": 1
+		},
+
+		"shaking_power": {
+			"type": "int",
+			"id": 6,
+			"required": false
+		},
+
+		"shaking_direction": {
+			"type": "int",
+			"id": 7,
+			"required": false
+		},
+
+		"shaking_multiplier": {
+			"type": "float",
+			"id": 8,
+			"required": false,
+			"default": 0
+		},
+
+		"minecart_block": {
+			"type": "int",
+			"id": 9,
+			"required": false
+		},
+
+		"minecart_block_position": {
+			"type": "int",
+			"id": 10,
+			"required": false,
+			"default": 6
+		},
+
+		"minecart_custom_block": {
+			"type": "bool",
+			"id": 11,
+			"required": false
+		},
+
+		"furnace_powered": {
+			"type": "bool",
+			"id": 12,
+			"required": false
+		},
+
+		"command": {
+			"type": "string",
+			"id": 12,
+			"required": false
+		},
+
+		"last_output": {
+			"type": "chat",
+			"id": 13,
+			"required": false
+		},
+
+		"fuse_time": {
+			"type": "int",
+			"id": 6,
+			"required": false
 		}
-		
+
 	}
-	
+
 }

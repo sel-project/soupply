@@ -492,9 +492,12 @@ alias varulong = var!ulong;
 			data ~= "static import sul.protocol." ~ game ~ ".types;\n\n";
 			data ~= "alias Changed(T) = Tuple!(T, \"value\", bool, \"changed\");\n\n";
 			data ~= "class Metadata {\n\n";
-			string[string] ctable;
+			string[string] ctable, etable;
+			ubyte[string] idtable;
 			foreach(type ; m.data.types) {
 				ctable[type.name] = type.type;
+				etable[type.name] = type.endianness;
+				idtable[type.name] = type.id;
 			}
 			foreach(d ; m.data.data) {
 				immutable name = convertName(d.name);
@@ -525,7 +528,10 @@ alias varulong = var!ulong;
 			if(m.data.length.length) data ~= "\t\t\timmutable _length = _buffer.length;\n\t\t\t" ~ convertType(m.data.length) ~ " _count;\n";
 			foreach(d ; m.data.data) {
 				immutable name = convertName(d.name);
-				data ~= "\t\t\t" ~ (d.required ? "" : "if(this._" ~ name ~ ".changed)") ~ "{ " ~ createEncoding(ctable[d.type], name) ~ (m.data.length.length ? " _count++;" : "") ~ " }\n";
+				data ~= "\t\t\t" ~ (d.required ? "" : "if(this._" ~ name ~ ".changed)") ~ "{ ";
+				data ~= createEncoding(m.data.id, d.id.to!string) ~ " ";
+				data ~= createEncoding(m.data.type, idtable[d.type].to!string) ~ " ";
+				data ~= createEncoding(ctable[d.type], name, etable[d.type]) ~ (m.data.length.length ? " _count++;" : "") ~ " }\n";
 			}
 			if(m.data.length.length) {
 				if(m.data.length.startsWith("var")) {

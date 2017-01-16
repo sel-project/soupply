@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
+/**
+ * Executes a command on the node.
+ */
 class RemoteCommand extends Packet {
 
 	public final static byte ID = (byte)8;
