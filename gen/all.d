@@ -20,6 +20,7 @@ import std.conv : to;
 import std.file : dirEntries, SpanMode, read, isFile, _write = write;
 import std.json;
 import std.path : dirSeparator;
+import std.regex : ctRegex, replaceAll;
 import std.string;
 import std.typecons : Tuple, tuple;
 import std.xml;
@@ -374,7 +375,7 @@ void main(string[] args) {
 			}
 		}
 	}()), "\n");
-	foreach(ref str ; ret) str = decode(str.strip);
+	foreach(ref str ; ret) str = decode(str.replaceAll(ctRegex!"[\r\t]", ""));
 	return ret.join("\n");
 }
 

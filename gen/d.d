@@ -580,7 +580,7 @@ string ddocImpl(string space, string[] words) {
 	size_t length;
 	string[] ret;
 	while(length < 80 && words.length) {
-		ret ~= words[0].replaceAll(ctRegex!"```[a-z]{0,8}", "---");
+		ret ~= words[0].replaceAll(ctRegex!"```[a-z]{0,16}", "---");
 		length += words[0].length + 1;
 		words = words[1..$];
 	}

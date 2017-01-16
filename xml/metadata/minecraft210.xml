@@ -4,7 +4,7 @@
 
 	<software>Minecraft</software>
 
-	<protocol>316</protocol>
+	<protocol>210</protocol>
 
 	<encoding suffix="255" types="ubyte" ids="ubyte">
 

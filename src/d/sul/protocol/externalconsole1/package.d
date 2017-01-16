@@ -33,12 +33,12 @@
  * into strings using base64. The connection is established like every web socket connection
  * and, if successfull, continues with the AuthCredentials packet sent by the server.
  * Example of a connection in javascript:
- * ---pt
+ * ---
  * var socket = new WebSocket("example.com:19134");
  * socket.onmessage = function(event){
- * var json = JSON.parse(event.data);
- * if(json.hash) console.log("Server's requires hash " + json.hash_algorithm);
- * else console.log("The server doesn't require hashing");
+ *    var json = JSON.parse(event.data);
+ *    if(json.hash) console.log("Server's requires hash " + json.hash_algorithm);
+ *    else console.log("The server doesn't require hashing");
  * }
  * ---
  * 
