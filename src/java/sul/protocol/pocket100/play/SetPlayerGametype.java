@@ -18,7 +18,7 @@ class SetPlayerGametype extends Packet {
 	public final static byte ID = (byte)62;
 
 	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public final static boolean SERVERBOUND = true;
 
 	// gametype
 	public static immutable int SURVIVAL = 0;

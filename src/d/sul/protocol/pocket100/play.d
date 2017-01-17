@@ -1834,6 +1834,9 @@ class UpdateAttributes : Buffer {
 
 }
 
+/**
+ * Sent when the client puts an item in its hotbar or selects a new hotbar slot.
+ */
 class MobEquipment : Buffer {
 
 	public enum ubyte ID = 32;
@@ -1841,21 +1844,30 @@ class MobEquipment : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["entityId", "item", "slot", "selectedSlot", "unknown4"];
+	public enum string[] FIELDS = ["entityId", "item", "inventorySlot", "hotbarSlot", "unknown4"];
 
 	public long entityId;
 	public sul.protocol.pocket100.types.Slot item;
-	public ubyte slot;
-	public ubyte selectedSlot;
+
+	/**
+	 * Slot of the inventory where the item is. The hotbat slots (0-8) are not counted.
+	 * 255 means that a generic empty slot has been selected.
+	 */
+	public ubyte inventorySlot;
+
+	/**
+	 * Slot of the hotbar where the item is being moved.
+	 */
+	public ubyte hotbarSlot;
 	public ubyte unknown4;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long entityId, sul.protocol.pocket100.types.Slot item=sul.protocol.pocket100.types.Slot.init, ubyte slot=ubyte.init, ubyte selectedSlot=ubyte.init, ubyte unknown4=ubyte.init) {
+	public pure nothrow @safe @nogc this(long entityId, sul.protocol.pocket100.types.Slot item=sul.protocol.pocket100.types.Slot.init, ubyte inventorySlot=ubyte.init, ubyte hotbarSlot=ubyte.init, ubyte unknown4=ubyte.init) {
 		this.entityId = entityId;
 		this.item = item;
-		this.slot = slot;
-		this.selectedSlot = selectedSlot;
+		this.inventorySlot = inventorySlot;
+		this.hotbarSlot = hotbarSlot;
 		this.unknown4 = unknown4;
 	}
 
@@ -1864,8 +1876,8 @@ class MobEquipment : Buffer {
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varlong.encode(entityId));
 		item.encode(bufferInstance);
-		writeBigEndianUbyte(slot);
-		writeBigEndianUbyte(selectedSlot);
+		writeBigEndianUbyte(inventorySlot);
+		writeBigEndianUbyte(hotbarSlot);
 		writeBigEndianUbyte(unknown4);
 		return _buffer;
 	}
@@ -1874,8 +1886,8 @@ class MobEquipment : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		entityId=varlong.decode(_buffer, &_index);
 		item.decode(bufferInstance);
-		slot=readBigEndianUbyte();
-		selectedSlot=readBigEndianUbyte();
+		inventorySlot=readBigEndianUbyte();
+		hotbarSlot=readBigEndianUbyte();
 		unknown4=readBigEndianUbyte();
 	}
 
@@ -2631,7 +2643,7 @@ class ContainerClose : Buffer {
 	public enum ubyte ID = 49;
 
 	public enum bool CLIENTBOUND = true;
-	public enum bool SERVERBOUND = false;
+	public enum bool SERVERBOUND = true;
 
 	public enum string[] FIELDS = ["window"];
 
@@ -2669,7 +2681,7 @@ class ContainerSetSlot : Buffer {
 	public enum ubyte ID = 50;
 
 	public enum bool CLIENTBOUND = true;
-	public enum bool SERVERBOUND = false;
+	public enum bool SERVERBOUND = true;
 
 	public enum string[] FIELDS = ["window", "slot", "hotbarSlot", "item", "unknown4"];
 
@@ -2815,7 +2827,7 @@ class CraftingData : Buffer {
 	public enum ubyte ID = 53;
 
 	public enum bool CLIENTBOUND = true;
-	public enum bool SERVERBOUND = true;
+	public enum bool SERVERBOUND = false;
 
 	public enum string[] FIELDS = ["recipes"];
 
@@ -2917,8 +2929,8 @@ class AdventureSettings : Buffer {
 	public enum uint EVP_DISABLED = 16;
 	public enum uint AUTO_JUMP = 32;
 	public enum uint ALLOW_FLIGHT = 64;
-	public enum uint NO_CLIP = 256;
-	public enum uint FLYING = 1024;
+	public enum uint NO_CLIP = 128;
+	public enum uint FLYING = 256;
 
 	// permissions
 	public enum uint USER = 0;
@@ -3234,7 +3246,7 @@ class SetPlayerGametype : Buffer {
 	public enum ubyte ID = 62;
 
 	public enum bool CLIENTBOUND = true;
-	public enum bool SERVERBOUND = false;
+	public enum bool SERVERBOUND = true;
 
 	// gametype
 	public enum int SURVIVAL = 0;

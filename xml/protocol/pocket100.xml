@@ -424,10 +424,15 @@
 			</packet>
 
 			<packet name="mob-equipment" id="32" clientbound="true" serverbound="true">
+				Sent when the client puts an item in its hotbar or selects a new hotbar slot.
 				<field name="entity-id" type="entity-id" />
 				<field name="item" type="slot" />
-				<field name="slot" type="ubyte" />
-				<field name="selected-slot" type="ubyte" />
+				<field name="inventory-slot" type="ubyte">
+					Slot of the inventory where the item is. The hotbat slots (0-8) are not counted. 255 means that a generic empty slot has been selected.
+				</field>
+				<field name="hotbar-slot" type="ubyte">
+					Slot of the hotbar where the item is being moved.
+				</field>
 				<field name="?" type="ubyte" />
 			</packet>
 
@@ -548,11 +553,11 @@
 				<field name="entity-id" type="entity-id" />
 			</packet>
 
-			<packet name="container-close" id="49" clientbound="true" serverbound="false">
+			<packet name="container-close" id="49" clientbound="true" serverbound="true">
 				<field name="window" type="ubyte" />
 			</packet>
 
-			<packet name="container-set-slot" id="50" clientbound="true" serverbound="false">
+			<packet name="container-set-slot" id="50" clientbound="true" serverbound="true">
 				<field name="window" type="ubyte" />
 				<field name="slot" type="varint" />
 				<field name="hotbar-slot" type="varint" />
@@ -572,7 +577,7 @@
 				<field name="hotbar" type="varint[]" />
 			</packet>
 
-			<packet name="crafting-data" id="53" clientbound="true" serverbound="true">
+			<packet name="crafting-data" id="53" clientbound="true" serverbound="false">
 				<field name="recipes" type="recipe[]" />
 			</packet>
 
@@ -593,8 +598,8 @@
 					<constant name="evp-disabled" value="16" />
 					<constant name="auto-jump" value="32" />
 					<constant name="allow-flight" value="64" />
-					<constant name="no-clip" value="256" />
-					<constant name="flying" value="1024" />
+					<constant name="no-clip" value="128" />
+					<constant name="flying" value="256" />
 				</field>
 				<field name="permissions" type="varuint">
 					<constant name="user" value="0" />
@@ -645,7 +650,7 @@
 				<field name="?" type="bool" />
 			</packet>
 
-			<packet name="set-player-gametype" id="62" clientbound="true" serverbound="false">
+			<packet name="set-player-gametype" id="62" clientbound="true" serverbound="true">
 				<field name="gametype" type="varint">
 					<constant name="survival" value="0" />
 					<constant name="creative" value="1" />

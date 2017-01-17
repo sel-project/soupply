@@ -18,7 +18,7 @@ class CraftingData extends Packet {
 	public final static byte ID = (byte)53;
 
 	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public final static boolean SERVERBOUND = false;
 
 	public Recipe[] recipes;
 

@@ -28,8 +28,8 @@ class AdventureSettings extends Packet {
 	public static immutable int EVP_DISABLED = 16;
 	public static immutable int AUTO_JUMP = 32;
 	public static immutable int ALLOW_FLIGHT = 64;
-	public static immutable int NO_CLIP = 256;
-	public static immutable int FLYING = 1024;
+	public static immutable int NO_CLIP = 128;
+	public static immutable int FLYING = 256;
 
 	// permissions
 	public static immutable int USER = 0;

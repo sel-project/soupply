@@ -1071,11 +1071,11 @@
 						"type": "slot"
 					},
 					{
-						"name": "slot",
+						"name": "inventory_slot",
 						"type": "ubyte"
 					},
 					{
-						"name": "selected_slot",
+						"name": "hotbar_slot",
 						"type": "ubyte"
 					},
 					{
@@ -1410,7 +1410,7 @@
 			"container_close": {
 				"id": 49,
 				"clientbound": true,
-				"serverbound": false,
+				"serverbound": true,
 				"fields": [
 					{
 						"name": "window",
@@ -1422,7 +1422,7 @@
 			"container_set_slot": {
 				"id": 50,
 				"clientbound": true,
-				"serverbound": false,
+				"serverbound": true,
 				"fields": [
 					{
 						"name": "window",
@@ -1490,7 +1490,7 @@
 			"crafting_data": {
 				"id": 53,
 				"clientbound": true,
-				"serverbound": true,
+				"serverbound": false,
 				"fields": [
 					{
 						"name": "recipes",
@@ -1543,8 +1543,8 @@
 							"evp_disabled": 16,
 							"auto_jump": 32,
 							"allow_flight": 64,
-							"no_clip": 256,
-							"flying": 1024
+							"no_clip": 128,
+							"flying": 256
 						}
 					},
 					{
@@ -1675,7 +1675,7 @@
 			"set_player_gametype": {
 				"id": 62,
 				"clientbound": true,
-				"serverbound": false,
+				"serverbound": true,
 				"fields": [
 					{
 						"name": "gametype",

@@ -13,6 +13,9 @@ import java.util.UUID;
 import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
+/**
+ * Sent when the client puts an item in its hotbar or selects a new hotbar slot.
+ */
 class MobEquipment extends Packet {
 
 	public final static byte ID = (byte)32;
@@ -22,8 +25,17 @@ class MobEquipment extends Packet {
 
 	public long entityId;
 	public Slot item;
-	public byte slot;
-	public byte selectedSlot;
+
+	/**
+	 * Slot of the inventory where the item is. The hotbat slots (0-8) are not counted.
+	 * 255 means that a generic empty slot has been selected.
+	 */
+	public byte inventorySlot;
+
+	/**
+	 * Slot of the hotbar where the item is being moved.
+	 */
+	public byte hotbarSlot;
 	public byte unknown4;
 
 	@Override
@@ -37,8 +49,8 @@ class MobEquipment extends Packet {
 		this.writeByteB(ID);
 		this.writeVarlong(entityId);
 		this.writeBytes(item.encode());
-		this.writeByteB(slot);
-		this.writeByteB(selectedSlot);
+		this.writeByteB(inventorySlot);
+		this.writeByteB(hotbarSlot);
 		this.writeByteB(unknown4);
 		return this.buffer;
 	}
