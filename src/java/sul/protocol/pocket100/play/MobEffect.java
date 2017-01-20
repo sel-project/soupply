@@ -21,9 +21,9 @@ class MobEffect extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	// event id
-	public static immutable byte ADD = 0;
-	public static immutable byte MODIFY = 1;
-	public static immutable byte REMOVE = 2;
+	public static immutable byte ADD = 1;
+	public static immutable byte MODIFY = 2;
+	public static immutable byte REMOVE = 3;
 
 	public long entityId;
 	public byte eventId;

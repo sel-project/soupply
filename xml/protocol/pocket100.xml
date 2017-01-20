@@ -10,6 +10,8 @@
 
 	<from>1.0.0</from>
 
+	<!--<to>1.0.2</to>-->
+
 	<encoding id="ubyte" arraylength="varuint">
 
 		<endianness type="*" value="big-endian" />
@@ -408,9 +410,9 @@
 			<packet name="mob-effect" id="30" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="event-id" type="ubyte">
-					<constant name="add" value="0" />
-					<constant name="modify" value="1" />
-					<constant name="remove" value="2" />
+					<constant name="add" value="1" />
+					<constant name="modify" value="2" />
+					<constant name="remove" value="3" />
 				</field>
 				<field name="effect" type="varint" />
 				<field name="amplifier" type="varint" />

@@ -1737,9 +1737,9 @@ class MobEffect : Buffer {
 	public enum bool SERVERBOUND = false;
 
 	// event id
-	public enum ubyte ADD = 0;
-	public enum ubyte MODIFY = 1;
-	public enum ubyte REMOVE = 2;
+	public enum ubyte ADD = 1;
+	public enum ubyte MODIFY = 2;
+	public enum ubyte REMOVE = 3;
 
 	public enum string[] FIELDS = ["entityId", "eventId", "effect", "amplifier", "particles", "duration"];
 

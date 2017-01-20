@@ -1017,9 +1017,9 @@
 						"name": "event_id",
 						"type": "ubyte",
 						"constants": {
-							"add": 0,
-							"modify": 1,
-							"remove": 2
+							"add": 1,
+							"modify": 2,
+							"remove": 3
 						}
 					},
 					{
