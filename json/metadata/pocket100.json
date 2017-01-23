@@ -48,7 +48,7 @@
 		},
 
 		"block_position": {
-			"type": "block_position",
+			"type": "varint<xyz>",
 			"id": 6
 		},
 

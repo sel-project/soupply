@@ -14,7 +14,7 @@
 		<type name="float" type="float" id="3" />
 		<type name="string" type="string" id="4" />
 		<type name="slot" type="slot" id="5" />
-		<type name="block-position" type="block-position" id="6" />
+		<type name="block-position" type="varint<xyz>" id="6" />
 		<type name="long" type="varlong" id="7" />
 		<type name="entity-position" type="float<xyz>" id="8" />
 
