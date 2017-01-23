@@ -29,7 +29,7 @@ public class LoginStart extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length;
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class LoginStart extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvudxnlcm5hbwu=varuint.decode(_buffer, _index); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvudxnlcm5hbwu=this.readVaruint(); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
 	}
 
 	public static LoginStart fromBuffer(byte[] buffer) {

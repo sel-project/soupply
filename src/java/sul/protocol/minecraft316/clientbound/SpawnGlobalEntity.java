@@ -34,7 +34,7 @@ public class SpawnGlobalEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + position.length() + 1;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 25;
 	}
 
 	@Override
@@ -43,15 +43,15 @@ public class SpawnGlobalEntity extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBigEndianByte(type);
-		this.writeBigEndianDouble(position.x);this.writeBigEndianDouble(position.y);this.writeBigEndianDouble(position.z);
+		this.writeBigEndianDouble(position.x); this.writeBigEndianDouble(position.y); this.writeBigEndianDouble(position.z);
 		return this._buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
 		type=readBigEndianByte();
 		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 	}

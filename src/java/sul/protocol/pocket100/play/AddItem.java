@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class AddItem extends Packet {
@@ -18,11 +17,11 @@ public class AddItem extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
-	public Slot item;
+	public sul.protocol.pocket100.types.Slot item;
 
 	public AddItem() {}
 
-	public AddItem(Slot item) {
+	public AddItem(sul.protocol.pocket100.types.Slot item) {
 		this.item = item;
 	}
 
@@ -43,7 +42,7 @@ public class AddItem extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		item=new Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
+		item=new sul.protocol.pocket100.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
 	}
 
 	public static AddItem fromBuffer(byte[] buffer) {

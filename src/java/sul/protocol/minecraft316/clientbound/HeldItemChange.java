@@ -27,7 +27,7 @@ public class HeldItemChange extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 1;
+		return Buffer.varuintLength(ID) + 1;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class HeldItemChange extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		slot=readBigEndianByte();
 	}
 

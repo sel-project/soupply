@@ -8,7 +8,6 @@
  */
 package sul.protocol.raknet8.encapsulated;
 
-import sul.protocol.raknet8.types.*;
 import sul.utils.*;
 
 public class ServerHandshake extends Packet {
@@ -18,15 +17,15 @@ public class ServerHandshake extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
-	public Address clientAddress;
+	public sul.protocol.raknet8.types.Address clientAddress;
 	public short mtuLength;
-	public Address[] systemAddresses = new Address[10];
+	public sul.protocol.raknet8.types.Address[] systemAddresses = new sul.protocol.raknet8.types.Address[10];
 	public long pingId;
 	public long serverId;
 
 	public ServerHandshake() {}
 
-	public ServerHandshake(Address clientAddress, short mtuLength, Address[] systemAddresses, long pingId, long serverId) {
+	public ServerHandshake(sul.protocol.raknet8.types.Address clientAddress, short mtuLength, sul.protocol.raknet8.types.Address[] systemAddresses, long pingId, long serverId) {
 		this.clientAddress = clientAddress;
 		this.mtuLength = mtuLength;
 		this.systemAddresses = systemAddresses;
@@ -36,7 +35,7 @@ public class ServerHandshake extends Packet {
 
 	@Override
 	public int length() {
-		int length=clientAddress.length() + 19; for(Address c3lzdgvtqwrkcmvz:systemAddresses){ length+=c3lzdgvtqwrkcmvz.length(); } return length;
+		int length=clientAddress.length() + 19; for(sul.protocol.raknet8.types.Address c3lzdgvtqwrkcmvz:systemAddresses){ length+=c3lzdgvtqwrkcmvz.length(); } return length;
 	}
 
 	@Override
@@ -45,7 +44,7 @@ public class ServerHandshake extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBytes(clientAddress.encode());
 		this.writeBigEndianShort(mtuLength);
-		for(Address c3lzdgvtqwrkcmvz:systemAddresses){ this.writeBytes(c3lzdgvtqwrkcmvz.encode()); }
+		for(sul.protocol.raknet8.types.Address c3lzdgvtqwrkcmvz:systemAddresses){ this.writeBytes(c3lzdgvtqwrkcmvz.encode()); }
 		this.writeBigEndianLong(pingId);
 		this.writeBigEndianLong(serverId);
 		return this._buffer;
@@ -55,9 +54,9 @@ public class ServerHandshake extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		clientAddress=new Address(); clientAddress._index=this._index; clientAddress.decode(this._buffer); this._index=clientAddress._index;
+		clientAddress=new sul.protocol.raknet8.types.Address(); clientAddress._index=this._index; clientAddress.decode(this._buffer); this._index=clientAddress._index;
 		mtuLength=readBigEndianShort();
-		final int bhn5c3rlbufkzhjl=10; systemAddresses=new Address[bhn5c3rlbufkzhjl]; for(int c3lzdgvtqwrkcmvz=0;c3lzdgvtqwrkcmvz<systemAddresses.length;c3lzdgvtqwrkcmvz++){ systemAddresses[c3lzdgvtqwrkcmvz]=new Address(); systemAddresses[c3lzdgvtqwrkcmvz]._index=this._index; systemAddresses[c3lzdgvtqwrkcmvz].decode(this._buffer); this._index=systemAddresses[c3lzdgvtqwrkcmvz]._index; }
+		final int bhn5c3rlbufkzhjl=10; systemAddresses=new sul.protocol.raknet8.types.Address[bhn5c3rlbufkzhjl]; for(int c3lzdgvtqwrkcmvz=0;c3lzdgvtqwrkcmvz<systemAddresses.length;c3lzdgvtqwrkcmvz++){ systemAddresses[c3lzdgvtqwrkcmvz]=new sul.protocol.raknet8.types.Address(); systemAddresses[c3lzdgvtqwrkcmvz]._index=this._index; systemAddresses[c3lzdgvtqwrkcmvz].decode(this._buffer); this._index=systemAddresses[c3lzdgvtqwrkcmvz]._index; }
 		pingId=readBigEndianLong();
 		serverId=readBigEndianLong();
 	}

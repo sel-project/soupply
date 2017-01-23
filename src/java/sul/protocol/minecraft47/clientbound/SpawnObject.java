@@ -39,7 +39,7 @@ public class SpawnObject extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + position.length() + velocity.length() + 7;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 25;
 	}
 
 	@Override
@@ -48,19 +48,19 @@ public class SpawnObject extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBigEndianByte(type);
-		this.writeBigEndianInt(position.x);this.writeBigEndianInt(position.y);this.writeBigEndianInt(position.z);
+		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.y); this.writeBigEndianInt(position.z);
 		this.writeBigEndianByte(pitch);
 		this.writeBigEndianByte(yaw);
 		this.writeBigEndianInt(data);
-		this.writeBigEndianShort(velocity.x);this.writeBigEndianShort(velocity.y);this.writeBigEndianShort(velocity.z);
+		this.writeBigEndianShort(velocity.x); this.writeBigEndianShort(velocity.y); this.writeBigEndianShort(velocity.z);
 		return this._buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
 		type=readBigEndianByte();
 		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 		pitch=readBigEndianByte();

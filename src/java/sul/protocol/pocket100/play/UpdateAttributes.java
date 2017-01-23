@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class UpdateAttributes extends Packet {
@@ -19,18 +18,18 @@ public class UpdateAttributes extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	public long entityId;
-	public Attribute[] attributes;
+	public sul.protocol.pocket100.types.Attribute[] attributes;
 
 	public UpdateAttributes() {}
 
-	public UpdateAttributes(long entityId, Attribute[] attributes) {
+	public UpdateAttributes(long entityId, sul.protocol.pocket100.types.Attribute[] attributes) {
 		this.entityId = entityId;
 		this.attributes = attributes;
 	}
 
 	@Override
 	public int length() {
-		int length=Var.Long.length(entityId) + Var.Uint.length(attributes.length) + 1; for(Attribute yxr0cmlidxrlcw:attributes){ length+=yxr0cmlidxrlcw.length(); } return length;
+		int length=Buffer.varlongLength(entityId) + Buffer.varuintLength(attributes.length) + 1; for(sul.protocol.pocket100.types.Attribute yxr0cmlidxrlcw:attributes){ length+=yxr0cmlidxrlcw.length(); } return length;
 	}
 
 	@Override
@@ -38,7 +37,7 @@ public class UpdateAttributes extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
-		this.writeVaruint((int)attributes.length); for(Attribute yxr0cmlidxrlcw:attributes){ this.writeBytes(yxr0cmlidxrlcw.encode()); }
+		this.writeVaruint((int)attributes.length); for(sul.protocol.pocket100.types.Attribute yxr0cmlidxrlcw:attributes){ this.writeBytes(yxr0cmlidxrlcw.encode()); }
 		return this._buffer;
 	}
 
@@ -46,8 +45,8 @@ public class UpdateAttributes extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
-		int bgf0dhjpynv0zxm=varuint.decode(_buffer, _index); attributes=new Attribute[bgf0dhjpynv0zxm]; for(int yxr0cmlidxrlcw=0;yxr0cmlidxrlcw<attributes.length;yxr0cmlidxrlcw++){ attributes[yxr0cmlidxrlcw]=new Attribute(); attributes[yxr0cmlidxrlcw]._index=this._index; attributes[yxr0cmlidxrlcw].decode(this._buffer); this._index=attributes[yxr0cmlidxrlcw]._index; }
+		entityId=this.readVarlong();
+		int bgf0dhjpynv0zxm=this.readVaruint(); attributes=new sul.protocol.pocket100.types.Attribute[bgf0dhjpynv0zxm]; for(int yxr0cmlidxrlcw=0;yxr0cmlidxrlcw<attributes.length;yxr0cmlidxrlcw++){ attributes[yxr0cmlidxrlcw]=new sul.protocol.pocket100.types.Attribute(); attributes[yxr0cmlidxrlcw]._index=this._index; attributes[yxr0cmlidxrlcw].decode(this._buffer); this._index=attributes[yxr0cmlidxrlcw]._index; }
 	}
 
 	public static UpdateAttributes fromBuffer(byte[] buffer) {

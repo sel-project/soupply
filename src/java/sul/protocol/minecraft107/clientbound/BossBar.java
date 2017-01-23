@@ -32,7 +32,7 @@ public class BossBar extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(action) + 16;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(action) + 16;
 	}
 
 	@Override
@@ -51,9 +51,9 @@ public class BossBar extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		long bxv1awq=readBigEndianLong();long bhv1awq=readBigEndianLong();return new UUID(bxv1awq,bhv1awq);
-		action=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
+		action=this.readVaruint();
 	}
 
 	private byte[] remainingBuffer() {
@@ -108,7 +108,7 @@ public class BossBar extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(title.getBytes(StandardCharsets.UTF_8).length) + title.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(color) + Var.Uint.length(division) + 5;
+			return Buffer.varuintLength(title.getBytes(StandardCharsets.UTF_8).length) + title.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(color) + Buffer.varuintLength(division) + 5;
 		}
 
 		@Override
@@ -127,10 +127,10 @@ public class BossBar extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bgvudgl0bgu=varuint.decode(_buffer, _index); title=new String(this.readBytes(bgvudgl0bgu), StandardCharsets.UTF_8);
+			int bgvudgl0bgu=this.readVaruint(); title=new String(this.readBytes(bgvudgl0bgu), StandardCharsets.UTF_8);
 			health=readBigEndianFloat();
-			color=varuint.decode(_buffer, _index);
-			division=varuint.decode(_buffer, _index);
+			color=this.readVaruint();
+			division=this.readVaruint();
 			flags=readBigEndianByte();
 		}
 
@@ -220,7 +220,7 @@ public class BossBar extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(title.getBytes(StandardCharsets.UTF_8).length) + title.getBytes(StandardCharsets.UTF_8).length;
+			return Buffer.varuintLength(title.getBytes(StandardCharsets.UTF_8).length) + title.getBytes(StandardCharsets.UTF_8).length;
 		}
 
 		@Override
@@ -235,7 +235,7 @@ public class BossBar extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bgvudgl0bgu=varuint.decode(_buffer, _index); title=new String(this.readBytes(bgvudgl0bgu), StandardCharsets.UTF_8);
+			int bgvudgl0bgu=this.readVaruint(); title=new String(this.readBytes(bgvudgl0bgu), StandardCharsets.UTF_8);
 		}
 
 		public void decode() {
@@ -276,7 +276,7 @@ public class BossBar extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(color) + Var.Uint.length(division);
+			return Buffer.varuintLength(color) + Buffer.varuintLength(division);
 		}
 
 		@Override
@@ -292,8 +292,8 @@ public class BossBar extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			color=varuint.decode(_buffer, _index);
-			division=varuint.decode(_buffer, _index);
+			color=this.readVaruint();
+			division=this.readVaruint();
 		}
 
 		public void decode() {

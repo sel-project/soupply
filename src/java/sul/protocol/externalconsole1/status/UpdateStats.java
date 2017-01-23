@@ -8,7 +8,6 @@
  */
 package sul.protocol.externalconsole1.status;
 
-import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
 /**
@@ -55,11 +54,11 @@ public class UpdateStats extends Packet {
 	 * Resources usage of the connected nodes, if the server uses the hub-node layout,
 	 * or an empty list.
 	 */
-	public NodeStats[] nodes;
+	public sul.protocol.externalconsole1.types.NodeStats[] nodes;
 
 	public UpdateStats() {}
 
-	public UpdateStats(int onlinePlayers, int maxPlayers, int uptime, int upload, int download, NodeStats[] nodes) {
+	public UpdateStats(int onlinePlayers, int maxPlayers, int uptime, int upload, int download, sul.protocol.externalconsole1.types.NodeStats[] nodes) {
 		this.onlinePlayers = onlinePlayers;
 		this.maxPlayers = maxPlayers;
 		this.uptime = uptime;
@@ -70,7 +69,7 @@ public class UpdateStats extends Packet {
 
 	@Override
 	public int length() {
-		int length=23; for(NodeStats bm9kzxm:nodes){ length+=bm9kzxm.length(); } return length;
+		int length=23; for(sul.protocol.externalconsole1.types.NodeStats bm9kzxm:nodes){ length+=bm9kzxm.length(); } return length;
 	}
 
 	@Override
@@ -82,7 +81,7 @@ public class UpdateStats extends Packet {
 		this.writeBigEndianInt(uptime);
 		this.writeBigEndianInt(upload);
 		this.writeBigEndianInt(download);
-		this.writeBigEndianShort((short)nodes.length); for(NodeStats bm9kzxm:nodes){ this.writeBytes(bm9kzxm.encode()); }
+		this.writeBigEndianShort((short)nodes.length); for(sul.protocol.externalconsole1.types.NodeStats bm9kzxm:nodes){ this.writeBytes(bm9kzxm.encode()); }
 		return this._buffer;
 	}
 
@@ -95,7 +94,7 @@ public class UpdateStats extends Packet {
 		uptime=readBigEndianInt();
 		upload=readBigEndianInt();
 		download=readBigEndianInt();
-		int bg5vzgvz=readBigEndianShort(); nodes=new NodeStats[bg5vzgvz]; for(int bm9kzxm=0;bm9kzxm<nodes.length;bm9kzxm++){ nodes[bm9kzxm]=new NodeStats(); nodes[bm9kzxm]._index=this._index; nodes[bm9kzxm].decode(this._buffer); this._index=nodes[bm9kzxm]._index; }
+		int bg5vzgvz=readBigEndianShort(); nodes=new sul.protocol.externalconsole1.types.NodeStats[bg5vzgvz]; for(int bm9kzxm=0;bm9kzxm<nodes.length;bm9kzxm++){ nodes[bm9kzxm]=new sul.protocol.externalconsole1.types.NodeStats(); nodes[bm9kzxm]._index=this._index; nodes[bm9kzxm].decode(this._buffer); this._index=nodes[bm9kzxm]._index; }
 	}
 
 	public static UpdateStats fromBuffer(byte[] buffer) {

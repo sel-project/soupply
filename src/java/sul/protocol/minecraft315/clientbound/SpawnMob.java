@@ -10,7 +10,6 @@ package sul.protocol.minecraft315.clientbound;
 
 import java.util.UUID;
 
-import sul.protocol.minecraft315.types.*;
 import sul.utils.*;
 
 public class SpawnMob extends Packet {
@@ -46,7 +45,7 @@ public class SpawnMob extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + Var.Uint.length(type) + position.length() + velocity.length() + metadata.length() + 19;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + Buffer.varuintLength(type) + metadata.length() + 49;
 	}
 
 	@Override
@@ -56,11 +55,11 @@ public class SpawnMob extends Packet {
 		this.writeVaruint(entityId);
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
 		this.writeVaruint(type);
-		this.writeBigEndianDouble(position.x);this.writeBigEndianDouble(position.y);this.writeBigEndianDouble(position.z);
+		this.writeBigEndianDouble(position.x); this.writeBigEndianDouble(position.y); this.writeBigEndianDouble(position.z);
 		this.writeBigEndianByte(yaw);
 		this.writeBigEndianByte(pitch);
 		this.writeBigEndianByte(headPitch);
-		this.writeBigEndianShort(velocity.x);this.writeBigEndianShort(velocity.y);this.writeBigEndianShort(velocity.z);
+		this.writeBigEndianShort(velocity.x); this.writeBigEndianShort(velocity.y); this.writeBigEndianShort(velocity.z);
 		this.writeBytes(metadata.encode());
 		return this._buffer;
 	}
@@ -68,10 +67,10 @@ public class SpawnMob extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
-		long bxv1awq=readBigEndianLong();long bhv1awq=readBigEndianLong();return new UUID(bxv1awq,bhv1awq);
-		type=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
+		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
+		type=this.readVaruint();
 		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		yaw=readBigEndianByte();
 		pitch=readBigEndianByte();

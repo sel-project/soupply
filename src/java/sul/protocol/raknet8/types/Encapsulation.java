@@ -17,12 +17,12 @@ public class Encapsulation extends Packet {
 	public int messageIndex;
 	public int orderIndex;
 	public byte orderChannel;
-	public Split split;
+	public sul.protocol.raknet8.types.Split split;
 	public byte[] payload;
 
 	public Encapsulation() {}
 
-	public Encapsulation(byte info, short length, int messageIndex, int orderIndex, byte orderChannel, Split split, byte[] payload) {
+	public Encapsulation(byte info, short length, int messageIndex, int orderIndex, byte orderChannel, sul.protocol.raknet8.types.Split split, byte[] payload) {
 		this.info = info;
 		this.length = length;
 		this.messageIndex = messageIndex;
@@ -58,7 +58,7 @@ public class Encapsulation extends Packet {
 		if((info&0x7F)>=64){ messageIndex=readLittleEndianTriad(); }
 		if((info&0x7F)>=96){ orderIndex=readLittleEndianTriad(); }
 		if((info&0x7F)>=96){ orderChannel=readBigEndianByte(); }
-		if((info&0x10)!=0){ split=new Split(); split._index=this._index; split.decode(this._buffer); this._index=split._index; }
+		if((info&0x10)!=0){ split=new sul.protocol.raknet8.types.Split(); split._index=this._index; split.decode(this._buffer); this._index=split._index; }
 		payload=this.readBytes(this._buffer.length-this._index);
 	}
 

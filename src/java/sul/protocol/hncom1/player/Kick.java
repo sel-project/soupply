@@ -39,7 +39,7 @@ public class Kick extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length(hubId) + Var.Uint.length(reason.getBytes(StandardCharsets.UTF_8).length) + reason.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(parameters.length) + 2; for(String cgfyyw1ldgvycw:parameters){ length+=Var.Uint.length(cgfyyw1ldgvycw.getBytes(StandardCharsets.UTF_8).length)+cgfyyw1ldgvycw.getBytes(StandardCharsets.UTF_8).length; } return length;
+		int length=Buffer.varuintLength(hubId) + Buffer.varuintLength(reason.getBytes(StandardCharsets.UTF_8).length) + reason.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(parameters.length) + 2; for(String cgfyyw1ldgvycw:parameters){ length+=Buffer.varuintLength(cgfyyw1ldgvycw.getBytes(StandardCharsets.UTF_8).length)+cgfyyw1ldgvycw.getBytes(StandardCharsets.UTF_8).length; } return length;
 	}
 
 	@Override
@@ -57,10 +57,10 @@ public class Kick extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		hubId=varuint.decode(_buffer, _index);
-		int bgvucmvhc29u=varuint.decode(_buffer, _index); reason=new String(this.readBytes(bgvucmvhc29u), StandardCharsets.UTF_8);
+		hubId=this.readVaruint();
+		int bgvucmvhc29u=this.readVaruint(); reason=new String(this.readBytes(bgvucmvhc29u), StandardCharsets.UTF_8);
 		translation=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		if(translation==true){ int bhbhcmftzxrlcnm=varuint.decode(_buffer, _index); parameters=new String[bhbhcmftzxrlcnm]; for(int cgfyyw1ldgvycw=0;cgfyyw1ldgvycw<parameters.length;cgfyyw1ldgvycw++){ int bgvucgfyyw1ldgvy=varuint.decode(_buffer, _index); parameters[cgfyyw1ldgvycw]=new String(this.readBytes(bgvucgfyyw1ldgvy), StandardCharsets.UTF_8); } }
+		if(translation==true){ int bhbhcmftzxrlcnm=this.readVaruint(); parameters=new String[bhbhcmftzxrlcnm]; for(int cgfyyw1ldgvycw=0;cgfyyw1ldgvycw<parameters.length;cgfyyw1ldgvycw++){ int bgvucgfyyw1ldgvy=this.readVaruint(); parameters[cgfyyw1ldgvycw]=new String(this.readBytes(bgvucgfyyw1ldgvy), StandardCharsets.UTF_8); } }
 	}
 
 	public static Kick fromBuffer(byte[] buffer) {

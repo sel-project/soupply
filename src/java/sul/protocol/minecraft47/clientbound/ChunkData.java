@@ -33,14 +33,14 @@ public class ChunkData extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + position.length() + Var.Uint.length(data.length) + data.length + 3;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(data.length) + data.length + 11;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
-		this.writeBigEndianInt(position.x);this.writeBigEndianInt(position.z);
+		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.z);
 		this._buffer[this._index++]=(byte)(full?1:0);
 		this.writeBigEndianShort(sections);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
@@ -50,11 +50,11 @@ public class ChunkData extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		position.x=readBigEndianInt(); position.z=readBigEndianInt();
 		full=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 		sections=readBigEndianShort();
-		int bgrhdge=varuint.decode(_buffer, _index); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
+		int bgrhdge=this.readVaruint(); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
 	}
 
 	public static ChunkData fromBuffer(byte[] buffer) {

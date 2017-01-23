@@ -8,7 +8,6 @@
  */
 package sul.protocol.raknet8.control;
 
-import sul.protocol.raknet8.types.*;
 import sul.utils.*;
 
 public class Ack extends Packet {
@@ -18,24 +17,24 @@ public class Ack extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = true;
 
-	public Acknowledge[] packets;
+	public sul.protocol.raknet8.types.Acknowledge[] packets;
 
 	public Ack() {}
 
-	public Ack(Acknowledge[] packets) {
+	public Ack(sul.protocol.raknet8.types.Acknowledge[] packets) {
 		this.packets = packets;
 	}
 
 	@Override
 	public int length() {
-		int length=3; for(Acknowledge cgfja2v0cw:packets){ length+=cgfja2v0cw.length(); } return length;
+		int length=3; for(sul.protocol.raknet8.types.Acknowledge cgfja2v0cw:packets){ length+=cgfja2v0cw.length(); } return length;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeBigEndianShort((short)packets.length); for(Acknowledge cgfja2v0cw:packets){ this.writeBytes(cgfja2v0cw.encode()); }
+		this.writeBigEndianShort((short)packets.length); for(sul.protocol.raknet8.types.Acknowledge cgfja2v0cw:packets){ this.writeBytes(cgfja2v0cw.encode()); }
 		return this._buffer;
 	}
 
@@ -43,7 +42,7 @@ public class Ack extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		int bhbhy2tldhm=readBigEndianShort(); packets=new Acknowledge[bhbhy2tldhm]; for(int cgfja2v0cw=0;cgfja2v0cw<packets.length;cgfja2v0cw++){ packets[cgfja2v0cw]=new Acknowledge(); packets[cgfja2v0cw]._index=this._index; packets[cgfja2v0cw].decode(this._buffer); this._index=packets[cgfja2v0cw]._index; }
+		int bhbhy2tldhm=readBigEndianShort(); packets=new sul.protocol.raknet8.types.Acknowledge[bhbhy2tldhm]; for(int cgfja2v0cw=0;cgfja2v0cw<packets.length;cgfja2v0cw++){ packets[cgfja2v0cw]=new sul.protocol.raknet8.types.Acknowledge(); packets[cgfja2v0cw]._index=this._index; packets[cgfja2v0cw].decode(this._buffer); this._index=packets[cgfja2v0cw]._index; }
 	}
 
 	public static Ack fromBuffer(byte[] buffer) {

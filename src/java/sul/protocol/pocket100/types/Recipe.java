@@ -29,7 +29,7 @@ public class Recipe extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(type);
+		return Buffer.varintLength(type);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class Recipe extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		type=varint.decode(_buffer, _index);
+		type=this.readVarint();
 	}
 
 

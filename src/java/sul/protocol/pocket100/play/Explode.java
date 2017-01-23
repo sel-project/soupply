@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class Explode extends Packet {
@@ -20,11 +19,11 @@ public class Explode extends Packet {
 
 	public Tuples.FloatXYZ position;
 	public float radius;
-	public BlockPosition[] destroyedBlocks;
+	public sul.protocol.pocket100.types.BlockPosition[] destroyedBlocks;
 
 	public Explode() {}
 
-	public Explode(Tuples.FloatXYZ position, float radius, BlockPosition[] destroyedBlocks) {
+	public Explode(Tuples.FloatXYZ position, float radius, sul.protocol.pocket100.types.BlockPosition[] destroyedBlocks) {
 		this.position = position;
 		this.radius = radius;
 		this.destroyedBlocks = destroyedBlocks;
@@ -32,16 +31,16 @@ public class Explode extends Packet {
 
 	@Override
 	public int length() {
-		int length=position.length() + Var.Uint.length(destroyedBlocks.length) + 5; for(BlockPosition zgvzdhjvewvkqmxv:destroyedBlocks){ length+=zgvzdhjvewvkqmxv.length(); } return length;
+		int length=Buffer.varuintLength(destroyedBlocks.length) + 17; for(sul.protocol.pocket100.types.BlockPosition zgvzdhjvewvkqmxv:destroyedBlocks){ length+=zgvzdhjvewvkqmxv.length(); } return length;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeLittleEndianFloat(radius);
-		this.writeVaruint((int)destroyedBlocks.length); for(BlockPosition zgvzdhjvewvkqmxv:destroyedBlocks){ this.writeBytes(zgvzdhjvewvkqmxv.encode()); }
+		this.writeVaruint((int)destroyedBlocks.length); for(sul.protocol.pocket100.types.BlockPosition zgvzdhjvewvkqmxv:destroyedBlocks){ this.writeBytes(zgvzdhjvewvkqmxv.encode()); }
 		return this._buffer;
 	}
 
@@ -51,7 +50,7 @@ public class Explode extends Packet {
 		readBigEndianByte();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		radius=readLittleEndianFloat();
-		int bgrlc3ryb3llzejs=varuint.decode(_buffer, _index); destroyedBlocks=new BlockPosition[bgrlc3ryb3llzejs]; for(int zgvzdhjvewvkqmxv=0;zgvzdhjvewvkqmxv<destroyedBlocks.length;zgvzdhjvewvkqmxv++){ destroyedBlocks[zgvzdhjvewvkqmxv]=new BlockPosition(); destroyedBlocks[zgvzdhjvewvkqmxv]._index=this._index; destroyedBlocks[zgvzdhjvewvkqmxv].decode(this._buffer); this._index=destroyedBlocks[zgvzdhjvewvkqmxv]._index; }
+		int bgrlc3ryb3llzejs=this.readVaruint(); destroyedBlocks=new sul.protocol.pocket100.types.BlockPosition[bgrlc3ryb3llzejs]; for(int zgvzdhjvewvkqmxv=0;zgvzdhjvewvkqmxv<destroyedBlocks.length;zgvzdhjvewvkqmxv++){ destroyedBlocks[zgvzdhjvewvkqmxv]=new sul.protocol.pocket100.types.BlockPosition(); destroyedBlocks[zgvzdhjvewvkqmxv]._index=this._index; destroyedBlocks[zgvzdhjvewvkqmxv].decode(this._buffer); this._index=destroyedBlocks[zgvzdhjvewvkqmxv]._index; }
 	}
 
 	public static Explode fromBuffer(byte[] buffer) {

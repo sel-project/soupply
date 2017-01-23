@@ -42,14 +42,14 @@ public class PlayerPositionAndLook extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + position.length() + Var.Uint.length(teleportId) + 9;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(teleportId) + 33;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
-		this.writeBigEndianDouble(position.x);this.writeBigEndianDouble(position.y);this.writeBigEndianDouble(position.z);
+		this.writeBigEndianDouble(position.x); this.writeBigEndianDouble(position.y); this.writeBigEndianDouble(position.z);
 		this.writeBigEndianFloat(yaw);
 		this.writeBigEndianFloat(pitch);
 		this.writeBigEndianByte(flags);
@@ -60,12 +60,12 @@ public class PlayerPositionAndLook extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		yaw=readBigEndianFloat();
 		pitch=readBigEndianFloat();
 		flags=readBigEndianByte();
-		teleportId=varuint.decode(_buffer, _index);
+		teleportId=this.readVaruint();
 	}
 
 	public static PlayerPositionAndLook fromBuffer(byte[] buffer) {

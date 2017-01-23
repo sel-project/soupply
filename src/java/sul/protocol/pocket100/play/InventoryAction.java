@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class InventoryAction extends Packet {
@@ -19,18 +18,18 @@ public class InventoryAction extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	public int action;
-	public Slot item;
+	public sul.protocol.pocket100.types.Slot item;
 
 	public InventoryAction() {}
 
-	public InventoryAction(int action, Slot item) {
+	public InventoryAction(int action, sul.protocol.pocket100.types.Slot item) {
 		this.action = action;
 		this.item = item;
 	}
 
 	@Override
 	public int length() {
-		return Var.Int.length(action) + item.length() + 1;
+		return Buffer.varintLength(action) + item.length() + 1;
 	}
 
 	@Override
@@ -46,8 +45,8 @@ public class InventoryAction extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		action=varint.decode(_buffer, _index);
-		item=new Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
+		action=this.readVarint();
+		item=new sul.protocol.pocket100.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
 	}
 
 	public static InventoryAction fromBuffer(byte[] buffer) {

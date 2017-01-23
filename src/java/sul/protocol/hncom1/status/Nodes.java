@@ -38,7 +38,7 @@ public class Nodes extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(node.getBytes(StandardCharsets.UTF_8).length) + node.getBytes(StandardCharsets.UTF_8).length + 2;
+		return Buffer.varuintLength(node.getBytes(StandardCharsets.UTF_8).length) + node.getBytes(StandardCharsets.UTF_8).length + 2;
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class Nodes extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		action=readBigEndianByte();
-		int bgvubm9kzq=varuint.decode(_buffer, _index); node=new String(this.readBytes(bgvubm9kzq), StandardCharsets.UTF_8);
+		int bgvubm9kzq=this.readVaruint(); node=new String(this.readBytes(bgvubm9kzq), StandardCharsets.UTF_8);
 	}
 
 	public static Nodes fromBuffer(byte[] buffer) {

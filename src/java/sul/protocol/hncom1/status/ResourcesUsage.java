@@ -34,7 +34,7 @@ public class ResourcesUsage extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Ulong.length(ram) + 9;
+		return Buffer.varulongLength(ram) + 9;
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class ResourcesUsage extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		tps=readBigEndianFloat();
-		ram=varulong.decode(_buffer, _index);
+		ram=this.readVarulong();
 		cpu=readBigEndianFloat();
 	}
 

@@ -32,7 +32,7 @@ public class GamePacket extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + packet.length + 1;
+		return Buffer.varuintLength(hubId) + packet.length + 1;
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class GamePacket extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		hubId=varuint.decode(_buffer, _index);
+		hubId=this.readVaruint();
 		packet=this.readBytes(this._buffer.length-this._index);
 	}
 

@@ -29,7 +29,7 @@ public class SetCooldown extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(item) + Var.Uint.length(cooldown);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(item) + Buffer.varuintLength(cooldown);
 	}
 
 	@Override
@@ -44,9 +44,9 @@ public class SetCooldown extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		item=varuint.decode(_buffer, _index);
-		cooldown=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		item=this.readVaruint();
+		cooldown=this.readVaruint();
 	}
 
 	public static SetCooldown fromBuffer(byte[] buffer) {

@@ -27,7 +27,7 @@ public class TeleportConfirm extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(teleportId);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(teleportId);
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class TeleportConfirm extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		teleportId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		teleportId=this.readVaruint();
 	}
 
 	public static TeleportConfirm fromBuffer(byte[] buffer) {

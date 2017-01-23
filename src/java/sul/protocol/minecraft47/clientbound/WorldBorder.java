@@ -27,7 +27,7 @@ public class WorldBorder extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(action);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(action);
 	}
 
 	@Override
@@ -45,8 +45,8 @@ public class WorldBorder extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		action=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		action=this.readVaruint();
 	}
 
 	private byte[] remainingBuffer() {
@@ -115,7 +115,7 @@ public class WorldBorder extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Ulong.length(speed) + 16;
+			return Buffer.varulongLength(speed) + 16;
 		}
 
 		@Override
@@ -134,7 +134,7 @@ public class WorldBorder extends Packet {
 			this._buffer = buffer;
 			oldDiameter=readBigEndianDouble();
 			newDiameter=readBigEndianDouble();
-			speed=varulong.decode(_buffer, _index);
+			speed=this.readVarulong();
 		}
 
 		public void decode() {
@@ -157,7 +157,7 @@ public class WorldBorder extends Packet {
 
 		@Override
 		public int length() {
-			return center.length();
+			return 16;
 		}
 
 		@Override
@@ -165,7 +165,7 @@ public class WorldBorder extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			this.writeBigEndianDouble(center.x);this.writeBigEndianDouble(center.z);
+			this.writeBigEndianDouble(center.x); this.writeBigEndianDouble(center.z);
 			return this._buffer;
 		}
 
@@ -207,7 +207,7 @@ public class WorldBorder extends Packet {
 
 		@Override
 		public int length() {
-			return center.length() + Var.Ulong.length(speed) + Var.Uint.length(portalTeleportBoundary) + Var.Uint.length(warningTime) + Var.Uint.length(warningBlocks) + 16;
+			return Buffer.varulongLength(speed) + Buffer.varuintLength(portalTeleportBoundary) + Buffer.varuintLength(warningTime) + Buffer.varuintLength(warningBlocks) + 32;
 		}
 
 		@Override
@@ -215,7 +215,7 @@ public class WorldBorder extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			this.writeBigEndianDouble(center.x);this.writeBigEndianDouble(center.z);
+			this.writeBigEndianDouble(center.x); this.writeBigEndianDouble(center.z);
 			this.writeBigEndianDouble(oldDiameter);
 			this.writeBigEndianDouble(newDiameter);
 			this.writeVarulong(speed);
@@ -231,10 +231,10 @@ public class WorldBorder extends Packet {
 			center.x=readBigEndianDouble(); center.z=readBigEndianDouble();
 			oldDiameter=readBigEndianDouble();
 			newDiameter=readBigEndianDouble();
-			speed=varulong.decode(_buffer, _index);
-			portalTeleportBoundary=varuint.decode(_buffer, _index);
-			warningTime=varuint.decode(_buffer, _index);
-			warningBlocks=varuint.decode(_buffer, _index);
+			speed=this.readVarulong();
+			portalTeleportBoundary=this.readVaruint();
+			warningTime=this.readVaruint();
+			warningBlocks=this.readVaruint();
 		}
 
 		public void decode() {
@@ -257,7 +257,7 @@ public class WorldBorder extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(warningTime);
+			return Buffer.varuintLength(warningTime);
 		}
 
 		@Override
@@ -272,7 +272,7 @@ public class WorldBorder extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			warningTime=varuint.decode(_buffer, _index);
+			warningTime=this.readVaruint();
 		}
 
 		public void decode() {
@@ -295,7 +295,7 @@ public class WorldBorder extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(warningBlocks);
+			return Buffer.varuintLength(warningBlocks);
 		}
 
 		@Override
@@ -310,7 +310,7 @@ public class WorldBorder extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			warningBlocks=varuint.decode(_buffer, _index);
+			warningBlocks=this.readVaruint();
 		}
 
 		public void decode() {

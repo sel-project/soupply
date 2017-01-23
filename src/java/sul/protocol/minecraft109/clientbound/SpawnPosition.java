@@ -27,7 +27,7 @@ public class SpawnPosition extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 8;
+		return Buffer.varuintLength(ID) + 8;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class SpawnPosition extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		position=readBigEndianLong();
 	}
 

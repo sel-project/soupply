@@ -29,7 +29,7 @@ public class UpdateLatency extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + Var.Uint.length(latency) + 1;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(latency) + 1;
 	}
 
 	@Override
@@ -45,8 +45,8 @@ public class UpdateLatency extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		hubId=varuint.decode(_buffer, _index);
-		latency=varuint.decode(_buffer, _index);
+		hubId=this.readVaruint();
+		latency=this.readVaruint();
 	}
 
 	public static UpdateLatency fromBuffer(byte[] buffer) {

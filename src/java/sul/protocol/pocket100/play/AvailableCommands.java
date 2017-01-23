@@ -29,7 +29,7 @@ public class AvailableCommands extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(commands.getBytes(StandardCharsets.UTF_8).length) + commands.getBytes(StandardCharsets.UTF_8).length + 1;
+		return Buffer.varuintLength(commands.getBytes(StandardCharsets.UTF_8).length) + commands.getBytes(StandardCharsets.UTF_8).length + 1;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class AvailableCommands extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		int bgvuy29tbwfuzhm=varuint.decode(_buffer, _index); commands=new String(this.readBytes(bgvuy29tbwfuzhm), StandardCharsets.UTF_8);
+		int bgvuy29tbwfuzhm=this.readVaruint(); commands=new String(this.readBytes(bgvuy29tbwfuzhm), StandardCharsets.UTF_8);
 	}
 
 	public static AvailableCommands fromBuffer(byte[] buffer) {

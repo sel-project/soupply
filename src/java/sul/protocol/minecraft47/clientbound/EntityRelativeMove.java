@@ -31,7 +31,7 @@ public class EntityRelativeMove extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + delta.length() + 1;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 4;
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class EntityRelativeMove extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
-		this.writeBigEndianByte(delta.x);this.writeBigEndianByte(delta.y);this.writeBigEndianByte(delta.z);
+		this.writeBigEndianByte(delta.x); this.writeBigEndianByte(delta.y); this.writeBigEndianByte(delta.z);
 		this._buffer[this._index++]=(byte)(onGround?1:0);
 		return this._buffer;
 	}
@@ -47,8 +47,8 @@ public class EntityRelativeMove extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
 		delta.x=readBigEndianByte(); delta.y=readBigEndianByte(); delta.z=readBigEndianByte();
 		onGround=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 	}

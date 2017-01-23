@@ -31,7 +31,7 @@ public class ServerHandshake extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(serverPublicKey.getBytes(StandardCharsets.UTF_8).length) + serverPublicKey.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(token.length) + token.length + 1;
+		return Buffer.varuintLength(serverPublicKey.getBytes(StandardCharsets.UTF_8).length) + serverPublicKey.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(token.length) + token.length + 1;
 	}
 
 	@Override
@@ -47,8 +47,8 @@ public class ServerHandshake extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		int bgvuc2vydmvyuhvi=varuint.decode(_buffer, _index); serverPublicKey=new String(this.readBytes(bgvuc2vydmvyuhvi), StandardCharsets.UTF_8);
-		int bhrva2vu=varuint.decode(_buffer, _index); token=new byte[bhrva2vu]; token=this.readBytes(bhrva2vu);
+		int bgvuc2vydmvyuhvi=this.readVaruint(); serverPublicKey=new String(this.readBytes(bgvuc2vydmvyuhvi), StandardCharsets.UTF_8);
+		int bhrva2vu=this.readVaruint(); token=new byte[bhrva2vu]; token=this.readBytes(bhrva2vu);
 	}
 
 	public static ServerHandshake fromBuffer(byte[] buffer) {

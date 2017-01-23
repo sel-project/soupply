@@ -8,7 +8,6 @@
  */
 package sul.protocol.hncom1.login;
 
-import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
 /**
@@ -26,11 +25,11 @@ public class NodeInfo extends Packet {
 
 	public long time;
 	public int max;
-	public Plugin[] plugins;
+	public sul.protocol.hncom1.types.Plugin[] plugins;
 
 	public NodeInfo() {}
 
-	public NodeInfo(long time, int max, Plugin[] plugins) {
+	public NodeInfo(long time, int max, sul.protocol.hncom1.types.Plugin[] plugins) {
 		this.time = time;
 		this.max = max;
 		this.plugins = plugins;
@@ -38,7 +37,7 @@ public class NodeInfo extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Ulong.length(time) + Var.Uint.length(max) + Var.Uint.length(plugins.length) + 1; for(Plugin cgx1z2lucw:plugins){ length+=cgx1z2lucw.length(); } return length;
+		int length=Buffer.varulongLength(time) + Buffer.varuintLength(max) + Buffer.varuintLength(plugins.length) + 1; for(sul.protocol.hncom1.types.Plugin cgx1z2lucw:plugins){ length+=cgx1z2lucw.length(); } return length;
 	}
 
 	@Override
@@ -47,7 +46,7 @@ public class NodeInfo extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarulong(time);
 		this.writeVaruint(max);
-		this.writeVaruint((int)plugins.length); for(Plugin cgx1z2lucw:plugins){ this.writeBytes(cgx1z2lucw.encode()); }
+		this.writeVaruint((int)plugins.length); for(sul.protocol.hncom1.types.Plugin cgx1z2lucw:plugins){ this.writeBytes(cgx1z2lucw.encode()); }
 		return this._buffer;
 	}
 
@@ -55,9 +54,9 @@ public class NodeInfo extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		time=varulong.decode(_buffer, _index);
-		max=varuint.decode(_buffer, _index);
-		int bhbsdwdpbnm=varuint.decode(_buffer, _index); plugins=new Plugin[bhbsdwdpbnm]; for(int cgx1z2lucw=0;cgx1z2lucw<plugins.length;cgx1z2lucw++){ plugins[cgx1z2lucw]=new Plugin(); plugins[cgx1z2lucw]._index=this._index; plugins[cgx1z2lucw].decode(this._buffer); this._index=plugins[cgx1z2lucw]._index; }
+		time=this.readVarulong();
+		max=this.readVaruint();
+		int bhbsdwdpbnm=this.readVaruint(); plugins=new sul.protocol.hncom1.types.Plugin[bhbsdwdpbnm]; for(int cgx1z2lucw=0;cgx1z2lucw<plugins.length;cgx1z2lucw++){ plugins[cgx1z2lucw]=new sul.protocol.hncom1.types.Plugin(); plugins[cgx1z2lucw]._index=this._index; plugins[cgx1z2lucw].decode(this._buffer); this._index=plugins[cgx1z2lucw]._index; }
 	}
 
 	public static NodeInfo fromBuffer(byte[] buffer) {

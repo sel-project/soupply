@@ -11,7 +11,6 @@ package sul.protocol.hncom1.player;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
 /**
@@ -59,15 +58,15 @@ public class Add extends Packet {
 	 * by the node.
 	 */
 	public String displayName;
-	public Address address;
+	public sul.protocol.hncom1.types.Address address;
 	public UUID uuid;
-	public Skin skin;
+	public sul.protocol.hncom1.types.Skin skin;
 	public int latency;
 	public String language;
 
 	public Add() {}
 
-	public Add(int hubId, byte reason, byte type, int protocol, String username, String displayName, Address address, UUID uuid, Skin skin, int latency, String language) {
+	public Add(int hubId, byte reason, byte type, int protocol, String username, String displayName, sul.protocol.hncom1.types.Address address, UUID uuid, sul.protocol.hncom1.types.Skin skin, int latency, String language) {
 		this.hubId = hubId;
 		this.reason = reason;
 		this.type = type;
@@ -83,7 +82,7 @@ public class Add extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + Var.Uint.length(protocol) + Var.Uint.length(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + address.length() + skin.length() + Var.Uint.length(latency) + Var.Uint.length(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + 19;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(protocol) + Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + address.length() + skin.length() + Buffer.varuintLength(latency) + Buffer.varuintLength(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + 19;
 	}
 
 	@Override
@@ -112,17 +111,17 @@ public class Add extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		hubId=varuint.decode(_buffer, _index);
+		hubId=this.readVaruint();
 		reason=readBigEndianByte();
 		type=readBigEndianByte();
-		protocol=varuint.decode(_buffer, _index);
-		int bgvudxnlcm5hbwu=varuint.decode(_buffer, _index); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
-		int bgvuzglzcgxheu5h=varuint.decode(_buffer, _index); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
-		address=new Address(); address._index=this._index; address.decode(this._buffer); this._index=address._index;
-		long bxv1awq=readBigEndianLong();long bhv1awq=readBigEndianLong();return new UUID(bxv1awq,bhv1awq);
-		skin=new Skin(); skin._index=this._index; skin.decode(this._buffer); this._index=skin._index;
-		latency=varuint.decode(_buffer, _index);
-		int bgvubgfuz3vhz2u=varuint.decode(_buffer, _index); language=new String(this.readBytes(bgvubgfuz3vhz2u), StandardCharsets.UTF_8);
+		protocol=this.readVaruint();
+		int bgvudxnlcm5hbwu=this.readVaruint(); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
+		int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
+		address=new sul.protocol.hncom1.types.Address(); address._index=this._index; address.decode(this._buffer); this._index=address._index;
+		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
+		skin=new sul.protocol.hncom1.types.Skin(); skin._index=this._index; skin.decode(this._buffer); this._index=skin._index;
+		latency=this.readVaruint();
+		int bgvubgfuz3vhz2u=this.readVaruint(); language=new String(this.readBytes(bgvubgfuz3vhz2u), StandardCharsets.UTF_8);
 	}
 
 	private byte[] remainingBuffer() {
@@ -153,7 +152,7 @@ public class Add extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Long.length(xuid) + 5;
+			return Buffer.varlongLength(xuid) + 5;
 		}
 
 		@Override
@@ -170,7 +169,7 @@ public class Add extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			xuid=varlong.decode(_buffer, _index);
+			xuid=this.readVarlong();
 			edu=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 			packetLoss=readBigEndianFloat();
 		}

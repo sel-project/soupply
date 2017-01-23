@@ -31,7 +31,7 @@ public class Teams extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + 1;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + 1;
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class Teams extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvubmftzq=varuint.decode(_buffer, _index); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
 		mode=readBigEndianByte();
 	}
 
@@ -109,7 +109,7 @@ public class Teams extends Packet {
 
 		@Override
 		public int length() {
-			int length=Var.Uint.length(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(prefix.getBytes(StandardCharsets.UTF_8).length) + prefix.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(suffix.getBytes(StandardCharsets.UTF_8).length) + suffix.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(nametagVisibility.getBytes(StandardCharsets.UTF_8).length) + nametagVisibility.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(collisionRule.getBytes(StandardCharsets.UTF_8).length) + collisionRule.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(players.length) + 2; for(String cgxhewvycw:players){ length+=Var.Uint.length(cgxhewvycw.getBytes(StandardCharsets.UTF_8).length)+cgxhewvycw.getBytes(StandardCharsets.UTF_8).length; } return length;
+			int length=Buffer.varuintLength(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(prefix.getBytes(StandardCharsets.UTF_8).length) + prefix.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(suffix.getBytes(StandardCharsets.UTF_8).length) + suffix.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(nametagVisibility.getBytes(StandardCharsets.UTF_8).length) + nametagVisibility.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(collisionRule.getBytes(StandardCharsets.UTF_8).length) + collisionRule.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(players.length) + 2; for(String cgxhewvycw:players){ length+=Buffer.varuintLength(cgxhewvycw.getBytes(StandardCharsets.UTF_8).length)+cgxhewvycw.getBytes(StandardCharsets.UTF_8).length; } return length;
 		}
 
 		@Override
@@ -131,14 +131,14 @@ public class Teams extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bgvuzglzcgxheu5h=varuint.decode(_buffer, _index); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
-			int bgvuchjlzml4=varuint.decode(_buffer, _index); prefix=new String(this.readBytes(bgvuchjlzml4), StandardCharsets.UTF_8);
-			int bgvuc3vmzml4=varuint.decode(_buffer, _index); suffix=new String(this.readBytes(bgvuc3vmzml4), StandardCharsets.UTF_8);
+			int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
+			int bgvuchjlzml4=this.readVaruint(); prefix=new String(this.readBytes(bgvuchjlzml4), StandardCharsets.UTF_8);
+			int bgvuc3vmzml4=this.readVaruint(); suffix=new String(this.readBytes(bgvuc3vmzml4), StandardCharsets.UTF_8);
 			friendlyFlags=readBigEndianByte();
-			int bgvubmftzxrhz1zp=varuint.decode(_buffer, _index); nametagVisibility=new String(this.readBytes(bgvubmftzxrhz1zp), StandardCharsets.UTF_8);
-			int bgvuy29sbglzaw9u=varuint.decode(_buffer, _index); collisionRule=new String(this.readBytes(bgvuy29sbglzaw9u), StandardCharsets.UTF_8);
+			int bgvubmftzxrhz1zp=this.readVaruint(); nametagVisibility=new String(this.readBytes(bgvubmftzxrhz1zp), StandardCharsets.UTF_8);
+			int bgvuy29sbglzaw9u=this.readVaruint(); collisionRule=new String(this.readBytes(bgvuy29sbglzaw9u), StandardCharsets.UTF_8);
 			color=readBigEndianByte();
-			int bhbsyxllcnm=varuint.decode(_buffer, _index); players=new String[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ int bgvucgxhewvyc1tj=varuint.decode(_buffer, _index); players[cgxhewvycw]=new String(this.readBytes(bgvucgxhewvyc1tj), StandardCharsets.UTF_8); }
+			int bhbsyxllcnm=this.readVaruint(); players=new String[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ int bgvucgxhewvyc1tj=this.readVaruint(); players[cgxhewvycw]=new String(this.readBytes(bgvucgxhewvyc1tj), StandardCharsets.UTF_8); }
 		}
 
 		public void decode() {
@@ -217,7 +217,7 @@ public class Teams extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(prefix.getBytes(StandardCharsets.UTF_8).length) + prefix.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(suffix.getBytes(StandardCharsets.UTF_8).length) + suffix.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(nametagVisibility.getBytes(StandardCharsets.UTF_8).length) + nametagVisibility.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(collisionRule.getBytes(StandardCharsets.UTF_8).length) + collisionRule.getBytes(StandardCharsets.UTF_8).length + 2;
+			return Buffer.varuintLength(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(prefix.getBytes(StandardCharsets.UTF_8).length) + prefix.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(suffix.getBytes(StandardCharsets.UTF_8).length) + suffix.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(nametagVisibility.getBytes(StandardCharsets.UTF_8).length) + nametagVisibility.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(collisionRule.getBytes(StandardCharsets.UTF_8).length) + collisionRule.getBytes(StandardCharsets.UTF_8).length + 2;
 		}
 
 		@Override
@@ -238,12 +238,12 @@ public class Teams extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bgvuzglzcgxheu5h=varuint.decode(_buffer, _index); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
-			int bgvuchjlzml4=varuint.decode(_buffer, _index); prefix=new String(this.readBytes(bgvuchjlzml4), StandardCharsets.UTF_8);
-			int bgvuc3vmzml4=varuint.decode(_buffer, _index); suffix=new String(this.readBytes(bgvuc3vmzml4), StandardCharsets.UTF_8);
+			int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
+			int bgvuchjlzml4=this.readVaruint(); prefix=new String(this.readBytes(bgvuchjlzml4), StandardCharsets.UTF_8);
+			int bgvuc3vmzml4=this.readVaruint(); suffix=new String(this.readBytes(bgvuc3vmzml4), StandardCharsets.UTF_8);
 			friendlyFlags=readBigEndianByte();
-			int bgvubmftzxrhz1zp=varuint.decode(_buffer, _index); nametagVisibility=new String(this.readBytes(bgvubmftzxrhz1zp), StandardCharsets.UTF_8);
-			int bgvuy29sbglzaw9u=varuint.decode(_buffer, _index); collisionRule=new String(this.readBytes(bgvuy29sbglzaw9u), StandardCharsets.UTF_8);
+			int bgvubmftzxrhz1zp=this.readVaruint(); nametagVisibility=new String(this.readBytes(bgvubmftzxrhz1zp), StandardCharsets.UTF_8);
+			int bgvuy29sbglzaw9u=this.readVaruint(); collisionRule=new String(this.readBytes(bgvuy29sbglzaw9u), StandardCharsets.UTF_8);
 			color=readBigEndianByte();
 		}
 
@@ -267,7 +267,7 @@ public class Teams extends Packet {
 
 		@Override
 		public int length() {
-			int length=Var.Uint.length(players.length) + 0; for(String cgxhewvycw:players){ length+=Var.Uint.length(cgxhewvycw.getBytes(StandardCharsets.UTF_8).length)+cgxhewvycw.getBytes(StandardCharsets.UTF_8).length; } return length;
+			int length=Buffer.varuintLength(players.length) + 0; for(String cgxhewvycw:players){ length+=Buffer.varuintLength(cgxhewvycw.getBytes(StandardCharsets.UTF_8).length)+cgxhewvycw.getBytes(StandardCharsets.UTF_8).length; } return length;
 		}
 
 		@Override
@@ -282,7 +282,7 @@ public class Teams extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bhbsyxllcnm=varuint.decode(_buffer, _index); players=new String[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ int bgvucgxhewvyc1tj=varuint.decode(_buffer, _index); players[cgxhewvycw]=new String(this.readBytes(bgvucgxhewvyc1tj), StandardCharsets.UTF_8); }
+			int bhbsyxllcnm=this.readVaruint(); players=new String[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ int bgvucgxhewvyc1tj=this.readVaruint(); players[cgxhewvycw]=new String(this.readBytes(bgvucgxhewvyc1tj), StandardCharsets.UTF_8); }
 		}
 
 		public void decode() {
@@ -305,7 +305,7 @@ public class Teams extends Packet {
 
 		@Override
 		public int length() {
-			int length=Var.Uint.length(players.length) + 0; for(String cgxhewvycw:players){ length+=Var.Uint.length(cgxhewvycw.getBytes(StandardCharsets.UTF_8).length)+cgxhewvycw.getBytes(StandardCharsets.UTF_8).length; } return length;
+			int length=Buffer.varuintLength(players.length) + 0; for(String cgxhewvycw:players){ length+=Buffer.varuintLength(cgxhewvycw.getBytes(StandardCharsets.UTF_8).length)+cgxhewvycw.getBytes(StandardCharsets.UTF_8).length; } return length;
 		}
 
 		@Override
@@ -320,7 +320,7 @@ public class Teams extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bhbsyxllcnm=varuint.decode(_buffer, _index); players=new String[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ int bgvucgxhewvyc1tj=varuint.decode(_buffer, _index); players[cgxhewvycw]=new String(this.readBytes(bgvucgxhewvyc1tj), StandardCharsets.UTF_8); }
+			int bhbsyxllcnm=this.readVaruint(); players=new String[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ int bgvucgxhewvyc1tj=this.readVaruint(); players[cgxhewvycw]=new String(this.readBytes(bgvucgxhewvyc1tj), StandardCharsets.UTF_8); }
 		}
 
 		public void decode() {

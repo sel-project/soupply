@@ -32,7 +32,7 @@ public class Players extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(online) + Var.Uint.length(max) + 1;
+		return Buffer.varuintLength(online) + Buffer.varuintLength(max) + 1;
 	}
 
 	@Override
@@ -48,8 +48,8 @@ public class Players extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		online=varuint.decode(_buffer, _index);
-		max=varuint.decode(_buffer, _index);
+		online=this.readVaruint();
+		max=this.readVaruint();
 	}
 
 	public static Players fromBuffer(byte[] buffer) {

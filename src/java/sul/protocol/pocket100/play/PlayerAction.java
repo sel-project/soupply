@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class PlayerAction extends Packet {
@@ -37,12 +36,12 @@ public class PlayerAction extends Packet {
 
 	public long entityId;
 	public int action;
-	public BlockPosition position;
+	public sul.protocol.pocket100.types.BlockPosition position;
 	public int face;
 
 	public PlayerAction() {}
 
-	public PlayerAction(long entityId, int action, BlockPosition position, int face) {
+	public PlayerAction(long entityId, int action, sul.protocol.pocket100.types.BlockPosition position, int face) {
 		this.entityId = entityId;
 		this.action = action;
 		this.position = position;
@@ -51,7 +50,7 @@ public class PlayerAction extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Int.length(action) + position.length() + Var.Int.length(face) + 1;
+		return Buffer.varlongLength(entityId) + Buffer.varintLength(action) + position.length() + Buffer.varintLength(face) + 1;
 	}
 
 	@Override
@@ -69,10 +68,10 @@ public class PlayerAction extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
-		action=varint.decode(_buffer, _index);
-		position=new BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
-		face=varint.decode(_buffer, _index);
+		entityId=this.readVarlong();
+		action=this.readVarint();
+		position=new sul.protocol.pocket100.types.BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
+		face=this.readVarint();
 	}
 
 	public static PlayerAction fromBuffer(byte[] buffer) {

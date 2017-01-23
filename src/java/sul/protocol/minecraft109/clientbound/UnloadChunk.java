@@ -27,21 +27,21 @@ public class UnloadChunk extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + position.length();
+		return Buffer.varuintLength(ID) + 8;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
-		this.writeBigEndianInt(position.x);this.writeBigEndianInt(position.z);
+		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.z);
 		return this._buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		position.x=readBigEndianInt(); position.z=readBigEndianInt();
 	}
 

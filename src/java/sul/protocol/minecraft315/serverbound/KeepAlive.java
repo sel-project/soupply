@@ -27,7 +27,7 @@ public class KeepAlive extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(id);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(id);
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class KeepAlive extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		id=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		id=this.readVaruint();
 	}
 
 	public static KeepAlive fromBuffer(byte[] buffer) {

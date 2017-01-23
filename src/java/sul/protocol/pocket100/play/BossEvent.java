@@ -34,7 +34,7 @@ public class BossEvent extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Uint.length(eventId) + 1;
+		return Buffer.varlongLength(entityId) + Buffer.varuintLength(eventId) + 1;
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class BossEvent extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
-		eventId=varuint.decode(_buffer, _index);
+		entityId=this.readVarlong();
+		eventId=this.readVaruint();
 	}
 
 	public static BossEvent fromBuffer(byte[] buffer) {

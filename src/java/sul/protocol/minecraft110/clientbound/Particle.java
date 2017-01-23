@@ -87,7 +87,7 @@ public class Particle extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length() + position.length() + offset.length() + 13; for(int ywrkaxrpb25hberh:additionalData){ length+=Var.Uint.length(ywrkaxrpb25hberh); } return length;
+		int length=Buffer.varuintLength(ID) + 37; for(int ywrkaxrpb25hberh:additionalData){ length+=Buffer.varuintLength(ywrkaxrpb25hberh); } return length;
 	}
 
 	@Override
@@ -96,8 +96,8 @@ public class Particle extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianInt(particleId);
 		this._buffer[this._index++]=(byte)(longDistance?1:0);
-		this.writeBigEndianFloat(position.x);this.writeBigEndianFloat(position.y);this.writeBigEndianFloat(position.z);
-		this.writeBigEndianFloat(offset.x);this.writeBigEndianFloat(offset.y);this.writeBigEndianFloat(offset.z);
+		this.writeBigEndianFloat(position.x); this.writeBigEndianFloat(position.y); this.writeBigEndianFloat(position.z);
+		this.writeBigEndianFloat(offset.x); this.writeBigEndianFloat(offset.y); this.writeBigEndianFloat(offset.z);
 		this.writeBigEndianFloat(data);
 		this.writeBigEndianInt(count);
 		for(int ywrkaxrpb25hberh:additionalData){ this.writeVaruint(ywrkaxrpb25hberh); }
@@ -107,14 +107,14 @@ public class Particle extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		particleId=readBigEndianInt();
 		longDistance=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 		position.x=readBigEndianFloat(); position.y=readBigEndianFloat(); position.z=readBigEndianFloat();
 		offset.x=readBigEndianFloat(); offset.y=readBigEndianFloat(); offset.z=readBigEndianFloat();
 		data=readBigEndianFloat();
 		count=readBigEndianInt();
-		final int bgfkzgl0aw9uywxe=2; additionalData=new int[bgfkzgl0aw9uywxe]; for(int ywrkaxrpb25hberh=0;ywrkaxrpb25hberh<additionalData.length;ywrkaxrpb25hberh++){ additionalData[ywrkaxrpb25hberh]=varuint.decode(_buffer, _index); }
+		final int bgfkzgl0aw9uywxe=2; additionalData=new int[bgfkzgl0aw9uywxe]; for(int ywrkaxrpb25hberh=0;ywrkaxrpb25hberh<additionalData.length;ywrkaxrpb25hberh++){ additionalData[ywrkaxrpb25hberh]=this.readVaruint(); }
 	}
 
 	public static Particle fromBuffer(byte[] buffer) {

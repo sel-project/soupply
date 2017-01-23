@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class AddItemEntity extends Packet {
@@ -20,13 +19,13 @@ public class AddItemEntity extends Packet {
 
 	public long entityId;
 	public long runtimeId;
-	public Slot item;
+	public sul.protocol.pocket100.types.Slot item;
 	public Tuples.FloatXYZ position;
 	public Tuples.FloatXYZ motion;
 
 	public AddItemEntity() {}
 
-	public AddItemEntity(long entityId, long runtimeId, Slot item, Tuples.FloatXYZ position, Tuples.FloatXYZ motion) {
+	public AddItemEntity(long entityId, long runtimeId, sul.protocol.pocket100.types.Slot item, Tuples.FloatXYZ position, Tuples.FloatXYZ motion) {
 		this.entityId = entityId;
 		this.runtimeId = runtimeId;
 		this.item = item;
@@ -36,7 +35,7 @@ public class AddItemEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + item.length() + position.length() + motion.length() + 1;
+		return Buffer.varlongLength(entityId) + Buffer.varlongLength(runtimeId) + item.length() + 25;
 	}
 
 	@Override
@@ -46,8 +45,8 @@ public class AddItemEntity extends Packet {
 		this.writeVarlong(entityId);
 		this.writeVarlong(runtimeId);
 		this.writeBytes(item.encode());
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
-		this.writeLittleEndianFloat(motion.x);this.writeLittleEndianFloat(motion.y);this.writeLittleEndianFloat(motion.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(motion.x); this.writeLittleEndianFloat(motion.y); this.writeLittleEndianFloat(motion.z);
 		return this._buffer;
 	}
 
@@ -55,9 +54,9 @@ public class AddItemEntity extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
-		runtimeId=varlong.decode(_buffer, _index);
-		item=new Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
+		entityId=this.readVarlong();
+		runtimeId=this.readVarlong();
+		item=new sul.protocol.pocket100.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 	}

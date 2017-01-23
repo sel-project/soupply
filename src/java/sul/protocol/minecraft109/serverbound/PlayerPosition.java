@@ -29,14 +29,14 @@ public class PlayerPosition extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + position.length() + 1;
+		return Buffer.varuintLength(ID) + 25;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
-		this.writeBigEndianDouble(position.x);this.writeBigEndianDouble(position.y);this.writeBigEndianDouble(position.z);
+		this.writeBigEndianDouble(position.x); this.writeBigEndianDouble(position.y); this.writeBigEndianDouble(position.z);
 		this._buffer[this._index++]=(byte)(onGround?1:0);
 		return this._buffer;
 	}
@@ -44,7 +44,7 @@ public class PlayerPosition extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		onGround=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 	}

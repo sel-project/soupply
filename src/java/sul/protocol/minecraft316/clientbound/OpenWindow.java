@@ -35,7 +35,7 @@ public class OpenWindow extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(type.getBytes(StandardCharsets.UTF_8).length) + type.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(title.getBytes(StandardCharsets.UTF_8).length) + title.getBytes(StandardCharsets.UTF_8).length + 2;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(type.getBytes(StandardCharsets.UTF_8).length) + type.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(title.getBytes(StandardCharsets.UTF_8).length) + title.getBytes(StandardCharsets.UTF_8).length + 2;
 	}
 
 	@Override
@@ -52,10 +52,10 @@ public class OpenWindow extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		window=readBigEndianByte();
-		int bgvudhlwzq=varuint.decode(_buffer, _index); type=new String(this.readBytes(bgvudhlwzq), StandardCharsets.UTF_8);
-		int bgvudgl0bgu=varuint.decode(_buffer, _index); title=new String(this.readBytes(bgvudgl0bgu), StandardCharsets.UTF_8);
+		int bgvudhlwzq=this.readVaruint(); type=new String(this.readBytes(bgvudhlwzq), StandardCharsets.UTF_8);
+		int bgvudgl0bgu=this.readVaruint(); title=new String(this.readBytes(bgvudgl0bgu), StandardCharsets.UTF_8);
 		slots=readBigEndianByte();
 	}
 

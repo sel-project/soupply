@@ -39,7 +39,7 @@ public class Handshake extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(protocol) + Var.Uint.length(serverAddress.getBytes(StandardCharsets.UTF_8).length) + serverAddress.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(next) + 2;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(protocol) + Buffer.varuintLength(serverAddress.getBytes(StandardCharsets.UTF_8).length) + serverAddress.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(next) + 2;
 	}
 
 	@Override
@@ -56,11 +56,11 @@ public class Handshake extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		protocol=varuint.decode(_buffer, _index);
-		int bgvuc2vydmvyqwrk=varuint.decode(_buffer, _index); serverAddress=new String(this.readBytes(bgvuc2vydmvyqwrk), StandardCharsets.UTF_8);
+		this.readVaruint();
+		protocol=this.readVaruint();
+		int bgvuc2vydmvyqwrk=this.readVaruint(); serverAddress=new String(this.readBytes(bgvuc2vydmvyqwrk), StandardCharsets.UTF_8);
 		serverPort=readBigEndianShort();
-		next=varuint.decode(_buffer, _index);
+		next=this.readVaruint();
 	}
 
 	public static Handshake fromBuffer(byte[] buffer) {

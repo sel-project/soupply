@@ -26,7 +26,7 @@ public class ListUpdateLatency extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(latency) + 16;
+		return Buffer.varuintLength(latency) + 16;
 	}
 
 	@Override
@@ -40,8 +40,8 @@ public class ListUpdateLatency extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		long bxv1awq=readBigEndianLong();long bhv1awq=readBigEndianLong();return new UUID(bxv1awq,bhv1awq);
-		latency=varuint.decode(_buffer, _index);
+		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
+		latency=this.readVaruint();
 	}
 
 

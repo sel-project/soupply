@@ -10,7 +10,6 @@ package sul.protocol.pocket100.play;
 
 import java.util.UUID;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class PlayerList extends Packet {
@@ -66,17 +65,17 @@ public class PlayerList extends Packet {
 
 		public final static byte ACTION = (byte)0;
 
-		public PlayerList[] players;
+		public sul.protocol.pocket100.types.PlayerList[] players;
 
 		public Add() {}
 
-		public Add(PlayerList[] players) {
+		public Add(sul.protocol.pocket100.types.PlayerList[] players) {
 			this.players = players;
 		}
 
 		@Override
 		public int length() {
-			int length=Var.Uint.length(players.length) + 0; for(PlayerList cgxhewvycw:players){ length+=cgxhewvycw.length(); } return length;
+			int length=Buffer.varuintLength(players.length) + 0; for(sul.protocol.pocket100.types.PlayerList cgxhewvycw:players){ length+=cgxhewvycw.length(); } return length;
 		}
 
 		@Override
@@ -84,14 +83,14 @@ public class PlayerList extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			this.writeVaruint((int)players.length); for(PlayerList cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
+			this.writeVaruint((int)players.length); for(sul.protocol.pocket100.types.PlayerList cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
 			return this._buffer;
 		}
 
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bhbsyxllcnm=varuint.decode(_buffer, _index); players=new PlayerList[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ players[cgxhewvycw]=new PlayerList(); players[cgxhewvycw]._index=this._index; players[cgxhewvycw].decode(this._buffer); this._index=players[cgxhewvycw]._index; }
+			int bhbsyxllcnm=this.readVaruint(); players=new sul.protocol.pocket100.types.PlayerList[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ players[cgxhewvycw]=new sul.protocol.pocket100.types.PlayerList(); players[cgxhewvycw]._index=this._index; players[cgxhewvycw].decode(this._buffer); this._index=players[cgxhewvycw]._index; }
 		}
 
 		public void decode() {
@@ -114,7 +113,7 @@ public class PlayerList extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(players.length) + players.length*16;
+			return Buffer.varuintLength(players.length) + players.length*16;
 		}
 
 		@Override
@@ -129,7 +128,7 @@ public class PlayerList extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bhbsyxllcnm=varuint.decode(_buffer, _index); players=new UUID[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ long bxbsyxllcnnby2d4=readBigEndianLong();long bhbsyxllcnnby2d4=readBigEndianLong();return new UUID(bxbsyxllcnnby2d4,bhbsyxllcnnby2d4); }
+			int bhbsyxllcnm=this.readVaruint(); players=new UUID[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ long bxbsyxllcnnby2d4=readBigEndianLong(); long bhbsyxllcnnby2d4=readBigEndianLong(); players[cgxhewvycw]=new UUID(bxbsyxllcnnby2d4,bhbsyxllcnnby2d4); }
 		}
 
 		public void decode() {

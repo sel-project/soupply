@@ -31,7 +31,7 @@ public class ConfirmTransaction extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 4;
+		return Buffer.varuintLength(ID) + 4;
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class ConfirmTransaction extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		window=readBigEndianByte();
 		action=readBigEndianShort();
 		accepted=this._index<this._buffer.length&&this._buffer[this._index++]!=0;

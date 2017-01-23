@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class AddHangingEntity extends Packet {
@@ -20,12 +19,12 @@ public class AddHangingEntity extends Packet {
 
 	public long entityId;
 	public long runtimeId;
-	public BlockPosition position;
+	public sul.protocol.pocket100.types.BlockPosition position;
 	public int unknown3;
 
 	public AddHangingEntity() {}
 
-	public AddHangingEntity(long entityId, long runtimeId, BlockPosition position, int unknown3) {
+	public AddHangingEntity(long entityId, long runtimeId, sul.protocol.pocket100.types.BlockPosition position, int unknown3) {
 		this.entityId = entityId;
 		this.runtimeId = runtimeId;
 		this.position = position;
@@ -34,7 +33,7 @@ public class AddHangingEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + position.length() + Var.Int.length(?) + 1;
+		return Buffer.varlongLength(entityId) + Buffer.varlongLength(runtimeId) + position.length() + Buffer.varintLength(unknown3) + 1;
 	}
 
 	@Override
@@ -52,10 +51,10 @@ public class AddHangingEntity extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
-		runtimeId=varlong.decode(_buffer, _index);
-		position=new BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
-		unknown3=varint.decode(_buffer, _index);
+		entityId=this.readVarlong();
+		runtimeId=this.readVarlong();
+		position=new sul.protocol.pocket100.types.BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
+		unknown3=this.readVarint();
 	}
 
 	public static AddHangingEntity fromBuffer(byte[] buffer) {

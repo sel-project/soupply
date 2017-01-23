@@ -31,7 +31,7 @@ public class UpdateHealth extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(hunger) + 8;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(hunger) + 8;
 	}
 
 	@Override
@@ -47,9 +47,9 @@ public class UpdateHealth extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		health=readBigEndianFloat();
-		hunger=varuint.decode(_buffer, _index);
+		hunger=this.readVaruint();
 		saturation=readBigEndianFloat();
 	}
 

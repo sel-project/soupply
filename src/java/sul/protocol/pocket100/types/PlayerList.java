@@ -18,11 +18,11 @@ public class PlayerList extends Packet {
 	public UUID uuid;
 	public long entityId;
 	public String displayName;
-	public Skin skin;
+	public sul.protocol.pocket100.types.Skin skin;
 
 	public PlayerList() {}
 
-	public PlayerList(UUID uuid, long entityId, String displayName, Skin skin) {
+	public PlayerList(UUID uuid, long entityId, String displayName, sul.protocol.pocket100.types.Skin skin) {
 		this.uuid = uuid;
 		this.entityId = entityId;
 		this.displayName = displayName;
@@ -31,7 +31,7 @@ public class PlayerList extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Uint.length(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + skin.length() + 16;
+		return Buffer.varlongLength(entityId) + Buffer.varuintLength(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + skin.length() + 16;
 	}
 
 	@Override
@@ -47,10 +47,10 @@ public class PlayerList extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		long bxv1awq=readBigEndianLong();long bhv1awq=readBigEndianLong();return new UUID(bxv1awq,bhv1awq);
-		entityId=varlong.decode(_buffer, _index);
-		int bgvuzglzcgxheu5h=varuint.decode(_buffer, _index); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
-		skin=new Skin(); skin._index=this._index; skin.decode(this._buffer); this._index=skin._index;
+		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
+		entityId=this.readVarlong();
+		int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
+		skin=new sul.protocol.pocket100.types.Skin(); skin._index=this._index; skin.decode(this._buffer); this._index=skin._index;
 	}
 
 

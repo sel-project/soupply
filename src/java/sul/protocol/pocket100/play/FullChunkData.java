@@ -31,14 +31,14 @@ public class FullChunkData extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + Var.Uint.length(data.length) + data.length + Var.Uint.length(tiles.length) + tiles.length + 1;
+		return Buffer.varintLength(position.x) + Buffer.varintLength(position.z) + Buffer.varuintLength(data.length) + data.length + Buffer.varuintLength(tiles.length) + tiles.length + 1;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeVarint(position.x);this.writeVarint(position.z);
+		this.writeVarint(position.x); this.writeVarint(position.z);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
 		this.writeVaruint((int)tiles.length); this.writeBytes(tiles);
 		return this._buffer;
@@ -48,9 +48,9 @@ public class FullChunkData extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		position.x=varint.decode(_buffer, _index); position.z=varint.decode(_buffer, _index);
-		int bgrhdge=varuint.decode(_buffer, _index); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
-		int bhrpbgvz=varuint.decode(_buffer, _index); tiles=new byte[bhrpbgvz]; tiles=this.readBytes(bhrpbgvz);
+		position.x=this.readVarint(); position.z=this.readVarint();
+		int bgrhdge=this.readVaruint(); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
+		int bhrpbgvz=this.readVaruint(); tiles=new byte[bhrpbgvz]; tiles=this.readBytes(bhrpbgvz);
 	}
 
 	public static FullChunkData fromBuffer(byte[] buffer) {

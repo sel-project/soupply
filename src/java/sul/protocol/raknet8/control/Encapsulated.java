@@ -8,7 +8,6 @@
  */
 package sul.protocol.raknet8.control;
 
-import sul.protocol.raknet8.types.*;
 import sul.utils.*;
 
 public class Encapsulated extends Packet {
@@ -19,11 +18,11 @@ public class Encapsulated extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	public int count;
-	public Encapsulation encapsulation;
+	public sul.protocol.raknet8.types.Encapsulation encapsulation;
 
 	public Encapsulated() {}
 
-	public Encapsulated(int count, Encapsulation encapsulation) {
+	public Encapsulated(int count, sul.protocol.raknet8.types.Encapsulation encapsulation) {
 		this.count = count;
 		this.encapsulation = encapsulation;
 	}
@@ -47,7 +46,7 @@ public class Encapsulated extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		count=readLittleEndianTriad();
-		encapsulation=new Encapsulation(); encapsulation._index=this._index; encapsulation.decode(this._buffer); this._index=encapsulation._index;
+		encapsulation=new sul.protocol.raknet8.types.Encapsulation(); encapsulation._index=this._index; encapsulation.decode(this._buffer); this._index=encapsulation._index;
 	}
 
 	public static Encapsulated fromBuffer(byte[] buffer) {

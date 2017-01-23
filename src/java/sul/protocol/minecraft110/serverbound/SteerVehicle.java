@@ -35,7 +35,7 @@ public class SteerVehicle extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 9;
+		return Buffer.varuintLength(ID) + 9;
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class SteerVehicle extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		sideways=readBigEndianFloat();
 		forward=readBigEndianFloat();
 		flags=readBigEndianByte();

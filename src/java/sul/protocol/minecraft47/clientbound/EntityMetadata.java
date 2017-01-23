@@ -8,7 +8,6 @@
  */
 package sul.protocol.minecraft47.clientbound;
 
-import sul.protocol.minecraft47.types.*;
 import sul.utils.*;
 
 public class EntityMetadata extends Packet {
@@ -30,7 +29,7 @@ public class EntityMetadata extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + metadata.length();
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + metadata.length();
 	}
 
 	@Override
@@ -45,8 +44,8 @@ public class EntityMetadata extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
 		metadata=new Metadata(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
 	}
 

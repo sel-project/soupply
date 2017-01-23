@@ -41,7 +41,7 @@ public class UpdateBlockEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + nbt.length + 9;
+		return Buffer.varuintLength(ID) + nbt.length + 9;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class UpdateBlockEntity extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		position=readBigEndianLong();
 		action=readBigEndianByte();
 		nbt=this.readBytes(this._buffer.length-this._index);

@@ -27,7 +27,7 @@ public class ChunkRadiusUpdated extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(radius) + 1;
+		return Buffer.varintLength(radius) + 1;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class ChunkRadiusUpdated extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		radius=varint.decode(_buffer, _index);
+		radius=this.readVarint();
 	}
 
 	public static ChunkRadiusUpdated fromBuffer(byte[] buffer) {

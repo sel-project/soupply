@@ -47,7 +47,7 @@ public class EntityEvent extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Int.length(?) + 2;
+		return Buffer.varlongLength(entityId) + Buffer.varintLength(unknown2) + 2;
 	}
 
 	@Override
@@ -64,9 +64,9 @@ public class EntityEvent extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
+		entityId=this.readVarlong();
 		eventId=readBigEndianByte();
-		unknown2=varint.decode(_buffer, _index);
+		unknown2=this.readVarint();
 	}
 
 	public static EntityEvent fromBuffer(byte[] buffer) {

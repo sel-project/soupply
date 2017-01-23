@@ -33,7 +33,7 @@ public class TabComplete extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(text.getBytes(StandardCharsets.UTF_8).length) + text.getBytes(StandardCharsets.UTF_8).length + 9;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(text.getBytes(StandardCharsets.UTF_8).length) + text.getBytes(StandardCharsets.UTF_8).length + 9;
 	}
 
 	@Override
@@ -42,17 +42,17 @@ public class TabComplete extends Packet {
 		this.writeVaruint(ID);
 		byte[] dgv4da=text.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgv4da.length); this.writeBytes(dgv4da);
 		this._buffer[this._index++]=(byte)(hasPosition?1:0);
-		if(has_position==true){ this.writeBigEndianLong(block); }
+		if(hasPosition==true){ this.writeBigEndianLong(block); }
 		return this._buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvudgv4da=varuint.decode(_buffer, _index); text=new String(this.readBytes(bgvudgv4da), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvudgv4da=this.readVaruint(); text=new String(this.readBytes(bgvudgv4da), StandardCharsets.UTF_8);
 		hasPosition=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		if(has_position==true){ block=readBigEndianLong(); }
+		if(hasPosition==true){ block=readBigEndianLong(); }
 	}
 
 	public static TabComplete fromBuffer(byte[] buffer) {

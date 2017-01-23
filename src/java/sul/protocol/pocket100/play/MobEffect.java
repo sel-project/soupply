@@ -42,7 +42,7 @@ public class MobEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Int.length(effect) + Var.Int.length(amplifier) + Var.Int.length(duration) + 3;
+		return Buffer.varlongLength(entityId) + Buffer.varintLength(effect) + Buffer.varintLength(amplifier) + Buffer.varintLength(duration) + 3;
 	}
 
 	@Override
@@ -62,12 +62,12 @@ public class MobEffect extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
+		entityId=this.readVarlong();
 		eventId=readBigEndianByte();
-		effect=varint.decode(_buffer, _index);
-		amplifier=varint.decode(_buffer, _index);
+		effect=this.readVarint();
+		amplifier=this.readVarint();
 		particles=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		duration=varint.decode(_buffer, _index);
+		duration=this.readVarint();
 	}
 
 	public static MobEffect fromBuffer(byte[] buffer) {

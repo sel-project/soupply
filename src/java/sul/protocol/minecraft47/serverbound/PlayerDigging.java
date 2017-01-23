@@ -40,7 +40,7 @@ public class PlayerDigging extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 10;
+		return Buffer.varuintLength(ID) + 10;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class PlayerDigging extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		status=readBigEndianByte();
 		position=readBigEndianLong();
 		face=readBigEndianByte();

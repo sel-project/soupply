@@ -27,7 +27,7 @@ public class SetHealth extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(health) + 1;
+		return Buffer.varintLength(health) + 1;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class SetHealth extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		health=varint.decode(_buffer, _index);
+		health=this.readVarint();
 	}
 
 	public static SetHealth fromBuffer(byte[] buffer) {

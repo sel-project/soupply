@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class ContainerSetContent extends Packet {
@@ -19,12 +18,12 @@ public class ContainerSetContent extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	public byte window;
-	public Slot[] slots;
+	public sul.protocol.pocket100.types.Slot[] slots;
 	public int[] hotbar;
 
 	public ContainerSetContent() {}
 
-	public ContainerSetContent(byte window, Slot[] slots, int[] hotbar) {
+	public ContainerSetContent(byte window, sul.protocol.pocket100.types.Slot[] slots, int[] hotbar) {
 		this.window = window;
 		this.slots = slots;
 		this.hotbar = hotbar;
@@ -32,7 +31,7 @@ public class ContainerSetContent extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length(slots.length) + Var.Uint.length(hotbar.length) + 2; for(Slot c2xvdhm:slots){ length+=c2xvdhm.length(); };for(int ag90ymfy:hotbar){ length+=Var.Int.length(ag90ymfy); } return length;
+		int length=Buffer.varuintLength(slots.length) + Buffer.varuintLength(hotbar.length) + 2; for(sul.protocol.pocket100.types.Slot c2xvdhm:slots){ length+=c2xvdhm.length(); };for(int ag90ymfy:hotbar){ length+=Buffer.varintLength(ag90ymfy); } return length;
 	}
 
 	@Override
@@ -40,7 +39,7 @@ public class ContainerSetContent extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(window);
-		this.writeVaruint((int)slots.length); for(Slot c2xvdhm:slots){ this.writeBytes(c2xvdhm.encode()); }
+		this.writeVaruint((int)slots.length); for(sul.protocol.pocket100.types.Slot c2xvdhm:slots){ this.writeBytes(c2xvdhm.encode()); }
 		this.writeVaruint((int)hotbar.length); for(int ag90ymfy:hotbar){ this.writeVarint(ag90ymfy); }
 		return this._buffer;
 	}
@@ -50,8 +49,8 @@ public class ContainerSetContent extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		window=readBigEndianByte();
-		int bhnsb3rz=varuint.decode(_buffer, _index); slots=new Slot[bhnsb3rz]; for(int c2xvdhm=0;c2xvdhm<slots.length;c2xvdhm++){ slots[c2xvdhm]=new Slot(); slots[c2xvdhm]._index=this._index; slots[c2xvdhm].decode(this._buffer); this._index=slots[c2xvdhm]._index; }
-		int bghvdgjhcg=varuint.decode(_buffer, _index); hotbar=new int[bghvdgjhcg]; for(int ag90ymfy=0;ag90ymfy<hotbar.length;ag90ymfy++){ hotbar[ag90ymfy]=varint.decode(_buffer, _index); }
+		int bhnsb3rz=this.readVaruint(); slots=new sul.protocol.pocket100.types.Slot[bhnsb3rz]; for(int c2xvdhm=0;c2xvdhm<slots.length;c2xvdhm++){ slots[c2xvdhm]=new sul.protocol.pocket100.types.Slot(); slots[c2xvdhm]._index=this._index; slots[c2xvdhm].decode(this._buffer); this._index=slots[c2xvdhm]._index; }
+		int bghvdgjhcg=this.readVaruint(); hotbar=new int[bghvdgjhcg]; for(int ag90ymfy=0;ag90ymfy<hotbar.length;ag90ymfy++){ hotbar[ag90ymfy]=this.readVarint(); }
 	}
 
 	public static ContainerSetContent fromBuffer(byte[] buffer) {

@@ -31,7 +31,7 @@ public class Disconnect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + 2;
+		return Buffer.varuintLength(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + 2;
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class Disconnect extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		hideDisconnectionScreen=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		int bgvubwvzc2fnzq=varuint.decode(_buffer, _index); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8);
+		int bgvubwvzc2fnzq=this.readVaruint(); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8);
 	}
 
 	public static Disconnect fromBuffer(byte[] buffer) {

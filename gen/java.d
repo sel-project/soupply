@@ -103,6 +103,45 @@ void java(Attributes[string] attributes, Protocols[string] protocols, Creative[s
 			io ~= "\t}\n\n";
 		}
 	}
+	foreach(varint ; [tuple("short", 3, 15), tuple("int", 5, 31), tuple("long", 10, 63)]) {
+		foreach(sign ; ["", "u"]) {
+			// write
+			io ~= "\tpublic void writeVar" ~ sign ~ varint[0] ~ "(" ~ varint[0] ~ " a) {\n";
+			if(sign.length) {
+				io ~= "\t\tthis._buffer[this._index++] = (byte)(a & 0x7F);\n";
+				io ~= "\t\twhile((a & 0x80) != 0) {\n";
+				io ~= "\t\t\ta >>>= 7;\n";
+				io ~= "\t\t\tthis._buffer[this._index++] = (byte)(a & 0x7F);\n";
+				io ~= "\t\t}\n";
+			} else {
+				io ~= "\t\tthis.writeVaru" ~ varint[0] ~ "((" ~ varint[0] ~ ")((a >> 1) | (a << " ~ to!string(varint[2]) ~ ")));\n";
+			}
+			io ~= "\t}\n\n";
+			// read
+			io ~= "\tpublic " ~ varint[0] ~ " readVar" ~ sign ~ varint[0] ~ "() {\n";
+			if(sign.length) {
+				io ~= "\t\tint limit = 0;\n";
+				io ~= "\t\t" ~ varint[0] ~ " ret = 0;\n";
+				io ~= "\t\tdo {\n";
+				io ~= "\t\t\tret |= (this._buffer[this._index] & 0x7F) << (limit * 7);\n";
+				io ~= "\t\t} while((this._buffer[this._index++] & 0x80) != 0 && ++limit < " ~ to!string(varint[1]) ~ ");\n";
+				io ~= "\t\treturn ret;\n";
+			} else {
+				io ~= "\t\t" ~ varint[0] ~ " ret = this.readVaru" ~ varint[0] ~ "();\n";;
+				io ~= "\t\treturn (" ~ varint[0] ~ ")((ret << 1) | (ret >> " ~ to!string(varint[2]) ~ "));\n";
+			}
+			io ~= "\t}\n\n";
+			// length
+			io ~= "\tpublic static int var" ~ sign ~ varint[0] ~ "Length(" ~ varint[0] ~ " a) {\n";
+			io ~= "\t\tint length = 1;\n";
+			io ~= "\t\twhile((a & 0x80) != 0 && length < " ~ to!string(varint[1]) ~ ") {\n";
+			io ~= "\t\t\tlength++;\n";
+			io ~= "\t\t\ta >>>= 7;\n";
+			io ~= "\t\t}\n";
+			io ~= "\t\treturn length;\n";
+			io ~= "\t}\n\n";
+		}
+	}
 	io ~= "}";
 	write("../src/java/sul/utils/Buffer.java", io);
 
@@ -157,11 +196,17 @@ public abstract class Packet extends Buffer {
 			auto e = type[end..$].replaceAll(ctRegex!`\[[0-9]{1,3}\]`, "[]");
 			auto a = t in defaultAliases;
 			if(a) return convert(*a ~ e);
-			if(e.length && e[0] == '<') {
-				if(!tuples.canFind(t ~ e)) tuples ~= (t ~ e);
-				return "Tuples." ~ toPascalCase(t) ~ toUpper(e[1..$-1]);
-			} else if(defaultTypes.canFind(t)) return t ~ e;
-			else return toPascalCase(t) ~ e;
+			auto b = t in prs.data.arrays;
+			if(b) return convert((*b).base ~ "[]" ~ e);
+			if(e.length && e[0] == '<') return "Tuples." ~ toPascalCase(t) ~ toUpper(e[1..e.indexOf(">")]) ~ e[e.indexOf(">")+1..$];
+			else if(defaultTypes.canFind(t)) return t ~ e;
+			else if(t == "metadata") return "Metadata" ~ e;
+			else return "sul.protocol." ~ game ~ ".types." ~ toPascalCase(t) ~ e;
+		}
+
+		@property string convertName(string name) {
+			if(name == "default") return "def";
+			else return toCamelCase(name);
 		}
 
 		immutable id = convert(prs.data.id);
@@ -170,6 +215,7 @@ public abstract class Packet extends Buffer {
 		void fieldsLengthImpl(string name, string type, ref size_t fixed, ref string[] exps, ref string[] seps) {
 			//TODO special arrays
 			auto array = type.lastIndexOf("[");
+			auto tup = type.indexOf("<");
 			if(array != -1) {
 				if(type.indexOf("]") == array + 1) fieldsLengthImpl(name ~ ".length", prs.data.arrayLength, fixed, exps, seps);
 				size_t new_fixed = 0;
@@ -181,61 +227,79 @@ public abstract class Packet extends Buffer {
 				if(new_exps.length) {
 					seps ~= "for(" ~ convert(type[0..array]) ~ " " ~ hash(name) ~ ":" ~ name ~ "){ length+=" ~ new_exps.join("+") ~ "; }";
 				}
-				return;
-			}
-			switch(type) {
-				case "bool":
-				case "byte":
-				case "ubyte":
-					fixed += 1;
-					break;
-				case "short":
-				case "ushort":
-					fixed += 2;
-					break;
-				case "triad":
-					fixed += 3;
-					break;
-				case "int":
-				case "uint":
-				case "float":
-					fixed += 4;
-					break;
-				case "long":
-				case "ulong":
-				case "double":
-					fixed += 8;
-					break;
-				case "uuid":
-					fixed += 16;
-					break;
-				case "string":
-					fieldsLengthImpl(name ~ ".getBytes(StandardCharsets.UTF_8).length", prs.data.arrayLength, fixed, exps, seps);
-					exps ~= name ~ ".getBytes(StandardCharsets.UTF_8).length";
-					break;
-				case "bytes":
-					exps ~= name ~ ".length";
-					break;
-				case "varshort":
-				case "varushort":
-				case "varint":
-				case "varuint":
-				case "varlong":
-				case "varulong":
-					exps ~= "Var." ~ toPascalCase(type[3..$]) ~ ".length(" ~ name ~ ")";
-					break;
-				default:
-					exps ~= name ~ ".length()";
-					break;
+			} else if(tup != -1) {
+				immutable vars = type[tup+1..type.indexOf(">")];
+				size_t new_fixed = 0;
+				string[] new_exps;
+				fieldsLengthImpl(hash(name), type[0..tup], new_fixed, new_exps, seps);
+				if(new_fixed != 0) {
+					fixed += new_fixed * vars.length;
+				} else {
+					foreach(c ; vars) {
+						fieldsLengthImpl(name ~ "." ~ c, type[0..tup], fixed, exps, seps);
+					}
+				}
+			} else {
+				auto a = type in prs.data.arrays;
+				if(a) {
+					fieldsLengthImpl(name ~ ".length", (*a).length, fixed, exps, seps);
+					fieldsLengthImpl(name, (*a).base ~ "[0]", fixed, exps, seps);
+				} else {
+					switch(type) {
+						case "bool":
+						case "byte":
+						case "ubyte":
+							fixed += 1;
+							break;
+						case "short":
+						case "ushort":
+							fixed += 2;
+							break;
+						case "triad":
+							fixed += 3;
+							break;
+						case "int":
+						case "uint":
+						case "float":
+							fixed += 4;
+							break;
+						case "long":
+						case "ulong":
+						case "double":
+							fixed += 8;
+							break;
+						case "uuid":
+							fixed += 16;
+							break;
+						case "string":
+							fieldsLengthImpl(name ~ ".getBytes(StandardCharsets.UTF_8).length", prs.data.arrayLength, fixed, exps, seps);
+							exps ~= name ~ ".getBytes(StandardCharsets.UTF_8).length";
+							break;
+						case "bytes":
+							exps ~= name ~ ".length";
+							break;
+						case "varshort":
+						case "varushort":
+						case "varint":
+						case "varuint":
+						case "varlong":
+						case "varulong":
+							exps ~= "Buffer." ~ type ~ "Length(" ~ name ~ ")";
+							break;
+						default:
+							exps ~= name ~ ".length()";
+							break;
+					}
+				}
 			}
 		}
 		
 		string fieldsLength(Field[] fields, string id="") {
 			size_t fixed = 0;
 			string[] exps, seps;
-			if(id.length) fieldsLengthImpl("", id, fixed, exps, seps);
-			foreach(field ; fields) {
-				fieldsLengthImpl(toCamelCase(field.name), field.type, fixed, exps, seps);
+			if(id.length) fieldsLengthImpl("ID", id, fixed, exps, seps); //TODO calculate at runtime if it's a varint
+			foreach(i, field; fields) {
+				fieldsLengthImpl(field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.type, fixed, exps, seps);
 			}
 			if(seps.length) {
 				return "int length=" ~ join(exps ~ to!string(fixed), " + ") ~ "; " ~ seps.join(";") ~ " return length";
@@ -276,17 +340,17 @@ public abstract class Packet extends Buffer {
 					ret ~= " ";
 				}
 				if(cnt == "byte") return ret ~ "this.writeBytes(" ~ name ~ ");";
-				else return ret ~ "for(" ~ cnt ~ " " ~ hash(name) ~ ":" ~ name ~ "){ " ~ createEncoding(type[0..lo], hash(name)) ~ " }";
+				else return ret ~ "for(" ~ cnt ~ " " ~ hash(name) ~ ":" ~ name ~ "){ " ~ createEncoding(nt, hash(name)) ~ " }";
 			}
 			auto ts = conv.lastIndexOf("<");
 			if(ts > 0) {
 				auto te = conv.lastIndexOf(">");
 				string nt = conv[0..ts];
-				string ret;
+				string[] ret;
 				foreach(i ; conv[ts+1..te]) {
 					ret ~= createEncoding(nt, name ~ "." ~ i);
 				}
-				return ret;
+				return ret.join(" ");
 			}
 			type = conv;
 			if(type.startsWith("var")) return "this.write" ~ capitalize(type) ~ "(" ~ name ~ ");";
@@ -335,9 +399,9 @@ public abstract class Packet extends Buffer {
 				return ret.join(" ");
 			}
 			type = conv;
-			if(type.startsWith("var")) return name ~ "=" ~ type ~ ".decode(_buffer, _index);";
+			if(type.startsWith("var")) return name ~ "=this.read" ~ capitalize(type) ~ "();";
 			else if(type == "string") return createDecoding(prs.data.arrayLength, arrayLength ~ " " ~ hash("len" ~ name)) ~ " " ~ name ~ "=new String(this.readBytes(" ~ hash("len" ~ name) ~ "), StandardCharsets.UTF_8);";
-			else if(type == "uuid") return createDecoding("long", "long " ~ hash("m" ~ name)) ~ createDecoding("long", "long " ~ hash("l" ~ name)) ~ "return new UUID(" ~ hash("m" ~ name) ~ "," ~ hash("l" ~ name) ~ ");";
+			else if(type == "uuid") return createDecoding("long", "long " ~ hash("m" ~ name)) ~ " " ~ createDecoding("long", "long " ~ hash("l" ~ name)) ~ " " ~ name ~ "=new UUID(" ~ hash("m" ~ name) ~ "," ~ hash("l" ~ name) ~ ");";
 			else if(type == "bytes") return name ~ "=this.readBytes(this._buffer.length-this._index);";
 			else if(type == "bool") return name ~ "=this._index<this._buffer.length&&this._buffer[this._index++]!=0;";
 			else if(defaultTypes.canFind(type) || type == "triad") return name ~ "=read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "();";
@@ -365,7 +429,7 @@ public abstract class Packet extends Buffer {
 				immutable c = convert(field.type);
 				immutable oa = field.type.indexOf("[");
 				immutable ca = field.type.indexOf("]");
-				data ~= space ~ "public " ~ c ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name));
+				data ~= space ~ "public " ~ c ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name));
 				if(oa != -1 && ca != oa + 1) data ~= " = new " ~ c[0..$-2] ~ "[" ~ field.type[oa+1..ca] ~ "]";
 				data ~= ";\n";
 				if(i == fields.length - 1) data ~= "\n";
@@ -375,11 +439,11 @@ public abstract class Packet extends Buffer {
 				data ~= space ~ "public " ~ className ~ "() {}\n\n";
 				data ~= space ~ "public " ~ className ~ "(";
 				foreach(i, field; fields) {
-					data ~= convert(field.type) ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name)) ~ (i != fields.length - 1 ? ", " : "");
+					data ~= convert(field.type) ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ (i != fields.length - 1 ? ", " : "");
 				}
 				data ~= ") {\n";
 				foreach(i, field; fields) {
-					immutable n = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
+					immutable n = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 					data ~= space ~ "\tthis." ~ n ~ " = "~ n ~ ";\n";
 				}
 				data ~= space ~ "}\n\n";
@@ -409,7 +473,7 @@ public abstract class Packet extends Buffer {
 			}
 			foreach(i, field; fields) {
 				bool c = field.condition.length != 0;
-				data ~= space ~ "\t" ~ (c ? "if(" ~ field.condition ~ "){ " : "") ~ createEncoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
+				data ~= space ~ "\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createEncoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
 			}
 			data ~= space ~ "\treturn this._buffer;\n";
 			data ~= space ~ "}\n\n";
@@ -422,7 +486,7 @@ public abstract class Packet extends Buffer {
 			}
 			foreach(i, field; fields) {
 				bool c = field.condition.length != 0;
-				data ~= space ~ "\t" ~ (c ? "if(" ~ field.condition ~ "){ " : "") ~ createDecoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
+				data ~= space ~ "\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createDecoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
 			}
 			data ~= space ~ "}\n\n";
 			if(isVariant) {
@@ -437,24 +501,27 @@ public abstract class Packet extends Buffer {
 			}
 		}
 
-		@property string imports(Field[] fields, bool import_types=true) {
-			bool str, uuid, types;
+		@property string imports(Field[] fields) {
+			bool str, uuid;
 			foreach(field ; fields) {
-				immutable t = field.type.split("[")[0].split("<")[0];
-				if(t == "string") str = true;
-				else if(t == "uuid") uuid = true;
-				else if(import_types && !defaultTypes.canFind(t) && t !in defaultAliases) types = true;
+				auto conv = convert(field.type);
+				immutable t = conv.split("[")[0].split("<")[0];
+				if(t == "String") str = true;
+				else if(t == "UUID") uuid = true;
+				else if(field.type.indexOf("<") != -1) {
+					immutable a = convert(field.type.split("<")[0]) ~ "|" ~ field.type.split("<")[1].split(">")[0];
+					if(!tuples.canFind(a)) tuples ~= a;
+				}
 			}
 			string ret = "";
 			if(str) ret ~= "import java.nio.charset.StandardCharsets;\n";
 			if(uuid) ret ~= "import java.util.UUID;\n";
 			if(str || uuid) ret ~= "\n";
-			if(types) ret ~= "import sul.protocol." ~ game ~ ".types.*;\n";
 			return ret;
 		}
 
 		foreach(type ; prs.data.types) {
-			string data = "package sul.protocol." ~ game ~ ".types;\n\n" ~ imports(type.fields, false) ~ "import sul.utils.*;\n\n";
+			string data = "package sul.protocol." ~ game ~ ".types;\n\n" ~ imports(type.fields) ~ "import sul.utils.*;\n\n";
 			if(type.description.length) data ~= javadoc("", type.description);
 			data ~= "public class " ~ toPascalCase(type.name) ~ " extends Packet {\n\n";
 			writeFields(data, "\t", toPascalCase(type.name), type.fields, false);
@@ -500,6 +567,23 @@ public abstract class Packet extends Buffer {
 			}
 		}
 	}
+
+	// tuples
+	string tp = "package sul.utils;\n\npublic final class Tuples {\n\n\tprivate Tuples() {}\n\n";
+	foreach(t ; tuples) {
+		auto spl = t.split("|");
+		immutable name = capitalize(spl[0]) ~ spl[1].toUpper();
+		tp ~= "\tpublic static class " ~ name ~ " {\n\n";
+		tp ~= "\t\tpublic " ~ spl[0] ~ " " ~ spl[1].split("").join(", ") ~ ";\n\n";
+		tp ~= "\t\tpublic " ~ name ~ "() {}\n\n";
+		tp ~= "\t\tpublic " ~ name ~ "(" ~ spl[0] ~ " " ~ spl[1].split("").join(", " ~ spl[0] ~ " ") ~ ") {\n";
+		foreach(c ; spl[1].split("")) {
+			tp ~= "\t\t\tthis." ~ c ~ " = " ~ c ~ ";\n";
+		}
+		tp ~= "\t\t}\n\n";
+		tp ~= "\t}\n\n";
+	}
+	write("../src/java/sul/utils/Tuples.java", tp ~ "}");
 
 }
 

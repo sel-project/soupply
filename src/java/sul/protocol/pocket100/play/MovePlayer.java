@@ -44,7 +44,7 @@ public class MovePlayer extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + position.length() + 15;
+		return Buffer.varlongLength(entityId) + 27;
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class MovePlayer extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeLittleEndianFloat(pitch);
 		this.writeLittleEndianFloat(headYaw);
 		this.writeLittleEndianFloat(yaw);
@@ -65,7 +65,7 @@ public class MovePlayer extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
+		entityId=this.readVarlong();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		headYaw=readLittleEndianFloat();

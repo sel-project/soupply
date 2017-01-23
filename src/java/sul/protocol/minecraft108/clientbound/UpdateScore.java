@@ -39,7 +39,7 @@ public class UpdateScore extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(scoreName.getBytes(StandardCharsets.UTF_8).length) + scoreName.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(objectiveName.getBytes(StandardCharsets.UTF_8).length) + objectiveName.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(value) + 1;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(scoreName.getBytes(StandardCharsets.UTF_8).length) + scoreName.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(objectiveName.getBytes(StandardCharsets.UTF_8).length) + objectiveName.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(value) + 1;
 	}
 
 	@Override
@@ -56,11 +56,11 @@ public class UpdateScore extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvuc2nvcmvoyw1l=varuint.decode(_buffer, _index); scoreName=new String(this.readBytes(bgvuc2nvcmvoyw1l), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvuc2nvcmvoyw1l=this.readVaruint(); scoreName=new String(this.readBytes(bgvuc2nvcmvoyw1l), StandardCharsets.UTF_8);
 		action=readBigEndianByte();
-		int bgvub2jqzwn0axzl=varuint.decode(_buffer, _index); objectiveName=new String(this.readBytes(bgvub2jqzwn0axzl), StandardCharsets.UTF_8);
-		if(action==0){ value=varuint.decode(_buffer, _index); }
+		int bgvub2jqzwn0axzl=this.readVaruint(); objectiveName=new String(this.readBytes(bgvub2jqzwn0axzl), StandardCharsets.UTF_8);
+		if(action==0){ value=this.readVaruint(); }
 	}
 
 	public static UpdateScore fromBuffer(byte[] buffer) {

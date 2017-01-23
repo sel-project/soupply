@@ -35,7 +35,7 @@ public class MoveEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + position.length() + 4;
+		return Buffer.varlongLength(entityId) + 16;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class MoveEntity extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeBigEndianByte(pitch);
 		this.writeBigEndianByte(headYaw);
 		this.writeBigEndianByte(yaw);
@@ -54,7 +54,7 @@ public class MoveEntity extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
+		entityId=this.readVarlong();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		pitch=readBigEndianByte();
 		headYaw=readBigEndianByte();

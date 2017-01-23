@@ -17,22 +17,22 @@ public class Attribute extends Packet {
 	public float min;
 	public float max;
 	public float value;
-	public float default;
+	public float def;
 	public String name;
 
 	public Attribute() {}
 
-	public Attribute(float min, float max, float value, float default, String name) {
+	public Attribute(float min, float max, float value, float def, String name) {
 		this.min = min;
 		this.max = max;
 		this.value = value;
-		this.default = default;
+		this.def = def;
 		this.name = name;
 	}
 
 	@Override
 	public int length() {
-		return Var.Uint.length(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + 16;
+		return Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + 16;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class Attribute extends Packet {
 		this.writeLittleEndianFloat(min);
 		this.writeLittleEndianFloat(max);
 		this.writeLittleEndianFloat(value);
-		this.writeLittleEndianFloat(default);
+		this.writeLittleEndianFloat(def);
 		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		return this._buffer;
 	}
@@ -52,8 +52,8 @@ public class Attribute extends Packet {
 		min=readLittleEndianFloat();
 		max=readLittleEndianFloat();
 		value=readLittleEndianFloat();
-		default=readLittleEndianFloat();
-		int bgvubmftzq=varuint.decode(_buffer, _index); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
+		def=readLittleEndianFloat();
+		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
 	}
 
 

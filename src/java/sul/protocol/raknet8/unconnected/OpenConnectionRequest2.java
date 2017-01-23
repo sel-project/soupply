@@ -8,7 +8,6 @@
  */
 package sul.protocol.raknet8.unconnected;
 
-import sul.protocol.raknet8.types.*;
 import sul.utils.*;
 
 public class OpenConnectionRequest2 extends Packet {
@@ -19,13 +18,13 @@ public class OpenConnectionRequest2 extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	public byte[] magic = new byte[16];
-	public Address serverAddress;
+	public sul.protocol.raknet8.types.Address serverAddress;
 	public short mtuLength;
 	public long clientId;
 
 	public OpenConnectionRequest2() {}
 
-	public OpenConnectionRequest2(byte[] magic, Address serverAddress, short mtuLength, long clientId) {
+	public OpenConnectionRequest2(byte[] magic, sul.protocol.raknet8.types.Address serverAddress, short mtuLength, long clientId) {
 		this.magic = magic;
 		this.serverAddress = serverAddress;
 		this.mtuLength = mtuLength;
@@ -53,7 +52,7 @@ public class OpenConnectionRequest2 extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		final int bg1hz2lj=16; magic=new byte[bg1hz2lj]; magic=this.readBytes(bg1hz2lj);
-		serverAddress=new Address(); serverAddress._index=this._index; serverAddress.decode(this._buffer); this._index=serverAddress._index;
+		serverAddress=new sul.protocol.raknet8.types.Address(); serverAddress._index=this._index; serverAddress.decode(this._buffer); this._index=serverAddress._index;
 		mtuLength=readBigEndianShort();
 		clientId=readBigEndianLong();
 	}

@@ -27,7 +27,7 @@ public class DestroyEntities extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length() + Var.Uint.length(entityIds.length) + 0; for(int zw50axr5swrz:entityIds){ length+=Var.Uint.length(zw50axr5swrz); } return length;
+		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(entityIds.length) + 0; for(int zw50axr5swrz:entityIds){ length+=Buffer.varuintLength(zw50axr5swrz); } return length;
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class DestroyEntities extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvudgl0eulkcw=varuint.decode(_buffer, _index); entityIds=new int[bgvudgl0eulkcw]; for(int zw50axr5swrz=0;zw50axr5swrz<entityIds.length;zw50axr5swrz++){ entityIds[zw50axr5swrz]=varuint.decode(_buffer, _index); }
+		this.readVaruint();
+		int bgvudgl0eulkcw=this.readVaruint(); entityIds=new int[bgvudgl0eulkcw]; for(int zw50axr5swrz=0;zw50axr5swrz<entityIds.length;zw50axr5swrz++){ entityIds[zw50axr5swrz]=this.readVaruint(); }
 	}
 
 	public static DestroyEntities fromBuffer(byte[] buffer) {

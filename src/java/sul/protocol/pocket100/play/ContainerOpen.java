@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class ContainerOpen extends Packet {
@@ -21,12 +20,12 @@ public class ContainerOpen extends Packet {
 	public byte window;
 	public byte type;
 	public int slotCount;
-	public BlockPosition position;
+	public sul.protocol.pocket100.types.BlockPosition position;
 	public long entityId;
 
 	public ContainerOpen() {}
 
-	public ContainerOpen(byte window, byte type, int slotCount, BlockPosition position, long entityId) {
+	public ContainerOpen(byte window, byte type, int slotCount, sul.protocol.pocket100.types.BlockPosition position, long entityId) {
 		this.window = window;
 		this.type = type;
 		this.slotCount = slotCount;
@@ -36,7 +35,7 @@ public class ContainerOpen extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(slotCount) + position.length() + Var.Long.length(entityId) + 3;
+		return Buffer.varintLength(slotCount) + position.length() + Buffer.varlongLength(entityId) + 3;
 	}
 
 	@Override
@@ -57,9 +56,9 @@ public class ContainerOpen extends Packet {
 		readBigEndianByte();
 		window=readBigEndianByte();
 		type=readBigEndianByte();
-		slotCount=varint.decode(_buffer, _index);
-		position=new BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
-		entityId=varlong.decode(_buffer, _index);
+		slotCount=this.readVarint();
+		position=new sul.protocol.pocket100.types.BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
+		entityId=this.readVarlong();
 	}
 
 	public static ContainerOpen fromBuffer(byte[] buffer) {

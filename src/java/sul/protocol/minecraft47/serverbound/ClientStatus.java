@@ -32,7 +32,7 @@ public class ClientStatus extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(action);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(action);
 	}
 
 	@Override
@@ -46,8 +46,8 @@ public class ClientStatus extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		action=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		action=this.readVaruint();
 	}
 
 	public static ClientStatus fromBuffer(byte[] buffer) {

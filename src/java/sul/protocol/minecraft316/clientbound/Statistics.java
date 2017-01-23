@@ -8,7 +8,6 @@
  */
 package sul.protocol.minecraft316.clientbound;
 
-import sul.protocol.minecraft316.types.*;
 import sul.utils.*;
 
 public class Statistics extends Packet {
@@ -18,32 +17,32 @@ public class Statistics extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
-	public Statistic[] statistics;
+	public sul.protocol.minecraft316.types.Statistic[] statistics;
 
 	public Statistics() {}
 
-	public Statistics(Statistic[] statistics) {
+	public Statistics(sul.protocol.minecraft316.types.Statistic[] statistics) {
 		this.statistics = statistics;
 	}
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length() + Var.Uint.length(statistics.length) + 0; for(Statistic c3rhdglzdgljcw:statistics){ length+=c3rhdglzdgljcw.length(); } return length;
+		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(statistics.length) + 0; for(sul.protocol.minecraft316.types.Statistic c3rhdglzdgljcw:statistics){ length+=c3rhdglzdgljcw.length(); } return length;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
-		this.writeVaruint((int)statistics.length); for(Statistic c3rhdglzdgljcw:statistics){ this.writeBytes(c3rhdglzdgljcw.encode()); }
+		this.writeVaruint((int)statistics.length); for(sul.protocol.minecraft316.types.Statistic c3rhdglzdgljcw:statistics){ this.writeBytes(c3rhdglzdgljcw.encode()); }
 		return this._buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bhn0yxrpc3rpy3m=varuint.decode(_buffer, _index); statistics=new Statistic[bhn0yxrpc3rpy3m]; for(int c3rhdglzdgljcw=0;c3rhdglzdgljcw<statistics.length;c3rhdglzdgljcw++){ statistics[c3rhdglzdgljcw]=new Statistic(); statistics[c3rhdglzdgljcw]._index=this._index; statistics[c3rhdglzdgljcw].decode(this._buffer); this._index=statistics[c3rhdglzdgljcw]._index; }
+		this.readVaruint();
+		int bhn0yxrpc3rpy3m=this.readVaruint(); statistics=new sul.protocol.minecraft316.types.Statistic[bhn0yxrpc3rpy3m]; for(int c3rhdglzdgljcw=0;c3rhdglzdgljcw<statistics.length;c3rhdglzdgljcw++){ statistics[c3rhdglzdgljcw]=new sul.protocol.minecraft316.types.Statistic(); statistics[c3rhdglzdgljcw]._index=this._index; statistics[c3rhdglzdgljcw].decode(this._buffer); this._index=statistics[c3rhdglzdgljcw]._index; }
 	}
 
 	public static Statistics fromBuffer(byte[] buffer) {

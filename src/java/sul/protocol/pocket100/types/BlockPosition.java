@@ -26,7 +26,7 @@ public class BlockPosition extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(x) + Var.Uint.length(y) + Var.Int.length(z);
+		return Buffer.varintLength(x) + Buffer.varuintLength(y) + Buffer.varintLength(z);
 	}
 
 	@Override
@@ -41,9 +41,9 @@ public class BlockPosition extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		x=varint.decode(_buffer, _index);
-		y=varuint.decode(_buffer, _index);
-		z=varint.decode(_buffer, _index);
+		x=this.readVarint();
+		y=this.readVaruint();
+		z=this.readVarint();
 	}
 
 

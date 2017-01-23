@@ -41,7 +41,7 @@ public class OptionalUuid extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		hasUuid=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		long bxv1awq=readBigEndianLong();long bhv1awq=readBigEndianLong();return new UUID(bxv1awq,bhv1awq);
+		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
 	}
 
 

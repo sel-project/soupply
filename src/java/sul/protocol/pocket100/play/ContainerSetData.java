@@ -31,7 +31,7 @@ public class ContainerSetData extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(property) + Var.Int.length(value) + 2;
+		return Buffer.varintLength(property) + Buffer.varintLength(value) + 2;
 	}
 
 	@Override
@@ -49,8 +49,8 @@ public class ContainerSetData extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		window=readBigEndianByte();
-		property=varint.decode(_buffer, _index);
-		value=varint.decode(_buffer, _index);
+		property=this.readVarint();
+		value=this.readVarint();
 	}
 
 	public static ContainerSetData fromBuffer(byte[] buffer) {

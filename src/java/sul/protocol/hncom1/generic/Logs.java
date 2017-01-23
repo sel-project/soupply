@@ -8,7 +8,6 @@
  */
 package sul.protocol.hncom1.generic;
 
-import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
 /**
@@ -21,24 +20,24 @@ public class Logs extends Packet {
 	public final static boolean CLIENTBOUND = false;
 	public final static boolean SERVERBOUND = true;
 
-	public Log[] messages;
+	public sul.protocol.hncom1.types.Log[] messages;
 
 	public Logs() {}
 
-	public Logs(Log[] messages) {
+	public Logs(sul.protocol.hncom1.types.Log[] messages) {
 		this.messages = messages;
 	}
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length(messages.length) + 1; for(Log bwvzc2fnzxm:messages){ length+=bwvzc2fnzxm.length(); } return length;
+		int length=Buffer.varuintLength(messages.length) + 1; for(sul.protocol.hncom1.types.Log bwvzc2fnzxm:messages){ length+=bwvzc2fnzxm.length(); } return length;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeVaruint((int)messages.length); for(Log bwvzc2fnzxm:messages){ this.writeBytes(bwvzc2fnzxm.encode()); }
+		this.writeVaruint((int)messages.length); for(sul.protocol.hncom1.types.Log bwvzc2fnzxm:messages){ this.writeBytes(bwvzc2fnzxm.encode()); }
 		return this._buffer;
 	}
 
@@ -46,7 +45,7 @@ public class Logs extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		int bg1lc3nhz2vz=varuint.decode(_buffer, _index); messages=new Log[bg1lc3nhz2vz]; for(int bwvzc2fnzxm=0;bwvzc2fnzxm<messages.length;bwvzc2fnzxm++){ messages[bwvzc2fnzxm]=new Log(); messages[bwvzc2fnzxm]._index=this._index; messages[bwvzc2fnzxm].decode(this._buffer); this._index=messages[bwvzc2fnzxm]._index; }
+		int bg1lc3nhz2vz=this.readVaruint(); messages=new sul.protocol.hncom1.types.Log[bg1lc3nhz2vz]; for(int bwvzc2fnzxm=0;bwvzc2fnzxm<messages.length;bwvzc2fnzxm++){ messages[bwvzc2fnzxm]=new sul.protocol.hncom1.types.Log(); messages[bwvzc2fnzxm]._index=this._index; messages[bwvzc2fnzxm].decode(this._buffer); this._index=messages[bwvzc2fnzxm]._index; }
 	}
 
 	public static Logs fromBuffer(byte[] buffer) {

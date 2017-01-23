@@ -91,7 +91,7 @@ public class StartGame extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + position.length() + Var.Int.length(seed) + Var.Int.length(dimension) + Var.Int.length(generator) + Var.Int.length(worldGamemode) + Var.Int.length(difficulty) + spawnPosition.length() + Var.Int.length(time) + Var.Uint.length(levelId.getBytes(StandardCharsets.UTF_8).length) + levelId.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(worldName.getBytes(StandardCharsets.UTF_8).length) + worldName.getBytes(StandardCharsets.UTF_8).length + 21;
+		return Buffer.varlongLength(entityId) + Buffer.varlongLength(runtimeId) + Buffer.varintLength(seed) + Buffer.varintLength(dimension) + Buffer.varintLength(generator) + Buffer.varintLength(worldGamemode) + Buffer.varintLength(difficulty) + Buffer.varintLength(spawnPosition.x) + Buffer.varintLength(spawnPosition.y) + Buffer.varintLength(spawnPosition.z) + Buffer.varintLength(time) + Buffer.varuintLength(levelId.getBytes(StandardCharsets.UTF_8).length) + levelId.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(worldName.getBytes(StandardCharsets.UTF_8).length) + worldName.getBytes(StandardCharsets.UTF_8).length + 33;
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class StartGame extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
 		this.writeVarlong(runtimeId);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeLittleEndianFloat(yaw);
 		this.writeLittleEndianFloat(pitch);
 		this.writeVarint(seed);
@@ -108,7 +108,7 @@ public class StartGame extends Packet {
 		this.writeVarint(generator);
 		this.writeVarint(worldGamemode);
 		this.writeVarint(difficulty);
-		this.writeVarint(spawnPosition.x);this.writeVarint(spawnPosition.y);this.writeVarint(spawnPosition.z);
+		this.writeVarint(spawnPosition.x); this.writeVarint(spawnPosition.y); this.writeVarint(spawnPosition.z);
 		this._buffer[this._index++]=(byte)(loadedInCreative?1:0);
 		this.writeVarint(time);
 		this.writeBigEndianByte(edition);
@@ -125,26 +125,26 @@ public class StartGame extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
-		runtimeId=varlong.decode(_buffer, _index);
+		entityId=this.readVarlong();
+		runtimeId=this.readVarlong();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
-		seed=varint.decode(_buffer, _index);
-		dimension=varint.decode(_buffer, _index);
-		generator=varint.decode(_buffer, _index);
-		worldGamemode=varint.decode(_buffer, _index);
-		difficulty=varint.decode(_buffer, _index);
-		spawnPosition.x=varint.decode(_buffer, _index); spawnPosition.y=varint.decode(_buffer, _index); spawnPosition.z=varint.decode(_buffer, _index);
+		seed=this.readVarint();
+		dimension=this.readVarint();
+		generator=this.readVarint();
+		worldGamemode=this.readVarint();
+		difficulty=this.readVarint();
+		spawnPosition.x=this.readVarint(); spawnPosition.y=this.readVarint(); spawnPosition.z=this.readVarint();
 		loadedInCreative=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		time=varint.decode(_buffer, _index);
+		time=this.readVarint();
 		edition=readBigEndianByte();
 		rainLevel=readLittleEndianFloat();
 		lightingLevel=readLittleEndianFloat();
 		cheatsEnabled=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 		textureRequired=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		int bgvubgv2zwxjza=varuint.decode(_buffer, _index); levelId=new String(this.readBytes(bgvubgv2zwxjza), StandardCharsets.UTF_8);
-		int bgvud29ybgroyw1l=varuint.decode(_buffer, _index); worldName=new String(this.readBytes(bgvud29ybgroyw1l), StandardCharsets.UTF_8);
+		int bgvubgv2zwxjza=this.readVaruint(); levelId=new String(this.readBytes(bgvubgv2zwxjza), StandardCharsets.UTF_8);
+		int bgvud29ybgroyw1l=this.readVaruint(); worldName=new String(this.readBytes(bgvud29ybgroyw1l), StandardCharsets.UTF_8);
 	}
 
 	public static StartGame fromBuffer(byte[] buffer) {

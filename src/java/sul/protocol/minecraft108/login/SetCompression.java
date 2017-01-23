@@ -27,7 +27,7 @@ public class SetCompression extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(thresold);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(thresold);
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class SetCompression extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		thresold=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		thresold=this.readVaruint();
 	}
 
 	public static SetCompression fromBuffer(byte[] buffer) {

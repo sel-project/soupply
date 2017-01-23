@@ -27,7 +27,7 @@ public class RiderJump extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(rider) + 1;
+		return Buffer.varlongLength(rider) + 1;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class RiderJump extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		rider=varlong.decode(_buffer, _index);
+		rider=this.readVarlong();
 	}
 
 	public static RiderJump fromBuffer(byte[] buffer) {

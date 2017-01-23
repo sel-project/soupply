@@ -35,7 +35,7 @@ public class EntityEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + Var.Uint.length(duration) + 3;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + Buffer.varuintLength(duration) + 3;
 	}
 
 	@Override
@@ -53,11 +53,11 @@ public class EntityEffect extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
 		effectId=readBigEndianByte();
 		amplifier=readBigEndianByte();
-		duration=varuint.decode(_buffer, _index);
+		duration=this.readVaruint();
 		hideParticles=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 	}
 

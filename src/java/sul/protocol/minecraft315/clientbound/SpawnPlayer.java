@@ -10,7 +10,6 @@ package sul.protocol.minecraft315.clientbound;
 
 import java.util.UUID;
 
-import sul.protocol.minecraft315.types.*;
 import sul.utils.*;
 
 public class SpawnPlayer extends Packet {
@@ -40,7 +39,7 @@ public class SpawnPlayer extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + position.length() + metadata.length() + 18;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + metadata.length() + 42;
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class SpawnPlayer extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
-		this.writeBigEndianDouble(position.x);this.writeBigEndianDouble(position.y);this.writeBigEndianDouble(position.z);
+		this.writeBigEndianDouble(position.x); this.writeBigEndianDouble(position.y); this.writeBigEndianDouble(position.z);
 		this.writeBigEndianByte(yaw);
 		this.writeBigEndianByte(pitch);
 		this.writeBytes(metadata.encode());
@@ -59,9 +58,9 @@ public class SpawnPlayer extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
-		long bxv1awq=readBigEndianLong();long bhv1awq=readBigEndianLong();return new UUID(bxv1awq,bhv1awq);
+		this.readVaruint();
+		entityId=this.readVaruint();
+		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
 		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		yaw=readBigEndianByte();
 		pitch=readBigEndianByte();

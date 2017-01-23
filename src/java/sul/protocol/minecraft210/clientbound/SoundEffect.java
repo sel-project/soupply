@@ -35,7 +35,7 @@ public class SoundEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(soundId) + Var.Uint.length(category) + position.length() + 8;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(soundId) + Buffer.varuintLength(category) + 20;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class SoundEffect extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(soundId);
 		this.writeVaruint(category);
-		this.writeBigEndianInt(position.x);this.writeBigEndianInt(position.y);this.writeBigEndianInt(position.z);
+		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.y); this.writeBigEndianInt(position.z);
 		this.writeBigEndianFloat(volume);
 		this.writeBigEndianFloat(pitch);
 		return this._buffer;
@@ -53,9 +53,9 @@ public class SoundEffect extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		soundId=varuint.decode(_buffer, _index);
-		category=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		soundId=this.readVaruint();
+		category=this.readVaruint();
 		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 		volume=readBigEndianFloat();
 		pitch=readBigEndianFloat();

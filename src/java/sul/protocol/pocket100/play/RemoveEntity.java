@@ -27,7 +27,7 @@ public class RemoveEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + 1;
+		return Buffer.varlongLength(entityId) + 1;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class RemoveEntity extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
+		entityId=this.readVarlong();
 	}
 
 	public static RemoveEntity fromBuffer(byte[] buffer) {

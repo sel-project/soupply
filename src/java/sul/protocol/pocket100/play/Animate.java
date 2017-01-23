@@ -33,7 +33,7 @@ public class Animate extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(action) + Var.Long.length(entityId) + 1;
+		return Buffer.varintLength(action) + Buffer.varlongLength(entityId) + 1;
 	}
 
 	@Override
@@ -49,8 +49,8 @@ public class Animate extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		action=varint.decode(_buffer, _index);
-		entityId=varlong.decode(_buffer, _index);
+		action=this.readVarint();
+		entityId=this.readVarlong();
 	}
 
 	public static Animate fromBuffer(byte[] buffer) {

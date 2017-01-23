@@ -35,7 +35,7 @@ public class Interact extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(target) + 2;
+		return Buffer.varlongLength(target) + 2;
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class Interact extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		action=readBigEndianByte();
-		target=varlong.decode(_buffer, _index);
+		target=this.readVarlong();
 	}
 
 	public static Interact fromBuffer(byte[] buffer) {

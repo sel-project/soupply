@@ -27,14 +27,14 @@ public class Respawn extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + 1;
+		return 13;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		return this._buffer;
 	}
 

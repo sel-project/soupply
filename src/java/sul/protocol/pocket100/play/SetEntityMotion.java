@@ -29,7 +29,7 @@ public class SetEntityMotion extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + motion.length() + 1;
+		return Buffer.varlongLength(entityId) + 13;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class SetEntityMotion extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
-		this.writeLittleEndianFloat(motion.x);this.writeLittleEndianFloat(motion.y);this.writeLittleEndianFloat(motion.z);
+		this.writeLittleEndianFloat(motion.x); this.writeLittleEndianFloat(motion.y); this.writeLittleEndianFloat(motion.z);
 		return this._buffer;
 	}
 
@@ -45,7 +45,7 @@ public class SetEntityMotion extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
+		entityId=this.readVarlong();
 		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 	}
 

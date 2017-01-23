@@ -29,7 +29,7 @@ public class CombatEvent extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 1;
+		return Buffer.varuintLength(ID) + 1;
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class CombatEvent extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		eventId=readBigEndianByte();
 	}
 
@@ -105,7 +105,7 @@ public class CombatEvent extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(duration) + 4;
+			return Buffer.varuintLength(duration) + 4;
 		}
 
 		@Override
@@ -121,7 +121,7 @@ public class CombatEvent extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			duration=varuint.decode(_buffer, _index);
+			duration=this.readVaruint();
 			entityId=readBigEndianInt();
 		}
 
@@ -149,7 +149,7 @@ public class CombatEvent extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(playerId) + Var.Uint.length(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + 4;
+			return Buffer.varuintLength(playerId) + Buffer.varuintLength(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + 4;
 		}
 
 		@Override
@@ -166,9 +166,9 @@ public class CombatEvent extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			playerId=varuint.decode(_buffer, _index);
+			playerId=this.readVaruint();
 			entityId=readBigEndianInt();
-			int bgvubwvzc2fnzq=varuint.decode(_buffer, _index); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8);
+			int bgvubwvzc2fnzq=this.readVaruint(); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8);
 		}
 
 		public void decode() {

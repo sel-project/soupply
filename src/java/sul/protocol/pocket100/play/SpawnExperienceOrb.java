@@ -29,14 +29,14 @@ public class SpawnExperienceOrb extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + Var.Int.length(count) + 1;
+		return Buffer.varintLength(count) + 13;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeVarint(count);
 		return this._buffer;
 	}
@@ -46,7 +46,7 @@ public class SpawnExperienceOrb extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
-		count=varint.decode(_buffer, _index);
+		count=this.readVarint();
 	}
 
 	public static SpawnExperienceOrb fromBuffer(byte[] buffer) {

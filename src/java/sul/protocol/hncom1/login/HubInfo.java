@@ -10,7 +10,6 @@ package sul.protocol.hncom1.login;
 
 import java.nio.charset.StandardCharsets;
 
-import sul.protocol.hncom1.types.*;
 import sul.utils.*;
 
 /**
@@ -28,7 +27,7 @@ public class HubInfo extends Packet {
 	public long reservedUuids;
 	public String displayName;
 	public boolean onlineMode;
-	public Game[] games;
+	public sul.protocol.hncom1.types.Game[] games;
 	public int online;
 	public int max;
 	public String language;
@@ -39,7 +38,7 @@ public class HubInfo extends Packet {
 
 	public HubInfo() {}
 
-	public HubInfo(long time, long serverId, long reservedUuids, String displayName, boolean onlineMode, Game[] games, int online, int max, String language, String[] acceptedLanguages, String[] nodes, String socialJson, String additionalJson) {
+	public HubInfo(long time, long serverId, long reservedUuids, String displayName, boolean onlineMode, sul.protocol.hncom1.types.Game[] games, int online, int max, String language, String[] acceptedLanguages, String[] nodes, String socialJson, String additionalJson) {
 		this.time = time;
 		this.serverId = serverId;
 		this.reservedUuids = reservedUuids;
@@ -57,7 +56,7 @@ public class HubInfo extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Ulong.length(time) + Var.Ulong.length(serverId) + Var.Ulong.length(reservedUuids) + Var.Uint.length(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(games.length) + Var.Uint.length(online) + Var.Uint.length(max) + Var.Uint.length(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(acceptedLanguages.length) + Var.Uint.length(nodes.length) + Var.Uint.length(socialJson.getBytes(StandardCharsets.UTF_8).length) + socialJson.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(additionalJson.getBytes(StandardCharsets.UTF_8).length) + additionalJson.getBytes(StandardCharsets.UTF_8).length + 2; for(Game z2ftzxm:games){ length+=z2ftzxm.length(); };for(String ywnjzxb0zwrmyw5n:acceptedLanguages){ length+=Var.Uint.length(ywnjzxb0zwrmyw5n.getBytes(StandardCharsets.UTF_8).length)+ywnjzxb0zwrmyw5n.getBytes(StandardCharsets.UTF_8).length; };for(String bm9kzxm:nodes){ length+=Var.Uint.length(bm9kzxm.getBytes(StandardCharsets.UTF_8).length)+bm9kzxm.getBytes(StandardCharsets.UTF_8).length; } return length;
+		int length=Buffer.varulongLength(time) + Buffer.varulongLength(serverId) + Buffer.varulongLength(reservedUuids) + Buffer.varuintLength(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(games.length) + Buffer.varuintLength(online) + Buffer.varuintLength(max) + Buffer.varuintLength(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(acceptedLanguages.length) + Buffer.varuintLength(nodes.length) + Buffer.varuintLength(socialJson.getBytes(StandardCharsets.UTF_8).length) + socialJson.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(additionalJson.getBytes(StandardCharsets.UTF_8).length) + additionalJson.getBytes(StandardCharsets.UTF_8).length + 2; for(sul.protocol.hncom1.types.Game z2ftzxm:games){ length+=z2ftzxm.length(); };for(String ywnjzxb0zwrmyw5n:acceptedLanguages){ length+=Buffer.varuintLength(ywnjzxb0zwrmyw5n.getBytes(StandardCharsets.UTF_8).length)+ywnjzxb0zwrmyw5n.getBytes(StandardCharsets.UTF_8).length; };for(String bm9kzxm:nodes){ length+=Buffer.varuintLength(bm9kzxm.getBytes(StandardCharsets.UTF_8).length)+bm9kzxm.getBytes(StandardCharsets.UTF_8).length; } return length;
 	}
 
 	@Override
@@ -69,7 +68,7 @@ public class HubInfo extends Packet {
 		this.writeVarulong(reservedUuids);
 		byte[] zglzcgxheu5hbwu=displayName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
 		this._buffer[this._index++]=(byte)(onlineMode?1:0);
-		this.writeVaruint((int)games.length); for(Game z2ftzxm:games){ this.writeBytes(z2ftzxm.encode()); }
+		this.writeVaruint((int)games.length); for(sul.protocol.hncom1.types.Game z2ftzxm:games){ this.writeBytes(z2ftzxm.encode()); }
 		this.writeVaruint(online);
 		this.writeVaruint(max);
 		byte[] bgfuz3vhz2u=language.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bgfuz3vhz2u.length); this.writeBytes(bgfuz3vhz2u);
@@ -84,19 +83,19 @@ public class HubInfo extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		time=varulong.decode(_buffer, _index);
-		serverId=varulong.decode(_buffer, _index);
-		reservedUuids=varulong.decode(_buffer, _index);
-		int bgvuzglzcgxheu5h=varuint.decode(_buffer, _index); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
+		time=this.readVarulong();
+		serverId=this.readVarulong();
+		reservedUuids=this.readVarulong();
+		int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
 		onlineMode=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		int bgdhbwvz=varuint.decode(_buffer, _index); games=new Game[bgdhbwvz]; for(int z2ftzxm=0;z2ftzxm<games.length;z2ftzxm++){ games[z2ftzxm]=new Game(); games[z2ftzxm]._index=this._index; games[z2ftzxm].decode(this._buffer); this._index=games[z2ftzxm]._index; }
-		online=varuint.decode(_buffer, _index);
-		max=varuint.decode(_buffer, _index);
-		int bgvubgfuz3vhz2u=varuint.decode(_buffer, _index); language=new String(this.readBytes(bgvubgfuz3vhz2u), StandardCharsets.UTF_8);
-		int bgfjy2vwdgvktgfu=varuint.decode(_buffer, _index); acceptedLanguages=new String[bgfjy2vwdgvktgfu]; for(int ywnjzxb0zwrmyw5n=0;ywnjzxb0zwrmyw5n<acceptedLanguages.length;ywnjzxb0zwrmyw5n++){ int bgvuywnjzxb0zwrm=varuint.decode(_buffer, _index); acceptedLanguages[ywnjzxb0zwrmyw5n]=new String(this.readBytes(bgvuywnjzxb0zwrm), StandardCharsets.UTF_8); }
-		int bg5vzgvz=varuint.decode(_buffer, _index); nodes=new String[bg5vzgvz]; for(int bm9kzxm=0;bm9kzxm<nodes.length;bm9kzxm++){ int bgvubm9kzxnbym05=varuint.decode(_buffer, _index); nodes[bm9kzxm]=new String(this.readBytes(bgvubm9kzxnbym05), StandardCharsets.UTF_8); }
-		int bgvuc29jawfssnnv=varuint.decode(_buffer, _index); socialJson=new String(this.readBytes(bgvuc29jawfssnnv), StandardCharsets.UTF_8);
-		int bgvuywrkaxrpb25h=varuint.decode(_buffer, _index); additionalJson=new String(this.readBytes(bgvuywrkaxrpb25h), StandardCharsets.UTF_8);
+		int bgdhbwvz=this.readVaruint(); games=new sul.protocol.hncom1.types.Game[bgdhbwvz]; for(int z2ftzxm=0;z2ftzxm<games.length;z2ftzxm++){ games[z2ftzxm]=new sul.protocol.hncom1.types.Game(); games[z2ftzxm]._index=this._index; games[z2ftzxm].decode(this._buffer); this._index=games[z2ftzxm]._index; }
+		online=this.readVaruint();
+		max=this.readVaruint();
+		int bgvubgfuz3vhz2u=this.readVaruint(); language=new String(this.readBytes(bgvubgfuz3vhz2u), StandardCharsets.UTF_8);
+		int bgfjy2vwdgvktgfu=this.readVaruint(); acceptedLanguages=new String[bgfjy2vwdgvktgfu]; for(int ywnjzxb0zwrmyw5n=0;ywnjzxb0zwrmyw5n<acceptedLanguages.length;ywnjzxb0zwrmyw5n++){ int bgvuywnjzxb0zwrm=this.readVaruint(); acceptedLanguages[ywnjzxb0zwrmyw5n]=new String(this.readBytes(bgvuywnjzxb0zwrm), StandardCharsets.UTF_8); }
+		int bg5vzgvz=this.readVaruint(); nodes=new String[bg5vzgvz]; for(int bm9kzxm=0;bm9kzxm<nodes.length;bm9kzxm++){ int bgvubm9kzxnbym05=this.readVaruint(); nodes[bm9kzxm]=new String(this.readBytes(bgvubm9kzxnbym05), StandardCharsets.UTF_8); }
+		int bgvuc29jawfssnnv=this.readVaruint(); socialJson=new String(this.readBytes(bgvuc29jawfssnnv), StandardCharsets.UTF_8);
+		int bgvuywrkaxrpb25h=this.readVaruint(); additionalJson=new String(this.readBytes(bgvuywrkaxrpb25h), StandardCharsets.UTF_8);
 	}
 
 	public static HubInfo fromBuffer(byte[] buffer) {

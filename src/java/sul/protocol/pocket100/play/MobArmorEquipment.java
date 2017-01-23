@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class MobArmorEquipment extends Packet {
@@ -19,18 +18,18 @@ public class MobArmorEquipment extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	public long entityId;
-	public Slot[] armor = new Slot[4];
+	public sul.protocol.pocket100.types.Slot[] armor = new sul.protocol.pocket100.types.Slot[4];
 
 	public MobArmorEquipment() {}
 
-	public MobArmorEquipment(long entityId, Slot[] armor) {
+	public MobArmorEquipment(long entityId, sul.protocol.pocket100.types.Slot[] armor) {
 		this.entityId = entityId;
 		this.armor = armor;
 	}
 
 	@Override
 	public int length() {
-		int length=Var.Long.length(entityId) + 1; for(Slot yxjtb3i:armor){ length+=yxjtb3i.length(); } return length;
+		int length=Buffer.varlongLength(entityId) + 1; for(sul.protocol.pocket100.types.Slot yxjtb3i:armor){ length+=yxjtb3i.length(); } return length;
 	}
 
 	@Override
@@ -38,7 +37,7 @@ public class MobArmorEquipment extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
-		for(Slot yxjtb3i:armor){ this.writeBytes(yxjtb3i.encode()); }
+		for(sul.protocol.pocket100.types.Slot yxjtb3i:armor){ this.writeBytes(yxjtb3i.encode()); }
 		return this._buffer;
 	}
 
@@ -46,8 +45,8 @@ public class MobArmorEquipment extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
-		final int bgfybw9y=4; armor=new Slot[bgfybw9y]; for(int yxjtb3i=0;yxjtb3i<armor.length;yxjtb3i++){ armor[yxjtb3i]=new Slot(); armor[yxjtb3i]._index=this._index; armor[yxjtb3i].decode(this._buffer); this._index=armor[yxjtb3i]._index; }
+		entityId=this.readVarlong();
+		final int bgfybw9y=4; armor=new sul.protocol.pocket100.types.Slot[bgfybw9y]; for(int yxjtb3i=0;yxjtb3i<armor.length;yxjtb3i++){ armor[yxjtb3i]=new sul.protocol.pocket100.types.Slot(); armor[yxjtb3i]._index=this._index; armor[yxjtb3i].decode(this._buffer); this._index=armor[yxjtb3i]._index; }
 	}
 
 	public static MobArmorEquipment fromBuffer(byte[] buffer) {

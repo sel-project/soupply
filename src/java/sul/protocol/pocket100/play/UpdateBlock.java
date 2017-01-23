@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class UpdateBlock extends Packet {
@@ -24,13 +23,13 @@ public class UpdateBlock extends Packet {
 	public final static int NO_GRAPHIC = 4;
 	public final static int PRIORITY = 8;
 
-	public BlockPosition position;
+	public sul.protocol.pocket100.types.BlockPosition position;
 	public int block;
 	public int flagsAndMeta;
 
 	public UpdateBlock() {}
 
-	public UpdateBlock(BlockPosition position, int block, int flagsAndMeta) {
+	public UpdateBlock(sul.protocol.pocket100.types.BlockPosition position, int block, int flagsAndMeta) {
 		this.position = position;
 		this.block = block;
 		this.flagsAndMeta = flagsAndMeta;
@@ -38,7 +37,7 @@ public class UpdateBlock extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + Var.Uint.length(block) + Var.Uint.length(flagsAndMeta) + 1;
+		return position.length() + Buffer.varuintLength(block) + Buffer.varuintLength(flagsAndMeta) + 1;
 	}
 
 	@Override
@@ -55,9 +54,9 @@ public class UpdateBlock extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		position=new BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
-		block=varuint.decode(_buffer, _index);
-		flagsAndMeta=varuint.decode(_buffer, _index);
+		position=new sul.protocol.pocket100.types.BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
+		block=this.readVaruint();
+		flagsAndMeta=this.readVaruint();
 	}
 
 	public static UpdateBlock fromBuffer(byte[] buffer) {

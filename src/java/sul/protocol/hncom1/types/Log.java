@@ -42,7 +42,7 @@ public class Log extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(logger.getBytes(StandardCharsets.UTF_8).length) + logger.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + 8;
+		return Buffer.varuintLength(logger.getBytes(StandardCharsets.UTF_8).length) + logger.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + 8;
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class Log extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		timestamp=readBigEndianLong();
-		int bgvubg9nz2vy=varuint.decode(_buffer, _index); logger=new String(this.readBytes(bgvubg9nz2vy), StandardCharsets.UTF_8);
-		int bgvubwvzc2fnzq=varuint.decode(_buffer, _index); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8);
+		int bgvubg9nz2vy=this.readVaruint(); logger=new String(this.readBytes(bgvubg9nz2vy), StandardCharsets.UTF_8);
+		int bgvubwvzc2fnzq=this.readVaruint(); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8);
 	}
 
 

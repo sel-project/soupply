@@ -33,7 +33,7 @@ public class ResourcePackStatus extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(result);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(result);
 	}
 
 	@Override
@@ -47,8 +47,8 @@ public class ResourcePackStatus extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		result=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		result=this.readVaruint();
 	}
 
 	public static ResourcePackStatus fromBuffer(byte[] buffer) {

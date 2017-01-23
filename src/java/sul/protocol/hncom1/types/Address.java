@@ -35,7 +35,7 @@ public class Address extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(bytes.length) + bytes.length + 2;
+		return Buffer.varuintLength(bytes.length) + bytes.length + 2;
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class Address extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		int bgj5dgvz=varuint.decode(_buffer, _index); bytes=new byte[bgj5dgvz]; bytes=this.readBytes(bgj5dgvz);
+		int bgj5dgvz=this.readVaruint(); bytes=new byte[bgj5dgvz]; bytes=this.readBytes(bgj5dgvz);
 		port=readBigEndianShort();
 	}
 

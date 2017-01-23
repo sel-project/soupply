@@ -29,7 +29,7 @@ public class EncryptionResponse extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(sharedSecret.length) + sharedSecret.length + Var.Uint.length(verifyToken.length) + verifyToken.length;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(sharedSecret.length) + sharedSecret.length + Buffer.varuintLength(verifyToken.length) + verifyToken.length;
 	}
 
 	@Override
@@ -44,9 +44,9 @@ public class EncryptionResponse extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bhnoyxjlzfnly3jl=varuint.decode(_buffer, _index); sharedSecret=new byte[bhnoyxjlzfnly3jl]; sharedSecret=this.readBytes(bhnoyxjlzfnly3jl);
-		int bhzlcmlmevrva2vu=varuint.decode(_buffer, _index); verifyToken=new byte[bhzlcmlmevrva2vu]; verifyToken=this.readBytes(bhzlcmlmevrva2vu);
+		this.readVaruint();
+		int bhnoyxjlzfnly3jl=this.readVaruint(); sharedSecret=new byte[bhnoyxjlzfnly3jl]; sharedSecret=this.readBytes(bhnoyxjlzfnly3jl);
+		int bhzlcmlmevrva2vu=this.readVaruint(); verifyToken=new byte[bhzlcmlmevrva2vu]; verifyToken=this.readBytes(bhzlcmlmevrva2vu);
 	}
 
 	public static EncryptionResponse fromBuffer(byte[] buffer) {

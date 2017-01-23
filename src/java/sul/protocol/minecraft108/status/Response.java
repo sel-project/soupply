@@ -29,7 +29,7 @@ public class Response extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(json.getBytes(StandardCharsets.UTF_8).length) + json.getBytes(StandardCharsets.UTF_8).length;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(json.getBytes(StandardCharsets.UTF_8).length) + json.getBytes(StandardCharsets.UTF_8).length;
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class Response extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvuannvbg=varuint.decode(_buffer, _index); json=new String(this.readBytes(bgvuannvbg), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvuannvbg=this.readVaruint(); json=new String(this.readBytes(bgvuannvbg), StandardCharsets.UTF_8);
 	}
 
 	public static Response fromBuffer(byte[] buffer) {

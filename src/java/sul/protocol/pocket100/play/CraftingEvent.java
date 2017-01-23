@@ -10,7 +10,6 @@ package sul.protocol.pocket100.play;
 
 import java.util.UUID;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class CraftingEvent extends Packet {
@@ -23,12 +22,12 @@ public class CraftingEvent extends Packet {
 	public byte window;
 	public int type;
 	public UUID uuid;
-	public Slot[] input;
-	public Slot[] output;
+	public sul.protocol.pocket100.types.Slot[] input;
+	public sul.protocol.pocket100.types.Slot[] output;
 
 	public CraftingEvent() {}
 
-	public CraftingEvent(byte window, int type, UUID uuid, Slot[] input, Slot[] output) {
+	public CraftingEvent(byte window, int type, UUID uuid, sul.protocol.pocket100.types.Slot[] input, sul.protocol.pocket100.types.Slot[] output) {
 		this.window = window;
 		this.type = type;
 		this.uuid = uuid;
@@ -38,7 +37,7 @@ public class CraftingEvent extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Int.length(type) + Var.Uint.length(input.length) + Var.Uint.length(output.length) + 18; for(Slot aw5wdxq:input){ length+=aw5wdxq.length(); };for(Slot b3v0chv0:output){ length+=b3v0chv0.length(); } return length;
+		int length=Buffer.varintLength(type) + Buffer.varuintLength(input.length) + Buffer.varuintLength(output.length) + 18; for(sul.protocol.pocket100.types.Slot aw5wdxq:input){ length+=aw5wdxq.length(); };for(sul.protocol.pocket100.types.Slot b3v0chv0:output){ length+=b3v0chv0.length(); } return length;
 	}
 
 	@Override
@@ -48,8 +47,8 @@ public class CraftingEvent extends Packet {
 		this.writeBigEndianByte(window);
 		this.writeVarint(type);
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
-		this.writeVaruint((int)input.length); for(Slot aw5wdxq:input){ this.writeBytes(aw5wdxq.encode()); }
-		this.writeVaruint((int)output.length); for(Slot b3v0chv0:output){ this.writeBytes(b3v0chv0.encode()); }
+		this.writeVaruint((int)input.length); for(sul.protocol.pocket100.types.Slot aw5wdxq:input){ this.writeBytes(aw5wdxq.encode()); }
+		this.writeVaruint((int)output.length); for(sul.protocol.pocket100.types.Slot b3v0chv0:output){ this.writeBytes(b3v0chv0.encode()); }
 		return this._buffer;
 	}
 
@@ -58,10 +57,10 @@ public class CraftingEvent extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		window=readBigEndianByte();
-		type=varint.decode(_buffer, _index);
-		long bxv1awq=readBigEndianLong();long bhv1awq=readBigEndianLong();return new UUID(bxv1awq,bhv1awq);
-		int bgluchv0=varuint.decode(_buffer, _index); input=new Slot[bgluchv0]; for(int aw5wdxq=0;aw5wdxq<input.length;aw5wdxq++){ input[aw5wdxq]=new Slot(); input[aw5wdxq]._index=this._index; input[aw5wdxq].decode(this._buffer); this._index=input[aw5wdxq]._index; }
-		int bg91dhb1da=varuint.decode(_buffer, _index); output=new Slot[bg91dhb1da]; for(int b3v0chv0=0;b3v0chv0<output.length;b3v0chv0++){ output[b3v0chv0]=new Slot(); output[b3v0chv0]._index=this._index; output[b3v0chv0].decode(this._buffer); this._index=output[b3v0chv0]._index; }
+		type=this.readVarint();
+		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
+		int bgluchv0=this.readVaruint(); input=new sul.protocol.pocket100.types.Slot[bgluchv0]; for(int aw5wdxq=0;aw5wdxq<input.length;aw5wdxq++){ input[aw5wdxq]=new sul.protocol.pocket100.types.Slot(); input[aw5wdxq]._index=this._index; input[aw5wdxq].decode(this._buffer); this._index=input[aw5wdxq]._index; }
+		int bg91dhb1da=this.readVaruint(); output=new sul.protocol.pocket100.types.Slot[bg91dhb1da]; for(int b3v0chv0=0;b3v0chv0<output.length;b3v0chv0++){ output[b3v0chv0]=new sul.protocol.pocket100.types.Slot(); output[b3v0chv0]._index=this._index; output[b3v0chv0].decode(this._buffer); this._index=output[b3v0chv0]._index; }
 	}
 
 	public static CraftingEvent fromBuffer(byte[] buffer) {

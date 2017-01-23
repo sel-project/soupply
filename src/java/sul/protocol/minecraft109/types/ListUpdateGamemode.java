@@ -32,7 +32,7 @@ public class ListUpdateGamemode extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(gamemode) + 16;
+		return Buffer.varuintLength(gamemode) + 16;
 	}
 
 	@Override
@@ -46,8 +46,8 @@ public class ListUpdateGamemode extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		long bxv1awq=readBigEndianLong();long bhv1awq=readBigEndianLong();return new UUID(bxv1awq,bhv1awq);
-		gamemode=varuint.decode(_buffer, _index);
+		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
+		gamemode=this.readVaruint();
 	}
 
 

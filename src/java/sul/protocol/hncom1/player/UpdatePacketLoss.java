@@ -29,7 +29,7 @@ public class UpdatePacketLoss extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + 5;
+		return Buffer.varuintLength(hubId) + 5;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class UpdatePacketLoss extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		hubId=varuint.decode(_buffer, _index);
+		hubId=this.readVaruint();
 		packetLoss=readBigEndianFloat();
 	}
 

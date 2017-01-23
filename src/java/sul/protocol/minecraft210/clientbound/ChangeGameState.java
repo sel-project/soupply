@@ -55,7 +55,7 @@ public class ChangeGameState extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 5;
+		return Buffer.varuintLength(ID) + 5;
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class ChangeGameState extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		reason=readBigEndianByte();
 		value=readBigEndianFloat();
 	}

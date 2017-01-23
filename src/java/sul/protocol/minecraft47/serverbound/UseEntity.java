@@ -36,7 +36,7 @@ public class UseEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(target) + Var.Uint.length(type) + targetPosition.length();
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(target) + Buffer.varuintLength(type) + 12;
 	}
 
 	@Override
@@ -45,16 +45,16 @@ public class UseEntity extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(target);
 		this.writeVaruint(type);
-		if(type==2){ this.writeBigEndianFloat(targetPosition.x);this.writeBigEndianFloat(targetPosition.y);this.writeBigEndianFloat(targetPosition.z); }
+		if(type==2){ this.writeBigEndianFloat(targetPosition.x); this.writeBigEndianFloat(targetPosition.y); this.writeBigEndianFloat(targetPosition.z); }
 		return this._buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		target=varuint.decode(_buffer, _index);
-		type=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		target=this.readVaruint();
+		type=this.readVaruint();
 		if(type==2){ targetPosition.x=readBigEndianFloat(); targetPosition.y=readBigEndianFloat(); targetPosition.z=readBigEndianFloat(); }
 	}
 

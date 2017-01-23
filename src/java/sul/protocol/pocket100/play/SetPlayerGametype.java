@@ -31,7 +31,7 @@ public class SetPlayerGametype extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(gametype) + 1;
+		return Buffer.varintLength(gametype) + 1;
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class SetPlayerGametype extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		gametype=varint.decode(_buffer, _index);
+		gametype=this.readVarint();
 	}
 
 	public static SetPlayerGametype fromBuffer(byte[] buffer) {

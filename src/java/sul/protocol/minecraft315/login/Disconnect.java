@@ -29,7 +29,7 @@ public class Disconnect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(reason.getBytes(StandardCharsets.UTF_8).length) + reason.getBytes(StandardCharsets.UTF_8).length;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(reason.getBytes(StandardCharsets.UTF_8).length) + reason.getBytes(StandardCharsets.UTF_8).length;
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class Disconnect extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvucmvhc29u=varuint.decode(_buffer, _index); reason=new String(this.readBytes(bgvucmvhc29u), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvucmvhc29u=this.readVaruint(); reason=new String(this.readBytes(bgvucmvhc29u), StandardCharsets.UTF_8);
 	}
 
 	public static Disconnect fromBuffer(byte[] buffer) {

@@ -29,7 +29,7 @@ public class SteerBoat extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 2;
+		return Buffer.varuintLength(ID) + 2;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class SteerBoat extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		rightPaddleTurning=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 		leftPaddleTurning=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 	}

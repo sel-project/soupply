@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class DropItem extends Packet {
@@ -22,11 +21,11 @@ public class DropItem extends Packet {
 	public final static byte DROP = 0;
 
 	public byte action;
-	public Slot item;
+	public sul.protocol.pocket100.types.Slot item;
 
 	public DropItem() {}
 
-	public DropItem(byte action, Slot item) {
+	public DropItem(byte action, sul.protocol.pocket100.types.Slot item) {
 		this.action = action;
 		this.item = item;
 	}
@@ -50,7 +49,7 @@ public class DropItem extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		action=readBigEndianByte();
-		item=new Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
+		item=new sul.protocol.pocket100.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
 	}
 
 	public static DropItem fromBuffer(byte[] buffer) {

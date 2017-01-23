@@ -29,7 +29,7 @@ public class Camera extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + Var.Long.length(runtimeId) + 1;
+		return Buffer.varlongLength(entityId) + Buffer.varlongLength(runtimeId) + 1;
 	}
 
 	@Override
@@ -45,8 +45,8 @@ public class Camera extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
-		runtimeId=varlong.decode(_buffer, _index);
+		entityId=this.readVarlong();
+		runtimeId=this.readVarlong();
 	}
 
 	public static Camera fromBuffer(byte[] buffer) {

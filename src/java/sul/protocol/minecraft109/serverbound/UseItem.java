@@ -31,7 +31,7 @@ public class UseItem extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(hand);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(hand);
 	}
 
 	@Override
@@ -45,8 +45,8 @@ public class UseItem extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		hand=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		hand=this.readVaruint();
 	}
 
 	public static UseItem fromBuffer(byte[] buffer) {

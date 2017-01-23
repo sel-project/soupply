@@ -31,14 +31,14 @@ public class PlayerInput extends Packet {
 
 	@Override
 	public int length() {
-		return motion.length() + 3;
+		return 15;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeLittleEndianFloat(motion.x);this.writeLittleEndianFloat(motion.y);this.writeLittleEndianFloat(motion.z);
+		this.writeLittleEndianFloat(motion.x); this.writeLittleEndianFloat(motion.y); this.writeLittleEndianFloat(motion.z);
 		this.writeBigEndianByte(flags);
 		this._buffer[this._index++]=(byte)(unknown2?1:0);
 		return this._buffer;

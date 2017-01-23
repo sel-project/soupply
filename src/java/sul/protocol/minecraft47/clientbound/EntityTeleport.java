@@ -35,7 +35,7 @@ public class EntityTeleport extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + position.length() + 3;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 15;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class EntityTeleport extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
-		this.writeBigEndianInt(position.x);this.writeBigEndianInt(position.y);this.writeBigEndianInt(position.z);
+		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.y); this.writeBigEndianInt(position.z);
 		this.writeBigEndianByte(yaw);
 		this.writeBigEndianByte(pitch);
 		this._buffer[this._index++]=(byte)(onGround?1:0);
@@ -53,8 +53,8 @@ public class EntityTeleport extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
 		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 		yaw=readBigEndianByte();
 		pitch=readBigEndianByte();

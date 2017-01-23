@@ -35,7 +35,7 @@ public class SoundEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(soundName.getBytes(StandardCharsets.UTF_8).length) + soundName.getBytes(StandardCharsets.UTF_8).length + position.length() + 5;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(soundName.getBytes(StandardCharsets.UTF_8).length) + soundName.getBytes(StandardCharsets.UTF_8).length + 17;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class SoundEffect extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		byte[] c291bmroyw1l=soundName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c291bmroyw1l.length); this.writeBytes(c291bmroyw1l);
-		this.writeBigEndianInt(position.x);this.writeBigEndianInt(position.y);this.writeBigEndianInt(position.z);
+		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.y); this.writeBigEndianInt(position.z);
 		this.writeBigEndianFloat(volume);
 		this.writeBigEndianByte(pitch);
 		return this._buffer;
@@ -52,8 +52,8 @@ public class SoundEffect extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvuc291bmroyw1l=varuint.decode(_buffer, _index); soundName=new String(this.readBytes(bgvuc291bmroyw1l), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvuc291bmroyw1l=this.readVaruint(); soundName=new String(this.readBytes(bgvuc291bmroyw1l), StandardCharsets.UTF_8);
 		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 		volume=readBigEndianFloat();
 		pitch=readBigEndianByte();

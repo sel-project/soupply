@@ -29,7 +29,7 @@ public class UpdateEntityNbt extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + nbt.length;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + nbt.length;
 	}
 
 	@Override
@@ -44,8 +44,8 @@ public class UpdateEntityNbt extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
 		nbt=this.readBytes(this._buffer.length-this._index);
 	}
 

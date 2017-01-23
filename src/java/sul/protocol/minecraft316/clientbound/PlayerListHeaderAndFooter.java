@@ -31,7 +31,7 @@ public class PlayerListHeaderAndFooter extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(header.getBytes(StandardCharsets.UTF_8).length) + header.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(footer.getBytes(StandardCharsets.UTF_8).length) + footer.getBytes(StandardCharsets.UTF_8).length;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(header.getBytes(StandardCharsets.UTF_8).length) + header.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(footer.getBytes(StandardCharsets.UTF_8).length) + footer.getBytes(StandardCharsets.UTF_8).length;
 	}
 
 	@Override
@@ -46,9 +46,9 @@ public class PlayerListHeaderAndFooter extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvuagvhzgvy=varuint.decode(_buffer, _index); header=new String(this.readBytes(bgvuagvhzgvy), StandardCharsets.UTF_8);
-		int bgvuzm9vdgvy=varuint.decode(_buffer, _index); footer=new String(this.readBytes(bgvuzm9vdgvy), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvuagvhzgvy=this.readVaruint(); header=new String(this.readBytes(bgvuagvhzgvy), StandardCharsets.UTF_8);
+		int bgvuzm9vdgvy=this.readVaruint(); footer=new String(this.readBytes(bgvuzm9vdgvy), StandardCharsets.UTF_8);
 	}
 
 	public static PlayerListHeaderAndFooter fromBuffer(byte[] buffer) {

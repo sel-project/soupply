@@ -55,7 +55,7 @@ public class Game extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length(protocols.length) + Var.Uint.length(motd.getBytes(StandardCharsets.UTF_8).length) + motd.getBytes(StandardCharsets.UTF_8).length + 3; for(int chjvdg9jb2xz:protocols){ length+=Var.Uint.length(chjvdg9jb2xz); } return length;
+		int length=Buffer.varuintLength(protocols.length) + Buffer.varuintLength(motd.getBytes(StandardCharsets.UTF_8).length) + motd.getBytes(StandardCharsets.UTF_8).length + 3; for(int chjvdg9jb2xz:protocols){ length+=Buffer.varuintLength(chjvdg9jb2xz); } return length;
 	}
 
 	@Override
@@ -72,8 +72,8 @@ public class Game extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		type=readBigEndianByte();
-		int bhbyb3rvy29scw=varuint.decode(_buffer, _index); protocols=new int[bhbyb3rvy29scw]; for(int chjvdg9jb2xz=0;chjvdg9jb2xz<protocols.length;chjvdg9jb2xz++){ protocols[chjvdg9jb2xz]=varuint.decode(_buffer, _index); }
-		int bgvubw90za=varuint.decode(_buffer, _index); motd=new String(this.readBytes(bgvubw90za), StandardCharsets.UTF_8);
+		int bhbyb3rvy29scw=this.readVaruint(); protocols=new int[bhbyb3rvy29scw]; for(int chjvdg9jb2xz=0;chjvdg9jb2xz<protocols.length;chjvdg9jb2xz++){ protocols[chjvdg9jb2xz]=this.readVaruint(); }
+		int bgvubw90za=this.readVaruint(); motd=new String(this.readBytes(bgvubw90za), StandardCharsets.UTF_8);
 		port=readBigEndianShort();
 	}
 

@@ -8,7 +8,6 @@
  */
 package sul.protocol.minecraft109.serverbound;
 
-import sul.protocol.minecraft109.types.*;
 import sul.utils.*;
 
 public class CreativeInventoryAction extends Packet {
@@ -19,18 +18,18 @@ public class CreativeInventoryAction extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	public short slot;
-	public Slot clickedItem;
+	public sul.protocol.minecraft109.types.Slot clickedItem;
 
 	public CreativeInventoryAction() {}
 
-	public CreativeInventoryAction(short slot, Slot clickedItem) {
+	public CreativeInventoryAction(short slot, sul.protocol.minecraft109.types.Slot clickedItem) {
 		this.slot = slot;
 		this.clickedItem = clickedItem;
 	}
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + clickedItem.length() + 2;
+		return Buffer.varuintLength(ID) + clickedItem.length() + 2;
 	}
 
 	@Override
@@ -45,9 +44,9 @@ public class CreativeInventoryAction extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		slot=readBigEndianShort();
-		clickedItem=new Slot(); clickedItem._index=this._index; clickedItem.decode(this._buffer); this._index=clickedItem._index;
+		clickedItem=new sul.protocol.minecraft109.types.Slot(); clickedItem._index=this._index; clickedItem.decode(this._buffer); this._index=clickedItem._index;
 	}
 
 	public static CreativeInventoryAction fromBuffer(byte[] buffer) {

@@ -8,7 +8,6 @@
  */
 package sul.protocol.minecraft47.clientbound;
 
-import sul.protocol.minecraft47.types.*;
 import sul.utils.*;
 
 public class Map extends Packet {
@@ -20,7 +19,7 @@ public class Map extends Packet {
 
 	public int mapId;
 	public byte scale;
-	public Icon[] icons;
+	public sul.protocol.minecraft47.types.Icon[] icons;
 	public byte colums;
 	public byte rows;
 	public Tuples.ByteXZ offset;
@@ -28,7 +27,7 @@ public class Map extends Packet {
 
 	public Map() {}
 
-	public Map(int mapId, byte scale, Icon[] icons, byte colums, byte rows, Tuples.ByteXZ offset, byte[] data) {
+	public Map(int mapId, byte scale, sul.protocol.minecraft47.types.Icon[] icons, byte colums, byte rows, Tuples.ByteXZ offset, byte[] data) {
 		this.mapId = mapId;
 		this.scale = scale;
 		this.icons = icons;
@@ -40,7 +39,7 @@ public class Map extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length() + Var.Uint.length(mapId) + Var.Uint.length(icons.length) + offset.length() + Var.Uint.length(data.length) + data.length + 3; for(Icon awnvbnm:icons){ length+=awnvbnm.length(); } return length;
+		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(mapId) + Buffer.varuintLength(icons.length) + Buffer.varuintLength(data.length) + data.length + 5; for(sul.protocol.minecraft47.types.Icon awnvbnm:icons){ length+=awnvbnm.length(); } return length;
 	}
 
 	@Override
@@ -49,10 +48,10 @@ public class Map extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(mapId);
 		this.writeBigEndianByte(scale);
-		this.writeVaruint((int)icons.length); for(Icon awnvbnm:icons){ this.writeBytes(awnvbnm.encode()); }
+		this.writeVaruint((int)icons.length); for(sul.protocol.minecraft47.types.Icon awnvbnm:icons){ this.writeBytes(awnvbnm.encode()); }
 		this.writeBigEndianByte(colums);
 		this.writeBigEndianByte(rows);
-		this.writeBigEndianByte(offset.x);this.writeBigEndianByte(offset.z);
+		this.writeBigEndianByte(offset.x); this.writeBigEndianByte(offset.z);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
 		return this._buffer;
 	}
@@ -60,14 +59,14 @@ public class Map extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		mapId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		mapId=this.readVaruint();
 		scale=readBigEndianByte();
-		int bgljb25z=varuint.decode(_buffer, _index); icons=new Icon[bgljb25z]; for(int awnvbnm=0;awnvbnm<icons.length;awnvbnm++){ icons[awnvbnm]=new Icon(); icons[awnvbnm]._index=this._index; icons[awnvbnm].decode(this._buffer); this._index=icons[awnvbnm]._index; }
+		int bgljb25z=this.readVaruint(); icons=new sul.protocol.minecraft47.types.Icon[bgljb25z]; for(int awnvbnm=0;awnvbnm<icons.length;awnvbnm++){ icons[awnvbnm]=new sul.protocol.minecraft47.types.Icon(); icons[awnvbnm]._index=this._index; icons[awnvbnm].decode(this._buffer); this._index=icons[awnvbnm]._index; }
 		colums=readBigEndianByte();
 		rows=readBigEndianByte();
 		offset.x=readBigEndianByte(); offset.z=readBigEndianByte();
-		int bgrhdge=varuint.decode(_buffer, _index); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
+		int bgrhdge=this.readVaruint(); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
 	}
 
 	public static Map fromBuffer(byte[] buffer) {

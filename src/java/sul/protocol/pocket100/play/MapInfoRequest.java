@@ -27,7 +27,7 @@ public class MapInfoRequest extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(mapId) + 1;
+		return Buffer.varlongLength(mapId) + 1;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class MapInfoRequest extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		mapId=varlong.decode(_buffer, _index);
+		mapId=this.readVarlong();
 	}
 
 	public static MapInfoRequest fromBuffer(byte[] buffer) {

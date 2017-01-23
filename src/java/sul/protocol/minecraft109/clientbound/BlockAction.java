@@ -55,7 +55,7 @@ public class BlockAction extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(blockType) + 10;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(blockType) + 10;
 	}
 
 	@Override
@@ -72,11 +72,11 @@ public class BlockAction extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		position=readBigEndianLong();
 		action=readBigEndianByte();
 		parameter=readBigEndianByte();
-		blockType=varuint.decode(_buffer, _index);
+		blockType=this.readVaruint();
 	}
 
 	public static BlockAction fromBuffer(byte[] buffer) {

@@ -19,7 +19,7 @@ public class Request extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length();
+		return Buffer.varuintLength(ID);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class Request extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 	}
 
 	public static Request fromBuffer(byte[] buffer) {

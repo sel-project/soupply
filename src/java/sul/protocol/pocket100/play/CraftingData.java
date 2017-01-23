@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class CraftingData extends Packet {
@@ -18,24 +17,24 @@ public class CraftingData extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
-	public Recipe[] recipes;
+	public sul.protocol.pocket100.types.Recipe[] recipes;
 
 	public CraftingData() {}
 
-	public CraftingData(Recipe[] recipes) {
+	public CraftingData(sul.protocol.pocket100.types.Recipe[] recipes) {
 		this.recipes = recipes;
 	}
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length(recipes.length) + 1; for(Recipe cmvjaxblcw:recipes){ length+=cmvjaxblcw.length(); } return length;
+		int length=Buffer.varuintLength(recipes.length) + 1; for(sul.protocol.pocket100.types.Recipe cmvjaxblcw:recipes){ length+=cmvjaxblcw.length(); } return length;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeVaruint((int)recipes.length); for(Recipe cmvjaxblcw:recipes){ this.writeBytes(cmvjaxblcw.encode()); }
+		this.writeVaruint((int)recipes.length); for(sul.protocol.pocket100.types.Recipe cmvjaxblcw:recipes){ this.writeBytes(cmvjaxblcw.encode()); }
 		return this._buffer;
 	}
 
@@ -43,7 +42,7 @@ public class CraftingData extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		int bhjly2lwzxm=varuint.decode(_buffer, _index); recipes=new Recipe[bhjly2lwzxm]; for(int cmvjaxblcw=0;cmvjaxblcw<recipes.length;cmvjaxblcw++){ recipes[cmvjaxblcw]=new Recipe(); recipes[cmvjaxblcw]._index=this._index; recipes[cmvjaxblcw].decode(this._buffer); this._index=recipes[cmvjaxblcw]._index; }
+		int bhjly2lwzxm=this.readVaruint(); recipes=new sul.protocol.pocket100.types.Recipe[bhjly2lwzxm]; for(int cmvjaxblcw=0;cmvjaxblcw<recipes.length;cmvjaxblcw++){ recipes[cmvjaxblcw]=new sul.protocol.pocket100.types.Recipe(); recipes[cmvjaxblcw]._index=this._index; recipes[cmvjaxblcw].decode(this._buffer); this._index=recipes[cmvjaxblcw]._index; }
 	}
 
 	public static CraftingData fromBuffer(byte[] buffer) {

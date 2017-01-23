@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 /**
@@ -22,7 +21,7 @@ public class MobEquipment extends Packet {
 	public final static boolean SERVERBOUND = true;
 
 	public long entityId;
-	public Slot item;
+	public sul.protocol.pocket100.types.Slot item;
 
 	/**
 	 * Slot of the inventory where the item is. The hotbat slots (0-8) are not counted.
@@ -38,7 +37,7 @@ public class MobEquipment extends Packet {
 
 	public MobEquipment() {}
 
-	public MobEquipment(long entityId, Slot item, byte inventorySlot, byte hotbarSlot, byte unknown4) {
+	public MobEquipment(long entityId, sul.protocol.pocket100.types.Slot item, byte inventorySlot, byte hotbarSlot, byte unknown4) {
 		this.entityId = entityId;
 		this.item = item;
 		this.inventorySlot = inventorySlot;
@@ -48,7 +47,7 @@ public class MobEquipment extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + item.length() + 4;
+		return Buffer.varlongLength(entityId) + item.length() + 4;
 	}
 
 	@Override
@@ -67,8 +66,8 @@ public class MobEquipment extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
-		item=new Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
+		entityId=this.readVarlong();
+		item=new sul.protocol.pocket100.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
 		inventorySlot=readBigEndianByte();
 		hotbarSlot=readBigEndianByte();
 		unknown4=readBigEndianByte();

@@ -35,7 +35,7 @@ public class Login extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(body.length) + body.length + 6;
+		return Buffer.varuintLength(body.length) + body.length + 6;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class Login extends Packet {
 		readBigEndianByte();
 		protocol=readBigEndianInt();
 		edition=readBigEndianByte();
-		int bgjvzhk=varuint.decode(_buffer, _index); body=new byte[bgjvzhk]; body=this.readBytes(bgjvzhk);
+		int bgjvzhk=this.readVaruint(); body=new byte[bgjvzhk]; body=this.readBytes(bgjvzhk);
 	}
 
 	public static Login fromBuffer(byte[] buffer) {

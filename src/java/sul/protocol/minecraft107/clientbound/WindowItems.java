@@ -8,7 +8,6 @@
  */
 package sul.protocol.minecraft107.clientbound;
 
-import sul.protocol.minecraft107.types.*;
 import sul.utils.*;
 
 public class WindowItems extends Packet {
@@ -19,18 +18,18 @@ public class WindowItems extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	public byte window;
-	public Slots slots;
+	public sul.protocol.minecraft107.types.Slot[] slots;
 
 	public WindowItems() {}
 
-	public WindowItems(byte window, Slots slots) {
+	public WindowItems(byte window, sul.protocol.minecraft107.types.Slot[] slots) {
 		this.window = window;
 		this.slots = slots;
 	}
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + slots.length() + 1;
+		int length=Buffer.varuintLength(ID) + 3; for(sul.protocol.minecraft107.types.Slot c2xvdhm:slots){ length+=c2xvdhm.length(); } return length;
 	}
 
 	@Override
@@ -38,16 +37,16 @@ public class WindowItems extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeBigEndianByte(window);
-		this.writeBigEndianShort((short)slots.length); for(Slot c2xvdhm:slots){ this.writeBytes(c2xvdhm.encode()); }
+		this.writeBigEndianShort((short)slots.length); for(sul.protocol.minecraft107.types.Slot c2xvdhm:slots){ this.writeBytes(c2xvdhm.encode()); }
 		return this._buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		window=readBigEndianByte();
-		int bhnsb3rz=readBigEndianShort(); slots=new Slot[bhnsb3rz]; for(int c2xvdhm=0;c2xvdhm<slots.length;c2xvdhm++){ slots[c2xvdhm]=new Slot(); slots[c2xvdhm]._index=this._index; slots[c2xvdhm].decode(this._buffer); this._index=slots[c2xvdhm]._index; }
+		int bhnsb3rz=readBigEndianShort(); slots=new sul.protocol.minecraft107.types.Slot[bhnsb3rz]; for(int c2xvdhm=0;c2xvdhm<slots.length;c2xvdhm++){ slots[c2xvdhm]=new sul.protocol.minecraft107.types.Slot(); slots[c2xvdhm]._index=this._index; slots[c2xvdhm].decode(this._buffer); this._index=slots[c2xvdhm]._index; }
 	}
 
 	public static WindowItems fromBuffer(byte[] buffer) {

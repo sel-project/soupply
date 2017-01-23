@@ -35,7 +35,7 @@ public class SetEntityLink extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(from) + Var.Long.length(to) + 2;
+		return Buffer.varlongLength(from) + Buffer.varlongLength(to) + 2;
 	}
 
 	@Override
@@ -52,8 +52,8 @@ public class SetEntityLink extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		from=varlong.decode(_buffer, _index);
-		to=varlong.decode(_buffer, _index);
+		from=this.readVarlong();
+		to=this.readVarlong();
 		action=readBigEndianByte();
 	}
 

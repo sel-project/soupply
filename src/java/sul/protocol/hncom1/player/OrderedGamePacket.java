@@ -35,7 +35,7 @@ public class OrderedGamePacket extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + Var.Uint.length(order) + packet.length + 1;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(order) + packet.length + 1;
 	}
 
 	@Override
@@ -52,8 +52,8 @@ public class OrderedGamePacket extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		hubId=varuint.decode(_buffer, _index);
-		order=varuint.decode(_buffer, _index);
+		hubId=this.readVaruint();
+		order=this.readVaruint();
 		packet=this.readBytes(this._buffer.length-this._index);
 	}
 

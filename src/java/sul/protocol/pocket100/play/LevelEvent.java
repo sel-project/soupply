@@ -81,7 +81,7 @@ public class LevelEvent extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(eventId) + position.length() + Var.Int.length(data) + 1;
+		return Buffer.varintLength(eventId) + Buffer.varintLength(data) + 13;
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class LevelEvent extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarint(eventId);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeVarint(data);
 		return this._buffer;
 	}
@@ -98,9 +98,9 @@ public class LevelEvent extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		eventId=varint.decode(_buffer, _index);
+		eventId=this.readVarint();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
-		data=varint.decode(_buffer, _index);
+		data=this.readVarint();
 	}
 
 	public static LevelEvent fromBuffer(byte[] buffer) {

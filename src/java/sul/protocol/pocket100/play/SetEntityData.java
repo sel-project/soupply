@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class SetEntityData extends Packet {
@@ -30,7 +29,7 @@ public class SetEntityData extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(entityId) + metadata.length() + 1;
+		return Buffer.varlongLength(entityId) + metadata.length() + 1;
 	}
 
 	@Override
@@ -46,7 +45,7 @@ public class SetEntityData extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
+		entityId=this.readVarlong();
 		metadata=new Metadata(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
 	}
 

@@ -64,7 +64,7 @@ public class JoinGame extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(levelType.getBytes(StandardCharsets.UTF_8).length) + levelType.getBytes(StandardCharsets.UTF_8).length + 12;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(levelType.getBytes(StandardCharsets.UTF_8).length) + levelType.getBytes(StandardCharsets.UTF_8).length + 12;
 	}
 
 	@Override
@@ -84,13 +84,13 @@ public class JoinGame extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		entityId=readBigEndianInt();
 		gamemode=readBigEndianByte();
 		dimension=readBigEndianInt();
 		difficulty=readBigEndianByte();
 		maxPlayers=readBigEndianByte();
-		int bgvubgv2zwxuexbl=varuint.decode(_buffer, _index); levelType=new String(this.readBytes(bgvubgv2zwxuexbl), StandardCharsets.UTF_8);
+		int bgvubgv2zwxuexbl=this.readVaruint(); levelType=new String(this.readBytes(bgvubgv2zwxuexbl), StandardCharsets.UTF_8);
 		reducedDebug=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 	}
 

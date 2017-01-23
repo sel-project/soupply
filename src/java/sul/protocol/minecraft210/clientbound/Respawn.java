@@ -58,7 +58,7 @@ public class Respawn extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(levelType.getBytes(StandardCharsets.UTF_8).length) + levelType.getBytes(StandardCharsets.UTF_8).length + 6;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(levelType.getBytes(StandardCharsets.UTF_8).length) + levelType.getBytes(StandardCharsets.UTF_8).length + 6;
 	}
 
 	@Override
@@ -75,11 +75,11 @@ public class Respawn extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		dimension=readBigEndianInt();
 		difficulty=readBigEndianByte();
 		gamemode=readBigEndianByte();
-		int bgvubgv2zwxuexbl=varuint.decode(_buffer, _index); levelType=new String(this.readBytes(bgvubgv2zwxuexbl), StandardCharsets.UTF_8);
+		int bgvubgv2zwxuexbl=this.readVaruint(); levelType=new String(this.readBytes(bgvubgv2zwxuexbl), StandardCharsets.UTF_8);
 	}
 
 	public static Respawn fromBuffer(byte[] buffer) {

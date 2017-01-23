@@ -82,7 +82,7 @@ public class Effect extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 17;
+		return Buffer.varuintLength(ID) + 17;
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class Effect extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		effectId=readBigEndianInt();
 		position=readBigEndianLong();
 		data=readBigEndianInt();

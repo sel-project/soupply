@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class BlockEvent extends Packet {
@@ -18,19 +17,19 @@ public class BlockEvent extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
-	public BlockPosition position;
+	public sul.protocol.pocket100.types.BlockPosition position;
 	public int[] data = new int[2];
 
 	public BlockEvent() {}
 
-	public BlockEvent(BlockPosition position, int[] data) {
+	public BlockEvent(sul.protocol.pocket100.types.BlockPosition position, int[] data) {
 		this.position = position;
 		this.data = data;
 	}
 
 	@Override
 	public int length() {
-		int length=position.length() + 1; for(int zgf0yq:data){ length+=Var.Int.length(zgf0yq); } return length;
+		int length=position.length() + 1; for(int zgf0yq:data){ length+=Buffer.varintLength(zgf0yq); } return length;
 	}
 
 	@Override
@@ -46,8 +45,8 @@ public class BlockEvent extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		position=new BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
-		final int bgrhdge=2; data=new int[bgrhdge]; for(int zgf0yq=0;zgf0yq<data.length;zgf0yq++){ data[zgf0yq]=varint.decode(_buffer, _index); }
+		position=new sul.protocol.pocket100.types.BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
+		final int bgrhdge=2; data=new int[bgrhdge]; for(int zgf0yq=0;zgf0yq<data.length;zgf0yq++){ data[zgf0yq]=this.readVarint(); }
 	}
 
 	public static BlockEvent fromBuffer(byte[] buffer) {

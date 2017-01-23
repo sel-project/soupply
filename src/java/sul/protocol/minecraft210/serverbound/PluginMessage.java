@@ -31,7 +31,7 @@ public class PluginMessage extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(channel.getBytes(StandardCharsets.UTF_8).length) + channel.getBytes(StandardCharsets.UTF_8).length + data.length;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(channel.getBytes(StandardCharsets.UTF_8).length) + channel.getBytes(StandardCharsets.UTF_8).length + data.length;
 	}
 
 	@Override
@@ -46,8 +46,8 @@ public class PluginMessage extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvuy2hhbm5lba=varuint.decode(_buffer, _index); channel=new String(this.readBytes(bgvuy2hhbm5lba), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvuy2hhbm5lba=this.readVaruint(); channel=new String(this.readBytes(bgvuy2hhbm5lba), StandardCharsets.UTF_8);
 		data=this.readBytes(this._buffer.length-this._index);
 	}
 

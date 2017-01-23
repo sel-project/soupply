@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class RemoveBlock extends Packet {
@@ -18,11 +17,11 @@ public class RemoveBlock extends Packet {
 	public final static boolean CLIENTBOUND = false;
 	public final static boolean SERVERBOUND = true;
 
-	public BlockPosition position;
+	public sul.protocol.pocket100.types.BlockPosition position;
 
 	public RemoveBlock() {}
 
-	public RemoveBlock(BlockPosition position) {
+	public RemoveBlock(sul.protocol.pocket100.types.BlockPosition position) {
 		this.position = position;
 	}
 
@@ -43,7 +42,7 @@ public class RemoveBlock extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		position=new BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
+		position=new sul.protocol.pocket100.types.BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
 	}
 
 	public static RemoveBlock fromBuffer(byte[] buffer) {

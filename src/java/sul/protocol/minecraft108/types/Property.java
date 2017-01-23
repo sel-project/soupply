@@ -30,7 +30,7 @@ public class Property extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(value.getBytes(StandardCharsets.UTF_8).length) + value.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(signature.getBytes(StandardCharsets.UTF_8).length) + signature.getBytes(StandardCharsets.UTF_8).length + 1;
+		return Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(value.getBytes(StandardCharsets.UTF_8).length) + value.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(signature.getBytes(StandardCharsets.UTF_8).length) + signature.getBytes(StandardCharsets.UTF_8).length + 1;
 	}
 
 	@Override
@@ -46,10 +46,10 @@ public class Property extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		int bgvubmftzq=varuint.decode(_buffer, _index); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
-		int bgvudmfsdwu=varuint.decode(_buffer, _index); value=new String(this.readBytes(bgvudmfsdwu), StandardCharsets.UTF_8);
+		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
+		int bgvudmfsdwu=this.readVaruint(); value=new String(this.readBytes(bgvudmfsdwu), StandardCharsets.UTF_8);
 		signed=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		if(signed==true){ int bgvuc2lnbmf0dxjl=varuint.decode(_buffer, _index); signature=new String(this.readBytes(bgvuc2lnbmf0dxjl), StandardCharsets.UTF_8); }
+		if(signed==true){ int bgvuc2lnbmf0dxjl=this.readVaruint(); signature=new String(this.readBytes(bgvuc2lnbmf0dxjl), StandardCharsets.UTF_8); }
 	}
 
 

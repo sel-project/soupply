@@ -29,7 +29,7 @@ public class SetPassengers extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length() + Var.Uint.length(entityId) + Var.Uint.length(passengers.length) + 0; for(int cgfzc2vuz2vycw:passengers){ length+=Var.Uint.length(cgfzc2vuz2vycw); } return length;
+		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + Buffer.varuintLength(passengers.length) + 0; for(int cgfzc2vuz2vycw:passengers){ length+=Buffer.varuintLength(cgfzc2vuz2vycw); } return length;
 	}
 
 	@Override
@@ -44,9 +44,9 @@ public class SetPassengers extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
-		int bhbhc3nlbmdlcnm=varuint.decode(_buffer, _index); passengers=new int[bhbhc3nlbmdlcnm]; for(int cgfzc2vuz2vycw=0;cgfzc2vuz2vycw<passengers.length;cgfzc2vuz2vycw++){ passengers[cgfzc2vuz2vycw]=varuint.decode(_buffer, _index); }
+		this.readVaruint();
+		entityId=this.readVaruint();
+		int bhbhc3nlbmdlcnm=this.readVaruint(); passengers=new int[bhbhc3nlbmdlcnm]; for(int cgfzc2vuz2vycw=0;cgfzc2vuz2vycw<passengers.length;cgfzc2vuz2vycw++){ passengers[cgfzc2vuz2vycw]=this.readVaruint(); }
 	}
 
 	public static SetPassengers fromBuffer(byte[] buffer) {

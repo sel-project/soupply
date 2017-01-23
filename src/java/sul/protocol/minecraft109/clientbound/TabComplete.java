@@ -29,7 +29,7 @@ public class TabComplete extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length() + Var.Uint.length(matches.length) + 0; for(String bwf0y2hlcw:matches){ length+=Var.Uint.length(bwf0y2hlcw.getBytes(StandardCharsets.UTF_8).length)+bwf0y2hlcw.getBytes(StandardCharsets.UTF_8).length; } return length;
+		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(matches.length) + 0; for(String bwf0y2hlcw:matches){ length+=Buffer.varuintLength(bwf0y2hlcw.getBytes(StandardCharsets.UTF_8).length)+bwf0y2hlcw.getBytes(StandardCharsets.UTF_8).length; } return length;
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class TabComplete extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bg1hdgnozxm=varuint.decode(_buffer, _index); matches=new String[bg1hdgnozxm]; for(int bwf0y2hlcw=0;bwf0y2hlcw<matches.length;bwf0y2hlcw++){ int bgvubwf0y2hlc1ti=varuint.decode(_buffer, _index); matches[bwf0y2hlcw]=new String(this.readBytes(bgvubwf0y2hlc1ti), StandardCharsets.UTF_8); }
+		this.readVaruint();
+		int bg1hdgnozxm=this.readVaruint(); matches=new String[bg1hdgnozxm]; for(int bwf0y2hlcw=0;bwf0y2hlcw<matches.length;bwf0y2hlcw++){ int bgvubwf0y2hlc1ti=this.readVaruint(); matches[bwf0y2hlcw]=new String(this.readBytes(bgvubwf0y2hlc1ti), StandardCharsets.UTF_8); }
 	}
 
 	public static TabComplete fromBuffer(byte[] buffer) {

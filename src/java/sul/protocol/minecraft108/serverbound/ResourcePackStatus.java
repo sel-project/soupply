@@ -37,7 +37,7 @@ public class ResourcePackStatus extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(hash.getBytes(StandardCharsets.UTF_8).length) + hash.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(result);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(hash.getBytes(StandardCharsets.UTF_8).length) + hash.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(result);
 	}
 
 	@Override
@@ -52,9 +52,9 @@ public class ResourcePackStatus extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvuagfzaa=varuint.decode(_buffer, _index); hash=new String(this.readBytes(bgvuagfzaa), StandardCharsets.UTF_8);
-		result=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		int bgvuagfzaa=this.readVaruint(); hash=new String(this.readBytes(bgvuagfzaa), StandardCharsets.UTF_8);
+		result=this.readVaruint();
 	}
 
 	public static ResourcePackStatus fromBuffer(byte[] buffer) {

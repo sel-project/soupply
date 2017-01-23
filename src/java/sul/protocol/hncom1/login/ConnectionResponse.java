@@ -52,7 +52,7 @@ public class ConnectionResponse extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(protocol) + 2;
+		return Buffer.varuintLength(protocol) + 2;
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class ConnectionResponse extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		protocol=varuint.decode(_buffer, _index);
+		protocol=this.readVaruint();
 		status=readBigEndianByte();
 	}
 

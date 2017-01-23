@@ -14,11 +14,11 @@ public class Slot extends Packet {
 
 	public int id;
 	public int metaAndCount;
-	public SlotNbt nbt;
+	public byte[] nbt;
 
 	public Slot() {}
 
-	public Slot(int id, int metaAndCount, SlotNbt nbt) {
+	public Slot(int id, int metaAndCount, byte[] nbt) {
 		this.id = id;
 		this.metaAndCount = metaAndCount;
 		this.nbt = nbt;
@@ -26,7 +26,7 @@ public class Slot extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(id) + Var.Int.length(metaAndCount) + nbt.length();
+		return Buffer.varintLength(id) + Buffer.varintLength(metaAndCount) + nbt.length + 2;
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class Slot extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		id=varint.decode(_buffer, _index);
-		if(id>0){ metaAndCount=varint.decode(_buffer, _index); }
+		id=this.readVarint();
+		if(id>0){ metaAndCount=this.readVarint(); }
 		if(id>0){ int bg5ida=readLittleEndianShort(); nbt=new byte[bg5ida]; nbt=this.readBytes(bg5ida); }
 	}
 

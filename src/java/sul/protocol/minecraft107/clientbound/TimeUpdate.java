@@ -29,7 +29,7 @@ public class TimeUpdate extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 16;
+		return Buffer.varuintLength(ID) + 16;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class TimeUpdate extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		worldAge=readBigEndianLong();
 		time=readBigEndianLong();
 	}

@@ -40,7 +40,7 @@ public class EntityAction extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + Var.Uint.length(action) + Var.Uint.length(jumpBoost);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + Buffer.varuintLength(action) + Buffer.varuintLength(jumpBoost);
 	}
 
 	@Override
@@ -56,10 +56,10 @@ public class EntityAction extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
-		action=varuint.decode(_buffer, _index);
-		if(action==5){ jumpBoost=varuint.decode(_buffer, _index); }
+		this.readVaruint();
+		entityId=this.readVaruint();
+		action=this.readVaruint();
+		if(action==5){ jumpBoost=this.readVaruint(); }
 	}
 
 	public static EntityAction fromBuffer(byte[] buffer) {

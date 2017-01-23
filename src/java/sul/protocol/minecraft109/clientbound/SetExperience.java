@@ -31,7 +31,7 @@ public class SetExperience extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(level) + Var.Uint.length(totalExperience) + 4;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(level) + Buffer.varuintLength(totalExperience) + 4;
 	}
 
 	@Override
@@ -47,10 +47,10 @@ public class SetExperience extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		experience=readBigEndianFloat();
-		level=varuint.decode(_buffer, _index);
-		totalExperience=varuint.decode(_buffer, _index);
+		level=this.readVaruint();
+		totalExperience=this.readVaruint();
 	}
 
 	public static SetExperience fromBuffer(byte[] buffer) {

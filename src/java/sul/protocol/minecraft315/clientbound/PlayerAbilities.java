@@ -37,7 +37,7 @@ public class PlayerAbilities extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 9;
+		return Buffer.varuintLength(ID) + 9;
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class PlayerAbilities extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		flags=readBigEndianByte();
 		flyingSpeed=readBigEndianFloat();
 		fovModifier=readBigEndianFloat();

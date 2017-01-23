@@ -16,11 +16,11 @@ public class Attribute extends Packet {
 
 	public String key;
 	public double value;
-	public Modifier[] modifiers;
+	public sul.protocol.minecraft107.types.Modifier[] modifiers;
 
 	public Attribute() {}
 
-	public Attribute(String key, double value, Modifier[] modifiers) {
+	public Attribute(String key, double value, sul.protocol.minecraft107.types.Modifier[] modifiers) {
 		this.key = key;
 		this.value = value;
 		this.modifiers = modifiers;
@@ -28,7 +28,7 @@ public class Attribute extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length(key.getBytes(StandardCharsets.UTF_8).length) + key.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(modifiers.length) + 8; for(Modifier bw9kawzpzxjz:modifiers){ length+=bw9kawzpzxjz.length(); } return length;
+		int length=Buffer.varuintLength(key.getBytes(StandardCharsets.UTF_8).length) + key.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(modifiers.length) + 8; for(sul.protocol.minecraft107.types.Modifier bw9kawzpzxjz:modifiers){ length+=bw9kawzpzxjz.length(); } return length;
 	}
 
 	@Override
@@ -36,16 +36,16 @@ public class Attribute extends Packet {
 		this._buffer = new byte[this.length()];
 		byte[] a2v5=key.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)a2v5.length); this.writeBytes(a2v5);
 		this.writeBigEndianDouble(value);
-		this.writeVaruint((int)modifiers.length); for(Modifier bw9kawzpzxjz:modifiers){ this.writeBytes(bw9kawzpzxjz.encode()); }
+		this.writeVaruint((int)modifiers.length); for(sul.protocol.minecraft107.types.Modifier bw9kawzpzxjz:modifiers){ this.writeBytes(bw9kawzpzxjz.encode()); }
 		return this._buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		int bgvua2v5=varuint.decode(_buffer, _index); key=new String(this.readBytes(bgvua2v5), StandardCharsets.UTF_8);
+		int bgvua2v5=this.readVaruint(); key=new String(this.readBytes(bgvua2v5), StandardCharsets.UTF_8);
 		value=readBigEndianDouble();
-		int bg1vzglmawvycw=varuint.decode(_buffer, _index); modifiers=new Modifier[bg1vzglmawvycw]; for(int bw9kawzpzxjz=0;bw9kawzpzxjz<modifiers.length;bw9kawzpzxjz++){ modifiers[bw9kawzpzxjz]=new Modifier(); modifiers[bw9kawzpzxjz]._index=this._index; modifiers[bw9kawzpzxjz].decode(this._buffer); this._index=modifiers[bw9kawzpzxjz]._index; }
+		int bg1vzglmawvycw=this.readVaruint(); modifiers=new sul.protocol.minecraft107.types.Modifier[bg1vzglmawvycw]; for(int bw9kawzpzxjz=0;bw9kawzpzxjz<modifiers.length;bw9kawzpzxjz++){ modifiers[bw9kawzpzxjz]=new sul.protocol.minecraft107.types.Modifier(); modifiers[bw9kawzpzxjz]._index=this._index; modifiers[bw9kawzpzxjz].decode(this._buffer); this._index=modifiers[bw9kawzpzxjz]._index; }
 	}
 
 

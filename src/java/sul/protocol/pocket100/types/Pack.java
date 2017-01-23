@@ -28,7 +28,7 @@ public class Pack extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(id.getBytes(StandardCharsets.UTF_8).length) + id.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(version.getBytes(StandardCharsets.UTF_8).length) + version.getBytes(StandardCharsets.UTF_8).length + 8;
+		return Buffer.varuintLength(id.getBytes(StandardCharsets.UTF_8).length) + id.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(version.getBytes(StandardCharsets.UTF_8).length) + version.getBytes(StandardCharsets.UTF_8).length + 8;
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class Pack extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		int bgvuawq=varuint.decode(_buffer, _index); id=new String(this.readBytes(bgvuawq), StandardCharsets.UTF_8);
-		int bgvudmvyc2lvbg=varuint.decode(_buffer, _index); version=new String(this.readBytes(bgvudmvyc2lvbg), StandardCharsets.UTF_8);
+		int bgvuawq=this.readVaruint(); id=new String(this.readBytes(bgvuawq), StandardCharsets.UTF_8);
+		int bgvudmvyc2lvbg=this.readVaruint(); version=new String(this.readBytes(bgvudmvyc2lvbg), StandardCharsets.UTF_8);
 		size=readBigEndianLong();
 	}
 

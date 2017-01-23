@@ -31,7 +31,7 @@ public class LoginSuccess extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(uuid.getBytes(StandardCharsets.UTF_8).length) + uuid.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(uuid.getBytes(StandardCharsets.UTF_8).length) + uuid.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length;
 	}
 
 	@Override
@@ -46,9 +46,9 @@ public class LoginSuccess extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvudxvpza=varuint.decode(_buffer, _index); uuid=new String(this.readBytes(bgvudxvpza), StandardCharsets.UTF_8);
-		int bgvudxnlcm5hbwu=varuint.decode(_buffer, _index); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvudxvpza=this.readVaruint(); uuid=new String(this.readBytes(bgvudxvpza), StandardCharsets.UTF_8);
+		int bgvudxnlcm5hbwu=this.readVaruint(); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
 	}
 
 	public static LoginSuccess fromBuffer(byte[] buffer) {

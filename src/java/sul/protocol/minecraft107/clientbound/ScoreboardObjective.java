@@ -44,7 +44,7 @@ public class ScoreboardObjective extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(value.getBytes(StandardCharsets.UTF_8).length) + value.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(type.getBytes(StandardCharsets.UTF_8).length) + type.getBytes(StandardCharsets.UTF_8).length + 1;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(value.getBytes(StandardCharsets.UTF_8).length) + value.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(type.getBytes(StandardCharsets.UTF_8).length) + type.getBytes(StandardCharsets.UTF_8).length + 1;
 	}
 
 	@Override
@@ -61,11 +61,11 @@ public class ScoreboardObjective extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvubmftzq=varuint.decode(_buffer, _index); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
 		mode=readBigEndianByte();
-		if(mode!=1){ int bgvudmfsdwu=varuint.decode(_buffer, _index); value=new String(this.readBytes(bgvudmfsdwu), StandardCharsets.UTF_8); }
-		if(mode!=1){ int bgvudhlwzq=varuint.decode(_buffer, _index); type=new String(this.readBytes(bgvudhlwzq), StandardCharsets.UTF_8); }
+		if(mode!=1){ int bgvudmfsdwu=this.readVaruint(); value=new String(this.readBytes(bgvudmfsdwu), StandardCharsets.UTF_8); }
+		if(mode!=1){ int bgvudhlwzq=this.readVaruint(); type=new String(this.readBytes(bgvudhlwzq), StandardCharsets.UTF_8); }
 	}
 
 	public static ScoreboardObjective fromBuffer(byte[] buffer) {

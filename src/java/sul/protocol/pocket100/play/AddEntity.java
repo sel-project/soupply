@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class AddEntity extends Packet {
@@ -25,13 +24,13 @@ public class AddEntity extends Packet {
 	public Tuples.FloatXYZ motion;
 	public float pitch;
 	public float yaw;
-	public Attribute[] attributes;
+	public sul.protocol.pocket100.types.Attribute[] attributes;
 	public Metadata metadata;
 	public long[] links;
 
 	public AddEntity() {}
 
-	public AddEntity(long entityId, long runtimeId, int type, Tuples.FloatXYZ position, Tuples.FloatXYZ motion, float pitch, float yaw, Attribute[] attributes, Metadata metadata, long[] links) {
+	public AddEntity(long entityId, long runtimeId, int type, Tuples.FloatXYZ position, Tuples.FloatXYZ motion, float pitch, float yaw, sul.protocol.pocket100.types.Attribute[] attributes, Metadata metadata, long[] links) {
 		this.entityId = entityId;
 		this.runtimeId = runtimeId;
 		this.type = type;
@@ -46,7 +45,7 @@ public class AddEntity extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Long.length(entityId) + Var.Long.length(runtimeId) + Var.Uint.length(type) + position.length() + motion.length() + Var.Uint.length(attributes.length) + metadata.length() + Var.Uint.length(links.length) + 9; for(Attribute yxr0cmlidxrlcw:attributes){ length+=yxr0cmlidxrlcw.length(); };for(long bglua3m:links){ length+=Var.Long.length(bglua3m); } return length;
+		int length=Buffer.varlongLength(entityId) + Buffer.varlongLength(runtimeId) + Buffer.varuintLength(type) + Buffer.varuintLength(attributes.length) + metadata.length() + Buffer.varuintLength(links.length) + 33; for(sul.protocol.pocket100.types.Attribute yxr0cmlidxrlcw:attributes){ length+=yxr0cmlidxrlcw.length(); };for(long bglua3m:links){ length+=Buffer.varlongLength(bglua3m); } return length;
 	}
 
 	@Override
@@ -56,11 +55,11 @@ public class AddEntity extends Packet {
 		this.writeVarlong(entityId);
 		this.writeVarlong(runtimeId);
 		this.writeVaruint(type);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
-		this.writeLittleEndianFloat(motion.x);this.writeLittleEndianFloat(motion.y);this.writeLittleEndianFloat(motion.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(motion.x); this.writeLittleEndianFloat(motion.y); this.writeLittleEndianFloat(motion.z);
 		this.writeLittleEndianFloat(pitch);
 		this.writeLittleEndianFloat(yaw);
-		this.writeVaruint((int)attributes.length); for(Attribute yxr0cmlidxrlcw:attributes){ this.writeBytes(yxr0cmlidxrlcw.encode()); }
+		this.writeVaruint((int)attributes.length); for(sul.protocol.pocket100.types.Attribute yxr0cmlidxrlcw:attributes){ this.writeBytes(yxr0cmlidxrlcw.encode()); }
 		this.writeBytes(metadata.encode());
 		this.writeVaruint((int)links.length); for(long bglua3m:links){ this.writeVarlong(bglua3m); }
 		return this._buffer;
@@ -70,16 +69,16 @@ public class AddEntity extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=varlong.decode(_buffer, _index);
-		runtimeId=varlong.decode(_buffer, _index);
-		type=varuint.decode(_buffer, _index);
+		entityId=this.readVarlong();
+		runtimeId=this.readVarlong();
+		type=this.readVaruint();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
-		int bgf0dhjpynv0zxm=varuint.decode(_buffer, _index); attributes=new Attribute[bgf0dhjpynv0zxm]; for(int yxr0cmlidxrlcw=0;yxr0cmlidxrlcw<attributes.length;yxr0cmlidxrlcw++){ attributes[yxr0cmlidxrlcw]=new Attribute(); attributes[yxr0cmlidxrlcw]._index=this._index; attributes[yxr0cmlidxrlcw].decode(this._buffer); this._index=attributes[yxr0cmlidxrlcw]._index; }
+		int bgf0dhjpynv0zxm=this.readVaruint(); attributes=new sul.protocol.pocket100.types.Attribute[bgf0dhjpynv0zxm]; for(int yxr0cmlidxrlcw=0;yxr0cmlidxrlcw<attributes.length;yxr0cmlidxrlcw++){ attributes[yxr0cmlidxrlcw]=new sul.protocol.pocket100.types.Attribute(); attributes[yxr0cmlidxrlcw]._index=this._index; attributes[yxr0cmlidxrlcw].decode(this._buffer); this._index=attributes[yxr0cmlidxrlcw]._index; }
 		metadata=new Metadata(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
-		int bgxpbmtz=varuint.decode(_buffer, _index); links=new long[bgxpbmtz]; for(int bglua3m=0;bglua3m<links.length;bglua3m++){ links[bglua3m]=varlong.decode(_buffer, _index); }
+		int bgxpbmtz=this.readVaruint(); links=new long[bgxpbmtz]; for(int bglua3m=0;bglua3m<links.length;bglua3m++){ links[bglua3m]=this.readVarlong(); }
 	}
 
 	public static AddEntity fromBuffer(byte[] buffer) {

@@ -27,7 +27,7 @@ public class Batch extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(data.length) + data.length + 1;
+		return Buffer.varuintLength(data.length) + data.length + 1;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class Batch extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		int bgrhdge=varuint.decode(_buffer, _index); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
+		int bgrhdge=this.readVaruint(); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
 	}
 
 	public static Batch fromBuffer(byte[] buffer) {

@@ -27,7 +27,7 @@ public class Camera extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId);
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class Camera extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
 	}
 
 	public static Camera fromBuffer(byte[] buffer) {

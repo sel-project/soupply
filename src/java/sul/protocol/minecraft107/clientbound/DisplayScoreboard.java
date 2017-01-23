@@ -36,7 +36,7 @@ public class DisplayScoreboard extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(scoreName.getBytes(StandardCharsets.UTF_8).length) + scoreName.getBytes(StandardCharsets.UTF_8).length + 1;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(scoreName.getBytes(StandardCharsets.UTF_8).length) + scoreName.getBytes(StandardCharsets.UTF_8).length + 1;
 	}
 
 	@Override
@@ -51,9 +51,9 @@ public class DisplayScoreboard extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		position=readBigEndianByte();
-		int bgvuc2nvcmvoyw1l=varuint.decode(_buffer, _index); scoreName=new String(this.readBytes(bgvuc2nvcmvoyw1l), StandardCharsets.UTF_8);
+		int bgvuc2nvcmvoyw1l=this.readVaruint(); scoreName=new String(this.readBytes(bgvuc2nvcmvoyw1l), StandardCharsets.UTF_8);
 	}
 
 	public static DisplayScoreboard fromBuffer(byte[] buffer) {

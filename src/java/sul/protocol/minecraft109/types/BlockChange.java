@@ -26,7 +26,7 @@ public class BlockChange extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(block) + 2;
+		return Buffer.varuintLength(block) + 2;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class BlockChange extends Packet {
 		this._buffer = buffer;
 		xz=readBigEndianByte();
 		y=readBigEndianByte();
-		block=varuint.decode(_buffer, _index);
+		block=this.readVaruint();
 	}
 
 

@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class BlockEntityData extends Packet {
@@ -18,12 +17,12 @@ public class BlockEntityData extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
-	public BlockPosition position;
+	public sul.protocol.pocket100.types.BlockPosition position;
 	public byte[] nbt;
 
 	public BlockEntityData() {}
 
-	public BlockEntityData(BlockPosition position, byte[] nbt) {
+	public BlockEntityData(sul.protocol.pocket100.types.BlockPosition position, byte[] nbt) {
 		this.position = position;
 		this.nbt = nbt;
 	}
@@ -46,7 +45,7 @@ public class BlockEntityData extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		position=new BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
+		position=new sul.protocol.pocket100.types.BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
 		nbt=this.readBytes(this._buffer.length-this._index);
 	}
 

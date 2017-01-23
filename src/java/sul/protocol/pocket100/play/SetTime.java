@@ -29,7 +29,7 @@ public class SetTime extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(time) + 2;
+		return Buffer.varintLength(time) + 2;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class SetTime extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		time=varint.decode(_buffer, _index);
+		time=this.readVarint();
 		daylightCycle=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 	}
 

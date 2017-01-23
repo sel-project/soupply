@@ -10,7 +10,6 @@ package sul.protocol.externalconsole1.login;
 
 import java.nio.charset.StandardCharsets;
 
-import sul.protocol.externalconsole1.types.*;
 import sul.utils.*;
 
 /**
@@ -97,7 +96,7 @@ public class Welcome extends Packet {
 		/**
 		 * Informations about the games and their protocols supported by the server.
 		 */
-		public Game[] games;
+		public sul.protocol.externalconsole1.types.Game[] games;
 
 		/**
 		 * List of names of the nodes connected to the server, if it uses the hub-node layout,
@@ -107,7 +106,7 @@ public class Welcome extends Packet {
 
 		public Accepted() {}
 
-		public Accepted(boolean remoteCommands, String software, byte[] versions, String displayName, Game[] games, String[] connectedNodes) {
+		public Accepted(boolean remoteCommands, String software, byte[] versions, String displayName, sul.protocol.externalconsole1.types.Game[] games, String[] connectedNodes) {
 			this.remoteCommands = remoteCommands;
 			this.software = software;
 			this.versions = versions;
@@ -118,7 +117,7 @@ public class Welcome extends Packet {
 
 		@Override
 		public int length() {
-			int length=software.getBytes(StandardCharsets.UTF_8).length + versions.length + displayName.getBytes(StandardCharsets.UTF_8).length + connectedNodes.length*2 + 9; for(Game z2ftzxm:games){ length+=z2ftzxm.length(); };for(String y29ubmvjdgvktm9k:connectedNodes){ length+=y29ubmvjdgvktm9k.getBytes(StandardCharsets.UTF_8).length; } return length;
+			int length=software.getBytes(StandardCharsets.UTF_8).length + versions.length + displayName.getBytes(StandardCharsets.UTF_8).length + connectedNodes.length*2 + 9; for(sul.protocol.externalconsole1.types.Game z2ftzxm:games){ length+=z2ftzxm.length(); };for(String y29ubmvjdgvktm9k:connectedNodes){ length+=y29ubmvjdgvktm9k.getBytes(StandardCharsets.UTF_8).length; } return length;
 		}
 
 		@Override
@@ -130,7 +129,7 @@ public class Welcome extends Packet {
 			byte[] c29mdhdhcmu=software.getBytes(StandardCharsets.UTF_8); this.writeBigEndianShort((short)c29mdhdhcmu.length); this.writeBytes(c29mdhdhcmu);
 			this.writeBytes(versions);
 			byte[] zglzcgxheu5hbwu=displayName.getBytes(StandardCharsets.UTF_8); this.writeBigEndianShort((short)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
-			this.writeBigEndianShort((short)games.length); for(Game z2ftzxm:games){ this.writeBytes(z2ftzxm.encode()); }
+			this.writeBigEndianShort((short)games.length); for(sul.protocol.externalconsole1.types.Game z2ftzxm:games){ this.writeBytes(z2ftzxm.encode()); }
 			this.writeBigEndianShort((short)connectedNodes.length); for(String y29ubmvjdgvktm9k:connectedNodes){ byte[] eti5dwjtdmpkz3zr=y29ubmvjdgvktm9k.getBytes(StandardCharsets.UTF_8); this.writeBigEndianShort((short)eti5dwjtdmpkz3zr.length); this.writeBytes(eti5dwjtdmpkz3zr); }
 			return this._buffer;
 		}
@@ -142,7 +141,7 @@ public class Welcome extends Packet {
 			short bgvuc29mdhdhcmu=readBigEndianShort(); software=new String(this.readBytes(bgvuc29mdhdhcmu), StandardCharsets.UTF_8);
 			final int bhzlcnnpb25z=3; versions=new byte[bhzlcnnpb25z]; versions=this.readBytes(bhzlcnnpb25z);
 			short bgvuzglzcgxheu5h=readBigEndianShort(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
-			int bgdhbwvz=readBigEndianShort(); games=new Game[bgdhbwvz]; for(int z2ftzxm=0;z2ftzxm<games.length;z2ftzxm++){ games[z2ftzxm]=new Game(); games[z2ftzxm]._index=this._index; games[z2ftzxm].decode(this._buffer); this._index=games[z2ftzxm]._index; }
+			int bgdhbwvz=readBigEndianShort(); games=new sul.protocol.externalconsole1.types.Game[bgdhbwvz]; for(int z2ftzxm=0;z2ftzxm<games.length;z2ftzxm++){ games[z2ftzxm]=new sul.protocol.externalconsole1.types.Game(); games[z2ftzxm]._index=this._index; games[z2ftzxm].decode(this._buffer); this._index=games[z2ftzxm]._index; }
 			int bgnvbm5ly3rlze5v=readBigEndianShort(); connectedNodes=new String[bgnvbm5ly3rlze5v]; for(int y29ubmvjdgvktm9k=0;y29ubmvjdgvktm9k<connectedNodes.length;y29ubmvjdgvktm9k++){ short bgvuy29ubmvjdgvk=readBigEndianShort(); connectedNodes[y29ubmvjdgvktm9k]=new String(this.readBytes(bgvuy29ubmvjdgvk), StandardCharsets.UTF_8); }
 		}
 

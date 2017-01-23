@@ -29,7 +29,7 @@ public class EntityVelocity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + velocity.length();
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 6;
 	}
 
 	@Override
@@ -37,15 +37,15 @@ public class EntityVelocity extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
-		this.writeBigEndianShort(velocity.x);this.writeBigEndianShort(velocity.y);this.writeBigEndianShort(velocity.z);
+		this.writeBigEndianShort(velocity.x); this.writeBigEndianShort(velocity.y); this.writeBigEndianShort(velocity.z);
 		return this._buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
 		velocity.x=readBigEndianShort(); velocity.y=readBigEndianShort(); velocity.z=readBigEndianShort();
 	}
 

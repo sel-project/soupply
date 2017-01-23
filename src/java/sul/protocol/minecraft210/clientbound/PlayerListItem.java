@@ -10,7 +10,6 @@ package sul.protocol.minecraft210.clientbound;
 
 import java.util.UUID;
 
-import sul.protocol.minecraft210.types.*;
 import sul.utils.*;
 
 public class PlayerListItem extends Packet {
@@ -30,7 +29,7 @@ public class PlayerListItem extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(action);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(action);
 	}
 
 	@Override
@@ -48,8 +47,8 @@ public class PlayerListItem extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		action=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		action=this.readVaruint();
 	}
 
 	private byte[] remainingBuffer() {
@@ -66,17 +65,17 @@ public class PlayerListItem extends Packet {
 
 		public final static int ACTION = (int)0;
 
-		public ListAddPlayer[] players;
+		public sul.protocol.minecraft210.types.ListAddPlayer[] players;
 
 		public AddPlayer() {}
 
-		public AddPlayer(ListAddPlayer[] players) {
+		public AddPlayer(sul.protocol.minecraft210.types.ListAddPlayer[] players) {
 			this.players = players;
 		}
 
 		@Override
 		public int length() {
-			int length=Var.Uint.length(players.length) + 0; for(ListAddPlayer cgxhewvycw:players){ length+=cgxhewvycw.length(); } return length;
+			int length=Buffer.varuintLength(players.length) + 0; for(sul.protocol.minecraft210.types.ListAddPlayer cgxhewvycw:players){ length+=cgxhewvycw.length(); } return length;
 		}
 
 		@Override
@@ -84,14 +83,14 @@ public class PlayerListItem extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			this.writeVaruint((int)players.length); for(ListAddPlayer cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
+			this.writeVaruint((int)players.length); for(sul.protocol.minecraft210.types.ListAddPlayer cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
 			return this._buffer;
 		}
 
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bhbsyxllcnm=varuint.decode(_buffer, _index); players=new ListAddPlayer[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ players[cgxhewvycw]=new ListAddPlayer(); players[cgxhewvycw]._index=this._index; players[cgxhewvycw].decode(this._buffer); this._index=players[cgxhewvycw]._index; }
+			int bhbsyxllcnm=this.readVaruint(); players=new sul.protocol.minecraft210.types.ListAddPlayer[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ players[cgxhewvycw]=new sul.protocol.minecraft210.types.ListAddPlayer(); players[cgxhewvycw]._index=this._index; players[cgxhewvycw].decode(this._buffer); this._index=players[cgxhewvycw]._index; }
 		}
 
 		public void decode() {
@@ -104,17 +103,17 @@ public class PlayerListItem extends Packet {
 
 		public final static int ACTION = (int)1;
 
-		public ListUpdateGamemode[] players;
+		public sul.protocol.minecraft210.types.ListUpdateGamemode[] players;
 
 		public UpdateGamemode() {}
 
-		public UpdateGamemode(ListUpdateGamemode[] players) {
+		public UpdateGamemode(sul.protocol.minecraft210.types.ListUpdateGamemode[] players) {
 			this.players = players;
 		}
 
 		@Override
 		public int length() {
-			int length=Var.Uint.length(players.length) + 0; for(ListUpdateGamemode cgxhewvycw:players){ length+=cgxhewvycw.length(); } return length;
+			int length=Buffer.varuintLength(players.length) + 0; for(sul.protocol.minecraft210.types.ListUpdateGamemode cgxhewvycw:players){ length+=cgxhewvycw.length(); } return length;
 		}
 
 		@Override
@@ -122,14 +121,14 @@ public class PlayerListItem extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			this.writeVaruint((int)players.length); for(ListUpdateGamemode cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
+			this.writeVaruint((int)players.length); for(sul.protocol.minecraft210.types.ListUpdateGamemode cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
 			return this._buffer;
 		}
 
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bhbsyxllcnm=varuint.decode(_buffer, _index); players=new ListUpdateGamemode[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ players[cgxhewvycw]=new ListUpdateGamemode(); players[cgxhewvycw]._index=this._index; players[cgxhewvycw].decode(this._buffer); this._index=players[cgxhewvycw]._index; }
+			int bhbsyxllcnm=this.readVaruint(); players=new sul.protocol.minecraft210.types.ListUpdateGamemode[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ players[cgxhewvycw]=new sul.protocol.minecraft210.types.ListUpdateGamemode(); players[cgxhewvycw]._index=this._index; players[cgxhewvycw].decode(this._buffer); this._index=players[cgxhewvycw]._index; }
 		}
 
 		public void decode() {
@@ -142,17 +141,17 @@ public class PlayerListItem extends Packet {
 
 		public final static int ACTION = (int)2;
 
-		public ListUpdateLatency[] players;
+		public sul.protocol.minecraft210.types.ListUpdateLatency[] players;
 
 		public UpdateLatency() {}
 
-		public UpdateLatency(ListUpdateLatency[] players) {
+		public UpdateLatency(sul.protocol.minecraft210.types.ListUpdateLatency[] players) {
 			this.players = players;
 		}
 
 		@Override
 		public int length() {
-			int length=Var.Uint.length(players.length) + 0; for(ListUpdateLatency cgxhewvycw:players){ length+=cgxhewvycw.length(); } return length;
+			int length=Buffer.varuintLength(players.length) + 0; for(sul.protocol.minecraft210.types.ListUpdateLatency cgxhewvycw:players){ length+=cgxhewvycw.length(); } return length;
 		}
 
 		@Override
@@ -160,14 +159,14 @@ public class PlayerListItem extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			this.writeVaruint((int)players.length); for(ListUpdateLatency cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
+			this.writeVaruint((int)players.length); for(sul.protocol.minecraft210.types.ListUpdateLatency cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
 			return this._buffer;
 		}
 
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bhbsyxllcnm=varuint.decode(_buffer, _index); players=new ListUpdateLatency[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ players[cgxhewvycw]=new ListUpdateLatency(); players[cgxhewvycw]._index=this._index; players[cgxhewvycw].decode(this._buffer); this._index=players[cgxhewvycw]._index; }
+			int bhbsyxllcnm=this.readVaruint(); players=new sul.protocol.minecraft210.types.ListUpdateLatency[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ players[cgxhewvycw]=new sul.protocol.minecraft210.types.ListUpdateLatency(); players[cgxhewvycw]._index=this._index; players[cgxhewvycw].decode(this._buffer); this._index=players[cgxhewvycw]._index; }
 		}
 
 		public void decode() {
@@ -180,17 +179,17 @@ public class PlayerListItem extends Packet {
 
 		public final static int ACTION = (int)3;
 
-		public ListUpdateDisplayName[] players;
+		public sul.protocol.minecraft210.types.ListUpdateDisplayName[] players;
 
 		public UpdateDisplayName() {}
 
-		public UpdateDisplayName(ListUpdateDisplayName[] players) {
+		public UpdateDisplayName(sul.protocol.minecraft210.types.ListUpdateDisplayName[] players) {
 			this.players = players;
 		}
 
 		@Override
 		public int length() {
-			int length=Var.Uint.length(players.length) + 0; for(ListUpdateDisplayName cgxhewvycw:players){ length+=cgxhewvycw.length(); } return length;
+			int length=Buffer.varuintLength(players.length) + 0; for(sul.protocol.minecraft210.types.ListUpdateDisplayName cgxhewvycw:players){ length+=cgxhewvycw.length(); } return length;
 		}
 
 		@Override
@@ -198,14 +197,14 @@ public class PlayerListItem extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			this.writeVaruint((int)players.length); for(ListUpdateDisplayName cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
+			this.writeVaruint((int)players.length); for(sul.protocol.minecraft210.types.ListUpdateDisplayName cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
 			return this._buffer;
 		}
 
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bhbsyxllcnm=varuint.decode(_buffer, _index); players=new ListUpdateDisplayName[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ players[cgxhewvycw]=new ListUpdateDisplayName(); players[cgxhewvycw]._index=this._index; players[cgxhewvycw].decode(this._buffer); this._index=players[cgxhewvycw]._index; }
+			int bhbsyxllcnm=this.readVaruint(); players=new sul.protocol.minecraft210.types.ListUpdateDisplayName[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ players[cgxhewvycw]=new sul.protocol.minecraft210.types.ListUpdateDisplayName(); players[cgxhewvycw]._index=this._index; players[cgxhewvycw].decode(this._buffer); this._index=players[cgxhewvycw]._index; }
 		}
 
 		public void decode() {
@@ -228,7 +227,7 @@ public class PlayerListItem extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(players.length) + players.length*16;
+			return Buffer.varuintLength(players.length) + players.length*16;
 		}
 
 		@Override
@@ -243,7 +242,7 @@ public class PlayerListItem extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bhbsyxllcnm=varuint.decode(_buffer, _index); players=new UUID[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ long bxbsyxllcnnby2d4=readBigEndianLong();long bhbsyxllcnnby2d4=readBigEndianLong();return new UUID(bxbsyxllcnnby2d4,bhbsyxllcnnby2d4); }
+			int bhbsyxllcnm=this.readVaruint(); players=new UUID[bhbsyxllcnm]; for(int cgxhewvycw=0;cgxhewvycw<players.length;cgxhewvycw++){ long bxbsyxllcnnby2d4=readBigEndianLong(); long bhbsyxllcnnby2d4=readBigEndianLong(); players[cgxhewvycw]=new UUID(bxbsyxllcnnby2d4,bhbsyxllcnnby2d4); }
 		}
 
 		public void decode() {

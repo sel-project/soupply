@@ -33,7 +33,7 @@ public class SetDifficulty extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(difficulty) + 1;
+		return Buffer.varuintLength(difficulty) + 1;
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class SetDifficulty extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		difficulty=varuint.decode(_buffer, _index);
+		difficulty=this.readVaruint();
 	}
 
 	public static SetDifficulty fromBuffer(byte[] buffer) {

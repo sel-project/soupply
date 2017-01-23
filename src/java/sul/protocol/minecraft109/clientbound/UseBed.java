@@ -29,7 +29,7 @@ public class UseBed extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + 8;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 8;
 	}
 
 	@Override
@@ -44,8 +44,8 @@ public class UseBed extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
 		position=readBigEndianLong();
 	}
 

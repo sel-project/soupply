@@ -34,7 +34,7 @@ public class UpdateLanguage extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + Var.Uint.length(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + 1;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + 1;
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class UpdateLanguage extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		hubId=varuint.decode(_buffer, _index);
-		int bgvubgfuz3vhz2u=varuint.decode(_buffer, _index); language=new String(this.readBytes(bgvubgfuz3vhz2u), StandardCharsets.UTF_8);
+		hubId=this.readVaruint();
+		int bgvubgfuz3vhz2u=this.readVaruint(); language=new String(this.readBytes(bgvubgfuz3vhz2u), StandardCharsets.UTF_8);
 	}
 
 	public static UpdateLanguage fromBuffer(byte[] buffer) {

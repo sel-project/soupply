@@ -47,7 +47,7 @@ public class AdventureSettings extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(flags) + Var.Uint.length(permissions) + 1;
+		return Buffer.varuintLength(flags) + Buffer.varuintLength(permissions) + 1;
 	}
 
 	@Override
@@ -63,8 +63,8 @@ public class AdventureSettings extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		flags=varuint.decode(_buffer, _index);
-		permissions=varuint.decode(_buffer, _index);
+		flags=this.readVaruint();
+		permissions=this.readVaruint();
 	}
 
 	public static AdventureSettings fromBuffer(byte[] buffer) {

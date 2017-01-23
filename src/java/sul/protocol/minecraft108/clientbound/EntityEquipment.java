@@ -8,7 +8,6 @@
  */
 package sul.protocol.minecraft108.clientbound;
 
-import sul.protocol.minecraft108.types.*;
 import sul.utils.*;
 
 public class EntityEquipment extends Packet {
@@ -20,11 +19,11 @@ public class EntityEquipment extends Packet {
 
 	public int entityId;
 	public int slot;
-	public Slot item;
+	public sul.protocol.minecraft108.types.Slot item;
 
 	public EntityEquipment() {}
 
-	public EntityEquipment(int entityId, int slot, Slot item) {
+	public EntityEquipment(int entityId, int slot, sul.protocol.minecraft108.types.Slot item) {
 		this.entityId = entityId;
 		this.slot = slot;
 		this.item = item;
@@ -32,7 +31,7 @@ public class EntityEquipment extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + Var.Uint.length(slot) + item.length();
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + Buffer.varuintLength(slot) + item.length();
 	}
 
 	@Override
@@ -48,10 +47,10 @@ public class EntityEquipment extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
-		slot=varuint.decode(_buffer, _index);
-		item=new Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
+		this.readVaruint();
+		entityId=this.readVaruint();
+		slot=this.readVaruint();
+		item=new sul.protocol.minecraft108.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
 	}
 
 	public static EntityEquipment fromBuffer(byte[] buffer) {

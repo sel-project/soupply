@@ -31,7 +31,7 @@ public class UpdateSign extends Packet {
 
 	@Override
 	public int length() {
-		int length=Var.Uint.length() + 8; for(String bgluzxm:lines){ length+=Var.Uint.length(bgluzxm.getBytes(StandardCharsets.UTF_8).length)+bgluzxm.getBytes(StandardCharsets.UTF_8).length; } return length;
+		int length=Buffer.varuintLength(ID) + 8; for(String bgluzxm:lines){ length+=Buffer.varuintLength(bgluzxm.getBytes(StandardCharsets.UTF_8).length)+bgluzxm.getBytes(StandardCharsets.UTF_8).length; } return length;
 	}
 
 	@Override
@@ -46,9 +46,9 @@ public class UpdateSign extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		position=readBigEndianLong();
-		final int bgxpbmvz=4; lines=new String[bgxpbmvz]; for(int bgluzxm=0;bgluzxm<lines.length;bgluzxm++){ int bgvubgluzxnbymds=varuint.decode(_buffer, _index); lines[bgluzxm]=new String(this.readBytes(bgvubgluzxnbymds), StandardCharsets.UTF_8); }
+		final int bgxpbmvz=4; lines=new String[bgxpbmvz]; for(int bgluzxm=0;bgluzxm<lines.length;bgluzxm++){ int bgvubgluzxnbymds=this.readVaruint(); lines[bgluzxm]=new String(this.readBytes(bgvubgluzxnbymds), StandardCharsets.UTF_8); }
 	}
 
 	public static UpdateSign fromBuffer(byte[] buffer) {

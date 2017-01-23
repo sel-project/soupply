@@ -8,7 +8,6 @@
  */
 package sul.protocol.minecraft210.clientbound;
 
-import sul.protocol.minecraft210.types.*;
 import sul.utils.*;
 
 public class SetSlot extends Packet {
@@ -20,11 +19,11 @@ public class SetSlot extends Packet {
 
 	public byte window;
 	public short slot;
-	public Slot item;
+	public sul.protocol.minecraft210.types.Slot item;
 
 	public SetSlot() {}
 
-	public SetSlot(byte window, short slot, Slot item) {
+	public SetSlot(byte window, short slot, sul.protocol.minecraft210.types.Slot item) {
 		this.window = window;
 		this.slot = slot;
 		this.item = item;
@@ -32,7 +31,7 @@ public class SetSlot extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + item.length() + 3;
+		return Buffer.varuintLength(ID) + item.length() + 3;
 	}
 
 	@Override
@@ -48,10 +47,10 @@ public class SetSlot extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		window=readBigEndianByte();
 		slot=readBigEndianShort();
-		item=new Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
+		item=new sul.protocol.minecraft210.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
 	}
 
 	public static SetSlot fromBuffer(byte[] buffer) {

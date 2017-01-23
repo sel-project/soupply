@@ -36,7 +36,7 @@ public class ChangeDimension extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(dimension) + position.length() + 2;
+		return Buffer.varintLength(dimension) + 14;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class ChangeDimension extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarint(dimension);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this._buffer[this._index++]=(byte)(unknown2?1:0);
 		return this._buffer;
 	}
@@ -53,7 +53,7 @@ public class ChangeDimension extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		dimension=varint.decode(_buffer, _index);
+		dimension=this.readVarint();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		unknown2=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 	}

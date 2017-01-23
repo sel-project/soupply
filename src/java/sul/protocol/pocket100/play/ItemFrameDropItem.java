@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class ItemFrameDropItem extends Packet {
@@ -18,12 +17,12 @@ public class ItemFrameDropItem extends Packet {
 	public final static boolean CLIENTBOUND = true;
 	public final static boolean SERVERBOUND = false;
 
-	public BlockPosition position;
-	public Slot item;
+	public sul.protocol.pocket100.types.BlockPosition position;
+	public sul.protocol.pocket100.types.Slot item;
 
 	public ItemFrameDropItem() {}
 
-	public ItemFrameDropItem(BlockPosition position, Slot item) {
+	public ItemFrameDropItem(sul.protocol.pocket100.types.BlockPosition position, sul.protocol.pocket100.types.Slot item) {
 		this.position = position;
 		this.item = item;
 	}
@@ -46,8 +45,8 @@ public class ItemFrameDropItem extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		position=new BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
-		item=new Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
+		position=new sul.protocol.pocket100.types.BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
+		item=new sul.protocol.pocket100.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
 	}
 
 	public static ItemFrameDropItem fromBuffer(byte[] buffer) {

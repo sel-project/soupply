@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class ContainerSetSlot extends Packet {
@@ -21,12 +20,12 @@ public class ContainerSetSlot extends Packet {
 	public byte window;
 	public int slot;
 	public int hotbarSlot;
-	public Slot item;
+	public sul.protocol.pocket100.types.Slot item;
 	public byte unknown4;
 
 	public ContainerSetSlot() {}
 
-	public ContainerSetSlot(byte window, int slot, int hotbarSlot, Slot item, byte unknown4) {
+	public ContainerSetSlot(byte window, int slot, int hotbarSlot, sul.protocol.pocket100.types.Slot item, byte unknown4) {
 		this.window = window;
 		this.slot = slot;
 		this.hotbarSlot = hotbarSlot;
@@ -36,7 +35,7 @@ public class ContainerSetSlot extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(slot) + Var.Int.length(hotbarSlot) + item.length() + 3;
+		return Buffer.varintLength(slot) + Buffer.varintLength(hotbarSlot) + item.length() + 3;
 	}
 
 	@Override
@@ -56,9 +55,9 @@ public class ContainerSetSlot extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		window=readBigEndianByte();
-		slot=varint.decode(_buffer, _index);
-		hotbarSlot=varint.decode(_buffer, _index);
-		item=new Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
+		slot=this.readVarint();
+		hotbarSlot=this.readVarint();
+		item=new sul.protocol.pocket100.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
 		unknown4=readBigEndianByte();
 	}
 

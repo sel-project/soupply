@@ -36,14 +36,14 @@ public class Icon extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + 1;
+		return 3;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(directionAndType);
-		this.writeBigEndianByte(position.x);this.writeBigEndianByte(position.z);
+		this.writeBigEndianByte(position.x); this.writeBigEndianByte(position.z);
 		return this._buffer;
 	}
 

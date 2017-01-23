@@ -57,7 +57,7 @@ public class ClientSettings extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + 5;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + 5;
 	}
 
 	@Override
@@ -76,8 +76,8 @@ public class ClientSettings extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvubgfuz3vhz2u=varuint.decode(_buffer, _index); language=new String(this.readBytes(bgvubgfuz3vhz2u), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvubgfuz3vhz2u=this.readVaruint(); language=new String(this.readBytes(bgvubgfuz3vhz2u), StandardCharsets.UTF_8);
 		viewDistance=readBigEndianByte();
 		chatMode=readBigEndianByte();
 		chatColors=this._index<this._buffer.length&&this._buffer[this._index++]!=0;

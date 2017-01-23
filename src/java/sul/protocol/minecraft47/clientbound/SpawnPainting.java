@@ -41,7 +41,7 @@ public class SpawnPainting extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + Var.Uint.length(title.getBytes(StandardCharsets.UTF_8).length) + title.getBytes(StandardCharsets.UTF_8).length + 9;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + Buffer.varuintLength(title.getBytes(StandardCharsets.UTF_8).length) + title.getBytes(StandardCharsets.UTF_8).length + 9;
 	}
 
 	@Override
@@ -58,9 +58,9 @@ public class SpawnPainting extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
-		int bgvudgl0bgu=varuint.decode(_buffer, _index); title=new String(this.readBytes(bgvudgl0bgu), StandardCharsets.UTF_8);
+		this.readVaruint();
+		entityId=this.readVaruint();
+		int bgvudgl0bgu=this.readVaruint(); title=new String(this.readBytes(bgvudgl0bgu), StandardCharsets.UTF_8);
 		position=readBigEndianLong();
 		direction=readBigEndianByte();
 	}

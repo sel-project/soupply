@@ -38,7 +38,7 @@ public class LevelSoundEvent extends Packet {
 
 	@Override
 	public int length() {
-		return position.length() + Var.Uint.length(volume) + Var.Int.length(pitch) + 3;
+		return Buffer.varuintLength(volume) + Buffer.varintLength(pitch) + 15;
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class LevelSoundEvent extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(sound);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeVaruint(volume);
 		this.writeVarint(pitch);
 		this._buffer[this._index++]=(byte)(unknown4?1:0);
@@ -59,8 +59,8 @@ public class LevelSoundEvent extends Packet {
 		readBigEndianByte();
 		sound=readBigEndianByte();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
-		volume=varuint.decode(_buffer, _index);
-		pitch=varint.decode(_buffer, _index);
+		volume=this.readVaruint();
+		pitch=this.readVarint();
 		unknown4=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 	}
 

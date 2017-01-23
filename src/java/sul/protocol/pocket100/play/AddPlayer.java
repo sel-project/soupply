@@ -11,7 +11,6 @@ package sul.protocol.pocket100.play;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class AddPlayer extends Packet {
@@ -30,12 +29,12 @@ public class AddPlayer extends Packet {
 	public float pitch;
 	public float headYaw;
 	public float yaw;
-	public Slot heldItem;
+	public sul.protocol.pocket100.types.Slot heldItem;
 	public Metadata metadata;
 
 	public AddPlayer() {}
 
-	public AddPlayer(UUID uuid, String username, long entityId, long runtimeId, Tuples.FloatXYZ position, Tuples.FloatXYZ motion, float pitch, float headYaw, float yaw, Slot heldItem, Metadata metadata) {
+	public AddPlayer(UUID uuid, String username, long entityId, long runtimeId, Tuples.FloatXYZ position, Tuples.FloatXYZ motion, float pitch, float headYaw, float yaw, sul.protocol.pocket100.types.Slot heldItem, Metadata metadata) {
 		this.uuid = uuid;
 		this.username = username;
 		this.entityId = entityId;
@@ -51,7 +50,7 @@ public class AddPlayer extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length + Var.Long.length(entityId) + Var.Long.length(runtimeId) + position.length() + motion.length() + heldItem.length() + metadata.length() + 29;
+		return Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length + Buffer.varlongLength(entityId) + Buffer.varlongLength(runtimeId) + heldItem.length() + metadata.length() + 53;
 	}
 
 	@Override
@@ -62,8 +61,8 @@ public class AddPlayer extends Packet {
 		byte[] dxnlcm5hbwu=username.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dxnlcm5hbwu.length); this.writeBytes(dxnlcm5hbwu);
 		this.writeVarlong(entityId);
 		this.writeVarlong(runtimeId);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
-		this.writeLittleEndianFloat(motion.x);this.writeLittleEndianFloat(motion.y);this.writeLittleEndianFloat(motion.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(motion.x); this.writeLittleEndianFloat(motion.y); this.writeLittleEndianFloat(motion.z);
 		this.writeLittleEndianFloat(pitch);
 		this.writeLittleEndianFloat(headYaw);
 		this.writeLittleEndianFloat(yaw);
@@ -76,16 +75,16 @@ public class AddPlayer extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		long bxv1awq=readBigEndianLong();long bhv1awq=readBigEndianLong();return new UUID(bxv1awq,bhv1awq);
-		int bgvudxnlcm5hbwu=varuint.decode(_buffer, _index); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
-		entityId=varlong.decode(_buffer, _index);
-		runtimeId=varlong.decode(_buffer, _index);
+		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
+		int bgvudxnlcm5hbwu=this.readVaruint(); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
+		entityId=this.readVarlong();
+		runtimeId=this.readVarlong();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		headYaw=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
-		heldItem=new Slot(); heldItem._index=this._index; heldItem.decode(this._buffer); this._index=heldItem._index;
+		heldItem=new sul.protocol.pocket100.types.Slot(); heldItem._index=this._index; heldItem.decode(this._buffer); this._index=heldItem._index;
 		metadata=new Metadata(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
 	}
 

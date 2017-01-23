@@ -43,7 +43,7 @@ public class CommandStep extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(command.getBytes(StandardCharsets.UTF_8).length) + command.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(overload.getBytes(StandardCharsets.UTF_8).length) + overload.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(?) + Var.Uint.length(?) + Var.Ulong.length(?) + Var.Uint.length(input.getBytes(StandardCharsets.UTF_8).length) + input.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(output.getBytes(StandardCharsets.UTF_8).length) + output.getBytes(StandardCharsets.UTF_8).length + 2;
+		return Buffer.varuintLength(command.getBytes(StandardCharsets.UTF_8).length) + command.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(overload.getBytes(StandardCharsets.UTF_8).length) + overload.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(unknown2) + Buffer.varuintLength(unknown3) + Buffer.varulongLength(unknown5) + Buffer.varuintLength(input.getBytes(StandardCharsets.UTF_8).length) + input.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(output.getBytes(StandardCharsets.UTF_8).length) + output.getBytes(StandardCharsets.UTF_8).length + 2;
 	}
 
 	@Override
@@ -65,14 +65,14 @@ public class CommandStep extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		int bgvuy29tbwfuza=varuint.decode(_buffer, _index); command=new String(this.readBytes(bgvuy29tbwfuza), StandardCharsets.UTF_8);
-		int bgvub3zlcmxvywq=varuint.decode(_buffer, _index); overload=new String(this.readBytes(bgvub3zlcmxvywq), StandardCharsets.UTF_8);
-		unknown2=varuint.decode(_buffer, _index);
-		unknown3=varuint.decode(_buffer, _index);
+		int bgvuy29tbwfuza=this.readVaruint(); command=new String(this.readBytes(bgvuy29tbwfuza), StandardCharsets.UTF_8);
+		int bgvub3zlcmxvywq=this.readVaruint(); overload=new String(this.readBytes(bgvub3zlcmxvywq), StandardCharsets.UTF_8);
+		unknown2=this.readVaruint();
+		unknown3=this.readVaruint();
 		isOutput=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		unknown5=varulong.decode(_buffer, _index);
-		int bgvuaw5wdxq=varuint.decode(_buffer, _index); input=new String(this.readBytes(bgvuaw5wdxq), StandardCharsets.UTF_8);
-		int bgvub3v0chv0=varuint.decode(_buffer, _index); output=new String(this.readBytes(bgvub3v0chv0), StandardCharsets.UTF_8);
+		unknown5=this.readVarulong();
+		int bgvuaw5wdxq=this.readVaruint(); input=new String(this.readBytes(bgvuaw5wdxq), StandardCharsets.UTF_8);
+		int bgvub3v0chv0=this.readVaruint(); output=new String(this.readBytes(bgvub3v0chv0), StandardCharsets.UTF_8);
 	}
 
 	public static CommandStep fromBuffer(byte[] buffer) {

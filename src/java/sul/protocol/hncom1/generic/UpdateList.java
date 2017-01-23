@@ -95,7 +95,7 @@ public class UpdateList extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(hubId);
+			return Buffer.varuintLength(hubId);
 		}
 
 		@Override
@@ -110,7 +110,7 @@ public class UpdateList extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			hubId=varuint.decode(_buffer, _index);
+			hubId=this.readVaruint();
 		}
 
 		public void decode() {
@@ -133,7 +133,7 @@ public class UpdateList extends Packet {
 
 		@Override
 		public int length() {
-			return Var.Uint.length(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length;
+			return Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length;
 		}
 
 		@Override
@@ -148,7 +148,7 @@ public class UpdateList extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			int bgvudxnlcm5hbwu=varuint.decode(_buffer, _index); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
+			int bgvudxnlcm5hbwu=this.readVaruint(); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
 		}
 
 		public void decode() {
@@ -194,7 +194,7 @@ public class UpdateList extends Packet {
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
 			game=readBigEndianByte();
-			long bxv1awq=readBigEndianLong();long bhv1awq=readBigEndianLong();return new UUID(bxv1awq,bhv1awq);
+			long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
 		}
 
 		public void decode() {

@@ -37,7 +37,7 @@ public class PlayerBlockPlacement extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(face) + Var.Uint.length(hand) + cursorPosition.length() + 8;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(face) + Buffer.varuintLength(hand) + 20;
 	}
 
 	@Override
@@ -47,17 +47,17 @@ public class PlayerBlockPlacement extends Packet {
 		this.writeBigEndianLong(position);
 		this.writeVaruint(face);
 		this.writeVaruint(hand);
-		this.writeBigEndianFloat(cursorPosition.x);this.writeBigEndianFloat(cursorPosition.y);this.writeBigEndianFloat(cursorPosition.z);
+		this.writeBigEndianFloat(cursorPosition.x); this.writeBigEndianFloat(cursorPosition.y); this.writeBigEndianFloat(cursorPosition.z);
 		return this._buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		position=readBigEndianLong();
-		face=varuint.decode(_buffer, _index);
-		hand=varuint.decode(_buffer, _index);
+		face=this.readVaruint();
+		hand=this.readVaruint();
 		cursorPosition.x=readBigEndianFloat(); cursorPosition.y=readBigEndianFloat(); cursorPosition.z=readBigEndianFloat();
 	}
 

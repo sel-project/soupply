@@ -8,7 +8,6 @@
  */
 package sul.protocol.minecraft210.serverbound;
 
-import sul.protocol.minecraft210.types.*;
 import sul.utils.*;
 
 public class ClickWindow extends Packet {
@@ -23,11 +22,11 @@ public class ClickWindow extends Packet {
 	public byte button;
 	public short action;
 	public int mode;
-	public Slot clickedItem;
+	public sul.protocol.minecraft210.types.Slot clickedItem;
 
 	public ClickWindow() {}
 
-	public ClickWindow(byte window, short slot, byte button, short action, int mode, Slot clickedItem) {
+	public ClickWindow(byte window, short slot, byte button, short action, int mode, sul.protocol.minecraft210.types.Slot clickedItem) {
 		this.window = window;
 		this.slot = slot;
 		this.button = button;
@@ -38,7 +37,7 @@ public class ClickWindow extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(mode) + clickedItem.length() + 6;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(mode) + clickedItem.length() + 6;
 	}
 
 	@Override
@@ -57,13 +56,13 @@ public class ClickWindow extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		window=readBigEndianByte();
 		slot=readBigEndianShort();
 		button=readBigEndianByte();
 		action=readBigEndianShort();
-		mode=varuint.decode(_buffer, _index);
-		clickedItem=new Slot(); clickedItem._index=this._index; clickedItem.decode(this._buffer); this._index=clickedItem._index;
+		mode=this.readVaruint();
+		clickedItem=new sul.protocol.minecraft210.types.Slot(); clickedItem._index=this._index; clickedItem.decode(this._buffer); this._index=clickedItem._index;
 	}
 
 	public static ClickWindow fromBuffer(byte[] buffer) {

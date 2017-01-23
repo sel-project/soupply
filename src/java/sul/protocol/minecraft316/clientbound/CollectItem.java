@@ -31,7 +31,7 @@ public class CollectItem extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(collected) + Var.Uint.length(collector) + Var.Uint.length(count);
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(collected) + Buffer.varuintLength(collector) + Buffer.varuintLength(count);
 	}
 
 	@Override
@@ -47,10 +47,10 @@ public class CollectItem extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		collected=varuint.decode(_buffer, _index);
-		collector=varuint.decode(_buffer, _index);
-		count=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		collected=this.readVaruint();
+		collector=this.readVaruint();
+		count=this.readVaruint();
 	}
 
 	public static CollectItem fromBuffer(byte[] buffer) {

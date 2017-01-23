@@ -37,7 +37,7 @@ public class Plugin extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(version.getBytes(StandardCharsets.UTF_8).length) + version.getBytes(StandardCharsets.UTF_8).length;
+		return Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(version.getBytes(StandardCharsets.UTF_8).length) + version.getBytes(StandardCharsets.UTF_8).length;
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public class Plugin extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		int bgvubmftzq=varuint.decode(_buffer, _index); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
-		int bgvudmvyc2lvbg=varuint.decode(_buffer, _index); version=new String(this.readBytes(bgvudmvyc2lvbg), StandardCharsets.UTF_8);
+		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
+		int bgvudmvyc2lvbg=this.readVaruint(); version=new String(this.readBytes(bgvudmvyc2lvbg), StandardCharsets.UTF_8);
 	}
 
 

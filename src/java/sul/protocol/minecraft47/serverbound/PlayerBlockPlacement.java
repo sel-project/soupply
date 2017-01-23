@@ -8,7 +8,6 @@
  */
 package sul.protocol.minecraft47.serverbound;
 
-import sul.protocol.minecraft47.types.*;
 import sul.utils.*;
 
 public class PlayerBlockPlacement extends Packet {
@@ -20,12 +19,12 @@ public class PlayerBlockPlacement extends Packet {
 
 	public long position;
 	public byte face;
-	public Slot heldItem;
+	public sul.protocol.minecraft47.types.Slot heldItem;
 	public Tuples.ByteXYZ cursorPosition;
 
 	public PlayerBlockPlacement() {}
 
-	public PlayerBlockPlacement(long position, byte face, Slot heldItem, Tuples.ByteXYZ cursorPosition) {
+	public PlayerBlockPlacement(long position, byte face, sul.protocol.minecraft47.types.Slot heldItem, Tuples.ByteXYZ cursorPosition) {
 		this.position = position;
 		this.face = face;
 		this.heldItem = heldItem;
@@ -34,7 +33,7 @@ public class PlayerBlockPlacement extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + heldItem.length() + cursorPosition.length() + 9;
+		return Buffer.varuintLength(ID) + heldItem.length() + 12;
 	}
 
 	@Override
@@ -44,17 +43,17 @@ public class PlayerBlockPlacement extends Packet {
 		this.writeBigEndianLong(position);
 		this.writeBigEndianByte(face);
 		this.writeBytes(heldItem.encode());
-		this.writeBigEndianByte(cursorPosition.x);this.writeBigEndianByte(cursorPosition.y);this.writeBigEndianByte(cursorPosition.z);
+		this.writeBigEndianByte(cursorPosition.x); this.writeBigEndianByte(cursorPosition.y); this.writeBigEndianByte(cursorPosition.z);
 		return this._buffer;
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
+		this.readVaruint();
 		position=readBigEndianLong();
 		face=readBigEndianByte();
-		heldItem=new Slot(); heldItem._index=this._index; heldItem.decode(this._buffer); this._index=heldItem._index;
+		heldItem=new sul.protocol.minecraft47.types.Slot(); heldItem._index=this._index; heldItem.decode(this._buffer); this._index=heldItem._index;
 		cursorPosition.x=readBigEndianByte(); cursorPosition.y=readBigEndianByte(); cursorPosition.z=readBigEndianByte();
 	}
 

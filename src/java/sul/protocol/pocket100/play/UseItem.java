@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class UseItem extends Packet {
@@ -18,17 +17,17 @@ public class UseItem extends Packet {
 	public final static boolean CLIENTBOUND = false;
 	public final static boolean SERVERBOUND = true;
 
-	public BlockPosition blockPosition;
+	public sul.protocol.pocket100.types.BlockPosition blockPosition;
 	public int hotbarSlot;
 	public int face;
 	public Tuples.FloatXYZ facePosition;
 	public Tuples.FloatXYZ position;
 	public int slot;
-	public Slot item;
+	public sul.protocol.pocket100.types.Slot item;
 
 	public UseItem() {}
 
-	public UseItem(BlockPosition blockPosition, int hotbarSlot, int face, Tuples.FloatXYZ facePosition, Tuples.FloatXYZ position, int slot, Slot item) {
+	public UseItem(sul.protocol.pocket100.types.BlockPosition blockPosition, int hotbarSlot, int face, Tuples.FloatXYZ facePosition, Tuples.FloatXYZ position, int slot, sul.protocol.pocket100.types.Slot item) {
 		this.blockPosition = blockPosition;
 		this.hotbarSlot = hotbarSlot;
 		this.face = face;
@@ -40,7 +39,7 @@ public class UseItem extends Packet {
 
 	@Override
 	public int length() {
-		return blockPosition.length() + Var.Uint.length(hotbarSlot) + Var.Int.length(face) + facePosition.length() + position.length() + Var.Int.length(slot) + item.length() + 1;
+		return blockPosition.length() + Buffer.varuintLength(hotbarSlot) + Buffer.varintLength(face) + Buffer.varintLength(slot) + item.length() + 25;
 	}
 
 	@Override
@@ -50,8 +49,8 @@ public class UseItem extends Packet {
 		this.writeBytes(blockPosition.encode());
 		this.writeVaruint(hotbarSlot);
 		this.writeVarint(face);
-		this.writeLittleEndianFloat(facePosition.x);this.writeLittleEndianFloat(facePosition.y);this.writeLittleEndianFloat(facePosition.z);
-		this.writeLittleEndianFloat(position.x);this.writeLittleEndianFloat(position.y);this.writeLittleEndianFloat(position.z);
+		this.writeLittleEndianFloat(facePosition.x); this.writeLittleEndianFloat(facePosition.y); this.writeLittleEndianFloat(facePosition.z);
+		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeVarint(slot);
 		this.writeBytes(item.encode());
 		return this._buffer;
@@ -61,13 +60,13 @@ public class UseItem extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		blockPosition=new BlockPosition(); blockPosition._index=this._index; blockPosition.decode(this._buffer); this._index=blockPosition._index;
-		hotbarSlot=varuint.decode(_buffer, _index);
-		face=varint.decode(_buffer, _index);
+		blockPosition=new sul.protocol.pocket100.types.BlockPosition(); blockPosition._index=this._index; blockPosition.decode(this._buffer); this._index=blockPosition._index;
+		hotbarSlot=this.readVaruint();
+		face=this.readVarint();
 		facePosition.x=readLittleEndianFloat(); facePosition.y=readLittleEndianFloat(); facePosition.z=readLittleEndianFloat();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
-		slot=varint.decode(_buffer, _index);
-		item=new Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
+		slot=this.readVarint();
+		item=new sul.protocol.pocket100.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
 	}
 
 	public static UseItem fromBuffer(byte[] buffer) {

@@ -55,7 +55,7 @@ public class ConnectionRequest extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(protocol) + Var.Uint.length(password.getBytes(StandardCharsets.UTF_8).length) + password.getBytes(StandardCharsets.UTF_8).length + Var.Uint.length(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + 2;
+		return Buffer.varuintLength(protocol) + Buffer.varuintLength(password.getBytes(StandardCharsets.UTF_8).length) + password.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + 2;
 	}
 
 	@Override
@@ -73,9 +73,9 @@ public class ConnectionRequest extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		protocol=varuint.decode(_buffer, _index);
-		int bgvucgfzc3dvcmq=varuint.decode(_buffer, _index); password=new String(this.readBytes(bgvucgfzc3dvcmq), StandardCharsets.UTF_8);
-		int bgvubmftzq=varuint.decode(_buffer, _index); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
+		protocol=this.readVaruint();
+		int bgvucgfzc3dvcmq=this.readVaruint(); password=new String(this.readBytes(bgvucgfzc3dvcmq), StandardCharsets.UTF_8);
+		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
 		main=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 	}
 

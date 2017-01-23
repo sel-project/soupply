@@ -8,7 +8,6 @@
  */
 package sul.protocol.minecraft47.clientbound;
 
-import sul.protocol.minecraft47.types.*;
 import sul.utils.*;
 
 public class SpawnMob extends Packet {
@@ -42,7 +41,7 @@ public class SpawnMob extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(entityId) + position.length() + velocity.length() + metadata.length() + 4;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + metadata.length() + 22;
 	}
 
 	@Override
@@ -51,11 +50,11 @@ public class SpawnMob extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBigEndianByte(type);
-		this.writeBigEndianInt(position.x);this.writeBigEndianInt(position.y);this.writeBigEndianInt(position.z);
+		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.y); this.writeBigEndianInt(position.z);
 		this.writeBigEndianByte(yaw);
 		this.writeBigEndianByte(pitch);
 		this.writeBigEndianByte(headPitch);
-		this.writeBigEndianShort(velocity.x);this.writeBigEndianShort(velocity.y);this.writeBigEndianShort(velocity.z);
+		this.writeBigEndianShort(velocity.x); this.writeBigEndianShort(velocity.y); this.writeBigEndianShort(velocity.z);
 		this.writeBytes(metadata.encode());
 		return this._buffer;
 	}
@@ -63,8 +62,8 @@ public class SpawnMob extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		entityId=varuint.decode(_buffer, _index);
+		this.readVaruint();
+		entityId=this.readVaruint();
 		type=readBigEndianByte();
 		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 		yaw=readBigEndianByte();

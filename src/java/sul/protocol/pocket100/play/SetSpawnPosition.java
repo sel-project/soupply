@@ -8,7 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import sul.protocol.pocket100.types.*;
 import sul.utils.*;
 
 public class SetSpawnPosition extends Packet {
@@ -19,12 +18,12 @@ public class SetSpawnPosition extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	public int unknown0;
-	public BlockPosition position;
+	public sul.protocol.pocket100.types.BlockPosition position;
 	public boolean unknown2;
 
 	public SetSpawnPosition() {}
 
-	public SetSpawnPosition(int unknown0, BlockPosition position, boolean unknown2) {
+	public SetSpawnPosition(int unknown0, sul.protocol.pocket100.types.BlockPosition position, boolean unknown2) {
 		this.unknown0 = unknown0;
 		this.position = position;
 		this.unknown2 = unknown2;
@@ -32,7 +31,7 @@ public class SetSpawnPosition extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Int.length(?) + position.length() + 2;
+		return Buffer.varintLength(unknown0) + position.length() + 2;
 	}
 
 	@Override
@@ -49,8 +48,8 @@ public class SetSpawnPosition extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		unknown0=varint.decode(_buffer, _index);
-		position=new BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
+		unknown0=this.readVarint();
+		position=new sul.protocol.pocket100.types.BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
 		unknown2=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
 	}
 

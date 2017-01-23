@@ -36,7 +36,7 @@ public class ChatMessage extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + Var.Uint.length(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + 1;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + 1;
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public class ChatMessage extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		int bgvubwvzc2fnzq=varuint.decode(_buffer, _index); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8);
+		this.readVaruint();
+		int bgvubwvzc2fnzq=this.readVaruint(); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8);
 		position=readBigEndianByte();
 	}
 

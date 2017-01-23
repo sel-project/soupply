@@ -213,4 +213,136 @@ public class Buffer {
 		return Double.longBitsToDouble(this.readLittleEndianLong());
 	}
 
+	public void writeVarshort(short a) {
+		this.writeVarushort((short)((a >> 1) | (a << 15)));
+	}
+
+	public short readVarshort() {
+		short ret = this.readVarushort();
+		return (short)((ret << 1) | (ret >> 15));
+	}
+
+	public static int varshortLength(short a) {
+		int length = 1;
+		while((a & 0x80) != 0 && length < 3) {
+			length++;
+			a >>>= 7;
+		}
+		return length;
+	}
+
+	public void writeVarushort(short a) {
+		this._buffer[this._index++] = (byte)(a & 0x7F);
+		while((a & 0x80) != 0) {
+			a >>>= 7;
+			this._buffer[this._index++] = (byte)(a & 0x7F);
+		}
+	}
+
+	public short readVarushort() {
+		int limit = 0;
+		short ret = 0;
+		do {
+			ret |= (this._buffer[this._index] & 0x7F) << (limit * 7);
+		} while((this._buffer[this._index++] & 0x80) != 0 && ++limit < 3);
+		return ret;
+	}
+
+	public static int varushortLength(short a) {
+		int length = 1;
+		while((a & 0x80) != 0 && length < 3) {
+			length++;
+			a >>>= 7;
+		}
+		return length;
+	}
+
+	public void writeVarint(int a) {
+		this.writeVaruint((int)((a >> 1) | (a << 31)));
+	}
+
+	public int readVarint() {
+		int ret = this.readVaruint();
+		return (int)((ret << 1) | (ret >> 31));
+	}
+
+	public static int varintLength(int a) {
+		int length = 1;
+		while((a & 0x80) != 0 && length < 5) {
+			length++;
+			a >>>= 7;
+		}
+		return length;
+	}
+
+	public void writeVaruint(int a) {
+		this._buffer[this._index++] = (byte)(a & 0x7F);
+		while((a & 0x80) != 0) {
+			a >>>= 7;
+			this._buffer[this._index++] = (byte)(a & 0x7F);
+		}
+	}
+
+	public int readVaruint() {
+		int limit = 0;
+		int ret = 0;
+		do {
+			ret |= (this._buffer[this._index] & 0x7F) << (limit * 7);
+		} while((this._buffer[this._index++] & 0x80) != 0 && ++limit < 5);
+		return ret;
+	}
+
+	public static int varuintLength(int a) {
+		int length = 1;
+		while((a & 0x80) != 0 && length < 5) {
+			length++;
+			a >>>= 7;
+		}
+		return length;
+	}
+
+	public void writeVarlong(long a) {
+		this.writeVarulong((long)((a >> 1) | (a << 63)));
+	}
+
+	public long readVarlong() {
+		long ret = this.readVarulong();
+		return (long)((ret << 1) | (ret >> 63));
+	}
+
+	public static int varlongLength(long a) {
+		int length = 1;
+		while((a & 0x80) != 0 && length < 10) {
+			length++;
+			a >>>= 7;
+		}
+		return length;
+	}
+
+	public void writeVarulong(long a) {
+		this._buffer[this._index++] = (byte)(a & 0x7F);
+		while((a & 0x80) != 0) {
+			a >>>= 7;
+			this._buffer[this._index++] = (byte)(a & 0x7F);
+		}
+	}
+
+	public long readVarulong() {
+		int limit = 0;
+		long ret = 0;
+		do {
+			ret |= (this._buffer[this._index] & 0x7F) << (limit * 7);
+		} while((this._buffer[this._index++] & 0x80) != 0 && ++limit < 10);
+		return ret;
+	}
+
+	public static int varulongLength(long a) {
+		int length = 1;
+		while((a & 0x80) != 0 && length < 10) {
+			length++;
+			a >>>= 7;
+		}
+		return length;
+	}
+
 }

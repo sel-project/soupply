@@ -38,7 +38,7 @@ public class Remove extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length(hubId) + 2;
+		return Buffer.varuintLength(hubId) + 2;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class Remove extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		hubId=varuint.decode(_buffer, _index);
+		hubId=this.readVaruint();
 		reason=readBigEndianByte();
 	}
 

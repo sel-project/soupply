@@ -29,7 +29,7 @@ public class Spectate extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Uint.length() + 16;
+		return Buffer.varuintLength(ID) + 16;
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class Spectate extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		varuint.decode(_buffer, _index);
-		long bxbsyxllcg=readBigEndianLong();long bhbsyxllcg=readBigEndianLong();return new UUID(bxbsyxllcg,bhbsyxllcg);
+		this.readVaruint();
+		long bxbsyxllcg=readBigEndianLong(); long bhbsyxllcg=readBigEndianLong(); player=new UUID(bxbsyxllcg,bhbsyxllcg);
 	}
 
 	public static Spectate fromBuffer(byte[] buffer) {

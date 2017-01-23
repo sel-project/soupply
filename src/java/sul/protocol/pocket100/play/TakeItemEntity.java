@@ -29,7 +29,7 @@ public class TakeItemEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Var.Long.length(taken) + Var.Long.length(collector) + 1;
+		return Buffer.varlongLength(taken) + Buffer.varlongLength(collector) + 1;
 	}
 
 	@Override
@@ -45,8 +45,8 @@ public class TakeItemEntity extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		taken=varlong.decode(_buffer, _index);
-		collector=varlong.decode(_buffer, _index);
+		taken=this.readVarlong();
+		collector=this.readVarlong();
 	}
 
 	public static TakeItemEntity fromBuffer(byte[] buffer) {
