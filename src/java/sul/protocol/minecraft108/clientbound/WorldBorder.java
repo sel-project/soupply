@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class WorldBorder extends Packet {
 
-	public final static int ID = (int)53;
+	public static final int ID = (int)53;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public int action;
 
@@ -61,7 +61,7 @@ public class WorldBorder extends Packet {
 
 	public class SetSize extends Packet {
 
-		public final static int ACTION = (int)0;
+		public static final int ACTION = (int)0;
 
 		public double diameter;
 
@@ -99,7 +99,7 @@ public class WorldBorder extends Packet {
 
 	public class LerpSize extends Packet {
 
-		public final static int ACTION = (int)1;
+		public static final int ACTION = (int)1;
 
 		public double oldDiameter;
 		public double newDiameter;
@@ -145,7 +145,7 @@ public class WorldBorder extends Packet {
 
 	public class SetCenter extends Packet {
 
-		public final static int ACTION = (int)2;
+		public static final int ACTION = (int)2;
 
 		public Tuples.DoubleXYZ center;
 
@@ -183,7 +183,7 @@ public class WorldBorder extends Packet {
 
 	public class Initialize extends Packet {
 
-		public final static int ACTION = (int)3;
+		public static final int ACTION = (int)3;
 
 		public Tuples.DoubleXYZ center;
 		public double oldDiameter;
@@ -245,7 +245,7 @@ public class WorldBorder extends Packet {
 
 	public class SetWarningTime extends Packet {
 
-		public final static int ACTION = (int)4;
+		public static final int ACTION = (int)4;
 
 		public int warningTime;
 
@@ -283,7 +283,7 @@ public class WorldBorder extends Packet {
 
 	public class SetWarningBlocks extends Packet {
 
-		public final static int ACTION = (int)5;
+		public static final int ACTION = (int)5;
 
 		public int warningBlocks;
 

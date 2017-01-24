@@ -12,17 +12,17 @@ import sul.utils.*;
 
 public class PlayerPositionAndLook extends Packet {
 
-	public final static int ID = (int)46;
+	public static final int ID = (int)46;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// flags
-	public final static byte X = 1;
-	public final static byte Y = 2;
-	public final static byte Z = 4;
-	public final static byte Y_ROTATION = 8;
-	public final static byte X_ROTATION = 16;
+	public static final byte X = 1;
+	public static final byte Y = 2;
+	public static final byte Z = 4;
+	public static final byte Y_ROTATION = 8;
+	public static final byte X_ROTATION = 16;
 
 	public Tuples.DoubleXYZ position;
 	public float yaw;

@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class MobArmorEquipment extends Packet {
 
-	public final static byte ID = (byte)33;
+	public static final byte ID = (byte)33;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = true;
 
 	public long entityId;
 	public sul.protocol.pocket100.types.Slot[] armor = new sul.protocol.pocket100.types.Slot[4];

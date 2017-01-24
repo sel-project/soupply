@@ -12,15 +12,15 @@ import sul.utils.*;
 
 public class BossEvent extends Packet {
 
-	public final static byte ID = (byte)75;
+	public static final byte ID = (byte)75;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// event id
-	public final static int ADD = 0;
-	public final static int UPDATE = 1;
-	public final static int REMOVE = 2;
+	public static final int ADD = 0;
+	public static final int UPDATE = 1;
+	public static final int REMOVE = 2;
 
 	public long entityId;
 	public int eventId;

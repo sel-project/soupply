@@ -13,16 +13,16 @@ import sul.utils.*;
 public class Icon extends Packet {
 
 	// direction and type
-	public final static byte WHITE_ARROW = 0;
-	public final static byte GREEN_ARROW = 1;
-	public final static byte RED_ARROW = 2;
-	public final static byte BLUE_ARROW = 3;
-	public final static byte WHITE_CROSS = 4;
-	public final static byte RED_POINTER = 5;
-	public final static byte WHITE_CIRCLE = 6;
-	public final static byte SMALL_WHITE_CIRCLE = 7;
-	public final static byte MANSION = 8;
-	public final static byte TEMPLE = 9;
+	public static final byte WHITE_ARROW = 0;
+	public static final byte GREEN_ARROW = 1;
+	public static final byte RED_ARROW = 2;
+	public static final byte BLUE_ARROW = 3;
+	public static final byte WHITE_CROSS = 4;
+	public static final byte RED_POINTER = 5;
+	public static final byte WHITE_CIRCLE = 6;
+	public static final byte SMALL_WHITE_CIRCLE = 7;
+	public static final byte MANSION = 8;
+	public static final byte TEMPLE = 9;
 
 	public byte directionAndType;
 	public Tuples.ByteXZ position;

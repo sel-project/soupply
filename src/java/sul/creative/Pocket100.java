@@ -14,7 +14,7 @@ public final class Pocket100 {
 
 	private Pocket100() {}
 
-	public final static Item[] ITEMS = new Item[]{
+	public static final Item[] ITEMS = new Item[]{
 		new Item("Coal", 263, 0, new Enchantment[]{}),
 		new Item("Charcoal", 263, 1, new Enchantment[]{}),
 		new Item("Diamond", 264, 0, new Enchantment[]{}),

@@ -12,15 +12,15 @@ import sul.utils.*;
 
 public class ChangeDimension extends Packet {
 
-	public final static byte ID = (byte)61;
+	public static final byte ID = (byte)61;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// dimension
-	public final static int OVERWORLD = 0;
-	public final static int NETHER = 1;
-	public final static int END = 2;
+	public static final int OVERWORLD = 0;
+	public static final int NETHER = 1;
+	public static final int END = 2;
 
 	public int dimension;
 	public Tuples.FloatXYZ position;

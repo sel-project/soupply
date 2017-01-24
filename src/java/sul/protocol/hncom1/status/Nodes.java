@@ -17,14 +17,14 @@ import sul.utils.*;
  */
 public class Nodes extends Packet {
 
-	public final static byte ID = (byte)5;
+	public static final byte ID = (byte)5;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// action
-	public final static byte ADD = 0;
-	public final static byte REMOVE = 1;
+	public static final byte ADD = 0;
+	public static final byte REMOVE = 1;
 
 	public byte action;
 	public String node;

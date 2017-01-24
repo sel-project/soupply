@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class ClientHandshake extends Packet {
 
-	public final static byte ID = (byte)19;
+	public static final byte ID = (byte)19;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public sul.protocol.raknet8.types.Address clientAddress;
 	public sul.protocol.raknet8.types.Address[] systemAddresses = new sul.protocol.raknet8.types.Address[10];

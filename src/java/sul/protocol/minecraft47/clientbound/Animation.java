@@ -12,18 +12,18 @@ import sul.utils.*;
 
 public class Animation extends Packet {
 
-	public final static int ID = (int)11;
+	public static final int ID = (int)11;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// animation
-	public final static byte SWING_ARM = 0;
-	public final static byte TAKE_DAMAGE = 1;
-	public final static byte LEAVE_BED = 2;
-	public final static byte EAT_FOOD = 3;
-	public final static byte CRITICAL_EFFECT = 4;
-	public final static byte MAGICAL_CRITICAL_EFFECT = 5;
+	public static final byte SWING_ARM = 0;
+	public static final byte TAKE_DAMAGE = 1;
+	public static final byte LEAVE_BED = 2;
+	public static final byte EAT_FOOD = 3;
+	public static final byte CRITICAL_EFFECT = 4;
+	public static final byte MAGICAL_CRITICAL_EFFECT = 5;
 
 	public int entityId;
 	public byte animation;

@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class CommandStep extends Packet {
 
-	public final static byte ID = (byte)78;
+	public static final byte ID = (byte)78;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public String command;
 	public String overload;

@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class Teams extends Packet {
 
-	public final static int ID = (int)65;
+	public static final int ID = (int)65;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public String name;
 	public byte mode;
@@ -67,23 +67,23 @@ public class Teams extends Packet {
 
 	public class CreateTeam extends Packet {
 
-		public final static byte MODE = (byte)0;
+		public static final byte MODE = (byte)0;
 
 		// friendly flags
-		public final static byte FRIENDLY_FIRE = 1;
-		public final static byte SEE_TEAM_INVISIBLE_PLAYERS = 2;
+		public static final byte FRIENDLY_FIRE = 1;
+		public static final byte SEE_TEAM_INVISIBLE_PLAYERS = 2;
 
 		// nametag visibility
-		public final static String ALWAYS_HIDE = "always";
-		public final static String HIDE_OTHER_TEAMS = "hideOtherTeams";
-		public final static String HIDE_OWN_TEAM = "hideOwnTeam";
-		public final static String NEVER_HIDE = "never";
+		public static final String ALWAYS_HIDE = "always";
+		public static final String HIDE_OTHER_TEAMS = "hideOtherTeams";
+		public static final String HIDE_OWN_TEAM = "hideOwnTeam";
+		public static final String NEVER_HIDE = "never";
 
 		// collision rule
-		public final static String ALWAYS_PUSH = "always";
-		public final static String PUSH_OTHER_TEAMS = "pushOtherTeams";
-		public final static String PUSH_OWN_TEAM = "pushOwnTeam";
-		public final static String NEVER_PUSH = "never";
+		public static final String ALWAYS_PUSH = "always";
+		public static final String PUSH_OTHER_TEAMS = "pushOtherTeams";
+		public static final String PUSH_OWN_TEAM = "pushOwnTeam";
+		public static final String NEVER_PUSH = "never";
 
 		public String displayName;
 		public String prefix;
@@ -149,7 +149,7 @@ public class Teams extends Packet {
 
 	public class RemoveTeam extends Packet {
 
-		public final static byte MODE = (byte)1;
+		public static final byte MODE = (byte)1;
 
 		@Override
 		public int length() {
@@ -177,23 +177,23 @@ public class Teams extends Packet {
 
 	public class UpdateTeamInfo extends Packet {
 
-		public final static byte MODE = (byte)2;
+		public static final byte MODE = (byte)2;
 
 		// friendly flags
-		public final static byte FRIENDLY_FIRE = 1;
-		public final static byte SEE_TEAM_INVISIBLE_PLAYERS = 2;
+		public static final byte FRIENDLY_FIRE = 1;
+		public static final byte SEE_TEAM_INVISIBLE_PLAYERS = 2;
 
 		// nametag visibility
-		public final static String ALWAYS_HIDE = "always";
-		public final static String HIDE_OTHER_TEAMS = "hideOtherTeams";
-		public final static String HIDE_OWN_TEAM = "hideOwnTeam";
-		public final static String NEVER_HIDE = "never";
+		public static final String ALWAYS_HIDE = "always";
+		public static final String HIDE_OTHER_TEAMS = "hideOtherTeams";
+		public static final String HIDE_OWN_TEAM = "hideOwnTeam";
+		public static final String NEVER_HIDE = "never";
 
 		// collision rule
-		public final static String ALWAYS_PUSH = "always";
-		public final static String PUSH_OTHER_TEAMS = "pushOtherTeams";
-		public final static String PUSH_OWN_TEAM = "pushOwnTeam";
-		public final static String NEVER_PUSH = "never";
+		public static final String ALWAYS_PUSH = "always";
+		public static final String PUSH_OTHER_TEAMS = "pushOtherTeams";
+		public static final String PUSH_OWN_TEAM = "pushOwnTeam";
+		public static final String NEVER_PUSH = "never";
 
 		public String displayName;
 		public String prefix;
@@ -255,7 +255,7 @@ public class Teams extends Packet {
 
 	public class AddPlayers extends Packet {
 
-		public final static byte MODE = (byte)3;
+		public static final byte MODE = (byte)3;
 
 		public String[] players;
 
@@ -293,7 +293,7 @@ public class Teams extends Packet {
 
 	public class RemovePlayers extends Packet {
 
-		public final static byte MODE = (byte)4;
+		public static final byte MODE = (byte)4;
 
 		public String[] players;
 

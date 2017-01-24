@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class CraftingEvent extends Packet {
 
-	public final static byte ID = (byte)54;
+	public static final byte ID = (byte)54;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public byte window;
 	public int type;

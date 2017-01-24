@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class RemoveBlock extends Packet {
 
-	public final static byte ID = (byte)22;
+	public static final byte ID = (byte)22;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public sul.protocol.pocket100.types.BlockPosition position;
 

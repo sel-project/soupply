@@ -12,21 +12,21 @@ import sul.utils.*;
 
 public class EntityAction extends Packet {
 
-	public final static int ID = (int)20;
+	public static final int ID = (int)20;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// action
-	public final static int START_SNEAKING = 0;
-	public final static int STOP_SNEAKING = 1;
-	public final static int LEAVE_BED = 2;
-	public final static int START_SPRINTING = 3;
-	public final static int STOP_SPRINTING = 4;
-	public final static int START_HORSE_JUMP = 5;
-	public final static int STOP_HORSE_JUMP = 6;
-	public final static int OPEN_HORSE_INVENTORY = 7;
-	public final static int START_ELYTRA_FLYING = 8;
+	public static final int START_SNEAKING = 0;
+	public static final int STOP_SNEAKING = 1;
+	public static final int LEAVE_BED = 2;
+	public static final int START_SPRINTING = 3;
+	public static final int STOP_SPRINTING = 4;
+	public static final int START_HORSE_JUMP = 5;
+	public static final int STOP_HORSE_JUMP = 6;
+	public static final int OPEN_HORSE_INVENTORY = 7;
+	public static final int START_ELYTRA_FLYING = 8;
 
 	public int entityId;
 	public int action;

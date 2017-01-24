@@ -14,19 +14,19 @@ import sul.utils.*;
 
 public class ScoreboardObjective extends Packet {
 
-	public final static int ID = (int)59;
+	public static final int ID = (int)59;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// mode
-	public final static byte CREATE = 0;
-	public final static byte REMOVE = 1;
-	public final static byte UPDATE = 2;
+	public static final byte CREATE = 0;
+	public static final byte REMOVE = 1;
+	public static final byte UPDATE = 2;
 
 	// type
-	public final static String NUMERIC = "integer";
-	public final static String GRAPHIC = "hearts";
+	public static final String NUMERIC = "integer";
+	public static final String GRAPHIC = "hearts";
 
 	public String name;
 	public byte mode;

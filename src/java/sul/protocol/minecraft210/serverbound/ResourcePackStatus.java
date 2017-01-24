@@ -12,16 +12,16 @@ import sul.utils.*;
 
 public class ResourcePackStatus extends Packet {
 
-	public final static int ID = (int)22;
+	public static final int ID = (int)22;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// result
-	public final static int LOADED = 0;
-	public final static int DECLINED = 1;
-	public final static int FAILED = 2;
-	public final static int ACCEPTED = 3;
+	public static final int LOADED = 0;
+	public static final int DECLINED = 1;
+	public static final int FAILED = 2;
+	public static final int ACCEPTED = 3;
 
 	public int result;
 

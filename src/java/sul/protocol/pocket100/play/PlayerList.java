@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class PlayerList extends Packet {
 
-	public final static byte ID = (byte)63;
+	public static final byte ID = (byte)63;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public byte action;
 
@@ -63,7 +63,7 @@ public class PlayerList extends Packet {
 
 	public class Add extends Packet {
 
-		public final static byte ACTION = (byte)0;
+		public static final byte ACTION = (byte)0;
 
 		public sul.protocol.pocket100.types.PlayerList[] players;
 
@@ -101,7 +101,7 @@ public class PlayerList extends Packet {
 
 	public class Remove extends Packet {
 
-		public final static byte ACTION = (byte)1;
+		public static final byte ACTION = (byte)1;
 
 		public UUID[] players;
 

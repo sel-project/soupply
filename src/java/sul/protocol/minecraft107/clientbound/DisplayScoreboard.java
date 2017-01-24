@@ -14,15 +14,15 @@ import sul.utils.*;
 
 public class DisplayScoreboard extends Packet {
 
-	public final static int ID = (int)56;
+	public static final int ID = (int)56;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// position
-	public final static byte LIST = 0;
-	public final static byte SIDEBAR = 1;
-	public final static byte BELOW_NAME = 2;
+	public static final byte LIST = 0;
+	public static final byte SIDEBAR = 1;
+	public static final byte BELOW_NAME = 2;
 
 	public byte position;
 	public String scoreName;

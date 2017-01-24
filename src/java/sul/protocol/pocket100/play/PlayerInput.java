@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class PlayerInput extends Packet {
 
-	public final static byte ID = (byte)57;
+	public static final byte ID = (byte)57;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public Tuples.FloatXYZ motion;
 	public byte flags;

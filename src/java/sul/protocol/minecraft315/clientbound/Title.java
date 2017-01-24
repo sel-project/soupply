@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class Title extends Packet {
 
-	public final static int ID = (int)69;
+	public static final int ID = (int)69;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public int action;
 
@@ -63,7 +63,7 @@ public class Title extends Packet {
 
 	public class SetTitle extends Packet {
 
-		public final static int ACTION = (int)0;
+		public static final int ACTION = (int)0;
 
 		public String text;
 
@@ -101,7 +101,7 @@ public class Title extends Packet {
 
 	public class SetSubtitle extends Packet {
 
-		public final static int ACTION = (int)1;
+		public static final int ACTION = (int)1;
 
 		public String text;
 
@@ -139,7 +139,7 @@ public class Title extends Packet {
 
 	public class SetActionBar extends Packet {
 
-		public final static int ACTION = (int)2;
+		public static final int ACTION = (int)2;
 
 		public String text;
 
@@ -177,7 +177,7 @@ public class Title extends Packet {
 
 	public class SetTimings extends Packet {
 
-		public final static int ACTION = (int)3;
+		public static final int ACTION = (int)3;
 
 		public int fadeIn;
 		public int stay;
@@ -223,7 +223,7 @@ public class Title extends Packet {
 
 	public class Hide extends Packet {
 
-		public final static int ACTION = (int)4;
+		public static final int ACTION = (int)4;
 
 		@Override
 		public int length() {
@@ -251,7 +251,7 @@ public class Title extends Packet {
 
 	public class Reset extends Packet {
 
-		public final static int ACTION = (int)5;
+		public static final int ACTION = (int)5;
 
 		@Override
 		public int length() {

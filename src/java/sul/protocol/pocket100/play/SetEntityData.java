@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class SetEntityData extends Packet {
 
-	public final static byte ID = (byte)39;
+	public static final byte ID = (byte)39;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public long entityId;
 	public sul.metadata.Pocket100 metadata;

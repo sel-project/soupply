@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class SetHealth extends Packet {
 
-	public final static byte ID = (byte)42;
+	public static final byte ID = (byte)42;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public int health;
 

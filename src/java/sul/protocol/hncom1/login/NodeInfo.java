@@ -15,13 +15,13 @@ import sul.utils.*;
  */
 public class NodeInfo extends Packet {
 
-	public final static byte ID = (byte)3;
+	public static final byte ID = (byte)3;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// max
-	public final static int UNLIMITED = 0;
+	public static final int UNLIMITED = 0;
 
 	public long time;
 	public int max;

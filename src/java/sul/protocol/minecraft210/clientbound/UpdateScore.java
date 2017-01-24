@@ -14,14 +14,14 @@ import sul.utils.*;
 
 public class UpdateScore extends Packet {
 
-	public final static int ID = (int)66;
+	public static final int ID = (int)66;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// action
-	public final static byte UPDATE = 0;
-	public final static byte REMOVE = 1;
+	public static final byte UPDATE = 0;
+	public static final byte REMOVE = 1;
 
 	public String scoreName;
 	public byte action;

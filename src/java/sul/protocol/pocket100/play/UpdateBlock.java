@@ -12,16 +12,16 @@ import sul.utils.*;
 
 public class UpdateBlock extends Packet {
 
-	public final static byte ID = (byte)23;
+	public static final byte ID = (byte)23;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// flags and meta
-	public final static int NEIGHBORS = 1;
-	public final static int NETWORK = 2;
-	public final static int NO_GRAPHIC = 4;
-	public final static int PRIORITY = 8;
+	public static final int NEIGHBORS = 1;
+	public static final int NETWORK = 2;
+	public static final int NO_GRAPHIC = 4;
+	public static final int PRIORITY = 8;
 
 	public sul.protocol.pocket100.types.BlockPosition position;
 	public int block;

@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class EntityProperties extends Packet {
 
-	public final static int ID = (int)32;
+	public static final int ID = (int)32;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public int entityId;
 	public sul.protocol.minecraft47.types.Attribute[] attributes;

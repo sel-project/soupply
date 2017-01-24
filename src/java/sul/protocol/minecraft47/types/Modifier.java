@@ -15,9 +15,9 @@ import sul.utils.*;
 public class Modifier extends Packet {
 
 	// operation
-	public final static byte ADD_SUBSTRACT_AMOUNT = 0;
-	public final static byte ADD_SUBSTRACT_AMOUNT_PERCENTAGE = 1;
-	public final static byte MULTIPLY_AMOUNT_PERCENTAGE = 2;
+	public static final byte ADD_SUBSTRACT_AMOUNT = 0;
+	public static final byte ADD_SUBSTRACT_AMOUNT_PERCENTAGE = 1;
+	public static final byte MULTIPLY_AMOUNT_PERCENTAGE = 2;
 
 	public UUID uuid;
 	public double amount;

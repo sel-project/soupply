@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class UpdateDisplayName extends Packet {
 
-	public final static byte ID = (byte)16;
+	public static final byte ID = (byte)16;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
 	public String displayName;

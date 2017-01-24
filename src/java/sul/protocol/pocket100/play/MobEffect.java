@@ -12,15 +12,15 @@ import sul.utils.*;
 
 public class MobEffect extends Packet {
 
-	public final static byte ID = (byte)30;
+	public static final byte ID = (byte)30;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// event id
-	public final static byte ADD = 1;
-	public final static byte MODIFY = 2;
-	public final static byte REMOVE = 3;
+	public static final byte ADD = 1;
+	public static final byte MODIFY = 2;
+	public static final byte REMOVE = 3;
 
 	public long entityId;
 	public byte eventId;

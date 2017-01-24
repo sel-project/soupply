@@ -16,10 +16,10 @@ import sul.utils.*;
 public class ListAddPlayer extends Packet {
 
 	// gamemode
-	public final static int SURVIVAL = 0;
-	public final static int CREATIVE = 1;
-	public final static int ADVENTURE = 2;
-	public final static int SPECTATOR = 3;
+	public static final int SURVIVAL = 0;
+	public static final int CREATIVE = 1;
+	public static final int ADVENTURE = 2;
+	public static final int SPECTATOR = 3;
 
 	public UUID uuid;
 	public String name;

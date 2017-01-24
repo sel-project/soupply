@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class Spectate extends Packet {
 
-	public final static int ID = (int)27;
+	public static final int ID = (int)27;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public UUID player;
 

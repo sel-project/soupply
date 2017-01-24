@@ -18,14 +18,14 @@ import sul.utils.*;
  */
 public class UpdateNodes extends Packet {
 
-	public final static byte ID = (byte)1;
+	public static final byte ID = (byte)1;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// action
-	public final static byte ADD = 0;
-	public final static byte REMOVE = 1;
+	public static final byte ADD = 0;
+	public static final byte REMOVE = 1;
 
 	/**
 	 * Whether the node should be added or removed from the list of connected nodes.

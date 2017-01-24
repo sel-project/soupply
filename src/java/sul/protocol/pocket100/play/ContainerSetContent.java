@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class ContainerSetContent extends Packet {
 
-	public final static byte ID = (byte)52;
+	public static final byte ID = (byte)52;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public byte window;
 	public sul.protocol.pocket100.types.Slot[] slots;

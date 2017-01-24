@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class UpdateAttributes extends Packet {
 
-	public final static byte ID = (byte)31;
+	public static final byte ID = (byte)31;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public long entityId;
 	public sul.protocol.pocket100.types.Attribute[] attributes;

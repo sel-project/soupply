@@ -19,10 +19,10 @@ import sul.utils.*;
  */
 public class Command extends Packet {
 
-	public final static byte ID = (byte)5;
+	public static final byte ID = (byte)5;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	/**
 	 * Command to execute on the server.

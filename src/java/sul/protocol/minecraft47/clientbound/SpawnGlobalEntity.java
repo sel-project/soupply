@@ -12,13 +12,13 @@ import sul.utils.*;
 
 public class SpawnGlobalEntity extends Packet {
 
-	public final static int ID = (int)44;
+	public static final int ID = (int)44;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// type
-	public final static byte THUNDERBOLT = 1;
+	public static final byte THUNDERBOLT = 1;
 
 	public int entityId;
 	public byte type;

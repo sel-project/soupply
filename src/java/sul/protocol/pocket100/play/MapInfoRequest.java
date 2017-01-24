@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class MapInfoRequest extends Packet {
 
-	public final static byte ID = (byte)67;
+	public static final byte ID = (byte)67;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public long mapId;
 

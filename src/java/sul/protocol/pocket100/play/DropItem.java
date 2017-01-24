@@ -12,13 +12,13 @@ import sul.utils.*;
 
 public class DropItem extends Packet {
 
-	public final static byte ID = (byte)46;
+	public static final byte ID = (byte)46;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// action
-	public final static byte DROP = 0;
+	public static final byte DROP = 0;
 
 	public byte action;
 	public sul.protocol.pocket100.types.Slot item;

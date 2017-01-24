@@ -12,14 +12,14 @@ import sul.utils.*;
 
 public class Login extends Packet {
 
-	public final static byte ID = (byte)1;
+	public static final byte ID = (byte)1;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// edition
-	public final static byte CLASSIC = 0;
-	public final static byte EDUCATION = 1;
+	public static final byte CLASSIC = 0;
+	public static final byte EDUCATION = 1;
 
 	public int protocol;
 	public byte edition;

@@ -17,15 +17,15 @@ import sul.utils.*;
  */
 public class RemoteCommand extends Packet {
 
-	public final static byte ID = (byte)8;
+	public static final byte ID = (byte)8;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// origin
-	public final static byte HUB = 0;
-	public final static byte EXTERNAL_CONSOLE = 1;
-	public final static byte RCON = 2;
+	public static final byte HUB = 0;
+	public static final byte EXTERNAL_CONSOLE = 1;
+	public static final byte RCON = 2;
 
 	public byte origin;
 	public sul.protocol.hncom1.types.Address sender;

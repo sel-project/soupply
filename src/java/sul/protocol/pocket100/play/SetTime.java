@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class SetTime extends Packet {
 
-	public final static byte ID = (byte)11;
+	public static final byte ID = (byte)11;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public int time;
 	public boolean daylightCycle;

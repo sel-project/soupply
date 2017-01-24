@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class OpenConnectionRequest2 extends Packet {
 
-	public final static byte ID = (byte)7;
+	public static final byte ID = (byte)7;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public byte[] magic = new byte[16];
 	public sul.protocol.raknet8.types.Address serverAddress;

@@ -12,18 +12,18 @@ import sul.utils.*;
 
 public class UpdateBlockEntity extends Packet {
 
-	public final static int ID = (int)53;
+	public static final int ID = (int)53;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// action
-	public final static byte MOB_SPAWNER_DATA = 1;
-	public final static byte COMMAND_BLOCK_TEXT = 2;
-	public final static byte BEACON_POWERS = 3;
-	public final static byte MOB_HEAD_DATA = 4;
-	public final static byte FLOWER_POT_FLOWER = 5;
-	public final static byte BANNER_DATA = 6;
+	public static final byte MOB_SPAWNER_DATA = 1;
+	public static final byte COMMAND_BLOCK_TEXT = 2;
+	public static final byte BEACON_POWERS = 3;
+	public static final byte MOB_HEAD_DATA = 4;
+	public static final byte FLOWER_POT_FLOWER = 5;
+	public static final byte BANNER_DATA = 6;
 
 	public long position;
 	public byte action;

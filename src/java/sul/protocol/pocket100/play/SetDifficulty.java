@@ -12,16 +12,16 @@ import sul.utils.*;
 
 public class SetDifficulty extends Packet {
 
-	public final static byte ID = (byte)60;
+	public static final byte ID = (byte)60;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// difficulty
-	public final static int PEACEFUL = 0;
-	public final static int EASY = 1;
-	public final static int NORMAL = 2;
-	public final static int HARD = 3;
+	public static final int PEACEFUL = 0;
+	public static final int EASY = 1;
+	public static final int NORMAL = 2;
+	public static final int HARD = 3;
 
 	public int difficulty;
 

@@ -13,8 +13,8 @@ import sul.utils.*;
 public class Game extends Packet {
 
 	// type
-	public final static byte POCKET = 1;
-	public final static byte MINECRAFT = 2;
+	public static final byte POCKET = 1;
+	public static final byte MINECRAFT = 2;
 
 	/**
 	 * Variant of the game.

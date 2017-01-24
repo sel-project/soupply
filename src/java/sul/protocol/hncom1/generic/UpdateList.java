@@ -18,18 +18,18 @@ import sul.utils.*;
  */
 public class UpdateList extends Packet {
 
-	public final static byte ID = (byte)9;
+	public static final byte ID = (byte)9;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// list
-	public final static byte WHITELIST = 0;
-	public final static byte BLACKLIST = 1;
+	public static final byte WHITELIST = 0;
+	public static final byte BLACKLIST = 1;
 
 	// action
-	public final static byte ADD = 0;
-	public final static byte REMOVE = 1;
+	public static final byte ADD = 0;
+	public static final byte REMOVE = 1;
 
 	public byte list;
 	public byte action;
@@ -83,7 +83,7 @@ public class UpdateList extends Packet {
 
 	public class ByHubId extends Packet {
 
-		public final static byte TYPE = (byte)0;
+		public static final byte TYPE = (byte)0;
 
 		public int hubId;
 
@@ -121,7 +121,7 @@ public class UpdateList extends Packet {
 
 	public class ByName extends Packet {
 
-		public final static byte TYPE = (byte)1;
+		public static final byte TYPE = (byte)1;
 
 		public String username;
 
@@ -159,11 +159,11 @@ public class UpdateList extends Packet {
 
 	public class ByUuid extends Packet {
 
-		public final static byte TYPE = (byte)2;
+		public static final byte TYPE = (byte)2;
 
 		// game
-		public final static byte POCKET = 1;
-		public final static byte MINECRAFT = 2;
+		public static final byte POCKET = 1;
+		public static final byte MINECRAFT = 2;
 
 		public byte game;
 		public UUID uuid;

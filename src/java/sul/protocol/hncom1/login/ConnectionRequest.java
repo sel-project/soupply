@@ -17,10 +17,10 @@ import sul.utils.*;
  */
 public class ConnectionRequest extends Packet {
 
-	public final static byte ID = (byte)0;
+	public static final byte ID = (byte)0;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	/**
 	 * Version of the protocol used by the client that must match the hub's one

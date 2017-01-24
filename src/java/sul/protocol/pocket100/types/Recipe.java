@@ -13,11 +13,11 @@ import sul.utils.*;
 public class Recipe extends Packet {
 
 	// type
-	public final static int SHAPELESS = 0;
-	public final static int SHAPED = 1;
-	public final static int FURNACE = 2;
-	public final static int FURNACE_DATA = 3;
-	public final static int MULTI = 4;
+	public static final int SHAPELESS = 0;
+	public static final int SHAPED = 1;
+	public static final int FURNACE = 2;
+	public static final int FURNACE_DATA = 3;
+	public static final int MULTI = 4;
 
 	public int type;
 

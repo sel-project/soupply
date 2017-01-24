@@ -18,10 +18,10 @@ import sul.utils.*;
  */
 public class UpdateStats extends Packet {
 
-	public final static byte ID = (byte)3;
+	public static final byte ID = (byte)3;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	/**
 	 * Number of players currently online on the server. Players that are performing authentication

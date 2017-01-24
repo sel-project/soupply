@@ -223,7 +223,7 @@ public class Enchantment {
 	foreach(string game, Creative c; creative) {
 		string data = "package sul.creative;\n\nimport sul.utils.*;\n\npublic final class " ~ toPascalCase(game) ~ " {\n\n";
 		data ~= "\tprivate " ~ toPascalCase(game) ~ "() {}\n\n";
-		data ~= "\tpublic final static Item[] ITEMS = new Item[]{\n";
+		data ~= "\tpublic static final Item[] ITEMS = new Item[]{\n";
 		foreach(i, item; c.data) {
 			data ~= "\t\tnew Item(" ~ JSONValue(item.name).toString() ~ ", " ~ item.id.to!string ~ ", " ~ item.meta.to!string ~ ", new Enchantment[]{";
 			if(item.enchantments.length) {
@@ -469,7 +469,7 @@ public class Enchantment {
 				if(field.constants.length) {
 					data ~= space ~ "// " ~ field.name.replace("_", " ") ~ "\n";
 					foreach(constant ; field.constants) {
-						data ~= space ~ "public final static " ~ convert(field.type) ~ " " ~ toUpper(constant.name) ~ " = " ~ (field.type == "string" ? JSONValue(constant.value).toString() : constant.value) ~ ";\n";
+						data ~= space ~ "public static final " ~ convert(field.type) ~ " " ~ toUpper(constant.name) ~ " = " ~ (field.type == "string" ? JSONValue(constant.value).toString() : constant.value) ~ ";\n";
 					}
 					data ~= "\n";
 				}
@@ -591,9 +591,9 @@ public class Enchantment {
 					data ~= javadoc("", packet.description);
 				}
 				data ~= "public class " ~ toPascalCase(packet.name) ~ " extends Packet {\n\n";
-				data ~= "\tpublic final static " ~ id ~ " ID = (" ~ id ~ ")" ~ to!string(packet.id) ~ ";\n\n";
-				data ~= "\tpublic final static boolean CLIENTBOUND = " ~ to!string(packet.clientbound) ~ ";\n";
-				data ~= "\tpublic final static boolean SERVERBOUND = " ~ to!string(packet.serverbound) ~ ";\n\n";
+				data ~= "\tpublic static final " ~ id ~ " ID = (" ~ id ~ ")" ~ to!string(packet.id) ~ ";\n\n";
+				data ~= "\tpublic static final boolean CLIENTBOUND = " ~ to!string(packet.clientbound) ~ ";\n";
+				data ~= "\tpublic static final boolean SERVERBOUND = " ~ to!string(packet.serverbound) ~ ";\n\n";
 				writeFields(data, "\t", toPascalCase(packet.name), packet.fields, true, packet.variants.length != 0, false);
 				data ~= "\tpublic static " ~ toPascalCase(packet.name) ~ " fromBuffer(byte[] buffer) {\n";
 				data ~= "\t\t" ~ toPascalCase(packet.name) ~ " ret = new " ~ toPascalCase(packet.name) ~ "();\n";
@@ -611,7 +611,7 @@ public class Enchantment {
 					foreach(variant ; packet.variants) {
 						if(variant.description.length) data ~= javadoc("\t", variant.description);
 						data ~= "\tpublic class " ~ toPascalCase(variant.name) ~ " extends Packet {\n\n";
-						data ~= "\t\tpublic final static " ~ vt ~ " " ~ toUpper(packet.variantField) ~ " = (" ~ vt ~ ")" ~ variant.value ~ ";\n\n";
+						data ~= "\t\tpublic static final " ~ vt ~ " " ~ toUpper(packet.variantField) ~ " = (" ~ vt ~ ")" ~ variant.value ~ ";\n\n";
 						writeFields(data, "\t\t", toPascalCase(variant.name), variant.fields, false, false, true);
 						data ~= "\t}\n\n";
 					}

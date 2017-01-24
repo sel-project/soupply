@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class Mcpe extends Packet {
 
-	public final static byte ID = (byte)254;
+	public static final byte ID = (byte)254;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = true;
 
 	public byte[] packet;
 

@@ -18,10 +18,10 @@ import sul.utils.*;
  */
 public class AuthCredentials extends Packet {
 
-	public final static byte ID = (byte)0;
+	public static final byte ID = (byte)0;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	/**
 	 * Protocol used by the server. If the client uses a different one it should close

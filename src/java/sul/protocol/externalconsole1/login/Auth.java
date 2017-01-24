@@ -16,10 +16,10 @@ import sul.utils.*;
  */
 public class Auth extends Packet {
 
-	public final static byte ID = (byte)1;
+	public static final byte ID = (byte)1;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	/**
 	 * Pasword encoded as UTF-8 if AuthCredentials.hash is `false` or the hash (specified

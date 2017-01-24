@@ -14,33 +14,33 @@ import sul.utils.*;
 
 public class JoinGame extends Packet {
 
-	public final static int ID = (int)1;
+	public static final int ID = (int)1;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// gamemode
-	public final static byte SURVIVAL = 0;
-	public final static byte CREATIVE = 1;
-	public final static byte ADVENTURE = 2;
-	public final static byte SPECTATOR = 3;
+	public static final byte SURVIVAL = 0;
+	public static final byte CREATIVE = 1;
+	public static final byte ADVENTURE = 2;
+	public static final byte SPECTATOR = 3;
 
 	// dimension
-	public final static byte NETHER = -1;
-	public final static byte OVERWORLD = 0;
-	public final static byte END = 1;
+	public static final byte NETHER = -1;
+	public static final byte OVERWORLD = 0;
+	public static final byte END = 1;
 
 	// difficulty
-	public final static byte PEACEFUL = 0;
-	public final static byte EASY = 1;
-	public final static byte NORMAL = 2;
-	public final static byte HARD = 3;
+	public static final byte PEACEFUL = 0;
+	public static final byte EASY = 1;
+	public static final byte NORMAL = 2;
+	public static final byte HARD = 3;
 
 	// level type
-	public final static String INFINITY = "default";
-	public final static String FLAT = "flat";
-	public final static String AMPLIFIED = "amplified";
-	public final static String LARGE_BIOMES = "largeBiomes";
+	public static final String INFINITY = "default";
+	public static final String FLAT = "flat";
+	public static final String AMPLIFIED = "amplified";
+	public static final String LARGE_BIOMES = "largeBiomes";
 
 	public int entityId;
 	public byte gamemode;

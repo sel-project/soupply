@@ -12,15 +12,15 @@ import sul.utils.*;
 
 public class UseEntity extends Packet {
 
-	public final static int ID = (int)2;
+	public static final int ID = (int)2;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// type
-	public final static int INTERACT = 0;
-	public final static int ATTACK = 1;
-	public final static int INTERACT_AT = 2;
+	public static final int INTERACT = 0;
+	public static final int ATTACK = 1;
+	public static final int INTERACT_AT = 2;
 
 	public int target;
 	public int type;

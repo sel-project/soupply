@@ -12,14 +12,14 @@ import sul.utils.*;
 
 public class SetPlayerGametype extends Packet {
 
-	public final static byte ID = (byte)62;
+	public static final byte ID = (byte)62;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = true;
 
 	// gametype
-	public final static int SURVIVAL = 0;
-	public final static int CREATIVE = 1;
+	public static final int SURVIVAL = 0;
+	public static final int CREATIVE = 1;
 
 	public int gametype;
 

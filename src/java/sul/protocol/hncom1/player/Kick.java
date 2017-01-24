@@ -18,10 +18,10 @@ import sul.utils.*;
  */
 public class Kick extends Packet {
 
-	public final static byte ID = (byte)13;
+	public static final byte ID = (byte)13;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
 	public String reason;

@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class PlayerListItem extends Packet {
 
-	public final static int ID = (int)45;
+	public static final int ID = (int)45;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public int action;
 
@@ -63,7 +63,7 @@ public class PlayerListItem extends Packet {
 
 	public class AddPlayer extends Packet {
 
-		public final static int ACTION = (int)0;
+		public static final int ACTION = (int)0;
 
 		public sul.protocol.minecraft107.types.ListAddPlayer[] players;
 
@@ -101,7 +101,7 @@ public class PlayerListItem extends Packet {
 
 	public class UpdateGamemode extends Packet {
 
-		public final static int ACTION = (int)1;
+		public static final int ACTION = (int)1;
 
 		public sul.protocol.minecraft107.types.ListUpdateGamemode[] players;
 
@@ -139,7 +139,7 @@ public class PlayerListItem extends Packet {
 
 	public class UpdateLatency extends Packet {
 
-		public final static int ACTION = (int)2;
+		public static final int ACTION = (int)2;
 
 		public sul.protocol.minecraft107.types.ListUpdateLatency[] players;
 
@@ -177,7 +177,7 @@ public class PlayerListItem extends Packet {
 
 	public class UpdateDisplayName extends Packet {
 
-		public final static int ACTION = (int)3;
+		public static final int ACTION = (int)3;
 
 		public sul.protocol.minecraft107.types.ListUpdateDisplayName[] players;
 
@@ -215,7 +215,7 @@ public class PlayerListItem extends Packet {
 
 	public class RemovePlayer extends Packet {
 
-		public final static int ACTION = (int)4;
+		public static final int ACTION = (int)4;
 
 		public UUID[] players;
 

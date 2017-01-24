@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class SetExperience extends Packet {
 
-	public final static int ID = (int)61;
+	public static final int ID = (int)61;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public float experience;
 	public int level;

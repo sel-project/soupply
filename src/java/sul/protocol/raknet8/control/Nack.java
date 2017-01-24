@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class Nack extends Packet {
 
-	public final static byte ID = (byte)160;
+	public static final byte ID = (byte)160;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = true;
 
 	public sul.protocol.raknet8.types.Acknowledge[] packets;
 

@@ -12,14 +12,14 @@ import sul.utils.*;
 
 public class SteerVehicle extends Packet {
 
-	public final static int ID = (int)21;
+	public static final int ID = (int)21;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// flags
-	public final static byte JUMP = 1;
-	public final static byte UNMOUNT = 2;
+	public static final byte JUMP = 1;
+	public static final byte UNMOUNT = 2;
 
 	public float sideways;
 	public float forward;

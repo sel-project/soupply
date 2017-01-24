@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class CreativeInventoryAction extends Packet {
 
-	public final static int ID = (int)24;
+	public static final int ID = (int)24;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public short slot;
 	public sul.protocol.minecraft108.types.Slot clickedItem;

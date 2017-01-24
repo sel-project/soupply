@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class AddItemEntity extends Packet {
 
-	public final static byte ID = (byte)16;
+	public static final byte ID = (byte)16;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public long entityId;
 	public long runtimeId;

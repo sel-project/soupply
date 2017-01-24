@@ -12,19 +12,19 @@ import sul.utils.*;
 
 public class PlayerDigging extends Packet {
 
-	public final static int ID = (int)7;
+	public static final int ID = (int)7;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// status
-	public final static byte START_DIGGING = 0;
-	public final static byte CANCEL_DIGGING = 1;
-	public final static byte FINISH_DIGGING = 2;
-	public final static byte DROP_ITEM_STACK = 3;
-	public final static byte DROP_ITEM = 4;
-	public final static byte SHOOT_ARROW = 5;
-	public final static byte FINISH_EATING = 5;
+	public static final byte START_DIGGING = 0;
+	public static final byte CANCEL_DIGGING = 1;
+	public static final byte FINISH_DIGGING = 2;
+	public static final byte DROP_ITEM_STACK = 3;
+	public static final byte DROP_ITEM = 4;
+	public static final byte SHOOT_ARROW = 5;
+	public static final byte FINISH_EATING = 5;
 
 	public byte status;
 	public long position;

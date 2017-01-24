@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class BlockEvent extends Packet {
 
-	public final static byte ID = (byte)28;
+	public static final byte ID = (byte)28;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public sul.protocol.pocket100.types.BlockPosition position;
 	public int[] data = new int[2];

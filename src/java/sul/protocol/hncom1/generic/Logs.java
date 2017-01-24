@@ -15,10 +15,10 @@ import sul.utils.*;
  */
 public class Logs extends Packet {
 
-	public final static byte ID = (byte)7;
+	public static final byte ID = (byte)7;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public sul.protocol.hncom1.types.Log[] messages;
 

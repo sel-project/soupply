@@ -12,16 +12,16 @@ import sul.utils.*;
 
 public class PlayerAbilities extends Packet {
 
-	public final static int ID = (int)57;
+	public static final int ID = (int)57;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// flags
-	public final static byte INVULNERABLE = 1;
-	public final static byte FLYING = 2;
-	public final static byte ALLOW_FLYING = 4;
-	public final static byte CREATIVE_MODE = 8;
+	public static final byte INVULNERABLE = 1;
+	public static final byte FLYING = 2;
+	public static final byte ALLOW_FLYING = 4;
+	public static final byte CREATIVE_MODE = 8;
 
 	public byte flags;
 	public float flyingSpeed;

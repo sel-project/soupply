@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class UpdateSign extends Packet {
 
-	public final static int ID = (int)25;
+	public static final int ID = (int)25;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public long position;
 	public String[] lines = new String[4];

@@ -18,10 +18,10 @@ import sul.utils.*;
  */
 public class KeepAlive extends Packet {
 
-	public final static byte ID = (byte)0;
+	public static final byte ID = (byte)0;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = true;
 
 	/**
 	 * An identifier chosen by the external console to uniquely identify the packet.

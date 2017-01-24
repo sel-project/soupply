@@ -17,10 +17,10 @@ import sul.utils.*;
  */
 public class Welcome extends Packet {
 
-	public final static byte ID = (byte)2;
+	public static final byte ID = (byte)2;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public byte status;
 
@@ -69,7 +69,7 @@ public class Welcome extends Packet {
 	 */
 	public class Accepted extends Packet {
 
-		public final static byte STATUS = (byte)0;
+		public static final byte STATUS = (byte)0;
 
 		/**
 		 * Indicates whether the external console can execute command remotely through the
@@ -157,7 +157,7 @@ public class Welcome extends Packet {
 	 */
 	public class WrongHash extends Packet {
 
-		public final static byte STATUS = (byte)1;
+		public static final byte STATUS = (byte)1;
 
 		@Override
 		public int length() {
@@ -189,7 +189,7 @@ public class Welcome extends Packet {
 	 */
 	public class TimedOut extends Packet {
 
-		public final static byte STATUS = (byte)2;
+		public static final byte STATUS = (byte)2;
 
 		@Override
 		public int length() {

@@ -12,13 +12,13 @@ import sul.utils.*;
 
 public class LevelSoundEvent extends Packet {
 
-	public final static byte ID = (byte)26;
+	public static final byte ID = (byte)26;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = true;
 
 	// sound
-	public final static byte NOTE = 60;
+	public static final byte NOTE = 60;
 
 	public byte sound;
 	public Tuples.FloatXYZ position;

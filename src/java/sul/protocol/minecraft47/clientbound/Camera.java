@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class Camera extends Packet {
 
-	public final static int ID = (int)67;
+	public static final int ID = (int)67;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public int entityId;
 

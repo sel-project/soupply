@@ -15,16 +15,16 @@ import sul.utils.*;
  */
 public class Remove extends Packet {
 
-	public final static byte ID = (byte)12;
+	public static final byte ID = (byte)12;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// reason
-	public final static byte LEFT = 0;
-	public final static byte TIMED_OUT = 1;
-	public final static byte KICKED = 2;
-	public final static byte TRANSFERRED = 3;
+	public static final byte LEFT = 0;
+	public static final byte TIMED_OUT = 1;
+	public static final byte KICKED = 2;
+	public static final byte TRANSFERRED = 3;
 
 	public int hubId;
 	public byte reason;

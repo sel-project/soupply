@@ -17,10 +17,10 @@ import sul.utils.*;
  */
 public class UpdateLanguage extends Packet {
 
-	public final static byte ID = (byte)15;
+	public static final byte ID = (byte)15;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
 	public String language;

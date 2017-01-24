@@ -12,14 +12,14 @@ import sul.utils.*;
 
 public class PlayerBlockPlacement extends Packet {
 
-	public final static int ID = (int)28;
+	public static final int ID = (int)28;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// hand
-	public final static int MAIN_HAND = 0;
-	public final static int OFF_HAND = 1;
+	public static final int MAIN_HAND = 0;
+	public static final int OFF_HAND = 1;
 
 	public long position;
 	public int face;

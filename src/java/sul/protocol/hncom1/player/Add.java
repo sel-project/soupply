@@ -18,15 +18,15 @@ import sul.utils.*;
  */
 public class Add extends Packet {
 
-	public final static byte ID = (byte)11;
+	public static final byte ID = (byte)11;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// reason
-	public final static byte FIRST_JOIN = 0;
-	public final static byte TRANSFERRED = 1;
-	public final static byte FORCIBLY_TRANSFERRED = 2;
+	public static final byte FIRST_JOIN = 0;
+	public static final byte TRANSFERRED = 1;
+	public static final byte FORCIBLY_TRANSFERRED = 2;
 
 	/**
 	 * A unique identifier given by the hub that is never changed while the player is connected.
@@ -136,7 +136,7 @@ public class Add extends Packet {
 
 	public class Pocket extends Packet {
 
-		public final static byte TYPE = (byte)1;
+		public static final byte TYPE = (byte)1;
 
 		public long xuid;
 		public boolean edu;
@@ -182,7 +182,7 @@ public class Add extends Packet {
 
 	public class Minecraft extends Packet {
 
-		public final static byte TYPE = (byte)2;
+		public static final byte TYPE = (byte)2;
 
 		@Override
 		public int length() {

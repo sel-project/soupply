@@ -12,14 +12,14 @@ import sul.utils.*;
 
 public class EntityEffect extends Packet {
 
-	public final static int ID = (int)75;
+	public static final int ID = (int)75;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// flags
-	public final static byte AMBIENT = 1;
-	public final static byte SHOW_PARTICLES = 2;
+	public static final byte AMBIENT = 1;
+	public static final byte SHOW_PARTICLES = 2;
 
 	public int entityId;
 	public byte effectId;

@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class TabComplete extends Packet {
 
-	public final static int ID = (int)20;
+	public static final int ID = (int)20;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public String text;
 	public boolean hasPosition;

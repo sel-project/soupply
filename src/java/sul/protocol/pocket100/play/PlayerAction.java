@@ -12,27 +12,27 @@ import sul.utils.*;
 
 public class PlayerAction extends Packet {
 
-	public final static byte ID = (byte)36;
+	public static final byte ID = (byte)36;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// action
-	public final static int START_BREAK = 0;
-	public final static int ABORT_BREAK = 1;
-	public final static int STOP_BREAK = 2;
-	public final static int RELEASE_ITEM = 5;
-	public final static int STOP_SLEEPING = 6;
-	public final static int RESPAWN = 7;
-	public final static int JUMP = 8;
-	public final static int START_SPRINT = 9;
-	public final static int STOP_SPRINT = 10;
-	public final static int START_SNEAK = 11;
-	public final static int STOP_SNEAK = 12;
-	public final static int DIMENSION_CHANGE = 13;
-	public final static int ABORT_DIMENSION_CHANGE = 14;
-	public final static int START_GLIDING = 15;
-	public final static int STOP_GLIDING = 16;
+	public static final int START_BREAK = 0;
+	public static final int ABORT_BREAK = 1;
+	public static final int STOP_BREAK = 2;
+	public static final int RELEASE_ITEM = 5;
+	public static final int STOP_SLEEPING = 6;
+	public static final int RESPAWN = 7;
+	public static final int JUMP = 8;
+	public static final int START_SPRINT = 9;
+	public static final int STOP_SPRINT = 10;
+	public static final int START_SNEAK = 11;
+	public static final int STOP_SNEAK = 12;
+	public static final int DIMENSION_CHANGE = 13;
+	public static final int ABORT_DIMENSION_CHANGE = 14;
+	public static final int START_GLIDING = 15;
+	public static final int STOP_GLIDING = 16;
 
 	public long entityId;
 	public int action;

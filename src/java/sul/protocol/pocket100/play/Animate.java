@@ -12,14 +12,14 @@ import sul.utils.*;
 
 public class Animate extends Packet {
 
-	public final static byte ID = (byte)44;
+	public static final byte ID = (byte)44;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = true;
 
 	// action
-	public final static int BREAKING = 1;
-	public final static int WAKE_UP = 3;
+	public static final int BREAKING = 1;
+	public static final int WAKE_UP = 3;
 
 	public int action;
 	public long entityId;

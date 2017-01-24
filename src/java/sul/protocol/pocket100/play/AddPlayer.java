@@ -15,10 +15,10 @@ import sul.utils.*;
 
 public class AddPlayer extends Packet {
 
-	public final static byte ID = (byte)13;
+	public static final byte ID = (byte)13;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public UUID uuid;
 	public String username;

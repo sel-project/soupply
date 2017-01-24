@@ -12,15 +12,15 @@ import sul.utils.*;
 
 public class ClientStatus extends Packet {
 
-	public final static int ID = (int)22;
+	public static final int ID = (int)22;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// action
-	public final static int RESPAWN = 0;
-	public final static int REQUEST_STATS = 1;
-	public final static int OPEN_INVENTORY = 2;
+	public static final int RESPAWN = 0;
+	public static final int REQUEST_STATS = 1;
+	public static final int OPEN_INVENTORY = 2;
 
 	public int action;
 

@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class Text extends Packet {
 
-	public final static byte ID = (byte)10;
+	public static final byte ID = (byte)10;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = true;
 
 	public byte type;
 
@@ -63,7 +63,7 @@ public class Text extends Packet {
 
 	public class Raw extends Packet {
 
-		public final static byte TYPE = (byte)0;
+		public static final byte TYPE = (byte)0;
 
 		public String message;
 
@@ -101,7 +101,7 @@ public class Text extends Packet {
 
 	public class Chat extends Packet {
 
-		public final static byte TYPE = (byte)1;
+		public static final byte TYPE = (byte)1;
 
 		public String sender;
 		public String message;
@@ -143,7 +143,7 @@ public class Text extends Packet {
 
 	public class Translation extends Packet {
 
-		public final static byte TYPE = (byte)2;
+		public static final byte TYPE = (byte)2;
 
 		public String message;
 		public String[] parameters;
@@ -185,7 +185,7 @@ public class Text extends Packet {
 
 	public class Popup extends Packet {
 
-		public final static byte TYPE = (byte)3;
+		public static final byte TYPE = (byte)3;
 
 		public String title;
 		public String subtitle;
@@ -227,7 +227,7 @@ public class Text extends Packet {
 
 	public class Tip extends Packet {
 
-		public final static byte TYPE = (byte)4;
+		public static final byte TYPE = (byte)4;
 
 		public String message;
 
@@ -265,7 +265,7 @@ public class Text extends Packet {
 
 	public class System extends Packet {
 
-		public final static byte TYPE = (byte)5;
+		public static final byte TYPE = (byte)5;
 
 		public String message;
 
@@ -303,7 +303,7 @@ public class Text extends Packet {
 
 	public class Whisper extends Packet {
 
-		public final static byte TYPE = (byte)6;
+		public static final byte TYPE = (byte)6;
 
 		public String sender;
 		public String message;

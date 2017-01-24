@@ -14,14 +14,14 @@ import sul.utils.*;
 
 public class Handshake extends Packet {
 
-	public final static int ID = (int)0;
+	public static final int ID = (int)0;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// next
-	public final static int STATUS = 1;
-	public final static int LOGIN = 2;
+	public static final int STATUS = 1;
+	public static final int LOGIN = 2;
 
 	public int protocol;
 	public String serverAddress;

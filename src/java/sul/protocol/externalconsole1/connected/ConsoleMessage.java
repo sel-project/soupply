@@ -19,10 +19,10 @@ import sul.utils.*;
  */
 public class ConsoleMessage extends Packet {
 
-	public final static byte ID = (byte)4;
+	public static final byte ID = (byte)4;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	/**
 	 * Name of the node that created the log or an empty string if the log was created

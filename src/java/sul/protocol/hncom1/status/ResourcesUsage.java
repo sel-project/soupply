@@ -15,10 +15,10 @@ import sul.utils.*;
  */
 public class ResourcesUsage extends Packet {
 
-	public final static byte ID = (byte)6;
+	public static final byte ID = (byte)6;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public float tps;
 	public long ram;

@@ -14,34 +14,34 @@ import sul.utils.*;
 
 public class StartGame extends Packet {
 
-	public final static byte ID = (byte)12;
+	public static final byte ID = (byte)12;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// dimension
-	public final static int OVERWORLD = 0;
-	public final static int NETHER = 1;
-	public final static int END = 2;
+	public static final int OVERWORLD = 0;
+	public static final int NETHER = 1;
+	public static final int END = 2;
 
 	// generator
-	public final static int OLD = 0;
-	public final static int INFINITE = 1;
-	public final static int FLAT = 2;
+	public static final int OLD = 0;
+	public static final int INFINITE = 1;
+	public static final int FLAT = 2;
 
 	// world gamemode
-	public final static int SURVIVAL = 0;
-	public final static int CREATIVE = 1;
+	public static final int SURVIVAL = 0;
+	public static final int CREATIVE = 1;
 
 	// difficulty
-	public final static int PEACEFUL = 0;
-	public final static int EASY = 1;
-	public final static int NORMAL = 2;
-	public final static int HARD = 3;
+	public static final int PEACEFUL = 0;
+	public static final int EASY = 1;
+	public static final int NORMAL = 2;
+	public static final int HARD = 3;
 
 	// edition
-	public final static byte CLASSIC = 0;
-	public final static byte EDUCATION = 1;
+	public static final byte CLASSIC = 0;
+	public static final byte EDUCATION = 1;
 
 	public long entityId;
 	public long runtimeId;

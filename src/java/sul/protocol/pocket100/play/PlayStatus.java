@@ -12,18 +12,18 @@ import sul.utils.*;
 
 public class PlayStatus extends Packet {
 
-	public final static byte ID = (byte)2;
+	public static final byte ID = (byte)2;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// status
-	public final static int OK = 0;
-	public final static int OUTDATED_CLIENT = 1;
-	public final static int OUTDATED_SERVER = 2;
-	public final static int SPAWNED = 3;
-	public final static int INVALID_TENANT = 4;
-	public final static int EDITION_MISMATCH = 5;
+	public static final int OK = 0;
+	public static final int OUTDATED_CLIENT = 1;
+	public static final int OUTDATED_SERVER = 2;
+	public static final int SPAWNED = 3;
+	public static final int INVALID_TENANT = 4;
+	public static final int EDITION_MISMATCH = 5;
 
 	public int status;
 

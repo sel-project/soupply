@@ -12,15 +12,15 @@ import sul.utils.*;
 
 public class MovePlayer extends Packet {
 
-	public final static byte ID = (byte)20;
+	public static final byte ID = (byte)20;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = true;
 
 	// animation
-	public final static byte FULL = 0;
-	public final static byte NONE = 1;
-	public final static byte ROTATION = 2;
+	public static final byte FULL = 0;
+	public static final byte NONE = 1;
+	public static final byte ROTATION = 2;
 
 	public long entityId;
 	public Tuples.FloatXYZ position;

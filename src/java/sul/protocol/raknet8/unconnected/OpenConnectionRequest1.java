@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class OpenConnectionRequest1 extends Packet {
 
-	public final static byte ID = (byte)5;
+	public static final byte ID = (byte)5;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public byte[] magic = new byte[16];
 	public byte protocol;

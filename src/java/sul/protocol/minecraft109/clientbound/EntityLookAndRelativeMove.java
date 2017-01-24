@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class EntityLookAndRelativeMove extends Packet {
 
-	public final static int ID = (int)38;
+	public static final int ID = (int)38;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public int entityId;
 	public Tuples.ShortXYZ delta;

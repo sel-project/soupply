@@ -12,28 +12,28 @@ import sul.utils.*;
 
 public class AdventureSettings extends Packet {
 
-	public final static byte ID = (byte)55;
+	public static final byte ID = (byte)55;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = true;
 
 	// flags
-	public final static int IMMUTABLE_WORLD = 1;
-	public final static int PVP_DISABLED = 2;
-	public final static int PVM_DISABLED = 4;
-	public final static int MVP_DISBALED = 8;
-	public final static int EVP_DISABLED = 16;
-	public final static int AUTO_JUMP = 32;
-	public final static int ALLOW_FLIGHT = 64;
-	public final static int NO_CLIP = 128;
-	public final static int FLYING = 256;
+	public static final int IMMUTABLE_WORLD = 1;
+	public static final int PVP_DISABLED = 2;
+	public static final int PVM_DISABLED = 4;
+	public static final int MVP_DISBALED = 8;
+	public static final int EVP_DISABLED = 16;
+	public static final int AUTO_JUMP = 32;
+	public static final int ALLOW_FLIGHT = 64;
+	public static final int NO_CLIP = 128;
+	public static final int FLYING = 256;
 
 	// permissions
-	public final static int USER = 0;
-	public final static int OPERATOR = 1;
-	public final static int HOST = 2;
-	public final static int AUTOMATION = 3;
-	public final static int ADMIN = 4;
+	public static final int USER = 0;
+	public static final int OPERATOR = 1;
+	public static final int HOST = 2;
+	public static final int AUTOMATION = 3;
+	public static final int ADMIN = 4;
 
 	public int flags;
 	public int permissions;

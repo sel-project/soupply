@@ -16,10 +16,10 @@ import sul.utils.*;
  */
 public class RequestStats extends Packet {
 
-	public final static byte ID = (byte)2;
+	public static final byte ID = (byte)2;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	@Override
 	public int length() {

@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class CombatEvent extends Packet {
 
-	public final static int ID = (int)66;
+	public static final int ID = (int)66;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public byte eventId;
 
@@ -63,7 +63,7 @@ public class CombatEvent extends Packet {
 
 	public class EnterCombat extends Packet {
 
-		public final static byte EVENT_ID = (byte)0;
+		public static final byte EVENT_ID = (byte)0;
 
 		@Override
 		public int length() {
@@ -91,7 +91,7 @@ public class CombatEvent extends Packet {
 
 	public class EndCombat extends Packet {
 
-		public final static byte EVENT_ID = (byte)1;
+		public static final byte EVENT_ID = (byte)1;
 
 		public int duration;
 		public int entityId;
@@ -133,7 +133,7 @@ public class CombatEvent extends Packet {
 
 	public class EntityDead extends Packet {
 
-		public final static byte EVENT_ID = (byte)2;
+		public static final byte EVENT_ID = (byte)2;
 
 		public int playerId;
 		public int entityId;

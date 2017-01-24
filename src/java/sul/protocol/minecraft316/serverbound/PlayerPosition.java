@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class PlayerPosition extends Packet {
 
-	public final static int ID = (int)12;
+	public static final int ID = (int)12;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	public Tuples.DoubleXYZ position;
 	public boolean onGround;

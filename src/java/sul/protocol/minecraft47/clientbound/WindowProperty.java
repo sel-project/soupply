@@ -12,31 +12,31 @@ import sul.utils.*;
 
 public class WindowProperty extends Packet {
 
-	public final static int ID = (int)49;
+	public static final int ID = (int)49;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// property
-	public final static short FURNANCE_FIRE_ICON = 0;
-	public final static short FURNACE_MAX_FUEL_BURN_TIME = 1;
-	public final static short FURNACE_PROGRESS_ARROW = 2;
-	public final static short FURNCE_MAX_PROGRESS = 3;
-	public final static short ENCHANTMENT_LEVEL_REQUIREMENT_TOP = 0;
-	public final static short ENCHANTMENT_LEVEL_REQUIREMENT_MIDDLE = 1;
-	public final static short ENCHANTMENT_LEVEL_REQUIREMENT_BOTTOM = 2;
-	public final static short ENCHANTMENT_SEED = 3;
-	public final static short ENCHANTMENT_ID_TOP = 4;
-	public final static short ENCHANTMENT_ID_MIDDLE = 5;
-	public final static short ENCHANTMENT_ID_BOTTOM = 6;
-	public final static short ENCHANTMENT_LEVEL_TOP = 7;
-	public final static short ENCHANTMENT_LEVEL_MIDDLE = 8;
-	public final static short ENCHANTMENT_LEVEL_BOTTOM = 9;
-	public final static short BEACON_POWER_LEVEL = 0;
-	public final static short BEACON_FIRST_EFFECT = 1;
-	public final static short BEACON_SECOND_EFFECT = 2;
-	public final static short ANVIL_REPAIR_COST = 0;
-	public final static short BREWING_STAND_BREW_TIME = 0;
+	public static final short FURNANCE_FIRE_ICON = 0;
+	public static final short FURNACE_MAX_FUEL_BURN_TIME = 1;
+	public static final short FURNACE_PROGRESS_ARROW = 2;
+	public static final short FURNCE_MAX_PROGRESS = 3;
+	public static final short ENCHANTMENT_LEVEL_REQUIREMENT_TOP = 0;
+	public static final short ENCHANTMENT_LEVEL_REQUIREMENT_MIDDLE = 1;
+	public static final short ENCHANTMENT_LEVEL_REQUIREMENT_BOTTOM = 2;
+	public static final short ENCHANTMENT_SEED = 3;
+	public static final short ENCHANTMENT_ID_TOP = 4;
+	public static final short ENCHANTMENT_ID_MIDDLE = 5;
+	public static final short ENCHANTMENT_ID_BOTTOM = 6;
+	public static final short ENCHANTMENT_LEVEL_TOP = 7;
+	public static final short ENCHANTMENT_LEVEL_MIDDLE = 8;
+	public static final short ENCHANTMENT_LEVEL_BOTTOM = 9;
+	public static final short BEACON_POWER_LEVEL = 0;
+	public static final short BEACON_FIRST_EFFECT = 1;
+	public static final short BEACON_SECOND_EFFECT = 2;
+	public static final short ANVIL_REPAIR_COST = 0;
+	public static final short BREWING_STAND_BREW_TIME = 0;
 
 	public byte window;
 	public short property;

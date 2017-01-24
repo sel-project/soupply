@@ -12,32 +12,32 @@ import sul.utils.*;
 
 public class BlockAction extends Packet {
 
-	public final static int ID = (int)10;
+	public static final int ID = (int)10;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// action
-	public final static byte NOTE_BLOCK_HARP = 0;
-	public final static byte NOTE_BLOCK_BASS_DRUM = 1;
-	public final static byte NOTE_BLOCK_SNARE_DRUM = 2;
-	public final static byte NOTE_BLOCK_CLICKS = 3;
-	public final static byte NOTE_BLOCK_STICKS = 3;
-	public final static byte NOTE_BLOCK_BASS_GUITAR = 4;
-	public final static byte PISTON_EXTEND = 0;
-	public final static byte PISTON_RETRACT = 1;
-	public final static byte CHEST_WATCHERS = 1;
-	public final static byte BEACON_RECALCULATE = 1;
-	public final static byte MOB_SPAWNER_RESET_DELAY = 1;
-	public final static byte END_GATEWAY_YELLOW_BEAM = 1;
+	public static final byte NOTE_BLOCK_HARP = 0;
+	public static final byte NOTE_BLOCK_BASS_DRUM = 1;
+	public static final byte NOTE_BLOCK_SNARE_DRUM = 2;
+	public static final byte NOTE_BLOCK_CLICKS = 3;
+	public static final byte NOTE_BLOCK_STICKS = 3;
+	public static final byte NOTE_BLOCK_BASS_GUITAR = 4;
+	public static final byte PISTON_EXTEND = 0;
+	public static final byte PISTON_RETRACT = 1;
+	public static final byte CHEST_WATCHERS = 1;
+	public static final byte BEACON_RECALCULATE = 1;
+	public static final byte MOB_SPAWNER_RESET_DELAY = 1;
+	public static final byte END_GATEWAY_YELLOW_BEAM = 1;
 
 	// parameter
-	public final static byte PISTON_DOWN = 0;
-	public final static byte PISTON_UP = 1;
-	public final static byte PISTON_SOUTH = 2;
-	public final static byte PISTON_WEST = 3;
-	public final static byte PISTON_NORTH = 4;
-	public final static byte PISTON_EAST = 5;
+	public static final byte PISTON_DOWN = 0;
+	public static final byte PISTON_UP = 1;
+	public static final byte PISTON_SOUTH = 2;
+	public static final byte PISTON_WEST = 3;
+	public static final byte PISTON_NORTH = 4;
+	public static final byte PISTON_EAST = 5;
 
 	public long position;
 	public byte action;

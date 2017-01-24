@@ -12,17 +12,17 @@ import sul.utils.*;
 
 public class EntityEquipment extends Packet {
 
-	public final static int ID = (int)4;
+	public static final int ID = (int)4;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// slot
-	public final static int HAND = 0;
-	public final static int BOOTS = 1;
-	public final static int LEGGINGS = 2;
-	public final static int CHESTPLATE = 3;
-	public final static int HELMET = 4;
+	public static final int HAND = 0;
+	public static final int BOOTS = 1;
+	public static final int LEGGINGS = 2;
+	public static final int CHESTPLATE = 3;
+	public static final int HELMET = 4;
 
 	public int entityId;
 	public int slot;

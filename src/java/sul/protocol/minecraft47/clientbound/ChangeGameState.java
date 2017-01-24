@@ -12,34 +12,34 @@ import sul.utils.*;
 
 public class ChangeGameState extends Packet {
 
-	public final static int ID = (int)43;
+	public static final int ID = (int)43;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// reason
-	public final static byte INVALID_BED = 0;
-	public final static byte END_RAINING = 1;
-	public final static byte BEGIN_RAINING = 2;
-	public final static byte CHANGE_GAMEMODE = 3;
-	public final static byte EXIT_END = 4;
-	public final static byte DEMO_MESSAGE = 5;
-	public final static byte ARROW_HITTING_PLAYER = 6;
-	public final static byte FADE_VALUE = 7;
-	public final static byte FADE_TIME = 8;
-	public final static byte PLAY_MOB_APPEARANCE = 10;
+	public static final byte INVALID_BED = 0;
+	public static final byte END_RAINING = 1;
+	public static final byte BEGIN_RAINING = 2;
+	public static final byte CHANGE_GAMEMODE = 3;
+	public static final byte EXIT_END = 4;
+	public static final byte DEMO_MESSAGE = 5;
+	public static final byte ARROW_HITTING_PLAYER = 6;
+	public static final byte FADE_VALUE = 7;
+	public static final byte FADE_TIME = 8;
+	public static final byte PLAY_MOB_APPEARANCE = 10;
 
 	// value
-	public final static float SURVIVAL = 0;
-	public final static float CREATIVE = 1;
-	public final static float ADVENTURE = 2;
-	public final static float SPECTATOR = 3;
-	public final static float SHOW_DEMO_SCREEN = 0;
-	public final static float TELL_MOVEMENT_CONTROLS = 101;
-	public final static float TELL_JUMP_CONTROLS = 102;
-	public final static float TELL_INVENTORY_CONTROLS = 103;
-	public final static float BRIGHT = 0;
-	public final static float DARK = 1;
+	public static final float SURVIVAL = 0;
+	public static final float CREATIVE = 1;
+	public static final float ADVENTURE = 2;
+	public static final float SPECTATOR = 3;
+	public static final float SHOW_DEMO_SCREEN = 0;
+	public static final float TELL_MOVEMENT_CONTROLS = 101;
+	public static final float TELL_JUMP_CONTROLS = 102;
+	public static final float TELL_INVENTORY_CONTROLS = 103;
+	public static final float BRIGHT = 0;
+	public static final float DARK = 1;
 
 	public byte reason;
 	public float value;

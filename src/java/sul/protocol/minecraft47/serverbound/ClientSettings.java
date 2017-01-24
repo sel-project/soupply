@@ -14,28 +14,28 @@ import sul.utils.*;
 
 public class ClientSettings extends Packet {
 
-	public final static int ID = (int)21;
+	public static final int ID = (int)21;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// chat mode
-	public final static byte ENABLED = 0;
-	public final static byte COMMANDS_ONLY = 1;
-	public final static byte DISABLED = 2;
+	public static final byte ENABLED = 0;
+	public static final byte COMMANDS_ONLY = 1;
+	public static final byte DISABLED = 2;
 
 	// displayed skin parts
-	public final static byte CAPE = 1;
-	public final static byte JACKET = 2;
-	public final static byte LEFT_SLEEVE = 4;
-	public final static byte RIGHT_SLEEVE = 8;
-	public final static byte LEFT_PANTS = 16;
-	public final static byte RIGHT_PANTS = 32;
-	public final static byte HAT = 64;
+	public static final byte CAPE = 1;
+	public static final byte JACKET = 2;
+	public static final byte LEFT_SLEEVE = 4;
+	public static final byte RIGHT_SLEEVE = 8;
+	public static final byte LEFT_PANTS = 16;
+	public static final byte RIGHT_PANTS = 32;
+	public static final byte HAT = 64;
 
 	// main hand
-	public final static byte RIGHT = 0;
-	public final static byte LEFT = 1;
+	public static final byte RIGHT = 0;
+	public static final byte LEFT = 1;
 
 	public String language;
 	public byte viewDistance;

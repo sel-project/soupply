@@ -12,10 +12,10 @@ import sul.utils.*;
 
 public class Latency extends Packet {
 
-	public final static int ID = (int)1;
+	public static final int ID = (int)1;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = true;
 
 	public long id;
 

@@ -12,16 +12,16 @@ import sul.utils.*;
 
 public class ServerDifficulty extends Packet {
 
-	public final static int ID = (int)13;
+	public static final int ID = (int)13;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// difficulty
-	public final static byte PEACEFUL = 0;
-	public final static byte EASY = 1;
-	public final static byte NORMAL = 2;
-	public final static byte HARD = 3;
+	public static final byte PEACEFUL = 0;
+	public static final byte EASY = 1;
+	public static final byte NORMAL = 2;
+	public static final byte HARD = 3;
 
 	public byte difficulty;
 

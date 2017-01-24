@@ -14,16 +14,16 @@ import sul.utils.*;
 
 public class SpawnPainting extends Packet {
 
-	public final static int ID = (int)16;
+	public static final int ID = (int)16;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// direction
-	public final static byte NORTH = 0;
-	public final static byte WEST = 1;
-	public final static byte SOUTH = 2;
-	public final static byte EAST = 3;
+	public static final byte NORTH = 0;
+	public static final byte WEST = 1;
+	public static final byte SOUTH = 2;
+	public static final byte EAST = 3;
 
 	public int entityId;
 	public String title;

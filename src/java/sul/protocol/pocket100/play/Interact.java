@@ -12,16 +12,16 @@ import sul.utils.*;
 
 public class Interact extends Packet {
 
-	public final static byte ID = (byte)34;
+	public static final byte ID = (byte)34;
 
-	public final static boolean CLIENTBOUND = false;
-	public final static boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	// action
-	public final static byte ATTACK = 1;
-	public final static byte INTERACT = 2;
-	public final static byte LEAVE_VEHICLE = 3;
-	public final static byte HOVER = 4;
+	public static final byte ATTACK = 1;
+	public static final byte INTERACT = 2;
+	public static final byte LEAVE_VEHICLE = 3;
+	public static final byte HOVER = 4;
 
 	public byte action;
 	public long target;

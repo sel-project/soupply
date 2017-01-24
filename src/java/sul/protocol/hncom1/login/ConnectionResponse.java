@@ -16,21 +16,21 @@ import sul.utils.*;
  */
 public class ConnectionResponse extends Packet {
 
-	public final static byte ID = (byte)1;
+	public static final byte ID = (byte)1;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// status
-	public final static byte OK = 0;
-	public final static byte OUTDATED_HUB = 1;
-	public final static byte OUTDATED_NODE = 2;
-	public final static byte PASSWORD_REQUIRED = 3;
-	public final static byte WRONG_PASSWORD = 4;
-	public final static byte INVALID_NAME_LENGTH = 5;
-	public final static byte INVALID_NAME_CHARACTERS = 6;
-	public final static byte NAME_ALREADY_USED = 7;
-	public final static byte NAME_RESERVED = 8;
+	public static final byte OK = 0;
+	public static final byte OUTDATED_HUB = 1;
+	public static final byte OUTDATED_NODE = 2;
+	public static final byte PASSWORD_REQUIRED = 3;
+	public static final byte WRONG_PASSWORD = 4;
+	public static final byte INVALID_NAME_LENGTH = 5;
+	public static final byte INVALID_NAME_CHARACTERS = 6;
+	public static final byte NAME_ALREADY_USED = 7;
+	public static final byte NAME_RESERVED = 8;
 
 	/**
 	 * Protocol used by the hub. It must match the node's one otherwise the connection

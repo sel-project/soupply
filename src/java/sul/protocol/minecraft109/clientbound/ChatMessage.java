@@ -14,15 +14,15 @@ import sul.utils.*;
 
 public class ChatMessage extends Packet {
 
-	public final static int ID = (int)15;
+	public static final int ID = (int)15;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	// position
-	public final static byte CHAT = 0;
-	public final static byte SYSTEM_MESSAGE = 1;
-	public final static byte ABOVE_HOTBAR = 2;
+	public static final byte CHAT = 0;
+	public static final byte SYSTEM_MESSAGE = 1;
+	public static final byte ABOVE_HOTBAR = 2;
 
 	public String message;
 	public byte position;

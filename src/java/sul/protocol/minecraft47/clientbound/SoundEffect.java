@@ -14,10 +14,10 @@ import sul.utils.*;
 
 public class SoundEffect extends Packet {
 
-	public final static int ID = (int)41;
+	public static final int ID = (int)41;
 
-	public final static boolean CLIENTBOUND = true;
-	public final static boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public String soundName;
 	public Tuples.IntXYZ position;
