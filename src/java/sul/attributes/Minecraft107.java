@@ -4,7 +4,7 @@
  *
  * License: https://github.com/sel-project/sel-utils/blob/master/LICENSE
  * Repository: https://github.com/sel-project/sel-utils
- * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/attributes/Minecraft107.xml
+ * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/attributes/minecraft107.xml
  */
 package sul.attributes;
 

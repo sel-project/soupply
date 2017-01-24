@@ -19,1724 +19,2760 @@ alias Changed(T) = Tuple!(T, "value", bool, "changed");
 
 class Metadata {
 
-	private Changed!(byte) _entityFlags;
+	private bool _cached = false;
+	private ubyte[] _cache;
+
+	private void delegate(Buffer) pure nothrow @safe[] _changed;
+
+	private byte _entityFlags;
+	private Changed!(uint) _air = tuple(cast(uint)300, false);
+	private Changed!(string) _nametag;
+	private Changed!(bool) _showNametag;
+	private Changed!(bool) _silent;
+	private Changed!(bool) _noGravity;
+	private Changed!(sul.protocol.minecraft316.types.Slot) _potion;
+	private Changed!(ulong) _spawnPosition;
+	private Changed!(float) _radius = tuple(cast(float)0.5, false);
+	private Changed!(uint) _color = tuple(cast(uint)-1, false);
+	private Changed!(bool) _isSinglePoint;
+	private Changed!(uint) _particleId;
+	private Changed!(uint) _particleParameter1;
+	private Changed!(uint) _particleParameter2;
+	private Changed!(uint) _hookedEntity;
+	private Changed!(byte) _arrowFlags;
+	private Changed!(uint) _timeSinceLastHit;
+	private Changed!(uint) _forwardDirection = tuple(cast(uint)1, false);
+	private Changed!(float) _damageTaken = tuple(cast(float)0, false);
+	private Changed!(uint) _boatVariant;
+	private Changed!(bool) _rightPaddleTurning;
+	private Changed!(bool) _leftPaddleTurning;
+	private Changed!(sul.protocol.minecraft316.types.OptionalPosition) _beamTarget;
+	private Changed!(bool) _showBottom;
+	private Changed!(sul.protocol.minecraft316.types.Slot) _firework;
+	private Changed!(uint) _fireworkThrower;
+	private Changed!(sul.protocol.minecraft316.types.Slot) _item;
+	private Changed!(uint) _rotation;
+	private Changed!(byte) _livingFlags;
+	private Changed!(float) _health = tuple(cast(float)1, false);
+	private Changed!(uint) _potionColor;
+	private Changed!(bool) _potionAmbient;
+	private Changed!(uint) _arrows;
+	private Changed!(float) _additionalHearts = tuple(cast(float)0, false);
+	private Changed!(uint) _score;
+	private Changed!(byte) _skinParts = tuple(cast(byte)0, false);
+	private Changed!(byte) _mainHand = tuple(cast(byte)1, false);
+	private Changed!(byte) _armorStandFlags;
+	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _headRotation;
+	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _bodyRotation;
+	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _leftArmRotation;
+	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _rightArmRotation;
+	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _leftLegRotation;
+	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _rightLegRotation;
+	private Changed!(byte) _instentientFlags;
+	private Changed!(byte) _hanging;
+	private Changed!(bool) _baby;
+	private Changed!(byte) _horseFlags;
+	private Changed!(sul.protocol.minecraft316.types.OptionalUuid) _ownerUuid;
+	private Changed!(uint) _horseVariant;
+	private Changed!(uint) _horseArmor;
+	private Changed!(bool) _chested;
+	private Changed!(uint) _llamaStrength;
+	private Changed!(uint) _carpetColor = tuple(cast(uint)-1, false);
+	private Changed!(uint) _llamaVariant;
+	private Changed!(bool) _pigSaddled;
+	private Changed!(uint) _carrotBoost;
+	private Changed!(uint) _rabbitVariant;
+	private Changed!(bool) _standingUp;
+	private Changed!(byte) _sheepFlagsAndColor;
+	private Changed!(byte) _tameableFlags;
+	private Changed!(uint) _ocelotVariant;
+	private Changed!(float) _wolfHealth;
+	private Changed!(bool) _begging;
+	private Changed!(uint) _collarColor = tuple(cast(uint)14, false);
+	private Changed!(uint) _profession;
+	private Changed!(byte) _createdByPlayer;
+	private Changed!(byte) _snowmanFlags;
+	private Changed!(uint) _shulkerDirection;
+	private Changed!(sul.protocol.minecraft316.types.OptionalPosition) _shulkerAttachment;
+	private Changed!(byte) _shulkerShieldHeight;
+	private Changed!(byte) _shulkerColor;
+	private Changed!(byte) _blazeOnFire;
+	private Changed!(uint) _creeperState = tuple(cast(uint)-1, false);
+	private Changed!(bool) _charged;
+	private Changed!(bool) _ignited;
+	private Changed!(bool) _rectractingSpikes;
+	private Changed!(uint) _guardianTarget;
+	private Changed!(byte) _spell;
+	private Changed!(byte) _attackMode;
+	private Changed!(bool) _swingingArms;
+	private Changed!(byte) _climbing;
+	private Changed!(uint) _centerHeadTarget;
+	private Changed!(uint) _leftHeadTarget;
+	private Changed!(uint) _rightHeadTarget;
+	private Changed!(uint) _invulnerableTime;
+	private Changed!(bool) _handsHeldUp;
+	private Changed!(bool) _converting;
+	private Changed!(uint) _zombieVillagerProfession;
+	private Changed!(uint) _carriedBlock;
+	private Changed!(bool) _screaming;
+	private Changed!(uint) _dragonPhase;
+	private Changed!(bool) _ghastAttacking;
+	private Changed!(uint) _slimeSize = tuple(cast(uint)1, false);
+	private Changed!(uint) _shakingPower;
+	private Changed!(uint) _shakingDirection;
+	private Changed!(float) _shakingMultiplier = tuple(cast(float)0, false);
+	private Changed!(uint) _minecartBlock;
+	private Changed!(uint) _minecartBlockPosition = tuple(cast(uint)6, false);
+	private Changed!(bool) _minecartCustomBlock;
+	private Changed!(bool) _furnacePowered;
+	private Changed!(string) _command;
+	private Changed!(string) _lastOutput;
+	private Changed!(uint) _fuseTime;
+
+	public pure nothrow @safe this() {
+		this.reset();
+	}
+
+	public pure nothrow @safe void reset() {
+		this._changed = [
+			&this.encodeEntityFlags,
+		];
+	}
 
 	public pure nothrow @property @safe @nogc byte entityFlags() {
-		return _entityFlags.value;
+		return _entityFlags;
 	}
 
-	public pure nothrow @property @safe @nogc byte entityFlags(byte value) {
-		_entityFlags.changed = true;
-		_entityFlags.value = value;
+	public pure nothrow @property @safe byte entityFlags(byte value) {
+		this._cached = false;
+		this._entityFlags = value;
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool onFire() {
-		return (_entityFlags.value >>> 0) & 1;
+	public pure nothrow @safe encodeEntityFlags(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(0);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._entityFlags);
+		}
 	}
 
-	public pure nothrow @property @safe @nogc bool onFire(bool value) {
-		_entityFlags.changed = true;
-		if(value) _entityFlags.value |= (cast(byte)true << 0);
-		else _entityFlags.value &= ~(cast(byte)true << 0);
+	public pure nothrow @property @safe bool onFire() {
+		return (_entityFlags >>> 0) & 1;
+	}
+
+	public pure nothrow @property @safe bool onFire(bool value) {
+		if(value) entityFlags = cast(byte)(_entityFlags | (cast(byte)true << 0));
+		else entityFlags = cast(byte)(_entityFlags & ~(cast(byte)true << 0));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool sneaking() {
-		return (_entityFlags.value >>> 1) & 1;
+	public pure nothrow @property @safe bool sneaking() {
+		return (_entityFlags >>> 1) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool sneaking(bool value) {
-		_entityFlags.changed = true;
-		if(value) _entityFlags.value |= (cast(byte)true << 1);
-		else _entityFlags.value &= ~(cast(byte)true << 1);
+	public pure nothrow @property @safe bool sneaking(bool value) {
+		if(value) entityFlags = cast(byte)(_entityFlags | (cast(byte)true << 1));
+		else entityFlags = cast(byte)(_entityFlags & ~(cast(byte)true << 1));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool sprinting() {
-		return (_entityFlags.value >>> 3) & 1;
+	public pure nothrow @property @safe bool sprinting() {
+		return (_entityFlags >>> 3) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool sprinting(bool value) {
-		_entityFlags.changed = true;
-		if(value) _entityFlags.value |= (cast(byte)true << 3);
-		else _entityFlags.value &= ~(cast(byte)true << 3);
+	public pure nothrow @property @safe bool sprinting(bool value) {
+		if(value) entityFlags = cast(byte)(_entityFlags | (cast(byte)true << 3));
+		else entityFlags = cast(byte)(_entityFlags & ~(cast(byte)true << 3));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool invisible() {
-		return (_entityFlags.value >>> 5) & 1;
+	public pure nothrow @property @safe bool invisible() {
+		return (_entityFlags >>> 5) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool invisible(bool value) {
-		_entityFlags.changed = true;
-		if(value) _entityFlags.value |= (cast(byte)true << 5);
-		else _entityFlags.value &= ~(cast(byte)true << 5);
+	public pure nothrow @property @safe bool invisible(bool value) {
+		if(value) entityFlags = cast(byte)(_entityFlags | (cast(byte)true << 5));
+		else entityFlags = cast(byte)(_entityFlags & ~(cast(byte)true << 5));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool glowing() {
-		return (_entityFlags.value >>> 6) & 1;
+	public pure nothrow @property @safe bool glowing() {
+		return (_entityFlags >>> 6) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool glowing(bool value) {
-		_entityFlags.changed = true;
-		if(value) _entityFlags.value |= (cast(byte)true << 6);
-		else _entityFlags.value &= ~(cast(byte)true << 6);
+	public pure nothrow @property @safe bool glowing(bool value) {
+		if(value) entityFlags = cast(byte)(_entityFlags | (cast(byte)true << 6));
+		else entityFlags = cast(byte)(_entityFlags & ~(cast(byte)true << 6));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool gliding() {
-		return (_entityFlags.value >>> 7) & 1;
+	public pure nothrow @property @safe bool gliding() {
+		return (_entityFlags >>> 7) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool gliding(bool value) {
-		_entityFlags.changed = true;
-		if(value) _entityFlags.value |= (cast(byte)true << 7);
-		else _entityFlags.value &= ~(cast(byte)true << 7);
+	public pure nothrow @property @safe bool gliding(bool value) {
+		if(value) entityFlags = cast(byte)(_entityFlags | (cast(byte)true << 7));
+		else entityFlags = cast(byte)(_entityFlags & ~(cast(byte)true << 7));
 		return value;
 	}
-
-	private Changed!(uint) _air = tuple(cast(uint)300, false);
 
 	public pure nothrow @property @safe @nogc uint air() {
 		return _air.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint air(uint value) {
-		_air.changed = true;
-		_air.value = value;
+	public pure nothrow @property @safe uint air(uint value) {
+		this._cached = false;
+		this._air.value = value;
+		if(!this._air.changed) {
+			this._air.changed = true;
+			this._changed ~= &this.encodeAir;
+		}
 		return value;
 	}
 
-	private Changed!(string) _nametag;
+	public pure nothrow @safe encodeAir(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(1);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._air.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc string nametag() {
 		return _nametag.value;
 	}
 
-	public pure nothrow @property @safe @nogc string nametag(string value) {
-		_nametag.changed = true;
-		_nametag.value = value;
+	public pure nothrow @property @safe string nametag(string value) {
+		this._cached = false;
+		this._nametag.value = value;
+		if(!this._nametag.changed) {
+			this._nametag.changed = true;
+			this._changed ~= &this.encodeNametag;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _showNametag;
+	public pure nothrow @safe encodeNametag(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(2);
+			writeBigEndianUbyte(3);
+			writeBytes(varuint.encode(cast(uint)this._nametag.value.length)); writeString(this._nametag.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool showNametag() {
 		return _showNametag.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool showNametag(bool value) {
-		_showNametag.changed = true;
-		_showNametag.value = value;
+	public pure nothrow @property @safe bool showNametag(bool value) {
+		this._cached = false;
+		this._showNametag.value = value;
+		if(!this._showNametag.changed) {
+			this._showNametag.changed = true;
+			this._changed ~= &this.encodeShowNametag;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _silent;
+	public pure nothrow @safe encodeShowNametag(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(3);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._showNametag.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool silent() {
 		return _silent.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool silent(bool value) {
-		_silent.changed = true;
-		_silent.value = value;
+	public pure nothrow @property @safe bool silent(bool value) {
+		this._cached = false;
+		this._silent.value = value;
+		if(!this._silent.changed) {
+			this._silent.changed = true;
+			this._changed ~= &this.encodeSilent;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _noGravity;
+	public pure nothrow @safe encodeSilent(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(4);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._silent.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool noGravity() {
 		return _noGravity.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool noGravity(bool value) {
-		_noGravity.changed = true;
-		_noGravity.value = value;
+	public pure nothrow @property @safe bool noGravity(bool value) {
+		this._cached = false;
+		this._noGravity.value = value;
+		if(!this._noGravity.changed) {
+			this._noGravity.changed = true;
+			this._changed ~= &this.encodeNoGravity;
+		}
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.Slot) _potion;
+	public pure nothrow @safe encodeNoGravity(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(5);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._noGravity.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot potion() {
 		return _potion.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot potion(sul.protocol.minecraft316.types.Slot value) {
-		_potion.changed = true;
-		_potion.value = value;
+	public pure nothrow @property @safe sul.protocol.minecraft316.types.Slot potion(sul.protocol.minecraft316.types.Slot value) {
+		this._cached = false;
+		this._potion.value = value;
+		if(!this._potion.changed) {
+			this._potion.changed = true;
+			this._changed ~= &this.encodePotion;
+		}
 		return value;
 	}
 
-	private Changed!(ulong) _spawnPosition;
+	public pure nothrow @safe encodePotion(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(5);
+			this._potion.value.encode(bufferInstance);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc ulong spawnPosition() {
 		return _spawnPosition.value;
 	}
 
-	public pure nothrow @property @safe @nogc ulong spawnPosition(ulong value) {
-		_spawnPosition.changed = true;
-		_spawnPosition.value = value;
+	public pure nothrow @property @safe ulong spawnPosition(ulong value) {
+		this._cached = false;
+		this._spawnPosition.value = value;
+		if(!this._spawnPosition.changed) {
+			this._spawnPosition.changed = true;
+			this._changed ~= &this.encodeSpawnPosition;
+		}
 		return value;
 	}
 
-	private Changed!(float) _radius = tuple(cast(float)0.5, false);
+	public pure nothrow @safe encodeSpawnPosition(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(8);
+			writeBigEndianUlong(this._spawnPosition.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc float radius() {
 		return _radius.value;
 	}
 
-	public pure nothrow @property @safe @nogc float radius(float value) {
-		_radius.changed = true;
-		_radius.value = value;
+	public pure nothrow @property @safe float radius(float value) {
+		this._cached = false;
+		this._radius.value = value;
+		if(!this._radius.changed) {
+			this._radius.changed = true;
+			this._changed ~= &this.encodeRadius;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _color = tuple(cast(uint)-1, false);
+	public pure nothrow @safe encodeRadius(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(2);
+			writeBigEndianFloat(this._radius.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint color() {
 		return _color.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint color(uint value) {
-		_color.changed = true;
-		_color.value = value;
+	public pure nothrow @property @safe uint color(uint value) {
+		this._cached = false;
+		this._color.value = value;
+		if(!this._color.changed) {
+			this._color.changed = true;
+			this._changed ~= &this.encodeColor;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _isSinglePoint;
+	public pure nothrow @safe encodeColor(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(7);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._color.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool isSinglePoint() {
 		return _isSinglePoint.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool isSinglePoint(bool value) {
-		_isSinglePoint.changed = true;
-		_isSinglePoint.value = value;
+	public pure nothrow @property @safe bool isSinglePoint(bool value) {
+		this._cached = false;
+		this._isSinglePoint.value = value;
+		if(!this._isSinglePoint.changed) {
+			this._isSinglePoint.changed = true;
+			this._changed ~= &this.encodeIsSinglePoint;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _particleId;
+	public pure nothrow @safe encodeIsSinglePoint(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(8);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._isSinglePoint.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint particleId() {
 		return _particleId.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint particleId(uint value) {
-		_particleId.changed = true;
-		_particleId.value = value;
+	public pure nothrow @property @safe uint particleId(uint value) {
+		this._cached = false;
+		this._particleId.value = value;
+		if(!this._particleId.changed) {
+			this._particleId.changed = true;
+			this._changed ~= &this.encodeParticleId;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _particleParameter1;
+	public pure nothrow @safe encodeParticleId(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(9);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._particleId.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint particleParameter1() {
 		return _particleParameter1.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint particleParameter1(uint value) {
-		_particleParameter1.changed = true;
-		_particleParameter1.value = value;
+	public pure nothrow @property @safe uint particleParameter1(uint value) {
+		this._cached = false;
+		this._particleParameter1.value = value;
+		if(!this._particleParameter1.changed) {
+			this._particleParameter1.changed = true;
+			this._changed ~= &this.encodeParticleParameter1;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _particleParameter2;
+	public pure nothrow @safe encodeParticleParameter1(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(10);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._particleParameter1.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint particleParameter2() {
 		return _particleParameter2.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint particleParameter2(uint value) {
-		_particleParameter2.changed = true;
-		_particleParameter2.value = value;
+	public pure nothrow @property @safe uint particleParameter2(uint value) {
+		this._cached = false;
+		this._particleParameter2.value = value;
+		if(!this._particleParameter2.changed) {
+			this._particleParameter2.changed = true;
+			this._changed ~= &this.encodeParticleParameter2;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _hookedEntity;
+	public pure nothrow @safe encodeParticleParameter2(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(11);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._particleParameter2.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint hookedEntity() {
 		return _hookedEntity.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint hookedEntity(uint value) {
-		_hookedEntity.changed = true;
-		_hookedEntity.value = value;
+	public pure nothrow @property @safe uint hookedEntity(uint value) {
+		this._cached = false;
+		this._hookedEntity.value = value;
+		if(!this._hookedEntity.changed) {
+			this._hookedEntity.changed = true;
+			this._changed ~= &this.encodeHookedEntity;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _arrowFlags;
+	public pure nothrow @safe encodeHookedEntity(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._hookedEntity.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte arrowFlags() {
 		return _arrowFlags.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte arrowFlags(byte value) {
-		_arrowFlags.changed = true;
-		_arrowFlags.value = value;
+	public pure nothrow @property @safe byte arrowFlags(byte value) {
+		this._cached = false;
+		this._arrowFlags.value = value;
+		if(!this._arrowFlags.changed) {
+			this._arrowFlags.changed = true;
+			this._changed ~= &this.encodeArrowFlags;
+		}
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool critical() {
+	public pure nothrow @safe encodeArrowFlags(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._arrowFlags.value);
+		}
+	}
+
+	public pure nothrow @property @safe bool critical() {
 		return (_arrowFlags.value >>> 0) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool critical(bool value) {
-		_arrowFlags.changed = true;
-		if(value) _arrowFlags.value |= (cast(byte)true << 0);
-		else _arrowFlags.value &= ~(cast(byte)true << 0);
+	public pure nothrow @property @safe bool critical(bool value) {
+		if(value) arrowFlags = cast(byte)(_arrowFlags.value | (cast(byte)true << 0));
+		else arrowFlags = cast(byte)(_arrowFlags.value & ~(cast(byte)true << 0));
 		return value;
 	}
-
-	private Changed!(uint) _timeSinceLastHit;
 
 	public pure nothrow @property @safe @nogc uint timeSinceLastHit() {
 		return _timeSinceLastHit.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint timeSinceLastHit(uint value) {
-		_timeSinceLastHit.changed = true;
-		_timeSinceLastHit.value = value;
+	public pure nothrow @property @safe uint timeSinceLastHit(uint value) {
+		this._cached = false;
+		this._timeSinceLastHit.value = value;
+		if(!this._timeSinceLastHit.changed) {
+			this._timeSinceLastHit.changed = true;
+			this._changed ~= &this.encodeTimeSinceLastHit;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _forwardDirection = tuple(cast(uint)1, false);
+	public pure nothrow @safe encodeTimeSinceLastHit(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._timeSinceLastHit.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint forwardDirection() {
 		return _forwardDirection.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint forwardDirection(uint value) {
-		_forwardDirection.changed = true;
-		_forwardDirection.value = value;
+	public pure nothrow @property @safe uint forwardDirection(uint value) {
+		this._cached = false;
+		this._forwardDirection.value = value;
+		if(!this._forwardDirection.changed) {
+			this._forwardDirection.changed = true;
+			this._changed ~= &this.encodeForwardDirection;
+		}
 		return value;
 	}
 
-	private Changed!(float) _damageTaken = tuple(cast(float)0, false);
+	public pure nothrow @safe encodeForwardDirection(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(7);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._forwardDirection.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc float damageTaken() {
 		return _damageTaken.value;
 	}
 
-	public pure nothrow @property @safe @nogc float damageTaken(float value) {
-		_damageTaken.changed = true;
-		_damageTaken.value = value;
+	public pure nothrow @property @safe float damageTaken(float value) {
+		this._cached = false;
+		this._damageTaken.value = value;
+		if(!this._damageTaken.changed) {
+			this._damageTaken.changed = true;
+			this._changed ~= &this.encodeDamageTaken;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _boatVariant;
+	public pure nothrow @safe encodeDamageTaken(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(8);
+			writeBigEndianUbyte(2);
+			writeBigEndianFloat(this._damageTaken.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint boatVariant() {
 		return _boatVariant.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint boatVariant(uint value) {
-		_boatVariant.changed = true;
-		_boatVariant.value = value;
+	public pure nothrow @property @safe uint boatVariant(uint value) {
+		this._cached = false;
+		this._boatVariant.value = value;
+		if(!this._boatVariant.changed) {
+			this._boatVariant.changed = true;
+			this._changed ~= &this.encodeBoatVariant;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _rightPaddleTurning;
+	public pure nothrow @safe encodeBoatVariant(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(9);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._boatVariant.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool rightPaddleTurning() {
 		return _rightPaddleTurning.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool rightPaddleTurning(bool value) {
-		_rightPaddleTurning.changed = true;
-		_rightPaddleTurning.value = value;
+	public pure nothrow @property @safe bool rightPaddleTurning(bool value) {
+		this._cached = false;
+		this._rightPaddleTurning.value = value;
+		if(!this._rightPaddleTurning.changed) {
+			this._rightPaddleTurning.changed = true;
+			this._changed ~= &this.encodeRightPaddleTurning;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _leftPaddleTurning;
+	public pure nothrow @safe encodeRightPaddleTurning(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(10);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._rightPaddleTurning.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool leftPaddleTurning() {
 		return _leftPaddleTurning.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool leftPaddleTurning(bool value) {
-		_leftPaddleTurning.changed = true;
-		_leftPaddleTurning.value = value;
+	public pure nothrow @property @safe bool leftPaddleTurning(bool value) {
+		this._cached = false;
+		this._leftPaddleTurning.value = value;
+		if(!this._leftPaddleTurning.changed) {
+			this._leftPaddleTurning.changed = true;
+			this._changed ~= &this.encodeLeftPaddleTurning;
+		}
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.OptionalPosition) _beamTarget;
+	public pure nothrow @safe encodeLeftPaddleTurning(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(11);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._leftPaddleTurning.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition beamTarget() {
 		return _beamTarget.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition beamTarget(sul.protocol.minecraft316.types.OptionalPosition value) {
-		_beamTarget.changed = true;
-		_beamTarget.value = value;
+	public pure nothrow @property @safe sul.protocol.minecraft316.types.OptionalPosition beamTarget(sul.protocol.minecraft316.types.OptionalPosition value) {
+		this._cached = false;
+		this._beamTarget.value = value;
+		if(!this._beamTarget.changed) {
+			this._beamTarget.changed = true;
+			this._changed ~= &this.encodeBeamTarget;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _showBottom;
+	public pure nothrow @safe encodeBeamTarget(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(9);
+			this._beamTarget.value.encode(bufferInstance);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool showBottom() {
 		return _showBottom.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool showBottom(bool value) {
-		_showBottom.changed = true;
-		_showBottom.value = value;
+	public pure nothrow @property @safe bool showBottom(bool value) {
+		this._cached = false;
+		this._showBottom.value = value;
+		if(!this._showBottom.changed) {
+			this._showBottom.changed = true;
+			this._changed ~= &this.encodeShowBottom;
+		}
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.Slot) _firework;
+	public pure nothrow @safe encodeShowBottom(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(7);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._showBottom.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot firework() {
 		return _firework.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot firework(sul.protocol.minecraft316.types.Slot value) {
-		_firework.changed = true;
-		_firework.value = value;
+	public pure nothrow @property @safe sul.protocol.minecraft316.types.Slot firework(sul.protocol.minecraft316.types.Slot value) {
+		this._cached = false;
+		this._firework.value = value;
+		if(!this._firework.changed) {
+			this._firework.changed = true;
+			this._changed ~= &this.encodeFirework;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _fireworkThrower;
+	public pure nothrow @safe encodeFirework(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(5);
+			this._firework.value.encode(bufferInstance);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint fireworkThrower() {
 		return _fireworkThrower.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint fireworkThrower(uint value) {
-		_fireworkThrower.changed = true;
-		_fireworkThrower.value = value;
+	public pure nothrow @property @safe uint fireworkThrower(uint value) {
+		this._cached = false;
+		this._fireworkThrower.value = value;
+		if(!this._fireworkThrower.changed) {
+			this._fireworkThrower.changed = true;
+			this._changed ~= &this.encodeFireworkThrower;
+		}
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.Slot) _item;
+	public pure nothrow @safe encodeFireworkThrower(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(7);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._fireworkThrower.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot item() {
 		return _item.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.Slot item(sul.protocol.minecraft316.types.Slot value) {
-		_item.changed = true;
-		_item.value = value;
+	public pure nothrow @property @safe sul.protocol.minecraft316.types.Slot item(sul.protocol.minecraft316.types.Slot value) {
+		this._cached = false;
+		this._item.value = value;
+		if(!this._item.changed) {
+			this._item.changed = true;
+			this._changed ~= &this.encodeItem;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _rotation;
+	public pure nothrow @safe encodeItem(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(5);
+			this._item.value.encode(bufferInstance);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint rotation() {
 		return _rotation.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint rotation(uint value) {
-		_rotation.changed = true;
-		_rotation.value = value;
+	public pure nothrow @property @safe uint rotation(uint value) {
+		this._cached = false;
+		this._rotation.value = value;
+		if(!this._rotation.changed) {
+			this._rotation.changed = true;
+			this._changed ~= &this.encodeRotation;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _livingFlags;
+	public pure nothrow @safe encodeRotation(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(7);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._rotation.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte livingFlags() {
 		return _livingFlags.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte livingFlags(byte value) {
-		_livingFlags.changed = true;
-		_livingFlags.value = value;
+	public pure nothrow @property @safe byte livingFlags(byte value) {
+		this._cached = false;
+		this._livingFlags.value = value;
+		if(!this._livingFlags.changed) {
+			this._livingFlags.changed = true;
+			this._changed ~= &this.encodeLivingFlags;
+		}
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool handActive() {
+	public pure nothrow @safe encodeLivingFlags(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._livingFlags.value);
+		}
+	}
+
+	public pure nothrow @property @safe bool handActive() {
 		return (_livingFlags.value >>> 0) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool handActive(bool value) {
-		_livingFlags.changed = true;
-		if(value) _livingFlags.value |= (cast(byte)true << 0);
-		else _livingFlags.value &= ~(cast(byte)true << 0);
+	public pure nothrow @property @safe bool handActive(bool value) {
+		if(value) livingFlags = cast(byte)(_livingFlags.value | (cast(byte)true << 0));
+		else livingFlags = cast(byte)(_livingFlags.value & ~(cast(byte)true << 0));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool offhand() {
+	public pure nothrow @property @safe bool offhand() {
 		return (_livingFlags.value >>> 1) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool offhand(bool value) {
-		_livingFlags.changed = true;
-		if(value) _livingFlags.value |= (cast(byte)true << 1);
-		else _livingFlags.value &= ~(cast(byte)true << 1);
+	public pure nothrow @property @safe bool offhand(bool value) {
+		if(value) livingFlags = cast(byte)(_livingFlags.value | (cast(byte)true << 1));
+		else livingFlags = cast(byte)(_livingFlags.value & ~(cast(byte)true << 1));
 		return value;
 	}
-
-	private Changed!(float) _health = tuple(cast(float)1, false);
 
 	public pure nothrow @property @safe @nogc float health() {
 		return _health.value;
 	}
 
-	public pure nothrow @property @safe @nogc float health(float value) {
-		_health.changed = true;
-		_health.value = value;
+	public pure nothrow @property @safe float health(float value) {
+		this._cached = false;
+		this._health.value = value;
+		if(!this._health.changed) {
+			this._health.changed = true;
+			this._changed ~= &this.encodeHealth;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _potionColor;
+	public pure nothrow @safe encodeHealth(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(7);
+			writeBigEndianUbyte(2);
+			writeBigEndianFloat(this._health.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint potionColor() {
 		return _potionColor.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint potionColor(uint value) {
-		_potionColor.changed = true;
-		_potionColor.value = value;
+	public pure nothrow @property @safe uint potionColor(uint value) {
+		this._cached = false;
+		this._potionColor.value = value;
+		if(!this._potionColor.changed) {
+			this._potionColor.changed = true;
+			this._changed ~= &this.encodePotionColor;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _potionAmbient;
+	public pure nothrow @safe encodePotionColor(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(8);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._potionColor.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool potionAmbient() {
 		return _potionAmbient.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool potionAmbient(bool value) {
-		_potionAmbient.changed = true;
-		_potionAmbient.value = value;
+	public pure nothrow @property @safe bool potionAmbient(bool value) {
+		this._cached = false;
+		this._potionAmbient.value = value;
+		if(!this._potionAmbient.changed) {
+			this._potionAmbient.changed = true;
+			this._changed ~= &this.encodePotionAmbient;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _arrows;
+	public pure nothrow @safe encodePotionAmbient(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(9);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._potionAmbient.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint arrows() {
 		return _arrows.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint arrows(uint value) {
-		_arrows.changed = true;
-		_arrows.value = value;
+	public pure nothrow @property @safe uint arrows(uint value) {
+		this._cached = false;
+		this._arrows.value = value;
+		if(!this._arrows.changed) {
+			this._arrows.changed = true;
+			this._changed ~= &this.encodeArrows;
+		}
 		return value;
 	}
 
-	private Changed!(float) _additionalHearts = tuple(cast(float)0, false);
+	public pure nothrow @safe encodeArrows(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(10);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._arrows.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc float additionalHearts() {
 		return _additionalHearts.value;
 	}
 
-	public pure nothrow @property @safe @nogc float additionalHearts(float value) {
-		_additionalHearts.changed = true;
-		_additionalHearts.value = value;
+	public pure nothrow @property @safe float additionalHearts(float value) {
+		this._cached = false;
+		this._additionalHearts.value = value;
+		if(!this._additionalHearts.changed) {
+			this._additionalHearts.changed = true;
+			this._changed ~= &this.encodeAdditionalHearts;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _score;
+	public pure nothrow @safe encodeAdditionalHearts(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(11);
+			writeBigEndianUbyte(2);
+			writeBigEndianFloat(this._additionalHearts.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint score() {
 		return _score.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint score(uint value) {
-		_score.changed = true;
-		_score.value = value;
+	public pure nothrow @property @safe uint score(uint value) {
+		this._cached = false;
+		this._score.value = value;
+		if(!this._score.changed) {
+			this._score.changed = true;
+			this._changed ~= &this.encodeScore;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _skinParts = tuple(cast(byte)0, false);
+	public pure nothrow @safe encodeScore(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._score.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte skinParts() {
 		return _skinParts.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte skinParts(byte value) {
-		_skinParts.changed = true;
-		_skinParts.value = value;
+	public pure nothrow @property @safe byte skinParts(byte value) {
+		this._cached = false;
+		this._skinParts.value = value;
+		if(!this._skinParts.changed) {
+			this._skinParts.changed = true;
+			this._changed ~= &this.encodeSkinParts;
+		}
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool cape() {
+	public pure nothrow @safe encodeSkinParts(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._skinParts.value);
+		}
+	}
+
+	public pure nothrow @property @safe bool cape() {
 		return (_skinParts.value >>> 0) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool cape(bool value) {
-		_skinParts.changed = true;
-		if(value) _skinParts.value |= (cast(byte)true << 0);
-		else _skinParts.value &= ~(cast(byte)true << 0);
+	public pure nothrow @property @safe bool cape(bool value) {
+		if(value) skinParts = cast(byte)(_skinParts.value | (cast(byte)true << 0));
+		else skinParts = cast(byte)(_skinParts.value & ~(cast(byte)true << 0));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool jacket() {
+	public pure nothrow @property @safe bool jacket() {
 		return (_skinParts.value >>> 1) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool jacket(bool value) {
-		_skinParts.changed = true;
-		if(value) _skinParts.value |= (cast(byte)true << 1);
-		else _skinParts.value &= ~(cast(byte)true << 1);
+	public pure nothrow @property @safe bool jacket(bool value) {
+		if(value) skinParts = cast(byte)(_skinParts.value | (cast(byte)true << 1));
+		else skinParts = cast(byte)(_skinParts.value & ~(cast(byte)true << 1));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool leftSleeve() {
+	public pure nothrow @property @safe bool leftSleeve() {
 		return (_skinParts.value >>> 2) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool leftSleeve(bool value) {
-		_skinParts.changed = true;
-		if(value) _skinParts.value |= (cast(byte)true << 2);
-		else _skinParts.value &= ~(cast(byte)true << 2);
+	public pure nothrow @property @safe bool leftSleeve(bool value) {
+		if(value) skinParts = cast(byte)(_skinParts.value | (cast(byte)true << 2));
+		else skinParts = cast(byte)(_skinParts.value & ~(cast(byte)true << 2));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool rightSleeve() {
+	public pure nothrow @property @safe bool rightSleeve() {
 		return (_skinParts.value >>> 3) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool rightSleeve(bool value) {
-		_skinParts.changed = true;
-		if(value) _skinParts.value |= (cast(byte)true << 3);
-		else _skinParts.value &= ~(cast(byte)true << 3);
+	public pure nothrow @property @safe bool rightSleeve(bool value) {
+		if(value) skinParts = cast(byte)(_skinParts.value | (cast(byte)true << 3));
+		else skinParts = cast(byte)(_skinParts.value & ~(cast(byte)true << 3));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool leftPants() {
+	public pure nothrow @property @safe bool leftPants() {
 		return (_skinParts.value >>> 4) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool leftPants(bool value) {
-		_skinParts.changed = true;
-		if(value) _skinParts.value |= (cast(byte)true << 4);
-		else _skinParts.value &= ~(cast(byte)true << 4);
+	public pure nothrow @property @safe bool leftPants(bool value) {
+		if(value) skinParts = cast(byte)(_skinParts.value | (cast(byte)true << 4));
+		else skinParts = cast(byte)(_skinParts.value & ~(cast(byte)true << 4));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool rightPants() {
+	public pure nothrow @property @safe bool rightPants() {
 		return (_skinParts.value >>> 5) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool rightPants(bool value) {
-		_skinParts.changed = true;
-		if(value) _skinParts.value |= (cast(byte)true << 5);
-		else _skinParts.value &= ~(cast(byte)true << 5);
+	public pure nothrow @property @safe bool rightPants(bool value) {
+		if(value) skinParts = cast(byte)(_skinParts.value | (cast(byte)true << 5));
+		else skinParts = cast(byte)(_skinParts.value & ~(cast(byte)true << 5));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool hat() {
+	public pure nothrow @property @safe bool hat() {
 		return (_skinParts.value >>> 6) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool hat(bool value) {
-		_skinParts.changed = true;
-		if(value) _skinParts.value |= (cast(byte)true << 6);
-		else _skinParts.value &= ~(cast(byte)true << 6);
+	public pure nothrow @property @safe bool hat(bool value) {
+		if(value) skinParts = cast(byte)(_skinParts.value | (cast(byte)true << 6));
+		else skinParts = cast(byte)(_skinParts.value & ~(cast(byte)true << 6));
 		return value;
 	}
-
-	private Changed!(byte) _mainHand = tuple(cast(byte)1, false);
 
 	public pure nothrow @property @safe @nogc byte mainHand() {
 		return _mainHand.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte mainHand(byte value) {
-		_mainHand.changed = true;
-		_mainHand.value = value;
+	public pure nothrow @property @safe byte mainHand(byte value) {
+		this._cached = false;
+		this._mainHand.value = value;
+		if(!this._mainHand.changed) {
+			this._mainHand.changed = true;
+			this._changed ~= &this.encodeMainHand;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _armorStandFlags;
+	public pure nothrow @safe encodeMainHand(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(14);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._mainHand.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte armorStandFlags() {
 		return _armorStandFlags.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte armorStandFlags(byte value) {
-		_armorStandFlags.changed = true;
-		_armorStandFlags.value = value;
+	public pure nothrow @property @safe byte armorStandFlags(byte value) {
+		this._cached = false;
+		this._armorStandFlags.value = value;
+		if(!this._armorStandFlags.changed) {
+			this._armorStandFlags.changed = true;
+			this._changed ~= &this.encodeArmorStandFlags;
+		}
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool isSmall() {
+	public pure nothrow @safe encodeArmorStandFlags(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(11);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._armorStandFlags.value);
+		}
+	}
+
+	public pure nothrow @property @safe bool isSmall() {
 		return (_armorStandFlags.value >>> 0) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool isSmall(bool value) {
-		_armorStandFlags.changed = true;
-		if(value) _armorStandFlags.value |= (cast(byte)true << 0);
-		else _armorStandFlags.value &= ~(cast(byte)true << 0);
+	public pure nothrow @property @safe bool isSmall(bool value) {
+		if(value) armorStandFlags = cast(byte)(_armorStandFlags.value | (cast(byte)true << 0));
+		else armorStandFlags = cast(byte)(_armorStandFlags.value & ~(cast(byte)true << 0));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool hasArms() {
+	public pure nothrow @property @safe bool hasArms() {
 		return (_armorStandFlags.value >>> 2) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool hasArms(bool value) {
-		_armorStandFlags.changed = true;
-		if(value) _armorStandFlags.value |= (cast(byte)true << 2);
-		else _armorStandFlags.value &= ~(cast(byte)true << 2);
+	public pure nothrow @property @safe bool hasArms(bool value) {
+		if(value) armorStandFlags = cast(byte)(_armorStandFlags.value | (cast(byte)true << 2));
+		else armorStandFlags = cast(byte)(_armorStandFlags.value & ~(cast(byte)true << 2));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool noBasePlate() {
+	public pure nothrow @property @safe bool noBasePlate() {
 		return (_armorStandFlags.value >>> 3) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool noBasePlate(bool value) {
-		_armorStandFlags.changed = true;
-		if(value) _armorStandFlags.value |= (cast(byte)true << 3);
-		else _armorStandFlags.value &= ~(cast(byte)true << 3);
+	public pure nothrow @property @safe bool noBasePlate(bool value) {
+		if(value) armorStandFlags = cast(byte)(_armorStandFlags.value | (cast(byte)true << 3));
+		else armorStandFlags = cast(byte)(_armorStandFlags.value & ~(cast(byte)true << 3));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool setMarker() {
+	public pure nothrow @property @safe bool setMarker() {
 		return (_armorStandFlags.value >>> 4) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool setMarker(bool value) {
-		_armorStandFlags.changed = true;
-		if(value) _armorStandFlags.value |= (cast(byte)true << 4);
-		else _armorStandFlags.value &= ~(cast(byte)true << 4);
+	public pure nothrow @property @safe bool setMarker(bool value) {
+		if(value) armorStandFlags = cast(byte)(_armorStandFlags.value | (cast(byte)true << 4));
+		else armorStandFlags = cast(byte)(_armorStandFlags.value & ~(cast(byte)true << 4));
 		return value;
 	}
-
-	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _headRotation;
 
 	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") headRotation() {
 		return _headRotation.value;
 	}
 
-	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") headRotation(Tuple!(float, "x", float, "y", float, "z") value) {
-		_headRotation.changed = true;
-		_headRotation.value = value;
+	public pure nothrow @property @safe Tuple!(float, "x", float, "y", float, "z") headRotation(Tuple!(float, "x", float, "y", float, "z") value) {
+		this._cached = false;
+		this._headRotation.value = value;
+		if(!this._headRotation.changed) {
+			this._headRotation.changed = true;
+			this._changed ~= &this.encodeHeadRotation;
+		}
 		return value;
 	}
 
-	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _bodyRotation;
+	public pure nothrow @safe encodeHeadRotation(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(7);
+			writeBigEndianFloat(this._headRotation.value.x); writeBigEndianFloat(this._headRotation.value.y); writeBigEndianFloat(this._headRotation.value.z);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") bodyRotation() {
 		return _bodyRotation.value;
 	}
 
-	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") bodyRotation(Tuple!(float, "x", float, "y", float, "z") value) {
-		_bodyRotation.changed = true;
-		_bodyRotation.value = value;
+	public pure nothrow @property @safe Tuple!(float, "x", float, "y", float, "z") bodyRotation(Tuple!(float, "x", float, "y", float, "z") value) {
+		this._cached = false;
+		this._bodyRotation.value = value;
+		if(!this._bodyRotation.changed) {
+			this._bodyRotation.changed = true;
+			this._changed ~= &this.encodeBodyRotation;
+		}
 		return value;
 	}
 
-	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _leftArmRotation;
+	public pure nothrow @safe encodeBodyRotation(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(7);
+			writeBigEndianFloat(this._bodyRotation.value.x); writeBigEndianFloat(this._bodyRotation.value.y); writeBigEndianFloat(this._bodyRotation.value.z);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") leftArmRotation() {
 		return _leftArmRotation.value;
 	}
 
-	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") leftArmRotation(Tuple!(float, "x", float, "y", float, "z") value) {
-		_leftArmRotation.changed = true;
-		_leftArmRotation.value = value;
+	public pure nothrow @property @safe Tuple!(float, "x", float, "y", float, "z") leftArmRotation(Tuple!(float, "x", float, "y", float, "z") value) {
+		this._cached = false;
+		this._leftArmRotation.value = value;
+		if(!this._leftArmRotation.changed) {
+			this._leftArmRotation.changed = true;
+			this._changed ~= &this.encodeLeftArmRotation;
+		}
 		return value;
 	}
 
-	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _rightArmRotation;
+	public pure nothrow @safe encodeLeftArmRotation(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(14);
+			writeBigEndianUbyte(7);
+			writeBigEndianFloat(this._leftArmRotation.value.x); writeBigEndianFloat(this._leftArmRotation.value.y); writeBigEndianFloat(this._leftArmRotation.value.z);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") rightArmRotation() {
 		return _rightArmRotation.value;
 	}
 
-	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") rightArmRotation(Tuple!(float, "x", float, "y", float, "z") value) {
-		_rightArmRotation.changed = true;
-		_rightArmRotation.value = value;
+	public pure nothrow @property @safe Tuple!(float, "x", float, "y", float, "z") rightArmRotation(Tuple!(float, "x", float, "y", float, "z") value) {
+		this._cached = false;
+		this._rightArmRotation.value = value;
+		if(!this._rightArmRotation.changed) {
+			this._rightArmRotation.changed = true;
+			this._changed ~= &this.encodeRightArmRotation;
+		}
 		return value;
 	}
 
-	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _leftLegRotation;
+	public pure nothrow @safe encodeRightArmRotation(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(15);
+			writeBigEndianUbyte(7);
+			writeBigEndianFloat(this._rightArmRotation.value.x); writeBigEndianFloat(this._rightArmRotation.value.y); writeBigEndianFloat(this._rightArmRotation.value.z);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") leftLegRotation() {
 		return _leftLegRotation.value;
 	}
 
-	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") leftLegRotation(Tuple!(float, "x", float, "y", float, "z") value) {
-		_leftLegRotation.changed = true;
-		_leftLegRotation.value = value;
+	public pure nothrow @property @safe Tuple!(float, "x", float, "y", float, "z") leftLegRotation(Tuple!(float, "x", float, "y", float, "z") value) {
+		this._cached = false;
+		this._leftLegRotation.value = value;
+		if(!this._leftLegRotation.changed) {
+			this._leftLegRotation.changed = true;
+			this._changed ~= &this.encodeLeftLegRotation;
+		}
 		return value;
 	}
 
-	private Changed!(Tuple!(float, "x", float, "y", float, "z")) _rightLegRotation;
+	public pure nothrow @safe encodeLeftLegRotation(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(16);
+			writeBigEndianUbyte(7);
+			writeBigEndianFloat(this._leftLegRotation.value.x); writeBigEndianFloat(this._leftLegRotation.value.y); writeBigEndianFloat(this._leftLegRotation.value.z);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") rightLegRotation() {
 		return _rightLegRotation.value;
 	}
 
-	public pure nothrow @property @safe @nogc Tuple!(float, "x", float, "y", float, "z") rightLegRotation(Tuple!(float, "x", float, "y", float, "z") value) {
-		_rightLegRotation.changed = true;
-		_rightLegRotation.value = value;
+	public pure nothrow @property @safe Tuple!(float, "x", float, "y", float, "z") rightLegRotation(Tuple!(float, "x", float, "y", float, "z") value) {
+		this._cached = false;
+		this._rightLegRotation.value = value;
+		if(!this._rightLegRotation.changed) {
+			this._rightLegRotation.changed = true;
+			this._changed ~= &this.encodeRightLegRotation;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _instentientFlags;
+	public pure nothrow @safe encodeRightLegRotation(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(17);
+			writeBigEndianUbyte(7);
+			writeBigEndianFloat(this._rightLegRotation.value.x); writeBigEndianFloat(this._rightLegRotation.value.y); writeBigEndianFloat(this._rightLegRotation.value.z);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte instentientFlags() {
 		return _instentientFlags.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte instentientFlags(byte value) {
-		_instentientFlags.changed = true;
-		_instentientFlags.value = value;
+	public pure nothrow @property @safe byte instentientFlags(byte value) {
+		this._cached = false;
+		this._instentientFlags.value = value;
+		if(!this._instentientFlags.changed) {
+			this._instentientFlags.changed = true;
+			this._changed ~= &this.encodeInstentientFlags;
+		}
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool noAi() {
+	public pure nothrow @safe encodeInstentientFlags(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(11);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._instentientFlags.value);
+		}
+	}
+
+	public pure nothrow @property @safe bool noAi() {
 		return (_instentientFlags.value >>> 0) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool noAi(bool value) {
-		_instentientFlags.changed = true;
-		if(value) _instentientFlags.value |= (cast(byte)true << 0);
-		else _instentientFlags.value &= ~(cast(byte)true << 0);
+	public pure nothrow @property @safe bool noAi(bool value) {
+		if(value) instentientFlags = cast(byte)(_instentientFlags.value | (cast(byte)true << 0));
+		else instentientFlags = cast(byte)(_instentientFlags.value & ~(cast(byte)true << 0));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool leftHanded() {
+	public pure nothrow @property @safe bool leftHanded() {
 		return (_instentientFlags.value >>> 1) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool leftHanded(bool value) {
-		_instentientFlags.changed = true;
-		if(value) _instentientFlags.value |= (cast(byte)true << 1);
-		else _instentientFlags.value &= ~(cast(byte)true << 1);
+	public pure nothrow @property @safe bool leftHanded(bool value) {
+		if(value) instentientFlags = cast(byte)(_instentientFlags.value | (cast(byte)true << 1));
+		else instentientFlags = cast(byte)(_instentientFlags.value & ~(cast(byte)true << 1));
 		return value;
 	}
-
-	private Changed!(byte) _hanging;
 
 	public pure nothrow @property @safe @nogc byte hanging() {
 		return _hanging.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte hanging(byte value) {
-		_hanging.changed = true;
-		_hanging.value = value;
+	public pure nothrow @property @safe byte hanging(byte value) {
+		this._cached = false;
+		this._hanging.value = value;
+		if(!this._hanging.changed) {
+			this._hanging.changed = true;
+			this._changed ~= &this.encodeHanging;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _baby;
+	public pure nothrow @safe encodeHanging(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._hanging.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool baby() {
 		return _baby.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool baby(bool value) {
-		_baby.changed = true;
-		_baby.value = value;
+	public pure nothrow @property @safe bool baby(bool value) {
+		this._cached = false;
+		this._baby.value = value;
+		if(!this._baby.changed) {
+			this._baby.changed = true;
+			this._changed ~= &this.encodeBaby;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _horseFlags;
+	public pure nothrow @safe encodeBaby(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._baby.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte horseFlags() {
 		return _horseFlags.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte horseFlags(byte value) {
-		_horseFlags.changed = true;
-		_horseFlags.value = value;
+	public pure nothrow @property @safe byte horseFlags(byte value) {
+		this._cached = false;
+		this._horseFlags.value = value;
+		if(!this._horseFlags.changed) {
+			this._horseFlags.changed = true;
+			this._changed ~= &this.encodeHorseFlags;
+		}
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool horseTamed() {
+	public pure nothrow @safe encodeHorseFlags(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._horseFlags.value);
+		}
+	}
+
+	public pure nothrow @property @safe bool horseTamed() {
 		return (_horseFlags.value >>> 1) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool horseTamed(bool value) {
-		_horseFlags.changed = true;
-		if(value) _horseFlags.value |= (cast(byte)true << 1);
-		else _horseFlags.value &= ~(cast(byte)true << 1);
+	public pure nothrow @property @safe bool horseTamed(bool value) {
+		if(value) horseFlags = cast(byte)(_horseFlags.value | (cast(byte)true << 1));
+		else horseFlags = cast(byte)(_horseFlags.value & ~(cast(byte)true << 1));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool horseSaddled() {
+	public pure nothrow @property @safe bool horseSaddled() {
 		return (_horseFlags.value >>> 2) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool horseSaddled(bool value) {
-		_horseFlags.changed = true;
-		if(value) _horseFlags.value |= (cast(byte)true << 2);
-		else _horseFlags.value &= ~(cast(byte)true << 2);
+	public pure nothrow @property @safe bool horseSaddled(bool value) {
+		if(value) horseFlags = cast(byte)(_horseFlags.value | (cast(byte)true << 2));
+		else horseFlags = cast(byte)(_horseFlags.value & ~(cast(byte)true << 2));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool horseChested() {
+	public pure nothrow @property @safe bool horseChested() {
 		return (_horseFlags.value >>> 3) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool horseChested(bool value) {
-		_horseFlags.changed = true;
-		if(value) _horseFlags.value |= (cast(byte)true << 3);
-		else _horseFlags.value &= ~(cast(byte)true << 3);
+	public pure nothrow @property @safe bool horseChested(bool value) {
+		if(value) horseFlags = cast(byte)(_horseFlags.value | (cast(byte)true << 3));
+		else horseFlags = cast(byte)(_horseFlags.value & ~(cast(byte)true << 3));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool horseEating() {
+	public pure nothrow @property @safe bool horseEating() {
 		return (_horseFlags.value >>> 5) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool horseEating(bool value) {
-		_horseFlags.changed = true;
-		if(value) _horseFlags.value |= (cast(byte)true << 5);
-		else _horseFlags.value &= ~(cast(byte)true << 5);
+	public pure nothrow @property @safe bool horseEating(bool value) {
+		if(value) horseFlags = cast(byte)(_horseFlags.value | (cast(byte)true << 5));
+		else horseFlags = cast(byte)(_horseFlags.value & ~(cast(byte)true << 5));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool horseRearing() {
+	public pure nothrow @property @safe bool horseRearing() {
 		return (_horseFlags.value >>> 6) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool horseRearing(bool value) {
-		_horseFlags.changed = true;
-		if(value) _horseFlags.value |= (cast(byte)true << 6);
-		else _horseFlags.value &= ~(cast(byte)true << 6);
+	public pure nothrow @property @safe bool horseRearing(bool value) {
+		if(value) horseFlags = cast(byte)(_horseFlags.value | (cast(byte)true << 6));
+		else horseFlags = cast(byte)(_horseFlags.value & ~(cast(byte)true << 6));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool mouthOpen() {
+	public pure nothrow @property @safe bool mouthOpen() {
 		return (_horseFlags.value >>> 7) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool mouthOpen(bool value) {
-		_horseFlags.changed = true;
-		if(value) _horseFlags.value |= (cast(byte)true << 7);
-		else _horseFlags.value &= ~(cast(byte)true << 7);
+	public pure nothrow @property @safe bool mouthOpen(bool value) {
+		if(value) horseFlags = cast(byte)(_horseFlags.value | (cast(byte)true << 7));
+		else horseFlags = cast(byte)(_horseFlags.value & ~(cast(byte)true << 7));
 		return value;
 	}
-
-	private Changed!(sul.protocol.minecraft316.types.OptionalUuid) _ownerUuid;
 
 	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalUuid ownerUuid() {
 		return _ownerUuid.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalUuid ownerUuid(sul.protocol.minecraft316.types.OptionalUuid value) {
-		_ownerUuid.changed = true;
-		_ownerUuid.value = value;
+	public pure nothrow @property @safe sul.protocol.minecraft316.types.OptionalUuid ownerUuid(sul.protocol.minecraft316.types.OptionalUuid value) {
+		this._cached = false;
+		this._ownerUuid.value = value;
+		if(!this._ownerUuid.changed) {
+			this._ownerUuid.changed = true;
+			this._changed ~= &this.encodeOwnerUuid;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _horseVariant;
+	public pure nothrow @safe encodeOwnerUuid(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(14);
+			writeBigEndianUbyte(11);
+			this._ownerUuid.value.encode(bufferInstance);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint horseVariant() {
 		return _horseVariant.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint horseVariant(uint value) {
-		_horseVariant.changed = true;
-		_horseVariant.value = value;
+	public pure nothrow @property @safe uint horseVariant(uint value) {
+		this._cached = false;
+		this._horseVariant.value = value;
+		if(!this._horseVariant.changed) {
+			this._horseVariant.changed = true;
+			this._changed ~= &this.encodeHorseVariant;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _horseArmor;
+	public pure nothrow @safe encodeHorseVariant(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(15);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._horseVariant.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint horseArmor() {
 		return _horseArmor.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint horseArmor(uint value) {
-		_horseArmor.changed = true;
-		_horseArmor.value = value;
+	public pure nothrow @property @safe uint horseArmor(uint value) {
+		this._cached = false;
+		this._horseArmor.value = value;
+		if(!this._horseArmor.changed) {
+			this._horseArmor.changed = true;
+			this._changed ~= &this.encodeHorseArmor;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _chested;
+	public pure nothrow @safe encodeHorseArmor(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(16);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._horseArmor.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool chested() {
 		return _chested.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool chested(bool value) {
-		_chested.changed = true;
-		_chested.value = value;
+	public pure nothrow @property @safe bool chested(bool value) {
+		this._cached = false;
+		this._chested.value = value;
+		if(!this._chested.changed) {
+			this._chested.changed = true;
+			this._changed ~= &this.encodeChested;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _llamaStrength;
+	public pure nothrow @safe encodeChested(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(15);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._chested.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint llamaStrength() {
 		return _llamaStrength.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint llamaStrength(uint value) {
-		_llamaStrength.changed = true;
-		_llamaStrength.value = value;
+	public pure nothrow @property @safe uint llamaStrength(uint value) {
+		this._cached = false;
+		this._llamaStrength.value = value;
+		if(!this._llamaStrength.changed) {
+			this._llamaStrength.changed = true;
+			this._changed ~= &this.encodeLlamaStrength;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _carpetColor = tuple(cast(uint)-1, false);
+	public pure nothrow @safe encodeLlamaStrength(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(16);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._llamaStrength.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint carpetColor() {
 		return _carpetColor.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint carpetColor(uint value) {
-		_carpetColor.changed = true;
-		_carpetColor.value = value;
+	public pure nothrow @property @safe uint carpetColor(uint value) {
+		this._cached = false;
+		this._carpetColor.value = value;
+		if(!this._carpetColor.changed) {
+			this._carpetColor.changed = true;
+			this._changed ~= &this.encodeCarpetColor;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _llamaVariant;
+	public pure nothrow @safe encodeCarpetColor(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(17);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._carpetColor.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint llamaVariant() {
 		return _llamaVariant.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint llamaVariant(uint value) {
-		_llamaVariant.changed = true;
-		_llamaVariant.value = value;
+	public pure nothrow @property @safe uint llamaVariant(uint value) {
+		this._cached = false;
+		this._llamaVariant.value = value;
+		if(!this._llamaVariant.changed) {
+			this._llamaVariant.changed = true;
+			this._changed ~= &this.encodeLlamaVariant;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _pigSaddled;
+	public pure nothrow @safe encodeLlamaVariant(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(18);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._llamaVariant.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool pigSaddled() {
 		return _pigSaddled.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool pigSaddled(bool value) {
-		_pigSaddled.changed = true;
-		_pigSaddled.value = value;
+	public pure nothrow @property @safe bool pigSaddled(bool value) {
+		this._cached = false;
+		this._pigSaddled.value = value;
+		if(!this._pigSaddled.changed) {
+			this._pigSaddled.changed = true;
+			this._changed ~= &this.encodePigSaddled;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _carrotBoost;
+	public pure nothrow @safe encodePigSaddled(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._pigSaddled.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint carrotBoost() {
 		return _carrotBoost.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint carrotBoost(uint value) {
-		_carrotBoost.changed = true;
-		_carrotBoost.value = value;
+	public pure nothrow @property @safe uint carrotBoost(uint value) {
+		this._cached = false;
+		this._carrotBoost.value = value;
+		if(!this._carrotBoost.changed) {
+			this._carrotBoost.changed = true;
+			this._changed ~= &this.encodeCarrotBoost;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _rabbitVariant;
+	public pure nothrow @safe encodeCarrotBoost(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(14);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._carrotBoost.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint rabbitVariant() {
 		return _rabbitVariant.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint rabbitVariant(uint value) {
-		_rabbitVariant.changed = true;
-		_rabbitVariant.value = value;
+	public pure nothrow @property @safe uint rabbitVariant(uint value) {
+		this._cached = false;
+		this._rabbitVariant.value = value;
+		if(!this._rabbitVariant.changed) {
+			this._rabbitVariant.changed = true;
+			this._changed ~= &this.encodeRabbitVariant;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _standingUp;
+	public pure nothrow @safe encodeRabbitVariant(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._rabbitVariant.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool standingUp() {
 		return _standingUp.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool standingUp(bool value) {
-		_standingUp.changed = true;
-		_standingUp.value = value;
+	public pure nothrow @property @safe bool standingUp(bool value) {
+		this._cached = false;
+		this._standingUp.value = value;
+		if(!this._standingUp.changed) {
+			this._standingUp.changed = true;
+			this._changed ~= &this.encodeStandingUp;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _sheepFlagsAndColor;
+	public pure nothrow @safe encodeStandingUp(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._standingUp.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte sheepFlagsAndColor() {
 		return _sheepFlagsAndColor.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte sheepFlagsAndColor(byte value) {
-		_sheepFlagsAndColor.changed = true;
-		_sheepFlagsAndColor.value = value;
+	public pure nothrow @property @safe byte sheepFlagsAndColor(byte value) {
+		this._cached = false;
+		this._sheepFlagsAndColor.value = value;
+		if(!this._sheepFlagsAndColor.changed) {
+			this._sheepFlagsAndColor.changed = true;
+			this._changed ~= &this.encodeSheepFlagsAndColor;
+		}
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool sheared() {
+	public pure nothrow @safe encodeSheepFlagsAndColor(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._sheepFlagsAndColor.value);
+		}
+	}
+
+	public pure nothrow @property @safe bool sheared() {
 		return (_sheepFlagsAndColor.value >>> 7) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool sheared(bool value) {
-		_sheepFlagsAndColor.changed = true;
-		if(value) _sheepFlagsAndColor.value |= (cast(byte)true << 7);
-		else _sheepFlagsAndColor.value &= ~(cast(byte)true << 7);
+	public pure nothrow @property @safe bool sheared(bool value) {
+		if(value) sheepFlagsAndColor = cast(byte)(_sheepFlagsAndColor.value | (cast(byte)true << 7));
+		else sheepFlagsAndColor = cast(byte)(_sheepFlagsAndColor.value & ~(cast(byte)true << 7));
 		return value;
 	}
-
-	private Changed!(byte) _tameableFlags;
 
 	public pure nothrow @property @safe @nogc byte tameableFlags() {
 		return _tameableFlags.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte tameableFlags(byte value) {
-		_tameableFlags.changed = true;
-		_tameableFlags.value = value;
+	public pure nothrow @property @safe byte tameableFlags(byte value) {
+		this._cached = false;
+		this._tameableFlags.value = value;
+		if(!this._tameableFlags.changed) {
+			this._tameableFlags.changed = true;
+			this._changed ~= &this.encodeTameableFlags;
+		}
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool sitting() {
+	public pure nothrow @safe encodeTameableFlags(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._tameableFlags.value);
+		}
+	}
+
+	public pure nothrow @property @safe bool sitting() {
 		return (_tameableFlags.value >>> 0) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool sitting(bool value) {
-		_tameableFlags.changed = true;
-		if(value) _tameableFlags.value |= (cast(byte)true << 0);
-		else _tameableFlags.value &= ~(cast(byte)true << 0);
+	public pure nothrow @property @safe bool sitting(bool value) {
+		if(value) tameableFlags = cast(byte)(_tameableFlags.value | (cast(byte)true << 0));
+		else tameableFlags = cast(byte)(_tameableFlags.value & ~(cast(byte)true << 0));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool angry() {
+	public pure nothrow @property @safe bool angry() {
 		return (_tameableFlags.value >>> 1) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool angry(bool value) {
-		_tameableFlags.changed = true;
-		if(value) _tameableFlags.value |= (cast(byte)true << 1);
-		else _tameableFlags.value &= ~(cast(byte)true << 1);
+	public pure nothrow @property @safe bool angry(bool value) {
+		if(value) tameableFlags = cast(byte)(_tameableFlags.value | (cast(byte)true << 1));
+		else tameableFlags = cast(byte)(_tameableFlags.value & ~(cast(byte)true << 1));
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool tamed() {
+	public pure nothrow @property @safe bool tamed() {
 		return (_tameableFlags.value >>> 2) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool tamed(bool value) {
-		_tameableFlags.changed = true;
-		if(value) _tameableFlags.value |= (cast(byte)true << 2);
-		else _tameableFlags.value &= ~(cast(byte)true << 2);
+	public pure nothrow @property @safe bool tamed(bool value) {
+		if(value) tameableFlags = cast(byte)(_tameableFlags.value | (cast(byte)true << 2));
+		else tameableFlags = cast(byte)(_tameableFlags.value & ~(cast(byte)true << 2));
 		return value;
 	}
-
-	private Changed!(uint) _ocelotVariant;
 
 	public pure nothrow @property @safe @nogc uint ocelotVariant() {
 		return _ocelotVariant.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint ocelotVariant(uint value) {
-		_ocelotVariant.changed = true;
-		_ocelotVariant.value = value;
+	public pure nothrow @property @safe uint ocelotVariant(uint value) {
+		this._cached = false;
+		this._ocelotVariant.value = value;
+		if(!this._ocelotVariant.changed) {
+			this._ocelotVariant.changed = true;
+			this._changed ~= &this.encodeOcelotVariant;
+		}
 		return value;
 	}
 
-	private Changed!(float) _wolfHealth;
+	public pure nothrow @safe encodeOcelotVariant(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(15);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._ocelotVariant.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc float wolfHealth() {
 		return _wolfHealth.value;
 	}
 
-	public pure nothrow @property @safe @nogc float wolfHealth(float value) {
-		_wolfHealth.changed = true;
-		_wolfHealth.value = value;
+	public pure nothrow @property @safe float wolfHealth(float value) {
+		this._cached = false;
+		this._wolfHealth.value = value;
+		if(!this._wolfHealth.changed) {
+			this._wolfHealth.changed = true;
+			this._changed ~= &this.encodeWolfHealth;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _begging;
+	public pure nothrow @safe encodeWolfHealth(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(15);
+			writeBigEndianUbyte(2);
+			writeBigEndianFloat(this._wolfHealth.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool begging() {
 		return _begging.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool begging(bool value) {
-		_begging.changed = true;
-		_begging.value = value;
+	public pure nothrow @property @safe bool begging(bool value) {
+		this._cached = false;
+		this._begging.value = value;
+		if(!this._begging.changed) {
+			this._begging.changed = true;
+			this._changed ~= &this.encodeBegging;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _collarColor = tuple(cast(uint)14, false);
+	public pure nothrow @safe encodeBegging(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(16);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._begging.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint collarColor() {
 		return _collarColor.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint collarColor(uint value) {
-		_collarColor.changed = true;
-		_collarColor.value = value;
+	public pure nothrow @property @safe uint collarColor(uint value) {
+		this._cached = false;
+		this._collarColor.value = value;
+		if(!this._collarColor.changed) {
+			this._collarColor.changed = true;
+			this._changed ~= &this.encodeCollarColor;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _profession;
+	public pure nothrow @safe encodeCollarColor(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(17);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._collarColor.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint profession() {
 		return _profession.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint profession(uint value) {
-		_profession.changed = true;
-		_profession.value = value;
+	public pure nothrow @property @safe uint profession(uint value) {
+		this._cached = false;
+		this._profession.value = value;
+		if(!this._profession.changed) {
+			this._profession.changed = true;
+			this._changed ~= &this.encodeProfession;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _createdByPlayer;
+	public pure nothrow @safe encodeProfession(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._profession.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte createdByPlayer() {
 		return _createdByPlayer.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte createdByPlayer(byte value) {
-		_createdByPlayer.changed = true;
-		_createdByPlayer.value = value;
+	public pure nothrow @property @safe byte createdByPlayer(byte value) {
+		this._cached = false;
+		this._createdByPlayer.value = value;
+		if(!this._createdByPlayer.changed) {
+			this._createdByPlayer.changed = true;
+			this._changed ~= &this.encodeCreatedByPlayer;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _snowmanFlags;
+	public pure nothrow @safe encodeCreatedByPlayer(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._createdByPlayer.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte snowmanFlags() {
 		return _snowmanFlags.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte snowmanFlags(byte value) {
-		_snowmanFlags.changed = true;
-		_snowmanFlags.value = value;
+	public pure nothrow @property @safe byte snowmanFlags(byte value) {
+		this._cached = false;
+		this._snowmanFlags.value = value;
+		if(!this._snowmanFlags.changed) {
+			this._snowmanFlags.changed = true;
+			this._changed ~= &this.encodeSnowmanFlags;
+		}
 		return value;
 	}
 
-	public pure nothrow @property @safe @nogc bool pumpkinless() {
+	public pure nothrow @safe encodeSnowmanFlags(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._snowmanFlags.value);
+		}
+	}
+
+	public pure nothrow @property @safe bool pumpkinless() {
 		return (_snowmanFlags.value >>> 4) & 1;
 	}
 
-	public pure nothrow @property @safe @nogc bool pumpkinless(bool value) {
-		_snowmanFlags.changed = true;
-		if(value) _snowmanFlags.value |= (cast(byte)true << 4);
-		else _snowmanFlags.value &= ~(cast(byte)true << 4);
+	public pure nothrow @property @safe bool pumpkinless(bool value) {
+		if(value) snowmanFlags = cast(byte)(_snowmanFlags.value | (cast(byte)true << 4));
+		else snowmanFlags = cast(byte)(_snowmanFlags.value & ~(cast(byte)true << 4));
 		return value;
 	}
-
-	private Changed!(uint) _shulkerDirection;
 
 	public pure nothrow @property @safe @nogc uint shulkerDirection() {
 		return _shulkerDirection.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint shulkerDirection(uint value) {
-		_shulkerDirection.changed = true;
-		_shulkerDirection.value = value;
+	public pure nothrow @property @safe uint shulkerDirection(uint value) {
+		this._cached = false;
+		this._shulkerDirection.value = value;
+		if(!this._shulkerDirection.changed) {
+			this._shulkerDirection.changed = true;
+			this._changed ~= &this.encodeShulkerDirection;
+		}
 		return value;
 	}
 
-	private Changed!(sul.protocol.minecraft316.types.OptionalPosition) _shulkerAttachment;
+	public pure nothrow @safe encodeShulkerDirection(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(10);
+			writeBytes(varuint.encode(this._shulkerDirection.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition shulkerAttachment() {
 		return _shulkerAttachment.value;
 	}
 
-	public pure nothrow @property @safe @nogc sul.protocol.minecraft316.types.OptionalPosition shulkerAttachment(sul.protocol.minecraft316.types.OptionalPosition value) {
-		_shulkerAttachment.changed = true;
-		_shulkerAttachment.value = value;
+	public pure nothrow @property @safe sul.protocol.minecraft316.types.OptionalPosition shulkerAttachment(sul.protocol.minecraft316.types.OptionalPosition value) {
+		this._cached = false;
+		this._shulkerAttachment.value = value;
+		if(!this._shulkerAttachment.changed) {
+			this._shulkerAttachment.changed = true;
+			this._changed ~= &this.encodeShulkerAttachment;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _shulkerShieldHeight;
+	public pure nothrow @safe encodeShulkerAttachment(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(9);
+			this._shulkerAttachment.value.encode(bufferInstance);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte shulkerShieldHeight() {
 		return _shulkerShieldHeight.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte shulkerShieldHeight(byte value) {
-		_shulkerShieldHeight.changed = true;
-		_shulkerShieldHeight.value = value;
+	public pure nothrow @property @safe byte shulkerShieldHeight(byte value) {
+		this._cached = false;
+		this._shulkerShieldHeight.value = value;
+		if(!this._shulkerShieldHeight.changed) {
+			this._shulkerShieldHeight.changed = true;
+			this._changed ~= &this.encodeShulkerShieldHeight;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _shulkerColor;
+	public pure nothrow @safe encodeShulkerShieldHeight(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(14);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._shulkerShieldHeight.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte shulkerColor() {
 		return _shulkerColor.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte shulkerColor(byte value) {
-		_shulkerColor.changed = true;
-		_shulkerColor.value = value;
+	public pure nothrow @property @safe byte shulkerColor(byte value) {
+		this._cached = false;
+		this._shulkerColor.value = value;
+		if(!this._shulkerColor.changed) {
+			this._shulkerColor.changed = true;
+			this._changed ~= &this.encodeShulkerColor;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _blazeOnFire;
+	public pure nothrow @safe encodeShulkerColor(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(15);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._shulkerColor.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte blazeOnFire() {
 		return _blazeOnFire.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte blazeOnFire(byte value) {
-		_blazeOnFire.changed = true;
-		_blazeOnFire.value = value;
+	public pure nothrow @property @safe byte blazeOnFire(byte value) {
+		this._cached = false;
+		this._blazeOnFire.value = value;
+		if(!this._blazeOnFire.changed) {
+			this._blazeOnFire.changed = true;
+			this._changed ~= &this.encodeBlazeOnFire;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _creeperState = tuple(cast(uint)-1, false);
+	public pure nothrow @safe encodeBlazeOnFire(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._blazeOnFire.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint creeperState() {
 		return _creeperState.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint creeperState(uint value) {
-		_creeperState.changed = true;
-		_creeperState.value = value;
+	public pure nothrow @property @safe uint creeperState(uint value) {
+		this._cached = false;
+		this._creeperState.value = value;
+		if(!this._creeperState.changed) {
+			this._creeperState.changed = true;
+			this._changed ~= &this.encodeCreeperState;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _charged;
+	public pure nothrow @safe encodeCreeperState(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._creeperState.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool charged() {
 		return _charged.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool charged(bool value) {
-		_charged.changed = true;
-		_charged.value = value;
+	public pure nothrow @property @safe bool charged(bool value) {
+		this._cached = false;
+		this._charged.value = value;
+		if(!this._charged.changed) {
+			this._charged.changed = true;
+			this._changed ~= &this.encodeCharged;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _ignited;
+	public pure nothrow @safe encodeCharged(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._charged.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool ignited() {
 		return _ignited.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool ignited(bool value) {
-		_ignited.changed = true;
-		_ignited.value = value;
+	public pure nothrow @property @safe bool ignited(bool value) {
+		this._cached = false;
+		this._ignited.value = value;
+		if(!this._ignited.changed) {
+			this._ignited.changed = true;
+			this._changed ~= &this.encodeIgnited;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _rectractingSpikes;
+	public pure nothrow @safe encodeIgnited(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(14);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._ignited.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool rectractingSpikes() {
 		return _rectractingSpikes.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool rectractingSpikes(bool value) {
-		_rectractingSpikes.changed = true;
-		_rectractingSpikes.value = value;
+	public pure nothrow @property @safe bool rectractingSpikes(bool value) {
+		this._cached = false;
+		this._rectractingSpikes.value = value;
+		if(!this._rectractingSpikes.changed) {
+			this._rectractingSpikes.changed = true;
+			this._changed ~= &this.encodeRectractingSpikes;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _guardianTarget;
+	public pure nothrow @safe encodeRectractingSpikes(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._rectractingSpikes.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint guardianTarget() {
 		return _guardianTarget.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint guardianTarget(uint value) {
-		_guardianTarget.changed = true;
-		_guardianTarget.value = value;
+	public pure nothrow @property @safe uint guardianTarget(uint value) {
+		this._cached = false;
+		this._guardianTarget.value = value;
+		if(!this._guardianTarget.changed) {
+			this._guardianTarget.changed = true;
+			this._changed ~= &this.encodeGuardianTarget;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _spell;
+	public pure nothrow @safe encodeGuardianTarget(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._guardianTarget.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte spell() {
 		return _spell.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte spell(byte value) {
-		_spell.changed = true;
-		_spell.value = value;
+	public pure nothrow @property @safe byte spell(byte value) {
+		this._cached = false;
+		this._spell.value = value;
+		if(!this._spell.changed) {
+			this._spell.changed = true;
+			this._changed ~= &this.encodeSpell;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _attackMode;
+	public pure nothrow @safe encodeSpell(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._spell.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte attackMode() {
 		return _attackMode.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte attackMode(byte value) {
-		_attackMode.changed = true;
-		_attackMode.value = value;
+	public pure nothrow @property @safe byte attackMode(byte value) {
+		this._cached = false;
+		this._attackMode.value = value;
+		if(!this._attackMode.changed) {
+			this._attackMode.changed = true;
+			this._changed ~= &this.encodeAttackMode;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _swingingArms;
+	public pure nothrow @safe encodeAttackMode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._attackMode.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool swingingArms() {
 		return _swingingArms.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool swingingArms(bool value) {
-		_swingingArms.changed = true;
-		_swingingArms.value = value;
+	public pure nothrow @property @safe bool swingingArms(bool value) {
+		this._cached = false;
+		this._swingingArms.value = value;
+		if(!this._swingingArms.changed) {
+			this._swingingArms.changed = true;
+			this._changed ~= &this.encodeSwingingArms;
+		}
 		return value;
 	}
 
-	private Changed!(byte) _climbing;
+	public pure nothrow @safe encodeSwingingArms(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._swingingArms.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc byte climbing() {
 		return _climbing.value;
 	}
 
-	public pure nothrow @property @safe @nogc byte climbing(byte value) {
-		_climbing.changed = true;
-		_climbing.value = value;
+	public pure nothrow @property @safe byte climbing(byte value) {
+		this._cached = false;
+		this._climbing.value = value;
+		if(!this._climbing.changed) {
+			this._climbing.changed = true;
+			this._changed ~= &this.encodeClimbing;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _centerHeadTarget;
+	public pure nothrow @safe encodeClimbing(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(0);
+			writeBigEndianByte(this._climbing.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint centerHeadTarget() {
 		return _centerHeadTarget.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint centerHeadTarget(uint value) {
-		_centerHeadTarget.changed = true;
-		_centerHeadTarget.value = value;
+	public pure nothrow @property @safe uint centerHeadTarget(uint value) {
+		this._cached = false;
+		this._centerHeadTarget.value = value;
+		if(!this._centerHeadTarget.changed) {
+			this._centerHeadTarget.changed = true;
+			this._changed ~= &this.encodeCenterHeadTarget;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _leftHeadTarget;
+	public pure nothrow @safe encodeCenterHeadTarget(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._centerHeadTarget.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint leftHeadTarget() {
 		return _leftHeadTarget.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint leftHeadTarget(uint value) {
-		_leftHeadTarget.changed = true;
-		_leftHeadTarget.value = value;
+	public pure nothrow @property @safe uint leftHeadTarget(uint value) {
+		this._cached = false;
+		this._leftHeadTarget.value = value;
+		if(!this._leftHeadTarget.changed) {
+			this._leftHeadTarget.changed = true;
+			this._changed ~= &this.encodeLeftHeadTarget;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _rightHeadTarget;
+	public pure nothrow @safe encodeLeftHeadTarget(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._leftHeadTarget.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint rightHeadTarget() {
 		return _rightHeadTarget.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint rightHeadTarget(uint value) {
-		_rightHeadTarget.changed = true;
-		_rightHeadTarget.value = value;
+	public pure nothrow @property @safe uint rightHeadTarget(uint value) {
+		this._cached = false;
+		this._rightHeadTarget.value = value;
+		if(!this._rightHeadTarget.changed) {
+			this._rightHeadTarget.changed = true;
+			this._changed ~= &this.encodeRightHeadTarget;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _invulnerableTime;
+	public pure nothrow @safe encodeRightHeadTarget(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(14);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._rightHeadTarget.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint invulnerableTime() {
 		return _invulnerableTime.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint invulnerableTime(uint value) {
-		_invulnerableTime.changed = true;
-		_invulnerableTime.value = value;
+	public pure nothrow @property @safe uint invulnerableTime(uint value) {
+		this._cached = false;
+		this._invulnerableTime.value = value;
+		if(!this._invulnerableTime.changed) {
+			this._invulnerableTime.changed = true;
+			this._changed ~= &this.encodeInvulnerableTime;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _handsHeldUp;
+	public pure nothrow @safe encodeInvulnerableTime(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(15);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._invulnerableTime.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool handsHeldUp() {
 		return _handsHeldUp.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool handsHeldUp(bool value) {
-		_handsHeldUp.changed = true;
-		_handsHeldUp.value = value;
+	public pure nothrow @property @safe bool handsHeldUp(bool value) {
+		this._cached = false;
+		this._handsHeldUp.value = value;
+		if(!this._handsHeldUp.changed) {
+			this._handsHeldUp.changed = true;
+			this._changed ~= &this.encodeHandsHeldUp;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _converting;
+	public pure nothrow @safe encodeHandsHeldUp(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(14);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._handsHeldUp.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool converting() {
 		return _converting.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool converting(bool value) {
-		_converting.changed = true;
-		_converting.value = value;
+	public pure nothrow @property @safe bool converting(bool value) {
+		this._cached = false;
+		this._converting.value = value;
+		if(!this._converting.changed) {
+			this._converting.changed = true;
+			this._changed ~= &this.encodeConverting;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _zombieVillagerProfession;
+	public pure nothrow @safe encodeConverting(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(15);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._converting.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint zombieVillagerProfession() {
 		return _zombieVillagerProfession.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint zombieVillagerProfession(uint value) {
-		_zombieVillagerProfession.changed = true;
-		_zombieVillagerProfession.value = value;
+	public pure nothrow @property @safe uint zombieVillagerProfession(uint value) {
+		this._cached = false;
+		this._zombieVillagerProfession.value = value;
+		if(!this._zombieVillagerProfession.changed) {
+			this._zombieVillagerProfession.changed = true;
+			this._changed ~= &this.encodeZombieVillagerProfession;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _carriedBlock;
+	public pure nothrow @safe encodeZombieVillagerProfession(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(16);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._zombieVillagerProfession.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint carriedBlock() {
 		return _carriedBlock.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint carriedBlock(uint value) {
-		_carriedBlock.changed = true;
-		_carriedBlock.value = value;
+	public pure nothrow @property @safe uint carriedBlock(uint value) {
+		this._cached = false;
+		this._carriedBlock.value = value;
+		if(!this._carriedBlock.changed) {
+			this._carriedBlock.changed = true;
+			this._changed ~= &this.encodeCarriedBlock;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _screaming;
+	public pure nothrow @safe encodeCarriedBlock(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(12);
+			writeBytes(varuint.encode(this._carriedBlock.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool screaming() {
 		return _screaming.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool screaming(bool value) {
-		_screaming.changed = true;
-		_screaming.value = value;
+	public pure nothrow @property @safe bool screaming(bool value) {
+		this._cached = false;
+		this._screaming.value = value;
+		if(!this._screaming.changed) {
+			this._screaming.changed = true;
+			this._changed ~= &this.encodeScreaming;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _dragonPhase;
+	public pure nothrow @safe encodeScreaming(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._screaming.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint dragonPhase() {
 		return _dragonPhase.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint dragonPhase(uint value) {
-		_dragonPhase.changed = true;
-		_dragonPhase.value = value;
+	public pure nothrow @property @safe uint dragonPhase(uint value) {
+		this._cached = false;
+		this._dragonPhase.value = value;
+		if(!this._dragonPhase.changed) {
+			this._dragonPhase.changed = true;
+			this._changed ~= &this.encodeDragonPhase;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _ghastAttacking;
+	public pure nothrow @safe encodeDragonPhase(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._dragonPhase.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool ghastAttacking() {
 		return _ghastAttacking.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool ghastAttacking(bool value) {
-		_ghastAttacking.changed = true;
-		_ghastAttacking.value = value;
+	public pure nothrow @property @safe bool ghastAttacking(bool value) {
+		this._cached = false;
+		this._ghastAttacking.value = value;
+		if(!this._ghastAttacking.changed) {
+			this._ghastAttacking.changed = true;
+			this._changed ~= &this.encodeGhastAttacking;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _slimeSize = tuple(cast(uint)1, false);
+	public pure nothrow @safe encodeGhastAttacking(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._ghastAttacking.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint slimeSize() {
 		return _slimeSize.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint slimeSize(uint value) {
-		_slimeSize.changed = true;
-		_slimeSize.value = value;
+	public pure nothrow @property @safe uint slimeSize(uint value) {
+		this._cached = false;
+		this._slimeSize.value = value;
+		if(!this._slimeSize.changed) {
+			this._slimeSize.changed = true;
+			this._changed ~= &this.encodeSlimeSize;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _shakingPower;
+	public pure nothrow @safe encodeSlimeSize(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._slimeSize.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint shakingPower() {
 		return _shakingPower.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint shakingPower(uint value) {
-		_shakingPower.changed = true;
-		_shakingPower.value = value;
+	public pure nothrow @property @safe uint shakingPower(uint value) {
+		this._cached = false;
+		this._shakingPower.value = value;
+		if(!this._shakingPower.changed) {
+			this._shakingPower.changed = true;
+			this._changed ~= &this.encodeShakingPower;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _shakingDirection;
+	public pure nothrow @safe encodeShakingPower(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._shakingPower.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint shakingDirection() {
 		return _shakingDirection.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint shakingDirection(uint value) {
-		_shakingDirection.changed = true;
-		_shakingDirection.value = value;
+	public pure nothrow @property @safe uint shakingDirection(uint value) {
+		this._cached = false;
+		this._shakingDirection.value = value;
+		if(!this._shakingDirection.changed) {
+			this._shakingDirection.changed = true;
+			this._changed ~= &this.encodeShakingDirection;
+		}
 		return value;
 	}
 
-	private Changed!(float) _shakingMultiplier = tuple(cast(float)0, false);
+	public pure nothrow @safe encodeShakingDirection(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(7);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._shakingDirection.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc float shakingMultiplier() {
 		return _shakingMultiplier.value;
 	}
 
-	public pure nothrow @property @safe @nogc float shakingMultiplier(float value) {
-		_shakingMultiplier.changed = true;
-		_shakingMultiplier.value = value;
+	public pure nothrow @property @safe float shakingMultiplier(float value) {
+		this._cached = false;
+		this._shakingMultiplier.value = value;
+		if(!this._shakingMultiplier.changed) {
+			this._shakingMultiplier.changed = true;
+			this._changed ~= &this.encodeShakingMultiplier;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _minecartBlock;
+	public pure nothrow @safe encodeShakingMultiplier(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(8);
+			writeBigEndianUbyte(2);
+			writeBigEndianFloat(this._shakingMultiplier.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint minecartBlock() {
 		return _minecartBlock.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint minecartBlock(uint value) {
-		_minecartBlock.changed = true;
-		_minecartBlock.value = value;
+	public pure nothrow @property @safe uint minecartBlock(uint value) {
+		this._cached = false;
+		this._minecartBlock.value = value;
+		if(!this._minecartBlock.changed) {
+			this._minecartBlock.changed = true;
+			this._changed ~= &this.encodeMinecartBlock;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _minecartBlockPosition = tuple(cast(uint)6, false);
+	public pure nothrow @safe encodeMinecartBlock(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(9);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._minecartBlock.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint minecartBlockPosition() {
 		return _minecartBlockPosition.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint minecartBlockPosition(uint value) {
-		_minecartBlockPosition.changed = true;
-		_minecartBlockPosition.value = value;
+	public pure nothrow @property @safe uint minecartBlockPosition(uint value) {
+		this._cached = false;
+		this._minecartBlockPosition.value = value;
+		if(!this._minecartBlockPosition.changed) {
+			this._minecartBlockPosition.changed = true;
+			this._changed ~= &this.encodeMinecartBlockPosition;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _minecartCustomBlock;
+	public pure nothrow @safe encodeMinecartBlockPosition(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(10);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._minecartBlockPosition.value));
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool minecartCustomBlock() {
 		return _minecartCustomBlock.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool minecartCustomBlock(bool value) {
-		_minecartCustomBlock.changed = true;
-		_minecartCustomBlock.value = value;
+	public pure nothrow @property @safe bool minecartCustomBlock(bool value) {
+		this._cached = false;
+		this._minecartCustomBlock.value = value;
+		if(!this._minecartCustomBlock.changed) {
+			this._minecartCustomBlock.changed = true;
+			this._changed ~= &this.encodeMinecartCustomBlock;
+		}
 		return value;
 	}
 
-	private Changed!(bool) _furnacePowered;
+	public pure nothrow @safe encodeMinecartCustomBlock(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(11);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._minecartCustomBlock.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc bool furnacePowered() {
 		return _furnacePowered.value;
 	}
 
-	public pure nothrow @property @safe @nogc bool furnacePowered(bool value) {
-		_furnacePowered.changed = true;
-		_furnacePowered.value = value;
+	public pure nothrow @property @safe bool furnacePowered(bool value) {
+		this._cached = false;
+		this._furnacePowered.value = value;
+		if(!this._furnacePowered.changed) {
+			this._furnacePowered.changed = true;
+			this._changed ~= &this.encodeFurnacePowered;
+		}
 		return value;
 	}
 
-	private Changed!(string) _command;
+	public pure nothrow @safe encodeFurnacePowered(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(6);
+			writeBigEndianBool(this._furnacePowered.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc string command() {
 		return _command.value;
 	}
 
-	public pure nothrow @property @safe @nogc string command(string value) {
-		_command.changed = true;
-		_command.value = value;
+	public pure nothrow @property @safe string command(string value) {
+		this._cached = false;
+		this._command.value = value;
+		if(!this._command.changed) {
+			this._command.changed = true;
+			this._changed ~= &this.encodeCommand;
+		}
 		return value;
 	}
 
-	private Changed!(string) _lastOutput;
+	public pure nothrow @safe encodeCommand(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(12);
+			writeBigEndianUbyte(3);
+			writeBytes(varuint.encode(cast(uint)this._command.value.length)); writeString(this._command.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc string lastOutput() {
 		return _lastOutput.value;
 	}
 
-	public pure nothrow @property @safe @nogc string lastOutput(string value) {
-		_lastOutput.changed = true;
-		_lastOutput.value = value;
+	public pure nothrow @property @safe string lastOutput(string value) {
+		this._cached = false;
+		this._lastOutput.value = value;
+		if(!this._lastOutput.changed) {
+			this._lastOutput.changed = true;
+			this._changed ~= &this.encodeLastOutput;
+		}
 		return value;
 	}
 
-	private Changed!(uint) _fuseTime;
+	public pure nothrow @safe encodeLastOutput(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(13);
+			writeBigEndianUbyte(4);
+			writeBytes(varuint.encode(cast(uint)this._lastOutput.value.length)); writeString(this._lastOutput.value);
+		}
+	}
 
 	public pure nothrow @property @safe @nogc uint fuseTime() {
 		return _fuseTime.value;
 	}
 
-	public pure nothrow @property @safe @nogc uint fuseTime(uint value) {
-		_fuseTime.changed = true;
-		_fuseTime.value = value;
+	public pure nothrow @property @safe uint fuseTime(uint value) {
+		this._cached = false;
+		this._fuseTime.value = value;
+		if(!this._fuseTime.changed) {
+			this._fuseTime.changed = true;
+			this._changed ~= &this.encodeFuseTime;
+		}
 		return value;
+	}
+
+	public pure nothrow @safe encodeFuseTime(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(6);
+			writeBigEndianUbyte(1);
+			writeBytes(varuint.encode(this._fuseTime.value));
+		}
 	}
 
 	public pure nothrow @safe encode(Buffer buffer) {
 		with(buffer) {
-			{ writeBigEndianUbyte(0); writeBigEndianUbyte(0); writeBigEndianByte(entityFlags); }
-			if(this._air.changed){ writeBigEndianUbyte(1); writeBigEndianUbyte(1); writeBytes(varuint.encode(air)); }
-			if(this._nametag.changed){ writeBigEndianUbyte(2); writeBigEndianUbyte(3); writeBytes(varuint.encode(cast(uint)nametag.length)); writeString(nametag); }
-			if(this._showNametag.changed){ writeBigEndianUbyte(3); writeBigEndianUbyte(6); writeBigEndianBool(showNametag); }
-			if(this._silent.changed){ writeBigEndianUbyte(4); writeBigEndianUbyte(6); writeBigEndianBool(silent); }
-			if(this._noGravity.changed){ writeBigEndianUbyte(5); writeBigEndianUbyte(6); writeBigEndianBool(noGravity); }
-			if(this._potion.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(5); potion.encode(bufferInstance); }
-			if(this._spawnPosition.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(8); writeBigEndianUlong(spawnPosition); }
-			if(this._radius.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(2); writeBigEndianFloat(radius); }
-			if(this._color.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(1); writeBytes(varuint.encode(color)); }
-			if(this._isSinglePoint.changed){ writeBigEndianUbyte(8); writeBigEndianUbyte(6); writeBigEndianBool(isSinglePoint); }
-			if(this._particleId.changed){ writeBigEndianUbyte(9); writeBigEndianUbyte(1); writeBytes(varuint.encode(particleId)); }
-			if(this._particleParameter1.changed){ writeBigEndianUbyte(10); writeBigEndianUbyte(1); writeBytes(varuint.encode(particleParameter1)); }
-			if(this._particleParameter2.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(1); writeBytes(varuint.encode(particleParameter2)); }
-			if(this._hookedEntity.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(1); writeBytes(varuint.encode(hookedEntity)); }
-			if(this._arrowFlags.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(0); writeBigEndianByte(arrowFlags); }
-			if(this._timeSinceLastHit.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(1); writeBytes(varuint.encode(timeSinceLastHit)); }
-			if(this._forwardDirection.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(1); writeBytes(varuint.encode(forwardDirection)); }
-			if(this._damageTaken.changed){ writeBigEndianUbyte(8); writeBigEndianUbyte(2); writeBigEndianFloat(damageTaken); }
-			if(this._boatVariant.changed){ writeBigEndianUbyte(9); writeBigEndianUbyte(1); writeBytes(varuint.encode(boatVariant)); }
-			if(this._rightPaddleTurning.changed){ writeBigEndianUbyte(10); writeBigEndianUbyte(6); writeBigEndianBool(rightPaddleTurning); }
-			if(this._leftPaddleTurning.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(6); writeBigEndianBool(leftPaddleTurning); }
-			if(this._beamTarget.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(9); beamTarget.encode(bufferInstance); }
-			if(this._showBottom.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(6); writeBigEndianBool(showBottom); }
-			if(this._firework.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(5); firework.encode(bufferInstance); }
-			if(this._fireworkThrower.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(1); writeBytes(varuint.encode(fireworkThrower)); }
-			if(this._item.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(5); item.encode(bufferInstance); }
-			if(this._rotation.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(1); writeBytes(varuint.encode(rotation)); }
-			if(this._livingFlags.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(0); writeBigEndianByte(livingFlags); }
-			if(this._health.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(2); writeBigEndianFloat(health); }
-			if(this._potionColor.changed){ writeBigEndianUbyte(8); writeBigEndianUbyte(1); writeBytes(varuint.encode(potionColor)); }
-			if(this._potionAmbient.changed){ writeBigEndianUbyte(9); writeBigEndianUbyte(6); writeBigEndianBool(potionAmbient); }
-			if(this._arrows.changed){ writeBigEndianUbyte(10); writeBigEndianUbyte(1); writeBytes(varuint.encode(arrows)); }
-			if(this._additionalHearts.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(2); writeBigEndianFloat(additionalHearts); }
-			if(this._score.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(1); writeBytes(varuint.encode(score)); }
-			if(this._skinParts.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(0); writeBigEndianByte(skinParts); }
-			if(this._mainHand.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(0); writeBigEndianByte(mainHand); }
-			if(this._armorStandFlags.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(0); writeBigEndianByte(armorStandFlags); }
-			if(this._headRotation.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(7); writeBigEndianFloat(headRotation.x); writeBigEndianFloat(headRotation.y); writeBigEndianFloat(headRotation.z); }
-			if(this._bodyRotation.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(7); writeBigEndianFloat(bodyRotation.x); writeBigEndianFloat(bodyRotation.y); writeBigEndianFloat(bodyRotation.z); }
-			if(this._leftArmRotation.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(7); writeBigEndianFloat(leftArmRotation.x); writeBigEndianFloat(leftArmRotation.y); writeBigEndianFloat(leftArmRotation.z); }
-			if(this._rightArmRotation.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(7); writeBigEndianFloat(rightArmRotation.x); writeBigEndianFloat(rightArmRotation.y); writeBigEndianFloat(rightArmRotation.z); }
-			if(this._leftLegRotation.changed){ writeBigEndianUbyte(16); writeBigEndianUbyte(7); writeBigEndianFloat(leftLegRotation.x); writeBigEndianFloat(leftLegRotation.y); writeBigEndianFloat(leftLegRotation.z); }
-			if(this._rightLegRotation.changed){ writeBigEndianUbyte(17); writeBigEndianUbyte(7); writeBigEndianFloat(rightLegRotation.x); writeBigEndianFloat(rightLegRotation.y); writeBigEndianFloat(rightLegRotation.z); }
-			if(this._instentientFlags.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(0); writeBigEndianByte(instentientFlags); }
-			if(this._hanging.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(hanging); }
-			if(this._baby.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(6); writeBigEndianBool(baby); }
-			if(this._horseFlags.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(0); writeBigEndianByte(horseFlags); }
-			if(this._ownerUuid.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(11); ownerUuid.encode(bufferInstance); }
-			if(this._horseVariant.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(1); writeBytes(varuint.encode(horseVariant)); }
-			if(this._horseArmor.changed){ writeBigEndianUbyte(16); writeBigEndianUbyte(1); writeBytes(varuint.encode(horseArmor)); }
-			if(this._chested.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(6); writeBigEndianBool(chested); }
-			if(this._llamaStrength.changed){ writeBigEndianUbyte(16); writeBigEndianUbyte(1); writeBytes(varuint.encode(llamaStrength)); }
-			if(this._carpetColor.changed){ writeBigEndianUbyte(17); writeBigEndianUbyte(1); writeBytes(varuint.encode(carpetColor)); }
-			if(this._llamaVariant.changed){ writeBigEndianUbyte(18); writeBigEndianUbyte(1); writeBytes(varuint.encode(llamaVariant)); }
-			if(this._pigSaddled.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(6); writeBigEndianBool(pigSaddled); }
-			if(this._carrotBoost.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(1); writeBytes(varuint.encode(carrotBoost)); }
-			if(this._rabbitVariant.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(1); writeBytes(varuint.encode(rabbitVariant)); }
-			if(this._standingUp.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(6); writeBigEndianBool(standingUp); }
-			if(this._sheepFlagsAndColor.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(0); writeBigEndianByte(sheepFlagsAndColor); }
-			if(this._tameableFlags.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(0); writeBigEndianByte(tameableFlags); }
-			if(this._ocelotVariant.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(1); writeBytes(varuint.encode(ocelotVariant)); }
-			if(this._wolfHealth.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(2); writeBigEndianFloat(wolfHealth); }
-			if(this._begging.changed){ writeBigEndianUbyte(16); writeBigEndianUbyte(6); writeBigEndianBool(begging); }
-			if(this._collarColor.changed){ writeBigEndianUbyte(17); writeBigEndianUbyte(1); writeBytes(varuint.encode(collarColor)); }
-			if(this._profession.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(1); writeBytes(varuint.encode(profession)); }
-			if(this._createdByPlayer.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(createdByPlayer); }
-			if(this._snowmanFlags.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(snowmanFlags); }
-			if(this._shulkerDirection.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(10); writeBytes(varuint.encode(shulkerDirection)); }
-			if(this._shulkerAttachment.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(9); shulkerAttachment.encode(bufferInstance); }
-			if(this._shulkerShieldHeight.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(0); writeBigEndianByte(shulkerShieldHeight); }
-			if(this._shulkerColor.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(0); writeBigEndianByte(shulkerColor); }
-			if(this._blazeOnFire.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(blazeOnFire); }
-			if(this._creeperState.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(1); writeBytes(varuint.encode(creeperState)); }
-			if(this._charged.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(6); writeBigEndianBool(charged); }
-			if(this._ignited.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(6); writeBigEndianBool(ignited); }
-			if(this._rectractingSpikes.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(6); writeBigEndianBool(rectractingSpikes); }
-			if(this._guardianTarget.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(1); writeBytes(varuint.encode(guardianTarget)); }
-			if(this._spell.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(spell); }
-			if(this._attackMode.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(attackMode); }
-			if(this._swingingArms.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(6); writeBigEndianBool(swingingArms); }
-			if(this._climbing.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(0); writeBigEndianByte(climbing); }
-			if(this._centerHeadTarget.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(1); writeBytes(varuint.encode(centerHeadTarget)); }
-			if(this._leftHeadTarget.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(1); writeBytes(varuint.encode(leftHeadTarget)); }
-			if(this._rightHeadTarget.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(1); writeBytes(varuint.encode(rightHeadTarget)); }
-			if(this._invulnerableTime.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(1); writeBytes(varuint.encode(invulnerableTime)); }
-			if(this._handsHeldUp.changed){ writeBigEndianUbyte(14); writeBigEndianUbyte(6); writeBigEndianBool(handsHeldUp); }
-			if(this._converting.changed){ writeBigEndianUbyte(15); writeBigEndianUbyte(6); writeBigEndianBool(converting); }
-			if(this._zombieVillagerProfession.changed){ writeBigEndianUbyte(16); writeBigEndianUbyte(1); writeBytes(varuint.encode(zombieVillagerProfession)); }
-			if(this._carriedBlock.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(12); writeBytes(varuint.encode(carriedBlock)); }
-			if(this._screaming.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(6); writeBigEndianBool(screaming); }
-			if(this._dragonPhase.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(1); writeBytes(varuint.encode(dragonPhase)); }
-			if(this._ghastAttacking.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(6); writeBigEndianBool(ghastAttacking); }
-			if(this._slimeSize.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(1); writeBytes(varuint.encode(slimeSize)); }
-			if(this._shakingPower.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(1); writeBytes(varuint.encode(shakingPower)); }
-			if(this._shakingDirection.changed){ writeBigEndianUbyte(7); writeBigEndianUbyte(1); writeBytes(varuint.encode(shakingDirection)); }
-			if(this._shakingMultiplier.changed){ writeBigEndianUbyte(8); writeBigEndianUbyte(2); writeBigEndianFloat(shakingMultiplier); }
-			if(this._minecartBlock.changed){ writeBigEndianUbyte(9); writeBigEndianUbyte(1); writeBytes(varuint.encode(minecartBlock)); }
-			if(this._minecartBlockPosition.changed){ writeBigEndianUbyte(10); writeBigEndianUbyte(1); writeBytes(varuint.encode(minecartBlockPosition)); }
-			if(this._minecartCustomBlock.changed){ writeBigEndianUbyte(11); writeBigEndianUbyte(6); writeBigEndianBool(minecartCustomBlock); }
-			if(this._furnacePowered.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(6); writeBigEndianBool(furnacePowered); }
-			if(this._command.changed){ writeBigEndianUbyte(12); writeBigEndianUbyte(3); writeBytes(varuint.encode(cast(uint)command.length)); writeString(command); }
-			if(this._lastOutput.changed){ writeBigEndianUbyte(13); writeBigEndianUbyte(4); writeBytes(varuint.encode(cast(uint)lastOutput.length)); writeString(lastOutput); }
-			if(this._fuseTime.changed){ writeBigEndianUbyte(6); writeBigEndianUbyte(1); writeBytes(varuint.encode(fuseTime)); }
-			writeBigEndianUbyte(255);
+			if(this._cached) {
+				buffer.writeBytes(this._cache);
+			} else {
+				immutable start = buffer._buffer.length;
+				foreach(del ; this._changed) del(buffer);
+				writeBigEndianUbyte(255);
+				this._cached = true;
+				this._cache = buffer._buffer[start..$];
+			}
+		}
+	}
+
+	public static pure nothrow @safe Metadata decode(Buffer buffer) {
+		Metadata metadata = new Metadata();
+		with(buffer) {
+			size_t next;
+			while((next=readBigEndianUbyte()) != 255) {
+			}
 		}
 	}
 

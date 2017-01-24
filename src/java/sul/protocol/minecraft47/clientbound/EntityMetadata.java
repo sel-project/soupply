@@ -18,11 +18,11 @@ public class EntityMetadata extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	public int entityId;
-	public Metadata metadata;
+	public sul.metadata.Minecraft47 metadata;
 
 	public EntityMetadata() {}
 
-	public EntityMetadata(int entityId, Metadata metadata) {
+	public EntityMetadata(int entityId, sul.metadata.Minecraft47 metadata) {
 		this.entityId = entityId;
 		this.metadata = metadata;
 	}
@@ -46,7 +46,7 @@ public class EntityMetadata extends Packet {
 		this._buffer = buffer;
 		this.readVaruint();
 		entityId=this.readVaruint();
-		metadata=new Metadata(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
+		metadata=new sul.metadata.Minecraft47(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
 	}
 
 	public static EntityMetadata fromBuffer(byte[] buffer) {

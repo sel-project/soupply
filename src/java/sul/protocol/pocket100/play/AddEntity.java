@@ -25,12 +25,12 @@ public class AddEntity extends Packet {
 	public float pitch;
 	public float yaw;
 	public sul.protocol.pocket100.types.Attribute[] attributes;
-	public Metadata metadata;
+	public sul.metadata.Pocket100 metadata;
 	public long[] links;
 
 	public AddEntity() {}
 
-	public AddEntity(long entityId, long runtimeId, int type, Tuples.FloatXYZ position, Tuples.FloatXYZ motion, float pitch, float yaw, sul.protocol.pocket100.types.Attribute[] attributes, Metadata metadata, long[] links) {
+	public AddEntity(long entityId, long runtimeId, int type, Tuples.FloatXYZ position, Tuples.FloatXYZ motion, float pitch, float yaw, sul.protocol.pocket100.types.Attribute[] attributes, sul.metadata.Pocket100 metadata, long[] links) {
 		this.entityId = entityId;
 		this.runtimeId = runtimeId;
 		this.type = type;
@@ -77,7 +77,7 @@ public class AddEntity extends Packet {
 		pitch=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		int bgf0dhjpynv0zxm=this.readVaruint(); attributes=new sul.protocol.pocket100.types.Attribute[bgf0dhjpynv0zxm]; for(int yxr0cmlidxrlcw=0;yxr0cmlidxrlcw<attributes.length;yxr0cmlidxrlcw++){ attributes[yxr0cmlidxrlcw]=new sul.protocol.pocket100.types.Attribute(); attributes[yxr0cmlidxrlcw]._index=this._index; attributes[yxr0cmlidxrlcw].decode(this._buffer); this._index=attributes[yxr0cmlidxrlcw]._index; }
-		metadata=new Metadata(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
+		metadata=new sul.metadata.Pocket100(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
 		int bgxpbmtz=this.readVaruint(); links=new long[bgxpbmtz]; for(int bglua3m=0;bglua3m<links.length;bglua3m++){ links[bglua3m]=this.readVarlong(); }
 	}
 

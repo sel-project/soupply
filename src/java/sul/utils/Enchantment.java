@@ -7,17 +7,14 @@
  */
 package sul.utils;
 
-public abstract class Packet extends Buffer {
+public class Enchantment {
 
-	public final void reset() {
-		this._buffer = new byte[0];
-		this._index = 0;
+	public final byte id;
+	public final short level;
+
+	public Enchantment(byte id, short level) {
+		this.id = id;
+		this.level = level;
 	}
-
-	public abstract int length();
-
-	public abstract byte[] encode();
-
-	public abstract void decode(byte[] buffer);
 
 }

@@ -47,7 +47,7 @@
 
 		<type name="potion" type="slot" id="6" />
 
-		<type name="spawn-position" type="position" id="7" />
+		<type name="spawn-position" type="position" id="6" />
 
 		<type name="radius" type="float" id="6" default="0.5" />
 

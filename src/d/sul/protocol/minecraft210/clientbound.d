@@ -243,7 +243,7 @@ class SpawnMob : Buffer {
 		pitch=readBigEndianUbyte();
 		headPitch=readBigEndianUbyte();
 		velocity.x=readBigEndianShort(); velocity.y=readBigEndianShort(); velocity.z=readBigEndianShort();
-		//TODO
+		metadata=Metadata.decode(bufferInstance);
 	}
 
 	public static pure nothrow @safe SpawnMob fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -361,7 +361,7 @@ class SpawnPlayer : Buffer {
 		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		yaw=readBigEndianUbyte();
 		pitch=readBigEndianUbyte();
-		//TODO
+		metadata=Metadata.decode(bufferInstance);
 	}
 
 	public static pure nothrow @safe SpawnPlayer fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -3625,7 +3625,7 @@ class EntityMetadata : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ uint _id; _id=varuint.decode(_buffer, &_index); }
 		entityId=varuint.decode(_buffer, &_index);
-		//TODO
+		metadata=Metadata.decode(bufferInstance);
 	}
 
 	public static pure nothrow @safe EntityMetadata fromBuffer(bool readId=true)(ubyte[] buffer) {

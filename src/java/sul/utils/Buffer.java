@@ -13,6 +13,10 @@ public class Buffer {
 
 	public int _index;
 
+	public int getIndex() {
+		return this._index;
+	}
+
 	public void writeBytes(byte[] a) {
 		for(byte b : a) this._buffer[this._index++] = b;
 	}

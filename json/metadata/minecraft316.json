@@ -138,7 +138,7 @@
 
 		"spawn_position": {
 			"type": "position",
-			"id": 7,
+			"id": 6,
 			"required": false
 		},
 

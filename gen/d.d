@@ -137,10 +137,31 @@ alias varulong = var!ulong;
 		foreach(attr; attrs.data) {
 			data ~= "\tenum " ~ toCamelCase(attr.id) ~ " = Attribute(\"" ~ attr.name ~ "\", " ~ attr.min.to!string ~ ", " ~ attr.max.to!string ~ ", " ~ attr.def.to!string ~ ");\n\n";
 		}
+		mkdirRecurse("../src/d/sul/attributes");
 		write("../src/d/sul/attributes/" ~ game ~ ".d", data ~ "}", "attributes/" ~ game);
 	}
 	
-	//TODO creative inventory
+	// creative
+	foreach(string game, Creative c; creative) {
+		string data = "module sul.creative." ~ game ~ ";\n\nimport std.typecons : Tuple;\n\n";
+		data ~= "alias Enchantment = Tuple!(ubyte, \"id\", ubyte, \"level\");\n\n";
+		data ~= "alias Item = Tuple!(string, \"name\", ushort, \"id\", ushort, \"meta\", Enchantment[], \"enchantments\");\n\n";
+		data ~= "enum Item[] items = [\n";
+		foreach(i, item; c.data) {
+			data ~= "\tItem(" ~ JSONValue(item.name).toString() ~ ", " ~ item.id.to!string ~ ", " ~ item.meta.to!string ~ ", ";
+			if(item.enchantments.length) {
+				string[] e;
+				foreach(ench ; item.enchantments) e ~= "Enchantment(" ~ ench.id.to!string ~ ", " ~ ench.level.to!string ~ ")";
+				data ~= "[" ~ e.join(", ") ~ "]";
+			} else {
+				data ~= "new Enchantment[0]";
+			}
+			data ~= ")" ~ (i != c.data.length - 1 ? "," : "") ~ "\n";
+		}
+		data ~= "];";
+		mkdirRecurse("../src/d/sul/creative");
+		write("../src/d/sul/creative/" ~ game ~ ".d", data, "creative/" ~ game);
+	}
 
 	size_t lengthOf(string type) {
 		switch(type) {
@@ -330,7 +351,7 @@ alias varulong = var!ulong;
 			else if(type == "uuid") return "if(_buffer.length>=_index+16){ ubyte[16] " ~ hash(name) ~ "=_buffer[_index.._index+16].dup; _index+=16; " ~ name ~ "=UUID(" ~ hash(name) ~ "); }";
 			else if(type == "bytes") return name ~ "=_buffer[_index..$].dup; _index=_buffer.length;";
 			else if(defaultTypes.canFind(type) || type == "triad") return name ~ "=read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "();";
-			else if(type == "metadata") return "//TODO";
+			else if(type == "metadata") return name ~ "=Metadata.decode(bufferInstance);";
 			else return name ~ ".decode(bufferInstance);";
 		}
 		
@@ -492,6 +513,9 @@ alias varulong = var!ulong;
 			data ~= "static import sul.protocol." ~ game ~ ".types;\n\n";
 			data ~= "alias Changed(T) = Tuple!(T, \"value\", bool, \"changed\");\n\n";
 			data ~= "class Metadata {\n\n";
+			data ~= "\tprivate bool _cached = false;\n";
+			data ~= "\tprivate ubyte[] _cache;\n\n";
+			data ~= "\tprivate void delegate(Buffer) pure nothrow @safe[] _changed;\n\n";
 			string[string] ctable, etable;
 			ubyte[string] idtable;
 			foreach(type ; m.data.types) {
@@ -500,47 +524,94 @@ alias varulong = var!ulong;
 				idtable[type.name] = type.id;
 			}
 			foreach(d ; m.data.data) {
+				immutable tp = convertType(ctable[d.type]);
+				if(d.required) data ~= "\tprivate " ~ tp ~ " _" ~ convertName(d.name) ~ (d.def.length ? " = cast(" ~ tp ~ ")" ~ d.def : "") ~ ";\n";
+				else data ~= "\tprivate Changed!(" ~ tp ~ ") _" ~ convertName(d.name) ~ (d.def.length ? " = tuple(cast(" ~ tp ~ ")" ~ d.def ~ ", false)" : "") ~ ";\n";
+			}
+			data ~= "\n";
+			data ~= "\tpublic pure nothrow @safe this() {\n";
+			data ~= "\t\tthis.reset();\n";
+			data ~= "\t}\n\n";
+			data ~= "\tpublic pure nothrow @safe void reset() {\n";
+			data ~= "\t\tthis._changed = [\n";
+			foreach(d ; m.data.data) {
+				if(d.required) {
+					immutable name = convertName(d.name);
+					immutable tp = convertType(ctable[d.type]);
+					data ~= "\t\t\t&this.encode" ~ name[0..1].toUpper ~ name[1..$] ~ ",\n";
+				}
+			}
+			data ~= "\t\t];\n";
+			data ~= "\t}\n\n";
+			foreach(d ; m.data.data) {
 				immutable name = convertName(d.name);
 				immutable tp = convertType(ctable[d.type]);
-				data ~= "\tprivate Changed!(" ~ tp ~ ") _" ~ name ~ (d.def.length ? " = tuple(cast(" ~ tp ~ ")" ~ d.def ~ ", false)" : "") ~ ";\n\n";
-				data ~= "\tpublic pure nothrow @property @safe @nogc " ~ tp ~ " " ~ name ~ "() {\n\t\treturn _" ~ name ~ ".value;\n\t}\n\n";
-				data ~= "\tpublic pure nothrow @property @safe @nogc " ~ tp ~ " " ~ name ~ "(" ~ tp ~ " value) {\n";
-				data ~= "\t\t_" ~ name ~ ".changed = true;\n";
-				data ~= "\t\t_" ~ name ~ ".value = value;\n";
+				immutable value = "_" ~ name ~ (d.required ? "" : ".value");
+				// get
+				data ~= "\tpublic pure nothrow @property @safe @nogc " ~ tp ~ " " ~ name ~ "() {\n\t\treturn " ~ value ~ ";\n\t}\n\n";
+				// set
+				data ~= "\tpublic pure nothrow @property @safe " ~ tp ~ " " ~ name ~ "(" ~ tp ~ " value) {\n";
+				data ~= "\t\tthis._cached = false;\n";
+				data ~= "\t\tthis." ~ value ~ " = value;\n";
+				if(!d.required) {
+					data ~= "\t\tif(!this._" ~ name ~ ".changed) {\n";
+					data ~= "\t\t\tthis._" ~ name ~ ".changed = true;\n";
+					data ~= "\t\t\tthis._changed ~= &this.encode" ~ name[0..1].toUpper ~ name[1..$] ~ ";\n";
+					data ~= "\t\t}\n";
+				}
 				data ~= "\t\treturn value;\n";
+				data ~= "\t}\n\n";
+				// encode
+				data ~= "\tpublic pure nothrow @safe encode" ~ name[0..1].toUpper ~ name[1..$] ~ "(Buffer buffer) {\n";
+				data ~= "\t\twith(buffer) {\n";
+				data ~= "\t\t\t" ~ createEncoding(m.data.id, d.id.to!string) ~ "\n";
+				data ~= "\t\t\t" ~ createEncoding(m.data.type, idtable[d.type].to!string) ~ "\n";
+				data ~= "\t\t\t" ~ createEncoding(ctable[d.type], "this." ~ value, etable[d.type]) ~ "\n";
+				data ~= "\t\t}\n";
 				data ~= "\t}\n\n";
 				foreach(flag ; d.flags) {
 					immutable fname = convertName(flag.name);
-					data ~= "\tpublic pure nothrow @property @safe @nogc bool " ~ fname ~ "() {\n";
-					data ~= "\t\treturn (_" ~ name ~ ".value >>> " ~ to!string(flag.bit) ~ ") & 1;\n";
+					data ~= "\tpublic pure nothrow @property @safe bool " ~ fname ~ "() {\n";
+					data ~= "\t\treturn (" ~ value ~ " >>> " ~ to!string(flag.bit) ~ ") & 1;\n";
 					data ~= "\t}\n\n";
-					data ~= "\tpublic pure nothrow @property @safe @nogc bool " ~ fname ~ "(bool value) {\n";
-					data ~= "\t\t_" ~ name ~ ".changed = true;\n";
-					data ~= "\t\tif(value) _" ~ name ~ ".value |= (cast(" ~ tp ~ ")true << " ~ to!string(flag.bit) ~ ");\n";
-					data ~= "\t\telse _" ~ name ~ ".value &= ~(cast(" ~ tp ~ ")true << " ~ to!string(flag.bit) ~ ");\n";
+					data ~= "\tpublic pure nothrow @property @safe bool " ~ fname ~ "(bool value) {\n";
+					//if(!d.required) data ~= "\t\t_" ~ name ~ ".changed = true;\n";
+					data ~= "\t\tif(value) " ~ name ~ " = cast(" ~ tp ~ ")(" ~ value ~ " | (cast(" ~ tp ~ ")true << " ~ to!string(flag.bit) ~ "));\n";
+					data ~= "\t\telse " ~ name ~ " = cast(" ~ tp ~ ")(" ~ value ~ " & ~(cast(" ~ tp ~ ")true << " ~ to!string(flag.bit) ~ "));\n";
 					data ~= "\t\treturn value;\n";
 					data ~= "\t}\n\n";
 				}
 			}
+			// encode function
 			data ~= "\tpublic pure nothrow @safe encode(Buffer buffer) {\n";
 			data ~= "\t\twith(buffer) {\n";
-			if(m.data.prefix.length) data ~= "\t\t\t" ~ createEncoding("ubyte", m.data.prefix) ~ "\n";
-			if(m.data.length.length) data ~= "\t\t\timmutable _length = _buffer.length;\n\t\t\t" ~ convertType(m.data.length) ~ " _count;\n";
-			foreach(d ; m.data.data) {
-				immutable name = convertName(d.name);
-				data ~= "\t\t\t" ~ (d.required ? "" : "if(this._" ~ name ~ ".changed)") ~ "{ ";
-				data ~= createEncoding(m.data.id, d.id.to!string) ~ " ";
-				data ~= createEncoding(m.data.type, idtable[d.type].to!string) ~ " ";
-				data ~= createEncoding(ctable[d.type], name, etable[d.type]) ~ (m.data.length.length ? " _count++;" : "") ~ " }\n";
-			}
+			data ~= "\t\t\tif(this._cached) {\n";
+			data ~= "\t\t\t\tbuffer.writeBytes(this._cache);\n";
+			data ~= "\t\t\t} else {\n";
+			data ~= "\t\t\t\timmutable start = buffer._buffer.length;\n";
+			if(m.data.prefix.length) data ~= "\t\t\t\t" ~ createEncoding("ubyte", m.data.prefix) ~ "\n";
+			if(m.data.length.length) data ~= "\t\t\t\t" ~ createEncoding(m.data.length, "cast(" ~ convertType(m.data.length) ~ ")this._changed.length") ~ "\n";
+			data ~= "\t\t\t\tforeach(del ; this._changed) del(buffer);\n";
+			if(m.data.suffix.length) data ~= "\t\t\t\t" ~ createEncoding("ubyte", m.data.suffix) ~ "\n";
+			data ~= "\t\t\t\tthis._cached = true;\n";
+			data ~= "\t\t\t\tthis._cache = buffer._buffer[start..$];\n";
+			data ~= "\t\t\t}\n";
+			data ~= "\t\t}\n";
+			data ~= "\t}\n\n";
+			// decode function
+			data ~= "\tpublic static pure nothrow @safe Metadata decode(Buffer buffer) {\n";
+			data ~= "\t\tMetadata metadata = new Metadata();\n";
+			data ~= "\t\twith(buffer) {\n";
+			if(m.data.prefix.length) data ~= "\t\t\t" ~ createDecoding("ubyte", "ubyte _prefix") ~ "\n";
+			data ~= "\t\t\tsize_t next;\n";
 			if(m.data.length.length) {
-				if(m.data.length.startsWith("var")) {
-					data ~= "\t\t\t_buffer = _buffer[0.._length] ~ " ~ m.data.length ~ ".encode(_count) ~ _buffer[_length..$];\n";
-				} else {
-					//TODO
-				}
+				data ~= "\t\t\tforeach(i ; 0.." ~ createDecoding(m.data.length, "")[1..$-1] ~ ") {\n";
+				data ~= "\t\t\t\t" ~ createDecoding(m.data.id, "next") ~ "\n";
+			} else if(m.data.suffix.length) {
+				data ~= "\t\t\twhile((" ~ createDecoding(m.data.id, "next")[0..$-1] ~ ") != " ~ m.data.suffix ~ ") {\n";
 			}
-			if(m.data.suffix.length) data ~= "\t\t\t" ~ createEncoding("ubyte", m.data.suffix) ~ "\n";
+			//TODO
+			data ~= "\t\t\t}\n";
 			data ~= "\t\t}\n";
 			data ~= "\t}\n\n";
 			data ~= "}";

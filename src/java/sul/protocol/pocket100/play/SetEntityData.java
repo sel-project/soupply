@@ -18,11 +18,11 @@ public class SetEntityData extends Packet {
 	public final static boolean SERVERBOUND = false;
 
 	public long entityId;
-	public Metadata metadata;
+	public sul.metadata.Pocket100 metadata;
 
 	public SetEntityData() {}
 
-	public SetEntityData(long entityId, Metadata metadata) {
+	public SetEntityData(long entityId, sul.metadata.Pocket100 metadata) {
 		this.entityId = entityId;
 		this.metadata = metadata;
 	}
@@ -46,7 +46,7 @@ public class SetEntityData extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		entityId=this.readVarlong();
-		metadata=new Metadata(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
+		metadata=new sul.metadata.Pocket100(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
 	}
 
 	public static SetEntityData fromBuffer(byte[] buffer) {

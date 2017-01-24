@@ -30,11 +30,11 @@ public class AddPlayer extends Packet {
 	public float headYaw;
 	public float yaw;
 	public sul.protocol.pocket100.types.Slot heldItem;
-	public Metadata metadata;
+	public sul.metadata.Pocket100 metadata;
 
 	public AddPlayer() {}
 
-	public AddPlayer(UUID uuid, String username, long entityId, long runtimeId, Tuples.FloatXYZ position, Tuples.FloatXYZ motion, float pitch, float headYaw, float yaw, sul.protocol.pocket100.types.Slot heldItem, Metadata metadata) {
+	public AddPlayer(UUID uuid, String username, long entityId, long runtimeId, Tuples.FloatXYZ position, Tuples.FloatXYZ motion, float pitch, float headYaw, float yaw, sul.protocol.pocket100.types.Slot heldItem, sul.metadata.Pocket100 metadata) {
 		this.uuid = uuid;
 		this.username = username;
 		this.entityId = entityId;
@@ -85,7 +85,7 @@ public class AddPlayer extends Packet {
 		headYaw=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		heldItem=new sul.protocol.pocket100.types.Slot(); heldItem._index=this._index; heldItem.decode(this._buffer); this._index=heldItem._index;
-		metadata=new Metadata(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
+		metadata=new sul.metadata.Pocket100(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
 	}
 
 	public static AddPlayer fromBuffer(byte[] buffer) {

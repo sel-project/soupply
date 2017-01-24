@@ -47,7 +47,7 @@
 
 		<type name="potion" type="slot" id="6" />
 
-		<type name="spawn-position" type="position" id="7" />
+		<type name="spawn-position" type="position" id="6" />
 
 		<type name="radius" type="float" id="6" default="0.5" />
 
@@ -155,11 +155,13 @@
 			<flag name="mouth-open" bit="7" />
 		</type>
 
-		<type name="horse-variant" type="int" id="14" />
+		<type name="horse-type" type="int" id="14" />
 
-		<type name="owner-uuid" type="int" id="15" />
+		<type name="horse-variant" type="int" id="15" />
 
-		<type name="horse-armor" type="int" id="16" />
+		<type name="owner-uuid" type="uuid" id="16" />
+
+		<type name="horse-armor" type="int" id="17" />
 
 		<type name="pig-saddled" type="bool" id="13" />
 
@@ -207,11 +209,16 @@
 
 		<type name="ignited" type="bool" id="14" />
 
-		<type name="rectracting-spikes" type="bool" id="12" />
+		<type name="guardian-flags" type="byte" id="12">
+			<flag name="retracting-spikes" bit="1" />
+			<flag name="elder" bit="2" />
+		</type>
 
 		<type name="guardian-target" type="int" id="13" />
 
-		<type name="swinging-arms" type="bool" id="12" />
+		<type name="skeleton-type" type="int" id="12" />
+
+		<type name="swinging-arms" type="bool" id="13" />
 
 		<type name="climbing" type="byte" id="12" />
 
@@ -223,11 +230,11 @@
 
 		<type name="invulnerable-time" type="int" id="15" />
 
-		<type name="hands-held-up" type="bool" id="14" />
+		<type name="zombie-type" type="int" id="13" />
 
-		<type name="converting" type="bool" id="15" />
+		<type name="converting" type="bool" id="14" />
 
-		<type name="zombie-villager-profession" type="int" id="16" />
+		<type name="hands-held-up" type="bool" id="15" />
 
 		<type name="carried-block" type="block" id="12" />
 

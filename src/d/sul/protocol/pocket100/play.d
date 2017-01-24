@@ -853,7 +853,7 @@ class AddPlayer : Buffer {
 		headYaw=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		heldItem.decode(bufferInstance);
-		//TODO
+		metadata=Metadata.decode(bufferInstance);
 	}
 
 	public static pure nothrow @safe AddPlayer fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -926,7 +926,7 @@ class AddEntity : Buffer {
 		pitch=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		attributes.length=varuint.decode(_buffer, &_index); foreach(ref yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.decode(bufferInstance); }
-		//TODO
+		metadata=Metadata.decode(bufferInstance);
 		links.length=varuint.decode(_buffer, &_index); foreach(ref bglua3m;links){ bglua3m=varlong.decode(_buffer, &_index); }
 	}
 
@@ -2225,7 +2225,7 @@ class SetEntityData : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		entityId=varlong.decode(_buffer, &_index);
-		//TODO
+		metadata=Metadata.decode(bufferInstance);
 	}
 
 	public static pure nothrow @safe SetEntityData fromBuffer(bool readId=true)(ubyte[] buffer) {

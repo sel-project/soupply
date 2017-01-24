@@ -138,7 +138,7 @@
 
 		"spawn_position": {
 			"type": "position",
-			"id": 7,
+			"id": 6,
 			"required": false
 		},
 
@@ -417,21 +417,27 @@
 			}
 		},
 
-		"horse_variant": {
+		"horse_type": {
 			"type": "int",
 			"id": 14,
 			"required": false
 		},
 
-		"owner_uuid": {
+		"horse_variant": {
 			"type": "int",
 			"id": 15,
 			"required": false
 		},
 
+		"owner_uuid": {
+			"type": "uuid",
+			"id": 16,
+			"required": false
+		},
+
 		"horse_armor": {
 			"type": "int",
-			"id": 16,
+			"id": 17,
 			"required": false
 		},
 
@@ -562,10 +568,14 @@
 			"required": false
 		},
 
-		"rectracting_spikes": {
-			"type": "bool",
+		"guardian_flags": {
+			"type": "byte",
 			"id": 12,
-			"required": false
+			"required": false,
+			"flags": {
+				"retracting_spikes": 1,
+				"elder": 2
+			}
 		},
 
 		"guardian_target": {
@@ -574,9 +584,15 @@
 			"required": false
 		},
 
+		"skeleton_type": {
+			"type": "int",
+			"id": 12,
+			"required": false
+		},
+
 		"swinging_arms": {
 			"type": "bool",
-			"id": 12,
+			"id": 13,
 			"required": false
 		},
 
@@ -610,21 +626,21 @@
 			"required": false
 		},
 
-		"hands_held_up": {
-			"type": "bool",
-			"id": 14,
+		"zombie_type": {
+			"type": "int",
+			"id": 13,
 			"required": false
 		},
 
 		"converting": {
 			"type": "bool",
-			"id": 15,
+			"id": 14,
 			"required": false
 		},
 
-		"zombie_villager_profession": {
-			"type": "int",
-			"id": 16,
+		"hands_held_up": {
+			"type": "bool",
+			"id": 15,
 			"required": false
 		},
 

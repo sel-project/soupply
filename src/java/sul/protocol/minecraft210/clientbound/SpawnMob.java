@@ -27,11 +27,11 @@ public class SpawnMob extends Packet {
 	public byte pitch;
 	public byte headPitch;
 	public Tuples.ShortXYZ velocity;
-	public Metadata metadata;
+	public sul.metadata.Minecraft210 metadata;
 
 	public SpawnMob() {}
 
-	public SpawnMob(int entityId, UUID uuid, byte type, Tuples.DoubleXYZ position, byte yaw, byte pitch, byte headPitch, Tuples.ShortXYZ velocity, Metadata metadata) {
+	public SpawnMob(int entityId, UUID uuid, byte type, Tuples.DoubleXYZ position, byte yaw, byte pitch, byte headPitch, Tuples.ShortXYZ velocity, sul.metadata.Minecraft210 metadata) {
 		this.entityId = entityId;
 		this.uuid = uuid;
 		this.type = type;
@@ -76,7 +76,7 @@ public class SpawnMob extends Packet {
 		pitch=readBigEndianByte();
 		headPitch=readBigEndianByte();
 		velocity.x=readBigEndianShort(); velocity.y=readBigEndianShort(); velocity.z=readBigEndianShort();
-		metadata=new Metadata(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
+		metadata=new sul.metadata.Minecraft210(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
 	}
 
 	public static SpawnMob fromBuffer(byte[] buffer) {

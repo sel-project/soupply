@@ -24,11 +24,11 @@ public class SpawnPlayer extends Packet {
 	public Tuples.DoubleXYZ position;
 	public byte yaw;
 	public byte pitch;
-	public Metadata metadata;
+	public sul.metadata.Minecraft315 metadata;
 
 	public SpawnPlayer() {}
 
-	public SpawnPlayer(int entityId, UUID uuid, Tuples.DoubleXYZ position, byte yaw, byte pitch, Metadata metadata) {
+	public SpawnPlayer(int entityId, UUID uuid, Tuples.DoubleXYZ position, byte yaw, byte pitch, sul.metadata.Minecraft315 metadata) {
 		this.entityId = entityId;
 		this.uuid = uuid;
 		this.position = position;
@@ -64,7 +64,7 @@ public class SpawnPlayer extends Packet {
 		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		yaw=readBigEndianByte();
 		pitch=readBigEndianByte();
-		metadata=new Metadata(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
+		metadata=new sul.metadata.Minecraft315(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
 	}
 
 	public static SpawnPlayer fromBuffer(byte[] buffer) {

@@ -54,6 +54,9 @@ void java(Attributes[string] attributes, Protocols[string] protocols, Creative[s
 	io ~= "public class Buffer {\n\n";
 	io ~= "\tpublic byte[] _buffer;\n\n";
 	io ~= "\tpublic int _index;\n\n";
+	io ~= "\tpublic int getIndex() {\n";
+	io ~= "\t\treturn this._index;\n";
+	io ~= "\t}\n\n";
 	io ~= "\tpublic void writeBytes(byte[] a) {\n";
 	io ~= "\t\tfor(byte b : a) this._buffer[this._index++] = b;\n";
 	io ~= "\t}\n\n";
@@ -148,8 +151,6 @@ void java(Attributes[string] attributes, Protocols[string] protocols, Creative[s
 	write("../src/java/sul/utils/Packet.java", q{
 package sul.utils;
 
-import sul.utils.Buffer;
-
 public abstract class Packet extends Buffer {
 
 	public final void reset() {
@@ -165,23 +166,76 @@ public abstract class Packet extends Buffer {
 
 }
 	});
+
+	write("../src/java/sul/utils/Item.java", q{
+package sul.utils;
+
+public class Item {
+
+	public final String name;
+	public final int id, meta;
+	public final Enchantment[] enchantments;
+
+	public Item(String name, int id, int meta, Enchantment[] enchantments) {
+		this.name = name;
+		this.id = id;
+		this.meta = meta;
+		this.enchantments = enchantments;
+	}
+
+}
+		});
+
+	write("../src/java/sul/utils/Enchantment.java", q{
+package sul.utils;
+
+public class Enchantment {
+
+	public final byte id;
+	public final short level;
+
+	public Enchantment(byte id, short level) {
+		this.id = id;
+		this.level = level;
+	}
+
+}
+		});
 	
 	// attributes
 	foreach(string game, Attributes attrs; attributes) {
-		game = toPascalCase(game);
-		string data = "package sul.attributes;\n\npublic enum " ~ game ~ " {\n\n";
+		string data = "package sul.attributes;\n\npublic enum " ~ toPascalCase(game) ~ " {\n\n";
 		foreach(i, attr; attrs.data) {
 			data ~= "\t" ~ toUpper(attr.id) ~ "(\"" ~ attr.name ~ "\", " ~ attr.min.to!string ~ "f, " ~ attr.max.to!string ~ "f, " ~ attr.def.to!string ~ "f)" ~ (i == attrs.data.length - 1 ? ";" : ",") ~ "\n\n";
 		}
 		data ~= "\tpublic final String name;\n\tpublic final float min, max, def;\n\n";
-		data ~= "\t" ~ game ~ "(String name, float min, float max, float def) {\n";
+		data ~= "\t" ~ toPascalCase(game) ~ "(String name, float min, float max, float def) {\n";
 		data ~= "\t\tthis.name = name;\n";
 		data ~= "\t\tthis.min = min;\n";
 		data ~= "\t\tthis.max = max;\n";
 		data ~= "\t\tthis.def = def;\n";
-		data ~= "\t}\n\n}\n";
-		if(!exists("../src/java/sul/attributes")) mkdir("../src/java/sul/attributes");
-		write("../src/java/sul/attributes/" ~ game ~ ".java", data, "attributes/" ~ game);
+		data ~= "\t}\n\n}";
+		mkdirRecurse("../src/java/sul/attributes");
+		write("../src/java/sul/attributes/" ~ toPascalCase(game) ~ ".java", data, "attributes/" ~ game);
+	}
+
+	// creative
+	foreach(string game, Creative c; creative) {
+		string data = "package sul.creative;\n\nimport sul.utils.*;\n\npublic final class " ~ toPascalCase(game) ~ " {\n\n";
+		data ~= "\tprivate " ~ toPascalCase(game) ~ "() {}\n\n";
+		data ~= "\tpublic final static Item[] ITEMS = new Item[]{\n";
+		foreach(i, item; c.data) {
+			data ~= "\t\tnew Item(" ~ JSONValue(item.name).toString() ~ ", " ~ item.id.to!string ~ ", " ~ item.meta.to!string ~ ", new Enchantment[]{";
+			if(item.enchantments.length) {
+				string[] e;
+				foreach(ench ; item.enchantments) e ~= "new Enchantment((byte)" ~ ench.id.to!string ~ ", (short)" ~ ench.level.to!string ~ ")";
+				data ~= e.join(", ");
+			}
+			data ~= "})" ~ (i != c.data.length - 1 ? "," : "") ~ "\n";
+		}
+		data ~= "\t};\n\n}";
+		mkdirRecurse("../src/java/sul/creative");
+		write("../src/java/sul/creative/" ~ toPascalCase(game) ~ ".java", data, "creative/" ~ game);
 	}
 
 	// protocols
@@ -200,7 +254,7 @@ public abstract class Packet extends Buffer {
 			if(b) return convert((*b).base ~ "[]" ~ e);
 			if(e.length && e[0] == '<') return "Tuples." ~ toPascalCase(t) ~ toUpper(e[1..e.indexOf(">")]) ~ e[e.indexOf(">")+1..$];
 			else if(defaultTypes.canFind(t)) return t ~ e;
-			else if(t == "metadata") return "Metadata" ~ e;
+			else if(t == "metadata") return "sul.metadata." ~ capitalize(game) ~ e;
 			else return "sul.protocol." ~ game ~ ".types." ~ toPascalCase(t) ~ e;
 		}
 

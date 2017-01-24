@@ -990,7 +990,13 @@
 				{
 					"id": 13,
 					"level": 2
-				},
+				}
+			]
+		},
+		{
+			"name": "Enchanted Book",
+			"id": 403,
+			"enchantments": [
 				{
 					"id": 14,
 					"level": 1
