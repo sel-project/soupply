@@ -190,19 +190,22 @@ struct Recipe {
 	public enum int FURNACE_DATA = 3;
 	public enum int MULTI = 4;
 
-	public enum string[] FIELDS = ["type"];
+	public enum string[] FIELDS = ["type", "data"];
 
 	public int type;
+	public ubyte[] data;
 
 	public pure nothrow @safe void encode(Buffer buffer) {
 		with(buffer) {
 			writeBytes(varint.encode(type));
+			writeBytes(data);
 		}
 	}
 
 	public pure nothrow @safe void decode(Buffer buffer) {
 		with(buffer) {
 			type=varint.decode(_buffer, &_index);
+			data=_buffer[_index..$].dup; _index=_buffer.length;
 		}
 	}
 

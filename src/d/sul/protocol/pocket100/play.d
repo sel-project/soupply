@@ -2162,8 +2162,6 @@ class PlayerAction : Buffer {
 	public enum int STOP_SPRINT = 10;
 	public enum int START_SNEAK = 11;
 	public enum int STOP_SNEAK = 12;
-	public enum int DIMENSION_CHANGE = 13;
-	public enum int ABORT_DIMENSION_CHANGE = 14;
 	public enum int START_GLIDING = 15;
 	public enum int STOP_GLIDING = 16;
 

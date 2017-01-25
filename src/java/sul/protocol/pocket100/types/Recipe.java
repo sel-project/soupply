@@ -20,22 +20,25 @@ public class Recipe extends Packet {
 	public static final int MULTI = 4;
 
 	public int type;
+	public byte[] data;
 
 	public Recipe() {}
 
-	public Recipe(int type) {
+	public Recipe(int type, byte[] data) {
 		this.type = type;
+		this.data = data;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varintLength(type);
+		return Buffer.varintLength(type) + data.length;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeVarint(type);
+		this.writeBytes(data);
 		return this._buffer;
 	}
 
@@ -43,6 +46,7 @@ public class Recipe extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		type=this.readVarint();
+		data=this.readBytes(this._buffer.length-this._index);
 	}
 
 

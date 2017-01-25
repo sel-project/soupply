@@ -27,11 +27,11 @@ import std.typecons : tuple;
 import all;
 
 void java(Attributes[string] attributes, Protocols[string] protocols, Creative[string] creative) {
-
+	
 	mkdirRecurse("../src/java/sul/utils");
 	
 	enum defaultTypes = ["boolean", "byte", "short", "int", "long", "float", "double", "String", "UUID"];
-
+	
 	enum string[string] defaultAliases = [
 		"bool": "boolean",
 		"ubyte": "byte",
@@ -49,7 +49,7 @@ void java(Attributes[string] attributes, Protocols[string] protocols, Creative[s
 		"varlong": "long",
 		"varulong": "long"
 	];
-
+	
 	string io = "package sul.utils;\n\n";
 	io ~= "public class Buffer {\n\n";
 	io ~= "\tpublic byte[] _buffer;\n\n";
@@ -147,7 +147,7 @@ void java(Attributes[string] attributes, Protocols[string] protocols, Creative[s
 	}
 	io ~= "}";
 	write("../src/java/sul/utils/Buffer.java", io);
-
+	
 	write("../src/java/sul/utils/Packet.java", q{
 package sul.utils;
 
@@ -165,8 +165,8 @@ public abstract class Packet extends Buffer {
 	public abstract void decode(byte[] buffer);
 
 }
-	});
-
+		});
+	
 	write("../src/java/sul/utils/Item.java", q{
 package sul.utils;
 
@@ -185,7 +185,7 @@ public class Item {
 
 }
 		});
-
+	
 	write("../src/java/sul/utils/Enchantment.java", q{
 package sul.utils;
 
@@ -218,7 +218,7 @@ public class Enchantment {
 		mkdirRecurse("../src/java/sul/attributes");
 		write("../src/java/sul/attributes/" ~ toPascalCase(game) ~ ".java", data, "attributes/" ~ game);
 	}
-
+	
 	// creative
 	foreach(string game, Creative c; creative) {
 		string data = "package sul.creative;\n\nimport sul.utils.*;\n\npublic final class " ~ toPascalCase(game) ~ " {\n\n";
@@ -237,13 +237,13 @@ public class Enchantment {
 		mkdirRecurse("../src/java/sul/creative");
 		write("../src/java/sul/creative/" ~ toPascalCase(game) ~ ".java", data, "creative/" ~ game);
 	}
-
+	
 	// protocols
 	string[] tuples;
 	foreach(string game, Protocols prs; protocols) {
-
+		
 		mkdirRecurse("../src/java/sul/protocol/" ~ game ~ "/types");
-
+		
 		@property string convert(string type) {
 			auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
 			auto t = type[0..end];
@@ -257,12 +257,12 @@ public class Enchantment {
 			else if(t == "metadata") return "sul.metadata." ~ capitalize(game) ~ e;
 			else return "sul.protocol." ~ game ~ ".types." ~ toPascalCase(t) ~ e;
 		}
-
+		
 		@property string convertName(string name) {
 			if(name == "default") return "def";
 			else return toCamelCase(name);
 		}
-
+		
 		immutable id = convert(prs.data.id);
 		immutable arrayLength = convert(prs.data.arrayLength);
 		
@@ -362,7 +362,7 @@ public class Enchantment {
 				return "return " ~ exps.join(" + ");
 			}
 		}
-
+		
 		// returns the endianness for a type
 		string endiannessOf(string type, string over="") {
 			if(!over.length) {
@@ -372,7 +372,7 @@ public class Enchantment {
 			}
 			return toPascalCase(over);
 		}
-
+		
 		// encoding expression
 		string createEncoding(string type, string name, string e="") {
 			if(type[0] == 'u' && defaultTypes.canFind(type[1..$])) type = type[1..$];
@@ -415,7 +415,7 @@ public class Enchantment {
 			else if(type == "triad" || defaultTypes.canFind(type)) return "this.write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ");";
 			else return "this.writeBytes(" ~ name ~ ".encode());";
 		}
-
+		
 		// decoding expressions
 		string createDecoding(string type, string name, string e="") {
 			if(type[0] == 'u' && defaultTypes.canFind(type[1..$])) type = type[1..$];
@@ -461,7 +461,7 @@ public class Enchantment {
 			else if(defaultTypes.canFind(type) || type == "triad") return name ~ "=read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "();";
 			else return name ~ "=new " ~ convert(type) ~ "(); " ~ name ~ "._index=this._index; " ~ name ~ ".decode(this._buffer); this._index=" ~ name ~ "._index;";
 		}
-
+		
 		// write generic fields
 		void writeFields(ref string data, string space, string className, Field[] fields, bool hasId, bool hasVariants=false, bool isVariant=false) { // hasId is true when fields belong to a packet, false when a type
 			// constants
@@ -554,7 +554,7 @@ public class Enchantment {
 				data ~= space ~ "}\n\n";
 			}
 		}
-
+		
 		@property string imports(Field[] fields) {
 			bool str, uuid;
 			foreach(field ; fields) {
@@ -573,7 +573,7 @@ public class Enchantment {
 			if(str || uuid) ret ~= "\n";
 			return ret;
 		}
-
+		
 		foreach(type ; prs.data.types) {
 			string data = "package sul.protocol." ~ game ~ ".types;\n\n" ~ imports(type.fields) ~ "import sul.utils.*;\n\n";
 			if(type.description.length) data ~= javadoc("", type.description);
@@ -621,7 +621,7 @@ public class Enchantment {
 			}
 		}
 	}
-
+	
 	// tuples
 	string tp = "package sul.utils;\n\npublic final class Tuples {\n\n\tprivate Tuples() {}\n\n";
 	foreach(t ; tuples) {
@@ -638,7 +638,7 @@ public class Enchantment {
 		tp ~= "\t}\n\n";
 	}
 	write("../src/java/sul/utils/Tuples.java", tp ~ "}");
-
+	
 }
 
 string javadoc(string space, string description) {

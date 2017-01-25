@@ -879,6 +879,7 @@ class Metadata {
 			foreach(i ; 0..varuint.decode(_buffer, &_index)) {
 				next=varuint.decode(_buffer, &_index);
 			}
+			return metadata;
 		}
 	}
 

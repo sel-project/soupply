@@ -74,7 +74,7 @@
 				<constant name="furnace-data" value="3" />
 				<constant name="multi" value="4" />
 			</field>
-			<!-- TODO -->
+			<field name="data" type="bytes" />
 		</type>
 
 	</encoding>
@@ -568,8 +568,6 @@
 					<constant name="stop-sprint" value="10" />
 					<constant name="start-sneak" value="11" />
 					<constant name="stop-sneak" value="12" />
-					<constant name="dimension-change" value="13" />
-					<constant name="abort-dimension-change" value="14" />
 					<constant name="start-gliding" value="15" />
 					<constant name="stop-gliding" value="16" />
 				</field>

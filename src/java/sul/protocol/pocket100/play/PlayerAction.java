@@ -29,8 +29,6 @@ public class PlayerAction extends Packet {
 	public static final int STOP_SPRINT = 10;
 	public static final int START_SNEAK = 11;
 	public static final int STOP_SNEAK = 12;
-	public static final int DIMENSION_CHANGE = 13;
-	public static final int ABORT_DIMENSION_CHANGE = 14;
 	public static final int START_GLIDING = 15;
 	public static final int STOP_GLIDING = 16;
 

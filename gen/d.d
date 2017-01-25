@@ -612,6 +612,7 @@ alias varulong = var!ulong;
 			}
 			//TODO
 			data ~= "\t\t\t}\n";
+			data ~= "\t\t\treturn metadata;\n";
 			data ~= "\t\t}\n";
 			data ~= "\t}\n\n";
 			data ~= "}";

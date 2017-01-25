@@ -2773,6 +2773,7 @@ class Metadata {
 			size_t next;
 			while((next=readBigEndianUbyte()) != 255) {
 			}
+			return metadata;
 		}
 	}
 
