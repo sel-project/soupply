@@ -1,3 +1,7 @@
+![SEL Logo](http://i.imgur.com/jPfQuZ0.png)
+
+__Automatically generated libraries for SEL, Minecraft and Minecraft: Pocket Edition__
+
 ### Specification
  | Protocol | Metadata | Attributes | Recipes | Creative Inventory
  ---:|:---:|:---:|:---:|:---:|:---:
