@@ -26,7 +26,7 @@ import std.typecons : tuple;
 
 import all;
 
-void java(Attributes[string] attributes, Protocols[string] protocols, Creative[string] creative) {
+void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative) {
 	
 	mkdirRecurse("../src/java/sul/utils");
 	
@@ -620,6 +620,31 @@ public class Enchantment {
 				write("../src/java/sul/protocol/" ~ game ~ "/" ~ sectionName ~ "/" ~ toPascalCase(packet.name) ~ ".java", data, "protocol/" ~ game);
 			}
 		}
+
+		// metadata
+		auto m = game in metadatas;
+		if(m) {
+			string data = "package sul.metadata;\n\nimport sul.utils.*;\n\n";
+			data ~= "public class " ~ toPascalCase(game) ~ " extends Packet {\n\n";
+			//TODO variables
+			//TODO length
+			data ~= "\t@Override\n\tpublic int length() {\n";
+			data ~= "\t\treturn 0;\n";
+			data ~= "\t}\n\n";
+			//TODO encode
+			data ~= "\t@Override\n\tpublic byte[] encode() {\n";
+
+			data ~= "\t\treturn new byte[]{};\n";
+			data ~= "\t}\n\n";
+			//TODO decode
+			data ~= "\t@Override\n\tpublic void decode(byte[] buffer) {\n";
+
+			data ~= "\t}\n\n";
+			data ~= "}";
+			mkdirRecurse("../src/java/sul/metadata");
+			write("../src/java/sul/metadata/" ~ toPascalCase(game) ~ ".java", data, "metadata/" ~ game);
+		}
+
 	}
 	
 	// tuples
