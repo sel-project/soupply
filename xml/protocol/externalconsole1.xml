@@ -6,7 +6,7 @@
 
 	<protocol>1</protocol>
 
-	<released>2017/1/15</released>
+	<released>2017/1/25</released>
 
 	<description>
 		Protocol used to communicate with external sources using a raw TCP protocol or [Web Sockets](https://en.wikipedia.org/wiki/WebSocket).

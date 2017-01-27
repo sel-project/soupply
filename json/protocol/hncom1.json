@@ -444,6 +444,11 @@
 						"type": "string"
 					},
 					{
+						"name": "dimension",
+						"type": "byte",
+						"when": "reason!=0"
+					},
+					{
 						"name": "address",
 						"type": "address"
 					},
@@ -587,8 +592,28 @@
 				]
 			},
 
-			"update_latency": {
+			"update_world": {
 				"id": 17,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "dimension",
+						"type": "byte"
+					}
+				]
+			},
+
+			"update_latency": {
+				"id": 18,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -604,7 +629,7 @@
 			},
 
 			"update_packet_loss": {
-				"id": 18,
+				"id": 19,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -620,7 +645,7 @@
 			},
 
 			"game_packet": {
-				"id": 19,
+				"id": 20,
 				"clientbound": true,
 				"serverbound": true,
 				"fields": [
@@ -636,7 +661,7 @@
 			},
 
 			"ordered_game_packet": {
-				"id": 20,
+				"id": 21,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [

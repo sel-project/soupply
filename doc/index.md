@@ -27,11 +27,11 @@ Protocol | Packets | Released | From
 
 Protocol | Packets | Released | From
 :---:|:---:|:---:|:---:
-[1](https://github.com/sel-project/sel-utils/tree/master/doc/hncom/1.md) | 21 | 2017/1/15 | 1.0.0
+[1](https://github.com/sel-project/sel-utils/tree/master/doc/hncom/1.md) | 22 | 2017/1/25 | 1.0.0
 
 ## External Console
 
 Protocol | Packets | Released
 :---:|:---:|:---:
-[1](https://github.com/sel-project/sel-utils/tree/master/doc/externalconsole/1.md) | 10 | 2017/1/15
+[1](https://github.com/sel-project/sel-utils/tree/master/doc/externalconsole/1.md) | 10 | 2017/1/25
 

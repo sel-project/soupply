@@ -8,34 +8,32 @@
  */
 package sul.protocol.hncom1.player;
 
+import java.nio.charset.StandardCharsets;
+
 import sul.utils.*;
 
-/**
- * Sends data to the client but order it because it could be sent by the node unordered,
- * due to compressed packet sent delayed.
- */
-public class OrderedGamePacket extends Packet {
+public class UpdateWorld extends Packet {
 
-	public static final byte ID = (byte)21;
+	public static final byte ID = (byte)17;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
-	public int order;
-	public byte[] packet;
+	public String name;
+	public byte dimension;
 
-	public OrderedGamePacket() {}
+	public UpdateWorld() {}
 
-	public OrderedGamePacket(int hubId, int order, byte[] packet) {
+	public UpdateWorld(int hubId, String name, byte dimension) {
 		this.hubId = hubId;
-		this.order = order;
-		this.packet = packet;
+		this.name = name;
+		this.dimension = dimension;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(hubId) + Buffer.varuintLength(order) + packet.length + 1;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + 2;
 	}
 
 	@Override
@@ -43,8 +41,8 @@ public class OrderedGamePacket extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
-		this.writeVaruint(order);
-		this.writeBytes(packet);
+		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
+		this.writeBigEndianByte(dimension);
 		return this._buffer;
 	}
 
@@ -53,12 +51,12 @@ public class OrderedGamePacket extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		hubId=this.readVaruint();
-		order=this.readVaruint();
-		packet=this.readBytes(this._buffer.length-this._index);
+		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
+		dimension=readBigEndianByte();
 	}
 
-	public static OrderedGamePacket fromBuffer(byte[] buffer) {
-		OrderedGamePacket ret = new OrderedGamePacket();
+	public static UpdateWorld fromBuffer(byte[] buffer) {
+		UpdateWorld ret = new UpdateWorld();
 		ret.decode(buffer);
 		return ret;
 	}

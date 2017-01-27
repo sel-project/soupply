@@ -6,7 +6,7 @@
 
 	<protocol>1</protocol>
 
-	<released>2017/1/15</released>
+	<released>2017/1/25</released>
 
 	<from>1.0.0</from>
 
@@ -278,6 +278,7 @@
 				<field name="display-name" type="string">
 					Display name of the player, which can contain formatting codes. It can be updated by the node.
 				</field>
+				<field name="dimension" type="byte" when="reason!=0" />
 				<field name="address" type="address" />
 				<field name="uuid" type="uuid" />
 				<field name="skin" type="skin" />
@@ -331,23 +332,29 @@
 				<field name="display-name" type="string" />
 			</packet>
 
-			<packet name="update-latency" id="17" clientbound="true" serverbound="false">
+			<packet name="update-world" id="17" clientbound="false" serverbound="true">
+				<field name="hub-id" type="hub-id" />
+				<field name="name" type="string" />
+				<field name="dimension" type="byte" />
+			</packet>
+
+			<packet name="update-latency" id="18" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 				<field name="latency" type="varuint" />
 			</packet>
 
-			<packet name="update-packet-loss" id="18" clientbound="true" serverbound="false">
+			<packet name="update-packet-loss" id="19" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 				<field name="packet-loss" type="float" />
 			</packet>
 
-			<packet name="game-packet" id="19" clientbound="true" serverbound="true">
+			<packet name="game-packet" id="20" clientbound="true" serverbound="true">
 				Sends data to client or handles data received from the client.
 				<field name="hub-id" type="hub-id" />
 				<field name="packet" type="bytes" />
 			</packet>
 
-			<packet name="ordered-game-packet" id="20" clientbound="false" serverbound="true">
+			<packet name="ordered-game-packet" id="21" clientbound="false" serverbound="true">
 				Sends data to the client but order it because it could be sent by the node unordered, due to compressed packet sent delayed.
 				<field name="hub-id" type="hub-id" />
 				<field name="order" type="varuint" />
