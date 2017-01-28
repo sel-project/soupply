@@ -1816,6 +1816,22 @@
 				}
 			},
 
+			"teletry_event": {
+				"id": 64,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "entity_id",
+						"type": "varlong"
+					},
+					{
+						"name": "event_id",
+						"type": "varint"
+					}
+				]
+			},
+
 			"spawn_experience_orb": {
 				"id": 65,
 				"clientbound": true,
@@ -1828,6 +1844,86 @@
 					{
 						"name": "count",
 						"type": "varint"
+					}
+				]
+			},
+
+			"clientbound_map_item_data": {
+				"id": 66,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "map_id",
+						"type": "varlong"
+					},
+					{
+						"name": "?",
+						"type": "varuint"
+					},
+					{
+						"name": "?",
+						"type": "varuint"
+					},
+					{
+						"name": "?",
+						"type": "varlong"
+					},
+					{
+						"name": "action",
+						"type": "ubyte",
+						"constants": {
+							"update": 4,
+							"full": 6
+						}
+					},
+					{
+						"name": "?",
+						"type": "varuint"
+					},
+					{
+						"name": "?",
+						"type": "varint"
+					},
+					{
+						"name": "?",
+						"type": "byte"
+					},
+					{
+						"name": "?",
+						"type": "byte"
+					},
+					{
+						"name": "show_icons",
+						"type": "bool"
+					},
+					{
+						"name": "icons",
+						"type": "varint<xz>[]"
+					},
+					{
+						"name": "direction",
+						"type": "varint"
+					},
+					{
+						"name": "position",
+						"type": "varint<xz>"
+					},
+					{
+						"name": "colums",
+						"type": "varint"
+					},
+					{
+						"name": "rows",
+						"type": "varint"
+					},
+					{
+						"name": "offset",
+						"type": "varint<xz>"
+					},
+					{
+						"name": "data",
+						"type": "ubyte[]"
 					}
 				]
 			},

@@ -15,7 +15,7 @@ Protocol | Packets | Released | From | To
 
 Protocol | Packets | Released | From
 :---:|:---:|:---:|:---:
-[100](https://github.com/sel-project/sel-utils/tree/master/doc/pocket/100.md) | 74 | 2016/12/19 | 1.0.0
+[100](https://github.com/sel-project/sel-utils/tree/master/doc/pocket/100.md) | 76 | 2016/12/19 | 1.0.0
 
 ## Raknet
 

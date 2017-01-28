@@ -22,7 +22,7 @@ static import sul.protocol.pocket100.types;
 
 import sul.metadata.pocket100;
 
-alias Packets = TypeTuple!(Login, PlayStatus, ServerHandshake, ClientMagic, Disconnect, Batch, ResourcePacksInfo, ResourcePackClientResponse, Text, SetTime, StartGame, AddPlayer, AddEntity, RemoveEntity, AddItemEntity, AddHangingEntity, TakeItemEntity, MoveEntity, MovePlayer, RiderJump, RemoveBlock, UpdateBlock, AddPainting, Explode, LevelSoundEvent, LevelEvent, BlockEvent, EntityEvent, MobEffect, UpdateAttributes, MobEquipment, MobArmorEquipment, Interact, UseItem, PlayerAction, PlayerFall, HurtArmor, SetEntityData, SetEntityMotion, SetEntityLink, SetHealth, SetSpawnPosition, Animate, Respawn, DropItem, InventoryAction, ContainerOpen, ContainerClose, ContainerSetSlot, ContainerSetData, ContainerSetContent, CraftingData, CraftingEvent, AdventureSettings, BlockEntityData, PlayerInput, FullChunkData, SetCheatsEnabled, SetDifficulty, ChangeDimension, SetPlayerGametype, PlayerList, SpawnExperienceOrb, MapInfoRequest, RequestChunkRadius, ChunkRadiusUpdated, ItemFrameDropItem, ReplaceSelectedItem, Camera, AddItem, BossEvent, ShowCredits, AvailableCommands, CommandStep);
+alias Packets = TypeTuple!(Login, PlayStatus, ServerHandshake, ClientMagic, Disconnect, Batch, ResourcePacksInfo, ResourcePackClientResponse, Text, SetTime, StartGame, AddPlayer, AddEntity, RemoveEntity, AddItemEntity, AddHangingEntity, TakeItemEntity, MoveEntity, MovePlayer, RiderJump, RemoveBlock, UpdateBlock, AddPainting, Explode, LevelSoundEvent, LevelEvent, BlockEvent, EntityEvent, MobEffect, UpdateAttributes, MobEquipment, MobArmorEquipment, Interact, UseItem, PlayerAction, PlayerFall, HurtArmor, SetEntityData, SetEntityMotion, SetEntityLink, SetHealth, SetSpawnPosition, Animate, Respawn, DropItem, InventoryAction, ContainerOpen, ContainerClose, ContainerSetSlot, ContainerSetData, ContainerSetContent, CraftingData, CraftingEvent, AdventureSettings, BlockEntityData, PlayerInput, FullChunkData, SetCheatsEnabled, SetDifficulty, ChangeDimension, SetPlayerGametype, PlayerList, TeletryEvent, SpawnExperienceOrb, ClientboundMapItemData, MapInfoRequest, RequestChunkRadius, ChunkRadiusUpdated, ItemFrameDropItem, ReplaceSelectedItem, Camera, AddItem, BossEvent, ShowCredits, AvailableCommands, CommandStep);
 
 class Login : Buffer {
 
@@ -3470,6 +3470,48 @@ class PlayerList : Buffer {
 
 }
 
+class TeletryEvent : Buffer {
+
+	public enum ubyte ID = 64;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["entityId", "eventId"];
+
+	public long entityId;
+	public int eventId;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(long entityId, int eventId=int.init) {
+		this.entityId = entityId;
+		this.eventId = eventId;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varlong.encode(entityId));
+		writeBytes(varint.encode(eventId));
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		entityId=varlong.decode(_buffer, &_index);
+		eventId=varint.decode(_buffer, &_index);
+	}
+
+	public static pure nothrow @safe TeletryEvent fromBuffer(bool readId=true)(ubyte[] buffer) {
+		TeletryEvent ret = new TeletryEvent();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
 class SpawnExperienceOrb : Buffer {
 
 	public enum ubyte ID = 65;
@@ -3505,6 +3547,112 @@ class SpawnExperienceOrb : Buffer {
 
 	public static pure nothrow @safe SpawnExperienceOrb fromBuffer(bool readId=true)(ubyte[] buffer) {
 		SpawnExperienceOrb ret = new SpawnExperienceOrb();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
+class ClientboundMapItemData : Buffer {
+
+	public enum ubyte ID = 66;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	// action
+	public enum ubyte UPDATE = 4;
+	public enum ubyte FULL = 6;
+
+	public enum string[] FIELDS = ["mapId", "unknown1", "unknown2", "unknown3", "action", "unknown5", "unknown6", "unknown7", "unknown8", "showIcons", "icons", "direction", "position", "colums", "rows", "offset", "data"];
+
+	public long mapId;
+	public uint unknown1;
+	public uint unknown2;
+	public long unknown3;
+	public ubyte action;
+	public uint unknown5;
+	public int unknown6;
+	public byte unknown7;
+	public byte unknown8;
+	public bool showIcons;
+	public Tuple!(int, "x", int, "z")[] icons;
+	public int direction;
+	public Tuple!(int, "x", int, "z") position;
+	public int colums;
+	public int rows;
+	public Tuple!(int, "x", int, "z") offset;
+	public ubyte[] data;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(long mapId, uint unknown1=uint.init, uint unknown2=uint.init, long unknown3=long.init, ubyte action=ubyte.init, uint unknown5=uint.init, int unknown6=int.init, byte unknown7=byte.init, byte unknown8=byte.init, bool showIcons=bool.init, Tuple!(int, "x", int, "z")[] icons=(Tuple!(int, "x", int, "z")[]).init, int direction=int.init, Tuple!(int, "x", int, "z") position=Tuple!(int, "x", int, "z").init, int colums=int.init, int rows=int.init, Tuple!(int, "x", int, "z") offset=Tuple!(int, "x", int, "z").init, ubyte[] data=(ubyte[]).init) {
+		this.mapId = mapId;
+		this.unknown1 = unknown1;
+		this.unknown2 = unknown2;
+		this.unknown3 = unknown3;
+		this.action = action;
+		this.unknown5 = unknown5;
+		this.unknown6 = unknown6;
+		this.unknown7 = unknown7;
+		this.unknown8 = unknown8;
+		this.showIcons = showIcons;
+		this.icons = icons;
+		this.direction = direction;
+		this.position = position;
+		this.colums = colums;
+		this.rows = rows;
+		this.offset = offset;
+		this.data = data;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varlong.encode(mapId));
+		writeBytes(varuint.encode(unknown1));
+		writeBytes(varuint.encode(unknown2));
+		writeBytes(varlong.encode(unknown3));
+		writeBigEndianUbyte(action);
+		writeBytes(varuint.encode(unknown5));
+		writeBytes(varint.encode(unknown6));
+		writeBigEndianByte(unknown7);
+		writeBigEndianByte(unknown8);
+		writeBigEndianBool(showIcons);
+		writeBytes(varuint.encode(cast(uint)icons.length)); foreach(awnvbnm;icons){ writeBytes(varint.encode(awnvbnm.x)); writeBytes(varint.encode(awnvbnm.z)); }
+		writeBytes(varint.encode(direction));
+		writeBytes(varint.encode(position.x)); writeBytes(varint.encode(position.z));
+		writeBytes(varint.encode(colums));
+		writeBytes(varint.encode(rows));
+		writeBytes(varint.encode(offset.x)); writeBytes(varint.encode(offset.z));
+		writeBytes(varuint.encode(cast(uint)data.length)); writeBytes(data);
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		mapId=varlong.decode(_buffer, &_index);
+		unknown1=varuint.decode(_buffer, &_index);
+		unknown2=varuint.decode(_buffer, &_index);
+		unknown3=varlong.decode(_buffer, &_index);
+		action=readBigEndianUbyte();
+		unknown5=varuint.decode(_buffer, &_index);
+		unknown6=varint.decode(_buffer, &_index);
+		unknown7=readBigEndianByte();
+		unknown8=readBigEndianByte();
+		showIcons=readBigEndianBool();
+		icons.length=varuint.decode(_buffer, &_index); foreach(ref awnvbnm;icons){ awnvbnm.x=varint.decode(_buffer, &_index); awnvbnm.z=varint.decode(_buffer, &_index); }
+		direction=varint.decode(_buffer, &_index);
+		position.x=varint.decode(_buffer, &_index); position.z=varint.decode(_buffer, &_index);
+		colums=varint.decode(_buffer, &_index);
+		rows=varint.decode(_buffer, &_index);
+		offset.x=varint.decode(_buffer, &_index); offset.z=varint.decode(_buffer, &_index);
+		data.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+data.length){ data=_buffer[_index.._index+data.length].dup; _index+=data.length; }
+	}
+
+	public static pure nothrow @safe ClientboundMapItemData fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ClientboundMapItemData ret = new ClientboundMapItemData();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;

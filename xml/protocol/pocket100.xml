@@ -760,9 +760,37 @@
 				</variants>
 			</packet>
 
+			<packet name="teletry-event" id="64" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="event-id" type="varint" />
+			</packet>
+
 			<packet name="spawn-experience-orb" id="65" clientbound="true" serverbound="false">
 				<field name="position" type="entity-position" />
 				<field name="count" type="varint" />
+			</packet>
+
+			<packet name="clientbound-map-item-data" id="66" clientbound="true" serverbound="false">
+				<field name="map-id" type="entity-id" />
+				<field name="?" type="varuint" />
+				<field name="?" type="varuint" />
+				<field name="?" type="entity-id" />
+				<field name="action" type="ubyte">
+					<constant name="update" value="4" />
+					<constant name="full" value="6" />
+				</field>
+				<field name="?" type="varuint" />
+				<field name="?" type="varint" />
+				<field name="?" type="byte" />
+				<field name="?" type="byte" />
+				<field name="show-icons" type="bool" />
+				<field name="icons" type="varint<xz>[]" />
+				<field name="direction" type="varint" />
+				<field name="position" type="varint<xz>" />
+				<field name="colums" type="varint" />
+				<field name="rows" type="varint" />
+				<field name="offset" type="varint<xz>" />
+				<field name="data" type="ubyte[]" />
 			</packet>
 
 			<packet name="map-info-request" id="67" clientbound="false" serverbound="true">
