@@ -1816,7 +1816,7 @@
 				}
 			},
 
-			"teletry_event": {
+			"telemetry_event": {
 				"id": 64,
 				"clientbound": true,
 				"serverbound": false,

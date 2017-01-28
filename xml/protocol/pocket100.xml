@@ -760,7 +760,7 @@
 				</variants>
 			</packet>
 
-			<packet name="teletry-event" id="64" clientbound="true" serverbound="false">
+			<packet name="telemetry-event" id="64" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="event-id" type="varint" />
 			</packet>

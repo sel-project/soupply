@@ -10,7 +10,7 @@ package sul.protocol.pocket100.play;
 
 import sul.utils.*;
 
-public class TeletryEvent extends Packet {
+public class TelemetryEvent extends Packet {
 
 	public static final byte ID = (byte)64;
 
@@ -20,9 +20,9 @@ public class TeletryEvent extends Packet {
 	public long entityId;
 	public int eventId;
 
-	public TeletryEvent() {}
+	public TelemetryEvent() {}
 
-	public TeletryEvent(long entityId, int eventId) {
+	public TelemetryEvent(long entityId, int eventId) {
 		this.entityId = entityId;
 		this.eventId = eventId;
 	}
@@ -49,8 +49,8 @@ public class TeletryEvent extends Packet {
 		eventId=this.readVarint();
 	}
 
-	public static TeletryEvent fromBuffer(byte[] buffer) {
-		TeletryEvent ret = new TeletryEvent();
+	public static TelemetryEvent fromBuffer(byte[] buffer) {
+		TelemetryEvent ret = new TelemetryEvent();
 		ret.decode(buffer);
 		return ret;
 	}
