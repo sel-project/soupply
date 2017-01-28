@@ -40,7 +40,7 @@ public class SetSpawnPosition extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarint(unknown0);
 		this.writeBytes(position.encode());
-		this._buffer[this._index++]=(byte)(unknown2?1:0);
+		this.writeBool(unknown2);
 		return this._buffer;
 	}
 
@@ -50,7 +50,7 @@ public class SetSpawnPosition extends Packet {
 		readBigEndianByte();
 		unknown0=this.readVarint();
 		position=new sul.protocol.pocket100.types.BlockPosition(); position._index=this._index; position.decode(this._buffer); this._index=position._index;
-		unknown2=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		unknown2=this.readBool();
 	}
 
 	public static SetSpawnPosition fromBuffer(byte[] buffer) {

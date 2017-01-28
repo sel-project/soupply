@@ -165,7 +165,7 @@ public class Add extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVarlong(xuid);
-			this._buffer[this._index++]=(byte)(edu?1:0);
+			this.writeBool(edu);
 			this.writeBigEndianFloat(packetLoss);
 			return this._buffer;
 		}
@@ -174,7 +174,7 @@ public class Add extends Packet {
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
 			xuid=this.readVarlong();
-			edu=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+			edu=this.readBool();
 			packetLoss=readBigEndianFloat();
 		}
 

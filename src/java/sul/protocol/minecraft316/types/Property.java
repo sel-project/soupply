@@ -38,7 +38,7 @@ public class Property extends Packet {
 		this._buffer = new byte[this.length()];
 		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		byte[] dmfsdwu=value.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dmfsdwu.length); this.writeBytes(dmfsdwu);
-		this._buffer[this._index++]=(byte)(signed?1:0);
+		this.writeBool(signed);
 		if(signed==true){ byte[] c2lnbmf0dxjl=signature.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c2lnbmf0dxjl.length); this.writeBytes(c2lnbmf0dxjl); }
 		return this._buffer;
 	}
@@ -48,7 +48,7 @@ public class Property extends Packet {
 		this._buffer = buffer;
 		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
 		int bgvudmfsdwu=this.readVaruint(); value=new String(this.readBytes(bgvudmfsdwu), StandardCharsets.UTF_8);
-		signed=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		signed=this.readBool();
 		if(signed==true){ int bgvuc2lnbmf0dxjl=this.readVaruint(); signature=new String(this.readBytes(bgvuc2lnbmf0dxjl), StandardCharsets.UTF_8); }
 	}
 

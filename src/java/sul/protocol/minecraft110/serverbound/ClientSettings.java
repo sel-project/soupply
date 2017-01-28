@@ -67,7 +67,7 @@ public class ClientSettings extends Packet {
 		byte[] bgfuz3vhz2u=language.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bgfuz3vhz2u.length); this.writeBytes(bgfuz3vhz2u);
 		this.writeBigEndianByte(viewDistance);
 		this.writeVaruint(chatMode);
-		this._buffer[this._index++]=(byte)(chatColors?1:0);
+		this.writeBool(chatColors);
 		this.writeBigEndianByte(displayedSkinParts);
 		this.writeBigEndianByte(mainHand);
 		return this._buffer;
@@ -80,7 +80,7 @@ public class ClientSettings extends Packet {
 		int bgvubgfuz3vhz2u=this.readVaruint(); language=new String(this.readBytes(bgvubgfuz3vhz2u), StandardCharsets.UTF_8);
 		viewDistance=readBigEndianByte();
 		chatMode=this.readVaruint();
-		chatColors=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		chatColors=this.readBool();
 		displayedSkinParts=readBigEndianByte();
 		mainHand=readBigEndianByte();
 	}

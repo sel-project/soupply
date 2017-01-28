@@ -53,7 +53,7 @@ public class MobEffect extends Packet {
 		this.writeBigEndianByte(eventId);
 		this.writeVarint(effect);
 		this.writeVarint(amplifier);
-		this._buffer[this._index++]=(byte)(particles?1:0);
+		this.writeBool(particles);
 		this.writeVarint(duration);
 		return this._buffer;
 	}
@@ -66,7 +66,7 @@ public class MobEffect extends Packet {
 		eventId=readBigEndianByte();
 		effect=this.readVarint();
 		amplifier=this.readVarint();
-		particles=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		particles=this.readBool();
 		duration=this.readVarint();
 	}
 

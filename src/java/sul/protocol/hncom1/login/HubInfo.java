@@ -67,7 +67,7 @@ public class HubInfo extends Packet {
 		this.writeVarulong(serverId);
 		this.writeVarulong(reservedUuids);
 		byte[] zglzcgxheu5hbwu=displayName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
-		this._buffer[this._index++]=(byte)(onlineMode?1:0);
+		this.writeBool(onlineMode);
 		this.writeVaruint((int)games.length); for(sul.protocol.hncom1.types.Game z2ftzxm:games){ this.writeBytes(z2ftzxm.encode()); }
 		this.writeVaruint(online);
 		this.writeVaruint(max);
@@ -87,7 +87,7 @@ public class HubInfo extends Packet {
 		serverId=this.readVarulong();
 		reservedUuids=this.readVarulong();
 		int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
-		onlineMode=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		onlineMode=this.readBool();
 		int bgdhbwvz=this.readVaruint(); games=new sul.protocol.hncom1.types.Game[bgdhbwvz]; for(int z2ftzxm=0;z2ftzxm<games.length;z2ftzxm++){ games[z2ftzxm]=new sul.protocol.hncom1.types.Game(); games[z2ftzxm]._index=this._index; games[z2ftzxm].decode(this._buffer); this._index=games[z2ftzxm]._index; }
 		online=this.readVaruint();
 		max=this.readVaruint();

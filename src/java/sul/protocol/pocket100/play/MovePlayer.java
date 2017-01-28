@@ -57,7 +57,7 @@ public class MovePlayer extends Packet {
 		this.writeLittleEndianFloat(headYaw);
 		this.writeLittleEndianFloat(yaw);
 		this.writeBigEndianByte(animation);
-		this._buffer[this._index++]=(byte)(onGround?1:0);
+		this.writeBool(onGround);
 		return this._buffer;
 	}
 
@@ -71,7 +71,7 @@ public class MovePlayer extends Packet {
 		headYaw=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		animation=readBigEndianByte();
-		onGround=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		onGround=this.readBool();
 	}
 
 	public static MovePlayer fromBuffer(byte[] buffer) {

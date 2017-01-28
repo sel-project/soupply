@@ -37,7 +37,7 @@ public class PlayerPosition extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeBigEndianDouble(position.x); this.writeBigEndianDouble(position.y); this.writeBigEndianDouble(position.z);
-		this._buffer[this._index++]=(byte)(onGround?1:0);
+		this.writeBool(onGround);
 		return this._buffer;
 	}
 
@@ -46,7 +46,7 @@ public class PlayerPosition extends Packet {
 		this._buffer = buffer;
 		this.readVaruint();
 		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
-		onGround=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		onGround=this.readBool();
 	}
 
 	public static PlayerPosition fromBuffer(byte[] buffer) {

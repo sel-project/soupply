@@ -41,7 +41,7 @@ public class ChunkData extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.z);
-		this._buffer[this._index++]=(byte)(full?1:0);
+		this.writeBool(full);
 		this.writeVaruint(sections);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
 		return this._buffer;
@@ -52,9 +52,9 @@ public class ChunkData extends Packet {
 		this._buffer = buffer;
 		this.readVaruint();
 		position.x=readBigEndianInt(); position.z=readBigEndianInt();
-		full=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		full=this.readBool();
 		sections=this.readVaruint();
-		int bgrhdge=this.readVaruint(); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
+		int bgrhdge=this.readVaruint(); data=this.readBytes(bgrhdge);
 	}
 
 	public static ChunkData fromBuffer(byte[] buffer) {

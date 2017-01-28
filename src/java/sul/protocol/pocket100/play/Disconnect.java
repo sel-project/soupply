@@ -38,7 +38,7 @@ public class Disconnect extends Packet {
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this._buffer[this._index++]=(byte)(hideDisconnectionScreen?1:0);
+		this.writeBool(hideDisconnectionScreen);
 		byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
 		return this._buffer;
 	}
@@ -47,7 +47,7 @@ public class Disconnect extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		hideDisconnectionScreen=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		hideDisconnectionScreen=this.readBool();
 		int bgvubwvzc2fnzq=this.readVaruint(); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8);
 	}
 

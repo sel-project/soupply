@@ -140,7 +140,7 @@ public class LevelSoundEvent extends Packet {
 		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeVaruint(volume);
 		this.writeVarint(pitch);
-		this._buffer[this._index++]=(byte)(unknown4?1:0);
+		this.writeBool(unknown4);
 		return this._buffer;
 	}
 
@@ -152,7 +152,7 @@ public class LevelSoundEvent extends Packet {
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		volume=this.readVaruint();
 		pitch=this.readVarint();
-		unknown4=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		unknown4=this.readBool();
 	}
 
 	public static LevelSoundEvent fromBuffer(byte[] buffer) {

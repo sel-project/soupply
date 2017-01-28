@@ -32,7 +32,7 @@ public class Acknowledge extends Packet {
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
-		this._buffer[this._index++]=(byte)(unique?1:0);
+		this.writeBool(unique);
 		this.writeLittleEndianTriad(first);
 		if(unique==false){ this.writeLittleEndianTriad(last); }
 		return this._buffer;
@@ -41,7 +41,7 @@ public class Acknowledge extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		unique=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		unique=this.readBool();
 		first=readLittleEndianTriad();
 		if(unique==false){ last=readLittleEndianTriad(); }
 	}

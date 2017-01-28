@@ -43,7 +43,7 @@ public class EntityLook extends Packet {
 		this.writeVaruint(entityId);
 		this.writeBigEndianByte(yaw);
 		this.writeBigEndianByte(pitch);
-		this._buffer[this._index++]=(byte)(onGround?1:0);
+		this.writeBool(onGround);
 		return this._buffer;
 	}
 
@@ -54,7 +54,7 @@ public class EntityLook extends Packet {
 		entityId=this.readVaruint();
 		yaw=readBigEndianByte();
 		pitch=readBigEndianByte();
-		onGround=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		onGround=this.readBool();
 	}
 
 	public static EntityLook fromBuffer(byte[] buffer) {

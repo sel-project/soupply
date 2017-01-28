@@ -65,7 +65,7 @@ public class ConnectionRequest extends Packet {
 		this.writeVaruint(protocol);
 		byte[] cgfzc3dvcmq=password.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)cgfzc3dvcmq.length); this.writeBytes(cgfzc3dvcmq);
 		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
-		this._buffer[this._index++]=(byte)(main?1:0);
+		this.writeBool(main);
 		return this._buffer;
 	}
 
@@ -76,7 +76,7 @@ public class ConnectionRequest extends Packet {
 		protocol=this.readVaruint();
 		int bgvucgfzc3dvcmq=this.readVaruint(); password=new String(this.readBytes(bgvucgfzc3dvcmq), StandardCharsets.UTF_8);
 		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
-		main=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		main=this.readBool();
 	}
 
 	public static ConnectionRequest fromBuffer(byte[] buffer) {

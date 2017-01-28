@@ -30,7 +30,7 @@ public class OptionalPosition extends Packet {
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
-		this._buffer[this._index++]=(byte)(hasPosition?1:0);
+		this.writeBool(hasPosition);
 		if(hasPosition==true){ this.writeBigEndianLong(position); }
 		return this._buffer;
 	}
@@ -38,7 +38,7 @@ public class OptionalPosition extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		hasPosition=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		hasPosition=this.readBool();
 		if(hasPosition==true){ position=readBigEndianLong(); }
 	}
 

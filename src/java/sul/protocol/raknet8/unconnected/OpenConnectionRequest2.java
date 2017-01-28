@@ -51,7 +51,7 @@ public class OpenConnectionRequest2 extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		final int bg1hz2lj=16; magic=new byte[bg1hz2lj]; magic=this.readBytes(bg1hz2lj);
+		final int bg1hz2lj=16; magic=this.readBytes(bg1hz2lj);
 		serverAddress=new sul.protocol.raknet8.types.Address(); serverAddress._index=this._index; serverAddress.decode(this._buffer); this._index=serverAddress._index;
 		mtuLength=readBigEndianShort();
 		clientId=readBigEndianLong();

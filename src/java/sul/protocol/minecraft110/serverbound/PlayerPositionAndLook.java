@@ -43,7 +43,7 @@ public class PlayerPositionAndLook extends Packet {
 		this.writeBigEndianDouble(position.x); this.writeBigEndianDouble(position.y); this.writeBigEndianDouble(position.z);
 		this.writeBigEndianFloat(yaw);
 		this.writeBigEndianFloat(pitch);
-		this._buffer[this._index++]=(byte)(onGround?1:0);
+		this.writeBool(onGround);
 		return this._buffer;
 	}
 
@@ -54,7 +54,7 @@ public class PlayerPositionAndLook extends Packet {
 		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		yaw=readBigEndianFloat();
 		pitch=readBigEndianFloat();
-		onGround=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		onGround=this.readBool();
 	}
 
 	public static PlayerPositionAndLook fromBuffer(byte[] buffer) {

@@ -125,7 +125,7 @@ public class Welcome extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			this._buffer[this._index++]=(byte)(remoteCommands?1:0);
+			this.writeBool(remoteCommands);
 			byte[] c29mdhdhcmu=software.getBytes(StandardCharsets.UTF_8); this.writeBigEndianShort((short)c29mdhdhcmu.length); this.writeBytes(c29mdhdhcmu);
 			this.writeBytes(versions);
 			byte[] zglzcgxheu5hbwu=displayName.getBytes(StandardCharsets.UTF_8); this.writeBigEndianShort((short)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
@@ -137,9 +137,9 @@ public class Welcome extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			remoteCommands=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+			remoteCommands=this.readBool();
 			short bgvuc29mdhdhcmu=readBigEndianShort(); software=new String(this.readBytes(bgvuc29mdhdhcmu), StandardCharsets.UTF_8);
-			final int bhzlcnnpb25z=3; versions=new byte[bhzlcnnpb25z]; versions=this.readBytes(bhzlcnnpb25z);
+			final int bhzlcnnpb25z=3; versions=this.readBytes(bhzlcnnpb25z);
 			short bgvuzglzcgxheu5h=readBigEndianShort(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
 			int bgdhbwvz=readBigEndianShort(); games=new sul.protocol.externalconsole1.types.Game[bgdhbwvz]; for(int z2ftzxm=0;z2ftzxm<games.length;z2ftzxm++){ games[z2ftzxm]=new sul.protocol.externalconsole1.types.Game(); games[z2ftzxm]._index=this._index; games[z2ftzxm].decode(this._buffer); this._index=games[z2ftzxm]._index; }
 			int bgnvbm5ly3rlze5v=readBigEndianShort(); connectedNodes=new String[bgnvbm5ly3rlze5v]; for(int y29ubmvjdgvktm9k=0;y29ubmvjdgvktm9k<connectedNodes.length;y29ubmvjdgvktm9k++){ short bgvuy29ubmvjdgvk=readBigEndianShort(); connectedNodes[y29ubmvjdgvktm9k]=new String(this.readBytes(bgvuy29ubmvjdgvk), StandardCharsets.UTF_8); }

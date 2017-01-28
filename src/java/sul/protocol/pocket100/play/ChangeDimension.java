@@ -45,7 +45,7 @@ public class ChangeDimension extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarint(dimension);
 		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
-		this._buffer[this._index++]=(byte)(unknown2?1:0);
+		this.writeBool(unknown2);
 		return this._buffer;
 	}
 
@@ -55,7 +55,7 @@ public class ChangeDimension extends Packet {
 		readBigEndianByte();
 		dimension=this.readVarint();
 		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
-		unknown2=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		unknown2=this.readBool();
 	}
 
 	public static ChangeDimension fromBuffer(byte[] buffer) {

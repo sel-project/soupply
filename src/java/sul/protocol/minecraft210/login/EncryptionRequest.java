@@ -51,8 +51,8 @@ public class EncryptionRequest extends Packet {
 		this._buffer = buffer;
 		this.readVaruint();
 		int bgvuc2vydmvyswq=this.readVaruint(); serverId=new String(this.readBytes(bgvuc2vydmvyswq), StandardCharsets.UTF_8);
-		int bhb1ymxpy0tleq=this.readVaruint(); publicKey=new byte[bhb1ymxpy0tleq]; publicKey=this.readBytes(bhb1ymxpy0tleq);
-		int bhzlcmlmevrva2vu=this.readVaruint(); verifyToken=new byte[bhzlcmlmevrva2vu]; verifyToken=this.readBytes(bhzlcmlmevrva2vu);
+		int bhb1ymxpy0tleq=this.readVaruint(); publicKey=this.readBytes(bhb1ymxpy0tleq);
+		int bhzlcmlmevrva2vu=this.readVaruint(); verifyToken=this.readBytes(bhzlcmlmevrva2vu);
 	}
 
 	public static EncryptionRequest fromBuffer(byte[] buffer) {

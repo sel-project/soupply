@@ -46,7 +46,7 @@ public class Ping extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		pingId=readBigEndianLong();
-		final int bg1hz2lj=16; magic=new byte[bg1hz2lj]; magic=this.readBytes(bg1hz2lj);
+		final int bg1hz2lj=16; magic=this.readBytes(bg1hz2lj);
 	}
 
 	public static Ping fromBuffer(byte[] buffer) {

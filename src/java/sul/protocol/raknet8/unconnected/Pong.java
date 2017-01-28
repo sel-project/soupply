@@ -55,7 +55,7 @@ public class Pong extends Packet {
 		readBigEndianByte();
 		pingId=readBigEndianLong();
 		serverId=readBigEndianLong();
-		final int bg1hz2lj=16; magic=new byte[bg1hz2lj]; magic=this.readBytes(bg1hz2lj);
+		final int bg1hz2lj=16; magic=this.readBytes(bg1hz2lj);
 		short bgvuc3rhdhvz=readBigEndianShort(); status=new String(this.readBytes(bgvuc3rhdhvz), StandardCharsets.UTF_8);
 	}
 

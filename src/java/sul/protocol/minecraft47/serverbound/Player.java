@@ -34,7 +34,7 @@ public class Player extends Packet {
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
-		this._buffer[this._index++]=(byte)(onGround?1:0);
+		this.writeBool(onGround);
 		return this._buffer;
 	}
 
@@ -42,7 +42,7 @@ public class Player extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		this.readVaruint();
-		onGround=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		onGround=this.readBool();
 	}
 
 	public static Player fromBuffer(byte[] buffer) {

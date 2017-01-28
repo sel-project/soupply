@@ -109,13 +109,13 @@ public class StartGame extends Packet {
 		this.writeVarint(worldGamemode);
 		this.writeVarint(difficulty);
 		this.writeVarint(spawnPosition.x); this.writeVarint(spawnPosition.y); this.writeVarint(spawnPosition.z);
-		this._buffer[this._index++]=(byte)(loadedInCreative?1:0);
+		this.writeBool(loadedInCreative);
 		this.writeVarint(time);
 		this.writeBigEndianByte(edition);
 		this.writeLittleEndianFloat(rainLevel);
 		this.writeLittleEndianFloat(lightingLevel);
-		this._buffer[this._index++]=(byte)(cheatsEnabled?1:0);
-		this._buffer[this._index++]=(byte)(textureRequired?1:0);
+		this.writeBool(cheatsEnabled);
+		this.writeBool(textureRequired);
 		byte[] bgv2zwxjza=levelId.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bgv2zwxjza.length); this.writeBytes(bgv2zwxjza);
 		byte[] d29ybgroyw1l=worldName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)d29ybgroyw1l.length); this.writeBytes(d29ybgroyw1l);
 		return this._buffer;
@@ -136,13 +136,13 @@ public class StartGame extends Packet {
 		worldGamemode=this.readVarint();
 		difficulty=this.readVarint();
 		spawnPosition.x=this.readVarint(); spawnPosition.y=this.readVarint(); spawnPosition.z=this.readVarint();
-		loadedInCreative=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		loadedInCreative=this.readBool();
 		time=this.readVarint();
 		edition=readBigEndianByte();
 		rainLevel=readLittleEndianFloat();
 		lightingLevel=readLittleEndianFloat();
-		cheatsEnabled=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		textureRequired=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		cheatsEnabled=this.readBool();
+		textureRequired=this.readBool();
 		int bgvubgv2zwxjza=this.readVaruint(); levelId=new String(this.readBytes(bgvubgv2zwxjza), StandardCharsets.UTF_8);
 		int bgvud29ybgroyw1l=this.readVaruint(); worldName=new String(this.readBytes(bgvud29ybgroyw1l), StandardCharsets.UTF_8);
 	}

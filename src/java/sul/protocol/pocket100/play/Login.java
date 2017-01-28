@@ -54,7 +54,7 @@ public class Login extends Packet {
 		readBigEndianByte();
 		protocol=readBigEndianInt();
 		edition=readBigEndianByte();
-		int bgjvzhk=this.readVaruint(); body=new byte[bgjvzhk]; body=this.readBytes(bgjvzhk);
+		int bgjvzhk=this.readVaruint(); body=this.readBytes(bgjvzhk);
 	}
 
 	public static Login fromBuffer(byte[] buffer) {

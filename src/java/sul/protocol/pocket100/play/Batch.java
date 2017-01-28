@@ -42,7 +42,7 @@ public class Batch extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		int bgrhdge=this.readVaruint(); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
+		int bgrhdge=this.readVaruint(); data=this.readBytes(bgrhdge);
 	}
 
 	public static Batch fromBuffer(byte[] buffer) {

@@ -48,7 +48,7 @@ public class ServerHandshake extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		int bgvuc2vydmvyuhvi=this.readVaruint(); serverPublicKey=new String(this.readBytes(bgvuc2vydmvyuhvi), StandardCharsets.UTF_8);
-		int bhrva2vu=this.readVaruint(); token=new byte[bhrva2vu]; token=this.readBytes(bhrva2vu);
+		int bhrva2vu=this.readVaruint(); token=this.readBytes(bhrva2vu);
 	}
 
 	public static ServerHandshake fromBuffer(byte[] buffer) {

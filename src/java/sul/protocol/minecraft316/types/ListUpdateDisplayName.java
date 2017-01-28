@@ -36,7 +36,7 @@ public class ListUpdateDisplayName extends Packet {
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
-		this._buffer[this._index++]=(byte)(hasDisplayName?1:0);
+		this.writeBool(hasDisplayName);
 		if(hasDisplayName==true){ byte[] zglzcgxheu5hbwu=displayName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu); }
 		return this._buffer;
 	}
@@ -45,7 +45,7 @@ public class ListUpdateDisplayName extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
-		hasDisplayName=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		hasDisplayName=this.readBool();
 		if(hasDisplayName==true){ int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8); }
 	}
 

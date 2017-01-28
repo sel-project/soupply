@@ -49,7 +49,7 @@ public class Address extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		int bgj5dgvz=this.readVaruint(); bytes=new byte[bgj5dgvz]; bytes=this.readBytes(bgj5dgvz);
+		int bgj5dgvz=this.readVaruint(); bytes=this.readBytes(bgj5dgvz);
 		port=readBigEndianShort();
 	}
 

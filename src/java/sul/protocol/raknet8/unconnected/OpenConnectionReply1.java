@@ -42,7 +42,7 @@ public class OpenConnectionReply1 extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBytes(magic);
 		this.writeBigEndianLong(serverId);
-		this._buffer[this._index++]=(byte)(security?1:0);
+		this.writeBool(security);
 		this.writeBigEndianShort(mtuLength);
 		return this._buffer;
 	}
@@ -51,9 +51,9 @@ public class OpenConnectionReply1 extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		final int bg1hz2lj=16; magic=new byte[bg1hz2lj]; magic=this.readBytes(bg1hz2lj);
+		final int bg1hz2lj=16; magic=this.readBytes(bg1hz2lj);
 		serverId=readBigEndianLong();
-		security=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		security=this.readBool();
 		mtuLength=readBigEndianShort();
 	}
 

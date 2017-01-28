@@ -65,6 +65,12 @@ void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	io ~= "\t\tfor(int i=0; i<a && this._index<this._buffer.length; i++) _ret[i] = this._buffer[this._index++];\n";
 	io ~= "\t\treturn _ret;\n";
 	io ~= "\t}\n\n";
+	io ~= "\tpublic void writeBool(boolean a) {\n";
+	io ~= "\t\tthis._buffer[this._index++] = (byte)(a ? 1 : 0);\n";
+	io ~= "\t}\n\n";
+	io ~= "\tpublic boolean readBool() {\n";
+	io ~= "\t\treturn this._index < this._buffer.length && this._buffer[this._index++] != 0;\n";
+	io ~= "\t}\n\n";
 	foreach(type ; [tuple("byte", 1, "byte"), tuple("short", 2, "short"), tuple("triad", 3, "int"), tuple("int", 4, "int"), tuple("long", 8, "long")]) {
 		foreach(e ; ["BigEndian", "LittleEndian"]) {
 			// write
@@ -411,7 +417,7 @@ public class Enchantment {
 			else if(type == "string") return "byte[] " ~ hash(name) ~ "=" ~ name ~ ".getBytes(StandardCharsets.UTF_8); " ~ createEncoding("byte[]", hash(name));
 			else if(type == "uuid") return "this.writeBigEndianLong(" ~ name ~ ".getLeastSignificantBits()); this.writeBigEndianLong(" ~ name ~ ".getMostSignificantBits());";
 			else if(type == "bytes") return "this.writeBytes(" ~ name ~ ");";
-			else if(type == "bool") return "this._buffer[this._index++]=(byte)(" ~ name ~ "?1:0);";
+			else if(type == "bool") return "this.writeBool(" ~ name ~ ");";
 			else if(type == "triad" || defaultTypes.canFind(type)) return "this.write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ");";
 			else return "this.writeBytes(" ~ name ~ ".encode());";
 		}
@@ -438,9 +444,8 @@ public class Enchantment {
 				} else {
 					ret ~= "final int " ~ hash("l" ~ name) ~ "=" ~ conv[lo+1..lc] ~ "; ";
 				}
-				ret ~= name ~ "=new " ~ cnt ~ "[" ~ hash("l" ~ name) ~ "]; ";
 				if(cnt == "byte") return ret ~ name ~ "=this.readBytes(" ~ hash("l" ~ name) ~ ");";
-				else return ret ~ "for(int " ~ hash(name) ~ "=0;" ~ hash(name) ~ "<" ~ name ~ ".length;" ~ hash(name) ~ "++){ " ~ createDecoding(nt, name ~ "[" ~ hash(name) ~ "]") ~ " }";
+				else return ret ~ name ~ "=new " ~ cnt ~ "[" ~ hash("l" ~ name) ~ "]; for(int " ~ hash(name) ~ "=0;" ~ hash(name) ~ "<" ~ name ~ ".length;" ~ hash(name) ~ "++){ " ~ createDecoding(nt, name ~ "[" ~ hash(name) ~ "]") ~ " }";
 			}
 			auto ts = conv.lastIndexOf("<");
 			if(ts > 0) {
@@ -457,7 +462,7 @@ public class Enchantment {
 			else if(type == "string") return createDecoding(prs.data.arrayLength, arrayLength ~ " " ~ hash("len" ~ name)) ~ " " ~ name ~ "=new String(this.readBytes(" ~ hash("len" ~ name) ~ "), StandardCharsets.UTF_8);";
 			else if(type == "uuid") return createDecoding("long", "long " ~ hash("m" ~ name)) ~ " " ~ createDecoding("long", "long " ~ hash("l" ~ name)) ~ " " ~ name ~ "=new UUID(" ~ hash("m" ~ name) ~ "," ~ hash("l" ~ name) ~ ");";
 			else if(type == "bytes") return name ~ "=this.readBytes(this._buffer.length-this._index);";
-			else if(type == "bool") return name ~ "=this._index<this._buffer.length&&this._buffer[this._index++]!=0;";
+			else if(type == "bool") return name ~ "=this.readBool();";
 			else if(defaultTypes.canFind(type) || type == "triad") return name ~ "=read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "();";
 			else return name ~ "=new " ~ convert(type) ~ "(); " ~ name ~ "._index=this._index; " ~ name ~ ".decode(this._buffer); this._index=" ~ name ~ "._index;";
 		}

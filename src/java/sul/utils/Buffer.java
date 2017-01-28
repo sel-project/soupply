@@ -27,6 +27,14 @@ public class Buffer {
 		return _ret;
 	}
 
+	public void writeBool(boolean a) {
+		this._buffer[this._index++] = (byte)(a ? 1 : 0);
+	}
+
+	public boolean readBool() {
+		return this._index < this._buffer.length && this._buffer[this._index++] != 0;
+	}
+
 	public void writeBigEndianByte(byte a) {
 		this._buffer[this._index++] = (byte)a;
 	}

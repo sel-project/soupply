@@ -45,8 +45,8 @@ public class EncryptionResponse extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		this.readVaruint();
-		int bhnoyxjlzfnly3jl=this.readVaruint(); sharedSecret=new byte[bhnoyxjlzfnly3jl]; sharedSecret=this.readBytes(bhnoyxjlzfnly3jl);
-		int bhzlcmlmevrva2vu=this.readVaruint(); verifyToken=new byte[bhzlcmlmevrva2vu]; verifyToken=this.readBytes(bhzlcmlmevrva2vu);
+		int bhnoyxjlzfnly3jl=this.readVaruint(); sharedSecret=this.readBytes(bhnoyxjlzfnly3jl);
+		int bhzlcmlmevrva2vu=this.readVaruint(); verifyToken=this.readBytes(bhzlcmlmevrva2vu);
 	}
 
 	public static EncryptionResponse fromBuffer(byte[] buffer) {

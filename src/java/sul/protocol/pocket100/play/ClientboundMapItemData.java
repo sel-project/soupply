@@ -79,7 +79,7 @@ public class ClientboundMapItemData extends Packet {
 		this.writeVarint(unknown6);
 		this.writeBigEndianByte(unknown7);
 		this.writeBigEndianByte(unknown8);
-		this._buffer[this._index++]=(byte)(showIcons?1:0);
+		this.writeBool(showIcons);
 		this.writeVaruint((int)icons.length); for(Tuples.IntXZ awnvbnm:icons){ this.writeVarint(awnvbnm.x); this.writeVarint(awnvbnm.z); }
 		this.writeVarint(direction);
 		this.writeVarint(position.x); this.writeVarint(position.z);
@@ -103,14 +103,14 @@ public class ClientboundMapItemData extends Packet {
 		unknown6=this.readVarint();
 		unknown7=readBigEndianByte();
 		unknown8=readBigEndianByte();
-		showIcons=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		showIcons=this.readBool();
 		int bgljb25z=this.readVaruint(); icons=new Tuples.IntXZ[bgljb25z]; for(int awnvbnm=0;awnvbnm<icons.length;awnvbnm++){ icons[awnvbnm].x=this.readVarint(); icons[awnvbnm].z=this.readVarint(); }
 		direction=this.readVarint();
 		position.x=this.readVarint(); position.z=this.readVarint();
 		colums=this.readVarint();
 		rows=this.readVarint();
 		offset.x=this.readVarint(); offset.z=this.readVarint();
-		int bgrhdge=this.readVaruint(); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
+		int bgrhdge=this.readVaruint(); data=this.readBytes(bgrhdge);
 	}
 
 	public static ClientboundMapItemData fromBuffer(byte[] buffer) {

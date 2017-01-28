@@ -54,7 +54,7 @@ public class CommandStep extends Packet {
 		byte[] b3zlcmxvywq=overload.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)b3zlcmxvywq.length); this.writeBytes(b3zlcmxvywq);
 		this.writeVaruint(unknown2);
 		this.writeVaruint(unknown3);
-		this._buffer[this._index++]=(byte)(isOutput?1:0);
+		this.writeBool(isOutput);
 		this.writeVarulong(unknown5);
 		byte[] aw5wdxq=input.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)aw5wdxq.length); this.writeBytes(aw5wdxq);
 		byte[] b3v0chv0=output.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)b3v0chv0.length); this.writeBytes(b3v0chv0);
@@ -69,7 +69,7 @@ public class CommandStep extends Packet {
 		int bgvub3zlcmxvywq=this.readVaruint(); overload=new String(this.readBytes(bgvub3zlcmxvywq), StandardCharsets.UTF_8);
 		unknown2=this.readVaruint();
 		unknown3=this.readVaruint();
-		isOutput=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		isOutput=this.readBool();
 		unknown5=this.readVarulong();
 		int bgvuaw5wdxq=this.readVaruint(); input=new String(this.readBytes(bgvuaw5wdxq), StandardCharsets.UTF_8);
 		int bgvub3v0chv0=this.readVaruint(); output=new String(this.readBytes(bgvub3v0chv0), StandardCharsets.UTF_8);

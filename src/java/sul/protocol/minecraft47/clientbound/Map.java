@@ -66,7 +66,7 @@ public class Map extends Packet {
 		colums=readBigEndianByte();
 		rows=readBigEndianByte();
 		offset.x=readBigEndianByte(); offset.z=readBigEndianByte();
-		int bgrhdge=this.readVaruint(); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
+		int bgrhdge=this.readVaruint(); data=this.readBytes(bgrhdge);
 	}
 
 	public static Map fromBuffer(byte[] buffer) {

@@ -40,7 +40,7 @@ public class ConfirmTransaction extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianByte(window);
 		this.writeBigEndianShort(action);
-		this._buffer[this._index++]=(byte)(accepted?1:0);
+		this.writeBool(accepted);
 		return this._buffer;
 	}
 
@@ -50,7 +50,7 @@ public class ConfirmTransaction extends Packet {
 		this.readVaruint();
 		window=readBigEndianByte();
 		action=readBigEndianShort();
-		accepted=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		accepted=this.readBool();
 	}
 
 	public static ConfirmTransaction fromBuffer(byte[] buffer) {

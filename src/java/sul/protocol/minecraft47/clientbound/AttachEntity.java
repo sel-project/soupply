@@ -40,7 +40,7 @@ public class AttachEntity extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianInt(target);
 		this.writeBigEndianInt(holder);
-		this._buffer[this._index++]=(byte)(leash?1:0);
+		this.writeBool(leash);
 		return this._buffer;
 	}
 
@@ -50,7 +50,7 @@ public class AttachEntity extends Packet {
 		this.readVaruint();
 		target=readBigEndianInt();
 		holder=readBigEndianInt();
-		leash=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		leash=this.readBool();
 	}
 
 	public static AttachEntity fromBuffer(byte[] buffer) {

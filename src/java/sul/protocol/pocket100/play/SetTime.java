@@ -37,7 +37,7 @@ public class SetTime extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarint(time);
-		this._buffer[this._index++]=(byte)(daylightCycle?1:0);
+		this.writeBool(daylightCycle);
 		return this._buffer;
 	}
 
@@ -46,7 +46,7 @@ public class SetTime extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		time=this.readVarint();
-		daylightCycle=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		daylightCycle=this.readBool();
 	}
 
 	public static SetTime fromBuffer(byte[] buffer) {

@@ -62,7 +62,7 @@ public class Auth extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		int bghhc2g=readBigEndianShort(); hash=new byte[bghhc2g]; hash=this.readBytes(bghhc2g);
+		int bghhc2g=readBigEndianShort(); hash=this.readBytes(bghhc2g);
 	}
 
 	public static Auth fromBuffer(byte[] buffer) {

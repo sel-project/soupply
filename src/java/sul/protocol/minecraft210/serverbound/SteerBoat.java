@@ -36,8 +36,8 @@ public class SteerBoat extends Packet {
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
-		this._buffer[this._index++]=(byte)(rightPaddleTurning?1:0);
-		this._buffer[this._index++]=(byte)(leftPaddleTurning?1:0);
+		this.writeBool(rightPaddleTurning);
+		this.writeBool(leftPaddleTurning);
 		return this._buffer;
 	}
 
@@ -45,8 +45,8 @@ public class SteerBoat extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		this.readVaruint();
-		rightPaddleTurning=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		leftPaddleTurning=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		rightPaddleTurning=this.readBool();
+		leftPaddleTurning=this.readBool();
 	}
 
 	public static SteerBoat fromBuffer(byte[] buffer) {

@@ -45,8 +45,8 @@ public class Address extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		type=readBigEndianByte();
-		if(type==4){ final int bglwdjq=4; ipv4=new byte[bglwdjq]; ipv4=this.readBytes(bglwdjq); }
-		if(type==6){ final int bglwdjy=16; ipv6=new byte[bglwdjy]; ipv6=this.readBytes(bglwdjy); }
+		if(type==4){ final int bglwdjq=4; ipv4=this.readBytes(bglwdjq); }
+		if(type==6){ final int bglwdjy=16; ipv6=this.readBytes(bglwdjy); }
 		port=readBigEndianShort();
 	}
 

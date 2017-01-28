@@ -34,7 +34,7 @@ public class SetCheatsEnabled extends Packet {
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this._buffer[this._index++]=(byte)(enabled?1:0);
+		this.writeBool(enabled);
 		return this._buffer;
 	}
 
@@ -42,7 +42,7 @@ public class SetCheatsEnabled extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		enabled=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		enabled=this.readBool();
 	}
 
 	public static SetCheatsEnabled fromBuffer(byte[] buffer) {

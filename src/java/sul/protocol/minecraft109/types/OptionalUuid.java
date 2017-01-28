@@ -32,7 +32,7 @@ public class OptionalUuid extends Packet {
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
-		this._buffer[this._index++]=(byte)(hasUuid?1:0);
+		this.writeBool(hasUuid);
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
 		return this._buffer;
 	}
@@ -40,7 +40,7 @@ public class OptionalUuid extends Packet {
 	@Override
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
-		hasUuid=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		hasUuid=this.readBool();
 		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
 	}
 

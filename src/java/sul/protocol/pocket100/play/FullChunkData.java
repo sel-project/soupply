@@ -49,8 +49,8 @@ public class FullChunkData extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		position.x=this.readVarint(); position.z=this.readVarint();
-		int bgrhdge=this.readVaruint(); data=new byte[bgrhdge]; data=this.readBytes(bgrhdge);
-		int bhrpbgvz=this.readVaruint(); tiles=new byte[bhrpbgvz]; tiles=this.readBytes(bhrpbgvz);
+		int bgrhdge=this.readVaruint(); data=this.readBytes(bgrhdge);
+		int bhrpbgvz=this.readVaruint(); tiles=this.readBytes(bhrpbgvz);
 	}
 
 	public static FullChunkData fromBuffer(byte[] buffer) {

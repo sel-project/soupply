@@ -67,7 +67,7 @@ public class AuthCredentials extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(protocol);
-		this._buffer[this._index++]=(byte)(hash?1:0);
+		this.writeBool(hash);
 		if(hash==true){ byte[] agfzaefsz29yaxro=hashAlgorithm.getBytes(StandardCharsets.UTF_8); this.writeBigEndianShort((short)agfzaefsz29yaxro.length); this.writeBytes(agfzaefsz29yaxro); }
 		if(hash==true){ this.writeBigEndianShort((short)payload.length); this.writeBytes(payload); }
 		return this._buffer;
@@ -78,9 +78,9 @@ public class AuthCredentials extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		protocol=readBigEndianByte();
-		hash=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		hash=this.readBool();
 		if(hash==true){ short bgvuagfzaefsz29y=readBigEndianShort(); hashAlgorithm=new String(this.readBytes(bgvuagfzaefsz29y), StandardCharsets.UTF_8); }
-		if(hash==true){ int bhbhewxvywq=readBigEndianShort(); payload=new byte[bhbhewxvywq]; payload=this.readBytes(bhbhewxvywq); }
+		if(hash==true){ int bhbhewxvywq=readBigEndianShort(); payload=this.readBytes(bhbhewxvywq); }
 	}
 
 	public static AuthCredentials fromBuffer(byte[] buffer) {

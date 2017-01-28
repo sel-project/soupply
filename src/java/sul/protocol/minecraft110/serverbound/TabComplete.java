@@ -43,8 +43,8 @@ public class TabComplete extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		byte[] dgv4da=text.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgv4da.length); this.writeBytes(dgv4da);
-		this._buffer[this._index++]=(byte)(command?1:0);
-		this._buffer[this._index++]=(byte)(hasPosition?1:0);
+		this.writeBool(command);
+		this.writeBool(hasPosition);
 		if(hasPosition==true){ this.writeBigEndianLong(block); }
 		return this._buffer;
 	}
@@ -54,8 +54,8 @@ public class TabComplete extends Packet {
 		this._buffer = buffer;
 		this.readVaruint();
 		int bgvudgv4da=this.readVaruint(); text=new String(this.readBytes(bgvudgv4da), StandardCharsets.UTF_8);
-		command=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
-		hasPosition=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		command=this.readBool();
+		hasPosition=this.readBool();
 		if(hasPosition==true){ block=readBigEndianLong(); }
 	}
 

@@ -77,7 +77,7 @@ public class JoinGame extends Packet {
 		this.writeBigEndianByte(difficulty);
 		this.writeBigEndianByte(maxPlayers);
 		byte[] bgv2zwxuexbl=levelType.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bgv2zwxuexbl.length); this.writeBytes(bgv2zwxuexbl);
-		this._buffer[this._index++]=(byte)(reducedDebug?1:0);
+		this.writeBool(reducedDebug);
 		return this._buffer;
 	}
 
@@ -91,7 +91,7 @@ public class JoinGame extends Packet {
 		difficulty=readBigEndianByte();
 		maxPlayers=readBigEndianByte();
 		int bgvubgv2zwxuexbl=this.readVaruint(); levelType=new String(this.readBytes(bgvubgv2zwxuexbl), StandardCharsets.UTF_8);
-		reducedDebug=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		reducedDebug=this.readBool();
 	}
 
 	public static JoinGame fromBuffer(byte[] buffer) {

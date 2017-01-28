@@ -40,7 +40,7 @@ public class PlayerLook extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianFloat(yaw);
 		this.writeBigEndianFloat(pitch);
-		this._buffer[this._index++]=(byte)(onGround?1:0);
+		this.writeBool(onGround);
 		return this._buffer;
 	}
 
@@ -50,7 +50,7 @@ public class PlayerLook extends Packet {
 		this.readVaruint();
 		yaw=readBigEndianFloat();
 		pitch=readBigEndianFloat();
-		onGround=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		onGround=this.readBool();
 	}
 
 	public static PlayerLook fromBuffer(byte[] buffer) {

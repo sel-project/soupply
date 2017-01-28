@@ -40,7 +40,7 @@ public class EntityRelativeMove extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBigEndianByte(delta.x); this.writeBigEndianByte(delta.y); this.writeBigEndianByte(delta.z);
-		this._buffer[this._index++]=(byte)(onGround?1:0);
+		this.writeBool(onGround);
 		return this._buffer;
 	}
 
@@ -50,7 +50,7 @@ public class EntityRelativeMove extends Packet {
 		this.readVaruint();
 		entityId=this.readVaruint();
 		delta.x=readBigEndianByte(); delta.y=readBigEndianByte(); delta.z=readBigEndianByte();
-		onGround=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		onGround=this.readBool();
 	}
 
 	public static EntityRelativeMove fromBuffer(byte[] buffer) {

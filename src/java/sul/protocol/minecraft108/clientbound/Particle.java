@@ -95,7 +95,7 @@ public class Particle extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeBigEndianInt(particleId);
-		this._buffer[this._index++]=(byte)(longDistance?1:0);
+		this.writeBool(longDistance);
 		this.writeBigEndianFloat(position.x); this.writeBigEndianFloat(position.y); this.writeBigEndianFloat(position.z);
 		this.writeBigEndianFloat(offset.x); this.writeBigEndianFloat(offset.y); this.writeBigEndianFloat(offset.z);
 		this.writeBigEndianFloat(data);
@@ -109,7 +109,7 @@ public class Particle extends Packet {
 		this._buffer = buffer;
 		this.readVaruint();
 		particleId=readBigEndianInt();
-		longDistance=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		longDistance=this.readBool();
 		position.x=readBigEndianFloat(); position.y=readBigEndianFloat(); position.z=readBigEndianFloat();
 		offset.x=readBigEndianFloat(); offset.y=readBigEndianFloat(); offset.z=readBigEndianFloat();
 		data=readBigEndianFloat();

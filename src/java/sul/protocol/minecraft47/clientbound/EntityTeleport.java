@@ -46,7 +46,7 @@ public class EntityTeleport extends Packet {
 		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.y); this.writeBigEndianInt(position.z);
 		this.writeBigEndianByte(yaw);
 		this.writeBigEndianByte(pitch);
-		this._buffer[this._index++]=(byte)(onGround?1:0);
+		this.writeBool(onGround);
 		return this._buffer;
 	}
 
@@ -58,7 +58,7 @@ public class EntityTeleport extends Packet {
 		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 		yaw=readBigEndianByte();
 		pitch=readBigEndianByte();
-		onGround=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		onGround=this.readBool();
 	}
 
 	public static EntityTeleport fromBuffer(byte[] buffer) {

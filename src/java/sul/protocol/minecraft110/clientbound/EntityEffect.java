@@ -46,7 +46,7 @@ public class EntityEffect extends Packet {
 		this.writeBigEndianByte(effectId);
 		this.writeBigEndianByte(amplifier);
 		this.writeVaruint(duration);
-		this._buffer[this._index++]=(byte)(showParticles?1:0);
+		this.writeBool(showParticles);
 		return this._buffer;
 	}
 
@@ -58,7 +58,7 @@ public class EntityEffect extends Packet {
 		effectId=readBigEndianByte();
 		amplifier=readBigEndianByte();
 		duration=this.readVaruint();
-		showParticles=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		showParticles=this.readBool();
 	}
 
 	public static EntityEffect fromBuffer(byte[] buffer) {

@@ -54,7 +54,7 @@ public class ListAddPlayer extends Packet {
 		this.writeVaruint((int)properties.length); for(sul.protocol.minecraft107.types.Property chjvcgvydgllcw:properties){ this.writeBytes(chjvcgvydgllcw.encode()); }
 		this.writeVaruint(gamemode);
 		this.writeVaruint(latency);
-		this._buffer[this._index++]=(byte)(hasDisplayName?1:0);
+		this.writeBool(hasDisplayName);
 		if(hasDisplayName==true){ byte[] zglzcgxheu5hbwu=displayName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu); }
 		return this._buffer;
 	}
@@ -67,7 +67,7 @@ public class ListAddPlayer extends Packet {
 		int bhbyb3blcnrpzxm=this.readVaruint(); properties=new sul.protocol.minecraft107.types.Property[bhbyb3blcnrpzxm]; for(int chjvcgvydgllcw=0;chjvcgvydgllcw<properties.length;chjvcgvydgllcw++){ properties[chjvcgvydgllcw]=new sul.protocol.minecraft107.types.Property(); properties[chjvcgvydgllcw]._index=this._index; properties[chjvcgvydgllcw].decode(this._buffer); this._index=properties[chjvcgvydgllcw]._index; }
 		gamemode=this.readVaruint();
 		latency=this.readVaruint();
-		hasDisplayName=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		hasDisplayName=this.readBool();
 		if(hasDisplayName==true){ int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8); }
 	}
 

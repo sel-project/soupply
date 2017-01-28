@@ -70,7 +70,7 @@ public class Effect extends Packet {
 		this.writeBigEndianInt(effectId);
 		this.writeBigEndianLong(position);
 		this.writeBigEndianInt(data);
-		this._buffer[this._index++]=(byte)(disableVolume?1:0);
+		this.writeBool(disableVolume);
 		return this._buffer;
 	}
 
@@ -81,7 +81,7 @@ public class Effect extends Packet {
 		effectId=readBigEndianInt();
 		position=readBigEndianLong();
 		data=readBigEndianInt();
-		disableVolume=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		disableVolume=this.readBool();
 	}
 
 	public static Effect fromBuffer(byte[] buffer) {

@@ -46,7 +46,7 @@ public class OpenConnectionReply2 extends Packet {
 		this.writeBigEndianLong(serverId);
 		this.writeBytes(clientAddress.encode());
 		this.writeBigEndianShort(mtuLength);
-		this._buffer[this._index++]=(byte)(security?1:0);
+		this.writeBool(security);
 		return this._buffer;
 	}
 
@@ -54,11 +54,11 @@ public class OpenConnectionReply2 extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		final int bg1hz2lj=16; magic=new byte[bg1hz2lj]; magic=this.readBytes(bg1hz2lj);
+		final int bg1hz2lj=16; magic=this.readBytes(bg1hz2lj);
 		serverId=readBigEndianLong();
 		clientAddress=new sul.protocol.raknet8.types.Address(); clientAddress._index=this._index; clientAddress.decode(this._buffer); this._index=clientAddress._index;
 		mtuLength=readBigEndianShort();
-		security=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		security=this.readBool();
 	}
 
 	public static OpenConnectionReply2 fromBuffer(byte[] buffer) {

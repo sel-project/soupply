@@ -43,7 +43,7 @@ public class Slot extends Packet {
 		this._buffer = buffer;
 		id=this.readVarint();
 		if(id>0){ metaAndCount=this.readVarint(); }
-		if(id>0){ int bg5ida=readLittleEndianShort(); nbt=new byte[bg5ida]; nbt=this.readBytes(bg5ida); }
+		if(id>0){ int bg5ida=readLittleEndianShort(); nbt=this.readBytes(bg5ida); }
 	}
 
 

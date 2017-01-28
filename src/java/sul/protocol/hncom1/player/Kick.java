@@ -48,7 +48,7 @@ public class Kick extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
 		byte[] cmvhc29u=reason.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)cmvhc29u.length); this.writeBytes(cmvhc29u);
-		this._buffer[this._index++]=(byte)(translation?1:0);
+		this.writeBool(translation);
 		if(translation==true){ this.writeVaruint((int)parameters.length); for(String cgfyyw1ldgvycw:parameters){ byte[] y2dmexl3mwxkz3z5=cgfyyw1ldgvycw.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y2dmexl3mwxkz3z5.length); this.writeBytes(y2dmexl3mwxkz3z5); } }
 		return this._buffer;
 	}
@@ -59,7 +59,7 @@ public class Kick extends Packet {
 		readBigEndianByte();
 		hubId=this.readVaruint();
 		int bgvucmvhc29u=this.readVaruint(); reason=new String(this.readBytes(bgvucmvhc29u), StandardCharsets.UTF_8);
-		translation=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		translation=this.readBool();
 		if(translation==true){ int bhbhcmftzxrlcnm=this.readVaruint(); parameters=new String[bhbhcmftzxrlcnm]; for(int cgfyyw1ldgvycw=0;cgfyyw1ldgvycw<parameters.length;cgfyyw1ldgvycw++){ int bgvucgfyyw1ldgvy=this.readVaruint(); parameters[cgfyyw1ldgvycw]=new String(this.readBytes(bgvucgfyyw1ldgvy), StandardCharsets.UTF_8); } }
 	}
 

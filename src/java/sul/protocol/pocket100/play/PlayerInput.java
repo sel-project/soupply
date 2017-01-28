@@ -40,7 +40,7 @@ public class PlayerInput extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeLittleEndianFloat(motion.x); this.writeLittleEndianFloat(motion.y); this.writeLittleEndianFloat(motion.z);
 		this.writeBigEndianByte(flags);
-		this._buffer[this._index++]=(byte)(unknown2?1:0);
+		this.writeBool(unknown2);
 		return this._buffer;
 	}
 
@@ -50,7 +50,7 @@ public class PlayerInput extends Packet {
 		readBigEndianByte();
 		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 		flags=readBigEndianByte();
-		unknown2=this._index<this._buffer.length&&this._buffer[this._index++]!=0;
+		unknown2=this.readBool();
 	}
 
 	public static PlayerInput fromBuffer(byte[] buffer) {
