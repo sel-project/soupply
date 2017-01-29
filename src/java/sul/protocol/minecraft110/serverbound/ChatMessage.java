@@ -37,7 +37,7 @@ public class ChatMessage extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		byte[] dgv4da=text.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgv4da.length); this.writeBytes(dgv4da);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

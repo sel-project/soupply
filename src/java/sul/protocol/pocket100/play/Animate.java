@@ -42,7 +42,7 @@ public class Animate extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarint(action);
 		this.writeVarlong(entityId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class UpdateAttributes extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
 		this.writeVaruint((int)attributes.length); for(sul.protocol.pocket100.types.Attribute yxr0cmlidxrlcw:attributes){ this.writeBytes(yxr0cmlidxrlcw.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

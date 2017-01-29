@@ -45,7 +45,7 @@ public class Transfer extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
 		byte[] bm9kzq=node.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bm9kzq.length); this.writeBytes(bm9kzq);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

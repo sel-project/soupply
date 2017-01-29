@@ -47,7 +47,7 @@ public class AddItemEntity extends Packet {
 		this.writeBytes(item.encode());
 		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeLittleEndianFloat(motion.x); this.writeLittleEndianFloat(motion.y); this.writeLittleEndianFloat(motion.z);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

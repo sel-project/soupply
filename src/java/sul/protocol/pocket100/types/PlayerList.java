@@ -41,7 +41,7 @@ public class PlayerList extends Packet {
 		this.writeVarlong(entityId);
 		byte[] zglzcgxheu5hbwu=displayName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
 		this.writeBytes(skin.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

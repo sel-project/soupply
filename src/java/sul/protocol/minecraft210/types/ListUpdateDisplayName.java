@@ -38,7 +38,7 @@ public class ListUpdateDisplayName extends Packet {
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
 		this.writeBool(hasDisplayName);
 		if(hasDisplayName==true){ byte[] zglzcgxheu5hbwu=displayName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

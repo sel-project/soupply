@@ -38,7 +38,7 @@ public class Slot extends Packet {
 		if(id>0){ this.writeBigEndianByte(count); }
 		if(id>0){ this.writeBigEndianShort(damage); }
 		if(id>0){ this.writeBytes(nbt); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

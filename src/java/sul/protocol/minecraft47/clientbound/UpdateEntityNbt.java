@@ -38,7 +38,7 @@ public class UpdateEntityNbt extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBytes(nbt);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

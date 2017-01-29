@@ -41,7 +41,7 @@ public class ServerDifficulty extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeBigEndianByte(difficulty);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

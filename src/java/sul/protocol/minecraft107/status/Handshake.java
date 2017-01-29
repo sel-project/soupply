@@ -50,7 +50,7 @@ public class Handshake extends Packet {
 		byte[] c2vydmvyqwrkcmvz=serverAddress.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c2vydmvyqwrkcmvz.length); this.writeBytes(c2vydmvyqwrkcmvz);
 		this.writeBigEndianShort(serverPort);
 		this.writeVaruint(next);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

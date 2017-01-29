@@ -38,7 +38,7 @@ public class BlockEntityData extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBytes(position.encode());
 		this.writeBytes(nbt);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -35,7 +35,7 @@ public class Ack extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianShort((short)packets.length); for(sul.protocol.raknet8.types.Acknowledge cgfja2v0cw:packets){ this.writeBytes(cgfja2v0cw.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

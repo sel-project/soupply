@@ -53,7 +53,7 @@ public class UseEntity extends Packet {
 		this.writeVaruint(type);
 		if(type==2){ this.writeBigEndianFloat(targetPosition.x); this.writeBigEndianFloat(targetPosition.y); this.writeBigEndianFloat(targetPosition.z); }
 		if(type==2){ this.writeVaruint(hand); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

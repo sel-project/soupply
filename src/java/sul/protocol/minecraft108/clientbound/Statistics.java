@@ -35,7 +35,7 @@ public class Statistics extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint((int)statistics.length); for(sul.protocol.minecraft108.types.Statistic c3rhdglzdgljcw:statistics){ this.writeBytes(c3rhdglzdgljcw.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

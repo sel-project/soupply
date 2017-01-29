@@ -35,7 +35,7 @@ public class Split extends Packet {
 		this.writeBigEndianInt(count);
 		this.writeBigEndianShort(id);
 		this.writeBigEndianInt(order);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

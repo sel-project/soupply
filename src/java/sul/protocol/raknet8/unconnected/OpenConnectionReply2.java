@@ -47,7 +47,7 @@ public class OpenConnectionReply2 extends Packet {
 		this.writeBytes(clientAddress.encode());
 		this.writeBigEndianShort(mtuLength);
 		this.writeBool(security);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

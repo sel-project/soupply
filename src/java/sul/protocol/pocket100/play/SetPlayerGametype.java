@@ -39,7 +39,7 @@ public class SetPlayerGametype extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarint(gametype);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

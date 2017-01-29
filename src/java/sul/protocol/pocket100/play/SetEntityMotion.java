@@ -38,7 +38,7 @@ public class SetEntityMotion extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
 		this.writeLittleEndianFloat(motion.x); this.writeLittleEndianFloat(motion.y); this.writeLittleEndianFloat(motion.z);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

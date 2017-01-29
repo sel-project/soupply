@@ -43,7 +43,7 @@ public class TabComplete extends Packet {
 		byte[] dgv4da=text.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgv4da.length); this.writeBytes(dgv4da);
 		this.writeBool(hasPosition);
 		if(hasPosition==true){ this.writeBigEndianLong(block); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

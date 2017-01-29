@@ -35,7 +35,7 @@ public class Respawn extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

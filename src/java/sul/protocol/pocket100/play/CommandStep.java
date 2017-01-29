@@ -58,7 +58,7 @@ public class CommandStep extends Packet {
 		this.writeVarulong(unknown5);
 		byte[] aw5wdxq=input.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)aw5wdxq.length); this.writeBytes(aw5wdxq);
 		byte[] b3v0chv0=output.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)b3v0chv0.length); this.writeBytes(b3v0chv0);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class EntityMetadata extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBytes(metadata.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public class Animation extends Packet {
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

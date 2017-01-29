@@ -44,7 +44,7 @@ public class ResourcesUsage extends Packet {
 		this.writeBigEndianFloat(tps);
 		this.writeVarulong(ram);
 		this.writeBigEndianFloat(cpu);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

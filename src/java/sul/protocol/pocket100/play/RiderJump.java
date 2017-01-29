@@ -35,7 +35,7 @@ public class RiderJump extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(rider);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

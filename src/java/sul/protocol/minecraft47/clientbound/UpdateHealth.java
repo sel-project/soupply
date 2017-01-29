@@ -41,7 +41,7 @@ public class UpdateHealth extends Packet {
 		this.writeBigEndianFloat(health);
 		this.writeVaruint(hunger);
 		this.writeBigEndianFloat(saturation);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

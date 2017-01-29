@@ -38,7 +38,7 @@ public class UseBed extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBigEndianLong(position);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

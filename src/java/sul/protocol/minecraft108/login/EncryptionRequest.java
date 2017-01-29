@@ -43,7 +43,7 @@ public class EncryptionRequest extends Packet {
 		byte[] c2vydmvyswq=serverId.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c2vydmvyswq.length); this.writeBytes(c2vydmvyswq);
 		this.writeVaruint((int)publicKey.length); this.writeBytes(publicKey);
 		this.writeVaruint((int)verifyToken.length); this.writeBytes(verifyToken);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

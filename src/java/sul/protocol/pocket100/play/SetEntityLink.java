@@ -45,7 +45,7 @@ public class SetEntityLink extends Packet {
 		this.writeVarlong(from);
 		this.writeVarlong(to);
 		this.writeBigEndianByte(action);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public class Welcome extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(status);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class Welcome extends Packet {
 			byte[] zglzcgxheu5hbwu=displayName.getBytes(StandardCharsets.UTF_8); this.writeBigEndianShort((short)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
 			this.writeBigEndianShort((short)games.length); for(sul.protocol.externalconsole1.types.Game z2ftzxm:games){ this.writeBytes(z2ftzxm.encode()); }
 			this.writeBigEndianShort((short)connectedNodes.length); for(String y29ubmvjdgvktm9k:connectedNodes){ byte[] eti5dwjtdmpkz3zr=y29ubmvjdgvktm9k.getBytes(StandardCharsets.UTF_8); this.writeBigEndianShort((short)eti5dwjtdmpkz3zr.length); this.writeBytes(eti5dwjtdmpkz3zr); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -169,7 +169,7 @@ public class Welcome extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -201,7 +201,7 @@ public class Welcome extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override

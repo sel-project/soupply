@@ -43,7 +43,7 @@ public class Game extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(type);
 		this.writeBigEndianShort((short)protocols.length); for(int chjvdg9jb2xz:protocols){ this.writeBigEndianInt(chjvdg9jb2xz); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

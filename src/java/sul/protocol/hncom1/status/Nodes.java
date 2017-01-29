@@ -47,7 +47,7 @@ public class Nodes extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(action);
 		byte[] bm9kzq=node.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bm9kzq.length); this.writeBytes(bm9kzq);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

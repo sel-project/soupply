@@ -51,7 +51,7 @@ public class PlayerPositionAndLook extends Packet {
 		this.writeBigEndianFloat(yaw);
 		this.writeBigEndianFloat(pitch);
 		this.writeBigEndianByte(flags);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

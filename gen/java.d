@@ -50,12 +50,12 @@ void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		"varulong": "long"
 	];
 	
-	string io = "package sul.utils;\n\n";
+	string io = "package sul.utils;\n\nimport java.util.Arrays;\n\n";
 	io ~= "public class Buffer {\n\n";
 	io ~= "\tpublic byte[] _buffer;\n\n";
 	io ~= "\tpublic int _index;\n\n";
-	io ~= "\tpublic int getIndex() {\n";
-	io ~= "\t\treturn this._index;\n";
+	io ~= "\tpublic byte[] getBuffer() {\n";
+	io ~= "\t\treturn Arrays.copyOfRange(this._buffer, 0, this._index);\n";
 	io ~= "\t}\n\n";
 	io ~= "\tpublic void writeBytes(byte[] a) {\n";
 	io ~= "\t\tfor(byte b : a) this._buffer[this._index++] = b;\n";
@@ -534,7 +534,7 @@ public class Enchantment {
 				bool c = field.condition.length != 0;
 				data ~= space ~ "\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createEncoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
 			}
-			data ~= space ~ "\treturn this._buffer;\n";
+			data ~= space ~ "\treturn this.getBuffer();\n";
 			data ~= space ~ "}\n\n";
 			// decoding
 			data ~= space ~ "@Override\n";

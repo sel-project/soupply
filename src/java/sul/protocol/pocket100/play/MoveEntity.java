@@ -47,7 +47,7 @@ public class MoveEntity extends Packet {
 		this.writeBigEndianByte(pitch);
 		this.writeBigEndianByte(headYaw);
 		this.writeBigEndianByte(yaw);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class TabComplete extends Packet {
 		this.writeBool(command);
 		this.writeBool(hasPosition);
 		if(hasPosition==true){ this.writeBigEndianLong(block); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

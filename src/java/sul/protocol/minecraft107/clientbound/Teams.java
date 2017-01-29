@@ -44,7 +44,7 @@ public class Teams extends Packet {
 		this.writeVaruint(ID);
 		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		this.writeBigEndianByte(mode);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class Teams extends Packet {
 			byte[] y29sbglzaw9uunvs=collisionRule.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y29sbglzaw9uunvs.length); this.writeBytes(y29sbglzaw9uunvs);
 			this.writeBigEndianByte(color);
 			this.writeVaruint((int)players.length); for(String cgxhewvycw:players){ byte[] y2d4agv3dnljdw=cgxhewvycw.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y2d4agv3dnljdw.length); this.writeBytes(y2d4agv3dnljdw); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -161,7 +161,7 @@ public class Teams extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -232,7 +232,7 @@ public class Teams extends Packet {
 			byte[] bmftzxrhz1zpc2li=nametagVisibility.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzxrhz1zpc2li.length); this.writeBytes(bmftzxrhz1zpc2li);
 			byte[] y29sbglzaw9uunvs=collisionRule.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y29sbglzaw9uunvs.length); this.writeBytes(y29sbglzaw9uunvs);
 			this.writeBigEndianByte(color);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -276,7 +276,7 @@ public class Teams extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint((int)players.length); for(String cgxhewvycw:players){ byte[] y2d4agv3dnljdw=cgxhewvycw.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y2d4agv3dnljdw.length); this.writeBytes(y2d4agv3dnljdw); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -314,7 +314,7 @@ public class Teams extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint((int)players.length); for(String cgxhewvycw:players){ byte[] y2d4agv3dnljdw=cgxhewvycw.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y2d4agv3dnljdw.length); this.writeBytes(y2d4agv3dnljdw); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override

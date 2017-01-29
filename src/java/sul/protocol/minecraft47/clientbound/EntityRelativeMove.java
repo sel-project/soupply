@@ -41,7 +41,7 @@ public class EntityRelativeMove extends Packet {
 		this.writeVaruint(entityId);
 		this.writeBigEndianByte(delta.x); this.writeBigEndianByte(delta.y); this.writeBigEndianByte(delta.z);
 		this.writeBool(onGround);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

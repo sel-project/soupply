@@ -69,7 +69,7 @@ public class Respawn extends Packet {
 		this.writeBigEndianByte(difficulty);
 		this.writeBigEndianByte(gamemode);
 		byte[] bgv2zwxuexbl=levelType.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bgv2zwxuexbl.length); this.writeBytes(bgv2zwxuexbl);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

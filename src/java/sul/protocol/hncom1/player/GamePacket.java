@@ -41,7 +41,7 @@ public class GamePacket extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
 		this.writeBytes(packet);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

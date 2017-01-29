@@ -41,7 +41,7 @@ public class CombatEvent extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeBigEndianByte(eventId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class CombatEvent extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -115,7 +115,7 @@ public class CombatEvent extends Packet {
 			this.writeBytes(_encode);
 			this.writeVaruint(duration);
 			this.writeBigEndianInt(entityId);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -160,7 +160,7 @@ public class CombatEvent extends Packet {
 			this.writeVaruint(playerId);
 			this.writeBigEndianInt(entityId);
 			byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override

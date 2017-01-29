@@ -44,7 +44,7 @@ public class Interact extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(action);
 		this.writeVarlong(target);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

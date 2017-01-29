@@ -56,7 +56,7 @@ public class AdventureSettings extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(flags);
 		this.writeVaruint(permissions);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

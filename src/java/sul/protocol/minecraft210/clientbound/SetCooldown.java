@@ -38,7 +38,7 @@ public class SetCooldown extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(item);
 		this.writeVaruint(cooldown);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

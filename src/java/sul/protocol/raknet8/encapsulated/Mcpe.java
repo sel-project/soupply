@@ -35,7 +35,7 @@ public class Mcpe extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBytes(packet);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

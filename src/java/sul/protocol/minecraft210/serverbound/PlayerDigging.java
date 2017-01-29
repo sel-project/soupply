@@ -51,7 +51,7 @@ public class PlayerDigging extends Packet {
 		this.writeVaruint(status);
 		this.writeBigEndianLong(position);
 		this.writeBigEndianByte(face);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

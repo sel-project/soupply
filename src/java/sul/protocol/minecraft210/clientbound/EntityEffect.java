@@ -51,7 +51,7 @@ public class EntityEffect extends Packet {
 		this.writeBigEndianByte(amplifier);
 		this.writeVaruint(duration);
 		this.writeBigEndianByte(flags);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

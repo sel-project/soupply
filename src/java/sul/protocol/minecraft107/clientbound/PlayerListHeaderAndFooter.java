@@ -40,7 +40,7 @@ public class PlayerListHeaderAndFooter extends Packet {
 		this.writeVaruint(ID);
 		byte[] agvhzgvy=header.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)agvhzgvy.length); this.writeBytes(agvhzgvy);
 		byte[] zm9vdgvy=footer.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)zm9vdgvy.length); this.writeBytes(zm9vdgvy);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class ContainerOpen extends Packet {
 		this.writeVarint(slotCount);
 		this.writeBytes(position.encode());
 		this.writeVarlong(entityId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

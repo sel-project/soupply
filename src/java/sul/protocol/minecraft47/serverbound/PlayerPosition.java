@@ -38,7 +38,7 @@ public class PlayerPosition extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianDouble(position.x); this.writeBigEndianDouble(position.y); this.writeBigEndianDouble(position.z);
 		this.writeBool(onGround);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

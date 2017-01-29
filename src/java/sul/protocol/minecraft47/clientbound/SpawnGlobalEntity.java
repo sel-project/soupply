@@ -44,7 +44,7 @@ public class SpawnGlobalEntity extends Packet {
 		this.writeVaruint(entityId);
 		this.writeBigEndianByte(type);
 		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.y); this.writeBigEndianInt(position.z);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

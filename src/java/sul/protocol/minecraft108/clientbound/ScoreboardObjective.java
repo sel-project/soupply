@@ -55,7 +55,7 @@ public class ScoreboardObjective extends Packet {
 		this.writeBigEndianByte(mode);
 		if(mode!=1){ byte[] dmfsdwu=value.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dmfsdwu.length); this.writeBytes(dmfsdwu); }
 		if(mode!=1){ byte[] dhlwzq=type.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dhlwzq.length); this.writeBytes(dhlwzq); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

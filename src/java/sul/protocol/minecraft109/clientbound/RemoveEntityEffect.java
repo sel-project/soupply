@@ -38,7 +38,7 @@ public class RemoveEntityEffect extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBigEndianByte(effectId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

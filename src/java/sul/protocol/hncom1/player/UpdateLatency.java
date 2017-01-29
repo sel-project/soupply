@@ -38,7 +38,7 @@ public class UpdateLatency extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
 		this.writeVaruint(latency);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

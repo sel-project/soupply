@@ -47,7 +47,7 @@ public class NodeInfo extends Packet {
 		this.writeVarulong(time);
 		this.writeVaruint(max);
 		this.writeVaruint((int)plugins.length); for(sul.protocol.hncom1.types.Plugin cgx1z2lucw:plugins){ this.writeBytes(cgx1z2lucw.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

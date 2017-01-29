@@ -46,7 +46,7 @@ public class Pong extends Packet {
 		this.writeBigEndianLong(serverId);
 		this.writeBytes(magic);
 		byte[] c3rhdhvz=status.getBytes(StandardCharsets.UTF_8); this.writeBigEndianShort((short)c3rhdhvz.length); this.writeBytes(c3rhdhvz);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

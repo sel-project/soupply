@@ -41,7 +41,7 @@ public class SetExperience extends Packet {
 		this.writeBigEndianFloat(experience);
 		this.writeVaruint(level);
 		this.writeVaruint(totalExperience);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

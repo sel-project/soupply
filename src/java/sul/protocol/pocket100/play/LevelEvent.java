@@ -91,7 +91,7 @@ public class LevelEvent extends Packet {
 		this.writeVarint(eventId);
 		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeVarint(data);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

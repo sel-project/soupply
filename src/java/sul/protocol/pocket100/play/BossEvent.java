@@ -43,7 +43,7 @@ public class BossEvent extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
 		this.writeVaruint(eventId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

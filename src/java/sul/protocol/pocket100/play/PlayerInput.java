@@ -41,7 +41,7 @@ public class PlayerInput extends Packet {
 		this.writeLittleEndianFloat(motion.x); this.writeLittleEndianFloat(motion.y); this.writeLittleEndianFloat(motion.z);
 		this.writeBigEndianByte(flags);
 		this.writeBool(unknown2);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

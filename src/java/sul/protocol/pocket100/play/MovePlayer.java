@@ -58,7 +58,7 @@ public class MovePlayer extends Packet {
 		this.writeLittleEndianFloat(yaw);
 		this.writeBigEndianByte(animation);
 		this.writeBool(onGround);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

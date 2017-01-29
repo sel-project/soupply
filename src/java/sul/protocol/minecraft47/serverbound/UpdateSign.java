@@ -40,7 +40,7 @@ public class UpdateSign extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianLong(position);
 		for(String bgluzxm:lines){ byte[] ymdsdxp4bq=bgluzxm.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)ymdsdxp4bq.length); this.writeBytes(ymdsdxp4bq); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

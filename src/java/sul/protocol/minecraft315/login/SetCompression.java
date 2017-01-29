@@ -35,7 +35,7 @@ public class SetCompression extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint(thresold);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

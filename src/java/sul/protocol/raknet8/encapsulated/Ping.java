@@ -35,7 +35,7 @@ public class Ping extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianLong(time);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

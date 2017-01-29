@@ -66,7 +66,7 @@ public class BlockAction extends Packet {
 		this.writeBigEndianByte(action);
 		this.writeBigEndianByte(parameter);
 		this.writeVaruint(blockType);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

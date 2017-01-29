@@ -35,7 +35,7 @@ public class Batch extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

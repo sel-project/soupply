@@ -82,7 +82,7 @@ public class UpdateStats extends Packet {
 		this.writeBigEndianInt(upload);
 		this.writeBigEndianInt(download);
 		this.writeBigEndianShort((short)nodes.length); for(sul.protocol.externalconsole1.types.NodeStats bm9kzxm:nodes){ this.writeBytes(bm9kzxm.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

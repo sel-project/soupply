@@ -45,7 +45,7 @@ public class SteerVehicle extends Packet {
 		this.writeBigEndianFloat(sideways);
 		this.writeBigEndianFloat(forward);
 		this.writeBigEndianByte(flags);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

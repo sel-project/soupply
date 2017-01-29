@@ -43,7 +43,7 @@ public class UpdateWorld extends Packet {
 		this.writeVaruint(hubId);
 		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		this.writeBigEndianByte(dimension);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class ListUpdateLatency extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
 		this.writeVaruint(latency);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

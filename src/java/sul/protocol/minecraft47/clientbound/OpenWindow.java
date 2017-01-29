@@ -49,7 +49,7 @@ public class OpenWindow extends Packet {
 		byte[] dgl0bgu=title.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgl0bgu.length); this.writeBytes(dgl0bgu);
 		this.writeBigEndianByte(slots);
 		this.writeBigEndianInt(horseId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

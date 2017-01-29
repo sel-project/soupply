@@ -57,7 +57,7 @@ public class EntityEvent extends Packet {
 		this.writeVarlong(entityId);
 		this.writeBigEndianByte(eventId);
 		this.writeVarint(unknown2);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

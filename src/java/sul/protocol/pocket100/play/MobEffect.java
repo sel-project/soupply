@@ -55,7 +55,7 @@ public class MobEffect extends Packet {
 		this.writeVarint(amplifier);
 		this.writeBool(particles);
 		this.writeVarint(duration);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class UpdatePacketLoss extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
 		this.writeBigEndianFloat(packetLoss);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

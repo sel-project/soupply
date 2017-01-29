@@ -38,7 +38,7 @@ public class Ping extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianLong(pingId);
 		this.writeBytes(magic);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

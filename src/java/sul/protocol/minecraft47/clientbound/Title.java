@@ -41,7 +41,7 @@ public class Title extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint(action);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class Title extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			byte[] dgv4da=text.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgv4da.length); this.writeBytes(dgv4da);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -122,7 +122,7 @@ public class Title extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			byte[] dgv4da=text.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgv4da.length); this.writeBytes(dgv4da);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -166,7 +166,7 @@ public class Title extends Packet {
 			this.writeBigEndianInt(fadeIn);
 			this.writeBigEndianInt(stay);
 			this.writeBigEndianInt(fadeOut);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -197,7 +197,7 @@ public class Title extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -225,7 +225,7 @@ public class Title extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override

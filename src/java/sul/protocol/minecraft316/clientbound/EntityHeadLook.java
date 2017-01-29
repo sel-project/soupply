@@ -38,7 +38,7 @@ public class EntityHeadLook extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBigEndianByte(headYaw);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

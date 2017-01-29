@@ -45,7 +45,7 @@ public class BossBar extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
 		this.writeVaruint(action);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class BossBar extends Packet {
 			this.writeVaruint(color);
 			this.writeVaruint(division);
 			this.writeBigEndianByte(flags);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -154,7 +154,7 @@ public class BossBar extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -191,7 +191,7 @@ public class BossBar extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeBigEndianFloat(health);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -229,7 +229,7 @@ public class BossBar extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			byte[] dgl0bgu=title.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgl0bgu.length); this.writeBytes(dgl0bgu);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -286,7 +286,7 @@ public class BossBar extends Packet {
 			this.writeBytes(_encode);
 			this.writeVaruint(color);
 			this.writeVaruint(division);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -329,7 +329,7 @@ public class BossBar extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeBigEndianByte(flags);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override

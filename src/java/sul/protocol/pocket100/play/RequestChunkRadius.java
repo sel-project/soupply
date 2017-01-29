@@ -35,7 +35,7 @@ public class RequestChunkRadius extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarint(radius);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class ContainerSetSlot extends Packet {
 		this.writeVarint(hotbarSlot);
 		this.writeBytes(item.encode());
 		this.writeBigEndianByte(unknown4);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

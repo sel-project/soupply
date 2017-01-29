@@ -47,7 +47,7 @@ public class Skin extends Packet {
 		this._buffer = new byte[this.length()];
 		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

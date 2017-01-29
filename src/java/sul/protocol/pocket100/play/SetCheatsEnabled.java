@@ -35,7 +35,7 @@ public class SetCheatsEnabled extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBool(enabled);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class MultiBlockChange extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianInt(chunk.x); this.writeBigEndianInt(chunk.z);
 		this.writeVaruint((int)changes.length); for(sul.protocol.minecraft316.types.BlockChange y2hhbmdlcw:changes){ this.writeBytes(y2hhbmdlcw.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class Statistic extends Packet {
 		this._buffer = new byte[this.length()];
 		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		this.writeVaruint(value);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

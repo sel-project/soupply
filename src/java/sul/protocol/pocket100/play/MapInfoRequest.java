@@ -35,7 +35,7 @@ public class MapInfoRequest extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(mapId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

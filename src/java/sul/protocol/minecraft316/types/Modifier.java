@@ -42,7 +42,7 @@ public class Modifier extends Packet {
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
 		this.writeBigEndianDouble(amount);
 		this.writeBigEndianByte(operation);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

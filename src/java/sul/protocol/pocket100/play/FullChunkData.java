@@ -41,7 +41,7 @@ public class FullChunkData extends Packet {
 		this.writeVarint(position.x); this.writeVarint(position.z);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
 		this.writeVaruint((int)tiles.length); this.writeBytes(tiles);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

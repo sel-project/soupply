@@ -66,7 +66,7 @@ public class ConnectionRequest extends Packet {
 		byte[] cgfzc3dvcmq=password.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)cgfzc3dvcmq.length); this.writeBytes(cgfzc3dvcmq);
 		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		this.writeBool(main);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

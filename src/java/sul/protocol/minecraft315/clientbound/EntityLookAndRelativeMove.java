@@ -47,7 +47,7 @@ public class EntityLookAndRelativeMove extends Packet {
 		this.writeBigEndianByte(yaw);
 		this.writeBigEndianByte(pitch);
 		this.writeBool(onGround);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

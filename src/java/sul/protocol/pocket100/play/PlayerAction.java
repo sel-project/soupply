@@ -59,7 +59,7 @@ public class PlayerAction extends Packet {
 		this.writeVarint(action);
 		this.writeBytes(position.encode());
 		this.writeVarint(face);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

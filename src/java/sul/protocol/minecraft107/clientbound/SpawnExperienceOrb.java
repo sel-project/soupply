@@ -41,7 +41,7 @@ public class SpawnExperienceOrb extends Packet {
 		this.writeVaruint(entityId);
 		this.writeBigEndianDouble(position.x); this.writeBigEndianDouble(position.y); this.writeBigEndianDouble(position.z);
 		this.writeBigEndianShort(count);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

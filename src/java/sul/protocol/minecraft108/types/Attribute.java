@@ -37,7 +37,7 @@ public class Attribute extends Packet {
 		byte[] a2v5=key.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)a2v5.length); this.writeBytes(a2v5);
 		this.writeBigEndianDouble(value);
 		this.writeVaruint((int)modifiers.length); for(sul.protocol.minecraft108.types.Modifier bw9kawzpzxjz:modifiers){ this.writeBytes(bw9kawzpzxjz.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

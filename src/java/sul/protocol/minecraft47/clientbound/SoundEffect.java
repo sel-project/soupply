@@ -46,7 +46,7 @@ public class SoundEffect extends Packet {
 		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.y); this.writeBigEndianInt(position.z);
 		this.writeBigEndianFloat(volume);
 		this.writeBigEndianByte(pitch);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

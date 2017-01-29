@@ -54,7 +54,7 @@ public class PlayerPositionAndLook extends Packet {
 		this.writeBigEndianFloat(pitch);
 		this.writeBigEndianByte(flags);
 		this.writeVaruint(teleportId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class ChangeDimension extends Packet {
 		this.writeVarint(dimension);
 		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeBool(unknown2);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

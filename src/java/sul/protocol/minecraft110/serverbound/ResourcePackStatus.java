@@ -46,7 +46,7 @@ public class ResourcePackStatus extends Packet {
 		this.writeVaruint(ID);
 		byte[] agfzaa=hash.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)agfzaa.length); this.writeBytes(agfzaa);
 		this.writeVaruint(result);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class SetTime extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarint(time);
 		this.writeBool(daylightCycle);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

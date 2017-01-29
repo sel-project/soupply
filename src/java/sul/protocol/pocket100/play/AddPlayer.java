@@ -68,7 +68,7 @@ public class AddPlayer extends Packet {
 		this.writeLittleEndianFloat(yaw);
 		this.writeBytes(heldItem.encode());
 		this.writeBytes(metadata.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class OpenWindow extends Packet {
 		byte[] dhlwzq=type.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dhlwzq.length); this.writeBytes(dhlwzq);
 		byte[] dgl0bgu=title.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgl0bgu.length); this.writeBytes(dgl0bgu);
 		this.writeBigEndianByte(slots);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

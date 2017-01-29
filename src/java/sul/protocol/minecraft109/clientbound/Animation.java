@@ -46,7 +46,7 @@ public class Animation extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBigEndianByte(animation);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

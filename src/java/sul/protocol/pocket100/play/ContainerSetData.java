@@ -41,7 +41,7 @@ public class ContainerSetData extends Packet {
 		this.writeBigEndianByte(window);
 		this.writeVarint(property);
 		this.writeVarint(value);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public class Disconnect extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBool(hideDisconnectionScreen);
 		byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

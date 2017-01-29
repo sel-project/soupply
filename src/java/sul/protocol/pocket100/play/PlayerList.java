@@ -41,7 +41,7 @@ public class PlayerList extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(action);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class PlayerList extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint((int)players.length); for(sul.protocol.pocket100.types.PlayerList cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -122,7 +122,7 @@ public class PlayerList extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint((int)players.length); for(UUID cgxhewvycw:players){ this.writeBigEndianLong(cgxhewvycw.getLeastSignificantBits()); this.writeBigEndianLong(cgxhewvycw.getMostSignificantBits()); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override

@@ -62,7 +62,7 @@ public class WindowProperty extends Packet {
 		this.writeBigEndianByte(window);
 		this.writeBigEndianShort(property);
 		this.writeBigEndianShort(value);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

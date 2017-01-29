@@ -43,7 +43,7 @@ public class UpdateLanguage extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
 		byte[] bgfuz3vhz2u=language.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bgfuz3vhz2u.length); this.writeBytes(bgfuz3vhz2u);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -107,7 +107,7 @@ public class Add extends Packet {
 		this.writeBytes(skin.encode());
 		this.writeVaruint(latency);
 		byte[] bgfuz3vhz2u=language.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bgfuz3vhz2u.length); this.writeBytes(bgfuz3vhz2u);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class Add extends Packet {
 			this.writeVarlong(xuid);
 			this.writeBool(edu);
 			this.writeBigEndianFloat(packetLoss);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -198,7 +198,7 @@ public class Add extends Packet {
 			byte[] _encode = encodeImpl();
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override

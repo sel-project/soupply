@@ -35,7 +35,7 @@ public class UnloadChunk extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeBigEndianInt(position.x); this.writeBigEndianInt(position.z);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

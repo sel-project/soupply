@@ -52,7 +52,7 @@ public class EntityAction extends Packet {
 		this.writeVaruint(entityId);
 		this.writeVaruint(action);
 		if(action==5){ this.writeVaruint(jumpBoost); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

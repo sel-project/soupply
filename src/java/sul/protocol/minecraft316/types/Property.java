@@ -40,7 +40,7 @@ public class Property extends Packet {
 		byte[] dmfsdwu=value.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dmfsdwu.length); this.writeBytes(dmfsdwu);
 		this.writeBool(signed);
 		if(signed==true){ byte[] c2lnbmf0dxjl=signature.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c2lnbmf0dxjl.length); this.writeBytes(c2lnbmf0dxjl); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class SetEntityData extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
 		this.writeBytes(metadata.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

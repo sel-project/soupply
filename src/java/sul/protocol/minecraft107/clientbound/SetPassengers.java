@@ -38,7 +38,7 @@ public class SetPassengers extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeVaruint((int)passengers.length); for(int cgfzc2vuz2vycw:passengers){ this.writeVaruint(cgfzc2vuz2vycw); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

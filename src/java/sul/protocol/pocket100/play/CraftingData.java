@@ -35,7 +35,7 @@ public class CraftingData extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVaruint((int)recipes.length); for(sul.protocol.pocket100.types.Recipe cmvjaxblcw:recipes){ this.writeBytes(cmvjaxblcw.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

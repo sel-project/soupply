@@ -45,7 +45,7 @@ public class DisplayScoreboard extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianByte(position);
 		byte[] c2nvcmvoyw1l=scoreName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c2nvcmvoyw1l.length); this.writeBytes(c2nvcmvoyw1l);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

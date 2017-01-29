@@ -38,7 +38,7 @@ public class Camera extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
 		this.writeVarlong(runtimeId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

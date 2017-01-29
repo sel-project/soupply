@@ -41,7 +41,7 @@ public class PlayerLook extends Packet {
 		this.writeBigEndianFloat(yaw);
 		this.writeBigEndianFloat(pitch);
 		this.writeBool(onGround);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

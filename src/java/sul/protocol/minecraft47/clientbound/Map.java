@@ -53,7 +53,7 @@ public class Map extends Packet {
 		this.writeBigEndianByte(rows);
 		this.writeBigEndianByte(offset.x); this.writeBigEndianByte(offset.z);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

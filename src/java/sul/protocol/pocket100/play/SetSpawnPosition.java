@@ -41,7 +41,7 @@ public class SetSpawnPosition extends Packet {
 		this.writeVarint(unknown0);
 		this.writeBytes(position.encode());
 		this.writeBool(unknown2);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

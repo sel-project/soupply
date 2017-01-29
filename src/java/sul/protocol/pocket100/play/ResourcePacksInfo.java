@@ -41,7 +41,7 @@ public class ResourcePacksInfo extends Packet {
 		this.writeBool(mustAccept);
 		this.writeVaruint((int)behaviourPacks.length); for(sul.protocol.pocket100.types.Pack ymvoyxzpb3vyugfj:behaviourPacks){ this.writeBytes(ymvoyxzpb3vyugfj.encode()); }
 		this.writeVaruint((int)resourcePacks.length); for(sul.protocol.pocket100.types.Pack cmvzb3vyy2vqywnr:resourcePacks){ this.writeBytes(cmvzb3vyy2vqywnr.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

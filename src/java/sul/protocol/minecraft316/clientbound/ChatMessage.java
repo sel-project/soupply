@@ -45,7 +45,7 @@ public class ChatMessage extends Packet {
 		this.writeVaruint(ID);
 		byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
 		this.writeBigEndianByte(position);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

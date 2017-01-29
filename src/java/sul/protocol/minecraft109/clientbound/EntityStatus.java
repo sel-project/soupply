@@ -75,7 +75,7 @@ public class EntityStatus extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianInt(entityId);
 		this.writeBigEndianByte(status);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

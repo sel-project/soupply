@@ -41,7 +41,7 @@ public class VehicleMove extends Packet {
 		this.writeBigEndianDouble(position.x); this.writeBigEndianDouble(position.y); this.writeBigEndianDouble(position.z);
 		this.writeBigEndianFloat(yaw);
 		this.writeBigEndianFloat(pitch);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

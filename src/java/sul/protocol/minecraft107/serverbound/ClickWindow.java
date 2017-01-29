@@ -50,7 +50,7 @@ public class ClickWindow extends Packet {
 		this.writeBigEndianShort(action);
 		this.writeVaruint(mode);
 		this.writeBytes(clickedItem.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

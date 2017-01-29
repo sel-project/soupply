@@ -41,7 +41,7 @@ public class Text extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(type);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class Text extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -125,7 +125,7 @@ public class Text extends Packet {
 			this.writeBytes(_encode);
 			byte[] c2vuzgvy=sender.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c2vuzgvy.length); this.writeBytes(c2vuzgvy);
 			byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -167,7 +167,7 @@ public class Text extends Packet {
 			this.writeBytes(_encode);
 			byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
 			this.writeVaruint((int)parameters.length); for(String cgfyyw1ldgvycw:parameters){ byte[] y2dmexl3mwxkz3z5=cgfyyw1ldgvycw.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y2dmexl3mwxkz3z5.length); this.writeBytes(y2dmexl3mwxkz3z5); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -209,7 +209,7 @@ public class Text extends Packet {
 			this.writeBytes(_encode);
 			byte[] dgl0bgu=title.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgl0bgu.length); this.writeBytes(dgl0bgu);
 			byte[] c3vidgl0bgu=subtitle.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c3vidgl0bgu.length); this.writeBytes(c3vidgl0bgu);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -248,7 +248,7 @@ public class Text extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -286,7 +286,7 @@ public class Text extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -327,7 +327,7 @@ public class Text extends Packet {
 			this.writeBytes(_encode);
 			byte[] c2vuzgvy=sender.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c2vuzgvy.length); this.writeBytes(c2vuzgvy);
 			byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override

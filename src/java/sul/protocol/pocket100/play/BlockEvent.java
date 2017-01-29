@@ -38,7 +38,7 @@ public class BlockEvent extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBytes(position.encode());
 		for(int zgf0yq:data){ this.writeVarint(zgf0yq); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -67,7 +67,7 @@ public class NodeStats extends Packet {
 		this.writeBigEndianFloat(tps);
 		this.writeBigEndianLong(ram);
 		this.writeBigEndianFloat(cpu);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public class ServerHandshake extends Packet {
 		this.writeBigEndianByte(ID);
 		byte[] c2vydmvyuhvibglj=serverPublicKey.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c2vydmvyuhvibglj.length); this.writeBytes(c2vydmvyuhvibglj);
 		this.writeVaruint((int)token.length); this.writeBytes(token);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -71,7 +71,7 @@ public class Effect extends Packet {
 		this.writeBigEndianLong(position);
 		this.writeBigEndianInt(data);
 		this.writeBool(disableVolume);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -39,7 +39,7 @@ public class Recipe extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVarint(type);
 		this.writeBytes(data);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

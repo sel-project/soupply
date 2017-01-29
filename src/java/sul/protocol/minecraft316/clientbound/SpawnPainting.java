@@ -56,7 +56,7 @@ public class SpawnPainting extends Packet {
 		byte[] dgl0bgu=title.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgl0bgu.length); this.writeBytes(dgl0bgu);
 		this.writeBigEndianLong(position);
 		this.writeBigEndianByte(direction);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

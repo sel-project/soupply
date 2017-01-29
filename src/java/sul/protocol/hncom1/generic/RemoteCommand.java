@@ -51,7 +51,7 @@ public class RemoteCommand extends Packet {
 		this.writeBigEndianByte(origin);
 		this.writeBytes(sender.encode());
 		byte[] y29tbwfuza=command.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y29tbwfuza.length); this.writeBytes(y29tbwfuza);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

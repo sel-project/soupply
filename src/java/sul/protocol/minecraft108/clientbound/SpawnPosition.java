@@ -35,7 +35,7 @@ public class SpawnPosition extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeBigEndianLong(position);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class OpenConnectionRequest1 extends Packet {
 		this.writeBytes(magic);
 		this.writeBigEndianByte(protocol);
 		this.writeBytes(mtu);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

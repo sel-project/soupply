@@ -38,7 +38,7 @@ public class MobArmorEquipment extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
 		for(sul.protocol.pocket100.types.Slot yxjtb3i:armor){ this.writeBytes(yxjtb3i.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

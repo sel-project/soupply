@@ -141,7 +141,7 @@ public class LevelSoundEvent extends Packet {
 		this.writeVaruint(volume);
 		this.writeVarint(pitch);
 		this.writeBool(unknown4);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

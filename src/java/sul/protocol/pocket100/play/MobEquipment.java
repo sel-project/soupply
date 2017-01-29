@@ -59,7 +59,7 @@ public class MobEquipment extends Packet {
 		this.writeBigEndianByte(inventorySlot);
 		this.writeBigEndianByte(hotbarSlot);
 		this.writeBigEndianByte(unknown4);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

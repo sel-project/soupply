@@ -47,7 +47,7 @@ public class ServerHandshake extends Packet {
 		for(sul.protocol.raknet8.types.Address c3lzdgvtqwrkcmvz:systemAddresses){ this.writeBytes(c3lzdgvtqwrkcmvz.encode()); }
 		this.writeBigEndianLong(pingId);
 		this.writeBigEndianLong(serverId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

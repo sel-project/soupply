@@ -49,7 +49,7 @@ public class CraftingEvent extends Packet {
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
 		this.writeVaruint((int)input.length); for(sul.protocol.pocket100.types.Slot aw5wdxq:input){ this.writeBytes(aw5wdxq.encode()); }
 		this.writeVaruint((int)output.length); for(sul.protocol.pocket100.types.Slot b3v0chv0:output){ this.writeBytes(b3v0chv0.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class ResourcePackStatus extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint(result);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

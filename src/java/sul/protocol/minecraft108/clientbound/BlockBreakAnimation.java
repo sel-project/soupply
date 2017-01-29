@@ -41,7 +41,7 @@ public class BlockBreakAnimation extends Packet {
 		this.writeVaruint(entityId);
 		this.writeBigEndianLong(position);
 		this.writeBigEndianByte(stage);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

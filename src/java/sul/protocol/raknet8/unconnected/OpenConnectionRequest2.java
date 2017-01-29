@@ -44,7 +44,7 @@ public class OpenConnectionRequest2 extends Packet {
 		this.writeBytes(serverAddress.encode());
 		this.writeBigEndianShort(mtuLength);
 		this.writeBigEndianLong(clientId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

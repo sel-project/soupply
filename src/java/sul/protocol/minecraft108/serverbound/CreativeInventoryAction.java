@@ -38,7 +38,7 @@ public class CreativeInventoryAction extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianShort(slot);
 		this.writeBytes(clickedItem.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

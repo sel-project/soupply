@@ -64,7 +64,7 @@ public class ChangeGameState extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianByte(reason);
 		this.writeBigEndianFloat(value);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

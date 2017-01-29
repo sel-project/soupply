@@ -38,7 +38,7 @@ public class InventoryAction extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarint(action);
 		this.writeBytes(item.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

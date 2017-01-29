@@ -38,7 +38,7 @@ public class TimeUpdate extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianLong(worldAge);
 		this.writeBigEndianLong(time);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

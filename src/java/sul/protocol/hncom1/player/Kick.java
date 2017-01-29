@@ -50,7 +50,7 @@ public class Kick extends Packet {
 		byte[] cmvhc29u=reason.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)cmvhc29u.length); this.writeBytes(cmvhc29u);
 		this.writeBool(translation);
 		if(translation==true){ this.writeVaruint((int)parameters.length); for(String cgfyyw1ldgvycw:parameters){ byte[] y2dmexl3mwxkz3z5=cgfyyw1ldgvycw.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y2dmexl3mwxkz3z5.length); this.writeBytes(y2dmexl3mwxkz3z5); } }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

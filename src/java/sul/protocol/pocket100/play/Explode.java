@@ -41,7 +41,7 @@ public class Explode extends Packet {
 		this.writeLittleEndianFloat(position.x); this.writeLittleEndianFloat(position.y); this.writeLittleEndianFloat(position.z);
 		this.writeLittleEndianFloat(radius);
 		this.writeVaruint((int)destroyedBlocks.length); for(sul.protocol.pocket100.types.BlockPosition zgvzdhjvewvkqmxv:destroyedBlocks){ this.writeBytes(zgvzdhjvewvkqmxv.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

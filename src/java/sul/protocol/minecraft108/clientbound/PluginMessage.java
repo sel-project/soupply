@@ -40,7 +40,7 @@ public class PluginMessage extends Packet {
 		this.writeVaruint(ID);
 		byte[] y2hhbm5lba=channel.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y2hhbm5lba.length); this.writeBytes(y2hhbm5lba);
 		this.writeBytes(data);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class EntityVelocity extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBigEndianShort(velocity.x); this.writeBigEndianShort(velocity.y); this.writeBigEndianShort(velocity.z);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

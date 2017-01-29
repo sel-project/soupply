@@ -38,7 +38,7 @@ public class ClientConnect extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianLong(clientId);
 		this.writeBigEndianLong(pingId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public class AddPainting extends Packet {
 		this.writeBytes(position.encode());
 		this.writeVarint(direction);
 		byte[] dgl0bgu=title.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dgl0bgu.length); this.writeBytes(dgl0bgu);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

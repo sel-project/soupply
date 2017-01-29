@@ -38,7 +38,7 @@ public class EntityProperties extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
 		this.writeBigEndianInt((int)attributes.length); for(sul.protocol.minecraft316.types.Attribute yxr0cmlidxrlcw:attributes){ this.writeBytes(yxr0cmlidxrlcw.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

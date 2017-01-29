@@ -38,7 +38,7 @@ public class CollectItem extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint(collected);
 		this.writeVaruint(collector);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

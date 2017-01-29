@@ -40,7 +40,7 @@ public class ResourcePackSend extends Packet {
 		this.writeVaruint(ID);
 		byte[] dxjs=url.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dxjs.length); this.writeBytes(dxjs);
 		byte[] agfzaa=hash.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)agfzaa.length); this.writeBytes(agfzaa);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

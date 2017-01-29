@@ -53,7 +53,7 @@ public class UpdateBlockEntity extends Packet {
 		this.writeBigEndianLong(position);
 		this.writeBigEndianByte(action);
 		this.writeBytes(nbt);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

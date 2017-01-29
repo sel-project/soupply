@@ -61,7 +61,7 @@ public class ConnectionResponse extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(protocol);
 		this.writeBigEndianByte(status);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

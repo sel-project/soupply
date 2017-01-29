@@ -35,7 +35,7 @@ public class Entity extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint(entityId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

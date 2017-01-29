@@ -38,7 +38,7 @@ public class ItemFrameDropItem extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBytes(position.encode());
 		this.writeBytes(item.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

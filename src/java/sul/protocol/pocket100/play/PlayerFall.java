@@ -35,7 +35,7 @@ public class PlayerFall extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeLittleEndianFloat(distance);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -51,7 +51,7 @@ public class Log extends Packet {
 		this.writeBigEndianLong(timestamp);
 		byte[] bg9nz2vy=logger.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bg9nz2vy.length); this.writeBytes(bg9nz2vy);
 		byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

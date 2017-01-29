@@ -35,7 +35,7 @@ public class BlockChange extends Packet {
 		this.writeBigEndianByte(xz);
 		this.writeBigEndianByte(y);
 		this.writeVaruint(block);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

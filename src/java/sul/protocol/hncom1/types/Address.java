@@ -43,7 +43,7 @@ public class Address extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint((int)bytes.length); this.writeBytes(bytes);
 		this.writeBigEndianShort(port);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

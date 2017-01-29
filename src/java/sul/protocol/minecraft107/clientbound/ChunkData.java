@@ -44,7 +44,7 @@ public class ChunkData extends Packet {
 		this.writeBool(full);
 		this.writeVaruint(sections);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

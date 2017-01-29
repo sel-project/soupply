@@ -44,7 +44,7 @@ public class Explosion extends Packet {
 		this.writeBigEndianFloat(radius);
 		this.writeBigEndianInt((int)records.length); for(Tuples.ByteXYZ cmvjb3jkcw:records){ this.writeBigEndianByte(cmvjb3jkcw.x); this.writeBigEndianByte(cmvjb3jkcw.y); this.writeBigEndianByte(cmvjb3jkcw.z); }
 		this.writeBigEndianFloat(motion.x); this.writeBigEndianFloat(motion.y); this.writeBigEndianFloat(motion.z);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -70,7 +70,7 @@ public class ClientSettings extends Packet {
 		this.writeBool(chatColors);
 		this.writeBigEndianByte(displayedSkinParts);
 		this.writeBigEndianByte(mainHand);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -35,7 +35,7 @@ public class Slot extends Packet {
 		this.writeVarint(id);
 		if(id>0){ this.writeVarint(metaAndCount); }
 		if(id>0){ this.writeLittleEndianShort((short)nbt.length); this.writeBytes(nbt); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

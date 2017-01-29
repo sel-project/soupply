@@ -32,7 +32,7 @@ public class OptionalPosition extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBool(hasPosition);
 		if(hasPosition==true){ this.writeBigEndianLong(position); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -70,7 +70,7 @@ public class AuthCredentials extends Packet {
 		this.writeBool(hash);
 		if(hash==true){ byte[] agfzaefsz29yaxro=hashAlgorithm.getBytes(StandardCharsets.UTF_8); this.writeBigEndianShort((short)agfzaefsz29yaxro.length); this.writeBytes(agfzaefsz29yaxro); }
 		if(hash==true){ this.writeBigEndianShort((short)payload.length); this.writeBytes(payload); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

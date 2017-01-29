@@ -38,7 +38,7 @@ public class WindowItems extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianByte(window);
 		this.writeBigEndianShort((short)slots.length); for(sul.protocol.minecraft47.types.Slot c2xvdhm:slots){ this.writeBytes(c2xvdhm.encode()); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

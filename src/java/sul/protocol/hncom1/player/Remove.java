@@ -47,7 +47,7 @@ public class Remove extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
 		this.writeBigEndianByte(reason);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

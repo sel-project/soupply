@@ -52,7 +52,7 @@ public class SpawnPlayer extends Packet {
 		this.writeBigEndianByte(yaw);
 		this.writeBigEndianByte(pitch);
 		this.writeBytes(metadata.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

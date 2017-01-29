@@ -45,7 +45,7 @@ public class Plugin extends Packet {
 		this._buffer = new byte[this.length()];
 		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
 		byte[] dmvyc2lvbg=version.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dmvyc2lvbg.length); this.writeBytes(dmvyc2lvbg);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

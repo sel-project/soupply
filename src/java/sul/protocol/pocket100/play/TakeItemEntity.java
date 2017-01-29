@@ -38,7 +38,7 @@ public class TakeItemEntity extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(taken);
 		this.writeVarlong(collector);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

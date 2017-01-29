@@ -55,7 +55,7 @@ public class Auth extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianShort((short)hash.length); this.writeBytes(hash);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

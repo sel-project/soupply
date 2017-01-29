@@ -40,7 +40,7 @@ public class ListUpdateGamemode extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
 		this.writeVaruint(gamemode);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

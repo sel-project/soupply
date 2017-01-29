@@ -37,7 +37,7 @@ public class AvailableCommands extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		byte[] y29tbwfuzhm=commands.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y29tbwfuzhm.length); this.writeBytes(y29tbwfuzhm);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

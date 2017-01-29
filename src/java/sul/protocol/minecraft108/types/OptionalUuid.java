@@ -34,7 +34,7 @@ public class OptionalUuid extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBool(hasUuid);
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class EntityEquipment extends Packet {
 		this.writeVaruint(entityId);
 		this.writeVaruint(slot);
 		this.writeBytes(item.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

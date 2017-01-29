@@ -39,7 +39,7 @@ public class WorldBorder extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint(action);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class WorldBorder extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeBigEndianDouble(diameter);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -126,7 +126,7 @@ public class WorldBorder extends Packet {
 			this.writeBigEndianDouble(oldDiameter);
 			this.writeBigEndianDouble(newDiameter);
 			this.writeVarulong(speed);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -166,7 +166,7 @@ public class WorldBorder extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeBigEndianDouble(center.x); this.writeBigEndianDouble(center.z);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -222,7 +222,7 @@ public class WorldBorder extends Packet {
 			this.writeVaruint(portalTeleportBoundary);
 			this.writeVaruint(warningTime);
 			this.writeVaruint(warningBlocks);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -266,7 +266,7 @@ public class WorldBorder extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint(warningTime);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -304,7 +304,7 @@ public class WorldBorder extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint(warningBlocks);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override

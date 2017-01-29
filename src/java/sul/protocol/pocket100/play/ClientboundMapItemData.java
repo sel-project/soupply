@@ -87,7 +87,7 @@ public class ClientboundMapItemData extends Packet {
 		this.writeVarint(rows);
 		this.writeVarint(offset.x); this.writeVarint(offset.z);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class ConfirmTransaction extends Packet {
 		this.writeBigEndianByte(window);
 		this.writeBigEndianShort(action);
 		this.writeBool(accepted);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

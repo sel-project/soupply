@@ -48,7 +48,7 @@ public class PlayerBlockPlacement extends Packet {
 		this.writeVaruint(face);
 		this.writeVaruint(hand);
 		this.writeBigEndianFloat(cursorPosition.x); this.writeBigEndianFloat(cursorPosition.y); this.writeBigEndianFloat(cursorPosition.z);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

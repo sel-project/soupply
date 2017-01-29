@@ -41,7 +41,7 @@ public class DropItem extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(action);
 		this.writeBytes(item.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

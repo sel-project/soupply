@@ -35,7 +35,7 @@ public class DestroyEntities extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint((int)entityIds.length); for(int zw50axr5swrz:entityIds){ this.writeVaruint(zw50axr5swrz); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

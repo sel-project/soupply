@@ -55,7 +55,7 @@ public class SpawnPlayer extends Packet {
 		this.writeBigEndianByte(pitch);
 		this.writeBigEndianShort(currentItem);
 		this.writeBytes(metadata.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

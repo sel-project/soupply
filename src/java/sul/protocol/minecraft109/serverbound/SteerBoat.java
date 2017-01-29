@@ -38,7 +38,7 @@ public class SteerBoat extends Packet {
 		this.writeVaruint(ID);
 		this.writeBool(rightPaddleTurning);
 		this.writeBool(leftPaddleTurning);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

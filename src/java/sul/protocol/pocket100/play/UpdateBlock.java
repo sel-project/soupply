@@ -47,7 +47,7 @@ public class UpdateBlock extends Packet {
 		this.writeBytes(position.encode());
 		this.writeVaruint(block);
 		this.writeVaruint(flagsAndMeta);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

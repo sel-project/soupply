@@ -38,7 +38,7 @@ public class EnchantItem extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianByte(window);
 		this.writeBigEndianByte(enchantment);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

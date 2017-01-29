@@ -41,7 +41,7 @@ public class Players extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(online);
 		this.writeVaruint(max);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

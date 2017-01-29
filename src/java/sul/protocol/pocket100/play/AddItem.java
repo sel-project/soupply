@@ -35,7 +35,7 @@ public class AddItem extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBytes(item.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

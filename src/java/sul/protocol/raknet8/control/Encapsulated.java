@@ -38,7 +38,7 @@ public class Encapsulated extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeLittleEndianTriad(count);
 		this.writeBytes(encapsulation.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

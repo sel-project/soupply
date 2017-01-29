@@ -38,7 +38,7 @@ public class Address extends Packet {
 		if(type==4){ this.writeBytes(ipv4); }
 		if(type==6){ this.writeBytes(ipv6); }
 		this.writeBigEndianShort(port);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

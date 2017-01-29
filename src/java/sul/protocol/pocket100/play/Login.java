@@ -45,7 +45,7 @@ public class Login extends Packet {
 		this.writeBigEndianInt(protocol);
 		this.writeBigEndianByte(edition);
 		this.writeVaruint((int)body.length); this.writeBytes(body);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

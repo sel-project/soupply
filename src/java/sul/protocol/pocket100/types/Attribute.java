@@ -43,7 +43,7 @@ public class Attribute extends Packet {
 		this.writeLittleEndianFloat(value);
 		this.writeLittleEndianFloat(def);
 		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public class LoginSuccess extends Packet {
 		this.writeVaruint(ID);
 		byte[] dxvpza=uuid.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dxvpza.length); this.writeBytes(dxvpza);
 		byte[] dxnlcm5hbwu=username.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dxnlcm5hbwu.length); this.writeBytes(dxnlcm5hbwu);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class AttachEntity extends Packet {
 		this.writeVaruint(ID);
 		this.writeBigEndianInt(target);
 		this.writeBigEndianInt(holder);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

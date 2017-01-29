@@ -45,7 +45,7 @@ public class Command extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		byte[] y29tbwfuza=command.getBytes(StandardCharsets.UTF_8); this.writeBigEndianShort((short)y29tbwfuza.length); this.writeBytes(y29tbwfuza);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

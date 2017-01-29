@@ -35,7 +35,7 @@ public class BlockPosition extends Packet {
 		this.writeVarint(x);
 		this.writeVaruint(y);
 		this.writeVarint(z);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

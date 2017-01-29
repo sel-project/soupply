@@ -37,7 +37,7 @@ public class Disconnect extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		byte[] cmvhc29u=reason.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)cmvhc29u.length); this.writeBytes(cmvhc29u);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

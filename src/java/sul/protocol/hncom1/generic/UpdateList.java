@@ -59,7 +59,7 @@ public class UpdateList extends Packet {
 		this.writeBigEndianByte(list);
 		this.writeBigEndianByte(action);
 		this.writeBigEndianByte(type);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class UpdateList extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint(hubId);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -142,7 +142,7 @@ public class UpdateList extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			byte[] dxnlcm5hbwu=username.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dxnlcm5hbwu.length); this.writeBytes(dxnlcm5hbwu);
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -187,7 +187,7 @@ public class UpdateList extends Packet {
 			this.writeBytes(_encode);
 			this.writeBigEndianByte(game);
 			this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override

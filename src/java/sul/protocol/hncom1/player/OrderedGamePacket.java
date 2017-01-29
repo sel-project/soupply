@@ -45,7 +45,7 @@ public class OrderedGamePacket extends Packet {
 		this.writeVaruint(hubId);
 		this.writeVaruint(order);
 		this.writeBytes(packet);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

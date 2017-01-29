@@ -41,7 +41,7 @@ public class ContainerSetContent extends Packet {
 		this.writeBigEndianByte(window);
 		this.writeVaruint((int)slots.length); for(sul.protocol.pocket100.types.Slot c2xvdhm:slots){ this.writeBytes(c2xvdhm.encode()); }
 		this.writeVaruint((int)hotbar.length); for(int ag90ymfy:hotbar){ this.writeVarint(ag90ymfy); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

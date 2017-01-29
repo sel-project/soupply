@@ -78,7 +78,7 @@ public class JoinGame extends Packet {
 		this.writeBigEndianByte(maxPlayers);
 		byte[] bgv2zwxuexbl=levelType.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bgv2zwxuexbl.length); this.writeBytes(bgv2zwxuexbl);
 		this.writeBool(reducedDebug);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

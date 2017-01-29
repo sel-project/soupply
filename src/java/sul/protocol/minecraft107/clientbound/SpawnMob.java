@@ -61,7 +61,7 @@ public class SpawnMob extends Packet {
 		this.writeBigEndianByte(headPitch);
 		this.writeBigEndianShort(velocity.x); this.writeBigEndianShort(velocity.y); this.writeBigEndianShort(velocity.z);
 		this.writeBytes(metadata.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

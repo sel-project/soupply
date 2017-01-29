@@ -44,7 +44,7 @@ public class ClientHandshake extends Packet {
 		for(sul.protocol.raknet8.types.Address c3lzdgvtqwrkcmvz:systemAddresses){ this.writeBytes(c3lzdgvtqwrkcmvz.encode()); }
 		this.writeBigEndianLong(pingId);
 		this.writeBigEndianLong(clientId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

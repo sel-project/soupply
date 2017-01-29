@@ -47,7 +47,7 @@ public class Encapsulation extends Packet {
 		if((info&0x7F)>=96){ this.writeBigEndianByte(orderChannel); }
 		if((info&0x10)!=0){ this.writeBytes(split.encode()); }
 		this.writeBytes(payload);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

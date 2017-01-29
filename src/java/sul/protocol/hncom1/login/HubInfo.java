@@ -76,7 +76,7 @@ public class HubInfo extends Packet {
 		this.writeVaruint((int)nodes.length); for(String bm9kzxm:nodes){ byte[] ym05a3p4bq=bm9kzxm.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)ym05a3p4bq.length); this.writeBytes(ym05a3p4bq); }
 		byte[] c29jawfssnnvbg=socialJson.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c29jawfssnnvbg.length); this.writeBytes(c29jawfssnnvbg);
 		byte[] ywrkaxrpb25hbepz=additionalJson.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)ywrkaxrpb25hbepz.length); this.writeBytes(ywrkaxrpb25hbepz);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

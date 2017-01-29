@@ -41,7 +41,7 @@ public class SetSlot extends Packet {
 		this.writeBigEndianByte(window);
 		this.writeBigEndianShort(slot);
 		this.writeBytes(item.encode());
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

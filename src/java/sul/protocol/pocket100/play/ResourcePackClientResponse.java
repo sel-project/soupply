@@ -38,7 +38,7 @@ public class ResourcePackClientResponse extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(status);
 		this.writeBigEndianShort(resourcePackVersion);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

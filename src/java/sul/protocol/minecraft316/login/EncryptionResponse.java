@@ -38,7 +38,7 @@ public class EncryptionResponse extends Packet {
 		this.writeVaruint(ID);
 		this.writeVaruint((int)sharedSecret.length); this.writeBytes(sharedSecret);
 		this.writeVaruint((int)verifyToken.length); this.writeBytes(verifyToken);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class Pack extends Packet {
 		byte[] awq=id.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)awq.length); this.writeBytes(awq);
 		byte[] dmvyc2lvbg=version.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dmvyc2lvbg.length); this.writeBytes(dmvyc2lvbg);
 		this.writeBigEndianLong(size);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

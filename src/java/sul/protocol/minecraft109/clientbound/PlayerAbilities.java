@@ -47,7 +47,7 @@ public class PlayerAbilities extends Packet {
 		this.writeBigEndianByte(flags);
 		this.writeBigEndianFloat(flyingSpeed);
 		this.writeBigEndianFloat(fovModifier);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

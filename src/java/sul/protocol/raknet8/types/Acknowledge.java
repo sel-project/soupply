@@ -35,7 +35,7 @@ public class Acknowledge extends Packet {
 		this.writeBool(unique);
 		this.writeLittleEndianTriad(first);
 		if(unique==false){ this.writeLittleEndianTriad(last); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class PlayerListItem extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint(action);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class PlayerListItem extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint((int)players.length); for(sul.protocol.minecraft110.types.ListAddPlayer cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -122,7 +122,7 @@ public class PlayerListItem extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint((int)players.length); for(sul.protocol.minecraft110.types.ListUpdateGamemode cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -160,7 +160,7 @@ public class PlayerListItem extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint((int)players.length); for(sul.protocol.minecraft110.types.ListUpdateLatency cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -198,7 +198,7 @@ public class PlayerListItem extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint((int)players.length); for(sul.protocol.minecraft110.types.ListUpdateDisplayName cgxhewvycw:players){ this.writeBytes(cgxhewvycw.encode()); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override
@@ -236,7 +236,7 @@ public class PlayerListItem extends Packet {
 			this._buffer = new byte[_encode.length + this.length()];
 			this.writeBytes(_encode);
 			this.writeVaruint((int)players.length); for(UUID cgxhewvycw:players){ this.writeBigEndianLong(cgxhewvycw.getLeastSignificantBits()); this.writeBigEndianLong(cgxhewvycw.getMostSignificantBits()); }
-			return this._buffer;
+			return this.getBuffer();
 		}
 
 		@Override

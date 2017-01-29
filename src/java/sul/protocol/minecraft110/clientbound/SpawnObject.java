@@ -58,7 +58,7 @@ public class SpawnObject extends Packet {
 		this.writeBigEndianByte(yaw);
 		this.writeBigEndianInt(data);
 		this.writeBigEndianShort(velocity.x); this.writeBigEndianShort(velocity.y); this.writeBigEndianShort(velocity.z);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

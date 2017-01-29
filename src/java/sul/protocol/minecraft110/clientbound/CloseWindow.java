@@ -35,7 +35,7 @@ public class CloseWindow extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeBigEndianByte(window);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

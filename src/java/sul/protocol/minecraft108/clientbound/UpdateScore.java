@@ -50,7 +50,7 @@ public class UpdateScore extends Packet {
 		this.writeBigEndianByte(action);
 		byte[] b2jqzwn0axzltmft=objectiveName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)b2jqzwn0axzltmft.length); this.writeBytes(b2jqzwn0axzltmft);
 		if(action==0){ this.writeVaruint(value); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -65,7 +65,7 @@ public class Game extends Packet {
 		this.writeVaruint((int)protocols.length); for(int chjvdg9jb2xz:protocols){ this.writeVaruint(chjvdg9jb2xz); }
 		byte[] bw90za=motd.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bw90za.length); this.writeBytes(bw90za);
 		this.writeBigEndianShort(port);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

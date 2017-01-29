@@ -35,7 +35,7 @@ public class TeleportConfirm extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeVaruint(ID);
 		this.writeVaruint(teleportId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

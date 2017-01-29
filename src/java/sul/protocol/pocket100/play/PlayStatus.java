@@ -43,7 +43,7 @@ public class PlayStatus extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianInt(status);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

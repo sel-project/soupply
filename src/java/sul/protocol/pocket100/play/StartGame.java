@@ -118,7 +118,7 @@ public class StartGame extends Packet {
 		this.writeBool(textureRequired);
 		byte[] bgv2zwxjza=levelId.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bgv2zwxjza.length); this.writeBytes(bgv2zwxjza);
 		byte[] d29ybgroyw1l=worldName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)d29ybgroyw1l.length); this.writeBytes(d29ybgroyw1l);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

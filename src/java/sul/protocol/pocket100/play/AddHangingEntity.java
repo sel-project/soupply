@@ -44,7 +44,7 @@ public class AddHangingEntity extends Packet {
 		this.writeVarlong(runtimeId);
 		this.writeBytes(position.encode());
 		this.writeVarint(unknown3);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class TelemetryEvent extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(entityId);
 		this.writeVarint(eventId);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class Icon extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(directionAndType);
 		this.writeBigEndianByte(position.x); this.writeBigEndianByte(position.z);
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override

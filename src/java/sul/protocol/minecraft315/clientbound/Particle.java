@@ -102,7 +102,7 @@ public class Particle extends Packet {
 		this.writeBigEndianFloat(data);
 		this.writeBigEndianInt(count);
 		for(int ywrkaxrpb25hberh:additionalData){ this.writeVaruint(ywrkaxrpb25hberh); }
-		return this._buffer;
+		return this.getBuffer();
 	}
 
 	@Override
