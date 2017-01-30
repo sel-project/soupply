@@ -10,7 +10,8 @@ module sul.metadata.minecraft315;
 
 import std.typecons : Tuple, tuple;
 
-import sul.utils;
+import sul.utils.buffer : Buffer;
+import sul.utils.var;
 
 static import sul.protocol.minecraft315.types;
 

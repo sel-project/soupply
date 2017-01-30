@@ -115,14 +115,6 @@ alias varlong = var!long;
 alias varulong = var!ulong;
 	});
 
-	write("../src/d/sul/utils/package.d", q{
-module sul.utils;
-
-public import sul.utils.buffer;
-public import sul.utils.metadata;
-public import sul.utils.var;
-	});
-
 	enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "char", "string", "varint", "varuint", "varlong", "varulong", "UUID"];
 	
 	enum string[string] defaultAliases = [
@@ -236,6 +228,8 @@ public import sul.utils.var;
 	foreach(string game, Protocols prts; protocols) {
 
 		mkdirRecurse("../src/d/sul/protocol/" ~ game);
+
+		bool usesMetadata = false;
 		
 		@property string convertType(string type) {
 			string ret, t = type;
@@ -256,6 +250,7 @@ public import sul.utils.var;
 			} else if(defaultTypes.canFind(t)) {
 				ret = t;
 			} else if(t == "metadata") {
+				usesMetadata = true;
 				ret = "Metadata";
 			} else {
 				auto a = t in prts.data.arrays;
@@ -517,7 +512,7 @@ public import sul.utils.var;
 		if(m) {
 			string data = "module sul.metadata." ~ game ~ ";\n\n";
 			data ~= "import std.typecons : Tuple, tuple;\n\n";
-			data ~= "import sul.utils;\n\n";
+			data ~= "import sul.utils.buffer : Buffer;\nimport sul.utils.var;\n\n";
 			data ~= "static import sul.protocol." ~ game ~ ".types;\n\n";
 			data ~= "alias Changed(T) = Tuple!(T, \"value\", bool, \"changed\");\n\n";
 			data ~= "class Metadata {\n\n";
@@ -612,7 +607,7 @@ public import sul.utils.var;
 			data ~= "\t}\n\n";
 			data ~= "}";
 			write("../src/d/sul/metadata/" ~ game ~ ".d", data, "metadata/" ~ game);
-		} else {
+		} else if(usesMetadata) {
 			// dummy
 			string data = "module sul.metadata." ~ game ~ ";\n\nimport sul.utils.metadata;\n\n";
 			data ~= "class Metadata {\n\n";

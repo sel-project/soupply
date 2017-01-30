@@ -263,6 +263,8 @@ public class MetadataException extends RuntimeException {
 	foreach(string game, Protocols prs; protocols) {
 		
 		mkdirRecurse("../src/java/sul/protocol/" ~ game ~ "/types");
+
+		bool usesMetadata;
 		
 		@property string convert(string type) {
 			auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
@@ -274,7 +276,7 @@ public class MetadataException extends RuntimeException {
 			if(b) return convert((*b).base ~ "[]" ~ e);
 			if(e.length && e[0] == '<') return "Tuples." ~ toPascalCase(t) ~ toUpper(e[1..e.indexOf(">")]) ~ e[e.indexOf(">")+1..$];
 			else if(defaultTypes.canFind(t)) return t ~ e;
-			else if(t == "metadata") return "sul.metadata." ~ capitalize(game) ~ e;
+			else if(t == "metadata") { usesMetadata = true; return "sul.metadata." ~ capitalize(game) ~ e; }
 			else return "sul.protocol." ~ game ~ ".types." ~ toPascalCase(t) ~ e;
 		}
 		
@@ -666,7 +668,7 @@ public class MetadataException extends RuntimeException {
 		}
 		data ~= "}";
 		mkdirRecurse("../src/java/sul/metadata");
-		write("../src/java/sul/metadata/" ~ toPascalCase(game) ~ ".java", data, m ? "metadata/" ~ game : "");
+		if(usesMetadata) write("../src/java/sul/metadata/" ~ toPascalCase(game) ~ ".java", data, m ? "metadata/" ~ game : "");
 
 	}
 	
