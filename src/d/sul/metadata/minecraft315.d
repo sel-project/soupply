@@ -10,8 +10,7 @@ module sul.metadata.minecraft315;
 
 import std.typecons : Tuple, tuple;
 
-import sul.utils.buffer : Buffer;
-import sul.utils.var;
+import sul.utils;
 
 static import sul.protocol.minecraft315.types;
 
@@ -2722,13 +2721,7 @@ class Metadata {
 	}
 
 	public static pure nothrow @safe Metadata decode(Buffer buffer) {
-		Metadata metadata = new Metadata();
-		with(buffer) {
-			size_t next;
-			while((next=readBigEndianUbyte()) != 255) {
-			}
-			return metadata;
-		}
+		return null;
 	}
 
 }

@@ -115,6 +115,14 @@ alias varlong = var!long;
 alias varulong = var!ulong;
 	});
 
+	write("../src/d/sul/utils/package.d", q{
+module sul.utils;
+
+public import sul.utils.buffer;
+public import sul.utils.metadata;
+public import sul.utils.var;
+	});
+
 	enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "char", "string", "varint", "varuint", "varlong", "varulong", "UUID"];
 	
 	enum string[string] defaultAliases = [
@@ -509,7 +517,7 @@ alias varulong = var!ulong;
 		if(m) {
 			string data = "module sul.metadata." ~ game ~ ";\n\n";
 			data ~= "import std.typecons : Tuple, tuple;\n\n";
-			data ~= "import sul.utils.buffer : Buffer;\nimport sul.utils.var;\n\n";
+			data ~= "import sul.utils;\n\n";
 			data ~= "static import sul.protocol." ~ game ~ ".types;\n\n";
 			data ~= "alias Changed(T) = Tuple!(T, \"value\", bool, \"changed\");\n\n";
 			data ~= "class Metadata {\n\n";
@@ -598,25 +606,20 @@ alias varulong = var!ulong;
 			data ~= "\t\t\t}\n";
 			data ~= "\t\t}\n";
 			data ~= "\t}\n\n";
-			// decode function
+			//TODO decode function
 			data ~= "\tpublic static pure nothrow @safe Metadata decode(Buffer buffer) {\n";
-			data ~= "\t\tMetadata metadata = new Metadata();\n";
-			data ~= "\t\twith(buffer) {\n";
-			if(m.data.prefix.length) data ~= "\t\t\t" ~ createDecoding("ubyte", "ubyte _prefix") ~ "\n";
-			data ~= "\t\t\tsize_t next;\n";
-			if(m.data.length.length) {
-				data ~= "\t\t\tforeach(i ; 0.." ~ createDecoding(m.data.length, "")[1..$-1] ~ ") {\n";
-				data ~= "\t\t\t\t" ~ createDecoding(m.data.id, "next") ~ "\n";
-			} else if(m.data.suffix.length) {
-				data ~= "\t\t\twhile((" ~ createDecoding(m.data.id, "next")[0..$-1] ~ ") != " ~ m.data.suffix ~ ") {\n";
-			}
-			//TODO
-			data ~= "\t\t\t}\n";
-			data ~= "\t\t\treturn metadata;\n";
-			data ~= "\t\t}\n";
+			data ~= "\t\treturn null;\n";
 			data ~= "\t}\n\n";
 			data ~= "}";
 			write("../src/d/sul/metadata/" ~ game ~ ".d", data, "metadata/" ~ game);
+		} else {
+			// dummy
+			string data = "module sul.metadata." ~ game ~ ";\n\nimport sul.utils.metadata;\n\n";
+			data ~= "class Metadata {\n\n";
+			data ~= "\tpublic pure nothrow @safe @nogc ubyte[] encode() {\n\t\treturn new ubyte[0];\n\t}\n\n";
+			data ~= "\tpublic static pure nothrow @safe @nogc Metadata decode(Buffer buffer) {\n\t\treturn null;\n\t}\n\n";
+			data ~= "}";
+			write("../src/d/sul/metadata/" ~ game ~ ".d", data);
 		}
 
 	}

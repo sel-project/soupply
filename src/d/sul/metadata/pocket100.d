@@ -10,8 +10,7 @@ module sul.metadata.pocket100;
 
 import std.typecons : Tuple, tuple;
 
-import sul.utils.buffer : Buffer;
-import sul.utils.var;
+import sul.utils;
 
 static import sul.protocol.pocket100.types;
 
@@ -873,14 +872,7 @@ class Metadata {
 	}
 
 	public static pure nothrow @safe Metadata decode(Buffer buffer) {
-		Metadata metadata = new Metadata();
-		with(buffer) {
-			size_t next;
-			foreach(i ; 0..varuint.decode(_buffer, &_index)) {
-				next=varuint.decode(_buffer, &_index);
-			}
-			return metadata;
-		}
+		return null;
 	}
 
 }

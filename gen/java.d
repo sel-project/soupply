@@ -207,6 +207,20 @@ public class Enchantment {
 
 }
 		});
+
+	write("../src/java/sul/utils/MetadataException.java", q{
+package sul.utils;
+
+public class MetadataException extends RuntimeException {
+
+	private static final long serialVersionUID = 0x5EL;
+
+	public MetadataException(String reason) {
+		super(reason);
+	}
+
+}
+		});
 	
 	// attributes
 	foreach(string game, Attributes attrs; attributes) {
@@ -628,9 +642,9 @@ public class Enchantment {
 
 		// metadata
 		auto m = game in metadatas;
+		string data = "package sul.metadata;\n\nimport sul.utils.*;\n\n";
+		data ~= "public class " ~ toPascalCase(game) ~ " extends Packet {\n\n";
 		if(m) {
-			string data = "package sul.metadata;\n\nimport sul.utils.*;\n\n";
-			data ~= "public class " ~ toPascalCase(game) ~ " extends Packet {\n\n";
 			//TODO variables
 			//TODO length
 			data ~= "\t@Override\n\tpublic int length() {\n";
@@ -638,17 +652,21 @@ public class Enchantment {
 			data ~= "\t}\n\n";
 			//TODO encode
 			data ~= "\t@Override\n\tpublic byte[] encode() {\n";
-
-			data ~= "\t\treturn new byte[]{};\n";
+			data ~= "\t\tthrow new MetadataException(\"This action is not supported yet\");\n";
 			data ~= "\t}\n\n";
 			//TODO decode
 			data ~= "\t@Override\n\tpublic void decode(byte[] buffer) {\n";
-
+			data ~= "\t\tthrow new MetadataException(\"This action is not supported yet\");\n";
 			data ~= "\t}\n\n";
-			data ~= "}";
-			mkdirRecurse("../src/java/sul/metadata");
-			write("../src/java/sul/metadata/" ~ toPascalCase(game) ~ ".java", data, "metadata/" ~ game);
+		} else {
+			// dummy class
+			data ~= "\t@Override\n\tpublic int length() {\n\t\treturn 0;\n\t}\n\n";
+			data ~= "\t@Override\n\tpublic byte[] encode() {\n\t\tthrow new MetadataException(\"Metadata is not supported\");\n\t}\n\n";
+			data ~= "\t@Override\n\tpublic void decode(byte[] buffer) {\n\t\tthrow new MetadataException(\"Metadata is not supported\");\n\t}\n\n";
 		}
+		data ~= "}";
+		mkdirRecurse("../src/java/sul/metadata");
+		write("../src/java/sul/metadata/" ~ toPascalCase(game) ~ ".java", data, m ? "metadata/" ~ game : "");
 
 	}
 	

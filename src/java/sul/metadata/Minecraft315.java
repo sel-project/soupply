@@ -19,11 +19,12 @@ public class Minecraft315 extends Packet {
 
 	@Override
 	public byte[] encode() {
-		return new byte[]{};
+		throw new MetadataException("This action is not supported yet");
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
+		throw new MetadataException("This action is not supported yet");
 	}
 
 }
