@@ -2098,6 +2098,74 @@
 						"type": "string"
 					}
 				]
+			},
+
+			"resource_pack_data_info": {
+				"id": 79,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "string"
+					},
+					{
+						"name": "?",
+						"type": "uint"
+					},
+					{
+						"name": "?",
+						"type": "uint"
+					},
+					{
+						"name": "?",
+						"type": "ulong"
+					},
+					{
+						"name": "?",
+						"type": "string"
+					}
+				]
+			},
+
+			"resource_pack_chunk_data": {
+				"id": 80,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "id",
+						"type": "string"
+					},
+					{
+						"name": "?",
+						"type": "uint"
+					},
+					{
+						"name": "?",
+						"type": "ulong"
+					},
+					{
+						"name": "data",
+						"type": "ubyte[]"
+					}
+				]
+			},
+
+			"resource_pack_chunk_request": {
+				"id": 81,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "id",
+						"type": "string"
+					},
+					{
+						"name": "index",
+						"type": "uint"
+					}
+				]
 			}
 
 		}

@@ -22,7 +22,7 @@ static import sul.protocol.pocket100.types;
 
 import sul.metadata.pocket100;
 
-alias Packets = TypeTuple!(Login, PlayStatus, ServerHandshake, ClientMagic, Disconnect, Batch, ResourcePacksInfo, ResourcePackClientResponse, Text, SetTime, StartGame, AddPlayer, AddEntity, RemoveEntity, AddItemEntity, AddHangingEntity, TakeItemEntity, MoveEntity, MovePlayer, RiderJump, RemoveBlock, UpdateBlock, AddPainting, Explode, LevelSoundEvent, LevelEvent, BlockEvent, EntityEvent, MobEffect, UpdateAttributes, MobEquipment, MobArmorEquipment, Interact, UseItem, PlayerAction, PlayerFall, HurtArmor, SetEntityData, SetEntityMotion, SetEntityLink, SetHealth, SetSpawnPosition, Animate, Respawn, DropItem, InventoryAction, ContainerOpen, ContainerClose, ContainerSetSlot, ContainerSetData, ContainerSetContent, CraftingData, CraftingEvent, AdventureSettings, BlockEntityData, PlayerInput, FullChunkData, SetCheatsEnabled, SetDifficulty, ChangeDimension, SetPlayerGametype, PlayerList, TelemetryEvent, SpawnExperienceOrb, ClientboundMapItemData, MapInfoRequest, RequestChunkRadius, ChunkRadiusUpdated, ItemFrameDropItem, ReplaceSelectedItem, Camera, AddItem, BossEvent, ShowCredits, AvailableCommands, CommandStep);
+alias Packets = TypeTuple!(Login, PlayStatus, ServerHandshake, ClientMagic, Disconnect, Batch, ResourcePacksInfo, ResourcePackClientResponse, Text, SetTime, StartGame, AddPlayer, AddEntity, RemoveEntity, AddItemEntity, AddHangingEntity, TakeItemEntity, MoveEntity, MovePlayer, RiderJump, RemoveBlock, UpdateBlock, AddPainting, Explode, LevelSoundEvent, LevelEvent, BlockEvent, EntityEvent, MobEffect, UpdateAttributes, MobEquipment, MobArmorEquipment, Interact, UseItem, PlayerAction, PlayerFall, HurtArmor, SetEntityData, SetEntityMotion, SetEntityLink, SetHealth, SetSpawnPosition, Animate, Respawn, DropItem, InventoryAction, ContainerOpen, ContainerClose, ContainerSetSlot, ContainerSetData, ContainerSetContent, CraftingData, CraftingEvent, AdventureSettings, BlockEntityData, PlayerInput, FullChunkData, SetCheatsEnabled, SetDifficulty, ChangeDimension, SetPlayerGametype, PlayerList, TelemetryEvent, SpawnExperienceOrb, ClientboundMapItemData, MapInfoRequest, RequestChunkRadius, ChunkRadiusUpdated, ItemFrameDropItem, ReplaceSelectedItem, Camera, AddItem, BossEvent, ShowCredits, AvailableCommands, CommandStep, ResourcePackDataInfo, ResourcePackChunkData, ResourcePackChunkRequest);
 
 class Login : Buffer {
 
@@ -4106,6 +4106,152 @@ class CommandStep : Buffer {
 
 	public static pure nothrow @safe CommandStep fromBuffer(bool readId=true)(ubyte[] buffer) {
 		CommandStep ret = new CommandStep();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
+class ResourcePackDataInfo : Buffer {
+
+	public enum ubyte ID = 79;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["id", "unknown1", "unknown2", "unknown3", "unknown4"];
+
+	public string id;
+	public uint unknown1;
+	public uint unknown2;
+	public ulong unknown3;
+	public string unknown4;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(string id, uint unknown1=uint.init, uint unknown2=uint.init, ulong unknown3=ulong.init, string unknown4=string.init) {
+		this.id = id;
+		this.unknown1 = unknown1;
+		this.unknown2 = unknown2;
+		this.unknown3 = unknown3;
+		this.unknown4 = unknown4;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(cast(uint)id.length)); writeString(id);
+		writeBigEndianUint(unknown1);
+		writeBigEndianUint(unknown2);
+		writeBigEndianUlong(unknown3);
+		writeBytes(varuint.encode(cast(uint)unknown4.length)); writeString(unknown4);
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		uint awq=varuint.decode(_buffer, &_index); id=readString(awq);
+		unknown1=readBigEndianUint();
+		unknown2=readBigEndianUint();
+		unknown3=readBigEndianUlong();
+		uint dw5rbm93bjq=varuint.decode(_buffer, &_index); unknown4=readString(dw5rbm93bjq);
+	}
+
+	public static pure nothrow @safe ResourcePackDataInfo fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ResourcePackDataInfo ret = new ResourcePackDataInfo();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
+class ResourcePackChunkData : Buffer {
+
+	public enum ubyte ID = 80;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["id", "unknown1", "unknown2", "data"];
+
+	public string id;
+	public uint unknown1;
+	public ulong unknown2;
+	public ubyte[] data;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(string id, uint unknown1=uint.init, ulong unknown2=ulong.init, ubyte[] data=(ubyte[]).init) {
+		this.id = id;
+		this.unknown1 = unknown1;
+		this.unknown2 = unknown2;
+		this.data = data;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(cast(uint)id.length)); writeString(id);
+		writeBigEndianUint(unknown1);
+		writeBigEndianUlong(unknown2);
+		writeBytes(varuint.encode(cast(uint)data.length)); writeBytes(data);
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		uint awq=varuint.decode(_buffer, &_index); id=readString(awq);
+		unknown1=readBigEndianUint();
+		unknown2=readBigEndianUlong();
+		data.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+data.length){ data=_buffer[_index.._index+data.length].dup; _index+=data.length; }
+	}
+
+	public static pure nothrow @safe ResourcePackChunkData fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ResourcePackChunkData ret = new ResourcePackChunkData();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
+class ResourcePackChunkRequest : Buffer {
+
+	public enum ubyte ID = 81;
+
+	public enum bool CLIENTBOUND = false;
+	public enum bool SERVERBOUND = true;
+
+	public enum string[] FIELDS = ["id", "index"];
+
+	public string id;
+	public uint index;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(string id, uint index=uint.init) {
+		this.id = id;
+		this.index = index;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(cast(uint)id.length)); writeString(id);
+		writeBigEndianUint(index);
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		uint awq=varuint.decode(_buffer, &_index); id=readString(awq);
+		index=readBigEndianUint();
+	}
+
+	public static pure nothrow @safe ResourcePackChunkRequest fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ResourcePackChunkRequest ret = new ResourcePackChunkRequest();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;

@@ -849,6 +849,31 @@
 				<field name="output" type="string" />
 			</packet>
 
+			<packet name="resource-pack-data-info" id="79" clientbound="true" serverbound="false">
+				<field name="id" type="string" />
+				<field name="?" type="uint" />
+				<field name="?" type="uint" />
+				<field name="?" type="ulong" />
+				<field name="?" type="string" />
+			</packet>
+
+			<packet name="resource-pack-chunk-data" id="80" clientbound="true" serverbound="false">
+				<field name="id" type="string" />
+				<field name="?" type="uint" />
+				<field name="?" type="ulong" />
+				<field name="data" type="ubyte[]" />
+			</packet>
+
+			<packet name="resource-pack-chunk-request" id="81" clientbound="false" serverbound="true">
+				<field name="id" type="string" />
+				<field name="index" type="uint" />
+			</packet>
+
+			<packet name="transfer" id="82" clientbound="true" serverbound="false">
+				<field name="ip" type="string" />
+				<field name="port" type="ushort" endianness="little-endian" />
+			</packet>
+
 		</section>
 
 	</packets>
