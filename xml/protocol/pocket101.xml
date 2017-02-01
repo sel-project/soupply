@@ -4,13 +4,11 @@
 
 	<software>Minecraft: Pocket Edition</software>
 
-	<protocol>100</protocol>
+	<protocol>101</protocol>
 
-	<released>2016/12/19</released>
+	<released>2017/2/1</released>
 
-	<from>1.0.0</from>
-
-	<to>1.0.2</to>
+	<from>1.0.3</from>
 
 	<encoding id="ubyte" arraylength="varuint">
 

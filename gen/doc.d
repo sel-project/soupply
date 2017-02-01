@@ -340,7 +340,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 		data ~= "## " ~ name ~ "\n\n";
 		data ~= "Protocol | Packets" ~ (_released ? " | Released" : "") ~ (_from ? " | From" : "") ~ (_to ? " | To" : "") ~ "\n";
 		data ~= ":---:|:---:" ~ (_released ? "|:---:" : "") ~ (_from ? "|:---:" : "") ~ (_to ? "|:---:" : "") ~ "\n";
-		foreach(size_t protocol ; sort(p[name].keys).release()) {
+		foreach(size_t protocol ; sort!"a > b"(p[name].keys).release()) {
 			immutable ps = to!string(protocol);
 			auto cp = p[name][protocol];
 			size_t packets = 0;
