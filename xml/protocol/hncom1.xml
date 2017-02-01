@@ -279,7 +279,9 @@
 					Display name of the player, which can contain formatting codes. It can be updated by the node.
 				</field>
 				<field name="dimension" type="byte" when="reason!=0" />
-				<field name="address" type="address" />
+				<field name="client-address" type="address" />
+				<field name="server-address" type="string" />
+				<field name="server-port" type="ushort" />
 				<field name="uuid" type="uuid" />
 				<field name="skin" type="skin" />
 				<field name="latency" type="varuint" />
@@ -289,6 +291,11 @@
 						<field name="xuid" type="varlong" />
 						<field name="edu" type="bool" />
 						<field name="packet-loss" type="float" />
+						<field name="device-os" type="ubyte">
+							<constant name="unknown" value="0" />
+							<constant name="android" value="2" />
+						</field>
+						<field name="device-model" type="string" />
 					</variant>
 					<variant name="minecraft" value="2">
 

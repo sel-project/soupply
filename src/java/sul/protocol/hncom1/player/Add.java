@@ -59,7 +59,9 @@ public class Add extends Packet {
 	 */
 	public String displayName;
 	public byte dimension;
-	public sul.protocol.hncom1.types.Address address;
+	public sul.protocol.hncom1.types.Address clientAddress;
+	public String serverAddress;
+	public short serverPort;
 	public UUID uuid;
 	public sul.protocol.hncom1.types.Skin skin;
 	public int latency;
@@ -67,7 +69,7 @@ public class Add extends Packet {
 
 	public Add() {}
 
-	public Add(int hubId, byte reason, byte type, int protocol, String username, String displayName, byte dimension, sul.protocol.hncom1.types.Address address, UUID uuid, sul.protocol.hncom1.types.Skin skin, int latency, String language) {
+	public Add(int hubId, byte reason, byte type, int protocol, String username, String displayName, byte dimension, sul.protocol.hncom1.types.Address clientAddress, String serverAddress, short serverPort, UUID uuid, sul.protocol.hncom1.types.Skin skin, int latency, String language) {
 		this.hubId = hubId;
 		this.reason = reason;
 		this.type = type;
@@ -75,7 +77,9 @@ public class Add extends Packet {
 		this.username = username;
 		this.displayName = displayName;
 		this.dimension = dimension;
-		this.address = address;
+		this.clientAddress = clientAddress;
+		this.serverAddress = serverAddress;
+		this.serverPort = serverPort;
 		this.uuid = uuid;
 		this.skin = skin;
 		this.latency = latency;
@@ -84,7 +88,7 @@ public class Add extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(hubId) + Buffer.varuintLength(protocol) + Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + address.length() + skin.length() + Buffer.varuintLength(latency) + Buffer.varuintLength(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + 20;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(protocol) + Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + clientAddress.length() + Buffer.varuintLength(serverAddress.getBytes(StandardCharsets.UTF_8).length) + serverAddress.getBytes(StandardCharsets.UTF_8).length + skin.length() + Buffer.varuintLength(latency) + Buffer.varuintLength(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + 22;
 	}
 
 	@Override
@@ -102,7 +106,9 @@ public class Add extends Packet {
 		byte[] dxnlcm5hbwu=username.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dxnlcm5hbwu.length); this.writeBytes(dxnlcm5hbwu);
 		byte[] zglzcgxheu5hbwu=displayName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
 		if(reason!=0){ this.writeBigEndianByte(dimension); }
-		this.writeBytes(address.encode());
+		this.writeBytes(clientAddress.encode());
+		byte[] c2vydmvyqwrkcmvz=serverAddress.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c2vydmvyqwrkcmvz.length); this.writeBytes(c2vydmvyqwrkcmvz);
+		this.writeBigEndianShort(serverPort);
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
 		this.writeBytes(skin.encode());
 		this.writeVaruint(latency);
@@ -121,7 +127,9 @@ public class Add extends Packet {
 		int bgvudxnlcm5hbwu=this.readVaruint(); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
 		int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
 		if(reason!=0){ dimension=readBigEndianByte(); }
-		address=new sul.protocol.hncom1.types.Address(); address._index=this._index; address.decode(this._buffer); this._index=address._index;
+		clientAddress=new sul.protocol.hncom1.types.Address(); clientAddress._index=this._index; clientAddress.decode(this._buffer); this._index=clientAddress._index;
+		int bgvuc2vydmvyqwrk=this.readVaruint(); serverAddress=new String(this.readBytes(bgvuc2vydmvyqwrk), StandardCharsets.UTF_8);
+		serverPort=readBigEndianShort();
 		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
 		skin=new sul.protocol.hncom1.types.Skin(); skin._index=this._index; skin.decode(this._buffer); this._index=skin._index;
 		latency=this.readVaruint();
@@ -142,21 +150,29 @@ public class Add extends Packet {
 
 		public static final byte TYPE = (byte)1;
 
+		// device os
+		public static final byte UNKNOWN = 0;
+		public static final byte ANDROID = 2;
+
 		public long xuid;
 		public boolean edu;
 		public float packetLoss;
+		public byte deviceOs;
+		public String deviceModel;
 
 		public Pocket() {}
 
-		public Pocket(long xuid, boolean edu, float packetLoss) {
+		public Pocket(long xuid, boolean edu, float packetLoss, byte deviceOs, String deviceModel) {
 			this.xuid = xuid;
 			this.edu = edu;
 			this.packetLoss = packetLoss;
+			this.deviceOs = deviceOs;
+			this.deviceModel = deviceModel;
 		}
 
 		@Override
 		public int length() {
-			return Buffer.varlongLength(xuid) + 5;
+			return Buffer.varlongLength(xuid) + Buffer.varuintLength(deviceModel.getBytes(StandardCharsets.UTF_8).length) + deviceModel.getBytes(StandardCharsets.UTF_8).length + 6;
 		}
 
 		@Override
@@ -167,6 +183,8 @@ public class Add extends Packet {
 			this.writeVarlong(xuid);
 			this.writeBool(edu);
 			this.writeBigEndianFloat(packetLoss);
+			this.writeBigEndianByte(deviceOs);
+			byte[] zgv2awnltw9kzww=deviceModel.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)zgv2awnltw9kzww.length); this.writeBytes(zgv2awnltw9kzww);
 			return this.getBuffer();
 		}
 
@@ -176,6 +194,8 @@ public class Add extends Packet {
 			xuid=this.readVarlong();
 			edu=this.readBool();
 			packetLoss=readBigEndianFloat();
+			deviceOs=readBigEndianByte();
+			int bgvuzgv2awnltw9k=this.readVaruint(); deviceModel=new String(this.readBytes(bgvuzgv2awnltw9k), StandardCharsets.UTF_8);
 		}
 
 		public void decode() {

@@ -37,7 +37,7 @@ class Add : Buffer {
 	public enum ubyte TRANSFERRED = 1;
 	public enum ubyte FORCIBLY_TRANSFERRED = 2;
 
-	public enum string[] FIELDS = ["hubId", "reason", "type", "protocol", "username", "displayName", "dimension", "address", "uuid", "skin", "latency", "language"];
+	public enum string[] FIELDS = ["hubId", "reason", "type", "protocol", "username", "displayName", "dimension", "clientAddress", "serverAddress", "serverPort", "uuid", "skin", "latency", "language"];
 
 	/**
 	 * A unique identifier given by the hub that is never changed while the player is connected.
@@ -70,7 +70,9 @@ class Add : Buffer {
 	 */
 	public string displayName;
 	public byte dimension;
-	public sul.protocol.hncom1.types.Address address;
+	public sul.protocol.hncom1.types.Address clientAddress;
+	public string serverAddress;
+	public ushort serverPort;
 	public UUID uuid;
 	public sul.protocol.hncom1.types.Skin skin;
 	public uint latency;
@@ -78,7 +80,7 @@ class Add : Buffer {
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, ubyte type=ubyte.init, uint protocol=uint.init, string username=string.init, string displayName=string.init, byte dimension=byte.init, sul.protocol.hncom1.types.Address address=sul.protocol.hncom1.types.Address.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, uint latency=uint.init, string language=string.init) {
+	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, ubyte type=ubyte.init, uint protocol=uint.init, string username=string.init, string displayName=string.init, byte dimension=byte.init, sul.protocol.hncom1.types.Address clientAddress=sul.protocol.hncom1.types.Address.init, string serverAddress=string.init, ushort serverPort=ushort.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, uint latency=uint.init, string language=string.init) {
 		this.hubId = hubId;
 		this.reason = reason;
 		this.type = type;
@@ -86,7 +88,9 @@ class Add : Buffer {
 		this.username = username;
 		this.displayName = displayName;
 		this.dimension = dimension;
-		this.address = address;
+		this.clientAddress = clientAddress;
+		this.serverAddress = serverAddress;
+		this.serverPort = serverPort;
 		this.uuid = uuid;
 		this.skin = skin;
 		this.latency = latency;
@@ -103,7 +107,9 @@ class Add : Buffer {
 		writeBytes(varuint.encode(cast(uint)username.length)); writeString(username);
 		writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName);
 		if(reason!=0){ writeBigEndianByte(dimension); }
-		address.encode(bufferInstance);
+		clientAddress.encode(bufferInstance);
+		writeBytes(varuint.encode(cast(uint)serverAddress.length)); writeString(serverAddress);
+		writeBigEndianUshort(serverPort);
 		writeBytes(uuid.data);
 		skin.encode(bufferInstance);
 		writeBytes(varuint.encode(latency));
@@ -120,7 +126,9 @@ class Add : Buffer {
 		uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
 		uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu);
 		if(reason!=0){ dimension=readBigEndianByte(); }
-		address.decode(bufferInstance);
+		clientAddress.decode(bufferInstance);
+		uint c2vydmvyqwrkcmvz=varuint.decode(_buffer, &_index); serverAddress=readString(c2vydmvyqwrkcmvz);
+		serverPort=readBigEndianUshort();
 		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		skin.decode(bufferInstance);
 		latency=varuint.decode(_buffer, &_index);
@@ -144,18 +152,26 @@ class Add : Buffer {
 
 		public enum typeof(type) TYPE = 1;
 
-		public enum string[] FIELDS = ["xuid", "edu", "packetLoss"];
+		// device os
+		public enum ubyte UNKNOWN = 0;
+		public enum ubyte ANDROID = 2;
+
+		public enum string[] FIELDS = ["xuid", "edu", "packetLoss", "deviceOs", "deviceModel"];
 
 		public long xuid;
 		public bool edu;
 		public float packetLoss;
+		public ubyte deviceOs;
+		public string deviceModel;
 
 		public pure nothrow @safe @nogc this() {}
 
-		public pure nothrow @safe @nogc this(long xuid, bool edu=bool.init, float packetLoss=float.init) {
+		public pure nothrow @safe @nogc this(long xuid, bool edu=bool.init, float packetLoss=float.init, ubyte deviceOs=ubyte.init, string deviceModel=string.init) {
 			this.xuid = xuid;
 			this.edu = edu;
 			this.packetLoss = packetLoss;
+			this.deviceOs = deviceOs;
+			this.deviceModel = deviceModel;
 		}
 
 		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
@@ -164,6 +180,8 @@ class Add : Buffer {
 			writeBytes(varlong.encode(xuid));
 			writeBigEndianBool(edu);
 			writeBigEndianFloat(packetLoss);
+			writeBigEndianUbyte(deviceOs);
+			writeBytes(varuint.encode(cast(uint)deviceModel.length)); writeString(deviceModel);
 			return _buffer;
 		}
 
@@ -171,6 +189,8 @@ class Add : Buffer {
 			xuid=varlong.decode(_buffer, &_index);
 			edu=readBigEndianBool();
 			packetLoss=readBigEndianFloat();
+			deviceOs=readBigEndianUbyte();
+			uint zgv2awnltw9kzww=varuint.decode(_buffer, &_index); deviceModel=readString(zgv2awnltw9kzww);
 		}
 
 	}

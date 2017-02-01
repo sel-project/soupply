@@ -449,8 +449,16 @@
 						"when": "reason!=0"
 					},
 					{
-						"name": "address",
+						"name": "client_address",
 						"type": "address"
+					},
+					{
+						"name": "server_address",
+						"type": "string"
+					},
+					{
+						"name": "server_port",
+						"type": "ushort"
 					},
 					{
 						"name": "uuid",
@@ -486,6 +494,18 @@
 								{
 									"name": "packet_loss",
 									"type": "float"
+								},
+								{
+									"name": "device_os",
+									"type": "ubyte",
+									"constants": {
+										"unknown": 0,
+										"android": 2
+									}
+								},
+								{
+									"name": "device_model",
+									"type": "string"
 								}
 							]
 						},
