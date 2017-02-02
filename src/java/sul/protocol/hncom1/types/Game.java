@@ -8,12 +8,10 @@
  */
 package sul.protocol.hncom1.types;
 
-import java.nio.charset.StandardCharsets;
-
 import sul.utils.*;
 
 /**
- * Indicates a game and informations about it.
+ * Indicates a game and informations about its accepted protocols.
  */
 public class Game extends Packet {
 
@@ -22,7 +20,7 @@ public class Game extends Packet {
 	public static final byte MINECRAFT = 2;
 
 	/**
-	 * Type of the game.
+	 * Identifier of the game.
 	 */
 	public byte type;
 
@@ -32,30 +30,16 @@ public class Game extends Packet {
 	 */
 	public int[] protocols;
 
-	/**
-	 * "Message of the day" which is displayed in the game's server list. It may contain
-	 * Minecraft formatting codes.
-	 */
-	public String motd;
-
-	/**
-	 * Port, or main port if the server allows the connection from multiple ports, where
-	 * the socket is listening for connections.
-	 */
-	public short port;
-
 	public Game() {}
 
-	public Game(byte type, int[] protocols, String motd, short port) {
+	public Game(byte type, int[] protocols) {
 		this.type = type;
 		this.protocols = protocols;
-		this.motd = motd;
-		this.port = port;
 	}
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(protocols.length) + Buffer.varuintLength(motd.getBytes(StandardCharsets.UTF_8).length) + motd.getBytes(StandardCharsets.UTF_8).length + 3; for(int chjvdg9jb2xz:protocols){ length+=Buffer.varuintLength(chjvdg9jb2xz); } return length;
+		int length=Buffer.varuintLength(protocols.length) + 1; for(int chjvdg9jb2xz:protocols){ length+=Buffer.varuintLength(chjvdg9jb2xz); } return length;
 	}
 
 	@Override
@@ -63,8 +47,6 @@ public class Game extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(type);
 		this.writeVaruint((int)protocols.length); for(int chjvdg9jb2xz:protocols){ this.writeVaruint(chjvdg9jb2xz); }
-		byte[] bw90za=motd.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bw90za.length); this.writeBytes(bw90za);
-		this.writeBigEndianShort(port);
 		return this.getBuffer();
 	}
 
@@ -73,8 +55,6 @@ public class Game extends Packet {
 		this._buffer = buffer;
 		type=readBigEndianByte();
 		int bhbyb3rvy29scw=this.readVaruint(); protocols=new int[bhbyb3rvy29scw]; for(int chjvdg9jb2xz=0;chjvdg9jb2xz<protocols.length;chjvdg9jb2xz++){ protocols[chjvdg9jb2xz]=this.readVaruint(); }
-		int bgvubw90za=this.readVaruint(); motd=new String(this.readBytes(bgvubw90za), StandardCharsets.UTF_8);
-		port=readBigEndianShort();
 	}
 
 

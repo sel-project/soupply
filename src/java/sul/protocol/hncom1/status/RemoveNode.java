@@ -6,35 +6,28 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
-package sul.protocol.hncom1.player;
+package sul.protocol.hncom1.status;
 
 import sul.utils.*;
 
-/**
- * Transfers a player to another node. When a player is transferred from the node the
- * hub will not send the Remove packet and there's no way, for the node, to know whether
- * the player was disconnected or successfully transferred.
- */
-public class Transfer extends Packet {
+public class RemoveNode extends Packet {
 
-	public static final byte ID = (byte)15;
+	public static final byte ID = (byte)6;
 
-	public static final boolean CLIENTBOUND = false;
-	public static final boolean SERVERBOUND = true;
+	public static final boolean CLIENTBOUND = true;
+	public static final boolean SERVERBOUND = false;
 
 	public int hubId;
-	public int nodeId;
 
-	public Transfer() {}
+	public RemoveNode() {}
 
-	public Transfer(int hubId, int nodeId) {
+	public RemoveNode(int hubId) {
 		this.hubId = hubId;
-		this.nodeId = nodeId;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(hubId) + Buffer.varuintLength(nodeId) + 1;
+		return Buffer.varuintLength(hubId) + 1;
 	}
 
 	@Override
@@ -42,7 +35,6 @@ public class Transfer extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
-		this.writeVaruint(nodeId);
 		return this.getBuffer();
 	}
 
@@ -51,11 +43,10 @@ public class Transfer extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		hubId=this.readVaruint();
-		nodeId=this.readVaruint();
 	}
 
-	public static Transfer fromBuffer(byte[] buffer) {
-		Transfer ret = new Transfer();
+	public static RemoveNode fromBuffer(byte[] buffer) {
+		RemoveNode ret = new RemoveNode();
 		ret.decode(buffer);
 		return ret;
 	}

@@ -25,19 +25,21 @@ public class NodeInfo extends Packet {
 
 	public long time;
 	public int max;
+	public sul.protocol.hncom1.types.Game[] acceptedGames;
 	public sul.protocol.hncom1.types.Plugin[] plugins;
 
 	public NodeInfo() {}
 
-	public NodeInfo(long time, int max, sul.protocol.hncom1.types.Plugin[] plugins) {
+	public NodeInfo(long time, int max, sul.protocol.hncom1.types.Game[] acceptedGames, sul.protocol.hncom1.types.Plugin[] plugins) {
 		this.time = time;
 		this.max = max;
+		this.acceptedGames = acceptedGames;
 		this.plugins = plugins;
 	}
 
 	@Override
 	public int length() {
-		int length=Buffer.varulongLength(time) + Buffer.varuintLength(max) + Buffer.varuintLength(plugins.length) + 1; for(sul.protocol.hncom1.types.Plugin cgx1z2lucw:plugins){ length+=cgx1z2lucw.length(); } return length;
+		int length=Buffer.varulongLength(time) + Buffer.varuintLength(max) + Buffer.varuintLength(acceptedGames.length) + Buffer.varuintLength(plugins.length) + 1; for(sul.protocol.hncom1.types.Game ywnjzxb0zwrhyw1l:acceptedGames){ length+=ywnjzxb0zwrhyw1l.length(); };for(sul.protocol.hncom1.types.Plugin cgx1z2lucw:plugins){ length+=cgx1z2lucw.length(); } return length;
 	}
 
 	@Override
@@ -46,6 +48,7 @@ public class NodeInfo extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarulong(time);
 		this.writeVaruint(max);
+		this.writeVaruint((int)acceptedGames.length); for(sul.protocol.hncom1.types.Game ywnjzxb0zwrhyw1l:acceptedGames){ this.writeBytes(ywnjzxb0zwrhyw1l.encode()); }
 		this.writeVaruint((int)plugins.length); for(sul.protocol.hncom1.types.Plugin cgx1z2lucw:plugins){ this.writeBytes(cgx1z2lucw.encode()); }
 		return this.getBuffer();
 	}
@@ -56,6 +59,7 @@ public class NodeInfo extends Packet {
 		readBigEndianByte();
 		time=this.readVarulong();
 		max=this.readVaruint();
+		int bgfjy2vwdgvkr2ft=this.readVaruint(); acceptedGames=new sul.protocol.hncom1.types.Game[bgfjy2vwdgvkr2ft]; for(int ywnjzxb0zwrhyw1l=0;ywnjzxb0zwrhyw1l<acceptedGames.length;ywnjzxb0zwrhyw1l++){ acceptedGames[ywnjzxb0zwrhyw1l]=new sul.protocol.hncom1.types.Game(); acceptedGames[ywnjzxb0zwrhyw1l]._index=this._index; acceptedGames[ywnjzxb0zwrhyw1l].decode(this._buffer); this._index=acceptedGames[ywnjzxb0zwrhyw1l]._index; }
 		int bhbsdwdpbnm=this.readVaruint(); plugins=new sul.protocol.hncom1.types.Plugin[bhbsdwdpbnm]; for(int cgx1z2lucw=0;cgx1z2lucw<plugins.length;cgx1z2lucw++){ plugins[cgx1z2lucw]=new sul.protocol.hncom1.types.Plugin(); plugins[cgx1z2lucw]._index=this._index; plugins[cgx1z2lucw].decode(this._buffer); this._index=plugins[cgx1z2lucw]._index; }
 	}
 

@@ -18,7 +18,7 @@ import sul.utils.*;
  */
 public class Kick extends Packet {
 
-	public static final byte ID = (byte)13;
+	public static final byte ID = (byte)14;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;

@@ -10,9 +10,13 @@ package sul.protocol.hncom1.generic;
 
 import sul.utils.*;
 
+/**
+ * Notifies the node that the hub's reloadeable settings have been reloaded and that
+ * the node should also reload its reloadeable resources.
+ */
 public class Reload extends Packet {
 
-	public static final byte ID = (byte)10;
+	public static final byte ID = (byte)11;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

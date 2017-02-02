@@ -27,7 +27,7 @@ alias Packets = TypeTuple!(Add, Remove, Kick, Transfer, UpdateLanguage, UpdateDi
  */
 class Add : Buffer {
 
-	public enum ubyte ID = 11;
+	public enum ubyte ID = 12;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -37,7 +37,7 @@ class Add : Buffer {
 	public enum ubyte TRANSFERRED = 1;
 	public enum ubyte FORCIBLY_TRANSFERRED = 2;
 
-	public enum string[] FIELDS = ["hubId", "reason", "type", "protocol", "username", "displayName", "dimension", "clientAddress", "serverAddress", "serverPort", "uuid", "skin", "latency", "language"];
+	public enum string[] FIELDS = ["hubId", "reason", "type", "protocol", "vers", "username", "displayName", "dimension", "clientAddress", "serverAddress", "serverPort", "uuid", "skin", "latency", "language"];
 
 	/**
 	 * A unique identifier given by the hub that is never changed while the player is connected.
@@ -58,6 +58,7 @@ class Add : Buffer {
 	 * Version of the protocol used by the client.
 	 */
 	public uint protocol;
+	public string vers;
 
 	/**
 	 * Username of the player.
@@ -80,11 +81,12 @@ class Add : Buffer {
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, ubyte type=ubyte.init, uint protocol=uint.init, string username=string.init, string displayName=string.init, byte dimension=byte.init, sul.protocol.hncom1.types.Address clientAddress=sul.protocol.hncom1.types.Address.init, string serverAddress=string.init, ushort serverPort=ushort.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, uint latency=uint.init, string language=string.init) {
+	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, ubyte type=ubyte.init, uint protocol=uint.init, string vers=string.init, string username=string.init, string displayName=string.init, byte dimension=byte.init, sul.protocol.hncom1.types.Address clientAddress=sul.protocol.hncom1.types.Address.init, string serverAddress=string.init, ushort serverPort=ushort.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, uint latency=uint.init, string language=string.init) {
 		this.hubId = hubId;
 		this.reason = reason;
 		this.type = type;
 		this.protocol = protocol;
+		this.vers = vers;
 		this.username = username;
 		this.displayName = displayName;
 		this.dimension = dimension;
@@ -104,6 +106,7 @@ class Add : Buffer {
 		writeBigEndianUbyte(reason);
 		writeBigEndianUbyte(type);
 		writeBytes(varuint.encode(protocol));
+		writeBytes(varuint.encode(cast(uint)vers.length)); writeString(vers);
 		writeBytes(varuint.encode(cast(uint)username.length)); writeString(username);
 		writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName);
 		if(reason!=0){ writeBigEndianByte(dimension); }
@@ -123,6 +126,7 @@ class Add : Buffer {
 		reason=readBigEndianUbyte();
 		type=readBigEndianUbyte();
 		protocol=varuint.decode(_buffer, &_index);
+		uint dmvycw=varuint.decode(_buffer, &_index); vers=readString(dmvycw);
 		uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
 		uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu);
 		if(reason!=0){ dimension=readBigEndianByte(); }
@@ -219,7 +223,7 @@ class Add : Buffer {
  */
 class Remove : Buffer {
 
-	public enum ubyte ID = 12;
+	public enum ubyte ID = 13;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -271,7 +275,7 @@ class Remove : Buffer {
  */
 class Kick : Buffer {
 
-	public enum ubyte ID = 13;
+	public enum ubyte ID = 14;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -326,35 +330,35 @@ class Kick : Buffer {
  */
 class Transfer : Buffer {
 
-	public enum ubyte ID = 14;
+	public enum ubyte ID = 15;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["hubId", "node"];
+	public enum string[] FIELDS = ["hubId", "nodeId"];
 
 	public uint hubId;
-	public string node;
+	public uint nodeId;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint hubId, string node=string.init) {
+	public pure nothrow @safe @nogc this(uint hubId, uint nodeId=uint.init) {
 		this.hubId = hubId;
-		this.node = node;
+		this.nodeId = nodeId;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(hubId));
-		writeBytes(varuint.encode(cast(uint)node.length)); writeString(node);
+		writeBytes(varuint.encode(nodeId));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		hubId=varuint.decode(_buffer, &_index);
-		uint bm9kzq=varuint.decode(_buffer, &_index); node=readString(bm9kzq);
+		nodeId=varuint.decode(_buffer, &_index);
 	}
 
 	public static pure nothrow @safe Transfer fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -371,7 +375,7 @@ class Transfer : Buffer {
  */
 class UpdateLanguage : Buffer {
 
-	public enum ubyte ID = 15;
+	public enum ubyte ID = 16;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -413,7 +417,7 @@ class UpdateLanguage : Buffer {
 
 class UpdateDisplayName : Buffer {
 
-	public enum ubyte ID = 16;
+	public enum ubyte ID = 17;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -455,22 +459,22 @@ class UpdateDisplayName : Buffer {
 
 class UpdateWorld : Buffer {
 
-	public enum ubyte ID = 17;
+	public enum ubyte ID = 18;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["hubId", "name", "dimension"];
+	public enum string[] FIELDS = ["hubId", "world", "dimension"];
 
 	public uint hubId;
-	public string name;
+	public string world;
 	public byte dimension;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint hubId, string name=string.init, byte dimension=byte.init) {
+	public pure nothrow @safe @nogc this(uint hubId, string world=string.init, byte dimension=byte.init) {
 		this.hubId = hubId;
-		this.name = name;
+		this.world = world;
 		this.dimension = dimension;
 	}
 
@@ -478,7 +482,7 @@ class UpdateWorld : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(hubId));
-		writeBytes(varuint.encode(cast(uint)name.length)); writeString(name);
+		writeBytes(varuint.encode(cast(uint)world.length)); writeString(world);
 		writeBigEndianByte(dimension);
 		return _buffer;
 	}
@@ -486,7 +490,7 @@ class UpdateWorld : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		hubId=varuint.decode(_buffer, &_index);
-		uint bmftzq=varuint.decode(_buffer, &_index); name=readString(bmftzq);
+		uint d29ybgq=varuint.decode(_buffer, &_index); world=readString(d29ybgq);
 		dimension=readBigEndianByte();
 	}
 
@@ -501,7 +505,7 @@ class UpdateWorld : Buffer {
 
 class UpdateLatency : Buffer {
 
-	public enum ubyte ID = 18;
+	public enum ubyte ID = 19;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -543,7 +547,7 @@ class UpdateLatency : Buffer {
 
 class UpdatePacketLoss : Buffer {
 
-	public enum ubyte ID = 19;
+	public enum ubyte ID = 20;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -588,7 +592,7 @@ class UpdatePacketLoss : Buffer {
  */
 class GamePacket : Buffer {
 
-	public enum ubyte ID = 20;
+	public enum ubyte ID = 21;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
@@ -634,7 +638,7 @@ class GamePacket : Buffer {
  */
 class OrderedGamePacket : Buffer {
 
-	public enum ubyte ID = 21;
+	public enum ubyte ID = 22;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;

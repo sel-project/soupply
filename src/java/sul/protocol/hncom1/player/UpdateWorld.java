@@ -14,26 +14,26 @@ import sul.utils.*;
 
 public class UpdateWorld extends Packet {
 
-	public static final byte ID = (byte)17;
+	public static final byte ID = (byte)18;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
-	public String name;
+	public String world;
 	public byte dimension;
 
 	public UpdateWorld() {}
 
-	public UpdateWorld(int hubId, String name, byte dimension) {
+	public UpdateWorld(int hubId, String world, byte dimension) {
 		this.hubId = hubId;
-		this.name = name;
+		this.world = world;
 		this.dimension = dimension;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(hubId) + Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + 2;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(world.getBytes(StandardCharsets.UTF_8).length) + world.getBytes(StandardCharsets.UTF_8).length + 2;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class UpdateWorld extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
-		byte[] bmftzq=name.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bmftzq.length); this.writeBytes(bmftzq);
+		byte[] d29ybgq=world.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)d29ybgq.length); this.writeBytes(d29ybgq);
 		this.writeBigEndianByte(dimension);
 		return this.getBuffer();
 	}
@@ -51,7 +51,7 @@ public class UpdateWorld extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		hubId=this.readVaruint();
-		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
+		int bgvud29ybgq=this.readVaruint(); world=new String(this.readBytes(bgvud29ybgq), StandardCharsets.UTF_8);
 		dimension=readBigEndianByte();
 	}
 

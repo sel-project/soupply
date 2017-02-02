@@ -20,7 +20,7 @@ import sul.utils.var;
 
 static import sul.protocol.hncom1.types;
 
-alias Packets = TypeTuple!(Players, Nodes, ResourcesUsage);
+alias Packets = TypeTuple!(Players, AddNode, RemoveNode, ResourcesUsage);
 
 /**
  * Updates the number of players on the server.
@@ -67,48 +67,87 @@ class Players : Buffer {
 
 }
 
-/**
- * Adds or remove a node.
- */
-class Nodes : Buffer {
+class AddNode : Buffer {
 
 	public enum ubyte ID = 5;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	// action
-	public enum ubyte ADD = 0;
-	public enum ubyte REMOVE = 1;
+	public enum string[] FIELDS = ["hubId", "name", "main", "acceptedGames"];
 
-	public enum string[] FIELDS = ["action", "node"];
-
-	public ubyte action;
-	public string node;
+	public uint hubId;
+	public string name;
+	public bool main;
+	public sul.protocol.hncom1.types.Game[] acceptedGames;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(ubyte action, string node=string.init) {
-		this.action = action;
-		this.node = node;
+	public pure nothrow @safe @nogc this(uint hubId, string name=string.init, bool main=bool.init, sul.protocol.hncom1.types.Game[] acceptedGames=(sul.protocol.hncom1.types.Game[]).init) {
+		this.hubId = hubId;
+		this.name = name;
+		this.main = main;
+		this.acceptedGames = acceptedGames;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBigEndianUbyte(action);
-		writeBytes(varuint.encode(cast(uint)node.length)); writeString(node);
+		writeBytes(varuint.encode(hubId));
+		writeBytes(varuint.encode(cast(uint)name.length)); writeString(name);
+		writeBigEndianBool(main);
+		writeBytes(varuint.encode(cast(uint)acceptedGames.length)); foreach(ywnjzxb0zwrhyw1l;acceptedGames){ ywnjzxb0zwrhyw1l.encode(bufferInstance); }
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		action=readBigEndianUbyte();
-		uint bm9kzq=varuint.decode(_buffer, &_index); node=readString(bm9kzq);
+		hubId=varuint.decode(_buffer, &_index);
+		uint bmftzq=varuint.decode(_buffer, &_index); name=readString(bmftzq);
+		main=readBigEndianBool();
+		acceptedGames.length=varuint.decode(_buffer, &_index); foreach(ref ywnjzxb0zwrhyw1l;acceptedGames){ ywnjzxb0zwrhyw1l.decode(bufferInstance); }
 	}
 
-	public static pure nothrow @safe Nodes fromBuffer(bool readId=true)(ubyte[] buffer) {
-		Nodes ret = new Nodes();
+	public static pure nothrow @safe AddNode fromBuffer(bool readId=true)(ubyte[] buffer) {
+		AddNode ret = new AddNode();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
+class RemoveNode : Buffer {
+
+	public enum ubyte ID = 6;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["hubId"];
+
+	public uint hubId;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint hubId) {
+		this.hubId = hubId;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(hubId));
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		hubId=varuint.decode(_buffer, &_index);
+	}
+
+	public static pure nothrow @safe RemoveNode fromBuffer(bool readId=true)(ubyte[] buffer) {
+		RemoveNode ret = new RemoveNode();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
@@ -121,7 +160,7 @@ class Nodes : Buffer {
  */
 class ResourcesUsage : Buffer {
 
-	public enum ubyte ID = 6;
+	public enum ubyte ID = 7;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;

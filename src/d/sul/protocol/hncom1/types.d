@@ -18,40 +18,6 @@ import sul.utils.buffer;
 import sul.utils.var;
 
 /**
- * A plugin loaded on the node. It may be used by the hub to display the plugins loaded
- * on the server in queries.
- */
-struct Plugin {
-
-	public enum string[] FIELDS = ["name", "vers"];
-
-	/**
-	 * Name of the plugin.
-	 */
-	public string name;
-
-	/**
-	 * Version of the plugin, usually in the format `major.minor[.release] [alpha|beta]`.
-	 */
-	public string vers;
-
-	public pure nothrow @safe void encode(Buffer buffer) {
-		with(buffer) {
-			writeBytes(varuint.encode(cast(uint)name.length)); writeString(name);
-			writeBytes(varuint.encode(cast(uint)vers.length)); writeString(vers);
-		}
-	}
-
-	public pure nothrow @safe void decode(Buffer buffer) {
-		with(buffer) {
-			uint bmftzq=varuint.decode(_buffer, &_index); name=readString(bmftzq);
-			uint dmvycw=varuint.decode(_buffer, &_index); vers=readString(dmvycw);
-		}
-	}
-
-}
-
-/**
  * Internet protocol address. Could be either version 4 and 6.
  */
 struct Address {
@@ -86,7 +52,7 @@ struct Address {
 }
 
 /**
- * Indicates a game and informations about it.
+ * Indicates a game and informations about its accepted protocols.
  */
 struct Game {
 
@@ -94,10 +60,10 @@ struct Game {
 	public enum ubyte POCKET = 1;
 	public enum ubyte MINECRAFT = 2;
 
-	public enum string[] FIELDS = ["type", "protocols", "motd", "port"];
+	public enum string[] FIELDS = ["type", "protocols"];
 
 	/**
-	 * Type of the game.
+	 * Identifier of the game.
 	 */
 	public ubyte type;
 
@@ -106,6 +72,34 @@ struct Game {
 	 * to newest.
 	 */
 	public uint[] protocols;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBigEndianUbyte(type);
+			writeBytes(varuint.encode(cast(uint)protocols.length)); foreach(chjvdg9jb2xz;protocols){ writeBytes(varuint.encode(chjvdg9jb2xz)); }
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			type=readBigEndianUbyte();
+			protocols.length=varuint.decode(_buffer, &_index); foreach(ref chjvdg9jb2xz;protocols){ chjvdg9jb2xz=varuint.decode(_buffer, &_index); }
+		}
+	}
+
+}
+
+/**
+ * Indicates a game and informations about it.
+ */
+struct GameInfo {
+
+	public enum string[] FIELDS = ["game", "motd", "port"];
+
+	/**
+	 * Informations about the the game and the protocols used.
+	 */
+	public sul.protocol.hncom1.types.Game game;
 
 	/**
 	 * "Message of the day" which is displayed in the game's server list. It may contain
@@ -121,8 +115,7 @@ struct Game {
 
 	public pure nothrow @safe void encode(Buffer buffer) {
 		with(buffer) {
-			writeBigEndianUbyte(type);
-			writeBytes(varuint.encode(cast(uint)protocols.length)); foreach(chjvdg9jb2xz;protocols){ writeBytes(varuint.encode(chjvdg9jb2xz)); }
+			game.encode(bufferInstance);
 			writeBytes(varuint.encode(cast(uint)motd.length)); writeString(motd);
 			writeBigEndianUshort(port);
 		}
@@ -130,10 +123,43 @@ struct Game {
 
 	public pure nothrow @safe void decode(Buffer buffer) {
 		with(buffer) {
-			type=readBigEndianUbyte();
-			protocols.length=varuint.decode(_buffer, &_index); foreach(ref chjvdg9jb2xz;protocols){ chjvdg9jb2xz=varuint.decode(_buffer, &_index); }
+			game.decode(bufferInstance);
 			uint bw90za=varuint.decode(_buffer, &_index); motd=readString(bw90za);
 			port=readBigEndianUshort();
+		}
+	}
+
+}
+
+/**
+ * A plugin loaded on the node. It may be used by the hub to display the plugins loaded
+ * on the server in queries.
+ */
+struct Plugin {
+
+	public enum string[] FIELDS = ["name", "vers"];
+
+	/**
+	 * Name of the plugin.
+	 */
+	public string name;
+
+	/**
+	 * Version of the plugin, usually in the format `major.minor[.release] [alpha|beta]`.
+	 */
+	public string vers;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBytes(varuint.encode(cast(uint)name.length)); writeString(name);
+			writeBytes(varuint.encode(cast(uint)vers.length)); writeString(vers);
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			uint bmftzq=varuint.decode(_buffer, &_index); name=readString(bmftzq);
+			uint dmvycw=varuint.decode(_buffer, &_index); vers=readString(dmvycw);
 		}
 	}
 

@@ -11,7 +11,16 @@
 	<from>1.0.0</from>
 
 	<description>
-		Communication between hub and nodes.
+		Protocol used for the communication between an hub and multiple nodes.
+
+		## Definitions
+
+		### Hub
+		The hub is the network part of the game server and handles pings, login sequences, keep alive packets, queries, external consoles and everything else that is not a gameplay feature.
+		A server can work with only an hub (nodeless) but every player that will try to join the server will be disconnected with an "End of Stream" message after the login process.
+
+		### Node
+		The node is the gameplay part of the game server. It contains worlds and entities and has only one network connection, with the hub.
 	</description>
 
 	<encoding id="ubyte" arraylength="varuint">
@@ -19,16 +28,6 @@
 		<endianness type="*" value="big-endian" />
 
 		<alias name="hub-id" type="varuint" />
-
-		<type name="plugin">
-			A plugin loaded on the node. It may be used by the hub to display the plugins loaded on the server in queries.
-			<field name="name" type="string">
-				Name of the plugin.
-			</field>
-			<field name="version" type="string">
-				Version of the plugin, usually in the format `major.minor[.release] [alpha|beta]`.
-			</field>
-		</type>
 
 		<type name="address">
 			Internet protocol address. Could be either version 4 and 6.
@@ -41,20 +40,37 @@
 		</type>
 
 		<type name="game">
-			Indicates a game and informations about it.
+			Indicates a game and informations about its accepted protocols.
 			<field name="type" type="ubyte">
-				Type of the game.
+				Identifier of the game.
 				<constant name="pocket" value="1" />
 				<constant name="minecraft" value="2" />
 			</field>
 			<field name="protocols" type="varuint[]">
 				Protocols accepted by the server for the game. They should be ordered from oldest to newest.
 			</field>
+		</type>
+
+		<type name="game-info">
+			Indicates a game and informations about it.
+			<field name="game" type="game">
+				Informations about the the game and the protocols used.
+			</field>
 			<field name="motd" type="string">
 				"Message of the day" which is displayed in the game's server list. It may contain Minecraft formatting codes.
 			</field>
 			<field name="port" type="ushort">
 				Port, or main port if the server allows the connection from multiple ports, where the socket is listening for connections.
+			</field>
+		</type>
+
+		<type name="plugin">
+			A plugin loaded on the node. It may be used by the hub to display the plugins loaded on the server in queries.
+			<field name="name" type="string">
+				Name of the plugin.
+			</field>
+			<field name="version" type="string">
+				Version of the plugin, usually in the format `major.minor[.release] [alpha|beta]`.
 			</field>
 		</type>
 
@@ -148,14 +164,44 @@
 				<field name="reserved-uuids" type="varulong" />
 				<field name="display-name" type="string" />
 				<field name="online-mode" type="bool" />
-				<field name="games" type="game[]" />
+				<field name="games-info" type="game-info[]" />
 				<field name="online" type="varuint" />
 				<field name="max" type="varuint" />
 				<field name="language" type="string" />
 				<field name="accepted-languages" type="string[]" />
-				<field name="nodes" type="string[]" />
-				<field name="social-json" type="string" />
-				<field name="additional-json" type="string" />
+				<field name="social-json" type="string">
+					```
+					{
+						"website": "example.com",
+						"facebook": "example-official",
+						"twitter": "example_tweets",
+						"youtube": "examplechannel",
+						"instagram": "example",
+						"google_plus": "example-plus"					
+					}
+					```
+				</field>
+				<field name="additional-json" type="string">
+					```
+					{
+						"software": {
+							"name": "SEL",
+							"version": "1.0.4",
+							"stable": false
+						},
+						"minecraft": {
+							"edu": false,
+							"realm": true
+						},
+						"system": {
+							"os": "Ubuntu 16.04",
+							"cpu": 4,
+							"cpu_speed": 3.2
+							"ram": 4294967296
+						}
+					}
+					```
+				</field>
 			</packet>
 
 			<packet name="node-info" id="3" clientbound="false" serverbound="true">
@@ -164,6 +210,7 @@
 				<field name="max" type="varuint">
 					<constant name="unlimited" value="0" />
 				</field>
+				<field name="accepted-games" type="game[]" />
 				<field name="plugins" type="plugin[]" />
 			</packet>
 
@@ -177,16 +224,18 @@
 				<field name="max" type="varuint" />
 			</packet>
 
-			<packet name="nodes" id="5" clientbound="true" serverbound="false">
-				Adds or remove a node.
-				<field name="action" type="ubyte">
-					<constant name="add" value="0" />
-					<constant name="remove" value="1" />
-				</field>
-				<field name="node" type="string" />
+			<packet name="add-node" id="5" clientbound="true" serverbound="false">
+				<field name="hub-id" type="hub-id" />
+				<field name="name" type="string" />
+				<field name="main" type="bool" />
+				<field name="accepted-games" type="game[]" />
 			</packet>
 
-			<packet name="resources-usage" id="6" clientbound="false" serverbound="true">
+			<packet name="remove-node" id="6" clientbound="true" serverbound="false">
+				<field name="hub-id" type="hub-id" />
+			</packet>
+
+			<packet name="resources-usage" id="7" clientbound="false" serverbound="true">
 				Updates the usage of the resources in the node.
 				<field name="tps" type="float" />
 				<field name="ram" type="varulong" />
@@ -197,12 +246,12 @@
 
 		<section name="generic">
 
-			<packet name="logs" id="7" clientbound="false" serverbound="true">
+			<packet name="logs" id="8" clientbound="false" serverbound="true">
 				Sends node logs to the hub.
 				<field name="messages" type="log[]" />
 			</packet>
 
-			<packet name="remote-command" id="8" clientbound="true" serverbound="false">
+			<packet name="remote-command" id="9" clientbound="true" serverbound="false">
 				Executes a command on the node.
 				<field name="origin" type="ubyte">
 					<constant name="hub" value="0" />
@@ -213,9 +262,10 @@
 				<field name="command" type="string" />
 			</packet>
 
-			<packet name="update-list" id="9" clientbound="false" serverbound="true">
+			<packet name="update-list" id="10" clientbound="false" serverbound="true">
 				Updates a list.
 				<field name="list" type="ubyte">
+					Type of the list to update.
 					<constant name="whitelist" value="0" />
 					<constant name="blacklist" value="1" />
 				</field>
@@ -241,15 +291,15 @@
 				</variants>
 			</packet>
 
-			<packet name="reload" id="10" clientbound="true" serverbound="false">
-
+			<packet name="reload" id="11" clientbound="true" serverbound="false">
+				Notifies the node that the hub's reloadeable settings have been reloaded and that the node should also reload its reloadeable resources.
 			</packet>
 
 		</section>
 
 		<section name="player">
 
-			<packet name="add" id="11" clientbound="true" serverbound="false">
+			<packet name="add" id="12" clientbound="true" serverbound="false">
 				Adds a player to the node.
 				<field name="hub-id" type="hub-id">
 					A unique identifier given by the hub that is never changed while the player is connected.
@@ -272,6 +322,7 @@
 				<field name="protocol" type="varuint">
 					Version of the protocol used by the client.
 				</field>
+				<field name="version" type="string" />
 				<field name="username" type="string">
 					Username of the player.
 				</field>
@@ -303,7 +354,7 @@
 				</variants>
 			</packet>
 
-			<packet name="remove" id="12" clientbound="true" serverbound="false">
+			<packet name="remove" id="13" clientbound="true" serverbound="false">
 				Removes a player from the node.
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="ubyte">
@@ -314,7 +365,7 @@
 				</field>
 			</packet>
 
-			<packet name="kick" id="13" clientbound="false" serverbound="true">
+			<packet name="kick" id="14" clientbound="false" serverbound="true">
 				Kicks a player from the node and the whole server. When a player is disconnected from the node using this packet the hub will not send the [Remove](#player.remove) packet.
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="string" />
@@ -322,46 +373,46 @@
 				<field name="parameters" type="string[]" when="translation==true" />
 			</packet>
 
-			<packet name="transfer" id="14" clientbound="false" serverbound="true">
+			<packet name="transfer" id="15" clientbound="false" serverbound="true">
 				Transfers a player to another node. When a player is transferred from the node the hub will not send the [Remove](#login.remove) packet and there's no way, for the node, to know whether the player was disconnected or successfully transferred.
 				<field name="hub-id" type="hub-id" />
-				<field name="node" type="string" />
+				<field name="node-id" type="hub-id" />
 			</packet>
 
-			<packet name="update-language" id="15" clientbound="false" serverbound="true">
+			<packet name="update-language" id="16" clientbound="false" serverbound="true">
 				Updates the player language after the client has changed it.
 				<field name="hub-id" type="hub-id" />
 				<field name="language" type="string" />
 			</packet>
 
-			<packet name="update-display-name" id="16" clientbound="false" serverbound="true">
+			<packet name="update-display-name" id="17" clientbound="false" serverbound="true">
 				<field name="hub-id" type="hub-id" />
 				<field name="display-name" type="string" />
 			</packet>
 
-			<packet name="update-world" id="17" clientbound="false" serverbound="true">
+			<packet name="update-world" id="18" clientbound="false" serverbound="true">
 				<field name="hub-id" type="hub-id" />
-				<field name="name" type="string" />
+				<field name="world" type="string" />
 				<field name="dimension" type="byte" />
 			</packet>
 
-			<packet name="update-latency" id="18" clientbound="true" serverbound="false">
+			<packet name="update-latency" id="19" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 				<field name="latency" type="varuint" />
 			</packet>
 
-			<packet name="update-packet-loss" id="19" clientbound="true" serverbound="false">
+			<packet name="update-packet-loss" id="20" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 				<field name="packet-loss" type="float" />
 			</packet>
 
-			<packet name="game-packet" id="20" clientbound="true" serverbound="true">
+			<packet name="game-packet" id="21" clientbound="true" serverbound="true">
 				Sends data to client or handles data received from the client.
 				<field name="hub-id" type="hub-id" />
 				<field name="packet" type="bytes" />
 			</packet>
 
-			<packet name="ordered-game-packet" id="21" clientbound="false" serverbound="true">
+			<packet name="ordered-game-packet" id="22" clientbound="false" serverbound="true">
 				Sends data to the client but order it because it could be sent by the node unordered, due to compressed packet sent delayed.
 				<field name="hub-id" type="hub-id" />
 				<field name="order" type="varuint" />

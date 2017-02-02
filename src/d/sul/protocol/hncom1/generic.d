@@ -27,7 +27,7 @@ alias Packets = TypeTuple!(Logs, RemoteCommand, UpdateList, Reload);
  */
 class Logs : Buffer {
 
-	public enum ubyte ID = 7;
+	public enum ubyte ID = 8;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -68,7 +68,7 @@ class Logs : Buffer {
  */
 class RemoteCommand : Buffer {
 
-	public enum ubyte ID = 8;
+	public enum ubyte ID = 9;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -122,7 +122,7 @@ class RemoteCommand : Buffer {
  */
 class UpdateList : Buffer {
 
-	public enum ubyte ID = 9;
+	public enum ubyte ID = 10;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -137,6 +137,9 @@ class UpdateList : Buffer {
 
 	public enum string[] FIELDS = ["list", "action", "type"];
 
+	/**
+	 * Type of the list to update.
+	 */
 	public ubyte list;
 	public ubyte action;
 	public ubyte type;
@@ -269,9 +272,13 @@ class UpdateList : Buffer {
 
 }
 
+/**
+ * Notifies the node that the hub's reloadeable settings have been reloaded and that
+ * the node should also reload its reloadeable resources.
+ */
 class Reload : Buffer {
 
-	public enum ubyte ID = 10;
+	public enum ubyte ID = 11;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
