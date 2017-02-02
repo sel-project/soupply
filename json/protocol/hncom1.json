@@ -601,7 +601,7 @@
 						"type": "varuint"
 					},
 					{
-						"name": "node_id",
+						"name": "node",
 						"type": "varuint"
 					}
 				]

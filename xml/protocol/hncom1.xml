@@ -170,35 +170,35 @@
 				<field name="language" type="string" />
 				<field name="accepted-languages" type="string[]" />
 				<field name="social-json" type="string">
-					```
+					```json
 					{
-						"website": "example.com",
-						"facebook": "example-official",
-						"twitter": "example_tweets",
-						"youtube": "examplechannel",
-						"instagram": "example",
-						"google_plus": "example-plus"					
+					   "website": "example.com",
+					   "facebook": "example-official",
+					   "twitter": "example_tweets",
+					   "youtube": "examplechannel",
+					   "instagram": "example",
+					   "google_plus": "example-plus"					
 					}
 					```
 				</field>
 				<field name="additional-json" type="string">
-					```
+					```json
 					{
-						"software": {
-							"name": "SEL",
-							"version": "1.0.4",
-							"stable": false
-						},
-						"minecraft": {
-							"edu": false,
-							"realm": true
-						},
-						"system": {
-							"os": "Ubuntu 16.04",
-							"cpu": 4,
-							"cpu_speed": 3.2
-							"ram": 4294967296
-						}
+					   "software": {
+					      "name": "SEL",
+					      "version": "1.0.4",
+					      "stable": false
+					   },
+					   "minecraft": {
+					      "edu": false,
+					      "realm": true
+					   },
+					   "system": {
+					      "os": "Ubuntu 16.04",
+					      "cpu": 4,
+					      "cpu_speed": 3.2
+					      "ram": 4294967296
+					   }
 					}
 					```
 				</field>
@@ -376,7 +376,7 @@
 			<packet name="transfer" id="15" clientbound="false" serverbound="true">
 				Transfers a player to another node. When a player is transferred from the node the hub will not send the [Remove](#login.remove) packet and there's no way, for the node, to know whether the player was disconnected or successfully transferred.
 				<field name="hub-id" type="hub-id" />
-				<field name="node-id" type="hub-id" />
+				<field name="node" type="hub-id" />
 			</packet>
 
 			<packet name="update-language" id="16" clientbound="false" serverbound="true">

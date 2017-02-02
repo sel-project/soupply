@@ -335,30 +335,30 @@ class Transfer : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["hubId", "nodeId"];
+	public enum string[] FIELDS = ["hubId", "node"];
 
 	public uint hubId;
-	public uint nodeId;
+	public uint node;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint hubId, uint nodeId=uint.init) {
+	public pure nothrow @safe @nogc this(uint hubId, uint node=uint.init) {
 		this.hubId = hubId;
-		this.nodeId = nodeId;
+		this.node = node;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(hubId));
-		writeBytes(varuint.encode(nodeId));
+		writeBytes(varuint.encode(node));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		hubId=varuint.decode(_buffer, &_index);
-		nodeId=varuint.decode(_buffer, &_index);
+		node=varuint.decode(_buffer, &_index);
 	}
 
 	public static pure nothrow @safe Transfer fromBuffer(bool readId=true)(ubyte[] buffer) {

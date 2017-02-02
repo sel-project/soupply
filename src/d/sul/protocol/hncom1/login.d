@@ -186,12 +186,12 @@ class HubInfo : Buffer {
 	/**
 	 * ---
 	 * {
-	 * "website": "example.com",
-	 * "facebook": "example-official",
-	 * "twitter": "example_tweets",
-	 * "youtube": "examplechannel",
-	 * "instagram": "example",
-	 * "google_plus": "example-plus"
+	 *    "website": "example.com",
+	 *    "facebook": "example-official",
+	 *    "twitter": "example_tweets",
+	 *    "youtube": "examplechannel",
+	 *    "instagram": "example",
+	 *    "google_plus": "example-plus"
 	 * }
 	 * ---
 	 */
@@ -200,21 +200,21 @@ class HubInfo : Buffer {
 	/**
 	 * ---
 	 * {
-	 * "software": {
-	 * "name": "SEL",
-	 * "version": "1.0.4",
-	 * "stable": false
-	 * },
-	 * "minecraft": {
-	 * "edu": false,
-	 * "realm": true
-	 * },
-	 * "system": {
-	 * "os": "Ubuntu 16.04",
-	 * "cpu": 4,
-	 * "cpu_speed": 3.2
-	 * "ram": 4294967296
-	 * }
+	 *    "software": {
+	 *       "name": "SEL",
+	 *       "version": "1.0.4",
+	 *       "stable": false
+	 *    },
+	 *    "minecraft": {
+	 *       "edu": false,
+	 *       "realm": true
+	 *    },
+	 *    "system": {
+	 *       "os": "Ubuntu 16.04",
+	 *       "cpu": 4,
+	 *       "cpu_speed": 3.2
+	 *       "ram": 4294967296
+	 *    }
 	 * }
 	 * ---
 	 */

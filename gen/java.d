@@ -603,10 +603,27 @@ public class MetadataException extends RuntimeException {
 			data ~= "\n}";
 			write("../src/java/sul/protocol/" ~ game ~ "/types/" ~ toPascalCase(type.name) ~ ".java", data, "protocol/" ~ game);
 		}
+		string sections = "package sul.protocol." ~ game ~ ";\n\n";
+		sections ~= "import java.util.Collections;\nimport java.util.Map;\nimport java.util.HashMap;\n\n";
+		sections ~= "import sul.utils.Packet;\n\n";
+		if(prs.data.description.length) {
+			sections ~= javadoc("", prs.data.description);
+		}
+		sections ~= "public final class Packets {\n\n";
+		sections ~= "\tprivate Packets() {}\n\n";
+		foreach(section ; prs.data.sections) {
+			if(section.description.length) {
+				sections ~= javadoc("\t", section.description);
+			}
+			sections ~= "\tpublic static final Map<Integer, Class<? extends Packet>> " ~ section.name.toUpper ~ ";\n\n";
+		}
+		sections ~= "\tstatic {\n\n";
 		foreach(section ; prs.data.sections) {
 			immutable sectionName = section.name.replace("_", "");
+			sections ~= "\t\tHashMap<Integer, Class<? extends Packet>> " ~ sectionName ~ " = new HashMap<Integer, Class<? extends Packet>>();\n";
 			mkdirRecurse("../src/java/sul/protocol/" ~ game ~ "/" ~ sectionName);
 			foreach(packet ; section.packets) {
+				sections ~= "\t\t" ~ sectionName ~ ".put(" ~ packet.id.to!string ~ ", sul.protocol." ~ game ~ "." ~ sectionName ~ "." ~ toPascalCase(packet.name) ~ ".class);\n";
 				string data = "package sul.protocol." ~ game ~ "." ~ sectionName ~ ";\n\n" ~ imports(packet.fields ~ (){ Field[] fields;foreach(v;packet.variants){fields~=v.fields;}return fields;}()) ~ "import sul.utils.*;\n\n";
 				if(packet.description.length) {
 					data ~= javadoc("", packet.description);
@@ -640,7 +657,10 @@ public class MetadataException extends RuntimeException {
 				data ~= "}";
 				write("../src/java/sul/protocol/" ~ game ~ "/" ~ sectionName ~ "/" ~ toPascalCase(packet.name) ~ ".java", data, "protocol/" ~ game);
 			}
+			sections ~= "\t\t" ~ section.name.toUpper ~ " = Collections.unmodifiableMap(" ~ sectionName ~ ");\n\n";
 		}
+		sections ~= "\t}\n\n}";
+		write("../src/java/sul/protocol/" ~ game ~ "/Packets.java", sections);
 
 		// metadata
 		auto m = game in metadatas;

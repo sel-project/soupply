@@ -23,18 +23,18 @@ public class Transfer extends Packet {
 	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
-	public int nodeId;
+	public int node;
 
 	public Transfer() {}
 
-	public Transfer(int hubId, int nodeId) {
+	public Transfer(int hubId, int node) {
 		this.hubId = hubId;
-		this.nodeId = nodeId;
+		this.node = node;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(hubId) + Buffer.varuintLength(nodeId) + 1;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(node) + 1;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class Transfer extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
-		this.writeVaruint(nodeId);
+		this.writeVaruint(node);
 		return this.getBuffer();
 	}
 
@@ -51,7 +51,7 @@ public class Transfer extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		hubId=this.readVaruint();
-		nodeId=this.readVaruint();
+		node=this.readVaruint();
 	}
 
 	public static Transfer fromBuffer(byte[] buffer) {
