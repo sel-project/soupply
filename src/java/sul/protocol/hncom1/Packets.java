@@ -14,7 +14,8 @@ import java.util.HashMap;
 import sul.utils.Packet;
 
 /**
- * Protocol used for the communication between an hub and multiple nodes.
+ * Protocol used for the communication between an hub and multiple nodes with support
+ * for Minecraft and Minecraft: Pocket Edition and different protocol versions.
  * 
  * <h2>Definitions</h2>
  * 

@@ -20,6 +20,7 @@ import std.datetime : Date;
 static import std.file;
 import std.xml;
 import std.path : dirSeparator;
+import std.regex : ctRegex, replaceAll;
 import std.string;
 import std.typecons : Tuple, tuple;
 
@@ -379,7 +380,7 @@ string desc(string space, string d) {
 				lines ~= line;
 				if(!line.startsWith("+ ") && !line.startsWith("-") && !line.startsWith("* ")) lines ~= "";
 			}
-			ret ~= lines.join("\n" ~ space);
+			ret ~= lines.join("\n" ~ space).replaceAll(ctRegex!"[\n]{2,}", "\n\n");
 		} else {
 			// in code
 			ret ~= s.replace("\n", "\n" ~ space);

@@ -7,7 +7,8 @@
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
 /**
- * Protocol used for the communication between an hub and multiple nodes.
+ * Protocol used for the communication between an hub and multiple nodes with support
+ * for Minecraft and Minecraft: Pocket Edition and different protocol versions.
  * 
  * <h2>Definitions</h2>
  * 
