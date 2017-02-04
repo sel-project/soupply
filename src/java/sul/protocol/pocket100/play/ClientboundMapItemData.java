@@ -34,14 +34,14 @@ public class ClientboundMapItemData extends Packet {
 	public Tuples.IntXZ[] icons;
 	public int direction;
 	public Tuples.IntXZ position;
-	public int colums;
+	public int columns;
 	public int rows;
 	public Tuples.IntXZ offset;
 	public byte[] data;
 
 	public ClientboundMapItemData() {}
 
-	public ClientboundMapItemData(long mapId, int unknown1, int unknown2, long unknown3, byte action, int unknown5, int unknown6, byte unknown7, byte unknown8, boolean showIcons, Tuples.IntXZ[] icons, int direction, Tuples.IntXZ position, int colums, int rows, Tuples.IntXZ offset, byte[] data) {
+	public ClientboundMapItemData(long mapId, int unknown1, int unknown2, long unknown3, byte action, int unknown5, int unknown6, byte unknown7, byte unknown8, boolean showIcons, Tuples.IntXZ[] icons, int direction, Tuples.IntXZ position, int columns, int rows, Tuples.IntXZ offset, byte[] data) {
 		this.mapId = mapId;
 		this.unknown1 = unknown1;
 		this.unknown2 = unknown2;
@@ -55,7 +55,7 @@ public class ClientboundMapItemData extends Packet {
 		this.icons = icons;
 		this.direction = direction;
 		this.position = position;
-		this.colums = colums;
+		this.columns = columns;
 		this.rows = rows;
 		this.offset = offset;
 		this.data = data;
@@ -63,7 +63,7 @@ public class ClientboundMapItemData extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varlongLength(mapId) + Buffer.varuintLength(unknown1) + Buffer.varuintLength(unknown2) + Buffer.varlongLength(unknown3) + Buffer.varuintLength(unknown5) + Buffer.varintLength(unknown6) + Buffer.varuintLength(icons.length) + Buffer.varintLength(direction) + Buffer.varintLength(position.x) + Buffer.varintLength(position.z) + Buffer.varintLength(colums) + Buffer.varintLength(rows) + Buffer.varintLength(offset.x) + Buffer.varintLength(offset.z) + Buffer.varuintLength(data.length) + data.length + 5; for(Tuples.IntXZ awnvbnm:icons){ length+=Buffer.varintLength(awnvbnm.x)+Buffer.varintLength(awnvbnm.z); } return length;
+		int length=Buffer.varlongLength(mapId) + Buffer.varuintLength(unknown1) + Buffer.varuintLength(unknown2) + Buffer.varlongLength(unknown3) + Buffer.varuintLength(unknown5) + Buffer.varintLength(unknown6) + Buffer.varuintLength(icons.length) + Buffer.varintLength(direction) + Buffer.varintLength(position.x) + Buffer.varintLength(position.z) + Buffer.varintLength(columns) + Buffer.varintLength(rows) + Buffer.varintLength(offset.x) + Buffer.varintLength(offset.z) + Buffer.varuintLength(data.length) + data.length + 5; for(Tuples.IntXZ awnvbnm:icons){ length+=Buffer.varintLength(awnvbnm.x)+Buffer.varintLength(awnvbnm.z); } return length;
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class ClientboundMapItemData extends Packet {
 		this.writeVaruint((int)icons.length); for(Tuples.IntXZ awnvbnm:icons){ this.writeVarint(awnvbnm.x); this.writeVarint(awnvbnm.z); }
 		this.writeVarint(direction);
 		this.writeVarint(position.x); this.writeVarint(position.z);
-		this.writeVarint(colums);
+		this.writeVarint(columns);
 		this.writeVarint(rows);
 		this.writeVarint(offset.x); this.writeVarint(offset.z);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
@@ -107,7 +107,7 @@ public class ClientboundMapItemData extends Packet {
 		int bgljb25z=this.readVaruint(); icons=new Tuples.IntXZ[bgljb25z]; for(int awnvbnm=0;awnvbnm<icons.length;awnvbnm++){ icons[awnvbnm].x=this.readVarint(); icons[awnvbnm].z=this.readVarint(); }
 		direction=this.readVarint();
 		position.x=this.readVarint(); position.z=this.readVarint();
-		colums=this.readVarint();
+		columns=this.readVarint();
 		rows=this.readVarint();
 		offset.x=this.readVarint(); offset.z=this.readVarint();
 		int bgrhdge=this.readVaruint(); data=this.readBytes(bgrhdge);

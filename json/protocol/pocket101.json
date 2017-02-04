@@ -1910,7 +1910,7 @@
 						"type": "varint<xz>"
 					},
 					{
-						"name": "colums",
+						"name": "columns",
 						"type": "varint"
 					},
 					{

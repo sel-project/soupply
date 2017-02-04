@@ -3565,7 +3565,7 @@ class ClientboundMapItemData : Buffer {
 	public enum ubyte UPDATE = 4;
 	public enum ubyte FULL = 6;
 
-	public enum string[] FIELDS = ["mapId", "unknown1", "unknown2", "unknown3", "action", "unknown5", "unknown6", "unknown7", "unknown8", "showIcons", "icons", "direction", "position", "colums", "rows", "offset", "data"];
+	public enum string[] FIELDS = ["mapId", "unknown1", "unknown2", "unknown3", "action", "unknown5", "unknown6", "unknown7", "unknown8", "showIcons", "icons", "direction", "position", "columns", "rows", "offset", "data"];
 
 	public long mapId;
 	public uint unknown1;
@@ -3580,14 +3580,14 @@ class ClientboundMapItemData : Buffer {
 	public Tuple!(int, "x", int, "z")[] icons;
 	public int direction;
 	public Tuple!(int, "x", int, "z") position;
-	public int colums;
+	public int columns;
 	public int rows;
 	public Tuple!(int, "x", int, "z") offset;
 	public ubyte[] data;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long mapId, uint unknown1=uint.init, uint unknown2=uint.init, long unknown3=long.init, ubyte action=ubyte.init, uint unknown5=uint.init, int unknown6=int.init, byte unknown7=byte.init, byte unknown8=byte.init, bool showIcons=bool.init, Tuple!(int, "x", int, "z")[] icons=(Tuple!(int, "x", int, "z")[]).init, int direction=int.init, Tuple!(int, "x", int, "z") position=Tuple!(int, "x", int, "z").init, int colums=int.init, int rows=int.init, Tuple!(int, "x", int, "z") offset=Tuple!(int, "x", int, "z").init, ubyte[] data=(ubyte[]).init) {
+	public pure nothrow @safe @nogc this(long mapId, uint unknown1=uint.init, uint unknown2=uint.init, long unknown3=long.init, ubyte action=ubyte.init, uint unknown5=uint.init, int unknown6=int.init, byte unknown7=byte.init, byte unknown8=byte.init, bool showIcons=bool.init, Tuple!(int, "x", int, "z")[] icons=(Tuple!(int, "x", int, "z")[]).init, int direction=int.init, Tuple!(int, "x", int, "z") position=Tuple!(int, "x", int, "z").init, int columns=int.init, int rows=int.init, Tuple!(int, "x", int, "z") offset=Tuple!(int, "x", int, "z").init, ubyte[] data=(ubyte[]).init) {
 		this.mapId = mapId;
 		this.unknown1 = unknown1;
 		this.unknown2 = unknown2;
@@ -3601,7 +3601,7 @@ class ClientboundMapItemData : Buffer {
 		this.icons = icons;
 		this.direction = direction;
 		this.position = position;
-		this.colums = colums;
+		this.columns = columns;
 		this.rows = rows;
 		this.offset = offset;
 		this.data = data;
@@ -3623,7 +3623,7 @@ class ClientboundMapItemData : Buffer {
 		writeBytes(varuint.encode(cast(uint)icons.length)); foreach(awnvbnm;icons){ writeBytes(varint.encode(awnvbnm.x)); writeBytes(varint.encode(awnvbnm.z)); }
 		writeBytes(varint.encode(direction));
 		writeBytes(varint.encode(position.x)); writeBytes(varint.encode(position.z));
-		writeBytes(varint.encode(colums));
+		writeBytes(varint.encode(columns));
 		writeBytes(varint.encode(rows));
 		writeBytes(varint.encode(offset.x)); writeBytes(varint.encode(offset.z));
 		writeBytes(varuint.encode(cast(uint)data.length)); writeBytes(data);
@@ -3645,7 +3645,7 @@ class ClientboundMapItemData : Buffer {
 		icons.length=varuint.decode(_buffer, &_index); foreach(ref awnvbnm;icons){ awnvbnm.x=varint.decode(_buffer, &_index); awnvbnm.z=varint.decode(_buffer, &_index); }
 		direction=varint.decode(_buffer, &_index);
 		position.x=varint.decode(_buffer, &_index); position.z=varint.decode(_buffer, &_index);
-		colums=varint.decode(_buffer, &_index);
+		columns=varint.decode(_buffer, &_index);
 		rows=varint.decode(_buffer, &_index);
 		offset.x=varint.decode(_buffer, &_index); offset.z=varint.decode(_buffer, &_index);
 		data.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+data.length){ data=_buffer[_index.._index+data.length].dup; _index+=data.length; }

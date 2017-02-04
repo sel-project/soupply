@@ -787,7 +787,7 @@
 				<field name="icons" type="varint<xz>[]" />
 				<field name="direction" type="varint" />
 				<field name="position" type="varint<xz>" />
-				<field name="colums" type="varint" />
+				<field name="columns" type="varint" />
 				<field name="rows" type="varint" />
 				<field name="offset" type="varint<xz>" />
 				<field name="data" type="ubyte[]" />
