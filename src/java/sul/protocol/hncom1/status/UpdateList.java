@@ -6,7 +6,7 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
-package sul.protocol.hncom1.generic;
+package sul.protocol.hncom1.status;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -18,7 +18,7 @@ import sul.utils.*;
  */
 public class UpdateList extends Packet {
 
-	public static final byte ID = (byte)10;
+	public static final byte ID = (byte)12;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;

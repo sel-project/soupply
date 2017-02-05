@@ -292,8 +292,40 @@
 				]
 			},
 
-			"resources_usage": {
+			"message_serverbound": {
 				"id": 7,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "addressees",
+						"type": "varuint[]"
+					},
+					{
+						"name": "payload",
+						"type": "ubyte[]"
+					}
+				]
+			},
+
+			"message_clientbound": {
+				"id": 8,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "sender",
+						"type": "varuint"
+					},
+					{
+						"name": "payload",
+						"type": "ubyte[]"
+					}
+				]
+			},
+
+			"resources_usage": {
+				"id": 9,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -310,14 +342,10 @@
 						"type": "float"
 					}
 				]
-			}
-
-		},
-
-		"generic": {
+			},
 
 			"logs": {
-				"id": 8,
+				"id": 10,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -329,7 +357,7 @@
 			},
 
 			"remote_command": {
-				"id": 9,
+				"id": 11,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -354,7 +382,7 @@
 			},
 
 			"update_list": {
-				"id": 10,
+				"id": 12,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -422,7 +450,7 @@
 			},
 
 			"reload": {
-				"id": 11,
+				"id": 13,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": []
@@ -433,7 +461,7 @@
 		"player": {
 
 			"add": {
-				"id": 12,
+				"id": 14,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -545,7 +573,7 @@
 			},
 
 			"remove": {
-				"id": 13,
+				"id": 15,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -567,7 +595,7 @@
 			},
 
 			"kick": {
-				"id": 14,
+				"id": 16,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -592,7 +620,7 @@
 			},
 
 			"transfer": {
-				"id": 15,
+				"id": 17,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -608,7 +636,7 @@
 			},
 
 			"update_language": {
-				"id": 16,
+				"id": 18,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -624,7 +652,7 @@
 			},
 
 			"update_display_name": {
-				"id": 17,
+				"id": 19,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -640,7 +668,7 @@
 			},
 
 			"update_world": {
-				"id": 18,
+				"id": 20,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -660,7 +688,7 @@
 			},
 
 			"update_latency": {
-				"id": 19,
+				"id": 21,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -676,7 +704,7 @@
 			},
 
 			"update_packet_loss": {
-				"id": 20,
+				"id": 22,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -692,7 +720,7 @@
 			},
 
 			"game_packet": {
-				"id": 21,
+				"id": 23,
 				"clientbound": true,
 				"serverbound": true,
 				"fields": [
@@ -708,7 +736,7 @@
 			},
 
 			"ordered_game_packet": {
-				"id": 22,
+				"id": 24,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [

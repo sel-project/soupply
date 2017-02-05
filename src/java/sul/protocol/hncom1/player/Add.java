@@ -18,7 +18,7 @@ import sul.utils.*;
  */
 public class Add extends Packet {
 
-	public static final byte ID = (byte)12;
+	public static final byte ID = (byte)14;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

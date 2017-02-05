@@ -42,8 +42,6 @@ public final class Packets {
 
 	public static final Map<Integer, Class<? extends Packet>> STATUS;
 
-	public static final Map<Integer, Class<? extends Packet>> GENERIC;
-
 	public static final Map<Integer, Class<? extends Packet>> PLAYER;
 
 	static {
@@ -59,28 +57,27 @@ public final class Packets {
 		status.put(4, sul.protocol.hncom1.status.Players.class);
 		status.put(5, sul.protocol.hncom1.status.AddNode.class);
 		status.put(6, sul.protocol.hncom1.status.RemoveNode.class);
-		status.put(7, sul.protocol.hncom1.status.ResourcesUsage.class);
+		status.put(7, sul.protocol.hncom1.status.MessageServerbound.class);
+		status.put(8, sul.protocol.hncom1.status.MessageClientbound.class);
+		status.put(9, sul.protocol.hncom1.status.ResourcesUsage.class);
+		status.put(10, sul.protocol.hncom1.status.Logs.class);
+		status.put(11, sul.protocol.hncom1.status.RemoteCommand.class);
+		status.put(12, sul.protocol.hncom1.status.UpdateList.class);
+		status.put(13, sul.protocol.hncom1.status.Reload.class);
 		STATUS = Collections.unmodifiableMap(status);
 
-		HashMap<Integer, Class<? extends Packet>> generic = new HashMap<Integer, Class<? extends Packet>>();
-		generic.put(8, sul.protocol.hncom1.generic.Logs.class);
-		generic.put(9, sul.protocol.hncom1.generic.RemoteCommand.class);
-		generic.put(10, sul.protocol.hncom1.generic.UpdateList.class);
-		generic.put(11, sul.protocol.hncom1.generic.Reload.class);
-		GENERIC = Collections.unmodifiableMap(generic);
-
 		HashMap<Integer, Class<? extends Packet>> player = new HashMap<Integer, Class<? extends Packet>>();
-		player.put(12, sul.protocol.hncom1.player.Add.class);
-		player.put(13, sul.protocol.hncom1.player.Remove.class);
-		player.put(14, sul.protocol.hncom1.player.Kick.class);
-		player.put(15, sul.protocol.hncom1.player.Transfer.class);
-		player.put(16, sul.protocol.hncom1.player.UpdateLanguage.class);
-		player.put(17, sul.protocol.hncom1.player.UpdateDisplayName.class);
-		player.put(18, sul.protocol.hncom1.player.UpdateWorld.class);
-		player.put(19, sul.protocol.hncom1.player.UpdateLatency.class);
-		player.put(20, sul.protocol.hncom1.player.UpdatePacketLoss.class);
-		player.put(21, sul.protocol.hncom1.player.GamePacket.class);
-		player.put(22, sul.protocol.hncom1.player.OrderedGamePacket.class);
+		player.put(14, sul.protocol.hncom1.player.Add.class);
+		player.put(15, sul.protocol.hncom1.player.Remove.class);
+		player.put(16, sul.protocol.hncom1.player.Kick.class);
+		player.put(17, sul.protocol.hncom1.player.Transfer.class);
+		player.put(18, sul.protocol.hncom1.player.UpdateLanguage.class);
+		player.put(19, sul.protocol.hncom1.player.UpdateDisplayName.class);
+		player.put(20, sul.protocol.hncom1.player.UpdateWorld.class);
+		player.put(21, sul.protocol.hncom1.player.UpdateLatency.class);
+		player.put(22, sul.protocol.hncom1.player.UpdatePacketLoss.class);
+		player.put(23, sul.protocol.hncom1.player.GamePacket.class);
+		player.put(24, sul.protocol.hncom1.player.OrderedGamePacket.class);
 		PLAYER = Collections.unmodifiableMap(player);
 
 	}

@@ -15,7 +15,7 @@ import sul.utils.*;
  */
 public class Remove extends Packet {
 
-	public static final byte ID = (byte)13;
+	public static final byte ID = (byte)15;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

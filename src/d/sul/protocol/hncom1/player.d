@@ -27,7 +27,7 @@ alias Packets = TypeTuple!(Add, Remove, Kick, Transfer, UpdateLanguage, UpdateDi
  */
 class Add : Buffer {
 
-	public enum ubyte ID = 12;
+	public enum ubyte ID = 14;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -223,7 +223,7 @@ class Add : Buffer {
  */
 class Remove : Buffer {
 
-	public enum ubyte ID = 13;
+	public enum ubyte ID = 15;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -275,7 +275,7 @@ class Remove : Buffer {
  */
 class Kick : Buffer {
 
-	public enum ubyte ID = 14;
+	public enum ubyte ID = 16;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -330,7 +330,7 @@ class Kick : Buffer {
  */
 class Transfer : Buffer {
 
-	public enum ubyte ID = 15;
+	public enum ubyte ID = 17;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -375,7 +375,7 @@ class Transfer : Buffer {
  */
 class UpdateLanguage : Buffer {
 
-	public enum ubyte ID = 16;
+	public enum ubyte ID = 18;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -417,7 +417,7 @@ class UpdateLanguage : Buffer {
 
 class UpdateDisplayName : Buffer {
 
-	public enum ubyte ID = 17;
+	public enum ubyte ID = 19;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -459,7 +459,7 @@ class UpdateDisplayName : Buffer {
 
 class UpdateWorld : Buffer {
 
-	public enum ubyte ID = 18;
+	public enum ubyte ID = 20;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -505,7 +505,7 @@ class UpdateWorld : Buffer {
 
 class UpdateLatency : Buffer {
 
-	public enum ubyte ID = 19;
+	public enum ubyte ID = 21;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -547,7 +547,7 @@ class UpdateLatency : Buffer {
 
 class UpdatePacketLoss : Buffer {
 
-	public enum ubyte ID = 20;
+	public enum ubyte ID = 22;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -592,7 +592,7 @@ class UpdatePacketLoss : Buffer {
  */
 class GamePacket : Buffer {
 
-	public enum ubyte ID = 21;
+	public enum ubyte ID = 23;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
@@ -638,7 +638,7 @@ class GamePacket : Buffer {
  */
 class OrderedGamePacket : Buffer {
 
-	public enum ubyte ID = 22;
+	public enum ubyte ID = 24;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;

@@ -15,7 +15,7 @@ import sul.utils.*;
  */
 public class ResourcesUsage extends Packet {
 
-	public static final byte ID = (byte)7;
+	public static final byte ID = (byte)9;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;

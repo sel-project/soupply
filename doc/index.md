@@ -28,7 +28,7 @@ Protocol | Packets | Released | From
 
 Protocol | Packets | Released | From
 :---:|:---:|:---:|:---:
-[1](https://github.com/sel-project/sel-utils/tree/master/doc/hncom/1.md) | 23 | 2017/1/25 | 1.0.0
+[1](https://github.com/sel-project/sel-utils/tree/master/doc/hncom/1.md) | 25 | 2017/1/25 | 1.0.0
 
 ## External Console
 

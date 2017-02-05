@@ -6,7 +6,7 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
-package sul.protocol.hncom1.generic;
+package sul.protocol.hncom1.status;
 
 import java.nio.charset.StandardCharsets;
 
@@ -17,7 +17,7 @@ import sul.utils.*;
  */
 public class RemoteCommand extends Packet {
 
-	public static final byte ID = (byte)9;
+	public static final byte ID = (byte)11;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

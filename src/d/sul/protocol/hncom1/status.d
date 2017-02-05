@@ -20,7 +20,7 @@ import sul.utils.var;
 
 static import sul.protocol.hncom1.types;
 
-alias Packets = TypeTuple!(Players, AddNode, RemoveNode, ResourcesUsage);
+alias Packets = TypeTuple!(Players, AddNode, RemoveNode, MessageServerbound, MessageClientbound, ResourcesUsage, Logs, RemoteCommand, UpdateList, Reload);
 
 /**
  * Updates the number of players on the server.
@@ -155,12 +155,100 @@ class RemoveNode : Buffer {
 
 }
 
+class MessageServerbound : Buffer {
+
+	public enum ubyte ID = 7;
+
+	public enum bool CLIENTBOUND = false;
+	public enum bool SERVERBOUND = true;
+
+	public enum string[] FIELDS = ["addressees", "payload"];
+
+	/**
+	 * Addressees of the message. If the array is empty the message should be broadcasted
+	 * to every connected node.
+	 */
+	public uint[] addressees;
+	public ubyte[] payload;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint[] addressees, ubyte[] payload=(ubyte[]).init) {
+		this.addressees = addressees;
+		this.payload = payload;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(cast(uint)addressees.length)); foreach(ywrkcmvzc2vlcw;addressees){ writeBytes(varuint.encode(ywrkcmvzc2vlcw)); }
+		writeBytes(varuint.encode(cast(uint)payload.length)); writeBytes(payload);
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		addressees.length=varuint.decode(_buffer, &_index); foreach(ref ywrkcmvzc2vlcw;addressees){ ywrkcmvzc2vlcw=varuint.decode(_buffer, &_index); }
+		payload.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+payload.length){ payload=_buffer[_index.._index+payload.length].dup; _index+=payload.length; }
+	}
+
+	public static pure nothrow @safe MessageServerbound fromBuffer(bool readId=true)(ubyte[] buffer) {
+		MessageServerbound ret = new MessageServerbound();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
+class MessageClientbound : Buffer {
+
+	public enum ubyte ID = 8;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["sender", "payload"];
+
+	public uint sender;
+	public ubyte[] payload;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint sender, ubyte[] payload=(ubyte[]).init) {
+		this.sender = sender;
+		this.payload = payload;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(sender));
+		writeBytes(varuint.encode(cast(uint)payload.length)); writeBytes(payload);
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		sender=varuint.decode(_buffer, &_index);
+		payload.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+payload.length){ payload=_buffer[_index.._index+payload.length].dup; _index+=payload.length; }
+	}
+
+	public static pure nothrow @safe MessageClientbound fromBuffer(bool readId=true)(ubyte[] buffer) {
+		MessageClientbound ret = new MessageClientbound();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
 /**
  * Updates the usage of the resources in the node.
  */
 class ResourcesUsage : Buffer {
 
-	public enum ubyte ID = 7;
+	public enum ubyte ID = 9;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -197,6 +285,288 @@ class ResourcesUsage : Buffer {
 
 	public static pure nothrow @safe ResourcesUsage fromBuffer(bool readId=true)(ubyte[] buffer) {
 		ResourcesUsage ret = new ResourcesUsage();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
+/**
+ * Sends node logs to the hub.
+ */
+class Logs : Buffer {
+
+	public enum ubyte ID = 10;
+
+	public enum bool CLIENTBOUND = false;
+	public enum bool SERVERBOUND = true;
+
+	public enum string[] FIELDS = ["messages"];
+
+	public sul.protocol.hncom1.types.Log[] messages;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(sul.protocol.hncom1.types.Log[] messages) {
+		this.messages = messages;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(cast(uint)messages.length)); foreach(bwvzc2fnzxm;messages){ bwvzc2fnzxm.encode(bufferInstance); }
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		messages.length=varuint.decode(_buffer, &_index); foreach(ref bwvzc2fnzxm;messages){ bwvzc2fnzxm.decode(bufferInstance); }
+	}
+
+	public static pure nothrow @safe Logs fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Logs ret = new Logs();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
+/**
+ * Executes a command on the node.
+ */
+class RemoteCommand : Buffer {
+
+	public enum ubyte ID = 11;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	// origin
+	public enum ubyte HUB = 0;
+	public enum ubyte EXTERNAL_CONSOLE = 1;
+	public enum ubyte RCON = 2;
+
+	public enum string[] FIELDS = ["origin", "sender", "command"];
+
+	public ubyte origin;
+	public sul.protocol.hncom1.types.Address sender;
+	public string command;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte origin, sul.protocol.hncom1.types.Address sender=sul.protocol.hncom1.types.Address.init, string command=string.init) {
+		this.origin = origin;
+		this.sender = sender;
+		this.command = command;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUbyte(origin);
+		sender.encode(bufferInstance);
+		writeBytes(varuint.encode(cast(uint)command.length)); writeString(command);
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		origin=readBigEndianUbyte();
+		sender.decode(bufferInstance);
+		uint y29tbwfuza=varuint.decode(_buffer, &_index); command=readString(y29tbwfuza);
+	}
+
+	public static pure nothrow @safe RemoteCommand fromBuffer(bool readId=true)(ubyte[] buffer) {
+		RemoteCommand ret = new RemoteCommand();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
+/**
+ * Updates a list.
+ */
+class UpdateList : Buffer {
+
+	public enum ubyte ID = 12;
+
+	public enum bool CLIENTBOUND = false;
+	public enum bool SERVERBOUND = true;
+
+	// list
+	public enum ubyte WHITELIST = 0;
+	public enum ubyte BLACKLIST = 1;
+
+	// action
+	public enum ubyte ADD = 0;
+	public enum ubyte REMOVE = 1;
+
+	public enum string[] FIELDS = ["list", "action", "type"];
+
+	/**
+	 * Type of the list to update.
+	 */
+	public ubyte list;
+	public ubyte action;
+	public ubyte type;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(ubyte list, ubyte action=ubyte.init, ubyte type=ubyte.init) {
+		this.list = list;
+		this.action = action;
+		this.type = type;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUbyte(list);
+		writeBigEndianUbyte(action);
+		writeBigEndianUbyte(type);
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		list=readBigEndianUbyte();
+		action=readBigEndianUbyte();
+		type=readBigEndianUbyte();
+	}
+
+	public static pure nothrow @safe UpdateList fromBuffer(bool readId=true)(ubyte[] buffer) {
+		UpdateList ret = new UpdateList();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+	alias _encode = encode;
+
+	enum string variantField = "type";
+
+	alias Variants = TypeTuple!(ByHubId, ByName, ByUuid);
+
+	public class ByHubId {
+
+		public enum typeof(type) TYPE = 0;
+
+		public enum string[] FIELDS = ["hubId"];
+
+		public uint hubId;
+
+		public pure nothrow @safe @nogc this() {}
+
+		public pure nothrow @safe @nogc this(uint hubId) {
+			this.hubId = hubId;
+		}
+
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			type = 0;
+			_encode!writeId();
+			writeBytes(varuint.encode(hubId));
+			return _buffer;
+		}
+
+		public pure nothrow @safe void decode() {
+			hubId=varuint.decode(_buffer, &_index);
+		}
+
+	}
+
+	public class ByName {
+
+		public enum typeof(type) TYPE = 1;
+
+		public enum string[] FIELDS = ["username"];
+
+		public string username;
+
+		public pure nothrow @safe @nogc this() {}
+
+		public pure nothrow @safe @nogc this(string username) {
+			this.username = username;
+		}
+
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			type = 1;
+			_encode!writeId();
+			writeBytes(varuint.encode(cast(uint)username.length)); writeString(username);
+			return _buffer;
+		}
+
+		public pure nothrow @safe void decode() {
+			uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
+		}
+
+	}
+
+	public class ByUuid {
+
+		public enum typeof(type) TYPE = 2;
+
+		// game
+		public enum ubyte POCKET = 1;
+		public enum ubyte MINECRAFT = 2;
+
+		public enum string[] FIELDS = ["game", "uuid"];
+
+		public ubyte game;
+		public UUID uuid;
+
+		public pure nothrow @safe @nogc this() {}
+
+		public pure nothrow @safe @nogc this(ubyte game, UUID uuid=UUID.init) {
+			this.game = game;
+			this.uuid = uuid;
+		}
+
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			type = 2;
+			_encode!writeId();
+			writeBigEndianUbyte(game);
+			writeBytes(uuid.data);
+			return _buffer;
+		}
+
+		public pure nothrow @safe void decode() {
+			game=readBigEndianUbyte();
+			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
+		}
+
+	}
+
+}
+
+/**
+ * Notifies the node that the hub's reloadeable settings have been reloaded and that
+ * the node should also reload its reloadeable resources.
+ */
+class Reload : Buffer {
+
+	public enum ubyte ID = 13;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = [];
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+	}
+
+	public static pure nothrow @safe Reload fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Reload ret = new Reload();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;

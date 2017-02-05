@@ -30,5 +30,4 @@ public import sul.protocol.hncom1.types;
 
 public import sul.protocol.hncom1.login;
 public import sul.protocol.hncom1.status;
-public import sul.protocol.hncom1.generic;
 public import sul.protocol.hncom1.player;

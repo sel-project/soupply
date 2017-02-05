@@ -235,23 +235,31 @@
 				<field name="hub-id" type="hub-id" />
 			</packet>
 
-			<packet name="resources-usage" id="7" clientbound="false" serverbound="true">
+			<packet name="message-serverbound" id="7" clientbound="false" serverbound="true">
+				<field name="addressees" type="hub-id[]">
+					Addressees of the message. If the array is empty the message should be broadcasted to every connected node.
+				</field>
+				<field name="payload" type="ubyte[]" />
+			</packet>
+
+			<packet name="message-clientbound" id="8" clientbound="true" serverbound="false">
+				<field name="sender" type="hub-id" />
+				<field name="payload" type="ubyte[]" />
+			</packet>
+
+			<packet name="resources-usage" id="9" clientbound="false" serverbound="true">
 				Updates the usage of the resources in the node.
 				<field name="tps" type="float" />
 				<field name="ram" type="varulong" />
 				<field name="cpu" type="float" />
 			</packet>
 
-		</section>
-
-		<section name="generic">
-
-			<packet name="logs" id="8" clientbound="false" serverbound="true">
+			<packet name="logs" id="10" clientbound="false" serverbound="true">
 				Sends node logs to the hub.
 				<field name="messages" type="log[]" />
 			</packet>
 
-			<packet name="remote-command" id="9" clientbound="true" serverbound="false">
+			<packet name="remote-command" id="11" clientbound="true" serverbound="false">
 				Executes a command on the node.
 				<field name="origin" type="ubyte">
 					<constant name="hub" value="0" />
@@ -262,7 +270,7 @@
 				<field name="command" type="string" />
 			</packet>
 
-			<packet name="update-list" id="10" clientbound="false" serverbound="true">
+			<packet name="update-list" id="12" clientbound="false" serverbound="true">
 				Updates a list.
 				<field name="list" type="ubyte">
 					Type of the list to update.
@@ -291,7 +299,7 @@
 				</variants>
 			</packet>
 
-			<packet name="reload" id="11" clientbound="true" serverbound="false">
+			<packet name="reload" id="13" clientbound="true" serverbound="false">
 				Notifies the node that the hub's reloadeable settings have been reloaded and that the node should also reload its reloadeable resources.
 			</packet>
 
@@ -299,7 +307,7 @@
 
 		<section name="player">
 
-			<packet name="add" id="12" clientbound="true" serverbound="false">
+			<packet name="add" id="14" clientbound="true" serverbound="false">
 				Adds a player to the node.
 				<field name="hub-id" type="hub-id">
 					A unique identifier given by the hub that is never changed while the player is connected.
@@ -354,7 +362,7 @@
 				</variants>
 			</packet>
 
-			<packet name="remove" id="13" clientbound="true" serverbound="false">
+			<packet name="remove" id="15" clientbound="true" serverbound="false">
 				Removes a player from the node.
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="ubyte">
@@ -365,7 +373,7 @@
 				</field>
 			</packet>
 
-			<packet name="kick" id="14" clientbound="false" serverbound="true">
+			<packet name="kick" id="16" clientbound="false" serverbound="true">
 				Kicks a player from the node and the whole server. When a player is disconnected from the node using this packet the hub will not send the [Remove](#player.remove) packet.
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="string" />
@@ -373,46 +381,46 @@
 				<field name="parameters" type="string[]" when="translation==true" />
 			</packet>
 
-			<packet name="transfer" id="15" clientbound="false" serverbound="true">
+			<packet name="transfer" id="17" clientbound="false" serverbound="true">
 				Transfers a player to another node. When a player is transferred from the node the hub will not send the [Remove](#login.remove) packet and there's no way, for the node, to know whether the player was disconnected or successfully transferred.
 				<field name="hub-id" type="hub-id" />
 				<field name="node" type="hub-id" />
 			</packet>
 
-			<packet name="update-language" id="16" clientbound="false" serverbound="true">
+			<packet name="update-language" id="18" clientbound="false" serverbound="true">
 				Updates the player language after the client has changed it.
 				<field name="hub-id" type="hub-id" />
 				<field name="language" type="string" />
 			</packet>
 
-			<packet name="update-display-name" id="17" clientbound="false" serverbound="true">
+			<packet name="update-display-name" id="19" clientbound="false" serverbound="true">
 				<field name="hub-id" type="hub-id" />
 				<field name="display-name" type="string" />
 			</packet>
 
-			<packet name="update-world" id="18" clientbound="false" serverbound="true">
+			<packet name="update-world" id="20" clientbound="false" serverbound="true">
 				<field name="hub-id" type="hub-id" />
 				<field name="world" type="string" />
 				<field name="dimension" type="byte" />
 			</packet>
 
-			<packet name="update-latency" id="19" clientbound="true" serverbound="false">
+			<packet name="update-latency" id="21" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 				<field name="latency" type="varuint" />
 			</packet>
 
-			<packet name="update-packet-loss" id="20" clientbound="true" serverbound="false">
+			<packet name="update-packet-loss" id="22" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 				<field name="packet-loss" type="float" />
 			</packet>
 
-			<packet name="game-packet" id="21" clientbound="true" serverbound="true">
+			<packet name="game-packet" id="23" clientbound="true" serverbound="true">
 				Sends data to client or handles data received from the client.
 				<field name="hub-id" type="hub-id" />
 				<field name="packet" type="bytes" />
 			</packet>
 
-			<packet name="ordered-game-packet" id="22" clientbound="false" serverbound="true">
+			<packet name="ordered-game-packet" id="24" clientbound="false" serverbound="true">
 				Sends data to the client but order it because it could be sent by the node unordered, due to compressed packet sent delayed.
 				<field name="hub-id" type="hub-id" />
 				<field name="order" type="varuint" />

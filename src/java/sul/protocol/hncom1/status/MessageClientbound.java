@@ -6,38 +6,38 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
-package sul.protocol.hncom1.player;
+package sul.protocol.hncom1.status;
 
 import sul.utils.*;
 
-public class UpdatePacketLoss extends Packet {
+public class MessageClientbound extends Packet {
 
-	public static final byte ID = (byte)22;
+	public static final byte ID = (byte)8;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
-	public int hubId;
-	public float packetLoss;
+	public int sender;
+	public byte[] payload;
 
-	public UpdatePacketLoss() {}
+	public MessageClientbound() {}
 
-	public UpdatePacketLoss(int hubId, float packetLoss) {
-		this.hubId = hubId;
-		this.packetLoss = packetLoss;
+	public MessageClientbound(int sender, byte[] payload) {
+		this.sender = sender;
+		this.payload = payload;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(hubId) + 5;
+		return Buffer.varuintLength(sender) + Buffer.varuintLength(payload.length) + payload.length + 1;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeVaruint(hubId);
-		this.writeBigEndianFloat(packetLoss);
+		this.writeVaruint(sender);
+		this.writeVaruint((int)payload.length); this.writeBytes(payload);
 		return this.getBuffer();
 	}
 
@@ -45,12 +45,12 @@ public class UpdatePacketLoss extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		hubId=this.readVaruint();
-		packetLoss=readBigEndianFloat();
+		sender=this.readVaruint();
+		int bhbhewxvywq=this.readVaruint(); payload=this.readBytes(bhbhewxvywq);
 	}
 
-	public static UpdatePacketLoss fromBuffer(byte[] buffer) {
-		UpdatePacketLoss ret = new UpdatePacketLoss();
+	public static MessageClientbound fromBuffer(byte[] buffer) {
+		MessageClientbound ret = new MessageClientbound();
 		ret.decode(buffer);
 		return ret;
 	}

@@ -6,7 +6,7 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
-package sul.protocol.hncom1.generic;
+package sul.protocol.hncom1.status;
 
 import sul.utils.*;
 
@@ -16,7 +16,7 @@ import sul.utils.*;
  */
 public class Reload extends Packet {
 
-	public static final byte ID = (byte)11;
+	public static final byte ID = (byte)13;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
