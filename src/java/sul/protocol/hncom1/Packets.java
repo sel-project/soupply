@@ -54,11 +54,11 @@ public final class Packets {
 		LOGIN = Collections.unmodifiableMap(login);
 
 		HashMap<Integer, Class<? extends Packet>> status = new HashMap<Integer, Class<? extends Packet>>();
-		status.put(4, sul.protocol.hncom1.status.Players.class);
-		status.put(5, sul.protocol.hncom1.status.AddNode.class);
-		status.put(6, sul.protocol.hncom1.status.RemoveNode.class);
-		status.put(7, sul.protocol.hncom1.status.MessageServerbound.class);
-		status.put(8, sul.protocol.hncom1.status.MessageClientbound.class);
+		status.put(4, sul.protocol.hncom1.status.AddNode.class);
+		status.put(5, sul.protocol.hncom1.status.RemoveNode.class);
+		status.put(6, sul.protocol.hncom1.status.MessageServerbound.class);
+		status.put(7, sul.protocol.hncom1.status.MessageClientbound.class);
+		status.put(8, sul.protocol.hncom1.status.Players.class);
 		status.put(9, sul.protocol.hncom1.status.ResourcesUsage.class);
 		status.put(10, sul.protocol.hncom1.status.Logs.class);
 		status.put(11, sul.protocol.hncom1.status.RemoteCommand.class);

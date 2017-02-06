@@ -31,18 +31,20 @@ public class Log extends Packet {
 	 * Logged message. It may contain Minecraft formatting codes.
 	 */
 	public String message;
+	public int commandId;
 
 	public Log() {}
 
-	public Log(long timestamp, String logger, String message) {
+	public Log(long timestamp, String logger, String message, int commandId) {
 		this.timestamp = timestamp;
 		this.logger = logger;
 		this.message = message;
+		this.commandId = commandId;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(logger.getBytes(StandardCharsets.UTF_8).length) + logger.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + 8;
+		return Buffer.varuintLength(logger.getBytes(StandardCharsets.UTF_8).length) + logger.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + Buffer.varintLength(commandId) + 8;
 	}
 
 	@Override
@@ -51,6 +53,7 @@ public class Log extends Packet {
 		this.writeBigEndianLong(timestamp);
 		byte[] bg9nz2vy=logger.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bg9nz2vy.length); this.writeBytes(bg9nz2vy);
 		byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
+		this.writeVarint(commandId);
 		return this.getBuffer();
 	}
 
@@ -60,6 +63,7 @@ public class Log extends Packet {
 		timestamp=readBigEndianLong();
 		int bgvubg9nz2vy=this.readVaruint(); logger=new String(this.readBytes(bgvubg9nz2vy), StandardCharsets.UTF_8);
 		int bgvubwvzc2fnzq=this.readVaruint(); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8);
+		commandId=this.readVarint();
 	}
 
 

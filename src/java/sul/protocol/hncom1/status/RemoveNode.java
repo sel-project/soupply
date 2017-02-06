@@ -12,7 +12,7 @@ import sul.utils.*;
 
 public class RemoveNode extends Packet {
 
-	public static final byte ID = (byte)6;
+	public static final byte ID = (byte)5;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

@@ -91,6 +91,10 @@
 				{
 					"name": "message",
 					"type": "string"
+				},
+				{
+					"name": "command_id",
+					"type": "varint"
 				}
 			]
 
@@ -240,24 +244,8 @@
 
 		"status": {
 
-			"players": {
-				"id": 4,
-				"clientbound": true,
-				"serverbound": false,
-				"fields": [
-					{
-						"name": "online",
-						"type": "varuint"
-					},
-					{
-						"name": "max",
-						"type": "varuint"
-					}
-				]
-			},
-
 			"add_node": {
-				"id": 5,
+				"id": 4,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -281,7 +269,7 @@
 			},
 
 			"remove_node": {
-				"id": 6,
+				"id": 5,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -293,7 +281,7 @@
 			},
 
 			"message_serverbound": {
-				"id": 7,
+				"id": 6,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -309,7 +297,7 @@
 			},
 
 			"message_clientbound": {
-				"id": 8,
+				"id": 7,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -320,6 +308,22 @@
 					{
 						"name": "payload",
 						"type": "ubyte[]"
+					}
+				]
+			},
+
+			"players": {
+				"id": 8,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "online",
+						"type": "varuint"
+					},
+					{
+						"name": "max",
+						"type": "varuint"
 					}
 				]
 			},
@@ -377,6 +381,10 @@
 					{
 						"name": "command",
 						"type": "string"
+					},
+					{
+						"name": "command_id",
+						"type": "varint"
 					}
 				]
 			},

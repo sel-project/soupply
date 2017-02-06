@@ -206,7 +206,7 @@ struct Skin {
  */
 struct Log {
 
-	public enum string[] FIELDS = ["timestamp", "logger", "message"];
+	public enum string[] FIELDS = ["timestamp", "logger", "message", "commandId"];
 
 	/**
 	 * Unix time (in milliseconds) that indicates the exact creation time of the log.
@@ -222,12 +222,14 @@ struct Log {
 	 * Logged message. It may contain Minecraft formatting codes.
 	 */
 	public string message;
+	public int commandId;
 
 	public pure nothrow @safe void encode(Buffer buffer) {
 		with(buffer) {
 			writeBigEndianUlong(timestamp);
 			writeBytes(varuint.encode(cast(uint)logger.length)); writeString(logger);
 			writeBytes(varuint.encode(cast(uint)message.length)); writeString(message);
+			writeBytes(varint.encode(commandId));
 		}
 	}
 
@@ -236,6 +238,7 @@ struct Log {
 			timestamp=readBigEndianUlong();
 			uint bg9nz2vy=varuint.decode(_buffer, &_index); logger=readString(bg9nz2vy);
 			uint bwvzc2fnzq=varuint.decode(_buffer, &_index); message=readString(bwvzc2fnzq);
+			commandId=varint.decode(_buffer, &_index);
 		}
 	}
 

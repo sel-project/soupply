@@ -12,7 +12,7 @@ import sul.utils.*;
 
 /**
  * Notifies the node that the hub's reloadeable settings have been reloaded and that
- * the node should also reload its reloadeable resources.
+ * the node should also reload its resources (for example plugin's settings).
  */
 public class Reload extends Packet {
 

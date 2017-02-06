@@ -20,56 +20,11 @@ import sul.utils.var;
 
 static import sul.protocol.hncom1.types;
 
-alias Packets = TypeTuple!(Players, AddNode, RemoveNode, MessageServerbound, MessageClientbound, ResourcesUsage, Logs, RemoteCommand, UpdateList, Reload);
-
-/**
- * Updates the number of players on the server.
- */
-class Players : Buffer {
-
-	public enum ubyte ID = 4;
-
-	public enum bool CLIENTBOUND = true;
-	public enum bool SERVERBOUND = false;
-
-	public enum string[] FIELDS = ["online", "max"];
-
-	public uint online;
-	public uint max;
-
-	public pure nothrow @safe @nogc this() {}
-
-	public pure nothrow @safe @nogc this(uint online, uint max=uint.init) {
-		this.online = online;
-		this.max = max;
-	}
-
-	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
-		_buffer.length = 0;
-		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varuint.encode(online));
-		writeBytes(varuint.encode(max));
-		return _buffer;
-	}
-
-	public pure nothrow @safe void decode(bool readId=true)() {
-		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		online=varuint.decode(_buffer, &_index);
-		max=varuint.decode(_buffer, &_index);
-	}
-
-	public static pure nothrow @safe Players fromBuffer(bool readId=true)(ubyte[] buffer) {
-		Players ret = new Players();
-		ret._buffer = buffer;
-		ret.decode!readId();
-		return ret;
-	}
-
-}
+alias Packets = TypeTuple!(AddNode, RemoveNode, MessageServerbound, MessageClientbound, Players, ResourcesUsage, Logs, RemoteCommand, UpdateList, Reload);
 
 class AddNode : Buffer {
 
-	public enum ubyte ID = 5;
+	public enum ubyte ID = 4;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -119,7 +74,7 @@ class AddNode : Buffer {
 
 class RemoveNode : Buffer {
 
-	public enum ubyte ID = 6;
+	public enum ubyte ID = 5;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -157,7 +112,7 @@ class RemoveNode : Buffer {
 
 class MessageServerbound : Buffer {
 
-	public enum ubyte ID = 7;
+	public enum ubyte ID = 6;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -203,7 +158,7 @@ class MessageServerbound : Buffer {
 
 class MessageClientbound : Buffer {
 
-	public enum ubyte ID = 8;
+	public enum ubyte ID = 7;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -236,6 +191,51 @@ class MessageClientbound : Buffer {
 
 	public static pure nothrow @safe MessageClientbound fromBuffer(bool readId=true)(ubyte[] buffer) {
 		MessageClientbound ret = new MessageClientbound();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+}
+
+/**
+ * Updates the number of players on the server.
+ */
+class Players : Buffer {
+
+	public enum ubyte ID = 8;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["online", "max"];
+
+	public uint online;
+	public uint max;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint online, uint max=uint.init) {
+		this.online = online;
+		this.max = max;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(online));
+		writeBytes(varuint.encode(max));
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		online=varuint.decode(_buffer, &_index);
+		max=varuint.decode(_buffer, &_index);
+	}
+
+	public static pure nothrow @safe Players fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Players ret = new Players();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
@@ -348,18 +348,20 @@ class RemoteCommand : Buffer {
 	public enum ubyte EXTERNAL_CONSOLE = 1;
 	public enum ubyte RCON = 2;
 
-	public enum string[] FIELDS = ["origin", "sender", "command"];
+	public enum string[] FIELDS = ["origin", "sender", "command", "commandId"];
 
 	public ubyte origin;
 	public sul.protocol.hncom1.types.Address sender;
 	public string command;
+	public int commandId;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(ubyte origin, sul.protocol.hncom1.types.Address sender=sul.protocol.hncom1.types.Address.init, string command=string.init) {
+	public pure nothrow @safe @nogc this(ubyte origin, sul.protocol.hncom1.types.Address sender=sul.protocol.hncom1.types.Address.init, string command=string.init, int commandId=int.init) {
 		this.origin = origin;
 		this.sender = sender;
 		this.command = command;
+		this.commandId = commandId;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
@@ -368,6 +370,7 @@ class RemoteCommand : Buffer {
 		writeBigEndianUbyte(origin);
 		sender.encode(bufferInstance);
 		writeBytes(varuint.encode(cast(uint)command.length)); writeString(command);
+		writeBytes(varint.encode(commandId));
 		return _buffer;
 	}
 
@@ -376,6 +379,7 @@ class RemoteCommand : Buffer {
 		origin=readBigEndianUbyte();
 		sender.decode(bufferInstance);
 		uint y29tbwfuza=varuint.decode(_buffer, &_index); command=readString(y29tbwfuza);
+		commandId=varint.decode(_buffer, &_index);
 	}
 
 	public static pure nothrow @safe RemoteCommand fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -544,7 +548,7 @@ class UpdateList : Buffer {
 
 /**
  * Notifies the node that the hub's reloadeable settings have been reloaded and that
- * the node should also reload its reloadeable resources.
+ * the node should also reload its resources (for example plugin's settings).
  */
 class Reload : Buffer {
 

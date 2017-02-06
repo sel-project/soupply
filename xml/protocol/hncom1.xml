@@ -96,6 +96,9 @@
 			<field name="message" type="string">
 				Logged message. It may contain Minecraft formatting codes.
 			</field>
+			<field name="command-id" type="varint">
+
+			</field>
 		</type>
 
 	</encoding>
@@ -218,33 +221,33 @@
 
 		<section name="status">
 
-			<packet name="players" id="4" clientbound="true" serverbound="false">
-				Updates the number of players on the server.
-				<field name="online" type="varuint" />
-				<field name="max" type="varuint" />
-			</packet>
-
-			<packet name="add-node" id="5" clientbound="true" serverbound="false">
+			<packet name="add-node" id="4" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 				<field name="name" type="string" />
 				<field name="main" type="bool" />
 				<field name="accepted-games" type="game[]" />
 			</packet>
 
-			<packet name="remove-node" id="6" clientbound="true" serverbound="false">
+			<packet name="remove-node" id="5" clientbound="true" serverbound="false">
 				<field name="hub-id" type="hub-id" />
 			</packet>
 
-			<packet name="message-serverbound" id="7" clientbound="false" serverbound="true">
+			<packet name="message-serverbound" id="6" clientbound="false" serverbound="true">
 				<field name="addressees" type="hub-id[]">
 					Addressees of the message. If the array is empty the message should be broadcasted to every connected node.
 				</field>
 				<field name="payload" type="ubyte[]" />
 			</packet>
 
-			<packet name="message-clientbound" id="8" clientbound="true" serverbound="false">
+			<packet name="message-clientbound" id="7" clientbound="true" serverbound="false">
 				<field name="sender" type="hub-id" />
 				<field name="payload" type="ubyte[]" />
+			</packet>
+
+			<packet name="players" id="8" clientbound="true" serverbound="false">
+				Updates the number of players on the server.
+				<field name="online" type="varuint" />
+				<field name="max" type="varuint" />
 			</packet>
 
 			<packet name="resources-usage" id="9" clientbound="false" serverbound="true">
@@ -268,6 +271,7 @@
 				</field>
 				<field name="sender" type="address" />
 				<field name="command" type="string" />
+				<field name="command-id" type="varint" />
 			</packet>
 
 			<packet name="update-list" id="12" clientbound="false" serverbound="true">
@@ -300,7 +304,7 @@
 			</packet>
 
 			<packet name="reload" id="13" clientbound="true" serverbound="false">
-				Notifies the node that the hub's reloadeable settings have been reloaded and that the node should also reload its reloadeable resources.
+				Notifies the node that the hub's reloadeable settings have been reloaded and that the node should also reload its resources (for example plugin's settings).
 			</packet>
 
 		</section>

@@ -30,18 +30,20 @@ public class RemoteCommand extends Packet {
 	public byte origin;
 	public sul.protocol.hncom1.types.Address sender;
 	public String command;
+	public int commandId;
 
 	public RemoteCommand() {}
 
-	public RemoteCommand(byte origin, sul.protocol.hncom1.types.Address sender, String command) {
+	public RemoteCommand(byte origin, sul.protocol.hncom1.types.Address sender, String command, int commandId) {
 		this.origin = origin;
 		this.sender = sender;
 		this.command = command;
+		this.commandId = commandId;
 	}
 
 	@Override
 	public int length() {
-		return sender.length() + Buffer.varuintLength(command.getBytes(StandardCharsets.UTF_8).length) + command.getBytes(StandardCharsets.UTF_8).length + 2;
+		return sender.length() + Buffer.varuintLength(command.getBytes(StandardCharsets.UTF_8).length) + command.getBytes(StandardCharsets.UTF_8).length + Buffer.varintLength(commandId) + 2;
 	}
 
 	@Override
@@ -51,6 +53,7 @@ public class RemoteCommand extends Packet {
 		this.writeBigEndianByte(origin);
 		this.writeBytes(sender.encode());
 		byte[] y29tbwfuza=command.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y29tbwfuza.length); this.writeBytes(y29tbwfuza);
+		this.writeVarint(commandId);
 		return this.getBuffer();
 	}
 
@@ -61,6 +64,7 @@ public class RemoteCommand extends Packet {
 		origin=readBigEndianByte();
 		sender=new sul.protocol.hncom1.types.Address(); sender._index=this._index; sender.decode(this._buffer); this._index=sender._index;
 		int bgvuy29tbwfuza=this.readVaruint(); command=new String(this.readBytes(bgvuy29tbwfuza), StandardCharsets.UTF_8);
+		commandId=this.readVarint();
 	}
 
 	public static RemoteCommand fromBuffer(byte[] buffer) {
