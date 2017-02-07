@@ -58,4 +58,9 @@ public class DropItem extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "DropItem(action: " + this.action + ", item: " + this.item.toString() + ")";
+	}
+
 }

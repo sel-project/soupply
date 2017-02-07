@@ -8,10 +8,12 @@
  */
 package sul.protocol.hncom1.types;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 /**
- * Internet protocol address. Could be either version 4 and 6.
+ * Internet protocol address. Could be either version 4 or 6.
  */
 public class Address extends Packet {
 
@@ -51,6 +53,11 @@ public class Address extends Packet {
 		this._buffer = buffer;
 		int bgj5dgvz=this.readVaruint(); bytes=this.readBytes(bgj5dgvz);
 		port=readBigEndianShort();
+	}
+
+	@Override
+	public String toString() {
+		return "Address(bytes: " + Arrays.toString(this.bytes) + ", port: " + this.port + ")";
 	}
 
 

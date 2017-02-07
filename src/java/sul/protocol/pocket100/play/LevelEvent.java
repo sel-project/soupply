@@ -109,4 +109,9 @@ public class LevelEvent extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "LevelEvent(eventId: " + this.eventId + ", position: " + this.position.toString() + ", data: " + this.data + ")";
+	}
+
 }

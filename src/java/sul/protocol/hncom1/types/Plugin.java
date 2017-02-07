@@ -55,5 +55,10 @@ public class Plugin extends Packet {
 		int bgvudmvyc2lvbg=this.readVaruint(); version=new String(this.readBytes(bgvudmvyc2lvbg), StandardCharsets.UTF_8);
 	}
 
+	@Override
+	public String toString() {
+		return "Plugin(name: " + this.name + ", version: " + this.version + ")";
+	}
+
 
 }

@@ -8,6 +8,8 @@
  */
 package sul.protocol.raknet8.control;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Nack extends Packet {
@@ -49,6 +51,11 @@ public class Nack extends Packet {
 		Nack ret = new Nack();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Nack(packets: " + Arrays.deepToString(this.packets) + ")";
 	}
 
 }

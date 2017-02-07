@@ -41,4 +41,9 @@ public class ShowCredits extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ShowCredits()";
+	}
+
 }

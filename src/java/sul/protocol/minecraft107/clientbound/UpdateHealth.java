@@ -59,4 +59,9 @@ public class UpdateHealth extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "UpdateHealth(health: " + this.health + ", hunger: " + this.hunger + ", saturation: " + this.saturation + ")";
+	}
+
 }

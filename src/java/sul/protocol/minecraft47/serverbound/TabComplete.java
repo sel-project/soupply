@@ -61,4 +61,9 @@ public class TabComplete extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "TabComplete(text: " + this.text + ", hasPosition: " + this.hasPosition + ", block: " + this.block + ")";
+	}
+
 }

@@ -48,5 +48,10 @@ public class Pack extends Packet {
 		size=readBigEndianLong();
 	}
 
+	@Override
+	public String toString() {
+		return "Pack(id: " + this.id + ", version: " + this.version + ", size: " + this.size + ")";
+	}
+
 
 }

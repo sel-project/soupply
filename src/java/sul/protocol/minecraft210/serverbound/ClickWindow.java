@@ -71,4 +71,9 @@ public class ClickWindow extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ClickWindow(window: " + this.window + ", slot: " + this.slot + ", button: " + this.button + ", action: " + this.action + ", mode: " + this.mode + ", clickedItem: " + this.clickedItem.toString() + ")";
+	}
+
 }

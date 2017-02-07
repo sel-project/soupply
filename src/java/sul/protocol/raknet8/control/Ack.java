@@ -8,6 +8,8 @@
  */
 package sul.protocol.raknet8.control;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Ack extends Packet {
@@ -49,6 +51,11 @@ public class Ack extends Packet {
 		Ack ret = new Ack();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Ack(packets: " + Arrays.deepToString(this.packets) + ")";
 	}
 
 }

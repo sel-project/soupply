@@ -55,4 +55,9 @@ public class TelemetryEvent extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "TelemetryEvent(entityId: " + this.entityId + ", eventId: " + this.eventId + ")";
+	}
+
 }

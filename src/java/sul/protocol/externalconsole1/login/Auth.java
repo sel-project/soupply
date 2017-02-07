@@ -8,6 +8,8 @@
  */
 package sul.protocol.externalconsole1.login;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 /**
@@ -69,6 +71,11 @@ public class Auth extends Packet {
 		Auth ret = new Auth();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Auth(hash: " + Arrays.toString(this.hash) + ")";
 	}
 
 }

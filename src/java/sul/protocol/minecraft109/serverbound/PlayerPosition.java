@@ -55,4 +55,9 @@ public class PlayerPosition extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerPosition(position: " + this.position.toString() + ", onGround: " + this.onGround + ")";
+	}
+
 }

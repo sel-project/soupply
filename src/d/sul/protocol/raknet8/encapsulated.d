@@ -9,7 +9,7 @@
 module sul.protocol.raknet8.encapsulated;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
@@ -60,6 +60,10 @@ class ClientConnect : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "ClientConnect(clientId: " ~ std.conv.to!string(this.clientId) ~ ", pingId: " ~ std.conv.to!string(this.pingId) ~ ")";
 	}
 
 }
@@ -116,6 +120,10 @@ class ServerHandshake : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "ServerHandshake(clientAddress: " ~ std.conv.to!string(this.clientAddress) ~ ", mtuLength: " ~ std.conv.to!string(this.mtuLength) ~ ", systemAddresses: " ~ std.conv.to!string(this.systemAddresses) ~ ", pingId: " ~ std.conv.to!string(this.pingId) ~ ", serverId: " ~ std.conv.to!string(this.serverId) ~ ")";
+	}
+
 }
 
 class ClientHandshake : Buffer {
@@ -166,6 +174,10 @@ class ClientHandshake : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "ClientHandshake(clientAddress: " ~ std.conv.to!string(this.clientAddress) ~ ", systemAddresses: " ~ std.conv.to!string(this.systemAddresses) ~ ", pingId: " ~ std.conv.to!string(this.pingId) ~ ", clientId: " ~ std.conv.to!string(this.clientId) ~ ")";
+	}
+
 }
 
 class ClientCancelConnection : Buffer {
@@ -192,6 +204,10 @@ class ClientCancelConnection : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "ClientCancelConnection()";
 	}
 
 }
@@ -232,6 +248,10 @@ class Ping : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Ping(time: " ~ std.conv.to!string(this.time) ~ ")";
+	}
+
 }
 
 class Pong : Buffer {
@@ -270,6 +290,10 @@ class Pong : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Pong(time: " ~ std.conv.to!string(this.time) ~ ")";
+	}
+
 }
 
 class Mcpe : Buffer {
@@ -306,6 +330,10 @@ class Mcpe : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "Mcpe(packet: " ~ std.conv.to!string(this.packet) ~ ")";
 	}
 
 }

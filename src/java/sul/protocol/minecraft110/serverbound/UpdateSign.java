@@ -9,6 +9,7 @@
 package sul.protocol.minecraft110.serverbound;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -55,6 +56,11 @@ public class UpdateSign extends Packet {
 		UpdateSign ret = new UpdateSign();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "UpdateSign(position: " + this.position + ", lines: " + Arrays.deepToString(this.lines) + ")";
 	}
 
 }

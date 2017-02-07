@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft47.clientbound;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Explosion extends Packet {
@@ -61,6 +63,11 @@ public class Explosion extends Packet {
 		Explosion ret = new Explosion();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Explosion(position: " + this.position.toString() + ", radius: " + this.radius + ", records: " + Arrays.deepToString(this.records) + ", motion: " + this.motion.toString() + ")";
 	}
 
 }

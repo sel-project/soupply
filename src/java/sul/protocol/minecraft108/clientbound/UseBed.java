@@ -55,4 +55,9 @@ public class UseBed extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "UseBed(entityId: " + this.entityId + ", position: " + this.position + ")";
+	}
+
 }

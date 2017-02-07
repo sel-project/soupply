@@ -9,9 +9,13 @@
 package sul.protocol.hncom1.status;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
+/**
+ * Notifies the node that another node (that is not itelf) has connected to the hub.
+ */
 public class AddNode extends Packet {
 
 	public static final byte ID = (byte)4;
@@ -19,9 +23,24 @@ public class AddNode extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	/**
+	 * Identifier given by the hub to uniquey identify the node.
+	 */
 	public int hubId;
+
+	/**
+	 * Node's name used for displaying and identification purposes.
+	 */
 	public String name;
+
+	/**
+	 * Whether the node is a main node (see ConnectionRequest.main).
+	 */
 	public boolean main;
+
+	/**
+	 * Indicates the game accepted by the node.
+	 */
 	public sul.protocol.hncom1.types.Game[] acceptedGames;
 
 	public AddNode() {}
@@ -63,6 +82,11 @@ public class AddNode extends Packet {
 		AddNode ret = new AddNode();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "AddNode(hubId: " + this.hubId + ", name: " + this.name + ", main: " + this.main + ", acceptedGames: " + Arrays.deepToString(this.acceptedGames) + ")";
 	}
 
 }

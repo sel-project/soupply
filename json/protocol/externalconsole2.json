@@ -1,0 +1,287 @@
+{
+
+	"__software": "External Console",
+	"__protocol": 2,
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"encoding": {
+
+		"endianness": {
+			"*": "big_endian"
+		},
+
+		"id": "ubyte",
+
+		"array_length": "ushort",
+
+		"types": {
+
+			"game": [
+				{
+					"name": "type",
+					"type": "ubyte",
+					"constants": {
+						"pocket": 1,
+						"minecraft": 2
+					}
+				},
+				{
+					"name": "protocols",
+					"type": "uint[]"
+				}
+			],
+
+			"node_stats": [
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "tps",
+					"type": "float"
+				},
+				{
+					"name": "ram",
+					"type": "ulong"
+				},
+				{
+					"name": "cpu",
+					"type": "float"
+				}
+			]
+
+		}
+
+	},
+
+	"packets": {
+
+		"login": {
+
+			"auth_credentials": {
+				"id": 0,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "protocol",
+						"type": "ubyte"
+					},
+					{
+						"name": "hash",
+						"type": "bool"
+					},
+					{
+						"name": "hash_algorithm",
+						"type": "string",
+						"when": "hash==true"
+					},
+					{
+						"name": "payload",
+						"type": "ubyte[]",
+						"when": "hash==true"
+					}
+				]
+			},
+
+			"auth": {
+				"id": 1,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hash",
+						"type": "ubyte[]"
+					}
+				]
+			},
+
+			"welcome": {
+				"id": 2,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "status",
+						"type": "ubyte"
+					}
+				],
+				"variants": {
+					"field": "status",
+					"values": {
+						"accepted": {
+							"value": 0,
+							"fields": [
+								{
+									"name": "remote_commands",
+									"type": "bool"
+								},
+								{
+									"name": "software",
+									"type": "string"
+								},
+								{
+									"name": "versions",
+									"type": "ubyte[3]"
+								},
+								{
+									"name": "display_name",
+									"type": "string"
+								},
+								{
+									"name": "games",
+									"type": "game[]"
+								},
+								{
+									"name": "connected_nodes",
+									"type": "string[]"
+								}
+							]
+						},
+						"wrong_hash": {
+							"value": 1,
+							"fields": []
+						},
+						"timed_out": {
+							"value": 2,
+							"fields": []
+						}
+					}
+				}
+			}
+
+		},
+
+		"status": {
+
+			"keep_alive": {
+				"id": 0,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "count",
+						"type": "uint"
+					}
+				]
+			},
+
+			"update_nodes": {
+				"id": 1,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "action",
+						"type": "ubyte",
+						"constants": {
+							"add": 0,
+							"remove": 1
+						}
+					},
+					{
+						"name": "node",
+						"type": "string"
+					}
+				]
+			},
+
+			"request_stats": {
+				"id": 2,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": []
+			},
+
+			"update_stats": {
+				"id": 3,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "online_players",
+						"type": "uint"
+					},
+					{
+						"name": "max_players",
+						"type": "uint"
+					},
+					{
+						"name": "uptime",
+						"type": "uint"
+					},
+					{
+						"name": "upload",
+						"type": "uint"
+					},
+					{
+						"name": "download",
+						"type": "uint"
+					},
+					{
+						"name": "nodes",
+						"type": "node_stats[]"
+					}
+				]
+			}
+
+		},
+
+		"connected": {
+
+			"console_message": {
+				"id": 4,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "node",
+						"type": "string"
+					},
+					{
+						"name": "timestamp",
+						"type": "ulong"
+					},
+					{
+						"name": "logger",
+						"type": "string"
+					},
+					{
+						"name": "message",
+						"type": "string"
+					},
+					{
+						"name": "command_id",
+						"type": "int"
+					}
+				]
+			},
+
+			"command": {
+				"id": 5,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "command",
+						"type": "string"
+					},
+					{
+						"name": "command_id",
+						"type": "uint"
+					}
+				]
+			},
+
+			"permission_denied": {
+				"id": 6,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": []
+			}
+
+		}
+
+	}
+
+}

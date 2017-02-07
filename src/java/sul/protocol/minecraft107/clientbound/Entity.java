@@ -51,4 +51,9 @@ public class Entity extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Entity(entityId: " + this.entityId + ")";
+	}
+
 }

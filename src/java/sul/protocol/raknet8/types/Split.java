@@ -46,5 +46,10 @@ public class Split extends Packet {
 		order=readBigEndianInt();
 	}
 
+	@Override
+	public String toString() {
+		return "Split(count: " + this.count + ", id: " + this.id + ", order: " + this.order + ")";
+	}
+
 
 }

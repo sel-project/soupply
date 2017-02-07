@@ -8,8 +8,13 @@
  */
 package sul.protocol.hncom1.status;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
+/**
+ * Sends a binary message to some selected nodes or broadcast it.
+ */
 public class MessageServerbound extends Packet {
 
 	public static final byte ID = (byte)6;
@@ -18,10 +23,15 @@ public class MessageServerbound extends Packet {
 	public static final boolean SERVERBOUND = true;
 
 	/**
-	 * Addressees of the message. If the array is empty the message should be broadcasted
-	 * to every connected node.
+	 * Addressees of the message. If the array is empty the message is broadcasted to every
+	 * connected node.
 	 */
 	public int[] addressees;
+
+	/**
+	 * Bytes to be sent/broadcasted. It may be a serialised packet of a plugin-defined
+	 * protocol.
+	 */
 	public byte[] payload;
 
 	public MessageServerbound() {}
@@ -57,6 +67,11 @@ public class MessageServerbound extends Packet {
 		MessageServerbound ret = new MessageServerbound();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "MessageServerbound(addressees: " + Arrays.toString(this.addressees) + ", payload: " + Arrays.toString(this.payload) + ")";
 	}
 
 }

@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket101.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class BlockEntityData extends Packet {
@@ -53,6 +55,11 @@ public class BlockEntityData extends Packet {
 		BlockEntityData ret = new BlockEntityData();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "BlockEntityData(position: " + this.position.toString() + ", nbt: " + Arrays.toString(this.nbt) + ")";
 	}
 
 }

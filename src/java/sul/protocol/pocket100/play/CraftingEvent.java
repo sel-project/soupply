@@ -8,6 +8,7 @@
  */
 package sul.protocol.pocket100.play;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import sul.utils.*;
@@ -67,6 +68,11 @@ public class CraftingEvent extends Packet {
 		CraftingEvent ret = new CraftingEvent();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "CraftingEvent(window: " + this.window + ", type: " + this.type + ", uuid: " + this.uuid.toString() + ", input: " + Arrays.deepToString(this.input) + ", output: " + Arrays.deepToString(this.output) + ")";
 	}
 
 }

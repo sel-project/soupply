@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket100.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Login extends Packet {
@@ -61,6 +63,11 @@ public class Login extends Packet {
 		Login ret = new Login();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Login(protocol: " + this.protocol + ", edition: " + this.edition + ", body: " + Arrays.toString(this.body) + ")";
 	}
 
 }

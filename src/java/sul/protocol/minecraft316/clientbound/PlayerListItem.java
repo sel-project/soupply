@@ -8,6 +8,7 @@
  */
 package sul.protocol.minecraft316.clientbound;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import sul.utils.*;
@@ -61,6 +62,11 @@ public class PlayerListItem extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerListItem(action: " + this.action + ")";
+	}
+
 	public class AddPlayer extends Packet {
 
 		public static final int ACTION = (int)0;
@@ -95,6 +101,11 @@ public class PlayerListItem extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "PlayerListItem.AddPlayer(players: " + Arrays.deepToString(this.players) + ")";
 		}
 
 	}
@@ -135,6 +146,11 @@ public class PlayerListItem extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "PlayerListItem.UpdateGamemode(players: " + Arrays.deepToString(this.players) + ")";
+		}
+
 	}
 
 	public class UpdateLatency extends Packet {
@@ -171,6 +187,11 @@ public class PlayerListItem extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "PlayerListItem.UpdateLatency(players: " + Arrays.deepToString(this.players) + ")";
 		}
 
 	}
@@ -211,6 +232,11 @@ public class PlayerListItem extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "PlayerListItem.UpdateDisplayName(players: " + Arrays.deepToString(this.players) + ")";
+		}
+
 	}
 
 	public class RemovePlayer extends Packet {
@@ -247,6 +273,11 @@ public class PlayerListItem extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "PlayerListItem.RemovePlayer(players: " + Arrays.deepToString(this.players) + ")";
 		}
 
 	}

@@ -51,4 +51,9 @@ public class SetHealth extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SetHealth(health: " + this.health + ")";
+	}
+
 }

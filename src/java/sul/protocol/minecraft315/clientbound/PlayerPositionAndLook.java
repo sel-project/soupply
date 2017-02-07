@@ -74,4 +74,9 @@ public class PlayerPositionAndLook extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerPositionAndLook(position: " + this.position.toString() + ", yaw: " + this.yaw + ", pitch: " + this.pitch + ", flags: " + this.flags + ", teleportId: " + this.teleportId + ")";
+	}
+
 }

@@ -55,4 +55,9 @@ public class RemoveEntityEffect extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "RemoveEntityEffect(entityId: " + this.entityId + ", effectId: " + this.effectId + ")";
+	}
+
 }

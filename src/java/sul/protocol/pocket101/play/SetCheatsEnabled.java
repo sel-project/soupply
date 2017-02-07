@@ -51,4 +51,9 @@ public class SetCheatsEnabled extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SetCheatsEnabled(enabled: " + this.enabled + ")";
+	}
+
 }

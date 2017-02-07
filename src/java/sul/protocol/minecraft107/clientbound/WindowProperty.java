@@ -80,4 +80,9 @@ public class WindowProperty extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "WindowProperty(window: " + this.window + ", property: " + this.property + ", value: " + this.value + ")";
+	}
+
 }

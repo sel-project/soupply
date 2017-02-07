@@ -65,4 +65,9 @@ public class UpdateBlock extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "UpdateBlock(position: " + this.position.toString() + ", block: " + this.block + ", flagsAndMeta: " + this.flagsAndMeta + ")";
+	}
+
 }

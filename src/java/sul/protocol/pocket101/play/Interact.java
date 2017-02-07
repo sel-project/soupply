@@ -61,4 +61,9 @@ public class Interact extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Interact(action: " + this.action + ", target: " + this.target + ")";
+	}
+
 }

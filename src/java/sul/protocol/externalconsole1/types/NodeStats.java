@@ -79,5 +79,10 @@ public class NodeStats extends Packet {
 		cpu=readBigEndianFloat();
 	}
 
+	@Override
+	public String toString() {
+		return "NodeStats(name: " + this.name + ", tps: " + this.tps + ", ram: " + this.ram + ", cpu: " + this.cpu + ")";
+	}
+
 
 }

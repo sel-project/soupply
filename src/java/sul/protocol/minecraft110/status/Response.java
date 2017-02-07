@@ -53,4 +53,9 @@ public class Response extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Response(json: " + this.json + ")";
+	}
+
 }

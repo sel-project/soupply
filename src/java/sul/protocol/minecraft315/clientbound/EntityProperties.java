@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft315.clientbound;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class EntityProperties extends Packet {
@@ -53,6 +55,11 @@ public class EntityProperties extends Packet {
 		EntityProperties ret = new EntityProperties();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "EntityProperties(entityId: " + this.entityId + ", attributes: " + Arrays.deepToString(this.attributes) + ")";
 	}
 
 }

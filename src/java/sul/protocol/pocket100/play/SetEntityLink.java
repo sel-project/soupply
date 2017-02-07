@@ -63,4 +63,9 @@ public class SetEntityLink extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SetEntityLink(from: " + this.from + ", to: " + this.to + ", action: " + this.action + ")";
+	}
+
 }

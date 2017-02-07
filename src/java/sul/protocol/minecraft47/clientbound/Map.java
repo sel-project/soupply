@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft47.clientbound;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Map extends Packet {
@@ -73,6 +75,11 @@ public class Map extends Packet {
 		Map ret = new Map();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Map(mapId: " + this.mapId + ", scale: " + this.scale + ", icons: " + Arrays.deepToString(this.icons) + ", colums: " + this.colums + ", rows: " + this.rows + ", offset: " + this.offset.toString() + ", data: " + Arrays.toString(this.data) + ")";
 	}
 
 }

@@ -28,9 +28,6 @@ public class Add extends Packet {
 	public static final byte TRANSFERRED = 1;
 	public static final byte FORCIBLY_TRANSFERRED = 2;
 
-	/**
-	 * A unique identifier given by the hub that is never changed while the player is connected.
-	 */
 	public int hubId;
 
 	/**
@@ -47,6 +44,13 @@ public class Add extends Packet {
 	 * Version of the protocol used by the client.
 	 */
 	public int protocol;
+
+	/**
+	 * Version of the game used by the client, usually in the format major.minor[.patch],
+	 * calculated by the server or passed by the client during the authentication process.
+	 * The node should verify that the version exists and matches the protocol in the previous
+	 * field.
+	 */
 	public String version;
 
 	/**
@@ -55,17 +59,60 @@ public class Add extends Packet {
 	public String username;
 
 	/**
-	 * Display name of the player, which can contain formatting codes. It can be updated
-	 * by the node.
+	 * Display name of the player, which can contain formatting codes. By default it's
+	 * equals to the username but it can be updated by the node using UpdateDisplayName.
 	 */
 	public String displayName;
+
+	/**
+	 * Dimension in which the player was playing before being transferred. It could diffent
+	 * from client's game type and version because the dimension's ids are different in
+	 * Minecraft and Minecraft: Pocket Edition.
+	 * It's used to send the game's change dimension packet to despawn old entities and
+	 * delete old chunks.
+	 */
 	public byte dimension;
+
+	/**
+	 * Remote address of the client.
+	 */
 	public sul.protocol.hncom1.types.Address clientAddress;
+
+	/**
+	 * Ip used by the client to connect to the server. The value of this field is the address
+	 * the client has saved in its servers list. For example a client that joins through
+	 * `localhost` and a client that joins through `127.0.0.1` will connect to the same
+	 * server but the field of this value will be different (`localhost` for the first
+	 * client and `127.0.0.1` for the second).
+	 */
 	public String serverAddress;
+
+	/**
+	 * Port used by the client to connect to the server.
+	 */
 	public short serverPort;
+
+	/**
+	 * Client's UUID, given by Mojang's or Microsoft's services if the server is in online
+	 * mode or given by the client (and not verified) if the server is in offline mode.
+	 */
 	public UUID uuid;
+
+	/**
+	 * Client's skin, given by the client or downloaded from Mojang's services in online
+	 * mode.
+	 */
 	public sul.protocol.hncom1.types.Skin skin;
+
+	/**
+	 * Client's latency (ping time).
+	 */
 	public int latency;
+
+	/**
+	 * Client's language, in the same format as HubInfo.language, which should be updated
+	 * from the node when the client changes it.
+	 */
 	public String language;
 
 	public Add() {}
@@ -150,6 +197,14 @@ public class Add extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Add(hubId: " + this.hubId + ", reason: " + this.reason + ", type: " + this.type + ", protocol: " + this.protocol + ", version: " + this.version + ", username: " + this.username + ", displayName: " + this.displayName + ", dimension: " + this.dimension + ", clientAddress: " + this.clientAddress.toString() + ", serverAddress: " + this.serverAddress + ", serverPort: " + this.serverPort + ", uuid: " + this.uuid.toString() + ", skin: " + this.skin.toString() + ", latency: " + this.latency + ", language: " + this.language + ")";
+	}
+
+	/**
+	 * A Minecraft: Pocket Edition client.
+	 */
 	public class Pocket extends Packet {
 
 		public static final byte TYPE = (byte)1;
@@ -158,10 +213,34 @@ public class Add extends Packet {
 		public static final byte UNKNOWN = 0;
 		public static final byte ANDROID = 2;
 
+		/**
+		 * XBOX Live id, which is a unique identifier for authenticated players or 0 if the
+		 * server is in offline mode.
+		 */
 		public long xuid;
+
+		/**
+		 * Indicates whether the client is using the Education Edition variant of the game.
+		 */
 		public boolean edu;
+
+		/**
+		 * Client's packet loss calculated from the hub in the range 0 (no packet lost) to
+		 * 100 (every packet lost).
+		 */
 		public float packetLoss;
+
+		/**
+		 * Client's operative system, if supplied by the client. This field's value may be
+		 * used to divide players that play from a phone from players that play on a computer.
+		 */
 		public byte deviceOs;
+
+		/**
+		 * Client's device model, if supplied by the client. This field is usually a string
+		 * in the format `MANUFACTURES MODEL`: for example, the Oneplus one is `ONEPLUS A0001`.
+		 * This field's value may be used to exclude devices with bad performances.
+		 */
 		public String deviceModel;
 
 		public Pocket() {}
@@ -206,8 +285,16 @@ public class Add extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "Add.Pocket(xuid: " + this.xuid + ", edu: " + this.edu + ", packetLoss: " + this.packetLoss + ", deviceOs: " + this.deviceOs + ", deviceModel: " + this.deviceModel + ")";
+		}
+
 	}
 
+	/**
+	 * A Minecraft client. Currently there are no additional fields.
+	 */
 	public class Minecraft extends Packet {
 
 		public static final byte TYPE = (byte)2;
@@ -232,6 +319,11 @@ public class Add extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Add.Minecraft()";
 		}
 
 	}

@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket101.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class BlockEvent extends Packet {
@@ -53,6 +55,11 @@ public class BlockEvent extends Packet {
 		BlockEvent ret = new BlockEvent();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "BlockEvent(position: " + this.position.toString() + ", data: " + Arrays.toString(this.data) + ")";
 	}
 
 }

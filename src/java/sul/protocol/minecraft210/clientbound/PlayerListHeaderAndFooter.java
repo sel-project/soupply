@@ -57,4 +57,9 @@ public class PlayerListHeaderAndFooter extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerListHeaderAndFooter(header: " + this.header + ", footer: " + this.footer + ")";
+	}
+
 }

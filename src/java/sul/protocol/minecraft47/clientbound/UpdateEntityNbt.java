@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft47.clientbound;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class UpdateEntityNbt extends Packet {
@@ -53,6 +55,11 @@ public class UpdateEntityNbt extends Packet {
 		UpdateEntityNbt ret = new UpdateEntityNbt();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "UpdateEntityNbt(entityId: " + this.entityId + ", nbt: " + Arrays.toString(this.nbt) + ")";
 	}
 
 }

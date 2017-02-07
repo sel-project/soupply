@@ -68,4 +68,9 @@ public class PlayerDigging extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerDigging(status: " + this.status + ", position: " + this.position + ", face: " + this.face + ")";
+	}
+
 }

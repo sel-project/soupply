@@ -50,5 +50,10 @@ public class ListUpdateGamemode extends Packet {
 		gamemode=this.readVaruint();
 	}
 
+	@Override
+	public String toString() {
+		return "ListUpdateGamemode(uuid: " + this.uuid.toString() + ", gamemode: " + this.gamemode + ")";
+	}
+
 
 }

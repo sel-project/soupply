@@ -9,6 +9,7 @@
 package sul.protocol.externalconsole1.login;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -62,6 +63,11 @@ public class Welcome extends Packet {
 		Welcome ret = new Welcome();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Welcome(status: " + this.status + ")";
 	}
 
 	/**
@@ -149,6 +155,11 @@ public class Welcome extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "Welcome.Accepted(remoteCommands: " + this.remoteCommands + ", software: " + this.software + ", versions: " + Arrays.toString(this.versions) + ", displayName: " + this.displayName + ", games: " + Arrays.deepToString(this.games) + ", connectedNodes: " + Arrays.deepToString(this.connectedNodes) + ")";
+		}
+
 	}
 
 	/**
@@ -181,6 +192,11 @@ public class Welcome extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "Welcome.WrongHash()";
+		}
+
 	}
 
 	/**
@@ -211,6 +227,11 @@ public class Welcome extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Welcome.TimedOut()";
 		}
 
 	}

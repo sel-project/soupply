@@ -75,4 +75,9 @@ public class EntityEvent extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityEvent(entityId: " + this.entityId + ", eventId: " + this.eventId + ", unknown2: " + this.unknown2 + ")";
+	}
+
 }

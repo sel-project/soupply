@@ -74,4 +74,9 @@ public class ScoreboardObjective extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ScoreboardObjective(name: " + this.name + ", mode: " + this.mode + ", value: " + this.value + ", type: " + this.type + ")";
+	}
+
 }

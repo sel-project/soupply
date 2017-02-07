@@ -55,4 +55,9 @@ public class EntityHeadLook extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityHeadLook(entityId: " + this.entityId + ", headYaw: " + this.headYaw + ")";
+	}
+
 }

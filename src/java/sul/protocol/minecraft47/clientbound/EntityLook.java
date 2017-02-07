@@ -63,4 +63,9 @@ public class EntityLook extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityLook(entityId: " + this.entityId + ", yaw: " + this.yaw + ", pitch: " + this.pitch + ", onGround: " + this.onGround + ")";
+	}
+
 }

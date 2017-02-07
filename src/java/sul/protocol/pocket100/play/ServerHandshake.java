@@ -9,6 +9,7 @@
 package sul.protocol.pocket100.play;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -55,6 +56,11 @@ public class ServerHandshake extends Packet {
 		ServerHandshake ret = new ServerHandshake();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "ServerHandshake(serverPublicKey: " + this.serverPublicKey + ", token: " + Arrays.toString(this.token) + ")";
 	}
 
 }

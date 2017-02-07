@@ -72,4 +72,9 @@ public class UpdateNodes extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "UpdateNodes(action: " + this.action + ", node: " + this.node + ")";
+	}
+
 }

@@ -8,6 +8,8 @@
  */
 package sul.protocol.externalconsole1.status;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 /**
@@ -101,6 +103,11 @@ public class UpdateStats extends Packet {
 		UpdateStats ret = new UpdateStats();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "UpdateStats(onlinePlayers: " + this.onlinePlayers + ", maxPlayers: " + this.maxPlayers + ", uptime: " + this.uptime + ", upload: " + this.upload + ", download: " + this.download + ", nodes: " + Arrays.deepToString(this.nodes) + ")";
 	}
 
 }

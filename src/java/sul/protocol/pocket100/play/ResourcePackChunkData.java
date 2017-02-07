@@ -9,6 +9,7 @@
 package sul.protocol.pocket100.play;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -63,6 +64,11 @@ public class ResourcePackChunkData extends Packet {
 		ResourcePackChunkData ret = new ResourcePackChunkData();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "ResourcePackChunkData(id: " + this.id + ", unknown1: " + this.unknown1 + ", unknown2: " + this.unknown2 + ", data: " + Arrays.toString(this.data) + ")";
 	}
 
 }

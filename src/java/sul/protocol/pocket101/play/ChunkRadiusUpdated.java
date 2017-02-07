@@ -51,4 +51,9 @@ public class ChunkRadiusUpdated extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ChunkRadiusUpdated(radius: " + this.radius + ")";
+	}
+
 }

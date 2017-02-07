@@ -55,4 +55,9 @@ public class Encapsulated extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Encapsulated(count: " + this.count + ", encapsulation: " + this.encapsulation.toString() + ")";
+	}
+
 }

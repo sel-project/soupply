@@ -51,4 +51,9 @@ public class TeleportConfirm extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "TeleportConfirm(teleportId: " + this.teleportId + ")";
+	}
+
 }

@@ -9,7 +9,7 @@
 module sul.protocol.raknet8.control;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
@@ -58,6 +58,10 @@ class Ack : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Ack(packets: " ~ std.conv.to!string(this.packets) ~ ")";
+	}
+
 }
 
 class Nack : Buffer {
@@ -94,6 +98,10 @@ class Nack : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "Nack(packets: " ~ std.conv.to!string(this.packets) ~ ")";
 	}
 
 }
@@ -136,6 +144,10 @@ class Encapsulated : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "Encapsulated(count: " ~ std.conv.to!string(this.count) ~ ", encapsulation: " ~ std.conv.to!string(this.encapsulation) ~ ")";
 	}
 
 }

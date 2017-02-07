@@ -57,4 +57,9 @@ public class ResourcePackChunkRequest extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ResourcePackChunkRequest(id: " + this.id + ", index: " + this.index + ")";
+	}
+
 }

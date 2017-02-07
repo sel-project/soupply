@@ -70,4 +70,9 @@ public class EntityAction extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityAction(entityId: " + this.entityId + ", action: " + this.action + ", jumpBoost: " + this.jumpBoost + ")";
+	}
+
 }

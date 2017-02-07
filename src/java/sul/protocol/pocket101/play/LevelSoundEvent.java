@@ -161,4 +161,9 @@ public class LevelSoundEvent extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "LevelSoundEvent(sound: " + this.sound + ", position: " + this.position.toString() + ", volume: " + this.volume + ", pitch: " + this.pitch + ", unknown4: " + this.unknown4 + ")";
+	}
+
 }

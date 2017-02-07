@@ -76,4 +76,9 @@ public class MobEffect extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "MobEffect(entityId: " + this.entityId + ", eventId: " + this.eventId + ", effect: " + this.effect + ", amplifier: " + this.amplifier + ", particles: " + this.particles + ", duration: " + this.duration + ")";
+	}
+
 }

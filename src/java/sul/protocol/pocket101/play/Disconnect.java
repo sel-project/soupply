@@ -57,4 +57,9 @@ public class Disconnect extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Disconnect(hideDisconnectionScreen: " + this.hideDisconnectionScreen + ", message: " + this.message + ")";
+	}
+
 }

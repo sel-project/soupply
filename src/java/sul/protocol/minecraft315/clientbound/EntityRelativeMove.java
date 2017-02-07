@@ -59,4 +59,9 @@ public class EntityRelativeMove extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityRelativeMove(entityId: " + this.entityId + ", delta: " + this.delta.toString() + ", onGround: " + this.onGround + ")";
+	}
+
 }

@@ -61,6 +61,11 @@ public class Title extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Title(action: " + this.action + ")";
+	}
+
 	public class SetTitle extends Packet {
 
 		public static final int ACTION = (int)0;
@@ -95,6 +100,11 @@ public class Title extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Title.SetTitle(text: " + this.text + ")";
 		}
 
 	}
@@ -133,6 +143,11 @@ public class Title extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Title.SetSubtitle(text: " + this.text + ")";
 		}
 
 	}
@@ -181,6 +196,11 @@ public class Title extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "Title.SetTimings(fadeIn: " + this.fadeIn + ", stay: " + this.stay + ", fadeOut: " + this.fadeOut + ")";
+		}
+
 	}
 
 	public class Hide extends Packet {
@@ -209,6 +229,11 @@ public class Title extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "Title.Hide()";
+		}
+
 	}
 
 	public class Reset extends Packet {
@@ -235,6 +260,11 @@ public class Title extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Title.Reset()";
 		}
 
 	}

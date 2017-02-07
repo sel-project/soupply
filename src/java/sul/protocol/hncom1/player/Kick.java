@@ -9,6 +9,7 @@
 package sul.protocol.hncom1.player;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -24,8 +25,21 @@ public class Kick extends Packet {
 	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
+
+	/**
+	 * Reason of the disconnection that will be displayed in the client's disconnection
+	 * screen.
+	 */
 	public String reason;
+
+	/**
+	 * Whether the previous string should be translated client-side or not.
+	 */
 	public boolean translation;
+
+	/**
+	 * Optional parameters for the translation.
+	 */
 	public String[] parameters;
 
 	public Kick() {}
@@ -67,6 +81,11 @@ public class Kick extends Packet {
 		Kick ret = new Kick();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Kick(hubId: " + this.hubId + ", reason: " + this.reason + ", translation: " + this.translation + ", parameters: " + Arrays.deepToString(this.parameters) + ")";
 	}
 
 }

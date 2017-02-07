@@ -59,6 +59,11 @@ public class WorldBorder extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "WorldBorder(action: " + this.action + ")";
+	}
+
 	public class SetSize extends Packet {
 
 		public static final int ACTION = (int)0;
@@ -93,6 +98,11 @@ public class WorldBorder extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "WorldBorder.SetSize(diameter: " + this.diameter + ")";
 		}
 
 	}
@@ -141,6 +151,11 @@ public class WorldBorder extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "WorldBorder.LerpSize(oldDiameter: " + this.oldDiameter + ", newDiameter: " + this.newDiameter + ", speed: " + this.speed + ")";
+		}
+
 	}
 
 	public class SetCenter extends Packet {
@@ -177,6 +192,11 @@ public class WorldBorder extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "WorldBorder.SetCenter(center: " + this.center.toString() + ")";
 		}
 
 	}
@@ -241,6 +261,11 @@ public class WorldBorder extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "WorldBorder.Initialize(center: " + this.center.toString() + ", oldDiameter: " + this.oldDiameter + ", newDiameter: " + this.newDiameter + ", speed: " + this.speed + ", portalTeleportBoundary: " + this.portalTeleportBoundary + ", warningTime: " + this.warningTime + ", warningBlocks: " + this.warningBlocks + ")";
+		}
+
 	}
 
 	public class SetWarningTime extends Packet {
@@ -279,6 +304,11 @@ public class WorldBorder extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "WorldBorder.SetWarningTime(warningTime: " + this.warningTime + ")";
+		}
+
 	}
 
 	public class SetWarningBlocks extends Packet {
@@ -315,6 +345,11 @@ public class WorldBorder extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "WorldBorder.SetWarningBlocks(warningBlocks: " + this.warningBlocks + ")";
 		}
 
 	}

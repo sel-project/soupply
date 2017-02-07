@@ -55,4 +55,9 @@ public class ClientConnect extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ClientConnect(clientId: " + this.clientId + ", pingId: " + this.pingId + ")";
+	}
+
 }

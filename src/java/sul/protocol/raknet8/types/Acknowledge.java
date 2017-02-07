@@ -46,5 +46,10 @@ public class Acknowledge extends Packet {
 		if(unique==false){ last=readLittleEndianTriad(); }
 	}
 
+	@Override
+	public String toString() {
+		return "Acknowledge(unique: " + this.unique + ", first: " + this.first + ", last: " + this.last + ")";
+	}
+
 
 }

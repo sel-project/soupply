@@ -63,4 +63,9 @@ public class AddHangingEntity extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "AddHangingEntity(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ", position: " + this.position.toString() + ", unknown3: " + this.unknown3 + ")";
+	}
+
 }

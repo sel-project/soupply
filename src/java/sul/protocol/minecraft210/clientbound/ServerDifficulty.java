@@ -57,4 +57,9 @@ public class ServerDifficulty extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ServerDifficulty(difficulty: " + this.difficulty + ")";
+	}
+
 }

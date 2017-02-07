@@ -9,7 +9,7 @@
 module sul.protocol.raknet8.unconnected;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
@@ -62,6 +62,10 @@ class Ping : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Ping(pingId: " ~ std.conv.to!string(this.pingId) ~ ", magic: " ~ std.conv.to!string(this.magic) ~ ")";
+	}
+
 }
 
 class Pong : Buffer {
@@ -112,6 +116,10 @@ class Pong : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Pong(pingId: " ~ std.conv.to!string(this.pingId) ~ ", serverId: " ~ std.conv.to!string(this.serverId) ~ ", magic: " ~ std.conv.to!string(this.magic) ~ ", status: " ~ std.conv.to!string(this.status) ~ ")";
+	}
+
 }
 
 class OpenConnectionRequest1 : Buffer {
@@ -156,6 +164,10 @@ class OpenConnectionRequest1 : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "OpenConnectionRequest1(magic: " ~ std.conv.to!string(this.magic) ~ ", protocol: " ~ std.conv.to!string(this.protocol) ~ ", mtu: " ~ std.conv.to!string(this.mtu) ~ ")";
 	}
 
 }
@@ -208,6 +220,10 @@ class OpenConnectionReply1 : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "OpenConnectionReply1(magic: " ~ std.conv.to!string(this.magic) ~ ", serverId: " ~ std.conv.to!string(this.serverId) ~ ", security: " ~ std.conv.to!string(this.security) ~ ", mtuLength: " ~ std.conv.to!string(this.mtuLength) ~ ")";
+	}
+
 }
 
 class OpenConnectionRequest2 : Buffer {
@@ -256,6 +272,10 @@ class OpenConnectionRequest2 : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "OpenConnectionRequest2(magic: " ~ std.conv.to!string(this.magic) ~ ", serverAddress: " ~ std.conv.to!string(this.serverAddress) ~ ", mtuLength: " ~ std.conv.to!string(this.mtuLength) ~ ", clientId: " ~ std.conv.to!string(this.clientId) ~ ")";
 	}
 
 }
@@ -310,6 +330,10 @@ class OpenConnectionReply2 : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "OpenConnectionReply2(magic: " ~ std.conv.to!string(this.magic) ~ ", serverId: " ~ std.conv.to!string(this.serverId) ~ ", clientAddress: " ~ std.conv.to!string(this.clientAddress) ~ ", mtuLength: " ~ std.conv.to!string(this.mtuLength) ~ ", security: " ~ std.conv.to!string(this.security) ~ ")";
 	}
 
 }

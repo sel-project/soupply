@@ -63,4 +63,9 @@ public class ResourcePackStatus extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ResourcePackStatus(hash: " + this.hash + ", result: " + this.result + ")";
+	}
+
 }

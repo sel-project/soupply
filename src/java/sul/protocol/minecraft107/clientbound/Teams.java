@@ -9,6 +9,7 @@
 package sul.protocol.minecraft107.clientbound;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -63,6 +64,11 @@ public class Teams extends Packet {
 		Teams ret = new Teams();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Teams(name: " + this.name + ", mode: " + this.mode + ")";
 	}
 
 	public class CreateTeam extends Packet {
@@ -145,6 +151,11 @@ public class Teams extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "Teams.CreateTeam(displayName: " + this.displayName + ", prefix: " + this.prefix + ", suffix: " + this.suffix + ", friendlyFlags: " + this.friendlyFlags + ", nametagVisibility: " + this.nametagVisibility + ", collisionRule: " + this.collisionRule + ", color: " + this.color + ", players: " + Arrays.deepToString(this.players) + ")";
+		}
+
 	}
 
 	public class RemoveTeam extends Packet {
@@ -171,6 +182,11 @@ public class Teams extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Teams.RemoveTeam()";
 		}
 
 	}
@@ -251,6 +267,11 @@ public class Teams extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "Teams.UpdateTeamInfo(displayName: " + this.displayName + ", prefix: " + this.prefix + ", suffix: " + this.suffix + ", friendlyFlags: " + this.friendlyFlags + ", nametagVisibility: " + this.nametagVisibility + ", collisionRule: " + this.collisionRule + ", color: " + this.color + ")";
+		}
+
 	}
 
 	public class AddPlayers extends Packet {
@@ -289,6 +310,11 @@ public class Teams extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "Teams.AddPlayers(players: " + Arrays.deepToString(this.players) + ")";
+		}
+
 	}
 
 	public class RemovePlayers extends Packet {
@@ -325,6 +351,11 @@ public class Teams extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Teams.RemovePlayers(players: " + Arrays.deepToString(this.players) + ")";
 		}
 
 	}

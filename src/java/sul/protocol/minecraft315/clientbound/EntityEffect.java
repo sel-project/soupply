@@ -71,4 +71,9 @@ public class EntityEffect extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityEffect(entityId: " + this.entityId + ", effectId: " + this.effectId + ", amplifier: " + this.amplifier + ", duration: " + this.duration + ", flags: " + this.flags + ")";
+	}
+
 }

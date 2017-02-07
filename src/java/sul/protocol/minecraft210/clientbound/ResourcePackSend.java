@@ -57,4 +57,9 @@ public class ResourcePackSend extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ResourcePackSend(url: " + this.url + ", hash: " + this.hash + ")";
+	}
+
 }

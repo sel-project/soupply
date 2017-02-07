@@ -9,7 +9,7 @@
 module sul.protocol.minecraft108.serverbound;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
@@ -56,6 +56,10 @@ class TeleportConfirm : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "TeleportConfirm(teleportId: " ~ std.conv.to!string(this.teleportId) ~ ")";
 	}
 
 }
@@ -108,6 +112,10 @@ class TabComplete : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "TabComplete(text: " ~ std.conv.to!string(this.text) ~ ", command: " ~ std.conv.to!string(this.command) ~ ", hasPosition: " ~ std.conv.to!string(this.hasPosition) ~ ", block: " ~ std.conv.to!string(this.block) ~ ")";
+	}
+
 }
 
 class ChatMessage : Buffer {
@@ -144,6 +152,10 @@ class ChatMessage : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "ChatMessage(text: " ~ std.conv.to!string(this.text) ~ ")";
 	}
 
 }
@@ -187,6 +199,10 @@ class ClientStatus : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "ClientStatus(action: " ~ std.conv.to!string(this.action) ~ ")";
 	}
 
 }
@@ -265,6 +281,10 @@ class ClientSettings : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "ClientSettings(language: " ~ std.conv.to!string(this.language) ~ ", viewDistance: " ~ std.conv.to!string(this.viewDistance) ~ ", chatMode: " ~ std.conv.to!string(this.chatMode) ~ ", chatColors: " ~ std.conv.to!string(this.chatColors) ~ ", displayedSkinParts: " ~ std.conv.to!string(this.displayedSkinParts) ~ ", mainHand: " ~ std.conv.to!string(this.mainHand) ~ ")";
+	}
+
 }
 
 class ConfirmTransaction : Buffer {
@@ -311,6 +331,10 @@ class ConfirmTransaction : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "ConfirmTransaction(window: " ~ std.conv.to!string(this.window) ~ ", action: " ~ std.conv.to!string(this.action) ~ ", accepted: " ~ std.conv.to!string(this.accepted) ~ ")";
+	}
+
 }
 
 class EnchantItem : Buffer {
@@ -351,6 +375,10 @@ class EnchantItem : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "EnchantItem(window: " ~ std.conv.to!string(this.window) ~ ", enchantment: " ~ std.conv.to!string(this.enchantment) ~ ")";
 	}
 
 }
@@ -411,6 +439,10 @@ class ClickWindow : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "ClickWindow(window: " ~ std.conv.to!string(this.window) ~ ", slot: " ~ std.conv.to!string(this.slot) ~ ", button: " ~ std.conv.to!string(this.button) ~ ", action: " ~ std.conv.to!string(this.action) ~ ", mode: " ~ std.conv.to!string(this.mode) ~ ", clickedItem: " ~ std.conv.to!string(this.clickedItem) ~ ")";
+	}
+
 }
 
 class CloseWindow : Buffer {
@@ -447,6 +479,10 @@ class CloseWindow : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "CloseWindow(window: " ~ std.conv.to!string(this.window) ~ ")";
 	}
 
 }
@@ -489,6 +525,10 @@ class PluginMessage : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "PluginMessage(channel: " ~ std.conv.to!string(this.channel) ~ ", data: " ~ std.conv.to!string(this.data) ~ ")";
 	}
 
 }
@@ -550,6 +590,10 @@ class UseEntity : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "UseEntity(target: " ~ std.conv.to!string(this.target) ~ ", type: " ~ std.conv.to!string(this.type) ~ ", targetPosition: " ~ std.conv.to!string(this.targetPosition) ~ ", hand: " ~ std.conv.to!string(this.hand) ~ ")";
+	}
+
 }
 
 class KeepAlive : Buffer {
@@ -586,6 +630,10 @@ class KeepAlive : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "KeepAlive(id: " ~ std.conv.to!string(this.id) ~ ")";
 	}
 
 }
@@ -628,6 +676,10 @@ class PlayerPosition : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "PlayerPosition(position: " ~ std.conv.to!string(this.position) ~ ", onGround: " ~ std.conv.to!string(this.onGround) ~ ")";
 	}
 
 }
@@ -680,6 +732,10 @@ class PlayerPositionAndLook : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "PlayerPositionAndLook(position: " ~ std.conv.to!string(this.position) ~ ", yaw: " ~ std.conv.to!string(this.yaw) ~ ", pitch: " ~ std.conv.to!string(this.pitch) ~ ", onGround: " ~ std.conv.to!string(this.onGround) ~ ")";
+	}
+
 }
 
 class PlayerLook : Buffer {
@@ -726,6 +782,10 @@ class PlayerLook : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "PlayerLook(yaw: " ~ std.conv.to!string(this.yaw) ~ ", pitch: " ~ std.conv.to!string(this.pitch) ~ ", onGround: " ~ std.conv.to!string(this.onGround) ~ ")";
+	}
+
 }
 
 class Player : Buffer {
@@ -762,6 +822,10 @@ class Player : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "Player(onGround: " ~ std.conv.to!string(this.onGround) ~ ")";
 	}
 
 }
@@ -810,6 +874,10 @@ class VehicleMove : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "VehicleMove(position: " ~ std.conv.to!string(this.position) ~ ", yaw: " ~ std.conv.to!string(this.yaw) ~ ", pitch: " ~ std.conv.to!string(this.pitch) ~ ")";
+	}
+
 }
 
 class SteerBoat : Buffer {
@@ -850,6 +918,10 @@ class SteerBoat : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "SteerBoat(rightPaddleTurning: " ~ std.conv.to!string(this.rightPaddleTurning) ~ ", leftPaddleTurning: " ~ std.conv.to!string(this.leftPaddleTurning) ~ ")";
 	}
 
 }
@@ -902,6 +974,10 @@ class PlayerAbilities : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "PlayerAbilities(flags: " ~ std.conv.to!string(this.flags) ~ ", flyingSpeed: " ~ std.conv.to!string(this.flyingSpeed) ~ ", walkingSpeed: " ~ std.conv.to!string(this.walkingSpeed) ~ ")";
 	}
 
 }
@@ -958,6 +1034,10 @@ class PlayerDigging : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "PlayerDigging(status: " ~ std.conv.to!string(this.status) ~ ", position: " ~ std.conv.to!string(this.position) ~ ", face: " ~ std.conv.to!string(this.face) ~ ")";
 	}
 
 }
@@ -1017,6 +1097,10 @@ class EntityAction : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "EntityAction(entityId: " ~ std.conv.to!string(this.entityId) ~ ", action: " ~ std.conv.to!string(this.action) ~ ", jumpBoost: " ~ std.conv.to!string(this.jumpBoost) ~ ")";
+	}
+
 }
 
 class SteerVehicle : Buffer {
@@ -1067,6 +1151,10 @@ class SteerVehicle : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "SteerVehicle(sideways: " ~ std.conv.to!string(this.sideways) ~ ", forward: " ~ std.conv.to!string(this.forward) ~ ", flags: " ~ std.conv.to!string(this.flags) ~ ")";
+	}
+
 }
 
 class ResourcePackStatus : Buffer {
@@ -1115,6 +1203,10 @@ class ResourcePackStatus : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "ResourcePackStatus(hash: " ~ std.conv.to!string(this.hash) ~ ", result: " ~ std.conv.to!string(this.result) ~ ")";
+	}
+
 }
 
 class HeldItemChange : Buffer {
@@ -1151,6 +1243,10 @@ class HeldItemChange : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "HeldItemChange(slot: " ~ std.conv.to!string(this.slot) ~ ")";
 	}
 
 }
@@ -1195,6 +1291,10 @@ class CreativeInventoryAction : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "CreativeInventoryAction(slot: " ~ std.conv.to!string(this.slot) ~ ", clickedItem: " ~ std.conv.to!string(this.clickedItem) ~ ")";
+	}
+
 }
 
 class UpdateSign : Buffer {
@@ -1235,6 +1335,10 @@ class UpdateSign : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "UpdateSign(position: " ~ std.conv.to!string(this.position) ~ ", lines: " ~ std.conv.to!string(this.lines) ~ ")";
 	}
 
 }
@@ -1279,6 +1383,10 @@ class Animation : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Animation(hand: " ~ std.conv.to!string(this.hand) ~ ")";
+	}
+
 }
 
 class Spectate : Buffer {
@@ -1315,6 +1423,10 @@ class Spectate : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "Spectate(player: " ~ std.conv.to!string(this.player) ~ ")";
 	}
 
 }
@@ -1371,6 +1483,10 @@ class PlayerBlockPlacement : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "PlayerBlockPlacement(position: " ~ std.conv.to!string(this.position) ~ ", face: " ~ std.conv.to!string(this.face) ~ ", hand: " ~ std.conv.to!string(this.hand) ~ ", cursorPosition: " ~ std.conv.to!string(this.cursorPosition) ~ ")";
+	}
+
 }
 
 class UseItem : Buffer {
@@ -1411,6 +1527,10 @@ class UseItem : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "UseItem(hand: " ~ std.conv.to!string(this.hand) ~ ")";
 	}
 
 }

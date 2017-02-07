@@ -95,4 +95,9 @@ public class ConsoleMessage extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ConsoleMessage(node: " + this.node + ", timestamp: " + this.timestamp + ", logger: " + this.logger + ", message: " + this.message + ")";
+	}
+
 }

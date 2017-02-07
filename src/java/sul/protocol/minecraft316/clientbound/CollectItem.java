@@ -59,4 +59,9 @@ public class CollectItem extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "CollectItem(collected: " + this.collected + ", collector: " + this.collector + ", count: " + this.count + ")";
+	}
+
 }

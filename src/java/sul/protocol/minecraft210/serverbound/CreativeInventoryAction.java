@@ -55,4 +55,9 @@ public class CreativeInventoryAction extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "CreativeInventoryAction(slot: " + this.slot + ", clickedItem: " + this.clickedItem.toString() + ")";
+	}
+
 }

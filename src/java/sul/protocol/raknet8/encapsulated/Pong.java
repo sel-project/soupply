@@ -51,4 +51,9 @@ public class Pong extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Pong(time: " + this.time + ")";
+	}
+
 }

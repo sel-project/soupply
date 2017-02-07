@@ -8,21 +8,30 @@
  */
 /**
  * Protocol used for the communication between an hub and multiple nodes with support
- * for Minecraft and Minecraft: Pocket Edition and different protocol versions.
+ * for Minecraft and Minecraft: Pocket Edition and different versions of their protocols.
  * 
  * <h2>Definitions</h2>
  * 
  * <h3>Hub</h3>
- * The hub is the network part of the game server and handles pings, login sequences,
- * keep alive packets, queries, external consoles and everything else that is not a
- * gameplay feature.
+ * The hub (server) is the network part of the game server and handles pings, login
+ * sequences, keep alive packets, queries, external consoles and everything else that
+ * is not a gameplay feature.
  * A server can work with only an hub (nodeless) but every player that will try to
  * join the server will be disconnected with an "End of Stream" message after the login
  * process.
  * 
  * <h3>Node</h3>
- * The node is the gameplay part of the game server. It contains worlds and entities
- * and has only one network connection, with the hub.
+ * The node (client) is the gameplay part of the game server. It contains worlds and
+ * entities and has only one network connection, with the hub.
+ * 
+ * <h2>Connection</h2>
+ * 
+ * Hncom uses a packet-oriented TCP connection and every packet is prefixed with a
+ * little-endian unsigned 32-bits integer, without any exception.
+ * 
+ * <h3>Authentication</h3>
+ * The node starts the connection sending a ConnectionRequest packet with its credentials
+ * and waits for a ConnectionResponse packet.
  */
 module sul.protocol.hncom1;
 

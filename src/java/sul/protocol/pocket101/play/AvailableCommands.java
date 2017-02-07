@@ -53,4 +53,9 @@ public class AvailableCommands extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "AvailableCommands(commands: " + this.commands + ")";
+	}
+
 }

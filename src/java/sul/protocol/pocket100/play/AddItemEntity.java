@@ -67,4 +67,9 @@ public class AddItemEntity extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "AddItemEntity(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ", item: " + this.item.toString() + ", position: " + this.position.toString() + ", motion: " + this.motion.toString() + ")";
+	}
+
 }

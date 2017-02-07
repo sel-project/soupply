@@ -51,4 +51,9 @@ public class PlayerFall extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerFall(distance: " + this.distance + ")";
+	}
+
 }

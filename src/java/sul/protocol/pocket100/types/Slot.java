@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket100.types;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Slot extends Packet {
@@ -44,6 +46,11 @@ public class Slot extends Packet {
 		id=this.readVarint();
 		if(id>0){ metaAndCount=this.readVarint(); }
 		if(id>0){ int bg5ida=readLittleEndianShort(); nbt=this.readBytes(bg5ida); }
+	}
+
+	@Override
+	public String toString() {
+		return "Slot(id: " + this.id + ", metaAndCount: " + this.metaAndCount + ", nbt: " + Arrays.toString(this.nbt) + ")";
 	}
 
 

@@ -56,5 +56,10 @@ public class Attribute extends Packet {
 		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
 	}
 
+	@Override
+	public String toString() {
+		return "Attribute(min: " + this.min + ", max: " + this.max + ", value: " + this.value + ", def: " + this.def + ", name: " + this.name + ")";
+	}
+
 
 }

@@ -41,4 +41,9 @@ public class Request extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Request()";
+	}
+
 }

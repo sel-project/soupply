@@ -9,6 +9,7 @@
 package sul.protocol.pocket100.play;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -61,6 +62,11 @@ public class Text extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Text(type: " + this.type + ")";
+	}
+
 	public class Raw extends Packet {
 
 		public static final byte TYPE = (byte)0;
@@ -95,6 +101,11 @@ public class Text extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Text.Raw(message: " + this.message + ")";
 		}
 
 	}
@@ -139,6 +150,11 @@ public class Text extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "Text.Chat(sender: " + this.sender + ", message: " + this.message + ")";
+		}
+
 	}
 
 	public class Translation extends Packet {
@@ -179,6 +195,11 @@ public class Text extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Text.Translation(message: " + this.message + ", parameters: " + Arrays.deepToString(this.parameters) + ")";
 		}
 
 	}
@@ -223,6 +244,11 @@ public class Text extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "Text.Popup(title: " + this.title + ", subtitle: " + this.subtitle + ")";
+		}
+
 	}
 
 	public class Tip extends Packet {
@@ -261,6 +287,11 @@ public class Text extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "Text.Tip(message: " + this.message + ")";
+		}
+
 	}
 
 	public class System extends Packet {
@@ -297,6 +328,11 @@ public class Text extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Text.System(message: " + this.message + ")";
 		}
 
 	}
@@ -339,6 +375,11 @@ public class Text extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Text.Whisper(sender: " + this.sender + ", message: " + this.message + ")";
 		}
 
 	}

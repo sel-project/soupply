@@ -51,4 +51,9 @@ public class SpawnPosition extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SpawnPosition(position: " + this.position + ")";
+	}
+
 }

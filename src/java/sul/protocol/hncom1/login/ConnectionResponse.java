@@ -78,4 +78,9 @@ public class ConnectionResponse extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ConnectionResponse(protocol: " + this.protocol + ", status: " + this.status + ")";
+	}
+
 }

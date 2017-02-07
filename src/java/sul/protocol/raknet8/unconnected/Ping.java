@@ -8,6 +8,8 @@
  */
 package sul.protocol.raknet8.unconnected;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Ping extends Packet {
@@ -53,6 +55,11 @@ public class Ping extends Packet {
 		Ping ret = new Ping();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Ping(pingId: " + this.pingId + ", magic: " + Arrays.toString(this.magic) + ")";
 	}
 
 }

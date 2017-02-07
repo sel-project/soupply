@@ -8,6 +8,8 @@
  */
 package sul.protocol.raknet8.encapsulated;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Mcpe extends Packet {
@@ -49,6 +51,11 @@ public class Mcpe extends Packet {
 		Mcpe ret = new Mcpe();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Mcpe(packet: " + Arrays.toString(this.packet) + ")";
 	}
 
 }

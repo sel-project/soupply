@@ -52,5 +52,10 @@ public class Property extends Packet {
 		if(signed==true){ int bgvuc2lnbmf0dxjl=this.readVaruint(); signature=new String(this.readBytes(bgvuc2lnbmf0dxjl), StandardCharsets.UTF_8); }
 	}
 
+	@Override
+	public String toString() {
+		return "Property(name: " + this.name + ", value: " + this.value + ", signed: " + this.signed + ", signature: " + this.signature + ")";
+	}
+
 
 }

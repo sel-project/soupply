@@ -88,4 +88,9 @@ public class Respawn extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Respawn(dimension: " + this.dimension + ", difficulty: " + this.difficulty + ", gamemode: " + this.gamemode + ", levelType: " + this.levelType + ")";
+	}
+
 }

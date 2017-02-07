@@ -6,10 +6,13 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
+/**
+ * Node-related packets and updates.
+ */
 module sul.protocol.hncom1.status;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
@@ -20,8 +23,11 @@ import sul.utils.var;
 
 static import sul.protocol.hncom1.types;
 
-alias Packets = TypeTuple!(AddNode, RemoveNode, MessageServerbound, MessageClientbound, Players, ResourcesUsage, Logs, RemoteCommand, UpdateList, Reload);
+alias Packets = TypeTuple!(AddNode, RemoveNode, MessageServerbound, MessageClientbound, Players, ResourcesUsage, Log, RemoteCommand, UpdateList, Reload);
 
+/**
+ * Notifies the node that another node (that is not itelf) has connected to the hub.
+ */
 class AddNode : Buffer {
 
 	public enum ubyte ID = 4;
@@ -31,9 +37,24 @@ class AddNode : Buffer {
 
 	public enum string[] FIELDS = ["hubId", "name", "main", "acceptedGames"];
 
+	/**
+	 * Identifier given by the hub to uniquey identify the node.
+	 */
 	public uint hubId;
+
+	/**
+	 * Node's name used for displaying and identification purposes.
+	 */
 	public string name;
+
+	/**
+	 * Whether the node is a main node (see ConnectionRequest.main).
+	 */
 	public bool main;
+
+	/**
+	 * Indicates the game accepted by the node.
+	 */
 	public sul.protocol.hncom1.types.Game[] acceptedGames;
 
 	public pure nothrow @safe @nogc this() {}
@@ -70,8 +91,16 @@ class AddNode : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "AddNode(hubId: " ~ std.conv.to!string(this.hubId) ~ ", name: " ~ std.conv.to!string(this.name) ~ ", main: " ~ std.conv.to!string(this.main) ~ ", acceptedGames: " ~ std.conv.to!string(this.acceptedGames) ~ ")";
+	}
+
 }
 
+/**
+ * Notifies the node that another node, previously added with AddNode has disconnected
+ * from the hub.
+ */
 class RemoveNode : Buffer {
 
 	public enum ubyte ID = 5;
@@ -81,6 +110,9 @@ class RemoveNode : Buffer {
 
 	public enum string[] FIELDS = ["hubId"];
 
+	/**
+	 * Node's id given by the hub.
+	 */
 	public uint hubId;
 
 	public pure nothrow @safe @nogc this() {}
@@ -108,8 +140,15 @@ class RemoveNode : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "RemoveNode(hubId: " ~ std.conv.to!string(this.hubId) ~ ")";
+	}
+
 }
 
+/**
+ * Sends a binary message to some selected nodes or broadcast it.
+ */
 class MessageServerbound : Buffer {
 
 	public enum ubyte ID = 6;
@@ -120,10 +159,15 @@ class MessageServerbound : Buffer {
 	public enum string[] FIELDS = ["addressees", "payload"];
 
 	/**
-	 * Addressees of the message. If the array is empty the message should be broadcasted
-	 * to every connected node.
+	 * Addressees of the message. If the array is empty the message is broadcasted to every
+	 * connected node.
 	 */
 	public uint[] addressees;
+
+	/**
+	 * Bytes to be sent/broadcasted. It may be a serialised packet of a plugin-defined
+	 * protocol.
+	 */
 	public ubyte[] payload;
 
 	public pure nothrow @safe @nogc this() {}
@@ -154,8 +198,15 @@ class MessageServerbound : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "MessageServerbound(addressees: " ~ std.conv.to!string(this.addressees) ~ ", payload: " ~ std.conv.to!string(this.payload) ~ ")";
+	}
+
 }
 
+/**
+ * Receives a binary message sent by another node using MessageServerbound.
+ */
 class MessageClientbound : Buffer {
 
 	public enum ubyte ID = 7;
@@ -165,7 +216,14 @@ class MessageClientbound : Buffer {
 
 	public enum string[] FIELDS = ["sender", "payload"];
 
+	/**
+	 * Id of the node that has sent the message.
+	 */
 	public uint sender;
+
+	/**
+	 * Bytes received. It could be a serialised packet of a plugin-defined packet.
+	 */
 	public ubyte[] payload;
 
 	public pure nothrow @safe @nogc this() {}
@@ -196,6 +254,10 @@ class MessageClientbound : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "MessageClientbound(sender: " ~ std.conv.to!string(this.sender) ~ ", payload: " ~ std.conv.to!string(this.payload) ~ ")";
+	}
+
 }
 
 /**
@@ -208,14 +270,24 @@ class Players : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
+	// max
+	public enum int UNLIMITED = -1;
+
 	public enum string[] FIELDS = ["online", "max"];
 
+	/**
+	 * Players currently online in the whole server (connected to a node).
+	 */
 	public uint online;
-	public uint max;
+
+	/**
+	 * Maximum number of players that can connect to server.
+	 */
+	public int max;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint online, uint max=uint.init) {
+	public pure nothrow @safe @nogc this(uint online, int max=int.init) {
 		this.online = online;
 		this.max = max;
 	}
@@ -224,14 +296,14 @@ class Players : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(online));
-		writeBytes(varuint.encode(max));
+		writeBytes(varint.encode(max));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		online=varuint.decode(_buffer, &_index);
-		max=varuint.decode(_buffer, &_index);
+		max=varint.decode(_buffer, &_index);
 	}
 
 	public static pure nothrow @safe Players fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -241,10 +313,14 @@ class Players : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Players(online: " ~ std.conv.to!string(this.online) ~ ", max: " ~ std.conv.to!string(this.max) ~ ")";
+	}
+
 }
 
 /**
- * Updates the usage of the resources in the node.
+ * Updates the usage of the system's resources of the node.
  */
 class ResourcesUsage : Buffer {
 
@@ -255,8 +331,21 @@ class ResourcesUsage : Buffer {
 
 	public enum string[] FIELDS = ["tps", "ram", "cpu"];
 
+	/**
+	 * Ticks per second of the node, in the range 0 to 20, where a number lower than 20
+	 * indicates lag.
+	 */
 	public float tps;
+
+	/**
+	 * RAM used by the node in bytes.
+	 */
 	public ulong ram;
+
+	/**
+	 * Percentage of CPU used by the node. It may be higher than 100 if the node has more
+	 * than 1 CPU.
+	 */
 	public float cpu;
 
 	public pure nothrow @safe @nogc this() {}
@@ -290,45 +379,81 @@ class ResourcesUsage : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "ResourcesUsage(tps: " ~ std.conv.to!string(this.tps) ~ ", ram: " ~ std.conv.to!string(this.ram) ~ ", cpu: " ~ std.conv.to!string(this.cpu) ~ ")";
+	}
+
 }
 
 /**
- * Sends node logs to the hub.
+ * Sends a log to the hub.
  */
-class Logs : Buffer {
+class Log : Buffer {
 
 	public enum ubyte ID = 10;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["messages"];
+	public enum string[] FIELDS = ["timestamp", "logger", "message", "commandId"];
 
-	public sul.protocol.hncom1.types.Log[] messages;
+	/**
+	 * Unix time (in milliseconds) that indicates the exact creation time of the log.
+	 */
+	public ulong timestamp;
+
+	/**
+	 * Name of the logger (world, plugin or module/packet) thas has generated the log.
+	 */
+	public string logger;
+
+	/**
+	 * Logged message. It may contain Minecraft formatting codes.
+	 */
+	public string message;
+
+	/**
+	 * Identifier of the command that has generated the output or -1 if the log wasn't
+	 * generated by a command.
+	 */
+	public int commandId;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(sul.protocol.hncom1.types.Log[] messages) {
-		this.messages = messages;
+	public pure nothrow @safe @nogc this(ulong timestamp, string logger=string.init, string message=string.init, int commandId=int.init) {
+		this.timestamp = timestamp;
+		this.logger = logger;
+		this.message = message;
+		this.commandId = commandId;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varuint.encode(cast(uint)messages.length)); foreach(bwvzc2fnzxm;messages){ bwvzc2fnzxm.encode(bufferInstance); }
+		writeBytes(varulong.encode(timestamp));
+		writeBytes(varuint.encode(cast(uint)logger.length)); writeString(logger);
+		writeBytes(varuint.encode(cast(uint)message.length)); writeString(message);
+		writeBytes(varint.encode(commandId));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		messages.length=varuint.decode(_buffer, &_index); foreach(ref bwvzc2fnzxm;messages){ bwvzc2fnzxm.decode(bufferInstance); }
+		timestamp=varulong.decode(_buffer, &_index);
+		uint bg9nz2vy=varuint.decode(_buffer, &_index); logger=readString(bg9nz2vy);
+		uint bwvzc2fnzq=varuint.decode(_buffer, &_index); message=readString(bwvzc2fnzq);
+		commandId=varint.decode(_buffer, &_index);
 	}
 
-	public static pure nothrow @safe Logs fromBuffer(bool readId=true)(ubyte[] buffer) {
-		Logs ret = new Logs();
+	public static pure nothrow @safe Log fromBuffer(bool readId=true)(ubyte[] buffer) {
+		Log ret = new Log();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "Log(timestamp: " ~ std.conv.to!string(this.timestamp) ~ ", logger: " ~ std.conv.to!string(this.logger) ~ ", message: " ~ std.conv.to!string(this.message) ~ ", commandId: " ~ std.conv.to!string(this.commandId) ~ ")";
 	}
 
 }
@@ -350,9 +475,27 @@ class RemoteCommand : Buffer {
 
 	public enum string[] FIELDS = ["origin", "sender", "command", "commandId"];
 
+	/**
+	 * Origin of the command. It could be the hub itself or an external source.
+	 */
 	public ubyte origin;
+
+	/**
+	 * Address of the sender if the command has been sent from an external source and not
+	 * the hub.
+	 */
 	public sul.protocol.hncom1.types.Address sender;
+
+	/**
+	 * Commands and arguments that should be executed on the node. For example `say hello
+	 * world` or `transfer steve lobby12`.
+	 */
 	public string command;
+
+	/**
+	 * Identifier of the command. It's sent in Log.commandId if the command generates an
+	 * output.
+	 */
 	public int commandId;
 
 	public pure nothrow @safe @nogc this() {}
@@ -368,7 +511,7 @@ class RemoteCommand : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBigEndianUbyte(origin);
-		sender.encode(bufferInstance);
+		if(origin!=0){ sender.encode(bufferInstance); }
 		writeBytes(varuint.encode(cast(uint)command.length)); writeString(command);
 		writeBytes(varint.encode(commandId));
 		return _buffer;
@@ -377,7 +520,7 @@ class RemoteCommand : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		origin=readBigEndianUbyte();
-		sender.decode(bufferInstance);
+		if(origin!=0){ sender.decode(bufferInstance); }
 		uint y29tbwfuza=varuint.decode(_buffer, &_index); command=readString(y29tbwfuza);
 		commandId=varint.decode(_buffer, &_index);
 	}
@@ -387,6 +530,10 @@ class RemoteCommand : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "RemoteCommand(origin: " ~ std.conv.to!string(this.origin) ~ ", sender: " ~ std.conv.to!string(this.sender) ~ ", command: " ~ std.conv.to!string(this.command) ~ ", commandId: " ~ std.conv.to!string(this.commandId) ~ ")";
 	}
 
 }
@@ -449,6 +596,10 @@ class UpdateList : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "UpdateList(list: " ~ std.conv.to!string(this.list) ~ ", action: " ~ std.conv.to!string(this.action) ~ ", type: " ~ std.conv.to!string(this.type) ~ ")";
+	}
+
 	alias _encode = encode;
 
 	enum string variantField = "type";
@@ -480,6 +631,10 @@ class UpdateList : Buffer {
 			hubId=varuint.decode(_buffer, &_index);
 		}
 
+		public override string toString() {
+			return "UpdateList.ByHubId(hubId: " ~ std.conv.to!string(this.hubId) ~ ")";
+		}
+
 	}
 
 	public class ByName {
@@ -505,6 +660,10 @@ class UpdateList : Buffer {
 
 		public pure nothrow @safe void decode() {
 			uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
+		}
+
+		public override string toString() {
+			return "UpdateList.ByName(username: " ~ std.conv.to!string(this.username) ~ ")";
 		}
 
 	}
@@ -542,6 +701,10 @@ class UpdateList : Buffer {
 			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		}
 
+		public override string toString() {
+			return "UpdateList.ByUuid(game: " ~ std.conv.to!string(this.game) ~ ", uuid: " ~ std.conv.to!string(this.uuid) ~ ")";
+		}
+
 	}
 
 }
@@ -574,6 +737,10 @@ class Reload : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "Reload()";
 	}
 
 }

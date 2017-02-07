@@ -64,4 +64,9 @@ public class UseEntity extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "UseEntity(target: " + this.target + ", type: " + this.type + ", targetPosition: " + this.targetPosition.toString() + ")";
+	}
+
 }

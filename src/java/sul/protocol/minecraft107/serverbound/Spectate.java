@@ -53,4 +53,9 @@ public class Spectate extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Spectate(player: " + this.player.toString() + ")";
+	}
+
 }

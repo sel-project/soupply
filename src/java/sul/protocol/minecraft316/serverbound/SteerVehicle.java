@@ -63,4 +63,9 @@ public class SteerVehicle extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SteerVehicle(sideways: " + this.sideways + ", forward: " + this.forward + ", flags: " + this.flags + ")";
+	}
+
 }

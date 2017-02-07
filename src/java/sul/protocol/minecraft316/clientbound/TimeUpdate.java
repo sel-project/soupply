@@ -55,4 +55,9 @@ public class TimeUpdate extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "TimeUpdate(worldAge: " + this.worldAge + ", time: " + this.time + ")";
+	}
+
 }

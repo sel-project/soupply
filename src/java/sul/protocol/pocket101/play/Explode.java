@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket101.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Explode extends Packet {
@@ -57,6 +59,11 @@ public class Explode extends Packet {
 		Explode ret = new Explode();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Explode(position: " + this.position.toString() + ", radius: " + this.radius + ", destroyedBlocks: " + Arrays.deepToString(this.destroyedBlocks) + ")";
 	}
 
 }

@@ -46,5 +46,10 @@ public class BlockPosition extends Packet {
 		z=this.readVarint();
 	}
 
+	@Override
+	public String toString() {
+		return "BlockPosition(x: " + this.x + ", y: " + this.y + ", z: " + this.z + ")";
+	}
+
 
 }

@@ -59,4 +59,9 @@ public class SetExperience extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SetExperience(experience: " + this.experience + ", level: " + this.level + ", totalExperience: " + this.totalExperience + ")";
+	}
+
 }

@@ -12,6 +12,9 @@ import java.nio.charset.StandardCharsets;
 
 import sul.utils.*;
 
+/**
+ * Updates the player's display name when it changes.
+ */
 public class UpdateDisplayName extends Packet {
 
 	public static final byte ID = (byte)19;
@@ -20,6 +23,11 @@ public class UpdateDisplayName extends Packet {
 	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
+
+	/**
+	 * Player's display name that can contain formatting codes. Prefixes and suffixes should
+	 * be avoided.
+	 */
 	public String displayName;
 
 	public UpdateDisplayName() {}
@@ -55,6 +63,11 @@ public class UpdateDisplayName extends Packet {
 		UpdateDisplayName ret = new UpdateDisplayName();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "UpdateDisplayName(hubId: " + this.hubId + ", displayName: " + this.displayName + ")";
 	}
 
 }

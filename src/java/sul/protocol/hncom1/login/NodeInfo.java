@@ -8,6 +8,9 @@
  */
 package sul.protocol.hncom1.login;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 import sul.utils.*;
 
 /**
@@ -23,23 +26,62 @@ public class NodeInfo extends Packet {
 	// max
 	public static final int UNLIMITED = 0;
 
+	/**
+	 * Unix time in microseconds precision that indicates the exact moment when this packet
+	 * was created. It's used by the hub to calculate the latency.
+	 */
 	public long time;
+
+	/**
+	 * Maximum number of players accepted by node.
+	 */
 	public int max;
+
+	/**
+	 * Informations about the games accepted by the node. There should be at least one
+	 * combination of game/protocol that is also accepted by hub as indicated in HubInfo.gamesInfo,
+	 * otherwise the node will never receive any player.
+	 */
 	public sul.protocol.hncom1.types.Game[] acceptedGames;
+
+	/**
+	 * List of plugins loaded on the node for creating queries on the hub.
+	 */
 	public sul.protocol.hncom1.types.Plugin[] plugins;
+
+	/**
+	 * Optional informations about the server's software and system, similar to HubInfo.additionalJson.
+	 * <code>
+	 * {
+	 *    "software": {
+	 *       "name": "SEL",
+	 *       "version": "1.0.4",
+	 *       "stable": true
+	 *    },
+	 *    "system": {
+	 *       "os": "Windows 10",
+	 *       "cpu": "Intel(R) Core(TM) i7-5700U CPU @ 3.40GHz",
+	 *       "cores": 4,
+	 *       "ram": 8589934592
+	 *    }
+	 * }
+	 * </code>
+	 */
+	public String additionalJson;
 
 	public NodeInfo() {}
 
-	public NodeInfo(long time, int max, sul.protocol.hncom1.types.Game[] acceptedGames, sul.protocol.hncom1.types.Plugin[] plugins) {
+	public NodeInfo(long time, int max, sul.protocol.hncom1.types.Game[] acceptedGames, sul.protocol.hncom1.types.Plugin[] plugins, String additionalJson) {
 		this.time = time;
 		this.max = max;
 		this.acceptedGames = acceptedGames;
 		this.plugins = plugins;
+		this.additionalJson = additionalJson;
 	}
 
 	@Override
 	public int length() {
-		int length=Buffer.varulongLength(time) + Buffer.varuintLength(max) + Buffer.varuintLength(acceptedGames.length) + Buffer.varuintLength(plugins.length) + 1; for(sul.protocol.hncom1.types.Game ywnjzxb0zwrhyw1l:acceptedGames){ length+=ywnjzxb0zwrhyw1l.length(); };for(sul.protocol.hncom1.types.Plugin cgx1z2lucw:plugins){ length+=cgx1z2lucw.length(); } return length;
+		int length=Buffer.varulongLength(time) + Buffer.varuintLength(max) + Buffer.varuintLength(acceptedGames.length) + Buffer.varuintLength(plugins.length) + Buffer.varuintLength(additionalJson.getBytes(StandardCharsets.UTF_8).length) + additionalJson.getBytes(StandardCharsets.UTF_8).length + 1; for(sul.protocol.hncom1.types.Game ywnjzxb0zwrhyw1l:acceptedGames){ length+=ywnjzxb0zwrhyw1l.length(); };for(sul.protocol.hncom1.types.Plugin cgx1z2lucw:plugins){ length+=cgx1z2lucw.length(); } return length;
 	}
 
 	@Override
@@ -50,6 +92,7 @@ public class NodeInfo extends Packet {
 		this.writeVaruint(max);
 		this.writeVaruint((int)acceptedGames.length); for(sul.protocol.hncom1.types.Game ywnjzxb0zwrhyw1l:acceptedGames){ this.writeBytes(ywnjzxb0zwrhyw1l.encode()); }
 		this.writeVaruint((int)plugins.length); for(sul.protocol.hncom1.types.Plugin cgx1z2lucw:plugins){ this.writeBytes(cgx1z2lucw.encode()); }
+		byte[] ywrkaxrpb25hbepz=additionalJson.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)ywrkaxrpb25hbepz.length); this.writeBytes(ywrkaxrpb25hbepz);
 		return this.getBuffer();
 	}
 
@@ -61,12 +104,18 @@ public class NodeInfo extends Packet {
 		max=this.readVaruint();
 		int bgfjy2vwdgvkr2ft=this.readVaruint(); acceptedGames=new sul.protocol.hncom1.types.Game[bgfjy2vwdgvkr2ft]; for(int ywnjzxb0zwrhyw1l=0;ywnjzxb0zwrhyw1l<acceptedGames.length;ywnjzxb0zwrhyw1l++){ acceptedGames[ywnjzxb0zwrhyw1l]=new sul.protocol.hncom1.types.Game(); acceptedGames[ywnjzxb0zwrhyw1l]._index=this._index; acceptedGames[ywnjzxb0zwrhyw1l].decode(this._buffer); this._index=acceptedGames[ywnjzxb0zwrhyw1l]._index; }
 		int bhbsdwdpbnm=this.readVaruint(); plugins=new sul.protocol.hncom1.types.Plugin[bhbsdwdpbnm]; for(int cgx1z2lucw=0;cgx1z2lucw<plugins.length;cgx1z2lucw++){ plugins[cgx1z2lucw]=new sul.protocol.hncom1.types.Plugin(); plugins[cgx1z2lucw]._index=this._index; plugins[cgx1z2lucw].decode(this._buffer); this._index=plugins[cgx1z2lucw]._index; }
+		int bgvuywrkaxrpb25h=this.readVaruint(); additionalJson=new String(this.readBytes(bgvuywrkaxrpb25h), StandardCharsets.UTF_8);
 	}
 
 	public static NodeInfo fromBuffer(byte[] buffer) {
 		NodeInfo ret = new NodeInfo();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "NodeInfo(time: " + this.time + ", max: " + this.max + ", acceptedGames: " + Arrays.deepToString(this.acceptedGames) + ", plugins: " + Arrays.deepToString(this.plugins) + ", additionalJson: " + this.additionalJson + ")";
 	}
 
 }

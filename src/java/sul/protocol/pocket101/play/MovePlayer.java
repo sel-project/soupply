@@ -80,4 +80,9 @@ public class MovePlayer extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "MovePlayer(entityId: " + this.entityId + ", position: " + this.position.toString() + ", pitch: " + this.pitch + ", headYaw: " + this.headYaw + ", yaw: " + this.yaw + ", animation: " + this.animation + ", onGround: " + this.onGround + ")";
+	}
+
 }

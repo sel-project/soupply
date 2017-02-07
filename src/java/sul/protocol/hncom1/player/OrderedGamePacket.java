@@ -8,6 +8,8 @@
  */
 package sul.protocol.hncom1.player;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 /**
@@ -22,7 +24,17 @@ public class OrderedGamePacket extends Packet {
 	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
+
+	/**
+	 * Order of the packet. If the hub receives a packet with an id different from 0 or
+	 * the latest ordered packet's order + 1 it should wait for the packets with the missing
+	 * order(s) before sending.
+	 */
 	public int order;
+
+	/**
+	 * Serialised packet (see GamePacket.packet).
+	 */
 	public byte[] packet;
 
 	public OrderedGamePacket() {}
@@ -61,6 +73,11 @@ public class OrderedGamePacket extends Packet {
 		OrderedGamePacket ret = new OrderedGamePacket();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderedGamePacket(hubId: " + this.hubId + ", order: " + this.order + ", packet: " + Arrays.toString(this.packet) + ")";
 	}
 
 }

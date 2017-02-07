@@ -55,4 +55,9 @@ public class AttachEntity extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "AttachEntity(target: " + this.target + ", holder: " + this.holder + ")";
+	}
+
 }

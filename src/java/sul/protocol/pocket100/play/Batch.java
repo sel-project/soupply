@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket100.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Batch extends Packet {
@@ -49,6 +51,11 @@ public class Batch extends Packet {
 		Batch ret = new Batch();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Batch(data: " + Arrays.toString(this.data) + ")";
 	}
 
 }

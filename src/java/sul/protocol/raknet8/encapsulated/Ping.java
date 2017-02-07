@@ -51,4 +51,9 @@ public class Ping extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Ping(time: " + this.time + ")";
+	}
+
 }

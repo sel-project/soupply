@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft210.clientbound;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class DestroyEntities extends Packet {
@@ -49,6 +51,11 @@ public class DestroyEntities extends Packet {
 		DestroyEntities ret = new DestroyEntities();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "DestroyEntities(entityIds: " + Arrays.toString(this.entityIds) + ")";
 	}
 
 }

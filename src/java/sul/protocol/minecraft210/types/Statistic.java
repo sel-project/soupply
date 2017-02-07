@@ -44,5 +44,10 @@ public class Statistic extends Packet {
 		value=this.readVaruint();
 	}
 
+	@Override
+	public String toString() {
+		return "Statistic(name: " + this.name + ", value: " + this.value + ")";
+	}
+
 
 }

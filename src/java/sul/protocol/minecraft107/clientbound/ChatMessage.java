@@ -62,4 +62,9 @@ public class ChatMessage extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ChatMessage(message: " + this.message + ", position: " + this.position + ")";
+	}
+
 }

@@ -64,5 +64,10 @@ public class GameInfo extends Packet {
 		port=readBigEndianShort();
 	}
 
+	@Override
+	public String toString() {
+		return "GameInfo(game: " + this.game.toString() + ", motd: " + this.motd + ", port: " + this.port + ")";
+	}
+
 
 }

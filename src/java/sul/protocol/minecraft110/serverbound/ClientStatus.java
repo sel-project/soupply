@@ -56,4 +56,9 @@ public class ClientStatus extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ClientStatus(action: " + this.action + ")";
+	}
+
 }

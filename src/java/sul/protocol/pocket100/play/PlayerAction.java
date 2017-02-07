@@ -78,4 +78,9 @@ public class PlayerAction extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerAction(entityId: " + this.entityId + ", action: " + this.action + ", position: " + this.position.toString() + ", face: " + this.face + ")";
+	}
+
 }

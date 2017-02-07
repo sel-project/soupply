@@ -44,7 +44,7 @@ import sul.utils.Packet;
  * var socket = new WebSocket("example.com:19134");
  * socket.onmessage = function(event){
  *    var json = JSON.parse(event.data);
- *    if(json.hash) console.log("Server's requires hash " + json.hash_algorithm);
+ *    if(json.hash) console.log("The server requires hash " + json.hash_algorithm);
  *    else console.log("The server doesn't require hashing");
  * }
  * </code>

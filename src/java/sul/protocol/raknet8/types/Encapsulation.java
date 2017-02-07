@@ -8,6 +8,8 @@
  */
 package sul.protocol.raknet8.types;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Encapsulation extends Packet {
@@ -60,6 +62,11 @@ public class Encapsulation extends Packet {
 		if((info&0x7F)>=96){ orderChannel=readBigEndianByte(); }
 		if((info&0x10)!=0){ split=new sul.protocol.raknet8.types.Split(); split._index=this._index; split.decode(this._buffer); this._index=split._index; }
 		payload=this.readBytes(this._buffer.length-this._index);
+	}
+
+	@Override
+	public String toString() {
+		return "Encapsulation(info: " + this.info + ", length: " + this.length + ", messageIndex: " + this.messageIndex + ", orderIndex: " + this.orderIndex + ", orderChannel: " + this.orderChannel + ", split: " + this.split.toString() + ", payload: " + Arrays.toString(this.payload) + ")";
 	}
 
 

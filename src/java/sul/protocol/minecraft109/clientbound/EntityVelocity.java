@@ -55,4 +55,9 @@ public class EntityVelocity extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityVelocity(entityId: " + this.entityId + ", velocity: " + this.velocity.toString() + ")";
+	}
+
 }

@@ -51,4 +51,9 @@ public class Latency extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Latency(id: " + this.id + ")";
+	}
+
 }

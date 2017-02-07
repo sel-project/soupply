@@ -42,5 +42,10 @@ public class OptionalPosition extends Packet {
 		if(hasPosition==true){ position=readBigEndianLong(); }
 	}
 
+	@Override
+	public String toString() {
+		return "OptionalPosition(hasPosition: " + this.hasPosition + ", position: " + this.position + ")";
+	}
+
 
 }

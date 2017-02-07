@@ -51,4 +51,9 @@ public class ContainerClose extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ContainerClose(window: " + this.window + ")";
+	}
+
 }

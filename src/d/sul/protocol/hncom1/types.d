@@ -9,7 +9,7 @@
 module sul.protocol.hncom1.types;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typecons : Tuple;
 import std.uuid : UUID;
@@ -18,7 +18,7 @@ import sul.utils.buffer;
 import sul.utils.var;
 
 /**
- * Internet protocol address. Could be either version 4 and 6.
+ * Internet protocol address. Could be either version 4 or 6.
  */
 struct Address {
 
@@ -47,6 +47,10 @@ struct Address {
 			bytes.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+bytes.length){ bytes=_buffer[_index.._index+bytes.length].dup; _index+=bytes.length; }
 			port=readBigEndianUshort();
 		}
+	}
+
+	public string toString() {
+		return "Address(bytes: " ~ std.conv.to!string(this.bytes) ~ ", port: " ~ std.conv.to!string(this.port) ~ ")";
 	}
 
 }
@@ -85,6 +89,10 @@ struct Game {
 			type=readBigEndianUbyte();
 			protocols.length=varuint.decode(_buffer, &_index); foreach(ref chjvdg9jb2xz;protocols){ chjvdg9jb2xz=varuint.decode(_buffer, &_index); }
 		}
+	}
+
+	public string toString() {
+		return "Game(type: " ~ std.conv.to!string(this.type) ~ ", protocols: " ~ std.conv.to!string(this.protocols) ~ ")";
 	}
 
 }
@@ -129,6 +137,10 @@ struct GameInfo {
 		}
 	}
 
+	public string toString() {
+		return "GameInfo(game: " ~ std.conv.to!string(this.game) ~ ", motd: " ~ std.conv.to!string(this.motd) ~ ", port: " ~ std.conv.to!string(this.port) ~ ")";
+	}
+
 }
 
 /**
@@ -161,6 +173,10 @@ struct Plugin {
 			uint bmftzq=varuint.decode(_buffer, &_index); name=readString(bmftzq);
 			uint dmvycw=varuint.decode(_buffer, &_index); vers=readString(dmvycw);
 		}
+	}
+
+	public string toString() {
+		return "Plugin(name: " ~ std.conv.to!string(this.name) ~ ", vers: " ~ std.conv.to!string(this.vers) ~ ")";
 	}
 
 }
@@ -199,47 +215,8 @@ struct Skin {
 		}
 	}
 
-}
-
-/**
- * Indicates a log.
- */
-struct Log {
-
-	public enum string[] FIELDS = ["timestamp", "logger", "message", "commandId"];
-
-	/**
-	 * Unix time (in milliseconds) that indicates the exact creation time of the log.
-	 */
-	public ulong timestamp;
-
-	/**
-	 * Name of the logger (world, plugin or module/packet) thas has generated the log.
-	 */
-	public string logger;
-
-	/**
-	 * Logged message. It may contain Minecraft formatting codes.
-	 */
-	public string message;
-	public int commandId;
-
-	public pure nothrow @safe void encode(Buffer buffer) {
-		with(buffer) {
-			writeBigEndianUlong(timestamp);
-			writeBytes(varuint.encode(cast(uint)logger.length)); writeString(logger);
-			writeBytes(varuint.encode(cast(uint)message.length)); writeString(message);
-			writeBytes(varint.encode(commandId));
-		}
-	}
-
-	public pure nothrow @safe void decode(Buffer buffer) {
-		with(buffer) {
-			timestamp=readBigEndianUlong();
-			uint bg9nz2vy=varuint.decode(_buffer, &_index); logger=readString(bg9nz2vy);
-			uint bwvzc2fnzq=varuint.decode(_buffer, &_index); message=readString(bwvzc2fnzq);
-			commandId=varint.decode(_buffer, &_index);
-		}
+	public string toString() {
+		return "Skin(name: " ~ std.conv.to!string(this.name) ~ ", data: " ~ std.conv.to!string(this.data) ~ ")";
 	}
 
 }

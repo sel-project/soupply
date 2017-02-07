@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft108.types;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Slot extends Packet {
@@ -48,6 +50,11 @@ public class Slot extends Packet {
 		if(id>0){ count=readBigEndianByte(); }
 		if(id>0){ damage=readBigEndianShort(); }
 		if(id>0){ nbt=this.readBytes(this._buffer.length-this._index); }
+	}
+
+	@Override
+	public String toString() {
+		return "Slot(id: " + this.id + ", count: " + this.count + ", damage: " + this.damage + ", nbt: " + Arrays.toString(this.nbt) + ")";
 	}
 
 

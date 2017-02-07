@@ -66,6 +66,11 @@ public class BossBar extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "BossBar(uuid: " + this.uuid.toString() + ", action: " + this.action + ")";
+	}
+
 	public class Add extends Packet {
 
 		public static final int ACTION = (int)0;
@@ -138,6 +143,11 @@ public class BossBar extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "BossBar.Add(title: " + this.title + ", health: " + this.health + ", color: " + this.color + ", division: " + this.division + ", flags: " + this.flags + ")";
+		}
+
 	}
 
 	public class Remove extends Packet {
@@ -164,6 +174,11 @@ public class BossBar extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "BossBar.Remove()";
 		}
 
 	}
@@ -204,6 +219,11 @@ public class BossBar extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "BossBar.UpdateHealth(health: " + this.health + ")";
+		}
+
 	}
 
 	public class UpdateTitle extends Packet {
@@ -240,6 +260,11 @@ public class BossBar extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "BossBar.UpdateTitle(title: " + this.title + ")";
 		}
 
 	}
@@ -300,6 +325,11 @@ public class BossBar extends Packet {
 			this.decode(remainingBuffer());
 		}
 
+		@Override
+		public String toString() {
+			return "BossBar.UpdateStyle(color: " + this.color + ", division: " + this.division + ")";
+		}
+
 	}
 
 	public class UpdateFlags extends Packet {
@@ -340,6 +370,11 @@ public class BossBar extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "BossBar.UpdateFlags(flags: " + this.flags + ")";
 		}
 
 	}

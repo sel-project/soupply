@@ -51,4 +51,9 @@ public class OpenSignEditor extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "OpenSignEditor(position: " + this.position + ")";
+	}
+
 }

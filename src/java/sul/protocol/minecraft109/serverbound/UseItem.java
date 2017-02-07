@@ -55,4 +55,9 @@ public class UseItem extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "UseItem(hand: " + this.hand + ")";
+	}
+
 }

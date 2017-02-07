@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft110.clientbound;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class SetPassengers extends Packet {
@@ -53,6 +55,11 @@ public class SetPassengers extends Packet {
 		SetPassengers ret = new SetPassengers();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "SetPassengers(entityId: " + this.entityId + ", passengers: " + Arrays.toString(this.passengers) + ")";
 	}
 
 }

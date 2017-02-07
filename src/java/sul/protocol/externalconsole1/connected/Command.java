@@ -61,4 +61,9 @@ public class Command extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Command(command: " + this.command + ")";
+	}
+
 }

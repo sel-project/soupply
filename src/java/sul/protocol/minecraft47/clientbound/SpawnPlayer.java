@@ -77,4 +77,9 @@ public class SpawnPlayer extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SpawnPlayer(entityId: " + this.entityId + ", uuid: " + this.uuid.toString() + ", position: " + this.position.toString() + ", yaw: " + this.yaw + ", pitch: " + this.pitch + ", currentItem: " + this.currentItem + ", metadata: " + this.metadata.toString() + ")";
+	}
+
 }

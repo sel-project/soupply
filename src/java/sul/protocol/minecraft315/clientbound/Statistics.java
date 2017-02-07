@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft315.clientbound;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Statistics extends Packet {
@@ -49,6 +51,11 @@ public class Statistics extends Packet {
 		Statistics ret = new Statistics();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Statistics(statistics: " + Arrays.deepToString(this.statistics) + ")";
 	}
 
 }

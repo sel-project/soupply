@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket101.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class ResourcePacksInfo extends Packet {
@@ -57,6 +59,11 @@ public class ResourcePacksInfo extends Packet {
 		ResourcePacksInfo ret = new ResourcePacksInfo();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "ResourcePacksInfo(mustAccept: " + this.mustAccept + ", behaviourPacks: " + Arrays.deepToString(this.behaviourPacks) + ", resourcePacks: " + Arrays.deepToString(this.resourcePacks) + ")";
 	}
 
 }

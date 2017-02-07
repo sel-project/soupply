@@ -9,7 +9,7 @@
 module sul.protocol.minecraft315.status;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
@@ -76,6 +76,10 @@ class Handshake : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Handshake(protocol: " ~ std.conv.to!string(this.protocol) ~ ", serverAddress: " ~ std.conv.to!string(this.serverAddress) ~ ", serverPort: " ~ std.conv.to!string(this.serverPort) ~ ", next: " ~ std.conv.to!string(this.next) ~ ")";
+	}
+
 }
 
 class Request : Buffer {
@@ -102,6 +106,10 @@ class Request : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "Request()";
 	}
 
 }
@@ -142,6 +150,10 @@ class Response : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Response(json: " ~ std.conv.to!string(this.json) ~ ")";
+	}
+
 }
 
 class Latency : Buffer {
@@ -178,6 +190,10 @@ class Latency : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "Latency(id: " ~ std.conv.to!string(this.id) ~ ")";
 	}
 
 }

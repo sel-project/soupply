@@ -55,4 +55,9 @@ public class SetCooldown extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SetCooldown(item: " + this.item + ", cooldown: " + this.cooldown + ")";
+	}
+
 }

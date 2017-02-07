@@ -59,4 +59,9 @@ public class VehicleMove extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "VehicleMove(position: " + this.position.toString() + ", yaw: " + this.yaw + ", pitch: " + this.pitch + ")";
+	}
+
 }

@@ -59,4 +59,9 @@ public class EntityEquipment extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityEquipment(entityId: " + this.entityId + ", slot: " + this.slot + ", item: " + this.item.toString() + ")";
+	}
+
 }

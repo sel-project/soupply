@@ -61,6 +61,11 @@ public class CombatEvent extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "CombatEvent(eventId: " + this.eventId + ")";
+	}
+
 	public class EnterCombat extends Packet {
 
 		public static final byte EVENT_ID = (byte)0;
@@ -85,6 +90,11 @@ public class CombatEvent extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "CombatEvent.EnterCombat()";
 		}
 
 	}
@@ -127,6 +137,11 @@ public class CombatEvent extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "CombatEvent.EndCombat(duration: " + this.duration + ", entityId: " + this.entityId + ")";
 		}
 
 	}
@@ -173,6 +188,11 @@ public class CombatEvent extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "CombatEvent.EntityDead(playerId: " + this.playerId + ", entityId: " + this.entityId + ", message: " + this.message + ")";
 		}
 
 	}

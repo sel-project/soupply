@@ -59,4 +59,9 @@ public class ConfirmTransaction extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ConfirmTransaction(window: " + this.window + ", action: " + this.action + ", accepted: " + this.accepted + ")";
+	}
+
 }

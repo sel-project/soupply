@@ -67,4 +67,9 @@ public class ContainerOpen extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ContainerOpen(window: " + this.window + ", type: " + this.type + ", slotCount: " + this.slotCount + ", position: " + this.position.toString() + ", entityId: " + this.entityId + ")";
+	}
+
 }

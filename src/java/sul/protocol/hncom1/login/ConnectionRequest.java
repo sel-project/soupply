@@ -85,4 +85,9 @@ public class ConnectionRequest extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ConnectionRequest(protocol: " + this.protocol + ", password: " + this.password + ", name: " + this.name + ", main: " + this.main + ")";
+	}
+
 }

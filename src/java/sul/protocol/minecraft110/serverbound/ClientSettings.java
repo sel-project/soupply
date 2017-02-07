@@ -91,4 +91,9 @@ public class ClientSettings extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ClientSettings(language: " + this.language + ", viewDistance: " + this.viewDistance + ", chatMode: " + this.chatMode + ", chatColors: " + this.chatColors + ", displayedSkinParts: " + this.displayedSkinParts + ", mainHand: " + this.mainHand + ")";
+	}
+
 }

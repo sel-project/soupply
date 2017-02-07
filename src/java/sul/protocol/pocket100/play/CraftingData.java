@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket100.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class CraftingData extends Packet {
@@ -49,6 +51,11 @@ public class CraftingData extends Packet {
 		CraftingData ret = new CraftingData();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "CraftingData(recipes: " + Arrays.deepToString(this.recipes) + ")";
 	}
 
 }

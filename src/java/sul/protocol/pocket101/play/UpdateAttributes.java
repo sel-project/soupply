@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket101.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class UpdateAttributes extends Packet {
@@ -53,6 +55,11 @@ public class UpdateAttributes extends Packet {
 		UpdateAttributes ret = new UpdateAttributes();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "UpdateAttributes(entityId: " + this.entityId + ", attributes: " + Arrays.deepToString(this.attributes) + ")";
 	}
 
 }

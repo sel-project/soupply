@@ -8,6 +8,8 @@
  */
 package sul.protocol.hncom1.player;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 /**
@@ -21,6 +23,27 @@ public class GamePacket extends Packet {
 	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
+
+	/**
+	 * Serialised packet ready to be encrypted or encapsulated and sent to the client.
+	 * <h4>Format</h4>
+	 * 
+	 * <h5>Minecraft (serverbound)</h5>
+	 * The packet is prefixed with a varuint-encoded 0 if the packet is not compressed
+	 * or with the uncompressed packet's length encoded as a varuint if the packet is compressed.
+	 * 
+	 * <h5>Minecraft (clientbound)</h5>
+	 * The packet is already unencrypted and uncompressed and ready to be handled as a
+	 * serverbound packet.
+	 * 
+	 * <h5>Minecraft: Pocket Edition (serverbound)</h5>
+	 * The packet is simply encoded (may be compressed in a Batch packet) and ready to
+	 * be encapsulated using RakNet.
+	 * 
+	 * <h5>Minecraft: Pocket Edition (clientbound)</h5>
+	 * The packet is already unencrypted and uncompressed if it was a Batch packet and
+	 * ready to be handled as a serverbound packet.
+	 */
 	public byte[] packet;
 
 	public GamePacket() {}
@@ -56,6 +79,11 @@ public class GamePacket extends Packet {
 		GamePacket ret = new GamePacket();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "GamePacket(hubId: " + this.hubId + ", packet: " + Arrays.toString(this.packet) + ")";
 	}
 
 }

@@ -67,4 +67,9 @@ public class ContainerSetSlot extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ContainerSetSlot(window: " + this.window + ", slot: " + this.slot + ", hotbarSlot: " + this.hotbarSlot + ", item: " + this.item.toString() + ", unknown4: " + this.unknown4 + ")";
+	}
+
 }

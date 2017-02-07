@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft315.clientbound;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class MultiBlockChange extends Packet {
@@ -53,6 +55,11 @@ public class MultiBlockChange extends Packet {
 		MultiBlockChange ret = new MultiBlockChange();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "MultiBlockChange(chunk: " + this.chunk.toString() + ", changes: " + Arrays.deepToString(this.changes) + ")";
 	}
 
 }

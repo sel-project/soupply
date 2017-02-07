@@ -79,4 +79,9 @@ public class ChangeGameState extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ChangeGameState(reason: " + this.reason + ", value: " + this.value + ")";
+	}
+
 }

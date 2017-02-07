@@ -10,6 +10,9 @@ package sul.protocol.hncom1.player;
 
 import sul.utils.*;
 
+/**
+ * Updates the player's latenct with the hub.
+ */
 public class UpdateLatency extends Packet {
 
 	public static final byte ID = (byte)21;
@@ -18,6 +21,12 @@ public class UpdateLatency extends Packet {
 	public static final boolean SERVERBOUND = false;
 
 	public int hubId;
+
+	/**
+	 * Player's latency in milliseconds. The latency between the client and the node is
+	 * then calculated adding the latency between the node and the hub (calculated using
+	 * HubInfo.time) to this field's value.
+	 */
 	public int latency;
 
 	public UpdateLatency() {}
@@ -53,6 +62,11 @@ public class UpdateLatency extends Packet {
 		UpdateLatency ret = new UpdateLatency();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "UpdateLatency(hubId: " + this.hubId + ", latency: " + this.latency + ")";
 	}
 
 }

@@ -67,4 +67,9 @@ public class EntityTeleport extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityTeleport(entityId: " + this.entityId + ", position: " + this.position.toString() + ", yaw: " + this.yaw + ", pitch: " + this.pitch + ", onGround: " + this.onGround + ")";
+	}
+
 }

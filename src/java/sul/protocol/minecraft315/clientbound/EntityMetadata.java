@@ -55,4 +55,9 @@ public class EntityMetadata extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityMetadata(entityId: " + this.entityId + ", metadata: " + this.metadata.toString() + ")";
+	}
+
 }

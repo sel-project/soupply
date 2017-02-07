@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import sul.utils.*;
 
 /**
- * Updates the player language after the client has changed it.
+ * Updates the player's language when the client changes it.
  */
 public class UpdateLanguage extends Packet {
 
@@ -23,6 +23,10 @@ public class UpdateLanguage extends Packet {
 	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
+
+	/**
+	 * Player's language in the same format as HubInfo.language.
+	 */
 	public String language;
 
 	public UpdateLanguage() {}
@@ -58,6 +62,11 @@ public class UpdateLanguage extends Packet {
 		UpdateLanguage ret = new UpdateLanguage();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "UpdateLanguage(hubId: " + this.hubId + ", language: " + this.language + ")";
 	}
 
 }

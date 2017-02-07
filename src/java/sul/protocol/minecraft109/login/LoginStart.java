@@ -53,4 +53,9 @@ public class LoginStart extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "LoginStart(username: " + this.username + ")";
+	}
+
 }

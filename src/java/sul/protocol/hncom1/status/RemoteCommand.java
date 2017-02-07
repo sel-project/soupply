@@ -27,9 +27,27 @@ public class RemoteCommand extends Packet {
 	public static final byte EXTERNAL_CONSOLE = 1;
 	public static final byte RCON = 2;
 
+	/**
+	 * Origin of the command. It could be the hub itself or an external source.
+	 */
 	public byte origin;
+
+	/**
+	 * Address of the sender if the command has been sent from an external source and not
+	 * the hub.
+	 */
 	public sul.protocol.hncom1.types.Address sender;
+
+	/**
+	 * Commands and arguments that should be executed on the node. For example `say hello
+	 * world` or `transfer steve lobby12`.
+	 */
 	public String command;
+
+	/**
+	 * Identifier of the command. It's sent in Log.commandId if the command generates an
+	 * output.
+	 */
 	public int commandId;
 
 	public RemoteCommand() {}
@@ -51,7 +69,7 @@ public class RemoteCommand extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(origin);
-		this.writeBytes(sender.encode());
+		if(origin!=0){ this.writeBytes(sender.encode()); }
 		byte[] y29tbwfuza=command.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y29tbwfuza.length); this.writeBytes(y29tbwfuza);
 		this.writeVarint(commandId);
 		return this.getBuffer();
@@ -62,7 +80,7 @@ public class RemoteCommand extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		origin=readBigEndianByte();
-		sender=new sul.protocol.hncom1.types.Address(); sender._index=this._index; sender.decode(this._buffer); this._index=sender._index;
+		if(origin!=0){ sender=new sul.protocol.hncom1.types.Address(); sender._index=this._index; sender.decode(this._buffer); this._index=sender._index; }
 		int bgvuy29tbwfuza=this.readVaruint(); command=new String(this.readBytes(bgvuy29tbwfuza), StandardCharsets.UTF_8);
 		commandId=this.readVarint();
 	}
@@ -71,6 +89,11 @@ public class RemoteCommand extends Packet {
 		RemoteCommand ret = new RemoteCommand();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "RemoteCommand(origin: " + this.origin + ", sender: " + this.sender.toString() + ", command: " + this.command + ", commandId: " + this.commandId + ")";
 	}
 
 }

@@ -112,4 +112,9 @@ public class Effect extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Effect(effectId: " + this.effectId + ", position: " + this.position + ", data: " + this.data + ", disableVolume: " + this.disableVolume + ")";
+	}
+
 }

@@ -59,4 +59,9 @@ public class Animate extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Animate(action: " + this.action + ", entityId: " + this.entityId + ")";
+	}
+
 }

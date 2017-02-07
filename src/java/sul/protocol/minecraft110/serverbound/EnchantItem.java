@@ -55,4 +55,9 @@ public class EnchantItem extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EnchantItem(window: " + this.window + ", enchantment: " + this.enchantment + ")";
+	}
+
 }

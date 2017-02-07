@@ -9,6 +9,7 @@
 package sul.protocol.minecraft110.clientbound;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -51,6 +52,11 @@ public class TabComplete extends Packet {
 		TabComplete ret = new TabComplete();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "TabComplete(matches: " + Arrays.deepToString(this.matches) + ")";
 	}
 
 }

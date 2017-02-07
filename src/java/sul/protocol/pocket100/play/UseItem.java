@@ -75,4 +75,9 @@ public class UseItem extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "UseItem(blockPosition: " + this.blockPosition.toString() + ", hotbarSlot: " + this.hotbarSlot + ", face: " + this.face + ", facePosition: " + this.facePosition.toString() + ", position: " + this.position.toString() + ", slot: " + this.slot + ", item: " + this.item.toString() + ")";
+	}
+
 }

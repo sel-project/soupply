@@ -9,7 +9,7 @@
 module sul.protocol.raknet8.types;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typecons : Tuple;
 import std.uuid : UUID;
@@ -22,14 +22,14 @@ struct Address {
 	public enum string[] FIELDS = ["type", "ipv4", "ipv6", "port"];
 
 	public ubyte type;
-	public ubyte[4] ipv4;
+	public uint ipv4;
 	public ubyte[16] ipv6;
 	public ushort port;
 
 	public pure nothrow @safe void encode(Buffer buffer) {
 		with(buffer) {
 			writeBigEndianUbyte(type);
-			if(type==4){ writeBytes(ipv4); }
+			if(type==4){ writeBigEndianUint(ipv4); }
 			if(type==6){ writeBytes(ipv6); }
 			writeBigEndianUshort(port);
 		}
@@ -38,10 +38,14 @@ struct Address {
 	public pure nothrow @safe void decode(Buffer buffer) {
 		with(buffer) {
 			type=readBigEndianUbyte();
-			if(type==4){ if(_buffer.length>=_index+ipv4.length){ ipv4=_buffer[_index.._index+ipv4.length].dup; _index+=ipv4.length; } }
+			if(type==4){ ipv4=readBigEndianUint(); }
 			if(type==6){ if(_buffer.length>=_index+ipv6.length){ ipv6=_buffer[_index.._index+ipv6.length].dup; _index+=ipv6.length; } }
 			port=readBigEndianUshort();
 		}
+	}
+
+	public string toString() {
+		return "Address(type: " ~ std.conv.to!string(this.type) ~ ", ipv4: " ~ std.conv.to!string(this.ipv4) ~ ", ipv6: " ~ std.conv.to!string(this.ipv6) ~ ", port: " ~ std.conv.to!string(this.port) ~ ")";
 	}
 
 }
@@ -68,6 +72,10 @@ struct Acknowledge {
 			first=readLittleEndianTriad();
 			if(unique==false){ last=readLittleEndianTriad(); }
 		}
+	}
+
+	public string toString() {
+		return "Acknowledge(unique: " ~ std.conv.to!string(this.unique) ~ ", first: " ~ std.conv.to!string(this.first) ~ ", last: " ~ std.conv.to!string(this.last) ~ ")";
 	}
 
 }
@@ -108,6 +116,10 @@ struct Encapsulation {
 		}
 	}
 
+	public string toString() {
+		return "Encapsulation(info: " ~ std.conv.to!string(this.info) ~ ", length: " ~ std.conv.to!string(this.length) ~ ", messageIndex: " ~ std.conv.to!string(this.messageIndex) ~ ", orderIndex: " ~ std.conv.to!string(this.orderIndex) ~ ", orderChannel: " ~ std.conv.to!string(this.orderChannel) ~ ", split: " ~ std.conv.to!string(this.split) ~ ", payload: " ~ std.conv.to!string(this.payload) ~ ")";
+	}
+
 }
 
 struct Split {
@@ -132,6 +144,10 @@ struct Split {
 			id=readBigEndianUshort();
 			order=readBigEndianUint();
 		}
+	}
+
+	public string toString() {
+		return "Split(count: " ~ std.conv.to!string(this.count) ~ ", id: " ~ std.conv.to!string(this.id) ~ ", order: " ~ std.conv.to!string(this.order) ~ ")";
 	}
 
 }

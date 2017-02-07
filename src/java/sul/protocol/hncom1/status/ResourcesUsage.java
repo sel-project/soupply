@@ -11,7 +11,7 @@ package sul.protocol.hncom1.status;
 import sul.utils.*;
 
 /**
- * Updates the usage of the resources in the node.
+ * Updates the usage of the system's resources of the node.
  */
 public class ResourcesUsage extends Packet {
 
@@ -20,8 +20,21 @@ public class ResourcesUsage extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	/**
+	 * Ticks per second of the node, in the range 0 to 20, where a number lower than 20
+	 * indicates lag.
+	 */
 	public float tps;
+
+	/**
+	 * RAM used by the node in bytes.
+	 */
 	public long ram;
+
+	/**
+	 * Percentage of CPU used by the node. It may be higher than 100 if the node has more
+	 * than 1 CPU.
+	 */
 	public float cpu;
 
 	public ResourcesUsage() {}
@@ -60,6 +73,11 @@ public class ResourcesUsage extends Packet {
 		ResourcesUsage ret = new ResourcesUsage();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "ResourcesUsage(tps: " + this.tps + ", ram: " + this.ram + ", cpu: " + this.cpu + ")";
 	}
 
 }

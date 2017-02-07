@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket100.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class FullChunkData extends Packet {
@@ -57,6 +59,11 @@ public class FullChunkData extends Packet {
 		FullChunkData ret = new FullChunkData();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "FullChunkData(position: " + this.position.toString() + ", data: " + Arrays.toString(this.data) + ", tiles: " + Arrays.toString(this.tiles) + ")";
 	}
 
 }

@@ -51,4 +51,9 @@ public class RemoveEntity extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "RemoveEntity(entityId: " + this.entityId + ")";
+	}
+
 }

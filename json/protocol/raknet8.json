@@ -24,7 +24,7 @@
 				},
 				{
 					"name": "ipv4",
-					"type": "ubyte[4]",
+					"type": "uint",
 					"when": "type==4"
 				},
 				{

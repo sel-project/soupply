@@ -55,4 +55,9 @@ public class Camera extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Camera(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ")";
+	}
+
 }

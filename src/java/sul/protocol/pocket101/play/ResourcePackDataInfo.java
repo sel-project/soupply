@@ -69,4 +69,9 @@ public class ResourcePackDataInfo extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ResourcePackDataInfo(id: " + this.id + ", unknown1: " + this.unknown1 + ", unknown2: " + this.unknown2 + ", unknown3: " + this.unknown3 + ", unknown4: " + this.unknown4 + ")";
+	}
+
 }

@@ -26,13 +26,14 @@ Protocol | Packets | Released | From
 
 ## Hub-Node Communication
 
-Protocol | Packets | Released | From
-:---:|:---:|:---:|:---:
-[1](https://github.com/sel-project/sel-utils/tree/master/doc/hncom/1.md) | 25 | 2017/1/25 | 1.0.0
+Protocol | Packets | Released
+:---:|:---:|:---:
+[1](https://github.com/sel-project/sel-utils/tree/master/doc/hncom/1.md) | 25 | 2017/1/25
 
 ## External Console
 
 Protocol | Packets | Released
 :---:|:---:|:---:
+[2](https://github.com/sel-project/sel-utils/tree/master/doc/externalconsole/2.md) | 10 | 2017/2/7
 [1](https://github.com/sel-project/sel-utils/tree/master/doc/externalconsole/1.md) | 10 | 2017/1/25
 

@@ -55,4 +55,9 @@ public class SetTime extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SetTime(time: " + this.time + ", daylightCycle: " + this.daylightCycle + ")";
+	}
+
 }

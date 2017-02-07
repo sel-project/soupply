@@ -59,4 +59,9 @@ public class ContainerSetData extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ContainerSetData(window: " + this.window + ", property: " + this.property + ", value: " + this.value + ")";
+	}
+
 }

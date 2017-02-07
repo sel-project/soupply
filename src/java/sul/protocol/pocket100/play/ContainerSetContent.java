@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket100.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class ContainerSetContent extends Packet {
@@ -57,6 +59,11 @@ public class ContainerSetContent extends Packet {
 		ContainerSetContent ret = new ContainerSetContent();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "ContainerSetContent(window: " + this.window + ", slots: " + Arrays.deepToString(this.slots) + ", hotbar: " + Arrays.toString(this.hotbar) + ")";
 	}
 
 }

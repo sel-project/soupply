@@ -49,5 +49,10 @@ public class ListUpdateDisplayName extends Packet {
 		if(hasDisplayName==true){ int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8); }
 	}
 
+	@Override
+	public String toString() {
+		return "ListUpdateDisplayName(uuid: " + this.uuid.toString() + ", hasDisplayName: " + this.hasDisplayName + ", displayName: " + this.displayName + ")";
+	}
+
 
 }

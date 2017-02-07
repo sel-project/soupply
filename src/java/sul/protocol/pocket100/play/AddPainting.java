@@ -69,4 +69,9 @@ public class AddPainting extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "AddPainting(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ", position: " + this.position.toString() + ", direction: " + this.direction + ", title: " + this.title + ")";
+	}
+
 }

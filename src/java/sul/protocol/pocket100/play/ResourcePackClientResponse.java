@@ -55,4 +55,9 @@ public class ResourcePackClientResponse extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ResourcePackClientResponse(status: " + this.status + ", resourcePackVersion: " + this.resourcePackVersion + ")";
+	}
+
 }

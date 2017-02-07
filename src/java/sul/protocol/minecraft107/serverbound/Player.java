@@ -51,4 +51,9 @@ public class Player extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Player(onGround: " + this.onGround + ")";
+	}
+
 }

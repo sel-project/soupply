@@ -9,6 +9,7 @@
 package sul.protocol.minecraft47.types;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.UUID;
 
 import sul.utils.*;
@@ -69,6 +70,11 @@ public class ListAddPlayer extends Packet {
 		latency=this.readVaruint();
 		hasDisplayName=this.readBool();
 		if(hasDisplayName==true){ int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8); }
+	}
+
+	@Override
+	public String toString() {
+		return "ListAddPlayer(uuid: " + this.uuid.toString() + ", name: " + this.name + ", properties: " + Arrays.deepToString(this.properties) + ", gamemode: " + this.gamemode + ", latency: " + this.latency + ", hasDisplayName: " + this.hasDisplayName + ", displayName: " + this.displayName + ")";
 	}
 
 

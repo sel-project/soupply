@@ -20,7 +20,17 @@ public class Players extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	// max
+	public static final int UNLIMITED = -1;
+
+	/**
+	 * Players currently online in the whole server (connected to a node).
+	 */
 	public int online;
+
+	/**
+	 * Maximum number of players that can connect to server.
+	 */
 	public int max;
 
 	public Players() {}
@@ -32,7 +42,7 @@ public class Players extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(online) + Buffer.varuintLength(max) + 1;
+		return Buffer.varuintLength(online) + Buffer.varintLength(max) + 1;
 	}
 
 	@Override
@@ -40,7 +50,7 @@ public class Players extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(online);
-		this.writeVaruint(max);
+		this.writeVarint(max);
 		return this.getBuffer();
 	}
 
@@ -49,13 +59,18 @@ public class Players extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		online=this.readVaruint();
-		max=this.readVaruint();
+		max=this.readVarint();
 	}
 
 	public static Players fromBuffer(byte[] buffer) {
 		Players ret = new Players();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Players(online: " + this.online + ", max: " + this.max + ")";
 	}
 
 }

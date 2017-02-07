@@ -10,6 +10,10 @@ package sul.protocol.hncom1.status;
 
 import sul.utils.*;
 
+/**
+ * Notifies the node that another node, previously added with AddNode has disconnected
+ * from the hub.
+ */
 public class RemoveNode extends Packet {
 
 	public static final byte ID = (byte)5;
@@ -17,6 +21,9 @@ public class RemoveNode extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	/**
+	 * Node's id given by the hub.
+	 */
 	public int hubId;
 
 	public RemoveNode() {}
@@ -49,6 +56,11 @@ public class RemoveNode extends Packet {
 		RemoveNode ret = new RemoveNode();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "RemoveNode(hubId: " + this.hubId + ")";
 	}
 
 }

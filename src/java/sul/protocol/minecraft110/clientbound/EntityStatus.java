@@ -93,4 +93,9 @@ public class EntityStatus extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityStatus(entityId: " + this.entityId + ", status: " + this.status + ")";
+	}
+
 }

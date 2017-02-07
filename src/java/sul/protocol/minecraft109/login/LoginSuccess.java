@@ -57,4 +57,9 @@ public class LoginSuccess extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "LoginSuccess(uuid: " + this.uuid + ", username: " + this.username + ")";
+	}
+
 }

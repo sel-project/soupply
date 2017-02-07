@@ -12,7 +12,7 @@
 module sul.protocol.externalconsole1.connected;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
@@ -103,6 +103,10 @@ class ConsoleMessage : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "ConsoleMessage(node: " ~ std.conv.to!string(this.node) ~ ", timestamp: " ~ std.conv.to!string(this.timestamp) ~ ", logger: " ~ std.conv.to!string(this.logger) ~ ", message: " ~ std.conv.to!string(this.message) ~ ")";
+	}
+
 }
 
 /**
@@ -149,6 +153,10 @@ class Command : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Command(command: " ~ std.conv.to!string(this.command) ~ ")";
+	}
+
 }
 
 /**
@@ -181,6 +189,10 @@ class PermissionDenied : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "PermissionDenied()";
 	}
 
 }

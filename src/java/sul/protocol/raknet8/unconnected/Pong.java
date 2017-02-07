@@ -9,6 +9,7 @@
 package sul.protocol.raknet8.unconnected;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -63,6 +64,11 @@ public class Pong extends Packet {
 		Pong ret = new Pong();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Pong(pingId: " + this.pingId + ", serverId: " + this.serverId + ", magic: " + Arrays.toString(this.magic) + ", status: " + this.status + ")";
 	}
 
 }

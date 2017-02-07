@@ -75,4 +75,9 @@ public class SpawnObject extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SpawnObject(entityId: " + this.entityId + ", type: " + this.type + ", position: " + this.position.toString() + ", pitch: " + this.pitch + ", yaw: " + this.yaw + ", data: " + this.data + ", velocity: " + this.velocity.toString() + ")";
+	}
+
 }

@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket101.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class AddEntity extends Packet {
@@ -85,6 +87,11 @@ public class AddEntity extends Packet {
 		AddEntity ret = new AddEntity();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "AddEntity(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ", type: " + this.type + ", position: " + this.position.toString() + ", motion: " + this.motion.toString() + ", pitch: " + this.pitch + ", yaw: " + this.yaw + ", attributes: " + Arrays.deepToString(this.attributes) + ", metadata: " + this.metadata.toString() + ", links: " + Arrays.toString(this.links) + ")";
 	}
 
 }

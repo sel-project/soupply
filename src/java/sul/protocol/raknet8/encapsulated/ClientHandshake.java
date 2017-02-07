@@ -8,6 +8,8 @@
  */
 package sul.protocol.raknet8.encapsulated;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class ClientHandshake extends Packet {
@@ -61,6 +63,11 @@ public class ClientHandshake extends Packet {
 		ClientHandshake ret = new ClientHandshake();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "ClientHandshake(clientAddress: " + this.clientAddress.toString() + ", systemAddresses: " + Arrays.deepToString(this.systemAddresses) + ", pingId: " + this.pingId + ", clientId: " + this.clientId + ")";
 	}
 
 }

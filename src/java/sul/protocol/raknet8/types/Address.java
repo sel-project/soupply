@@ -8,18 +8,20 @@
  */
 package sul.protocol.raknet8.types;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Address extends Packet {
 
 	public byte type;
-	public byte[] ipv4 = new byte[4];
+	public int ipv4;
 	public byte[] ipv6 = new byte[16];
 	public short port;
 
 	public Address() {}
 
-	public Address(byte type, byte[] ipv4, byte[] ipv6, short port) {
+	public Address(byte type, int ipv4, byte[] ipv6, short port) {
 		this.type = type;
 		this.ipv4 = ipv4;
 		this.ipv6 = ipv6;
@@ -28,14 +30,14 @@ public class Address extends Packet {
 
 	@Override
 	public int length() {
-		return ipv4.length + ipv6.length + 3;
+		return ipv6.length + 7;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(type);
-		if(type==4){ this.writeBytes(ipv4); }
+		if(type==4){ this.writeBigEndianInt(ipv4); }
 		if(type==6){ this.writeBytes(ipv6); }
 		this.writeBigEndianShort(port);
 		return this.getBuffer();
@@ -45,9 +47,14 @@ public class Address extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		type=readBigEndianByte();
-		if(type==4){ final int bglwdjq=4; ipv4=this.readBytes(bglwdjq); }
+		if(type==4){ ipv4=readBigEndianInt(); }
 		if(type==6){ final int bglwdjy=16; ipv6=this.readBytes(bglwdjy); }
 		port=readBigEndianShort();
+	}
+
+	@Override
+	public String toString() {
+		return "Address(type: " + this.type + ", ipv4: " + this.ipv4 + ", ipv6: " + Arrays.toString(this.ipv6) + ", port: " + this.port + ")";
 	}
 
 

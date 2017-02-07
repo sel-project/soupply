@@ -8,6 +8,8 @@
  */
 package sul.protocol.raknet8.unconnected;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class OpenConnectionRequest2 extends Packet {
@@ -61,6 +63,11 @@ public class OpenConnectionRequest2 extends Packet {
 		OpenConnectionRequest2 ret = new OpenConnectionRequest2();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "OpenConnectionRequest2(magic: " + Arrays.toString(this.magic) + ", serverAddress: " + this.serverAddress.toString() + ", mtuLength: " + this.mtuLength + ", clientId: " + this.clientId + ")";
 	}
 
 }

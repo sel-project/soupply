@@ -59,4 +59,9 @@ public class SpawnExperienceOrb extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SpawnExperienceOrb(entityId: " + this.entityId + ", position: " + this.position.toString() + ", count: " + this.count + ")";
+	}
+
 }

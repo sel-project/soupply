@@ -6,10 +6,14 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
+/**
+ * Packet related to a player. The first field of every packet is an hubId that uniquely
+ * identifies a player in the hub and never changes during the session.
+ */
 module sul.protocol.hncom1.player;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
@@ -39,9 +43,6 @@ class Add : Buffer {
 
 	public enum string[] FIELDS = ["hubId", "reason", "type", "protocol", "vers", "username", "displayName", "dimension", "clientAddress", "serverAddress", "serverPort", "uuid", "skin", "latency", "language"];
 
-	/**
-	 * A unique identifier given by the hub that is never changed while the player is connected.
-	 */
 	public uint hubId;
 
 	/**
@@ -58,6 +59,13 @@ class Add : Buffer {
 	 * Version of the protocol used by the client.
 	 */
 	public uint protocol;
+
+	/**
+	 * Version of the game used by the client, usually in the format major.minor[.patch],
+	 * calculated by the server or passed by the client during the authentication process.
+	 * The node should verify that the version exists and matches the protocol in the previous
+	 * field.
+	 */
 	public string vers;
 
 	/**
@@ -66,17 +74,60 @@ class Add : Buffer {
 	public string username;
 
 	/**
-	 * Display name of the player, which can contain formatting codes. It can be updated
-	 * by the node.
+	 * Display name of the player, which can contain formatting codes. By default it's
+	 * equals to the username but it can be updated by the node using UpdateDisplayName.
 	 */
 	public string displayName;
+
+	/**
+	 * Dimension in which the player was playing before being transferred. It could diffent
+	 * from client's game type and version because the dimension's ids are different in
+	 * Minecraft and Minecraft: Pocket Edition.
+	 * It's used to send the game's change dimension packet to despawn old entities and
+	 * delete old chunks.
+	 */
 	public byte dimension;
+
+	/**
+	 * Remote address of the client.
+	 */
 	public sul.protocol.hncom1.types.Address clientAddress;
+
+	/**
+	 * Ip used by the client to connect to the server. The value of this field is the address
+	 * the client has saved in its servers list. For example a client that joins through
+	 * `localhost` and a client that joins through `127.0.0.1` will connect to the same
+	 * server but the field of this value will be different (`localhost` for the first
+	 * client and `127.0.0.1` for the second).
+	 */
 	public string serverAddress;
+
+	/**
+	 * Port used by the client to connect to the server.
+	 */
 	public ushort serverPort;
+
+	/**
+	 * Client's UUID, given by Mojang's or Microsoft's services if the server is in online
+	 * mode or given by the client (and not verified) if the server is in offline mode.
+	 */
 	public UUID uuid;
+
+	/**
+	 * Client's skin, given by the client or downloaded from Mojang's services in online
+	 * mode.
+	 */
 	public sul.protocol.hncom1.types.Skin skin;
+
+	/**
+	 * Client's latency (ping time).
+	 */
 	public uint latency;
+
+	/**
+	 * Client's language, in the same format as HubInfo.language, which should be updated
+	 * from the node when the client changes it.
+	 */
 	public string language;
 
 	public pure nothrow @safe @nogc this() {}
@@ -146,12 +197,19 @@ class Add : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Add(hubId: " ~ std.conv.to!string(this.hubId) ~ ", reason: " ~ std.conv.to!string(this.reason) ~ ", type: " ~ std.conv.to!string(this.type) ~ ", protocol: " ~ std.conv.to!string(this.protocol) ~ ", vers: " ~ std.conv.to!string(this.vers) ~ ", username: " ~ std.conv.to!string(this.username) ~ ", displayName: " ~ std.conv.to!string(this.displayName) ~ ", dimension: " ~ std.conv.to!string(this.dimension) ~ ", clientAddress: " ~ std.conv.to!string(this.clientAddress) ~ ", serverAddress: " ~ std.conv.to!string(this.serverAddress) ~ ", serverPort: " ~ std.conv.to!string(this.serverPort) ~ ", uuid: " ~ std.conv.to!string(this.uuid) ~ ", skin: " ~ std.conv.to!string(this.skin) ~ ", latency: " ~ std.conv.to!string(this.latency) ~ ", language: " ~ std.conv.to!string(this.language) ~ ")";
+	}
+
 	alias _encode = encode;
 
 	enum string variantField = "type";
 
 	alias Variants = TypeTuple!(Pocket, Minecraft);
 
+	/**
+	 * A Minecraft: Pocket Edition client.
+	 */
 	public class Pocket {
 
 		public enum typeof(type) TYPE = 1;
@@ -162,10 +220,34 @@ class Add : Buffer {
 
 		public enum string[] FIELDS = ["xuid", "edu", "packetLoss", "deviceOs", "deviceModel"];
 
+		/**
+		 * XBOX Live id, which is a unique identifier for authenticated players or 0 if the
+		 * server is in offline mode.
+		 */
 		public long xuid;
+
+		/**
+		 * Indicates whether the client is using the Education Edition variant of the game.
+		 */
 		public bool edu;
+
+		/**
+		 * Client's packet loss calculated from the hub in the range 0 (no packet lost) to
+		 * 100 (every packet lost).
+		 */
 		public float packetLoss;
+
+		/**
+		 * Client's operative system, if supplied by the client. This field's value may be
+		 * used to divide players that play from a phone from players that play on a computer.
+		 */
 		public ubyte deviceOs;
+
+		/**
+		 * Client's device model, if supplied by the client. This field is usually a string
+		 * in the format `MANUFACTURES MODEL`: for example, the Oneplus one is `ONEPLUS A0001`.
+		 * This field's value may be used to exclude devices with bad performances.
+		 */
 		public string deviceModel;
 
 		public pure nothrow @safe @nogc this() {}
@@ -197,8 +279,15 @@ class Add : Buffer {
 			uint zgv2awnltw9kzww=varuint.decode(_buffer, &_index); deviceModel=readString(zgv2awnltw9kzww);
 		}
 
+		public override string toString() {
+			return "Add.Pocket(xuid: " ~ std.conv.to!string(this.xuid) ~ ", edu: " ~ std.conv.to!string(this.edu) ~ ", packetLoss: " ~ std.conv.to!string(this.packetLoss) ~ ", deviceOs: " ~ std.conv.to!string(this.deviceOs) ~ ", deviceModel: " ~ std.conv.to!string(this.deviceModel) ~ ")";
+		}
+
 	}
 
+	/**
+	 * A Minecraft client. Currently there are no additional fields.
+	 */
 	public class Minecraft {
 
 		public enum typeof(type) TYPE = 2;
@@ -214,12 +303,17 @@ class Add : Buffer {
 		public pure nothrow @safe void decode() {
 		}
 
+		public override string toString() {
+			return "Add.Minecraft()";
+		}
+
 	}
 
 }
 
 /**
- * Removes a player from the node.
+ * Removes a player from the node. If the player is removed from the node using Kick
+ * or Transfer this packet is not sent.
  */
 class Remove : Buffer {
 
@@ -237,6 +331,10 @@ class Remove : Buffer {
 	public enum string[] FIELDS = ["hubId", "reason"];
 
 	public uint hubId;
+
+	/**
+	 * Reason of the disconnection.
+	 */
 	public ubyte reason;
 
 	public pure nothrow @safe @nogc this() {}
@@ -267,6 +365,10 @@ class Remove : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Remove(hubId: " ~ std.conv.to!string(this.hubId) ~ ", reason: " ~ std.conv.to!string(this.reason) ~ ")";
+	}
+
 }
 
 /**
@@ -283,8 +385,21 @@ class Kick : Buffer {
 	public enum string[] FIELDS = ["hubId", "reason", "translation", "parameters"];
 
 	public uint hubId;
+
+	/**
+	 * Reason of the disconnection that will be displayed in the client's disconnection
+	 * screen.
+	 */
 	public string reason;
+
+	/**
+	 * Whether the previous string should be translated client-side or not.
+	 */
 	public bool translation;
+
+	/**
+	 * Optional parameters for the translation.
+	 */
 	public string[] parameters;
 
 	public pure nothrow @safe @nogc this() {}
@@ -321,12 +436,17 @@ class Kick : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Kick(hubId: " ~ std.conv.to!string(this.hubId) ~ ", reason: " ~ std.conv.to!string(this.reason) ~ ", translation: " ~ std.conv.to!string(this.translation) ~ ", parameters: " ~ std.conv.to!string(this.parameters) ~ ")";
+	}
+
 }
 
 /**
  * Transfers a player to another node. When a player is transferred from the node the
  * hub will not send the Remove packet and there's no way, for the node, to know whether
- * the player was disconnected or successfully transferred.
+ * the player was disconnected or successfully transferred, if not using messages through
+ * a user-defined protocol.
  */
 class Transfer : Buffer {
 
@@ -335,16 +455,36 @@ class Transfer : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["hubId", "node"];
+	// on fail
+	public enum ubyte DISCONNECT = 0;
+	public enum ubyte AUTO = 1;
+	public enum ubyte RECONNECT = 2;
+
+	public enum string[] FIELDS = ["hubId", "node", "onFail"];
 
 	public uint hubId;
+
+	/**
+	 * Id of the node that player will be transferred to. It should be an id of a connected
+	 * node (which can be calculated using AddNode and RemoveNode), otherwise the player
+	 * will be disconnected or moved to another node (see the following field).
+	 */
 	public uint node;
+
+	/**
+	 * Indicates the action to be taken when a transfer fails because the indicated node
+	 * is not connected anymore or it cannot accept the given player's game type or protocol.
+	 * If the indicated node is full the player will be simply disconnected with the `Server
+	 * Full` message.
+	 */
+	public ubyte onFail;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint hubId, uint node=uint.init) {
+	public pure nothrow @safe @nogc this(uint hubId, uint node=uint.init, ubyte onFail=ubyte.init) {
 		this.hubId = hubId;
 		this.node = node;
+		this.onFail = onFail;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
@@ -352,6 +492,7 @@ class Transfer : Buffer {
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(hubId));
 		writeBytes(varuint.encode(node));
+		writeBigEndianUbyte(onFail);
 		return _buffer;
 	}
 
@@ -359,6 +500,7 @@ class Transfer : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		hubId=varuint.decode(_buffer, &_index);
 		node=varuint.decode(_buffer, &_index);
+		onFail=readBigEndianUbyte();
 	}
 
 	public static pure nothrow @safe Transfer fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -368,10 +510,14 @@ class Transfer : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Transfer(hubId: " ~ std.conv.to!string(this.hubId) ~ ", node: " ~ std.conv.to!string(this.node) ~ ", onFail: " ~ std.conv.to!string(this.onFail) ~ ")";
+	}
+
 }
 
 /**
- * Updates the player language after the client has changed it.
+ * Updates the player's language when the client changes it.
  */
 class UpdateLanguage : Buffer {
 
@@ -383,6 +529,10 @@ class UpdateLanguage : Buffer {
 	public enum string[] FIELDS = ["hubId", "language"];
 
 	public uint hubId;
+
+	/**
+	 * Player's language in the same format as HubInfo.language.
+	 */
 	public string language;
 
 	public pure nothrow @safe @nogc this() {}
@@ -413,8 +563,15 @@ class UpdateLanguage : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "UpdateLanguage(hubId: " ~ std.conv.to!string(this.hubId) ~ ", language: " ~ std.conv.to!string(this.language) ~ ")";
+	}
+
 }
 
+/**
+ * Updates the player's display name when it changes.
+ */
 class UpdateDisplayName : Buffer {
 
 	public enum ubyte ID = 19;
@@ -425,6 +582,11 @@ class UpdateDisplayName : Buffer {
 	public enum string[] FIELDS = ["hubId", "displayName"];
 
 	public uint hubId;
+
+	/**
+	 * Player's display name that can contain formatting codes. Prefixes and suffixes should
+	 * be avoided.
+	 */
 	public string displayName;
 
 	public pure nothrow @safe @nogc this() {}
@@ -455,8 +617,15 @@ class UpdateDisplayName : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "UpdateDisplayName(hubId: " ~ std.conv.to!string(this.hubId) ~ ", displayName: " ~ std.conv.to!string(this.displayName) ~ ")";
+	}
+
 }
 
+/**
+ * Updates player's world and dimension.
+ */
 class UpdateWorld : Buffer {
 
 	public enum ubyte ID = 20;
@@ -467,7 +636,16 @@ class UpdateWorld : Buffer {
 	public enum string[] FIELDS = ["hubId", "world", "dimension"];
 
 	public uint hubId;
+
+	/**
+	 * World's name, used mainly for display purposes.
+	 */
 	public string world;
+
+	/**
+	 * World's dimension, that may different from Minecraft's version. It used for synchronise
+	 * entities and chunks when changing node as described at Add.dimension.
+	 */
 	public byte dimension;
 
 	public pure nothrow @safe @nogc this() {}
@@ -501,8 +679,15 @@ class UpdateWorld : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "UpdateWorld(hubId: " ~ std.conv.to!string(this.hubId) ~ ", world: " ~ std.conv.to!string(this.world) ~ ", dimension: " ~ std.conv.to!string(this.dimension) ~ ")";
+	}
+
 }
 
+/**
+ * Updates the player's latenct with the hub.
+ */
 class UpdateLatency : Buffer {
 
 	public enum ubyte ID = 21;
@@ -513,6 +698,12 @@ class UpdateLatency : Buffer {
 	public enum string[] FIELDS = ["hubId", "latency"];
 
 	public uint hubId;
+
+	/**
+	 * Player's latency in milliseconds. The latency between the client and the node is
+	 * then calculated adding the latency between the node and the hub (calculated using
+	 * HubInfo.time) to this field's value.
+	 */
 	public uint latency;
 
 	public pure nothrow @safe @nogc this() {}
@@ -543,8 +734,15 @@ class UpdateLatency : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "UpdateLatency(hubId: " ~ std.conv.to!string(this.hubId) ~ ", latency: " ~ std.conv.to!string(this.latency) ~ ")";
+	}
+
 }
 
+/**
+ * Updates the player's packet loss if it uses a connectionless protocol.
+ */
 class UpdatePacketLoss : Buffer {
 
 	public enum ubyte ID = 22;
@@ -555,6 +753,10 @@ class UpdatePacketLoss : Buffer {
 	public enum string[] FIELDS = ["hubId", "packetLoss"];
 
 	public uint hubId;
+
+	/**
+	 * Percentage of lost packets in range 0 (no packet lost) to 100 (every packet lost).
+	 */
 	public float packetLoss;
 
 	public pure nothrow @safe @nogc this() {}
@@ -585,6 +787,10 @@ class UpdatePacketLoss : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "UpdatePacketLoss(hubId: " ~ std.conv.to!string(this.hubId) ~ ", packetLoss: " ~ std.conv.to!string(this.packetLoss) ~ ")";
+	}
+
 }
 
 /**
@@ -600,6 +806,27 @@ class GamePacket : Buffer {
 	public enum string[] FIELDS = ["hubId", "packet"];
 
 	public uint hubId;
+
+	/**
+	 * Serialised packet ready to be encrypted or encapsulated and sent to the client.
+	 * <h4>Format</h4>
+	 * 
+	 * <h5>Minecraft (serverbound)</h5>
+	 * The packet is prefixed with a varuint-encoded 0 if the packet is not compressed
+	 * or with the uncompressed packet's length encoded as a varuint if the packet is compressed.
+	 * 
+	 * <h5>Minecraft (clientbound)</h5>
+	 * The packet is already unencrypted and uncompressed and ready to be handled as a
+	 * serverbound packet.
+	 * 
+	 * <h5>Minecraft: Pocket Edition (serverbound)</h5>
+	 * The packet is simply encoded (may be compressed in a Batch packet) and ready to
+	 * be encapsulated using RakNet.
+	 * 
+	 * <h5>Minecraft: Pocket Edition (clientbound)</h5>
+	 * The packet is already unencrypted and uncompressed if it was a Batch packet and
+	 * ready to be handled as a serverbound packet.
+	 */
 	public ubyte[] packet;
 
 	public pure nothrow @safe @nogc this() {}
@@ -630,6 +857,10 @@ class GamePacket : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "GamePacket(hubId: " ~ std.conv.to!string(this.hubId) ~ ", packet: " ~ std.conv.to!string(this.packet) ~ ")";
+	}
+
 }
 
 /**
@@ -646,7 +877,17 @@ class OrderedGamePacket : Buffer {
 	public enum string[] FIELDS = ["hubId", "order", "packet"];
 
 	public uint hubId;
+
+	/**
+	 * Order of the packet. If the hub receives a packet with an id different from 0 or
+	 * the latest ordered packet's order + 1 it should wait for the packets with the missing
+	 * order(s) before sending.
+	 */
 	public uint order;
+
+	/**
+	 * Serialised packet (see GamePacket.packet).
+	 */
 	public ubyte[] packet;
 
 	public pure nothrow @safe @nogc this() {}
@@ -678,6 +919,10 @@ class OrderedGamePacket : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "OrderedGamePacket(hubId: " ~ std.conv.to!string(this.hubId) ~ ", order: " ~ std.conv.to!string(this.order) ~ ", packet: " ~ std.conv.to!string(this.packet) ~ ")";
 	}
 
 }

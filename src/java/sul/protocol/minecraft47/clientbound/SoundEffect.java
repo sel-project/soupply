@@ -65,4 +65,9 @@ public class SoundEffect extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SoundEffect(soundName: " + this.soundName + ", position: " + this.position.toString() + ", volume: " + this.volume + ", pitch: " + this.pitch + ")";
+	}
+
 }

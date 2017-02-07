@@ -8,8 +8,13 @@
  */
 package sul.protocol.hncom1.status;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
+/**
+ * Receives a binary message sent by another node using MessageServerbound.
+ */
 public class MessageClientbound extends Packet {
 
 	public static final byte ID = (byte)7;
@@ -17,7 +22,14 @@ public class MessageClientbound extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	/**
+	 * Id of the node that has sent the message.
+	 */
 	public int sender;
+
+	/**
+	 * Bytes received. It could be a serialised packet of a plugin-defined packet.
+	 */
 	public byte[] payload;
 
 	public MessageClientbound() {}
@@ -53,6 +65,11 @@ public class MessageClientbound extends Packet {
 		MessageClientbound ret = new MessageClientbound();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "MessageClientbound(sender: " + this.sender + ", payload: " + Arrays.toString(this.payload) + ")";
 	}
 
 }

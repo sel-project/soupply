@@ -9,7 +9,7 @@
 module sul.protocol.pocket100.types;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typecons : Tuple;
 import std.uuid : UUID;
@@ -43,6 +43,10 @@ struct Pack {
 		}
 	}
 
+	public string toString() {
+		return "Pack(id: " ~ std.conv.to!string(this.id) ~ ", vers: " ~ std.conv.to!string(this.vers) ~ ", size: " ~ std.conv.to!string(this.size) ~ ")";
+	}
+
 }
 
 struct BlockPosition {
@@ -69,6 +73,10 @@ struct BlockPosition {
 		}
 	}
 
+	public string toString() {
+		return "BlockPosition(x: " ~ std.conv.to!string(this.x) ~ ", y: " ~ std.conv.to!string(this.y) ~ ", z: " ~ std.conv.to!string(this.z) ~ ")";
+	}
+
 }
 
 struct Slot {
@@ -93,6 +101,10 @@ struct Slot {
 			if(id>0){ metaAndCount=varint.decode(_buffer, &_index); }
 			if(id>0){ nbt.length=readLittleEndianUshort(); if(_buffer.length>=_index+nbt.length){ nbt=_buffer[_index.._index+nbt.length].dup; _index+=nbt.length; } }
 		}
+	}
+
+	public string toString() {
+		return "Slot(id: " ~ std.conv.to!string(this.id) ~ ", metaAndCount: " ~ std.conv.to!string(this.metaAndCount) ~ ", nbt: " ~ std.conv.to!string(this.nbt) ~ ")";
 	}
 
 }
@@ -127,6 +139,10 @@ struct Attribute {
 		}
 	}
 
+	public string toString() {
+		return "Attribute(min: " ~ std.conv.to!string(this.min) ~ ", max: " ~ std.conv.to!string(this.max) ~ ", value: " ~ std.conv.to!string(this.value) ~ ", def: " ~ std.conv.to!string(this.def) ~ ", name: " ~ std.conv.to!string(this.name) ~ ")";
+	}
+
 }
 
 struct Skin {
@@ -148,6 +164,10 @@ struct Skin {
 			uint bmftzq=varuint.decode(_buffer, &_index); name=readString(bmftzq);
 			data.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+data.length){ data=_buffer[_index.._index+data.length].dup; _index+=data.length; }
 		}
+	}
+
+	public string toString() {
+		return "Skin(name: " ~ std.conv.to!string(this.name) ~ ", data: " ~ std.conv.to!string(this.data) ~ ")";
 	}
 
 }
@@ -179,6 +199,10 @@ struct PlayerList {
 		}
 	}
 
+	public string toString() {
+		return "PlayerList(uuid: " ~ std.conv.to!string(this.uuid) ~ ", entityId: " ~ std.conv.to!string(this.entityId) ~ ", displayName: " ~ std.conv.to!string(this.displayName) ~ ", skin: " ~ std.conv.to!string(this.skin) ~ ")";
+	}
+
 }
 
 struct Recipe {
@@ -207,6 +231,10 @@ struct Recipe {
 			type=varint.decode(_buffer, &_index);
 			data=_buffer[_index..$].dup; _index=_buffer.length;
 		}
+	}
+
+	public string toString() {
+		return "Recipe(type: " ~ std.conv.to!string(this.type) ~ ", data: " ~ std.conv.to!string(this.data) ~ ")";
 	}
 
 }

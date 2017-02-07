@@ -65,4 +65,9 @@ public class PlayerAbilities extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerAbilities(flags: " + this.flags + ", flyingSpeed: " + this.flyingSpeed + ", walkingSpeed: " + this.walkingSpeed + ")";
+	}
+
 }

@@ -15,21 +15,30 @@ import sul.utils.Packet;
 
 /**
  * Protocol used for the communication between an hub and multiple nodes with support
- * for Minecraft and Minecraft: Pocket Edition and different protocol versions.
+ * for Minecraft and Minecraft: Pocket Edition and different versions of their protocols.
  * 
  * <h2>Definitions</h2>
  * 
  * <h3>Hub</h3>
- * The hub is the network part of the game server and handles pings, login sequences,
- * keep alive packets, queries, external consoles and everything else that is not a
- * gameplay feature.
+ * The hub (server) is the network part of the game server and handles pings, login
+ * sequences, keep alive packets, queries, external consoles and everything else that
+ * is not a gameplay feature.
  * A server can work with only an hub (nodeless) but every player that will try to
  * join the server will be disconnected with an "End of Stream" message after the login
  * process.
  * 
  * <h3>Node</h3>
- * The node is the gameplay part of the game server. It contains worlds and entities
- * and has only one network connection, with the hub.
+ * The node (client) is the gameplay part of the game server. It contains worlds and
+ * entities and has only one network connection, with the hub.
+ * 
+ * <h2>Connection</h2>
+ * 
+ * Hncom uses a packet-oriented TCP connection and every packet is prefixed with a
+ * little-endian unsigned 32-bits integer, without any exception.
+ * 
+ * <h3>Authentication</h3>
+ * The node starts the connection sending a ConnectionRequest packet with its credentials
+ * and waits for a ConnectionResponse packet.
  */
 public final class Packets {
 
@@ -40,8 +49,15 @@ public final class Packets {
 	 */
 	public static final Map<Integer, Class<? extends Packet>> LOGIN;
 
+	/**
+	 * Node-related packets and updates.
+	 */
 	public static final Map<Integer, Class<? extends Packet>> STATUS;
 
+	/**
+	 * Packet related to a player. The first field of every packet is an hubId that uniquely
+	 * identifies a player in the hub and never changes during the session.
+	 */
 	public static final Map<Integer, Class<? extends Packet>> PLAYER;
 
 	static {
@@ -60,7 +76,7 @@ public final class Packets {
 		status.put(7, sul.protocol.hncom1.status.MessageClientbound.class);
 		status.put(8, sul.protocol.hncom1.status.Players.class);
 		status.put(9, sul.protocol.hncom1.status.ResourcesUsage.class);
-		status.put(10, sul.protocol.hncom1.status.Logs.class);
+		status.put(10, sul.protocol.hncom1.status.Log.class);
 		status.put(11, sul.protocol.hncom1.status.RemoteCommand.class);
 		status.put(12, sul.protocol.hncom1.status.UpdateList.class);
 		status.put(13, sul.protocol.hncom1.status.Reload.class);

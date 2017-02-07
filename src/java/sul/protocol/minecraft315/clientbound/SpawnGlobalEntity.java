@@ -62,4 +62,9 @@ public class SpawnGlobalEntity extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SpawnGlobalEntity(entityId: " + this.entityId + ", type: " + this.type + ", position: " + this.position.toString() + ")";
+	}
+
 }

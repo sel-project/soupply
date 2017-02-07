@@ -59,4 +59,9 @@ public class SetSpawnPosition extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SetSpawnPosition(unknown0: " + this.unknown0 + ", position: " + this.position.toString() + ", unknown2: " + this.unknown2 + ")";
+	}
+
 }

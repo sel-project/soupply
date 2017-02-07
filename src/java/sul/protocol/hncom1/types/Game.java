@@ -8,6 +8,8 @@
  */
 package sul.protocol.hncom1.types;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 /**
@@ -55,6 +57,11 @@ public class Game extends Packet {
 		this._buffer = buffer;
 		type=readBigEndianByte();
 		int bhbyb3rvy29scw=this.readVaruint(); protocols=new int[bhbyb3rvy29scw]; for(int chjvdg9jb2xz=0;chjvdg9jb2xz<protocols.length;chjvdg9jb2xz++){ protocols[chjvdg9jb2xz]=this.readVaruint(); }
+	}
+
+	@Override
+	public String toString() {
+		return "Game(type: " + this.type + ", protocols: " + Arrays.toString(this.protocols) + ")";
 	}
 
 

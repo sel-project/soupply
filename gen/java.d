@@ -575,11 +575,40 @@ public class MetadataException extends RuntimeException {
 				data ~= space ~ "}\n\n";
 			}
 		}
+
+		void createToString(ref string data, string space, string className, Field[] fields) {
+			data ~= space ~ "@Override\n";
+			data ~= space ~ "public String toString() {\n";
+			string[] f;
+			foreach(i, field; fields) {
+				immutable c = convert(field.type);
+				immutable n = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
+				string dec = n ~ ": \" + ";
+				if(c.endsWith("[]")) {
+					bool deep = true;
+					foreach(simple ; ["boolean", "byte", "short", "int", "long", "float", "double"]) {
+						if(c.startsWith(simple)) {
+							deep = false;
+							break;
+						}
+					}
+					if(deep) dec ~= "Arrays.deepToString(this." ~ n ~ ")";
+					else dec ~= "Arrays.toString(this." ~ n ~ ")";
+				} else {
+					if(["boolean", "byte", "short", "int", "long", "float", "double", "String"].canFind(c)) dec ~= "this." ~ n;
+					else dec ~= "this." ~ n ~ ".toString()";
+				}
+				f ~= dec;
+			}
+			data ~= space ~ "\treturn \"" ~ className ~ "(" ~ (f.length ? (f.join(" + \", ") ~ " + \"") : "") ~ ")\";\n";
+			data ~= space ~ "}\n\n";
+		}
 		
 		@property string imports(Field[] fields) {
-			bool str, uuid;
+			bool str, arrays, uuid;
 			foreach(field ; fields) {
 				auto conv = convert(field.type);
+				if(conv.endsWith("[]")) arrays = true;
 				immutable t = conv.split("[")[0].split("<")[0];
 				if(t == "String") str = true;
 				else if(t == "UUID") uuid = true;
@@ -590,8 +619,9 @@ public class MetadataException extends RuntimeException {
 			}
 			string ret = "";
 			if(str) ret ~= "import java.nio.charset.StandardCharsets;\n";
+			if(arrays) ret ~= "import java.util.Arrays;\n";
 			if(uuid) ret ~= "import java.util.UUID;\n";
-			if(str || uuid) ret ~= "\n";
+			if(str || arrays || uuid) ret ~= "\n";
 			return ret;
 		}
 		
@@ -600,6 +630,7 @@ public class MetadataException extends RuntimeException {
 			if(type.description.length) data ~= javadoc("", type.description);
 			data ~= "public class " ~ toPascalCase(type.name) ~ " extends Packet {\n\n";
 			writeFields(data, "\t", toPascalCase(type.name), type.fields, false);
+			createToString(data, "\t", toPascalCase(type.name), type.fields);
 			data ~= "\n}";
 			write("../src/java/sul/protocol/" ~ game ~ "/types/" ~ toPascalCase(type.name) ~ ".java", data, "protocol/" ~ game);
 		}
@@ -638,6 +669,7 @@ public class MetadataException extends RuntimeException {
 				data ~= "\t\tret.decode(buffer);\n";
 				data ~= "\t\treturn ret;\n";
 				data ~= "\t}\n\n";
+				createToString(data, "\t", toPascalCase(packet.name), packet.fields);
 				if(packet.variantField.length) {
 					string vt = "";
 					foreach(field ; packet.fields) {
@@ -651,6 +683,7 @@ public class MetadataException extends RuntimeException {
 						data ~= "\tpublic class " ~ toPascalCase(variant.name) ~ " extends Packet {\n\n";
 						data ~= "\t\tpublic static final " ~ vt ~ " " ~ toUpper(packet.variantField) ~ " = (" ~ vt ~ ")" ~ variant.value ~ ";\n\n";
 						writeFields(data, "\t\t", toPascalCase(variant.name), variant.fields, false, false, true);
+						createToString(data, "\t\t", toPascalCase(packet.name) ~ "." ~ toPascalCase(variant.name), variant.fields);
 						data ~= "\t}\n\n";
 					}
 				}

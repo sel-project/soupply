@@ -59,4 +59,9 @@ public class PlayerInput extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerInput(motion: " + this.motion.toString() + ", flags: " + this.flags + ", unknown2: " + this.unknown2 + ")";
+	}
+
 }

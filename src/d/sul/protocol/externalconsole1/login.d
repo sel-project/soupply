@@ -13,7 +13,7 @@
 module sul.protocol.externalconsole1.login;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
@@ -98,6 +98,10 @@ class AuthCredentials : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "AuthCredentials(protocol: " ~ std.conv.to!string(this.protocol) ~ ", hash: " ~ std.conv.to!string(this.hash) ~ ", hashAlgorithm: " ~ std.conv.to!string(this.hashAlgorithm) ~ ", payload: " ~ std.conv.to!string(this.payload) ~ ")";
+	}
+
 }
 
 /**
@@ -156,6 +160,10 @@ class Auth : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Auth(hash: " ~ std.conv.to!string(this.hash) ~ ")";
+	}
+
 }
 
 /**
@@ -195,6 +203,10 @@ class Welcome : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "Welcome(status: " ~ std.conv.to!string(this.status) ~ ")";
 	}
 
 	alias _encode = encode;
@@ -277,6 +289,10 @@ class Welcome : Buffer {
 			connectedNodes.length=readBigEndianUshort(); foreach(ref y29ubmvjdgvktm9k;connectedNodes){ ushort eti5dwjtdmpkz3zr=readBigEndianUshort(); y29ubmvjdgvktm9k=readString(eti5dwjtdmpkz3zr); }
 		}
 
+		public override string toString() {
+			return "Welcome.Accepted(remoteCommands: " ~ std.conv.to!string(this.remoteCommands) ~ ", software: " ~ std.conv.to!string(this.software) ~ ", versions: " ~ std.conv.to!string(this.versions) ~ ", displayName: " ~ std.conv.to!string(this.displayName) ~ ", games: " ~ std.conv.to!string(this.games) ~ ", connectedNodes: " ~ std.conv.to!string(this.connectedNodes) ~ ")";
+		}
+
 	}
 
 	/**
@@ -298,6 +314,10 @@ class Welcome : Buffer {
 		public pure nothrow @safe void decode() {
 		}
 
+		public override string toString() {
+			return "Welcome.WrongHash()";
+		}
+
 	}
 
 	/**
@@ -317,6 +337,10 @@ class Welcome : Buffer {
 		}
 
 		public pure nothrow @safe void decode() {
+		}
+
+		public override string toString() {
+			return "Welcome.TimedOut()";
 		}
 
 	}

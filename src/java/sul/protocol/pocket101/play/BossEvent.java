@@ -60,4 +60,9 @@ public class BossEvent extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "BossEvent(entityId: " + this.entityId + ", eventId: " + this.eventId + ")";
+	}
+
 }

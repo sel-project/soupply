@@ -85,4 +85,9 @@ public class BlockAction extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "BlockAction(position: " + this.position + ", action: " + this.action + ", parameter: " + this.parameter + ", blockType: " + this.blockType + ")";
+	}
+
 }

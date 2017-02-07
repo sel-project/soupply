@@ -107,7 +107,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 					condition |= field.condition.length != 0;
 				}
 				data ~= space ~ "Name | Type" ~ (endianness ? " | Endianness" : "") ~ (condition ? " | When" : "") ~ "\n";
-				data ~= space ~ "---|---" ~ (endianness ? "|:---:" : "") ~ (condition ? "|:---:" : "") ~ "\n";
+				data ~= space ~ "---|---" ~ (endianness ? "|:---:" : "") ~ (condition ? "|:---" : "") ~ "\n";
 				foreach(field ; fields) {
 					data ~= space;
 					if(field.description.length || field.constants.length) data ~= "[" ~ toCamelCase(field.name) ~ "](#" ~ link(namespace, field.name) ~ ")";
@@ -149,7 +149,7 @@ void doc(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 		}
 		string[] be, le;
 		string[] used;
-		foreach(string type ; ["byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double"]) {
+		foreach(string type ; ["short", "ushort", "int", "uint", "long", "ulong", "float", "double"]) {
 			(){
 				bool checkImpl(string ft) {
 					auto t = ft in ptrs.data.arrays;
@@ -380,7 +380,7 @@ string desc(string space, string d) {
 				lines ~= line;
 				if(!line.startsWith("+ ") && !line.startsWith("-") && !line.startsWith("* ")) lines ~= "";
 			}
-			ret ~= lines.join("\n" ~ space).replaceAll(ctRegex!"[\n]{2,}", "\n\n");
+			ret ~= lines.join("\n").replaceAll(ctRegex!"[\n]{2,}", "\n\n").replace("\n", "\n" ~ space);
 		} else {
 			// in code
 			ret ~= s.replace("\n", "\n" ~ space);

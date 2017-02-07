@@ -71,4 +71,9 @@ public class SpawnPainting extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SpawnPainting(entityId: " + this.entityId + ", title: " + this.title + ", position: " + this.position + ", direction: " + this.direction + ")";
+	}
+
 }

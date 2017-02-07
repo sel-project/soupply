@@ -44,5 +44,10 @@ public class ListUpdateLatency extends Packet {
 		latency=this.readVaruint();
 	}
 
+	@Override
+	public String toString() {
+		return "ListUpdateLatency(uuid: " + this.uuid.toString() + ", latency: " + this.latency + ")";
+	}
+
 
 }

@@ -9,6 +9,7 @@
 package sul.protocol.minecraft110.types;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -46,6 +47,11 @@ public class Attribute extends Packet {
 		int bgvua2v5=this.readVaruint(); key=new String(this.readBytes(bgvua2v5), StandardCharsets.UTF_8);
 		value=readBigEndianDouble();
 		int bg1vzglmawvycw=this.readVaruint(); modifiers=new sul.protocol.minecraft110.types.Modifier[bg1vzglmawvycw]; for(int bw9kawzpzxjz=0;bw9kawzpzxjz<modifiers.length;bw9kawzpzxjz++){ modifiers[bw9kawzpzxjz]=new sul.protocol.minecraft110.types.Modifier(); modifiers[bw9kawzpzxjz]._index=this._index; modifiers[bw9kawzpzxjz].decode(this._buffer); this._index=modifiers[bw9kawzpzxjz]._index; }
+	}
+
+	@Override
+	public String toString() {
+		return "Attribute(key: " + this.key + ", value: " + this.value + ", modifiers: " + Arrays.deepToString(this.modifiers) + ")";
 	}
 
 

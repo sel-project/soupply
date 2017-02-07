@@ -53,5 +53,10 @@ public class PlayerList extends Packet {
 		skin=new sul.protocol.pocket100.types.Skin(); skin._index=this._index; skin.decode(this._buffer); this._index=skin._index;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerList(uuid: " + this.uuid.toString() + ", entityId: " + this.entityId + ", displayName: " + this.displayName + ", skin: " + this.skin.toString() + ")";
+	}
+
 
 }

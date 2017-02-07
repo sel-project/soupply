@@ -55,4 +55,9 @@ public class ItemFrameDropItem extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "ItemFrameDropItem(position: " + this.position.toString() + ", item: " + this.item.toString() + ")";
+	}
+
 }

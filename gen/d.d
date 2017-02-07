@@ -414,9 +414,20 @@ alias varulong = var!ulong;
 			}
 		}
 
+		void createToString(ref string data, string space, string name, Field[] fields, bool over=true) {
+			data ~= space ~ "public " ~ (over ? "override ": "") ~ "string toString() {\n";
+			string[] f;
+			foreach(i, field; fields) {
+				immutable n = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
+				f ~= n ~ ": \" ~ std.conv.to!string(this." ~ n ~ ")";
+			}
+			data ~= space ~ "\treturn \"" ~ name ~ "(" ~ (f.length ? (f.join(" ~ \", ") ~ " ~ \"") : "") ~ ")\";\n";
+			data ~= space ~ "}\n\n";
+		}
+
 		// types
 		string t = "module sul.protocol." ~ game ~ ".types;\n\n";
-		t ~= "import std.bitmanip : write, peek;\nimport std.conv : to;\nimport std.system : Endian;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\nimport sul.utils.buffer;\nimport sul.utils.var;\n\n";
+		t ~= "import std.bitmanip : write, peek;\nstatic import std.conv;\nimport std.system : Endian;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\nimport sul.utils.buffer;\nimport sul.utils.var;\n\n";
 		if(game in metadatas) t ~= "import sul.metadata." ~ game ~ ";\n\n";
 		foreach(type ; prts.data.types) {
 			if(type.description.length) t ~= ddoc("", type.description);
@@ -430,6 +441,7 @@ alias varulong = var!ulong;
 			t ~= "\tpublic pure nothrow @safe void decode(Buffer buffer) {\n\t\twith(buffer) {\n";
 			createDecodings("\t\t\t", t, type.fields);
 			t ~= "\t\t}\n\t}\n\n";
+			createToString(t, "\t", toPascalCase(type.name), type.fields, false);
 			t ~= "}\n\n";
 		}
 		write("../src/d/sul/protocol/" ~ game ~ "/types.d", t, "protocol/" ~ game);
@@ -443,7 +455,7 @@ alias varulong = var!ulong;
 			string data;
 			if(section.description.length) data ~= ddoc("", section.description);
 			data ~= "module sul.protocol." ~ game ~ "." ~ section.name ~ ";\n\n";
-			data ~= "import std.bitmanip : write, peek;\nimport std.conv : to;\nimport std.system : Endian;\nimport std.typetuple : TypeTuple;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\n";
+			data ~= "import std.bitmanip : write, peek;\nstatic import std.conv;\nimport std.system : Endian;\nimport std.typetuple : TypeTuple;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\n";
 			data ~= "import sul.utils.buffer;\nimport sul.utils.var;\n\nstatic import sul.protocol." ~ game ~ ".types;\n\n";
 			if(game in metadatas) data ~= "import sul.metadata." ~ game ~ ";\n\n";
 			string[] names;
@@ -475,6 +487,7 @@ alias varulong = var!ulong;
 				data ~= "\t\tret.decode!readId();\n";
 				data ~= "\t\treturn ret;\n";
 				data ~= "\t}\n\n";
+				createToString(data, "\t", toPascalCase(packet.name), packet.fields);
 				// variants
 				if(packet.variants.length) {
 					data ~= "\talias _encode = encode;\n\n";
@@ -498,6 +511,7 @@ alias varulong = var!ulong;
 						data ~= "\t\tpublic pure nothrow @safe void decode() {\n";
 						createDecodings("\t\t\t", data, variant.fields);
 						data ~= "\t\t}\n\n";
+						createToString(data, "\t\t", toPascalCase(packet.name) ~ "." ~ toPascalCase(variant.name), variant.fields);
 						data ~= "\t}\n\n";
 					}
 				}

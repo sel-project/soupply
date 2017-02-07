@@ -55,4 +55,9 @@ public class SteerBoat extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SteerBoat(rightPaddleTurning: " + this.rightPaddleTurning + ", leftPaddleTurning: " + this.leftPaddleTurning + ")";
+	}
+
 }

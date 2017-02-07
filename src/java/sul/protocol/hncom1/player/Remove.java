@@ -11,7 +11,8 @@ package sul.protocol.hncom1.player;
 import sul.utils.*;
 
 /**
- * Removes a player from the node.
+ * Removes a player from the node. If the player is removed from the node using Kick
+ * or Transfer this packet is not sent.
  */
 public class Remove extends Packet {
 
@@ -27,6 +28,10 @@ public class Remove extends Packet {
 	public static final byte TRANSFERRED = 3;
 
 	public int hubId;
+
+	/**
+	 * Reason of the disconnection.
+	 */
 	public byte reason;
 
 	public Remove() {}
@@ -62,6 +67,11 @@ public class Remove extends Packet {
 		Remove ret = new Remove();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Remove(hubId: " + this.hubId + ", reason: " + this.reason + ")";
 	}
 
 }

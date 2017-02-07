@@ -79,4 +79,9 @@ public class SpawnMob extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SpawnMob(entityId: " + this.entityId + ", type: " + this.type + ", position: " + this.position.toString() + ", yaw: " + this.yaw + ", pitch: " + this.pitch + ", headPitch: " + this.headPitch + ", velocity: " + this.velocity.toString() + ", metadata: " + this.metadata.toString() + ")";
+	}
+
 }

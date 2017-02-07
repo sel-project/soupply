@@ -59,4 +59,9 @@ public class BlockBreakAnimation extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "BlockBreakAnimation(entityId: " + this.entityId + ", position: " + this.position + ", stage: " + this.stage + ")";
+	}
+
 }

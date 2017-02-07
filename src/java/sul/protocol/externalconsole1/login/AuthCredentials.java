@@ -9,6 +9,7 @@
 package sul.protocol.externalconsole1.login;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -87,6 +88,11 @@ public class AuthCredentials extends Packet {
 		AuthCredentials ret = new AuthCredentials();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "AuthCredentials(protocol: " + this.protocol + ", hash: " + this.hash + ", hashAlgorithm: " + this.hashAlgorithm + ", payload: " + Arrays.toString(this.payload) + ")";
 	}
 
 }

@@ -69,4 +69,9 @@ public class Handshake extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "Handshake(protocol: " + this.protocol + ", serverAddress: " + this.serverAddress + ", serverPort: " + this.serverPort + ", next: " + this.next + ")";
+	}
+
 }

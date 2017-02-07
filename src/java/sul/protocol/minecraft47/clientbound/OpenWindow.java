@@ -69,4 +69,9 @@ public class OpenWindow extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "OpenWindow(window: " + this.window + ", type: " + this.type + ", title: " + this.title + ", slots: " + this.slots + ", horseId: " + this.horseId + ")";
+	}
+
 }

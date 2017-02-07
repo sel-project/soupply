@@ -9,6 +9,7 @@
 package sul.protocol.minecraft315.login;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -59,6 +60,11 @@ public class EncryptionRequest extends Packet {
 		EncryptionRequest ret = new EncryptionRequest();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "EncryptionRequest(serverId: " + this.serverId + ", publicKey: " + Arrays.toString(this.publicKey) + ", verifyToken: " + Arrays.toString(this.verifyToken) + ")";
 	}
 
 }

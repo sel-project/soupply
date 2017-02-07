@@ -81,4 +81,9 @@ public class CommandStep extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "CommandStep(command: " + this.command + ", overload: " + this.overload + ", unknown2: " + this.unknown2 + ", unknown3: " + this.unknown3 + ", isOutput: " + this.isOutput + ", unknown5: " + this.unknown5 + ", input: " + this.input + ", output: " + this.output + ")";
+	}
+
 }

@@ -77,25 +77,6 @@
 					"name": "data",
 					"type": "ubyte[]"
 				}
-			],
-
-			"log": [
-				{
-					"name": "timestamp",
-					"type": "ulong"
-				},
-				{
-					"name": "logger",
-					"type": "string"
-				},
-				{
-					"name": "message",
-					"type": "string"
-				},
-				{
-					"name": "command_id",
-					"type": "varint"
-				}
 			]
 
 		}
@@ -192,7 +173,10 @@
 					},
 					{
 						"name": "max",
-						"type": "varuint"
+						"type": "varint",
+						"constants": {
+							"unlimited": "-1"
+						}
 					},
 					{
 						"name": "language",
@@ -236,6 +220,10 @@
 					{
 						"name": "plugins",
 						"type": "plugin[]"
+					},
+					{
+						"name": "additional_json",
+						"type": "string"
 					}
 				]
 			}
@@ -323,7 +311,10 @@
 					},
 					{
 						"name": "max",
-						"type": "varuint"
+						"type": "varint",
+						"constants": {
+							"unlimited": "-1"
+						}
 					}
 				]
 			},
@@ -348,14 +339,26 @@
 				]
 			},
 
-			"logs": {
+			"log": {
 				"id": 10,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "messages",
-						"type": "log[]"
+						"name": "timestamp",
+						"type": "varulong"
+					},
+					{
+						"name": "logger",
+						"type": "string"
+					},
+					{
+						"name": "message",
+						"type": "string"
+					},
+					{
+						"name": "command_id",
+						"type": "varint"
 					}
 				]
 			},
@@ -376,7 +379,8 @@
 					},
 					{
 						"name": "sender",
-						"type": "address"
+						"type": "address",
+						"when": "origin!=0"
 					},
 					{
 						"name": "command",
@@ -639,6 +643,15 @@
 					{
 						"name": "node",
 						"type": "varuint"
+					},
+					{
+						"name": "on_fail",
+						"type": "ubyte",
+						"constants": {
+							"disconnect": 0,
+							"auto": 1,
+							"reconnect": 2
+						}
 					}
 				]
 			},

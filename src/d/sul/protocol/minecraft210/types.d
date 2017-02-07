@@ -9,7 +9,7 @@
 module sul.protocol.minecraft210.types;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typecons : Tuple;
 import std.uuid : UUID;
@@ -40,6 +40,10 @@ struct Statistic {
 		}
 	}
 
+	public string toString() {
+		return "Statistic(name: " ~ std.conv.to!string(this.name) ~ ", value: " ~ std.conv.to!string(this.value) ~ ")";
+	}
+
 }
 
 struct BlockChange {
@@ -64,6 +68,10 @@ struct BlockChange {
 			y=readBigEndianUbyte();
 			block=varuint.decode(_buffer, &_index);
 		}
+	}
+
+	public string toString() {
+		return "BlockChange(xz: " ~ std.conv.to!string(this.xz) ~ ", y: " ~ std.conv.to!string(this.y) ~ ", block: " ~ std.conv.to!string(this.block) ~ ")";
 	}
 
 }
@@ -93,6 +101,10 @@ struct Slot {
 			if(id>0){ damage=readBigEndianUshort(); }
 			if(id>0){ nbt=_buffer[_index..$].dup; _index=_buffer.length; }
 		}
+	}
+
+	public string toString() {
+		return "Slot(id: " ~ std.conv.to!string(this.id) ~ ", count: " ~ std.conv.to!string(this.count) ~ ", damage: " ~ std.conv.to!string(this.damage) ~ ", nbt: " ~ std.conv.to!string(this.nbt) ~ ")";
 	}
 
 }
@@ -127,6 +139,10 @@ struct Icon {
 		}
 	}
 
+	public string toString() {
+		return "Icon(directionAndType: " ~ std.conv.to!string(this.directionAndType) ~ ", position: " ~ std.conv.to!string(this.position) ~ ")";
+	}
+
 }
 
 struct Property {
@@ -154,6 +170,10 @@ struct Property {
 			signed=readBigEndianBool();
 			if(signed==true){ uint c2lnbmf0dxjl=varuint.decode(_buffer, &_index); signature=readString(c2lnbmf0dxjl); }
 		}
+	}
+
+	public string toString() {
+		return "Property(name: " ~ std.conv.to!string(this.name) ~ ", value: " ~ std.conv.to!string(this.value) ~ ", signed: " ~ std.conv.to!string(this.signed) ~ ", signature: " ~ std.conv.to!string(this.signature) ~ ")";
 	}
 
 }
@@ -200,6 +220,10 @@ struct ListAddPlayer {
 		}
 	}
 
+	public string toString() {
+		return "ListAddPlayer(uuid: " ~ std.conv.to!string(this.uuid) ~ ", name: " ~ std.conv.to!string(this.name) ~ ", properties: " ~ std.conv.to!string(this.properties) ~ ", gamemode: " ~ std.conv.to!string(this.gamemode) ~ ", latency: " ~ std.conv.to!string(this.latency) ~ ", hasDisplayName: " ~ std.conv.to!string(this.hasDisplayName) ~ ", displayName: " ~ std.conv.to!string(this.displayName) ~ ")";
+	}
+
 }
 
 struct ListUpdateGamemode {
@@ -229,6 +253,10 @@ struct ListUpdateGamemode {
 		}
 	}
 
+	public string toString() {
+		return "ListUpdateGamemode(uuid: " ~ std.conv.to!string(this.uuid) ~ ", gamemode: " ~ std.conv.to!string(this.gamemode) ~ ")";
+	}
+
 }
 
 struct ListUpdateLatency {
@@ -250,6 +278,10 @@ struct ListUpdateLatency {
 			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 			latency=varuint.decode(_buffer, &_index);
 		}
+	}
+
+	public string toString() {
+		return "ListUpdateLatency(uuid: " ~ std.conv.to!string(this.uuid) ~ ", latency: " ~ std.conv.to!string(this.latency) ~ ")";
 	}
 
 }
@@ -276,6 +308,10 @@ struct ListUpdateDisplayName {
 			hasDisplayName=readBigEndianBool();
 			if(hasDisplayName==true){ uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu); }
 		}
+	}
+
+	public string toString() {
+		return "ListUpdateDisplayName(uuid: " ~ std.conv.to!string(this.uuid) ~ ", hasDisplayName: " ~ std.conv.to!string(this.hasDisplayName) ~ ", displayName: " ~ std.conv.to!string(this.displayName) ~ ")";
 	}
 
 }
@@ -309,6 +345,10 @@ struct Modifier {
 		}
 	}
 
+	public string toString() {
+		return "Modifier(uuid: " ~ std.conv.to!string(this.uuid) ~ ", amount: " ~ std.conv.to!string(this.amount) ~ ", operation: " ~ std.conv.to!string(this.operation) ~ ")";
+	}
+
 }
 
 struct Attribute {
@@ -335,6 +375,10 @@ struct Attribute {
 		}
 	}
 
+	public string toString() {
+		return "Attribute(key: " ~ std.conv.to!string(this.key) ~ ", value: " ~ std.conv.to!string(this.value) ~ ", modifiers: " ~ std.conv.to!string(this.modifiers) ~ ")";
+	}
+
 }
 
 struct OptionalPosition {
@@ -358,6 +402,10 @@ struct OptionalPosition {
 		}
 	}
 
+	public string toString() {
+		return "OptionalPosition(hasPosition: " ~ std.conv.to!string(this.hasPosition) ~ ", position: " ~ std.conv.to!string(this.position) ~ ")";
+	}
+
 }
 
 struct OptionalUuid {
@@ -379,6 +427,10 @@ struct OptionalUuid {
 			hasUuid=readBigEndianBool();
 			if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		}
+	}
+
+	public string toString() {
+		return "OptionalUuid(hasUuid: " ~ std.conv.to!string(this.hasUuid) ~ ", uuid: " ~ std.conv.to!string(this.uuid) ~ ")";
 	}
 
 }

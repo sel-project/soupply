@@ -12,7 +12,7 @@
 module sul.protocol.externalconsole1.status;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
@@ -68,6 +68,10 @@ class KeepAlive : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "KeepAlive(count: " ~ std.conv.to!string(this.count) ~ ")";
 	}
 
 }
@@ -127,6 +131,10 @@ class UpdateNodes : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "UpdateNodes(action: " ~ std.conv.to!string(this.action) ~ ", node: " ~ std.conv.to!string(this.node) ~ ")";
+	}
+
 }
 
 /**
@@ -157,6 +165,10 @@ class RequestStats : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "RequestStats()";
 	}
 
 }
@@ -247,6 +259,10 @@ class UpdateStats : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "UpdateStats(onlinePlayers: " ~ std.conv.to!string(this.onlinePlayers) ~ ", maxPlayers: " ~ std.conv.to!string(this.maxPlayers) ~ ", uptime: " ~ std.conv.to!string(this.uptime) ~ ", upload: " ~ std.conv.to!string(this.upload) ~ ", download: " ~ std.conv.to!string(this.download) ~ ", nodes: " ~ std.conv.to!string(this.nodes) ~ ")";
 	}
 
 }

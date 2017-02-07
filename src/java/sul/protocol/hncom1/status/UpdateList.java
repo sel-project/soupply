@@ -84,6 +84,11 @@ public class UpdateList extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "UpdateList(list: " + this.list + ", action: " + this.action + ", type: " + this.type + ")";
+	}
+
 	public class ByHubId extends Packet {
 
 		public static final byte TYPE = (byte)0;
@@ -118,6 +123,11 @@ public class UpdateList extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "UpdateList.ByHubId(hubId: " + this.hubId + ")";
 		}
 
 	}
@@ -156,6 +166,11 @@ public class UpdateList extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "UpdateList.ByName(username: " + this.username + ")";
 		}
 
 	}
@@ -202,6 +217,11 @@ public class UpdateList extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "UpdateList.ByUuid(game: " + this.game + ", uuid: " + this.uuid.toString() + ")";
 		}
 
 	}

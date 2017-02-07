@@ -24,7 +24,7 @@
 		
 		<type name="address">
 			<field name="type" type="ubyte" />
-			<field name="ipv4" type="ubyte[4]" when="type==4" />
+			<field name="ipv4" type="uint" when="type==4" />
 			<field name="ipv6" type="ubyte[16]" when="type==6" />
 			<field name="port" type="ushort" />
 		</type>

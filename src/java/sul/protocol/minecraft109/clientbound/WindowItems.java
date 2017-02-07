@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft109.clientbound;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class WindowItems extends Packet {
@@ -53,6 +55,11 @@ public class WindowItems extends Packet {
 		WindowItems ret = new WindowItems();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "WindowItems(window: " + this.window + ", slots: " + Arrays.deepToString(this.slots) + ")";
 	}
 
 }

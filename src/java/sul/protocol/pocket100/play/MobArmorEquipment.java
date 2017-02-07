@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket100.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class MobArmorEquipment extends Packet {
@@ -53,6 +55,11 @@ public class MobArmorEquipment extends Packet {
 		MobArmorEquipment ret = new MobArmorEquipment();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "MobArmorEquipment(entityId: " + this.entityId + ", armor: " + Arrays.deepToString(this.armor) + ")";
 	}
 
 }

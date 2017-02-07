@@ -12,6 +12,9 @@ import java.nio.charset.StandardCharsets;
 
 import sul.utils.*;
 
+/**
+ * Updates player's world and dimension.
+ */
 public class UpdateWorld extends Packet {
 
 	public static final byte ID = (byte)20;
@@ -20,7 +23,16 @@ public class UpdateWorld extends Packet {
 	public static final boolean SERVERBOUND = true;
 
 	public int hubId;
+
+	/**
+	 * World's name, used mainly for display purposes.
+	 */
 	public String world;
+
+	/**
+	 * World's dimension, that may different from Minecraft's version. It used for synchronise
+	 * entities and chunks when changing node as described at Add.dimension.
+	 */
 	public byte dimension;
 
 	public UpdateWorld() {}
@@ -59,6 +71,11 @@ public class UpdateWorld extends Packet {
 		UpdateWorld ret = new UpdateWorld();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "UpdateWorld(hubId: " + this.hubId + ", world: " + this.world + ", dimension: " + this.dimension + ")";
 	}
 
 }

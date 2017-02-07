@@ -51,5 +51,10 @@ public class Icon extends Packet {
 		position.x=readBigEndianByte(); position.z=readBigEndianByte();
 	}
 
+	@Override
+	public String toString() {
+		return "Icon(directionAndType: " + this.directionAndType + ", position: " + this.position.toString() + ")";
+	}
+
 
 }

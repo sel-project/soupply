@@ -79,4 +79,9 @@ public class MobEquipment extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "MobEquipment(entityId: " + this.entityId + ", item: " + this.item.toString() + ", inventorySlot: " + this.inventorySlot + ", hotbarSlot: " + this.hotbarSlot + ", unknown4: " + this.unknown4 + ")";
+	}
+
 }

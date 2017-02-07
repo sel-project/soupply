@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft47.login;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class EncryptionResponse extends Packet {
@@ -53,6 +55,11 @@ public class EncryptionResponse extends Packet {
 		EncryptionResponse ret = new EncryptionResponse();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "EncryptionResponse(sharedSecret: " + Arrays.toString(this.sharedSecret) + ", verifyToken: " + Arrays.toString(this.verifyToken) + ")";
 	}
 
 }

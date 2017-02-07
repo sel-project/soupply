@@ -46,5 +46,10 @@ public class BlockChange extends Packet {
 		block=this.readVaruint();
 	}
 
+	@Override
+	public String toString() {
+		return "BlockChange(xz: " + this.xz + ", y: " + this.y + ", block: " + this.block + ")";
+	}
+
 
 }

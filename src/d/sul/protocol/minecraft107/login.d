@@ -9,7 +9,7 @@
 module sul.protocol.minecraft107.login;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typetuple : TypeTuple;
 import std.typecons : Tuple;
@@ -58,6 +58,10 @@ class Disconnect : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "Disconnect(reason: " ~ std.conv.to!string(this.reason) ~ ")";
+	}
+
 }
 
 class LoginStart : Buffer {
@@ -94,6 +98,10 @@ class LoginStart : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "LoginStart(username: " ~ std.conv.to!string(this.username) ~ ")";
 	}
 
 }
@@ -142,6 +150,10 @@ class EncryptionRequest : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "EncryptionRequest(serverId: " ~ std.conv.to!string(this.serverId) ~ ", publicKey: " ~ std.conv.to!string(this.publicKey) ~ ", verifyToken: " ~ std.conv.to!string(this.verifyToken) ~ ")";
+	}
+
 }
 
 class EncryptionResponse : Buffer {
@@ -182,6 +194,10 @@ class EncryptionResponse : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "EncryptionResponse(sharedSecret: " ~ std.conv.to!string(this.sharedSecret) ~ ", verifyToken: " ~ std.conv.to!string(this.verifyToken) ~ ")";
 	}
 
 }
@@ -226,6 +242,10 @@ class LoginSuccess : Buffer {
 		return ret;
 	}
 
+	public override string toString() {
+		return "LoginSuccess(uuid: " ~ std.conv.to!string(this.uuid) ~ ", username: " ~ std.conv.to!string(this.username) ~ ")";
+	}
+
 }
 
 class SetCompression : Buffer {
@@ -262,6 +282,10 @@ class SetCompression : Buffer {
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
+	}
+
+	public override string toString() {
+		return "SetCompression(thresold: " ~ std.conv.to!string(this.thresold) ~ ")";
 	}
 
 }

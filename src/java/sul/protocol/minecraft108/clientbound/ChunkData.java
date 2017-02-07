@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft108.clientbound;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class ChunkData extends Packet {
@@ -61,6 +63,11 @@ public class ChunkData extends Packet {
 		ChunkData ret = new ChunkData();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "ChunkData(position: " + this.position.toString() + ", full: " + this.full + ", sections: " + this.sections + ", data: " + Arrays.toString(this.data) + ")";
 	}
 
 }

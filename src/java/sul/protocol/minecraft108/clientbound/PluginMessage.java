@@ -9,6 +9,7 @@
 package sul.protocol.minecraft108.clientbound;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -55,6 +56,11 @@ public class PluginMessage extends Packet {
 		PluginMessage ret = new PluginMessage();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "PluginMessage(channel: " + this.channel + ", data: " + Arrays.toString(this.data) + ")";
 	}
 
 }

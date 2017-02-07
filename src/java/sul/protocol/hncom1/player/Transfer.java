@@ -13,7 +13,8 @@ import sul.utils.*;
 /**
  * Transfers a player to another node. When a player is transferred from the node the
  * hub will not send the Remove packet and there's no way, for the node, to know whether
- * the player was disconnected or successfully transferred.
+ * the player was disconnected or successfully transferred, if not using messages through
+ * a user-defined protocol.
  */
 public class Transfer extends Packet {
 
@@ -22,19 +23,39 @@ public class Transfer extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	// on fail
+	public static final byte DISCONNECT = 0;
+	public static final byte AUTO = 1;
+	public static final byte RECONNECT = 2;
+
 	public int hubId;
+
+	/**
+	 * Id of the node that player will be transferred to. It should be an id of a connected
+	 * node (which can be calculated using AddNode and RemoveNode), otherwise the player
+	 * will be disconnected or moved to another node (see the following field).
+	 */
 	public int node;
+
+	/**
+	 * Indicates the action to be taken when a transfer fails because the indicated node
+	 * is not connected anymore or it cannot accept the given player's game type or protocol.
+	 * If the indicated node is full the player will be simply disconnected with the `Server
+	 * Full` message.
+	 */
+	public byte onFail;
 
 	public Transfer() {}
 
-	public Transfer(int hubId, int node) {
+	public Transfer(int hubId, int node, byte onFail) {
 		this.hubId = hubId;
 		this.node = node;
+		this.onFail = onFail;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(hubId) + Buffer.varuintLength(node) + 1;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(node) + 2;
 	}
 
 	@Override
@@ -43,6 +64,7 @@ public class Transfer extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
 		this.writeVaruint(node);
+		this.writeBigEndianByte(onFail);
 		return this.getBuffer();
 	}
 
@@ -52,12 +74,18 @@ public class Transfer extends Packet {
 		readBigEndianByte();
 		hubId=this.readVaruint();
 		node=this.readVaruint();
+		onFail=readBigEndianByte();
 	}
 
 	public static Transfer fromBuffer(byte[] buffer) {
 		Transfer ret = new Transfer();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Transfer(hubId: " + this.hubId + ", node: " + this.node + ", onFail: " + this.onFail + ")";
 	}
 
 }

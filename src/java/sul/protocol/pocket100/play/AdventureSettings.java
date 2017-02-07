@@ -73,4 +73,9 @@ public class AdventureSettings extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "AdventureSettings(flags: " + this.flags + ", permissions: " + this.permissions + ")";
+	}
+
 }

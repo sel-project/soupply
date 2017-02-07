@@ -53,5 +53,10 @@ public class Modifier extends Packet {
 		operation=readBigEndianByte();
 	}
 
+	@Override
+	public String toString() {
+		return "Modifier(uuid: " + this.uuid.toString() + ", amount: " + this.amount + ", operation: " + this.operation + ")";
+	}
+
 
 }

@@ -51,4 +51,9 @@ public class AddItem extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "AddItem(item: " + this.item.toString() + ")";
+	}
+
 }

@@ -55,4 +55,9 @@ public class BlockChange extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "BlockChange(position: " + this.position + ", block: " + this.block + ")";
+	}
+
 }

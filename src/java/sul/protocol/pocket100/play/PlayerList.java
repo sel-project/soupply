@@ -8,6 +8,7 @@
  */
 package sul.protocol.pocket100.play;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import sul.utils.*;
@@ -61,6 +62,11 @@ public class PlayerList extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerList(action: " + this.action + ")";
+	}
+
 	public class Add extends Packet {
 
 		public static final byte ACTION = (byte)0;
@@ -95,6 +101,11 @@ public class PlayerList extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "PlayerList.Add(players: " + Arrays.deepToString(this.players) + ")";
 		}
 
 	}
@@ -133,6 +144,11 @@ public class PlayerList extends Packet {
 
 		public void decode() {
 			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "PlayerList.Remove(players: " + Arrays.deepToString(this.players) + ")";
 		}
 
 	}

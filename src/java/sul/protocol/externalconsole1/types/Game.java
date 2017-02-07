@@ -8,6 +8,8 @@
  */
 package sul.protocol.externalconsole1.types;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Game extends Packet {
@@ -51,6 +53,11 @@ public class Game extends Packet {
 		this._buffer = buffer;
 		type=readBigEndianByte();
 		int bhbyb3rvy29scw=readBigEndianShort(); protocols=new int[bhbyb3rvy29scw]; for(int chjvdg9jb2xz=0;chjvdg9jb2xz<protocols.length;chjvdg9jb2xz++){ protocols[chjvdg9jb2xz]=readBigEndianInt(); }
+	}
+
+	@Override
+	public String toString() {
+		return "Game(type: " + this.type + ", protocols: " + Arrays.toString(this.protocols) + ")";
 	}
 
 

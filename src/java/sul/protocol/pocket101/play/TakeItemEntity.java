@@ -55,4 +55,9 @@ public class TakeItemEntity extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "TakeItemEntity(taken: " + this.taken + ", collector: " + this.collector + ")";
+	}
+
 }

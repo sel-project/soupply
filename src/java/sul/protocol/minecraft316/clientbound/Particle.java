@@ -8,6 +8,8 @@
  */
 package sul.protocol.minecraft316.clientbound;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Particle extends Packet {
@@ -122,6 +124,11 @@ public class Particle extends Packet {
 		Particle ret = new Particle();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "Particle(particleId: " + this.particleId + ", longDistance: " + this.longDistance + ", position: " + this.position.toString() + ", offset: " + this.offset.toString() + ", data: " + this.data + ", count: " + this.count + ", additionalData: " + Arrays.toString(this.additionalData) + ")";
 	}
 
 }

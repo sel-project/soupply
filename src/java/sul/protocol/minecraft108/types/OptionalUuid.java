@@ -44,5 +44,10 @@ public class OptionalUuid extends Packet {
 		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
 	}
 
+	@Override
+	public String toString() {
+		return "OptionalUuid(hasUuid: " + this.hasUuid + ", uuid: " + this.uuid.toString() + ")";
+	}
+
 
 }

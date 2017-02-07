@@ -55,4 +55,9 @@ public class SetEntityMotion extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SetEntityMotion(entityId: " + this.entityId + ", motion: " + this.motion.toString() + ")";
+	}
+
 }

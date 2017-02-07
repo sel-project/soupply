@@ -51,4 +51,9 @@ public class RequestChunkRadius extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "RequestChunkRadius(radius: " + this.radius + ")";
+	}
+
 }

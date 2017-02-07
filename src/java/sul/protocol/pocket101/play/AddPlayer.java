@@ -94,4 +94,9 @@ public class AddPlayer extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "AddPlayer(uuid: " + this.uuid.toString() + ", username: " + this.username + ", entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ", position: " + this.position.toString() + ", motion: " + this.motion.toString() + ", pitch: " + this.pitch + ", headYaw: " + this.headYaw + ", yaw: " + this.yaw + ", heldItem: " + this.heldItem.toString() + ", metadata: " + this.metadata.toString() + ")";
+	}
+
 }

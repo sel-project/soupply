@@ -62,4 +62,9 @@ public class DisplayScoreboard extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "DisplayScoreboard(position: " + this.position + ", scoreName: " + this.scoreName + ")";
+	}
+
 }

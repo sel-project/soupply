@@ -59,4 +59,9 @@ public class SetSlot extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "SetSlot(window: " + this.window + ", slot: " + this.slot + ", item: " + this.item.toString() + ")";
+	}
+
 }

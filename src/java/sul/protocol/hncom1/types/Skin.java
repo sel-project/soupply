@@ -9,6 +9,7 @@
 package sul.protocol.hncom1.types;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import sul.utils.*;
 
@@ -55,6 +56,11 @@ public class Skin extends Packet {
 		this._buffer = buffer;
 		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
 		int bgrhdge=this.readVaruint(); data=this.readBytes(bgrhdge);
+	}
+
+	@Override
+	public String toString() {
+		return "Skin(name: " + this.name + ", data: " + Arrays.toString(this.data) + ")";
 	}
 
 

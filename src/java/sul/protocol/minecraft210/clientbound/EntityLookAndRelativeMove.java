@@ -67,4 +67,9 @@ public class EntityLookAndRelativeMove extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityLookAndRelativeMove(entityId: " + this.entityId + ", delta: " + this.delta.toString() + ", yaw: " + this.yaw + ", pitch: " + this.pitch + ", onGround: " + this.onGround + ")";
+	}
+
 }

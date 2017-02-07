@@ -9,7 +9,7 @@
 module sul.protocol.externalconsole1.types;
 
 import std.bitmanip : write, peek;
-import std.conv : to;
+static import std.conv;
 import std.system : Endian;
 import std.typecons : Tuple;
 import std.uuid : UUID;
@@ -47,6 +47,10 @@ struct Game {
 			type=readBigEndianUbyte();
 			protocols.length=readBigEndianUshort(); foreach(ref chjvdg9jb2xz;protocols){ chjvdg9jb2xz=readBigEndianUint(); }
 		}
+	}
+
+	public string toString() {
+		return "Game(type: " ~ std.conv.to!string(this.type) ~ ", protocols: " ~ std.conv.to!string(this.protocols) ~ ")";
 	}
 
 }
@@ -103,6 +107,10 @@ struct NodeStats {
 			ram=readBigEndianUlong();
 			cpu=readBigEndianFloat();
 		}
+	}
+
+	public string toString() {
+		return "NodeStats(name: " ~ std.conv.to!string(this.name) ~ ", tps: " ~ std.conv.to!string(this.tps) ~ ", ram: " ~ std.conv.to!string(this.ram) ~ ", cpu: " ~ std.conv.to!string(this.cpu) ~ ")";
 	}
 
 }

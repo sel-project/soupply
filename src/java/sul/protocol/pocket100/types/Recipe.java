@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket100.types;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class Recipe extends Packet {
@@ -47,6 +49,11 @@ public class Recipe extends Packet {
 		this._buffer = buffer;
 		type=this.readVarint();
 		data=this.readBytes(this._buffer.length-this._index);
+	}
+
+	@Override
+	public String toString() {
+		return "Recipe(type: " + this.type + ", data: " + Arrays.toString(this.data) + ")";
 	}
 
 

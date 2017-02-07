@@ -100,4 +100,9 @@ public class JoinGame extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "JoinGame(entityId: " + this.entityId + ", gamemode: " + this.gamemode + ", dimension: " + this.dimension + ", difficulty: " + this.difficulty + ", maxPlayers: " + this.maxPlayers + ", levelType: " + this.levelType + ", reducedDebug: " + this.reducedDebug + ")";
+	}
+
 }

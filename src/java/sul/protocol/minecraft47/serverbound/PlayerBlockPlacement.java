@@ -63,4 +63,9 @@ public class PlayerBlockPlacement extends Packet {
 		return ret;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerBlockPlacement(position: " + this.position + ", face: " + this.face + ", heldItem: " + this.heldItem.toString() + ", cursorPosition: " + this.cursorPosition.toString() + ")";
+	}
+
 }

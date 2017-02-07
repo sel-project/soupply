@@ -10,6 +10,9 @@ package sul.protocol.hncom1.player;
 
 import sul.utils.*;
 
+/**
+ * Updates the player's packet loss if it uses a connectionless protocol.
+ */
 public class UpdatePacketLoss extends Packet {
 
 	public static final byte ID = (byte)22;
@@ -18,6 +21,10 @@ public class UpdatePacketLoss extends Packet {
 	public static final boolean SERVERBOUND = false;
 
 	public int hubId;
+
+	/**
+	 * Percentage of lost packets in range 0 (no packet lost) to 100 (every packet lost).
+	 */
 	public float packetLoss;
 
 	public UpdatePacketLoss() {}
@@ -53,6 +60,11 @@ public class UpdatePacketLoss extends Packet {
 		UpdatePacketLoss ret = new UpdatePacketLoss();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "UpdatePacketLoss(hubId: " + this.hubId + ", packetLoss: " + this.packetLoss + ")";
 	}
 
 }

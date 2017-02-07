@@ -8,6 +8,8 @@
  */
 package sul.protocol.pocket101.play;
 
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class ClientboundMapItemData extends Packet {
@@ -117,6 +119,11 @@ public class ClientboundMapItemData extends Packet {
 		ClientboundMapItemData ret = new ClientboundMapItemData();
 		ret.decode(buffer);
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return "ClientboundMapItemData(mapId: " + this.mapId + ", unknown1: " + this.unknown1 + ", unknown2: " + this.unknown2 + ", unknown3: " + this.unknown3 + ", action: " + this.action + ", unknown5: " + this.unknown5 + ", unknown6: " + this.unknown6 + ", unknown7: " + this.unknown7 + ", unknown8: " + this.unknown8 + ", showIcons: " + this.showIcons + ", icons: " + Arrays.deepToString(this.icons) + ", direction: " + this.direction + ", position: " + this.position.toString() + ", columns: " + this.columns + ", rows: " + this.rows + ", offset: " + this.offset.toString() + ", data: " + Arrays.toString(this.data) + ")";
 	}
 
 }
