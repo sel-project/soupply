@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Raknet 8</title>
+		<link rel="stylesheet" href="../style.css" />
+	</head>
+	<body>
+		<h1>Raknet 8</h1>
+		<p><strong>Jump to</strong>: <a href="#endianness">Endianness</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a></p>
+		<p><strong>Released</strong>: August 16th, 2011</p>
+		<p>In use since version <strong>Alpha 0.1.0</strong></p>
+		<p>Minecraft: Pocket Edition's networking protocol.</p>
+		<hr>
+		<h2>Endianness</h2>
+		<table>
+			<tr><td>big endian</td><td>ushort, uint, long</td></tr>
+			<tr><td>little endian</td><td></td></tr>
+		</table>
+		<hr>
+		<h2>Packets</h2>
+		<table>
+			<tr><th>Section</th><th>Packets</th></tr>
+			<tr><td><a href="#control">Control</a></td><td align="center">3</td></tr>
+			<tr><td><a href="#unconnected">Unconnected</a></td><td align="center">6</td></tr>
+			<tr><td><a href="#encapsulated">Encapsulated</a></td><td align="center">7</td></tr>
+		</table>
+		<h3>Control</h3>
+		<table>
+			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+			<tr><td><a href="#control.ack">Ack</a></td><td align="center">192</td><td align="center">C0₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
+			<tr><td><a href="#control.nack">Nack</a></td><td align="center">160</td><td align="center">A0₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
+			<tr><td><a href="#control.encapsulated">Encapsulated</a></td><td align="center">132</td><td align="center">84₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
+		</table>
+		<ul>
+			<li>
+				<a name="control.ack"></a>
+				<h3>Ack</h3>
+				<p><strong>Id</strong>: 192</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>packets</td><td><a href="#types.acknowledge">acknowledge</a>[]</td></tr>
+				</table>
+				<ul>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="control.nack"></a>
+				<h3>Nack</h3>
+				<p><strong>Id</strong>: 160</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>packets</td><td><a href="#types.acknowledge">acknowledge</a>[]</td></tr>
+				</table>
+				<ul>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="control.encapsulated"></a>
+				<h3>Encapsulated</h3>
+				<p><strong>Id</strong>: 132</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>count</td><td>triad</td></tr>
+					<tr><td>encapsulation</td><td><a href="#types.encapsulation">encapsulation</a></td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h3>Unconnected</h3>
+		<table>
+			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+			<tr><td><a href="#unconnected.ping">Ping</a></td><td align="center">1</td><td align="center">01₁₆</td><td align="center"></td><td align="center">✓</td></tr>
+			<tr><td><a href="#unconnected.pong">Pong</a></td><td align="center">28</td><td align="center">1C₁₆</td><td align="center">✓</td><td align="center"></td></tr>
+			<tr><td><a href="#unconnected.open-connection-request-1">Open Connection Request 1</a></td><td align="center">5</td><td align="center">05₁₆</td><td align="center"></td><td align="center">✓</td></tr>
+			<tr><td><a href="#unconnected.open-connection-reply-1">Open Connection Reply 1</a></td><td align="center">6</td><td align="center">06₁₆</td><td align="center">✓</td><td align="center"></td></tr>
+			<tr><td><a href="#unconnected.open-connection-request-2">Open Connection Request 2</a></td><td align="center">7</td><td align="center">07₁₆</td><td align="center"></td><td align="center">✓</td></tr>
+			<tr><td><a href="#unconnected.open-connection-reply-2">Open Connection Reply 2</a></td><td align="center">8</td><td align="center">08₁₆</td><td align="center">✓</td><td align="center"></td></tr>
+		</table>
+		<ul>
+			<li>
+				<a name="unconnected.ping"></a>
+				<h3>Ping</h3>
+				<p><strong>Id</strong>: 1</p>
+				<p><strong>Clientbound</strong>: no</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>pingId</td><td>long</td></tr>
+					<tr><td>magic</td><td>ubyte[16]</td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="unconnected.pong"></a>
+				<h3>Pong</h3>
+				<p><strong>Id</strong>: 28</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: no</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>pingId</td><td>long</td></tr>
+					<tr><td>serverId</td><td>long</td></tr>
+					<tr><td>magic</td><td>ubyte[16]</td></tr>
+					<tr><td>status</td><td>string</td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+					</li>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="unconnected.open-connection-request-1"></a>
+				<h3>Open Connection Request 1</h3>
+				<p><strong>Id</strong>: 5</p>
+				<p><strong>Clientbound</strong>: no</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>magic</td><td>ubyte[16]</td></tr>
+					<tr><td>protocol</td><td>ubyte</td></tr>
+					<tr><td>mtu</td><td>bytes</td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="unconnected.open-connection-reply-1"></a>
+				<h3>Open Connection Reply 1</h3>
+				<p><strong>Id</strong>: 6</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: no</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>magic</td><td>ubyte[16]</td></tr>
+					<tr><td>serverId</td><td>long</td></tr>
+					<tr><td>security</td><td>bool</td></tr>
+					<tr><td>mtuLength</td><td>ushort</td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+					</li>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="unconnected.open-connection-request-2"></a>
+				<h3>Open Connection Request 2</h3>
+				<p><strong>Id</strong>: 7</p>
+				<p><strong>Clientbound</strong>: no</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>magic</td><td>ubyte[16]</td></tr>
+					<tr><td>serverAddress</td><td><a href="#types.address">address</a></td></tr>
+					<tr><td>mtuLength</td><td>ushort</td></tr>
+					<tr><td>clientId</td><td>long</td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+					</li>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="unconnected.open-connection-reply-2"></a>
+				<h3>Open Connection Reply 2</h3>
+				<p><strong>Id</strong>: 8</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: no</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>magic</td><td>ubyte[16]</td></tr>
+					<tr><td>serverId</td><td>long</td></tr>
+					<tr><td>clientAddress</td><td><a href="#types.address">address</a></td></tr>
+					<tr><td>mtuLength</td><td>ushort</td></tr>
+					<tr><td>security</td><td>bool</td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+					</li>
+					</li>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h3>Encapsulated</h3>
+		<table>
+			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+			<tr><td><a href="#encapsulated.client-connect">Client Connect</a></td><td align="center">9</td><td align="center">09₁₆</td><td align="center"></td><td align="center">✓</td></tr>
+			<tr><td><a href="#encapsulated.server-handshake">Server Handshake</a></td><td align="center">16</td><td align="center">10₁₆</td><td align="center">✓</td><td align="center"></td></tr>
+			<tr><td><a href="#encapsulated.client-handshake">Client Handshake</a></td><td align="center">19</td><td align="center">13₁₆</td><td align="center"></td><td align="center">✓</td></tr>
+			<tr><td><a href="#encapsulated.client-cancel-connection">Client Cancel Connection</a></td><td align="center">21</td><td align="center">15₁₆</td><td align="center"></td><td align="center">✓</td></tr>
+			<tr><td><a href="#encapsulated.ping">Ping</a></td><td align="center">0</td><td align="center">00₁₆</td><td align="center"></td><td align="center">✓</td></tr>
+			<tr><td><a href="#encapsulated.pong">Pong</a></td><td align="center">3</td><td align="center">03₁₆</td><td align="center">✓</td><td align="center"></td></tr>
+			<tr><td><a href="#encapsulated.mcpe">Mcpe</a></td><td align="center">254</td><td align="center">FE₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
+		</table>
+		<ul>
+			<li>
+				<a name="encapsulated.client-connect"></a>
+				<h3>Client Connect</h3>
+				<p><strong>Id</strong>: 9</p>
+				<p><strong>Clientbound</strong>: no</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>clientId</td><td>long</td></tr>
+					<tr><td>pingId</td><td>long</td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="encapsulated.server-handshake"></a>
+				<h3>Server Handshake</h3>
+				<p><strong>Id</strong>: 16</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: no</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>clientAddress</td><td><a href="#types.address">address</a></td></tr>
+					<tr><td>mtuLength</td><td>ushort</td></tr>
+					<tr><td>systemAddresses</td><td><a href="#types.address">address</a>[10]</td></tr>
+					<tr><td>pingId</td><td>long</td></tr>
+					<tr><td>serverId</td><td>long</td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+					</li>
+					</li>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="encapsulated.client-handshake"></a>
+				<h3>Client Handshake</h3>
+				<p><strong>Id</strong>: 19</p>
+				<p><strong>Clientbound</strong>: no</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>clientAddress</td><td><a href="#types.address">address</a></td></tr>
+					<tr><td>systemAddresses</td><td><a href="#types.address">address</a>[10]</td></tr>
+					<tr><td>pingId</td><td>long</td></tr>
+					<tr><td>clientId</td><td>long</td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+					</li>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="encapsulated.client-cancel-connection"></a>
+				<h3>Client Cancel Connection</h3>
+				<p><strong>Id</strong>: 21</p>
+				<p><strong>Clientbound</strong>: no</p>
+				<p><strong>Serverbound</strong>: yes</p>
+			</li>
+			<li>
+				<a name="encapsulated.ping"></a>
+				<h3>Ping</h3>
+				<p><strong>Id</strong>: 0</p>
+				<p><strong>Clientbound</strong>: no</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>time</td><td>long</td></tr>
+				</table>
+				<ul>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="encapsulated.pong"></a>
+				<h3>Pong</h3>
+				<p><strong>Id</strong>: 3</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: no</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>time</td><td>long</td></tr>
+				</table>
+				<ul>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="encapsulated.mcpe"></a>
+				<h3>Mcpe</h3>
+				<p><strong>Id</strong>: 254</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>packet</td><td>bytes</td></tr>
+				</table>
+				<ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<hr>
+		<h2>Types</h2>
+		<p><strong>Jump to</strong>: <a href="types.address">Address</a>, <a href="types.acknowledge">Acknowledge</a>, <a href="types.encapsulation">Encapsulation</a>, <a href="types.split">Split</a></p>
+		<ul>
+			<li>
+				<a name="types.address"></a>
+				<h3>Address</h3>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th><th>When</th></tr>
+					<tr><td>type</td><td>ubyte</td><td align="center"></td></tr>
+					<tr><td>ipv4</td><td>uint</td><td align="center"><code>type</code> is equal to <code>4</code></td></tr>
+					<tr><td>ipv6</td><td>ubyte[16]</td><td align="center"><code>type</code> is equal to <code>6</code></td></tr>
+					<tr><td>port</td><td>ushort</td><td align="center"></td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+					</li>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="types.acknowledge"></a>
+				<h3>Acknowledge</h3>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th><th>When</th></tr>
+					<tr><td>unique</td><td>bool</td><td align="center"></td></tr>
+					<tr><td>first</td><td>triad</td><td align="center"></td></tr>
+					<tr><td>last</td><td>triad</td><td align="center"><code>unique</code> is <code><span style="color:#009688">false</span></code></td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="types.encapsulation"></a>
+				<h3>Encapsulation</h3>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th><th>When</th></tr>
+					<tr><td>info</td><td>ubyte</td><td align="center"></td></tr>
+					<tr><td>length</td><td>ushort</td><td align="center"></td></tr>
+					<tr><td>messageIndex</td><td>triad</td><td align="center"><code>(info & 0x7F)</code> is greater than or equal to <code>64</code></td></tr>
+					<tr><td>orderIndex</td><td>triad</td><td align="center"><code>(info & 0x7F)</code> is greater than or equal to <code>96</code></td></tr>
+					<tr><td>orderChannel</td><td>ubyte</td><td align="center"><code>(info & 0x7F)</code> is greater than or equal to <code>96</code></td></tr>
+					<tr><td>split</td><td><a href="#types.split">split</a></td><td align="center"><code>(info & 0x10)</code> is not equal to <code>0</code></td></tr>
+					<tr><td>payload</td><td>bytes</td><td align="center"></td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+					</li>
+					</li>
+					</li>
+					</li>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="types.split"></a>
+				<h3>Split</h3>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>count</td><td>uint</td></tr>
+					<tr><td>id</td><td>ushort</td></tr>
+					<tr><td>order</td><td>uint</td></tr>
+				</table>
+				<ul>
+					</li>
+					</li>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</body>
+</html>

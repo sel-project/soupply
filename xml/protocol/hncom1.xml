@@ -399,7 +399,7 @@
 
 		<section name="player">
 
-			Packet related to a player. The first field of every packet is an hubId that uniquely identifies a player in the hub and never changes during the session.
+			Packets related to a player. The first field of every packet is an hubId that uniquely identifies a player in the hub and never changes during the session.
 
 			<packet name="add" id="14" clientbound="true" serverbound="false">
 				Adds a player to the node.

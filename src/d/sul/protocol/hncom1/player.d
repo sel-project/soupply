@@ -7,7 +7,7 @@
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
 /**
- * Packet related to a player. The first field of every packet is an hubId that uniquely
+ * Packets related to a player. The first field of every packet is an hubId that uniquely
  * identifies a player in the hub and never changes during the session.
  */
 module sul.protocol.hncom1.player;

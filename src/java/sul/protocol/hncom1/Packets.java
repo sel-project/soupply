@@ -55,7 +55,7 @@ public final class Packets {
 	public static final Map<Integer, Class<? extends Packet>> STATUS;
 
 	/**
-	 * Packet related to a player. The first field of every packet is an hubId that uniquely
+	 * Packets related to a player. The first field of every packet is an hubId that uniquely
 	 * identifies a player in the hub and never changes during the session.
 	 */
 	public static final Map<Integer, Class<? extends Packet>> PLAYER;

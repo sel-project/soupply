@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>External Console 2</title>
+		<link rel="stylesheet" href="../style.css" />
+	</head>
+	<body>
+		<h1>External Console 2</h1>
+		<p><strong>Jump to</strong>: <a href="#endianness">Endianness</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a></p>
+		<p><strong>Released</strong>: February 7th, 2017</p>
+		<p>Protocol used to communicate with external sources using a raw TCP protocol or <a href="https://en.wikipedia.org/wiki/WebSocket" target="_blank">Web Sockets</a>.</p>
+		<h2>Features</h2>
+		<p>+ Organised remote logs</p>
+		<p>+ Execution of remote commands (if the server allows it)</p>
+		<p>+ Authentication using password hashing (optional)</p>
+		<p>+ Server's resources usage</p>
+		<p>+ Support for the hub-node layout</p>
+		<h2>What's new from [protocol 1](https://github.com/sel-project/sel-utils/blob/master/doc/externalconsole/1.md)</h2>
+		<p>+ TCP packet are prefixed with their length</p>
+		<p>+ Command can know when they generate output</p>
+		<h2>Connecting</h2>
+		<h3>Using raw TCP sockets</h3>
+		<p>The raw TCP protocol, also referred as "classic", uses a packet-oriented TCP connection, prefixing every packet with its length encoded as a little-endian unsigned 16-bits integer.</p>
+		<p>The connection starts with the client sending the string <code>classic</code> encoded as UTF-8 to the server, which replies with an <a href="#login.auth-credentials">AuthCredentials</a> packet and waits for the client to authenticate.</p>
+		<h3>Using Web Sockets</h3>
+		<p>The websocket protocol uses json packets instead of binary ones (with the keys in snake case) and encodes the arrays of bytes (<a href="#login.auth-credentials.payload">AuthCredentials.payload</a> and <a href="#login.auth.hash">Auth.hash</a>) into strings using base64. The connection is established like every web socket connection and, if successfull, continues with the <a href="#login.auth-credentials">AuthCredentials</a> packet sent by the server.</p>
+		<p>Example of a connection in javascript:</p>
+		<pre lang="javascript">var socket = new WebSocket("example.com:19134");
+socket.onmessage = function(event){
+   var json = JSON.parse(event.data);
+   if(json.hash) console.log("The server requires hash " + json.hash_algorithm);
+   else console.log("The server doesn't require hashing");
+}
+</pre>
+		<h2>Authenticating</h2>
+		<p>After receiving the <a href="#login.auth-credentials">AuthCredentials</a> packet, the external console, if able to perform authentication, has to send the password or its hash through the <a href="#login.auth">Auth</a> packet and waits for a response, given by the <a href="#login.welcome">Welcome</a> packet. If the server accepts the external console the status in the packet will be "accepted", the additional fields of the <a href="#login.welcome.accepted">Welcome.Accepted</a> packet can be read and the external console can proceed keeping the connection alive, sending commands, receiving logs and other updates.</p>
+		<h2>Keeping the connection alive</h2>
+		<p>The server may disconnect the external console after a period of inactivity (which shouldn't be shorter than 8 seconds). For this reason the external console needs to send a <a href="#status.keep-alive">KeepAlive</a> packet to notify the server that it is still perfectly connected.</p>
+		<h2>Server's logs</h2>
+		<p>Every time a log is created on the server it sends a <a href="#connected.console-message">ConsoleMessage</a> to the external console that contains informations about when the log was generated, from whom was generated and the log itself.</p>
+		<h2>Executing commands</h2>
+		<p>If the <a href="#login.welcome.accepted.remote-command">remoteCommand</a> field in the <a href="#login.welcome.accepted">Welcome.Accepted</a> packet is true, the server allows the execution of commands from the external console. That's done using the <a href="#connected.command">Command</a> packet, which has only one field that is the raw command.</p>
+		<hr>
+		<h2>Endianness</h2>
+		<table>
+			<tr><td>big endian</td><td>ushort, int, uint, ulong, float</td></tr>
+			<tr><td>little endian</td><td></td></tr>
+		</table>
+		<hr>
+		<h2>Packets</h2>
+		<table>
+			<tr><th>Section</th><th>Packets</th></tr>
+			<tr><td><a href="#login">Login</a></td><td align="center">3</td></tr>
+			<tr><td><a href="#status">Status</a></td><td align="center">4</td></tr>
+			<tr><td><a href="#connected">Connected</a></td><td align="center">3</td></tr>
+		</table>
+		<h3>Login</h3>
+		<p>Packets used during the authentication process and to exhange the initial server's informations.</p>
+		<table>
+			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+			<tr><td><a href="#login.auth-credentials">Auth Credentials</a></td><td align="center">0</td><td align="center">00₁₆</td><td align="center">✓</td><td align="center"></td></tr>
+			<tr><td><a href="#login.auth">Auth</a></td><td align="center">1</td><td align="center">01₁₆</td><td align="center"></td><td align="center">✓</td></tr>
+			<tr><td><a href="#login.welcome">Welcome</a></td><td align="center">2</td><td align="center">02₁₆</td><td align="center">✓</td><td align="center"></td></tr>
+		</table>
+		<ul>
+			<li>
+				<a name="login.auth-credentials"></a>
+				<h3>Auth Credentials</h3>
+				<p><strong>Id</strong>: 0</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: no</p>
+				<p>First packet sent by the server when the connection is successfully established. It contains informations about how the external console shall authenticate itself.</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th><th>When</th></tr>
+					<tr><td><a href="#login.auth-credentials.protocol">protocol</a></td><td>ubyte</td><td align="center"></td></tr>
+					<tr><td><a href="#login.auth-credentials.hash">hash</a></td><td>bool</td><td align="center"></td></tr>
+					<tr><td><a href="#login.auth-credentials.hash-algorithm">hashAlgorithm</a></td><td>string</td><td align="center"><code>hash</code> is <code><span style="color:#009688">true</span></code></td></tr>
+					<tr><td><a href="#login.auth-credentials.payload">payload</a></td><td>ubyte[]</td><td align="center"><code>hash</code> is <code><span style="color:#009688">true</span></code></td></tr>
+				</table>
+				<ul>
+					<li>
+						<a name="login.auth-credentials.protocol"></a>
+						<strong>protocol</strong>
+						<p>Protocol used by the server. If the client uses a different one it should close the connection without trying to perform authentication.</p>
+					</li>
+					<li>
+						<a name="login.auth-credentials.hash"></a>
+						<strong>hash</strong>
+						<p>Whether to perform hashing on the password or not.</p>
+					</li>
+					<li>
+						<a name="login.auth-credentials.hash-algorithm"></a>
+						<strong>hashAlgorithm</strong>
+						<p>Algorithm used by the server to hash the concatenation of the password and the <a href="#login.auth-credentials.payload">payload</a>. The value should be sent in lower case without any separation symbol (for example <code>md5</code> instead of <code>MD5</code>, <code>sha256</code> instead of <code>SHA-256</code>).</p>
+						<p>See <a href="#login.auth.hash">Auth.hash</a> for more details.</p>
+					</li>
+					<li>
+						<a name="login.auth-credentials.payload"></a>
+						<strong>payload</strong>
+						<p>Payload to cancatenate to the password before hashing it, as described in the <a href="#login.auth.hash">Auth.hash</a>'s field description.</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="login.auth"></a>
+				<h3>Auth</h3>
+				<p><strong>Id</strong>: 1</p>
+				<p><strong>Clientbound</strong>: no</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p>Performs authentication following the instruncions given by the <a href="#login.auth-credentials">AuthCredentials</a> packet.</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td><a href="#login.auth.hash">hash</a></td><td>ubyte[]</td></tr>
+				</table>
+				<ul>
+					<li>
+						<a name="login.auth.hash"></a>
+						<strong>hash</strong>
+						<p>Pasword encoded as UTF-8 if <a href="#login.auth-credentials.auth">AuthCredentials.hash</a> is <code>false</code> or the hash (specified in <a href="#login.auth-credentials.hash-algorithm">AuthCredentials.hashAlgorithm</a>) of the password encoded as UTF-8 concatenated with the bytes from <a href="#login.auth-credentials.payload">AuthCredentials.payload</a> if <code>true</code>.</p>
+						<p>The hash can be done with a function (if hashAlgorithm is <code>sha1</code>) in D:</p>
+						<pre lang="d">sha1Of(cast(ubyte[])password ~ authCredentials.payload);
+</pre>
+						<p>Or using <code>MessageDigest</code> in Java:</p>
+						<pre lang="java">MessageDigest md = MessageDigest.getInstance(authCredentials.hashAlgorithm);
+md.update(password.getBytes(StandardCharsets.UTF_8));
+md.update(authCredentials.payload);
+byte[] hash = md.digest();
+</pre>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="login.welcome"></a>
+				<h3>Welcome</h3>
+				<p><strong>Id</strong>: 2</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: no</p>
+				<p>Indicates the status of the authentication process.</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>status</td><td>ubyte</td></tr>
+				</table>
+				<ul>
+					</li>
+				</ul>
+				<p><strong>Variants</strong>:</p>
+				<table>
+					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
+					<tr><td><a href="login.welcome.accepted">Accepted</a></td><td>status</td><td align="center">0</td></tr>
+					<tr><td><a href="login.welcome.wrong-hash">Wrong Hash</a></td><td>status</td><td align="center">1</td></tr>
+					<tr><td><a href="login.welcome.timed-out">Timed Out</a></td><td>status</td><td align="center">2</td></tr>
+				</table>
+				<ul>
+					<li>
+						<a name="login.welcome.accepted"></a>
+						<h3>Accepted</h3>
+						<p>Sent when the hash sent in <a href="#login.auth">Auth</a> matches the server's.</p>
+						<p><strong>Additional Fields</strong>:</p>
+						<table>
+							<tr><th>Name</th><th>Type</th></tr>
+							<tr><td><a href="#login.welcome.accepted.remote-commands">remoteCommands</a></td><td>bool</td></tr>
+							<tr><td><a href="#login.welcome.accepted.software">software</a></td><td>string</td></tr>
+							<tr><td><a href="#login.welcome.accepted.versions">versions</a></td><td>ubyte[3]</td></tr>
+							<tr><td><a href="#login.welcome.accepted.display-name">displayName</a></td><td>string</td></tr>
+							<tr><td><a href="#login.welcome.accepted.games">games</a></td><td><a href="#types.game">game</a>[]</td></tr>
+							<tr><td><a href="#login.welcome.accepted.connected-nodes">connectedNodes</a></td><td>string[]</td></tr>
+						</table>
+						<ul>
+							<li>
+								<a name="login.welcome.accepted.remote-commands"></a>
+								<strong>remoteCommands</strong>
+								<p>Indicates whether the external console can execute command remotely through the <a href="#connected.command">Command</a> packet.</p>
+							</li>
+							<li>
+								<a name="login.welcome.accepted.software"></a>
+								<strong>software</strong>
+								<p>The server's software as a formatted string (without the version).</p>
+							</li>
+							<li>
+								<a name="login.welcome.accepted.versions"></a>
+								<strong>versions</strong>
+								<p>Versions of the server in a 3-btyes array readed as [major, minor, release].</p>
+							</li>
+							<li>
+								<a name="login.welcome.accepted.display-name"></a>
+								<strong>displayName</strong>
+								<p>Name of the server (not the game's MOTD!). It shouldn't contain Minecraft formatting codes.</p>
+							</li>
+							<li>
+								<a name="login.welcome.accepted.games"></a>
+								<strong>games</strong>
+								<p>Informations about the games and their protocols supported by the server.</p>
+							</li>
+							<li>
+								<a name="login.welcome.accepted.connected-nodes"></a>
+								<strong>connectedNodes</strong>
+								<p>List of names of the nodes connected to the server, if it uses the hub-node layout, or an empty list.</p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a name="login.welcome.wrong-hash"></a>
+						<h3>Wrong Hash</h3>
+						<p>Sent when <a href="#login.auth">Auth</a> is received but the given password or hash doesn't match the server's one.</p>
+					</li>
+					<li>
+						<a name="login.welcome.timed-out"></a>
+						<h3>Timed Out</h3>
+						<p>Sent when <a href="#login.auth">Auth</a> is not received and the server decides to close the connection because too much time has elapsed since the creation of the socket.</p>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h3>Status</h3>
+		<p>Packets about the informations and the usage of the server.</p>
+		<table>
+			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+			<tr><td><a href="#status.keep-alive">Keep Alive</a></td><td align="center">0</td><td align="center">00₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
+			<tr><td><a href="#status.update-nodes">Update Nodes</a></td><td align="center">1</td><td align="center">01₁₆</td><td align="center">✓</td><td align="center"></td></tr>
+			<tr><td><a href="#status.request-stats">Request Stats</a></td><td align="center">2</td><td align="center">02₁₆</td><td align="center"></td><td align="center">✓</td></tr>
+			<tr><td><a href="#status.update-stats">Update Stats</a></td><td align="center">3</td><td align="center">03₁₆</td><td align="center">✓</td><td align="center"></td></tr>
+		</table>
+		<ul>
+			<li>
+				<a name="status.keep-alive"></a>
+				<h3>Keep Alive</h3>
+				<p><strong>Id</strong>: 0</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p>Keeps the connection alive and/or calculates the latency. This packet should be sent at least every 5 seconds to avoid the disconnection caused by timeout and update the latency. The external console can send this packet whenever it wants it and the server must reply with the same packet with the same field's value.</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td><a href="#status.keep-alive.count">count</a></td><td>uint</td></tr>
+				</table>
+				<ul>
+					<li>
+						<a name="status.keep-alive.count"></a>
+						<strong>count</strong>
+						<p>An identifier chosen by the external console to uniquely identify the packet.</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="status.update-nodes"></a>
+				<h3>Update Nodes</h3>
+				<p><strong>Id</strong>: 1</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: no</p>
+				<p>Updates the list of the nodes connected to the hub, adding or removing one.</p>
+				<p>If the server isn't built on the hub-node layout this packet is never sent.</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td><a href="#status.update-nodes.action">action</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#status.update-nodes.node">node</a></td><td>string</td></tr>
+				</table>
+				<ul>
+					<li>
+						<a name="status.update-nodes.action"></a>
+						<strong>action</strong>
+						<p>Whether the node should be added or removed from the list of connected nodes.</p>
+						<p><strong>Constants</strong>:</p>
+						<table>
+							<tr><th>Name</th><th>Value</th></tr>
+							<tr><td>add</td><td align="center">0</td></tr>
+							<tr><td>remove</td><td align="center">1</td></tr>
+						</table>
+					</li>
+					<li>
+						<a name="status.update-nodes.node"></a>
+						<strong>node</strong>
+						<p>Name of the node.</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="status.request-stats"></a>
+				<h3>Request Stats</h3>
+				<p><strong>Id</strong>: 2</p>
+				<p><strong>Clientbound</strong>: no</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p>Requests an <a href="#stats.update-stats">UpdateStats</a> packet to the server, which should sent it immediately instead of waiting for the next automatic update (if the server does one).</p>
+			</li>
+			<li>
+				<a name="status.update-stats"></a>
+				<h3>Update Stats</h3>
+				<p><strong>Id</strong>: 3</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: no</p>
+				<p>Updates the statistics about the usage of the server and, eventually, the connected nodes.</p>
+				<p>This packet is sent in response to <a href="#status.request-stats">RequestStats</a> and every time the server retains that the stats should be updated (usually in a range of 5 to 30 seconds).</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td><a href="#status.update-stats.online-players">onlinePlayers</a></td><td>uint</td></tr>
+					<tr><td><a href="#status.update-stats.max-players">maxPlayers</a></td><td>uint</td></tr>
+					<tr><td><a href="#status.update-stats.uptime">uptime</a></td><td>uint</td></tr>
+					<tr><td><a href="#status.update-stats.upload">upload</a></td><td>uint</td></tr>
+					<tr><td><a href="#status.update-stats.download">download</a></td><td>uint</td></tr>
+					<tr><td><a href="#status.update-stats.nodes">nodes</a></td><td><a href="#types.node-stats">nodeStats</a>[]</td></tr>
+				</table>
+				<ul>
+					<li>
+						<a name="status.update-stats.online-players"></a>
+						<strong>onlinePlayers</strong>
+						<p>Number of players currently online on the server. Players that are performing authentication are not included in the count.</p>
+					</li>
+					<li>
+						<a name="status.update-stats.max-players"></a>
+						<strong>maxPlayers</strong>
+						<p>Highest number of players that can join the server simultaneously. If 0, there is not maximum number of players.</p>
+					</li>
+					<li>
+						<a name="status.update-stats.uptime"></a>
+						<strong>uptime</strong>
+						<p>Milliseconds since the server has started.</p>
+					</li>
+					<li>
+						<a name="status.update-stats.upload"></a>
+						<strong>upload</strong>
+						<p>Average amount of bytes sent every second.</p>
+					</li>
+					<li>
+						<a name="status.update-stats.download"></a>
+						<strong>download</strong>
+						<p>Average amount of bytes sent every second.</p>
+					</li>
+					<li>
+						<a name="status.update-stats.nodes"></a>
+						<strong>nodes</strong>
+						<p>Resources usage of the connected nodes, if the server uses the hub-node layout, or an empty list.</p>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h3>Connected</h3>
+		<p>Packets regarding the server's console and commands.</p>
+		<table>
+			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+			<tr><td><a href="#connected.console-message">Console Message</a></td><td align="center">4</td><td align="center">04₁₆</td><td align="center">✓</td><td align="center"></td></tr>
+			<tr><td><a href="#connected.command">Command</a></td><td align="center">5</td><td align="center">05₁₆</td><td align="center"></td><td align="center">✓</td></tr>
+			<tr><td><a href="#connected.permission-denied">Permission Denied</a></td><td align="center">6</td><td align="center">06₁₆</td><td align="center">✓</td><td align="center"></td></tr>
+		</table>
+		<ul>
+			<li>
+				<a name="connected.console-message"></a>
+				<h3>Console Message</h3>
+				<p><strong>Id</strong>: 4</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: no</p>
+				<p>Logs a message from the server's console. It may be the output of a command, a debug message or any other message that the server retains able to be seen by the External Console.</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td><a href="#connected.console-message.node">node</a></td><td>string</td></tr>
+					<tr><td><a href="#connected.console-message.timestamp">timestamp</a></td><td>ulong</td></tr>
+					<tr><td><a href="#connected.console-message.logger">logger</a></td><td>string</td></tr>
+					<tr><td><a href="#connected.console-message.message">message</a></td><td>string</td></tr>
+					<tr><td><a href="#connected.console-message.command-id">commandId</a></td><td>int</td></tr>
+				</table>
+				<ul>
+					<li>
+						<a name="connected.console-message.node"></a>
+						<strong>node</strong>
+						<p>Name of the node that created the log or an empty string if the log was created by the hub or by a server that isn't based on the hub-node layout.</p>
+					</li>
+					<li>
+						<a name="connected.console-message.timestamp"></a>
+						<strong>timestamp</strong>
+						<p>Unix timestamp in milliseconds that indicates the exact time when the log was generated by the server.</p>
+						<p>The logs may not arrive in order when the server uses the hub-node layout or some other kind of proxy because the logs created by the nodes have an additional latency (the one between the hub, or proxy, and the node).</p>
+					</li>
+					<li>
+						<a name="connected.console-message.logger"></a>
+						<strong>logger</strong>
+						<p>Name of the logger. It may be the world name if the log was generated by a world's message (like a broadcast or a chat message), the name of plugin (for example <code>plugin\test</code>) or the name of the package/module/class that generated the log (like <code>math.vector</code> or <code>event.world.player</code>).</p>
+					</li>
+					<li>
+						<a name="connected.console-message.message"></a>
+						<strong>message</strong>
+						<p>The logged message. It may contain Minecraft's formatting codes which should be translated into appropriate colours and formatting (bold, italic and strikethrough) by the client implementation of the external console.</p>
+					</li>
+					<li>
+						<a name="connected.console-message.command-id"></a>
+						<strong>commandId</strong>
+						<p>Identifier given in <a href="#connected.command.command-id">Command.commandId</a> if the log was generated by a command sent by the external console or -1 if the log was not related to a command sent from the external console.</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="connected.command"></a>
+				<h3>Command</h3>
+				<p><strong>Id</strong>: 5</p>
+				<p><strong>Clientbound</strong>: no</p>
+				<p><strong>Serverbound</strong>: yes</p>
+				<p>Executes a command remotely if the server allows it. If not a <a href="#connected.permission-denied">Permission Denied</a> is sent back. A good implementation of the external console client should never send this packet if <a href="#login.welcome.accepted.remote-commands">remoteCommands</a> field in <a href="#login.welcome.accepted">Welcome.Accepted</a> is not true.</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td><a href="#connected.command.command">command</a></td><td>string</td></tr>
+					<tr><td><a href="#connected.command.command-id">commandId</a></td><td>uint</td></tr>
+				</table>
+				<ul>
+					<li>
+						<a name="connected.command.command"></a>
+						<strong>command</strong>
+						<p>Command to execute on the server.</p>
+					</li>
+					<li>
+						<a name="connected.command.command-id"></a>
+						<strong>commandId</strong>
+						<p>Identifier for the command that will be sent in <a href="#connected.console-message.command-id">ConsoleMessage.commandId</a> if the command generates an output.</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="connected.permission-denied"></a>
+				<h3>Permission Denied</h3>
+				<p><strong>Id</strong>: 6</p>
+				<p><strong>Clientbound</strong>: yes</p>
+				<p><strong>Serverbound</strong>: no</p>
+				<p>Bodyless packet only sent in response to <a href="#connected.command">Command</a> when the server doesn't allow the execution of remote commands through the external console. A good implementation of the external console client should never receive this packet avoiding the use of the <a href="#connected.command">Command</a> packet when the <a href="#login.welcome.accepted.remote-command">remoteCommands</a> field is false.</p>
+			</li>
+		</ul>
+		<hr>
+		<h2>Types</h2>
+		<ul>
+			<li>
+				<a name="types.game"></a>
+				<h3>Game</h3>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td><a href="#game.type">type</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#game.protocols">protocols</a></td><td>uint[]</td></tr>
+				</table>
+				<ul>
+					<li>
+						<a name="game.type"></a>
+						<strong>type</strong>
+						<p>Variant of the game.</p>
+						<p><strong>Constants</strong>:</p>
+						<table>
+							<tr><th>Name</th><th>Value</th><th></th></tr>
+							<tr><td>pocket</td><td align="center">1</td><td>Minecraft: Pocket Edition and derivated</td></tr>
+							<tr><td>minecraft</td><td align="center">2</td><td>Classic minecraft (Java version)</td></tr>
+						</table>
+					</li>
+					<li>
+						<a name="game.protocols"></a>
+						<strong>protocols</strong>
+						<p>List of protocols supported by the server for the indicated game.</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a name="types.node-stats"></a>
+				<h3>Node Stats</h3>
+				<p>Resources usage of a node.</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td><a href="#node-stats.name">name</a></td><td>string</td></tr>
+					<tr><td><a href="#node-stats.tps">tps</a></td><td>float</td></tr>
+					<tr><td><a href="#node-stats.ram">ram</a></td><td>ulong</td></tr>
+					<tr><td><a href="#node-stats.cpu">cpu</a></td><td>float</td></tr>
+				</table>
+				<ul>
+					<li>
+						<a name="node-stats.name"></a>
+						<strong>name</strong>
+						<p>Name of the node. Should match one of the names given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes) or one added using the <a href="#status.update-nodes">UpdateNodes</a> packet.</p>
+						<p>If the server isn't built on the hub-node layout the name is an empty string and the following values are for the whole server and not for a node.</p>
+					</li>
+					<li>
+						<a name="node-stats.tps"></a>
+						<strong>tps</strong>
+						<p>Ticks per second of the node in range 0 to 20. If the value is less than 20, the server is lagging.</p>
+					</li>
+					<li>
+						<a name="node-stats.ram"></a>
+						<strong>ram</strong>
+						<p>RAM allocated by the node in bytes.</p>
+						<p>If the value is 0 the node couldn't retrieve the amount of memory allocated by its process.</p>
+					</li>
+					<li>
+						<a name="node-stats.cpu"></a>
+						<strong>cpu</strong>
+						<p>Percentage of CPU used by the node. The value can be higher than 100 when the machine where the node is running has more than one CPU.</p>
+						<p>If the value is <code>not a number</code> the node couldn't retrieve the amount of CPU used by its process.</p>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</body>
+</html>

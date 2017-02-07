@@ -30,6 +30,7 @@ static import java;
 static import js;
 
 static import doc;
+static import docs;
 static import json;
 
 
@@ -84,8 +85,9 @@ void main(string[] args) {
 	bool wjava = args.canFind("java");
 	bool wjs = args.canFind("js");
 	bool wdoc = args.canFind("doc");
+	bool wdocs = args.canFind("docs");
 	bool wjson = args.canFind("json");
-	bool wall = !wd && !wjava && !wjs && !wdoc && !wjson;
+	bool wall = !wd && !wjava && !wjs && !wdoc && !wdocs && !wjson;
 
 	// attributes
 	Attributes[string] attributes;
@@ -355,6 +357,7 @@ void main(string[] args) {
 	if(wall || wjs) js.js(attributes, protocols, creative);
 
 	if(wall || wdoc) doc.doc(attributes, protocols, metadata);
+	if(wall || wdocs) docs.docs(attributes, protocols, metadata);
 	if(wall || wjson) json.json(attributes, protocols, metadata, creative);
 
 }
