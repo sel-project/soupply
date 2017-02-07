@@ -421,7 +421,9 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 }
 
 string head(string title, bool back=true) {
-	return "<!DOCTYPE html>\n<html lang=\"en\">\n\t<head>\n\t\t<meta charset=\"UTF-8\" />\n\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n\t\t<title>" ~ title ~ "</title>\n\t\t<link rel=\"stylesheet\" href=\"" ~ (back ? "../" : "") ~ "style.css\" />\n\t</head>\n\t<body>\n";
+	return "<!DOCTYPE html>\n<html lang=\"en\">\n" ~
+		"\t<head>\n\t\t<meta charset=\"UTF-8\" />\n\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n\t\t<title>" ~ title ~ "</title>\n\t\t<link rel=\"stylesheet\" href=\"" ~ (back ? "../" : "") ~ "style.css\" />\n\t</head>\n" ~
+		"\t<body>\n\t\t<div style=\"text-align:center;padding-top:16px\"><a href=\"" ~ (back ? "../" : ".") ~ "\"><img src=\"" ~ (back ? "../" : "") ~ "logo.png\" alt=\"\" /></a></div>\n";
 }
 
 @property string pretty(string name) {
