@@ -25,7 +25,7 @@
 		Hncom uses a packet-oriented TCP connection and every packet is prefixed with a little-endian unsigned 32-bits integer, without any exception.
 
 		### Authentication
-		The node starts the connection sending a [ConnectionRequest](#login.connection-request) packet with its credentials and waits for a [ConnectionResponse](#login.connection-response) packet.
+		The node starts the connection sending a [ConnectionRequest](#login_connection-request) packet with its credentials and waits for a [ConnectionResponse](#login_connection-response) packet.
 	</description>
 
 	<encoding id="ubyte" arraylength="varuint">
@@ -115,7 +115,7 @@
 			</packet>
 
 			<packet name="connection-response" id="1" clientbound="true" serverbound="false">
-				Reply always sent after the [ConnectionRequest](#login.connection-request) packet. It indicates the status of the connection, which is accepted only when every field of the packet is true.
+				Reply always sent after the [ConnectionRequest](#login_connection-request) packet. It indicates the status of the connection, which is accepted only when every field of the packet is true.
 				<field name="protocol" type="varuint">
 					Protocol used by the hub. It must match the node's one otherwise the connection cannot be established.
 				</field>
@@ -180,7 +180,7 @@
 					Default server's language in format (language_COUNTRY, e.g. en_GB) and also the default language for players that don't specify their language or for the ones which language is not supported by the server.
 				</field>
 				<field name="accepted-languages" type="string[]">
-					Languages accepted by the server in the same format as [language](#login.hub-info.language). The list should always contain at least one element (the default language).
+					Languages accepted by the server in the same format as [language](#login_hub-info_language). The list should always contain at least one element (the default language).
 				</field>
 				<field name="social-json" type="string">
 					Optional informations about the server's website and social accounts in the format indicated below.
@@ -229,13 +229,13 @@
 					<constant name="unlimited" value="0" />
 				</field>
 				<field name="accepted-games" type="game[]">
-					Informations about the games accepted by the node. There should be at least one combination of game/protocol that is also accepted by hub as indicated in [HubInfo.gamesInfo](#login.hub-info.games-info), otherwise the node will never receive any player.
+					Informations about the games accepted by the node. There should be at least one combination of game/protocol that is also accepted by hub as indicated in [HubInfo.gamesInfo](#login_hub-info_games-info), otherwise the node will never receive any player.
 				</field>
 				<field name="plugins" type="plugin[]">
 					List of plugins loaded on the node for creating queries on the hub.
 				</field>
 				<field name="additional-json" type="string">
-					Optional informations about the server's software and system, similar to [HubInfo.additionalJson](#login.hub-info.additional-json).
+					Optional informations about the server's software and system, similar to [HubInfo.additionalJson](#login_hub-info_additional-json).
 					```json
 					{
 					   "software": {
@@ -269,7 +269,7 @@
 					Node's name used for displaying and identification purposes.
 				</field>
 				<field name="main" type="bool">
-					Whether the node is a main node (see [ConnectionRequest.main](#login.connection-request.main)).
+					Whether the node is a main node (see [ConnectionRequest.main](#login_connection-request_main)).
 				</field>
 				<field name="accepted-games" type="game[]">
 					Indicates the game accepted by the node.
@@ -277,7 +277,7 @@
 			</packet>
 
 			<packet name="remove-node" id="5" clientbound="true" serverbound="false">
-				Notifies the node that another node, previously added with [AddNode](#status.add-node) has disconnected from the hub.
+				Notifies the node that another node, previously added with [AddNode](#status_add-node) has disconnected from the hub.
 				<field name="hub-id" type="hub-id">
 					Node's id given by the hub.
 				</field>
@@ -294,7 +294,7 @@
 			</packet>
 
 			<packet name="message-clientbound" id="7" clientbound="true" serverbound="false">
-				Receives a binary message sent by another node using [MessageServerbound](#status.message-serverbound).
+				Receives a binary message sent by another node using [MessageServerbound](#status_message-serverbound).
 				<field name="sender" type="hub-id">
 					Id of the node that has sent the message.
 				</field>
@@ -358,7 +358,7 @@
 					Commands and arguments that should be executed on the node. For example `say hello world` or `transfer steve lobby12`.
 				</field>
 				<field name="command-id" type="varint">
-					Identifier of the command. It's sent in [Log.commandId](#status.log.command-id) if the command generates an output.
+					Identifier of the command. It's sent in [Log.commandId](#status_log_command-id) if the command generates an output.
 				</field>
 			</packet>
 
@@ -429,7 +429,7 @@
 					Username of the player.
 				</field>
 				<field name="display-name" type="string">
-					Display name of the player, which can contain formatting codes. By default it's equals to the username but it can be updated by the node using [UpdateDisplayName](#player.update-display-name).
+					Display name of the player, which can contain formatting codes. By default it's equals to the username but it can be updated by the node using [UpdateDisplayName](#player_update-display-name).
 				</field>
 				<field name="dimension" type="byte" when="reason!=0">
 					Dimension in which the player was playing before being transferred. It could diffent from client's game type and version because the dimension's ids are different in Minecraft and Minecraft: Pocket Edition.
@@ -454,7 +454,7 @@
 					Client's latency (ping time).
 				</field>
 				<field name="language" type="string">
-					Client's language, in the same format as [HubInfo.language](#login.hub-info.language), which should be updated from the node when the client changes it.
+					Client's language, in the same format as [HubInfo.language](#login_hub-info_language), which should be updated from the node when the client changes it.
 				</field>
 				<variants field="type">
 					<variant name="pocket" value="1">
@@ -484,7 +484,7 @@
 			</packet>
 
 			<packet name="remove" id="15" clientbound="true" serverbound="false">
-				Removes a player from the node. If the player is removed from the node using [Kick](#player.kick) or [Transfer](#player.transfer) this packet is not sent.
+				Removes a player from the node. If the player is removed from the node using [Kick](#player_kick) or [Transfer](#player_transfer) this packet is not sent.
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="ubyte">
 					Reason of the disconnection.
@@ -502,7 +502,7 @@
 			</packet>
 
 			<packet name="kick" id="16" clientbound="false" serverbound="true">
-				Kicks a player from the node and the whole server. When a player is disconnected from the node using this packet the hub will not send the [Remove](#player.remove) packet.
+				Kicks a player from the node and the whole server. When a player is disconnected from the node using this packet the hub will not send the [Remove](#player_remove) packet.
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="string">
 					Reason of the disconnection that will be displayed in the client's disconnection screen.
@@ -516,21 +516,21 @@
 			</packet>
 
 			<packet name="transfer" id="17" clientbound="false" serverbound="true">
-				Transfers a player to another node. When a player is transferred from the node the hub will not send the [Remove](#login.remove) packet and there's no way, for the node, to know whether the player was disconnected or successfully transferred, if not using messages through a user-defined protocol.
+				Transfers a player to another node. When a player is transferred from the node the hub will not send the [Remove](#login_remove) packet and there's no way, for the node, to know whether the player was disconnected or successfully transferred, if not using messages through a user-defined protocol.
 				<field name="hub-id" type="hub-id" />
 				<field name="node" type="hub-id">
-					Id of the node that player will be transferred to. It should be an id of a connected node (which can be calculated using [AddNode](#status.add-node) and [RemoveNode](#status.remove-node)), otherwise the player will be disconnected or moved to another node (see the following field).
+					Id of the node that player will be transferred to. It should be an id of a connected node (which can be calculated using [AddNode](#status_add-node) and [RemoveNode](#status_remove-node)), otherwise the player will be disconnected or moved to another node (see the following field).
 				</field>
 				<field name="on-fail" type="ubyte">
 					Indicates the action to be taken when a transfer fails because the indicated node is not connected anymore or it cannot accept the given player's game type or protocol. If the indicated node is full the player will be simply disconnected with the `Server Full` message.
 					<constant name="disconnect" value="0">
-						Disconnects with `End of Stream` message
+						Disconnect with `End of Stream` message
 					</constant>
 					<constant name="auto" value="1">
-						Connects to the first available node or disconnects if there isn't one
+						Connect to the first available node or disconnects if there isn't one
 					</constant>
 					<constant name="reconnect" value="2">
-						Connects to this node, but as a new player
+						Connect to this node, but as a new player
 					</constant>
 				</field>
 			</packet>
@@ -539,7 +539,7 @@
 				Updates the player's language when the client changes it.
 				<field name="hub-id" type="hub-id" />
 				<field name="language" type="string">
-					Player's language in the same format as [HubInfo.language](#login.hub-info.language).
+					Player's language in the same format as [HubInfo.language](#login_hub-info_language).
 				</field>
 			</packet>
 
@@ -558,7 +558,7 @@
 					World's name, used mainly for display purposes.
 				</field>
 				<field name="dimension" type="byte">
-					World's dimension, that may different from Minecraft's version. It used for synchronise entities and chunks when changing node as described at [Add.dimension](#player.add.dimension).
+					World's dimension, that may different from Minecraft's version. It used for synchronise entities and chunks when changing node as described at [Add.dimension](#player_add_dimension).
 				</field>
 			</packet>
 
@@ -566,7 +566,7 @@
 				Updates the player's latenct with the hub.
 				<field name="hub-id" type="hub-id" />
 				<field name="latency" type="varuint">
-					Player's latency in milliseconds. The latency between the client and the node is then calculated adding the latency between the node and the hub (calculated using [HubInfo.time](#login.hub-info.time)) to this field's value.
+					Player's latency in milliseconds. The latency between the client and the node is then calculated adding the latency between the node and the hub (calculated using [HubInfo.time](#login_hub-info_time)) to this field's value.
 				</field>
 			</packet>
 
@@ -606,7 +606,7 @@
 					Order of the packet. If the hub receives a packet with an id different from 0 or the latest ordered packet's order + 1 it should wait for the packets with the missing order(s) before sending.
 				</field>
 				<field name="packet" type="bytes">
-					Serialised packet (see [GamePacket.packet](#player.game-packet.packet)).
+					Serialised packet (see [GamePacket.packet](#player_game-packet_packet)).
 				</field>
 			</packet>
 

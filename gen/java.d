@@ -747,7 +747,7 @@ public class MetadataException extends RuntimeException {
 string javadoc(string space, string description) {
 	bool search = true;
 	while(search) {
-		auto m = matchFirst(description, ctRegex!`\[[a-zA-Z0-9 \.]{2,30}\]\([a-zA-Z0-9\#\.:\/-]{2,64}\)`);
+		auto m = matchFirst(description, ctRegex!`\[[a-zA-Z0-9 \.]{2,30}\]\([a-zA-Z0-9_\#\.:\/-]{2,64}\)`);
 		if(m) {
 			description = m.pre ~ m.hit[1..m.hit.indexOf("]")] ~ m.post;
 		} else {

@@ -14,7 +14,7 @@
  */
 module docs;
 
-import std.algorithm : min, canFind, sort;
+import std.algorithm : min, max, canFind, sort;
 import std.conv : to;
 import std.datetime : Date;
 static import std.file;
@@ -43,9 +43,24 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	}
 	
 	foreach(string game, Protocols ptrs; protocols) {
+		immutable gameName = game[0..$-ptrs.protocol.to!string.length];
 		auto attributes = game in attributes;
 		auto metadata = game in metadatas;
-		string data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string) ~ "\t\t<h1>" ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "</h1>\n";
+		string data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, game) ~ "\t\t<h1>" ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "</h1>\n";
+		uint[] others;
+		foreach(otherGame, op; protocols) {
+			if(otherGame != game && otherGame.startsWith(gameName)) {
+				others ~= to!uint(otherGame[gameName.length..$]);
+			}
+		}
+		if(others.length) {
+			sort(others);
+			string[] str;
+			foreach(o ; others) {
+				str ~= "<a href=\"diff/" ~ to!string(min(o, ptrs.protocol)) ~ "-" ~ to!string(max(o, ptrs.protocol)) ~ ".html\">" ~ to!string(o) ~ "</a>";
+			}
+			data ~= "\t\t<p><strong>Compare</strong>: " ~ str.join(", ") ~ "</p>\n";
+		}
 		string[] jumps = ["<a href=\"#endianness\">Endianness</a>", "<a href=\"#packets\">Packets</a>"];
 		if(ptrs.data.types.length) jumps ~= "<a href=\"#types\">Types</a>";
 		if(ptrs.data.arrays.length) jumps ~= "<a href=\"#arrays\">Arrays</a>";
@@ -97,7 +112,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		if(ptrs.data.description.length) data ~= desc("\t\t", ptrs.data.description);
 		data ~= "\t\t<hr>\n";
 		// field (generic)
-		void writeFields(string namespace, Field[] fields, size_t spaces, string fieldDesc="Fields") {
+		void writeFields(string[] namespace, Field[] fields, size_t spaces, string fieldDesc="Fields") {
 			string space;
 			foreach(i ; 0..spaces) space ~= "\t";
 			if(fields.length) {
@@ -111,45 +126,46 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 				data ~= space ~ "\t<tr><th>Name</th><th>Type</th>" ~ (endianness ? "<th>Endianness</th>" : "") ~ (condition ? "<th>When</th>" : "") ~ "</tr>\n";
 				foreach(field ; fields) {
 					data ~= space ~ "\t<tr><td>";
-					if(field.description.length || field.constants.length) data ~= "<a href=\"#" ~ link(namespace, field.name) ~ "\">" ~ toCamelCase(field.name) ~ "</a>";
+					if(field.description.length || field.constants.length) data ~= "<a href=\"#" ~ link(namespace ~ field.name) ~ "\">" ~ toCamelCase(field.name) ~ "</a>";
 					else data ~= toCamelCase(field.name);
 					data ~= "</td><td>" ~ convert(field.type) ~ "</td>";
-					if(endianness) data ~= "<td align=\"center\">" ~ field.endianness.replace("_", " ") ~ "</td>";
-					if(condition) data ~= "<td align=\"center\">" ~ (field.condition.length ? cond(toCamelCase(field.condition)) : "") ~ "</td>";
+					if(endianness) data ~= "<td class=\"center\">" ~ field.endianness.replace("_", " ") ~ "</td>";
+					if(condition) data ~= "<td class=\"center\">" ~ (field.condition.length ? cond(toCamelCase(field.condition)) : "") ~ "</td>";
 					data ~= "</tr>\n";
 				}
 				data ~= space ~ "</table>\n";
-				data ~= space ~ "<ul>\n";
-				foreach(field ; fields) {
-					if(field.description.length || field.constants.length) {
-						data ~= space ~ "\t<li>\n";
-						data ~= space ~ "\t\t<a name=\"" ~ link(namespace, field.name) ~ "\"></a>\n";
-						data ~= space ~ "\t\t<strong>" ~ toCamelCase(field.name) ~ "</strong>\n";
-						if(field.description.length) data ~= desc(space ~ "\t\t", field.description);
-						if(field.constants.length) {
-							bool notes;
-							foreach(constant ; field.constants) {
-								if(constant.description.length) {
-									notes = true;
-									break;
+				if(fields.length) {
+					data ~= space ~ "<ul>\n";
+					foreach(field ; fields) {
+						if(field.description.length || field.constants.length) {
+							data ~= space ~ "\t<li>\n";
+							data ~= space ~ "\t\t<strong id=\"" ~ link(namespace ~ field.name) ~ "\">" ~ toCamelCase(field.name) ~ "</strong>\n";
+							if(field.description.length) data ~= desc(space ~ "\t\t", field.description);
+							if(field.constants.length) {
+								bool notes;
+								foreach(constant ; field.constants) {
+									if(constant.description.length) {
+										notes = true;
+										break;
+									}
 								}
+								data ~= space ~ "\t\t<p><strong>Constants</strong>:</p>\n";
+								data ~= space ~ "\t\t<table>\n";
+								data ~= space ~ "\t\t\t<tr><th>Name</th><th>Value</th>" ~ (notes ? "<th></th>" : "") ~ "</tr>\n";
+								foreach(constant ; field.constants) {
+									data ~= space ~ "\t\t\t<tr><td>" ~ toCamelCase(constant.name) ~ "</td><td class=\"center\">" ~ constant.value ~ "</td>" ~ (notes ? "<td>" ~ constant.description ~ "</td>" : "") ~ "</tr>\n";
+								}
+								data ~= space ~ "\t\t</table>\n";
 							}
-							data ~= space ~ "\t\t<p><strong>Constants</strong>:</p>\n";
-							data ~= space ~ "\t\t<table>\n";
-							data ~= space ~ "\t\t\t<tr><th>Name</th><th>Value</th>" ~ (notes ? "<th></th>" : "") ~ "</tr>\n";
-							foreach(constant ; field.constants) {
-								data ~= space ~ "\t\t\t<tr><td>" ~ toCamelCase(constant.name) ~ "</td><td align=\"center\">" ~ constant.value ~ "</td>" ~ (notes ? "<td>" ~ constant.description ~ "</td>" : "") ~ "</tr>\n";
-							}
-							data ~= space ~ "\t\t</table>\n";
+							data ~= space ~ "\t</li>\n";
 						}
 					}
-					data ~= space ~ "\t</li>\n";
+					data ~= space ~ "</ul>\n";
 				}
-				data ~= space ~ "</ul>\n";
 			}
 		}
 		// endianness
-		data ~= "\t\t<h2>Endianness</h2>\n";
+		data ~= "\t\t<h2 id=\"endianness\">Endianness</h2>\n";
 		data ~= "\t\t<table>\n";
 		string def = "big_endian";
 		string[string] change;
@@ -191,13 +207,15 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		data ~= "\t\t\t<tr><td>big endian</td><td>" ~ be.join(", ") ~ "</td></tr>\n";
 		data ~= "\t\t\t<tr><td>little endian</td><td>" ~ le.join(", ") ~ "</td></tr>\n";
 		data ~= "\t\t</table>\n";
+		data ~= "\t\t<p><strong>Ids</strong>: " ~ ptrs.data.id ~ "</p>\n";
+		data ~= "\t\t<p><strong>Array's length</strong>: " ~ ptrs.data.arrayLength ~ "</p>\n";
 		data ~= "\t\t<hr>\n";
 		// sections (legend)
-		data ~= "\t\t<h2>Packets</h2>\n";
+		data ~= "\t\t<h2 id=\"packets\">Packets</h2>\n";
 		data ~= "\t\t<table>\n";
 		data ~= "\t\t\t<tr><th>Section</th><th>Packets</th></tr>\n";
 		foreach(section ; ptrs.data.sections) {
-			data ~= "\t\t\t<tr><td><a href=\"#" ~ section.name.replace("_", "-") ~ "\">" ~ pretty(toCamelCase(section.name)) ~ "</a></td><td align=\"center\">" ~ to!string(section.packets.length) ~ "</td></tr>\n";
+			data ~= "\t\t\t<tr><td><a href=\"#" ~ section.name.replace("_", "-") ~ "\">" ~ pretty(toCamelCase(section.name)) ~ "</a></td><td class=\"center\">" ~ to!string(section.packets.length) ~ "</td></tr>\n";
 		}
 		data ~= "\t\t</table>\n";
 		// sections
@@ -209,10 +227,10 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			foreach(packet ; section.packets) {
 				data ~= "\t\t\t<tr>";
 				data ~= "<td><a href=\"#" ~ link(section.name, packet.name) ~ "\">" ~ pretty(toCamelCase(packet.name)) ~ "</a></td>";
-				data ~= "<td align=\"center\">" ~ packet.id.to!string ~ "</td>";
-				data ~= "<td align=\"center\">" ~ ("0" ~ packet.id.to!string(16))[$-2..$] ~ "₁₆</td>";
-				data ~= "<td align=\"center\">" ~ (packet.clientbound ? "✓" : "") ~ "</td>";
-				data ~= "<td align=\"center\">" ~ (packet.serverbound ? "✓" : "") ~ "</td>";
+				data ~= "<td class=\"center\">" ~ packet.id.to!string ~ "</td>";
+				data ~= "<td class=\"center\">" ~ ("0" ~ packet.id.to!string(16))[$-2..$] ~ "₁₆</td>";
+				data ~= "<td class=\"center\">" ~ (packet.clientbound ? "✓" : "") ~ "</td>";
+				data ~= "<td class=\"center\">" ~ (packet.serverbound ? "✓" : "") ~ "</td>";
 				data ~= "</tr>\n";
 			}
 			data ~= "\t\t</table>\n";
@@ -220,28 +238,34 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t<ul>\n";
 			foreach(packet ; section.packets) {
 				data ~= "\t\t\t<li>\n";
-				data ~= "\t\t\t\t<a name=\"" ~ link(section.name, packet.name) ~ "\"></a>\n";
-				data ~= "\t\t\t\t<h3>" ~ pretty(toCamelCase(packet.name)) ~ "</h3>\n";
-				data ~= "\t\t\t\t<p><strong>Id</strong>: " ~ to!string(packet.id) ~ "</p>\n";
+				data ~= "\t\t\t\t<h3 id=\"" ~ link(section.name, packet.name) ~ "\">" ~ pretty(toCamelCase(packet.name)) ~ "</h3>\n";
+				/*data ~= "\t\t\t\t<p><strong>Id</strong>: " ~ to!string(packet.id) ~ "</p>\n";
 				data ~= "\t\t\t\t<p><strong>Clientbound</strong>: " ~ (packet.clientbound ? "yes" : "no") ~ "</p>\n";
-				data ~= "\t\t\t\t<p><strong>Serverbound</strong>: " ~ (packet.serverbound ? "yes" : "no") ~ "</p>\n";
+				data ~= "\t\t\t\t<p><strong>Serverbound</strong>: " ~ (packet.serverbound ? "yes" : "no") ~ "</p>\n";*/
+				data ~= "\t\t\t\t<table>\n";
+				data ~= "\t\t\t\t\t<tr><th colspan=\"3\">Id</th><th>Clientbound</th><th>Serverbound</th></tr>\n";
+				data ~= "\t\t\t\t\t<tr><td class=\"center\">" ~ packet.id.to!string ~ "</td>";
+				data ~= "<td class=\"center\">" ~ ("00000000" ~ packet.id.to!string(2))[$-8..$] ~ "₂</td>";
+				data ~= "<td class=\"center\">" ~ ("00" ~ packet.id.to!string(16))[$-2..$] ~ "₁₆</td>";
+				data ~= "<td class=\"center\">" ~ (packet.clientbound ? "✓" : "") ~ "</td>";
+				data ~= "<td class=\"center\">" ~ (packet.serverbound ? "✓" : "") ~ "</td></tr>\n";
+				data ~= "\t\t\t\t</table>\n";
 				if(packet.description.length) data ~= desc("\t\t\t\t", packet.description);
-				writeFields(link(section.name, packet.name), packet.fields, 4);
+				writeFields([section.name, packet.name], packet.fields, 4);
 				if(packet.variants.length) {
 					data ~= "\t\t\t\t<p><strong>Variants</strong>:</p>\n";
 					data ~= "\t\t\t\t<table>\n";
 					data ~= "\t\t\t\t\t<tr><th>Variant</th><th>Field</th><th>Value</th></tr>\n";
 					foreach(variant ; packet.variants) {
-						data ~= "\t\t\t\t\t<tr><td><a href=\"" ~ link(section.name, packet.name, variant.name) ~ "\">" ~ pretty(toCamelCase(variant.name)) ~ "</a></td><td>" ~ toCamelCase(packet.variantField) ~ "</td><td align=\"center\">" ~ variant.value ~ "</td></tr>\n";
+						data ~= "\t\t\t\t\t<tr><td><a href=\"" ~ link(section.name, packet.name, variant.name) ~ "\">" ~ pretty(toCamelCase(variant.name)) ~ "</a></td><td>" ~ toCamelCase(packet.variantField) ~ "</td><td class=\"center\">" ~ variant.value ~ "</td></tr>\n";
 					}
 					data ~= "\t\t\t\t</table>\n";
 					data ~= "\t\t\t\t<ul>\n";
 					foreach(variant ; packet.variants) {
 						data ~= "\t\t\t\t\t<li>\n";
-						data ~= "\t\t\t\t\t\t<a name=\"" ~ link(section.name, packet.name, variant.name) ~ "\"></a>\n";
-						data ~= "\t\t\t\t\t\t<h3>" ~ pretty(toCamelCase(variant.name)) ~ "</h3>\n";
+						data ~= "\t\t\t\t\t\t<h3 id=\"" ~ link(section.name, packet.name, variant.name) ~ "\">" ~ pretty(toCamelCase(variant.name)) ~ "</h3>\n";
 						if(variant.description.length) data ~= desc("\t\t\t\t\t\t", variant.description);
-						writeFields(link(section.name, packet.name, variant.name), variant.fields, 6, "Additional Fields");
+						writeFields([section.name, packet.name, variant.name], variant.fields, 6, "Additional Fields");
 						data ~= "\t\t\t\t\t</li>\n";
 					}
 					data ~= "\t\t\t\t</ul>\n";
@@ -253,21 +277,20 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		// types
 		if(ptrs.data.types.length) {
 			data ~= "\t\t<hr>\n";
-			data ~= "\t\t<h2>Types</h2>\n";
+			data ~= "\t\t<h2 id=\"types\">Types</h2>\n";
 			if(ptrs.data.types.length > 3) {
 				string[] jt;
 				foreach(type ; ptrs.data.types) {
-					jt ~= "<a href=\"" ~ link("types", type.name) ~ "\">" ~ pretty(toCamelCase(type.name)) ~ "</a>";
+					jt ~= "<a href=\"#" ~ link("types", type.name) ~ "\">" ~ pretty(toCamelCase(type.name)) ~ "</a>";
 				}
 				data ~= "\t\t<p><strong>Jump to</strong>: " ~ jt.join(", ") ~ "</p>\n";
 			}
 			data ~= "\t\t<ul>\n";
 			foreach(type ; ptrs.data.types) {
 				data ~= "\t\t\t<li>\n";
-				data ~= "\t\t\t\t<a name=\"" ~ link("types", type.name) ~ "\"></a>\n";
-				data ~= "\t\t\t\t<h3>" ~ pretty(toCamelCase(type.name)) ~ "</h3>\n";
+				data ~= "\t\t\t\t<h3 id=\"" ~ link("types", type.name) ~ "\">" ~ pretty(toCamelCase(type.name)) ~ "</h3>\n";
 				if(type.description.length) data ~= desc("\t\t\t\t", type.description);
-				writeFields(type.name, type.fields, 4);
+				writeFields(["types", type.name], type.fields, 4);
 				data ~= "\t\t\t</li>\n";
 			}
 			data ~= "\t\t</ul>\n";
@@ -275,10 +298,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		// arrays
 		if(ptrs.data.arrays.length) {
 			data ~= "\t\t<hr>\n";
-			foreach(name, a ; ptrs.data.arrays) {
-				data ~= "\t\t<a name\"" ~ link("types", name) ~ "\"></a>\n";
-			}
-			data ~= "\t\t<h2>Arrays</h2>\n";
+			data ~= "\t\t<h2 id=\"arrays\">Arrays</h2>\n";
 			bool e = false;
 			foreach(a ; ptrs.data.arrays) {
 				e |= a.endianness.length != 0;
@@ -286,14 +306,14 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t<table>\n";
 			data ~= "\t\t\t<tr><th>Name</th><th>Base</th><th>Length</th>" ~ (e ? "<th>Length's Endianness</th>" : "") ~ "</tr>\n";
 			foreach(name, a ; ptrs.data.arrays) {
-				data ~= "\t\t\t<tr><td>" ~ toCamelCase(name) ~ "</td><td>" ~ convert(a.base) ~ "</td><td>" ~ convert(a.length) ~ "</td>" ~ (e ? "<td>" ~ a.endianness.replace("_", " ") ~ "</td>" : "") ~ "</tr>\n";
+				data ~= "\t\t\t<tr id=\"" ~ link("types", name) ~ "\"><td>" ~ toCamelCase(name) ~ "</td><td>" ~ convert(a.base) ~ "</td><td>" ~ convert(a.length) ~ "</td>" ~ (e ? "<td>" ~ a.endianness.replace("_", " ") ~ "</td>" : "") ~ "</tr>\n";
 			}
 			data ~= "\t\t</table>\n";
 		}
 		// metadata
 		if(metadata) {
 			data ~= "\t\t<hr>\n";
-			data ~= "\t\t<h2>Metadata</h2>\n";
+			data ~= "\t\t<h2 id=\"metadata\">Metadata</h2>\n";
 			data ~= "\t\t<ul>\n";
 			// encoding
 			data ~= "\t\t\t<li>\n";
@@ -313,7 +333,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t\t\t<table>\n";
 			data ~= "\t\t\t\t\t<tr><th>Name</th><th>Type</th><th>Id</th></tr>\n";
 			foreach(type ; (*metadata).data.types) {
-				data ~= "\t\t\t\t\t<tr><td>" ~ toCamelCase(type.name) ~ "</td><td>" ~ convert(type.type) ~ "</td><td align=\"center\">" ~ type.id.to!string ~ "</td></tr>\n";
+				data ~= "\t\t\t\t\t<tr><td>" ~ toCamelCase(type.name) ~ "</td><td>" ~ convert(type.type) ~ "</td><td class=\"center\">" ~ type.id.to!string ~ "</td></tr>\n";
 			}
 			data ~= "\t\t\t\t</table>\n";
 			data ~= "\t\t\t</li>\n";
@@ -327,15 +347,14 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 				immutable name = pretty(toCamelCase(meta.name));
 				if(meta.description.length || meta.flags.length) data ~= "<a href=\"#" ~ link("metadata", meta.name) ~ "\">" ~ name ~ "</a>";
 				else data ~= name;
-				data ~= "</td><td>" ~ convert(meta.type) ~ "</td><td align=\"center\">" ~ meta.id.to!string ~ "</td><td align=\"center\">" ~ meta.id.to!string(16) ~ "₁₆</td><td align=\"center\">" ~ meta.def ~ "</td><td align=\"center\">" ~ (meta.required ? "✓" : "") ~ "</td></tr>\n";
+				data ~= "</td><td>" ~ convert(meta.type) ~ "</td><td class=\"center\">" ~ meta.id.to!string ~ "</td><td class=\"center\">" ~ meta.id.to!string(16) ~ "₁₆</td><td class=\"center\">" ~ meta.def ~ "</td><td class=\"center\">" ~ (meta.required ? "✓" : "") ~ "</td></tr>\n";
 			}
 			data ~= "\t\t\t\t</table>\n";
 			data ~= "\t\t\t\t<ul>\n";
 			foreach(meta ; (*metadata).data.data) {
 				if(meta.description.length || meta.flags.length) {
 					data ~= "\t\t\t\t\t<li>\n";
-					data ~= "\t\t\t\t\t<a name=\"" ~ link("metadata", meta.name) ~ "\"></a>\n";
-					data ~= "\t\t\t\t\t<h4>" ~ pretty(toCamelCase(meta.name)) ~ "</h4>\n";
+					data ~= "\t\t\t\t\t<h4 id=\"" ~ link("metadata", meta.name) ~ "\">" ~ pretty(toCamelCase(meta.name)) ~ "</h4>\n";
 					if(meta.description.length) data ~= desc("\t\t\t\t\t", meta.description);
 					if(meta.flags.length) {
 						bool description;
@@ -348,7 +367,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 						data ~= "\t\t\t\t\t<table>\n";
 						data ~= "\t\t\t\t\t\t<tr><th>Flag</th><th colspan=\"2\">Bit</th>" ~ (description ? "<th>Description</th>" : "") ~ "</tr>\n";
 						foreach(flag ; meta.flags) {
-							data ~= "\t\t\t\t\t\t<tr><td>" ~ toCamelCase(flag.name) ~ "</td><td align=\"center\">" ~ flag.bit.to!string ~ "</td><td align=\"center\">" ~ flag.bit.to!string(16) ~ "₁₆</td>" ~ (description ? "<td>" ~ flag.description.replace("\n", " ") : "</td>") ~ "</tr>\n";
+							data ~= "\t\t\t\t\t\t<tr><td>" ~ toCamelCase(flag.name) ~ "</td><td class=\"center\">" ~ flag.bit.to!string ~ "</td><td class=\"center\">" ~ flag.bit.to!string(16) ~ "₁₆</td>" ~ (description ? "<td>" ~ flag.description.replace("\n", " ") ~ "</td>" : "") ~ "</tr>\n";
 						}
 						data ~= "\t\t\t\t\t</table>\n";
 					}
@@ -362,11 +381,11 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		// attributes
 		if(attributes) {
 			data ~= "\t\t<hr>\n";
-			data ~= "\t\t<h2>Attributes</h2>\n";
+			data ~= "\t\t<h2 id=\"attributes\">Attributes</h2>\n";
 			data ~= "\t\t<table>\n";
 			data ~= "\t\t\t<tr><th>Name</th><th>Key</th><th>Min</th><th>Max</th><th>Default</th></tr>\n";
 			foreach(attribute ; (*attributes).data) {
-				data ~= "\t\t\t<tr><td>" ~ pretty(toCamelCase(attribute.id)) ~ "</td><td>" ~ attribute.name ~ "</td><td align=\"center\">" ~ attribute.min.to!string ~ "</td><td align=\"center\">" ~ attribute.max.to!string ~ "</td><td align=\"center\">" ~ attribute.def.to!string ~ "</td></tr>\n";
+				data ~= "\t\t\t<tr><td>" ~ pretty(toCamelCase(attribute.id)) ~ "</td><td>" ~ attribute.name ~ "</td><td class=\"center\">" ~ attribute.min.to!string ~ "</td><td class=\"center\">" ~ attribute.max.to!string ~ "</td><td class=\"center\">" ~ attribute.def.to!string ~ "</td></tr>\n";
 			}
 			data ~= "\t\t</table>\n";
 		}
@@ -381,7 +400,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	foreach(game, prts; protocols) {
 		p[prts.software][prts.protocol] = tuple(prts.data, game);
 	}
-	string data = head("SEL Utils", false);
+	string data = head("Index", false);
 	//TODO order with algorithm
 	foreach(string name ; ["Minecraft", "Minecraft: Pocket Edition", "Raknet", "Hub-Node Communication", "External Console"]) {
 		auto sorted = sort(p[name].keys).release();
@@ -420,10 +439,17 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	
 }
 
-string head(string title, bool back=true) {
+string head(string title, bool back, string xml="") {
+	string b = back ? "../" : "";
 	return "<!DOCTYPE html>\n<html lang=\"en\">\n" ~
-		"\t<head>\n\t\t<meta charset=\"UTF-8\" />\n\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n\t\t<title>" ~ title ~ "</title>\n\t\t<link rel=\"stylesheet\" href=\"" ~ (back ? "../" : "") ~ "style.css\" />\n\t</head>\n" ~
-		"\t<body>\n\t\t<div style=\"text-align:center;padding-top:16px\"><a href=\"" ~ (back ? "../" : ".") ~ "\"><img src=\"" ~ (back ? "../" : "") ~ "logo.png\" alt=\"\" /></a></div>\n";
+		"\t<head>\n\t\t<meta charset=\"UTF-8\" />\n\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n\t\t<title>" ~ title ~ " | SEL Utils</title>\n\t\t<link rel=\"stylesheet\" href=\"" ~ (back ? "../" : "") ~ "style.css\" />\n\t</head>\n" ~
+			"\t<body>\n\t\t<div style=\"text-align:center;padding-top:16px\"><a href=\"" ~ b ~ "\"><div><img src=\"" ~ b ~ "logo.png\" alt=\"\" /></div></a>" ~
+			"<div><a href=\"" ~ b ~ "\">Index</a>&nbsp;&nbsp;" ~
+			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/README.md\">About</a>&nbsp;&nbsp;" ~
+			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/TYPES.md\">Types</a>&nbsp;&nbsp;" ~
+			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md\">Contribute</a>&nbsp;&nbsp;" ~
+			(xml.length ? "<a href=\"https://github.com/sel-project/sel-utils/blob/master/xml/protocol/" ~ xml ~ ".xml\">XML</a>&nbsp;&nbsp;" : "") ~
+			"<a href=\"https://github.com/sel-project/sel-utils\">Github</a></div></div>\n";
 }
 
 @property string pretty(string name) {
@@ -437,13 +463,14 @@ string head(string title, bool back=true) {
 }
 
 string link(string[] pieces...) {
-	return pieces.join(".").replace("_", "-");
+	foreach(ref piece ; pieces) piece = piece.replace("_", "-");
+	return pieces.join("_");
 }
 
 string desc(string space, string description) {
 	bool search = true;
 	while(search) {
-		auto m = matchFirst(description, ctRegex!`\[[a-zA-Z0-9 \.]{2,30}\]\([a-zA-Z0-9\#\.:\/-]{2,64}\)`);
+		auto m = matchFirst(description, ctRegex!`\[[a-zA-Z0-9 \.]{2,30}\]\([a-zA-Z0-9_\#\.:\/-]{2,64}\)`);
 		if(m) {
 			auto dest = m.hit[m.hit.indexOf("(")+1..$-1];
 			description = m.pre ~ "<a href=\"" ~ dest ~ "\"" ~ (!dest.startsWith("#") ? " target=\"_blank\"" : "") ~ ">" ~ m.hit[1..m.hit.indexOf("]")] ~ "</a>" ~ m.post;
@@ -452,7 +479,7 @@ string desc(string space, string description) {
 		}
 	}
 	string ret;
-	bool code = false;
+	bool code = false, list = false;
 	foreach(s ; description.replaceAll(ctRegex!"[\\r\\t]+", "").split("\n")) {
 		if(code) {
 			if(s.startsWith("```")) {
@@ -463,8 +490,19 @@ string desc(string space, string description) {
 			}
 		} else {
 			if(!s.length) continue;
+			if(s.startsWith("+ ")) {
+				if(!list) {
+					ret ~= space ~ "<ul>\n";
+					list = true;
+				}
+				ret ~= space ~ "\t<li>" ~ s[2..$].strip ~ "</li>\n";
+				continue;
+			} else if(list) {
+				ret ~= space ~ "</ul>\n";
+				list = false;
+			}
 			if(s.startsWith("```")) {
-				ret ~= space ~ "<pre lang=\"" ~ s[3..$] ~ "\">";
+				ret ~= space ~ "<pre data-language=\"" ~ s[3..$] ~ "\">";
 				code = true;
 			} else {
 				string h = "######";

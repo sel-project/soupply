@@ -44,6 +44,7 @@ hr {
 
 table {
 	display: block;
+	width: -moz-fit-content;
 	margin: 0 0 16px 0;
 	border-spacing: 0px;
 	border-collapse: collapse;
@@ -55,12 +56,12 @@ table th, table td {
 }
 
 table th {
-	font-family: "Segoe 600";
+	font-family: "Segoe 600", Helvetica;
 	text-align: center;
 }
 
 h1, h2, h3, h4, h5, h6, strong {
-	font-family: "Segoe 600";
+	font-family: "Segoe 600", Helvetica;
 }
 
 a, a:hover, a:visited {
@@ -77,15 +78,24 @@ a:hover {
 
 code, pre {
 	font-family: "Consolas", monospace;
+	font-size: 15px;
 	border-radius: 3px;
 	background-color: rgba(0, 0, 0, 0.04);
+	padding: 4px 8px;
 }
 
 code {
 	padding: 0.2em 0;
 }
 
-pre p {
-	padding: 0;
-	margin: 0;
+.center {
+	text-align: center;
+}
+
+.added {
+	background-color: #dcedc8;
+}
+
+.removed {
+	background-color: #ffcdd2;
 }

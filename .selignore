@@ -3,4 +3,5 @@ README.md
 .gitignore
 .git/
 doc/
+docs/
 gen/

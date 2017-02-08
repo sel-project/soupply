@@ -18,7 +18,7 @@ import sul.utils.*;
 public class NodeStats extends Packet {
 
 	/**
-	 * Name of the node. Should match one of the names given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes)
+	 * Name of the node. Should match one of the names given in [Welcome.Accepted.connectedNodes](#login_welcome_accepted_connected-nodes)
 	 * or one added using the UpdateNodes packet.
 	 * If the server isn't built on the hub-node layout the name is an empty string and
 	 * the following values are for the whole server and not for a node.

@@ -24,7 +24,7 @@ import sul.utils.Packet;
  * + Server's resources usage
  * + Support for the hub-node layout
  * 
- * <h2>What's new from [protocol 1](https://github.com/sel-project/sel-utils/blob/master/doc/externalconsole/1.md)</h2>
+ * <h2>What's new from protocol 1</h2>
  * + TCP packet are prefixed with their length
  * + Command can know when they generate output
  * 

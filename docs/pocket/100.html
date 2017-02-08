@@ -3,173 +3,172 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		<title>Minecraft: Pocket Edition 100</title>
+		<title>Minecraft: Pocket Edition 100 | SEL Utils</title>
 		<link rel="stylesheet" href="../style.css" />
 	</head>
 	<body>
-		<div style="text-align:center;padding-top:16px"><a href="../"><img src="../logo.png" alt="" /></a></div>
+		<div style="text-align:center;padding-top:16px"><a href="../"><div><img src="../logo.png" alt="" /></div></a><div><a href="../">Index</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/pocket100.xml">XML</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
 		<h1>Minecraft: Pocket Edition 100</h1>
+		<p><strong>Compare</strong>: <a href="diff/100-101.html">101</a></p>
 		<p><strong>Jump to</strong>: <a href="#endianness">Endianness</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a>, <a href="#arrays">Arrays</a>, <a href="#metadata">Metadata</a>, <a href="#attributes">Attributes</a></p>
 		<p><strong>Released</strong>: December 19th, 2016</p>
 		<p>Used from version <strong>1.0.0</strong> to <strong>1.0.2</strong></p>
 		<hr>
-		<h2>Endianness</h2>
+		<h2 id="endianness">Endianness</h2>
 		<table>
 			<tr><td>big endian</td><td>ushort, uint, ulong</td></tr>
 			<tr><td>little endian</td><td>float</td></tr>
 		</table>
+		<p><strong>Ids</strong>: ubyte</p>
+		<p><strong>Array's length</strong>: varuint</p>
 		<hr>
-		<h2>Packets</h2>
+		<h2 id="packets">Packets</h2>
 		<table>
 			<tr><th>Section</th><th>Packets</th></tr>
-			<tr><td><a href="#play">Play</a></td><td align="center">79</td></tr>
+			<tr><td><a href="#play">Play</a></td><td class="center">79</td></tr>
 		</table>
 		<h3>Play</h3>
 		<table>
 			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-			<tr><td><a href="#play.login">Login</a></td><td align="center">1</td><td align="center">01₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.play-status">Play Status</a></td><td align="center">2</td><td align="center">02₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.server-handshake">Server Handshake</a></td><td align="center">3</td><td align="center">03₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.client-magic">Client Magic</a></td><td align="center">4</td><td align="center">04₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.disconnect">Disconnect</a></td><td align="center">5</td><td align="center">05₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.batch">Batch</a></td><td align="center">6</td><td align="center">06₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.resource-packs-info">Resource Packs Info</a></td><td align="center">7</td><td align="center">07₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.resource-pack-client-response">Resource Pack Client Response</a></td><td align="center">9</td><td align="center">09₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.text">Text</a></td><td align="center">10</td><td align="center">0A₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.set-time">Set Time</a></td><td align="center">11</td><td align="center">0B₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.start-game">Start Game</a></td><td align="center">12</td><td align="center">0C₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.add-player">Add Player</a></td><td align="center">13</td><td align="center">0D₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.add-entity">Add Entity</a></td><td align="center">14</td><td align="center">0E₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.remove-entity">Remove Entity</a></td><td align="center">15</td><td align="center">0F₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.add-item-entity">Add Item Entity</a></td><td align="center">16</td><td align="center">10₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.add-hanging-entity">Add Hanging Entity</a></td><td align="center">17</td><td align="center">11₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.take-item-entity">Take Item Entity</a></td><td align="center">18</td><td align="center">12₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.move-entity">Move Entity</a></td><td align="center">19</td><td align="center">13₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.move-player">Move Player</a></td><td align="center">20</td><td align="center">14₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.rider-jump">Rider Jump</a></td><td align="center">21</td><td align="center">15₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.remove-block">Remove Block</a></td><td align="center">22</td><td align="center">16₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.update-block">Update Block</a></td><td align="center">23</td><td align="center">17₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.add-painting">Add Painting</a></td><td align="center">24</td><td align="center">18₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.explode">Explode</a></td><td align="center">25</td><td align="center">19₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.level-sound-event">Level Sound Event</a></td><td align="center">26</td><td align="center">1A₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.level-event">Level Event</a></td><td align="center">27</td><td align="center">1B₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.block-event">Block Event</a></td><td align="center">28</td><td align="center">1C₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.entity-event">Entity Event</a></td><td align="center">29</td><td align="center">1D₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.mob-effect">Mob Effect</a></td><td align="center">30</td><td align="center">1E₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.update-attributes">Update Attributes</a></td><td align="center">31</td><td align="center">1F₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.mob-equipment">Mob Equipment</a></td><td align="center">32</td><td align="center">20₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.mob-armor-equipment">Mob Armor Equipment</a></td><td align="center">33</td><td align="center">21₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.interact">Interact</a></td><td align="center">34</td><td align="center">22₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.use-item">Use Item</a></td><td align="center">35</td><td align="center">23₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.player-action">Player Action</a></td><td align="center">36</td><td align="center">24₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.player-fall">Player Fall</a></td><td align="center">37</td><td align="center">25₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.hurt-armor">Hurt Armor</a></td><td align="center">38</td><td align="center">26₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.set-entity-data">Set Entity Data</a></td><td align="center">39</td><td align="center">27₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.set-entity-motion">Set Entity Motion</a></td><td align="center">40</td><td align="center">28₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.set-entity-link">Set Entity Link</a></td><td align="center">41</td><td align="center">29₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.set-health">Set Health</a></td><td align="center">42</td><td align="center">2A₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.set-spawn-position">Set Spawn Position</a></td><td align="center">43</td><td align="center">2B₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.animate">Animate</a></td><td align="center">44</td><td align="center">2C₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.respawn">Respawn</a></td><td align="center">45</td><td align="center">2D₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.drop-item">Drop Item</a></td><td align="center">46</td><td align="center">2E₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.inventory-action">Inventory Action</a></td><td align="center">47</td><td align="center">2F₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.container-open">Container Open</a></td><td align="center">48</td><td align="center">30₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.container-close">Container Close</a></td><td align="center">49</td><td align="center">31₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.container-set-slot">Container Set Slot</a></td><td align="center">50</td><td align="center">32₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.container-set-data">Container Set Data</a></td><td align="center">51</td><td align="center">33₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.container-set-content">Container Set Content</a></td><td align="center">52</td><td align="center">34₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.crafting-data">Crafting Data</a></td><td align="center">53</td><td align="center">35₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.crafting-event">Crafting Event</a></td><td align="center">54</td><td align="center">36₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.adventure-settings">Adventure Settings</a></td><td align="center">55</td><td align="center">37₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.block-entity-data">Block Entity Data</a></td><td align="center">56</td><td align="center">38₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.player-input">Player Input</a></td><td align="center">57</td><td align="center">39₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.full-chunk-data">Full Chunk Data</a></td><td align="center">58</td><td align="center">3A₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.set-cheats-enabled">Set Cheats Enabled</a></td><td align="center">59</td><td align="center">3B₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.set-difficulty">Set Difficulty</a></td><td align="center">60</td><td align="center">3C₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.change-dimension">Change Dimension</a></td><td align="center">61</td><td align="center">3D₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.set-player-gametype">Set Player Gametype</a></td><td align="center">62</td><td align="center">3E₁₆</td><td align="center">✓</td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.player-list">Player List</a></td><td align="center">63</td><td align="center">3F₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.telemetry-event">Telemetry Event</a></td><td align="center">64</td><td align="center">40₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.spawn-experience-orb">Spawn Experience Orb</a></td><td align="center">65</td><td align="center">41₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.clientbound-map-item-data">Clientbound Map Item Data</a></td><td align="center">66</td><td align="center">42₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.map-info-request">Map Info Request</a></td><td align="center">67</td><td align="center">43₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.request-chunk-radius">Request Chunk Radius</a></td><td align="center">68</td><td align="center">44₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.chunk-radius-updated">Chunk Radius Updated</a></td><td align="center">69</td><td align="center">45₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.item-frame-drop-item">Item Frame Drop Item</a></td><td align="center">70</td><td align="center">46₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.replace-selected-item">Replace Selected Item</a></td><td align="center">71</td><td align="center">47₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.camera">Camera</a></td><td align="center">73</td><td align="center">49₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.add-item">Add Item</a></td><td align="center">74</td><td align="center">4A₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.boss-event">Boss Event</a></td><td align="center">75</td><td align="center">4B₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.show-credits">Show Credits</a></td><td align="center">76</td><td align="center">4C₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.available-commands">Available Commands</a></td><td align="center">77</td><td align="center">4D₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.command-step">Command Step</a></td><td align="center">78</td><td align="center">4E₁₆</td><td align="center"></td><td align="center">✓</td></tr>
-			<tr><td><a href="#play.resource-pack-data-info">Resource Pack Data Info</a></td><td align="center">79</td><td align="center">4F₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.resource-pack-chunk-data">Resource Pack Chunk Data</a></td><td align="center">80</td><td align="center">50₁₆</td><td align="center">✓</td><td align="center"></td></tr>
-			<tr><td><a href="#play.resource-pack-chunk-request">Resource Pack Chunk Request</a></td><td align="center">81</td><td align="center">51₁₆</td><td align="center"></td><td align="center">✓</td></tr>
+			<tr><td><a href="#play_login">Login</a></td><td class="center">1</td><td class="center">01₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_play-status">Play Status</a></td><td class="center">2</td><td class="center">02₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_server-handshake">Server Handshake</a></td><td class="center">3</td><td class="center">03₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_client-magic">Client Magic</a></td><td class="center">4</td><td class="center">04₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_disconnect">Disconnect</a></td><td class="center">5</td><td class="center">05₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_batch">Batch</a></td><td class="center">6</td><td class="center">06₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_resource-packs-info">Resource Packs Info</a></td><td class="center">7</td><td class="center">07₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_resource-pack-client-response">Resource Pack Client Response</a></td><td class="center">9</td><td class="center">09₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_text">Text</a></td><td class="center">10</td><td class="center">0A₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_set-time">Set Time</a></td><td class="center">11</td><td class="center">0B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_start-game">Start Game</a></td><td class="center">12</td><td class="center">0C₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_add-player">Add Player</a></td><td class="center">13</td><td class="center">0D₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_add-entity">Add Entity</a></td><td class="center">14</td><td class="center">0E₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_remove-entity">Remove Entity</a></td><td class="center">15</td><td class="center">0F₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_add-item-entity">Add Item Entity</a></td><td class="center">16</td><td class="center">10₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_add-hanging-entity">Add Hanging Entity</a></td><td class="center">17</td><td class="center">11₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_take-item-entity">Take Item Entity</a></td><td class="center">18</td><td class="center">12₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_move-entity">Move Entity</a></td><td class="center">19</td><td class="center">13₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_move-player">Move Player</a></td><td class="center">20</td><td class="center">14₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_rider-jump">Rider Jump</a></td><td class="center">21</td><td class="center">15₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_remove-block">Remove Block</a></td><td class="center">22</td><td class="center">16₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_update-block">Update Block</a></td><td class="center">23</td><td class="center">17₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_add-painting">Add Painting</a></td><td class="center">24</td><td class="center">18₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_explode">Explode</a></td><td class="center">25</td><td class="center">19₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_level-sound-event">Level Sound Event</a></td><td class="center">26</td><td class="center">1A₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_level-event">Level Event</a></td><td class="center">27</td><td class="center">1B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_block-event">Block Event</a></td><td class="center">28</td><td class="center">1C₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_entity-event">Entity Event</a></td><td class="center">29</td><td class="center">1D₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_mob-effect">Mob Effect</a></td><td class="center">30</td><td class="center">1E₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_update-attributes">Update Attributes</a></td><td class="center">31</td><td class="center">1F₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_mob-equipment">Mob Equipment</a></td><td class="center">32</td><td class="center">20₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_mob-armor-equipment">Mob Armor Equipment</a></td><td class="center">33</td><td class="center">21₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_interact">Interact</a></td><td class="center">34</td><td class="center">22₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_use-item">Use Item</a></td><td class="center">35</td><td class="center">23₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_player-action">Player Action</a></td><td class="center">36</td><td class="center">24₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_player-fall">Player Fall</a></td><td class="center">37</td><td class="center">25₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_hurt-armor">Hurt Armor</a></td><td class="center">38</td><td class="center">26₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_set-entity-data">Set Entity Data</a></td><td class="center">39</td><td class="center">27₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_set-entity-motion">Set Entity Motion</a></td><td class="center">40</td><td class="center">28₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_set-entity-link">Set Entity Link</a></td><td class="center">41</td><td class="center">29₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_set-health">Set Health</a></td><td class="center">42</td><td class="center">2A₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_set-spawn-position">Set Spawn Position</a></td><td class="center">43</td><td class="center">2B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_animate">Animate</a></td><td class="center">44</td><td class="center">2C₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_respawn">Respawn</a></td><td class="center">45</td><td class="center">2D₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_drop-item">Drop Item</a></td><td class="center">46</td><td class="center">2E₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_inventory-action">Inventory Action</a></td><td class="center">47</td><td class="center">2F₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_container-open">Container Open</a></td><td class="center">48</td><td class="center">30₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_container-close">Container Close</a></td><td class="center">49</td><td class="center">31₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_container-set-slot">Container Set Slot</a></td><td class="center">50</td><td class="center">32₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_container-set-data">Container Set Data</a></td><td class="center">51</td><td class="center">33₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_container-set-content">Container Set Content</a></td><td class="center">52</td><td class="center">34₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_crafting-data">Crafting Data</a></td><td class="center">53</td><td class="center">35₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_crafting-event">Crafting Event</a></td><td class="center">54</td><td class="center">36₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_adventure-settings">Adventure Settings</a></td><td class="center">55</td><td class="center">37₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_block-entity-data">Block Entity Data</a></td><td class="center">56</td><td class="center">38₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_player-input">Player Input</a></td><td class="center">57</td><td class="center">39₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_full-chunk-data">Full Chunk Data</a></td><td class="center">58</td><td class="center">3A₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_set-cheats-enabled">Set Cheats Enabled</a></td><td class="center">59</td><td class="center">3B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_set-difficulty">Set Difficulty</a></td><td class="center">60</td><td class="center">3C₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_change-dimension">Change Dimension</a></td><td class="center">61</td><td class="center">3D₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_set-player-gametype">Set Player Gametype</a></td><td class="center">62</td><td class="center">3E₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_player-list">Player List</a></td><td class="center">63</td><td class="center">3F₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_telemetry-event">Telemetry Event</a></td><td class="center">64</td><td class="center">40₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_spawn-experience-orb">Spawn Experience Orb</a></td><td class="center">65</td><td class="center">41₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_clientbound-map-item-data">Clientbound Map Item Data</a></td><td class="center">66</td><td class="center">42₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_map-info-request">Map Info Request</a></td><td class="center">67</td><td class="center">43₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_request-chunk-radius">Request Chunk Radius</a></td><td class="center">68</td><td class="center">44₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_chunk-radius-updated">Chunk Radius Updated</a></td><td class="center">69</td><td class="center">45₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_item-frame-drop-item">Item Frame Drop Item</a></td><td class="center">70</td><td class="center">46₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_replace-selected-item">Replace Selected Item</a></td><td class="center">71</td><td class="center">47₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_camera">Camera</a></td><td class="center">73</td><td class="center">49₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_add-item">Add Item</a></td><td class="center">74</td><td class="center">4A₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_boss-event">Boss Event</a></td><td class="center">75</td><td class="center">4B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_show-credits">Show Credits</a></td><td class="center">76</td><td class="center">4C₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_available-commands">Available Commands</a></td><td class="center">77</td><td class="center">4D₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_command-step">Command Step</a></td><td class="center">78</td><td class="center">4E₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#play_resource-pack-data-info">Resource Pack Data Info</a></td><td class="center">79</td><td class="center">4F₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_resource-pack-chunk-data">Resource Pack Chunk Data</a></td><td class="center">80</td><td class="center">50₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#play_resource-pack-chunk-request">Resource Pack Chunk Request</a></td><td class="center">81</td><td class="center">51₁₆</td><td class="center"></td><td class="center">✓</td></tr>
 		</table>
 		<ul>
 			<li>
-				<a name="play.login"></a>
-				<h3>Login</h3>
-				<p><strong>Id</strong>: 1</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_login">Login</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">1</td><td class="center">00000001₂</td><td class="center">01₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>protocol</td><td>uint</td></tr>
-					<tr><td><a href="#play.login.edition">edition</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#play_login_edition">edition</a></td><td>ubyte</td></tr>
 					<tr><td>body</td><td>ubyte[]</td></tr>
 				</table>
 				<ul>
-					</li>
 					<li>
-						<a name="play.login.edition"></a>
-						<strong>edition</strong>
+						<strong id="play_login_edition">edition</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>classic</td><td align="center">0</td></tr>
-							<tr><td>education</td><td align="center">1</td></tr>
+							<tr><td>classic</td><td class="center">0</td></tr>
+							<tr><td>education</td><td class="center">1</td></tr>
 						</table>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.play-status"></a>
-				<h3>Play Status</h3>
-				<p><strong>Id</strong>: 2</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_play-status">Play Status</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">2</td><td class="center">00000010₂</td><td class="center">02₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#play.play-status.status">status</a></td><td>uint</td></tr>
+					<tr><td><a href="#play_play-status_status">status</a></td><td>uint</td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="play.play-status.status"></a>
-						<strong>status</strong>
+						<strong id="play_play-status_status">status</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>ok</td><td align="center">0</td></tr>
-							<tr><td>outdatedClient</td><td align="center">1</td></tr>
-							<tr><td>outdatedServer</td><td align="center">2</td></tr>
-							<tr><td>spawned</td><td align="center">3</td></tr>
-							<tr><td>invalidTenant</td><td align="center">4</td></tr>
-							<tr><td>editionMismatch</td><td align="center">5</td></tr>
+							<tr><td>ok</td><td class="center">0</td></tr>
+							<tr><td>outdatedClient</td><td class="center">1</td></tr>
+							<tr><td>outdatedServer</td><td class="center">2</td></tr>
+							<tr><td>spawned</td><td class="center">3</td></tr>
+							<tr><td>invalidTenant</td><td class="center">4</td></tr>
+							<tr><td>editionMismatch</td><td class="center">5</td></tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.server-handshake"></a>
-				<h3>Server Handshake</h3>
-				<p><strong>Id</strong>: 3</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_server-handshake">Server Handshake</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">3</td><td class="center">00000011₂</td><td class="center">03₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -177,23 +176,21 @@
 					<tr><td>token</td><td>ubyte[]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.client-magic"></a>
-				<h3>Client Magic</h3>
-				<p><strong>Id</strong>: 4</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_client-magic">Client Magic</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">4</td><td class="center">00000100₂</td><td class="center">04₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 			</li>
 			<li>
-				<a name="play.disconnect"></a>
-				<h3>Disconnect</h3>
-				<p><strong>Id</strong>: 5</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_disconnect">Disconnect</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">5</td><td class="center">00000101₂</td><td class="center">05₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -201,50 +198,44 @@
 					<tr><td>message</td><td>string</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.batch"></a>
-				<h3>Batch</h3>
-				<p><strong>Id</strong>: 6</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_batch">Batch</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">6</td><td class="center">00000110₂</td><td class="center">06₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>data</td><td>ubyte[]</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.resource-packs-info"></a>
-				<h3>Resource Packs Info</h3>
-				<p><strong>Id</strong>: 7</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_resource-packs-info">Resource Packs Info</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">7</td><td class="center">00000111₂</td><td class="center">07₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>mustAccept</td><td>bool</td></tr>
-					<tr><td>behaviourPacks</td><td><a href="#types.pack">pack</a>[]</td></tr>
-					<tr><td>resourcePacks</td><td><a href="#types.pack">pack</a>[]</td></tr>
+					<tr><td>behaviourPacks</td><td><a href="#types_pack">pack</a>[]</td></tr>
+					<tr><td>resourcePacks</td><td><a href="#types_pack">pack</a>[]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.resource-pack-client-response"></a>
-				<h3>Resource Pack Client Response</h3>
-				<p><strong>Id</strong>: 9</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_resource-pack-client-response">Resource Pack Client Response</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">9</td><td class="center">00001001₂</td><td class="center">09₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -252,51 +243,45 @@
 					<tr><td>resourcePackVersion</td><td>ushort</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.text"></a>
-				<h3>Text</h3>
-				<p><strong>Id</strong>: 10</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_text">Text</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">10</td><td class="center">00001010₂</td><td class="center">0A₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>type</td><td>ubyte</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 				<p><strong>Variants</strong>:</p>
 				<table>
 					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="play.text.raw">Raw</a></td><td>type</td><td align="center">0</td></tr>
-					<tr><td><a href="play.text.chat">Chat</a></td><td>type</td><td align="center">1</td></tr>
-					<tr><td><a href="play.text.translation">Translation</a></td><td>type</td><td align="center">2</td></tr>
-					<tr><td><a href="play.text.popup">Popup</a></td><td>type</td><td align="center">3</td></tr>
-					<tr><td><a href="play.text.tip">Tip</a></td><td>type</td><td align="center">4</td></tr>
-					<tr><td><a href="play.text.system">System</a></td><td>type</td><td align="center">5</td></tr>
-					<tr><td><a href="play.text.whisper">Whisper</a></td><td>type</td><td align="center">6</td></tr>
+					<tr><td><a href="play_text_raw">Raw</a></td><td>type</td><td class="center">0</td></tr>
+					<tr><td><a href="play_text_chat">Chat</a></td><td>type</td><td class="center">1</td></tr>
+					<tr><td><a href="play_text_translation">Translation</a></td><td>type</td><td class="center">2</td></tr>
+					<tr><td><a href="play_text_popup">Popup</a></td><td>type</td><td class="center">3</td></tr>
+					<tr><td><a href="play_text_tip">Tip</a></td><td>type</td><td class="center">4</td></tr>
+					<tr><td><a href="play_text_system">System</a></td><td>type</td><td class="center">5</td></tr>
+					<tr><td><a href="play_text_whisper">Whisper</a></td><td>type</td><td class="center">6</td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="play.text.raw"></a>
-						<h3>Raw</h3>
+						<h3 id="play_text_raw">Raw</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Type</th></tr>
 							<tr><td>message</td><td>string</td></tr>
 						</table>
 						<ul>
-							</li>
 						</ul>
 					</li>
 					<li>
-						<a name="play.text.chat"></a>
-						<h3>Chat</h3>
+						<h3 id="play_text_chat">Chat</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Type</th></tr>
@@ -304,13 +289,10 @@
 							<tr><td>message</td><td>string</td></tr>
 						</table>
 						<ul>
-							</li>
-							</li>
 						</ul>
 					</li>
 					<li>
-						<a name="play.text.translation"></a>
-						<h3>Translation</h3>
+						<h3 id="play_text_translation">Translation</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Type</th></tr>
@@ -318,13 +300,10 @@
 							<tr><td>parameters</td><td>string[]</td></tr>
 						</table>
 						<ul>
-							</li>
-							</li>
 						</ul>
 					</li>
 					<li>
-						<a name="play.text.popup"></a>
-						<h3>Popup</h3>
+						<h3 id="play_text_popup">Popup</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Type</th></tr>
@@ -332,37 +311,30 @@
 							<tr><td>subtitle</td><td>string</td></tr>
 						</table>
 						<ul>
-							</li>
-							</li>
 						</ul>
 					</li>
 					<li>
-						<a name="play.text.tip"></a>
-						<h3>Tip</h3>
+						<h3 id="play_text_tip">Tip</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Type</th></tr>
 							<tr><td>message</td><td>string</td></tr>
 						</table>
 						<ul>
-							</li>
 						</ul>
 					</li>
 					<li>
-						<a name="play.text.system"></a>
-						<h3>System</h3>
+						<h3 id="play_text_system">System</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Type</th></tr>
 							<tr><td>message</td><td>string</td></tr>
 						</table>
 						<ul>
-							</li>
 						</ul>
 					</li>
 					<li>
-						<a name="play.text.whisper"></a>
-						<h3>Whisper</h3>
+						<h3 id="play_text_whisper">Whisper</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Type</th></tr>
@@ -370,18 +342,16 @@
 							<tr><td>message</td><td>string</td></tr>
 						</table>
 						<ul>
-							</li>
-							</li>
 						</ul>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.set-time"></a>
-				<h3>Set Time</h3>
-				<p><strong>Id</strong>: 11</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_set-time">Set Time</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">11</td><td class="center">00001011₂</td><td class="center">0B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -389,16 +359,14 @@
 					<tr><td>daylightCycle</td><td>bool</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.start-game"></a>
-				<h3>Start Game</h3>
-				<p><strong>Id</strong>: 12</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_start-game">Start Game</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">12</td><td class="center">00001100₂</td><td class="center">0C₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -408,14 +376,14 @@
 					<tr><td>yaw</td><td>float</td></tr>
 					<tr><td>pitch</td><td>float</td></tr>
 					<tr><td>seed</td><td>varint</td></tr>
-					<tr><td><a href="#play.start-game.dimension">dimension</a></td><td>varint</td></tr>
-					<tr><td><a href="#play.start-game.generator">generator</a></td><td>varint</td></tr>
-					<tr><td><a href="#play.start-game.world-gamemode">worldGamemode</a></td><td>varint</td></tr>
-					<tr><td><a href="#play.start-game.difficulty">difficulty</a></td><td>varint</td></tr>
+					<tr><td><a href="#play_start-game_dimension">dimension</a></td><td>varint</td></tr>
+					<tr><td><a href="#play_start-game_generator">generator</a></td><td>varint</td></tr>
+					<tr><td><a href="#play_start-game_world-gamemode">worldGamemode</a></td><td>varint</td></tr>
+					<tr><td><a href="#play_start-game_difficulty">difficulty</a></td><td>varint</td></tr>
 					<tr><td>spawnPosition</td><td>varint&lt;xyz&gt;</td></tr>
 					<tr><td>loadedInCreative</td><td>bool</td></tr>
 					<tr><td>time</td><td>varint</td></tr>
-					<tr><td><a href="#play.start-game.edition">edition</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#play_start-game_edition">edition</a></td><td>ubyte</td></tr>
 					<tr><td>rainLevel</td><td>float</td></tr>
 					<tr><td>lightingLevel</td><td>float</td></tr>
 					<tr><td>cheatsEnabled</td><td>bool</td></tr>
@@ -424,83 +392,63 @@
 					<tr><td>worldName</td><td>string</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 					<li>
-						<a name="play.start-game.dimension"></a>
-						<strong>dimension</strong>
+						<strong id="play_start-game_dimension">dimension</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>overworld</td><td align="center">0</td></tr>
-							<tr><td>nether</td><td align="center">1</td></tr>
-							<tr><td>end</td><td align="center">2</td></tr>
+							<tr><td>overworld</td><td class="center">0</td></tr>
+							<tr><td>nether</td><td class="center">1</td></tr>
+							<tr><td>end</td><td class="center">2</td></tr>
 						</table>
 					</li>
 					<li>
-						<a name="play.start-game.generator"></a>
-						<strong>generator</strong>
+						<strong id="play_start-game_generator">generator</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>old</td><td align="center">0</td></tr>
-							<tr><td>infinite</td><td align="center">1</td></tr>
-							<tr><td>flat</td><td align="center">2</td></tr>
+							<tr><td>old</td><td class="center">0</td></tr>
+							<tr><td>infinite</td><td class="center">1</td></tr>
+							<tr><td>flat</td><td class="center">2</td></tr>
 						</table>
 					</li>
 					<li>
-						<a name="play.start-game.world-gamemode"></a>
-						<strong>worldGamemode</strong>
+						<strong id="play_start-game_world-gamemode">worldGamemode</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>survival</td><td align="center">0</td></tr>
-							<tr><td>creative</td><td align="center">1</td></tr>
+							<tr><td>survival</td><td class="center">0</td></tr>
+							<tr><td>creative</td><td class="center">1</td></tr>
 						</table>
 					</li>
 					<li>
-						<a name="play.start-game.difficulty"></a>
-						<strong>difficulty</strong>
+						<strong id="play_start-game_difficulty">difficulty</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>peaceful</td><td align="center">0</td></tr>
-							<tr><td>easy</td><td align="center">1</td></tr>
-							<tr><td>normal</td><td align="center">2</td></tr>
-							<tr><td>hard</td><td align="center">3</td></tr>
+							<tr><td>peaceful</td><td class="center">0</td></tr>
+							<tr><td>easy</td><td class="center">1</td></tr>
+							<tr><td>normal</td><td class="center">2</td></tr>
+							<tr><td>hard</td><td class="center">3</td></tr>
 						</table>
-					</li>
-					</li>
-					</li>
 					</li>
 					<li>
-						<a name="play.start-game.edition"></a>
-						<strong>edition</strong>
+						<strong id="play_start-game_edition">edition</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>classic</td><td align="center">0</td></tr>
-							<tr><td>education</td><td align="center">1</td></tr>
+							<tr><td>classic</td><td class="center">0</td></tr>
+							<tr><td>education</td><td class="center">1</td></tr>
 						</table>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.add-player"></a>
-				<h3>Add Player</h3>
-				<p><strong>Id</strong>: 13</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_add-player">Add Player</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">13</td><td class="center">00001101₂</td><td class="center">0D₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -513,29 +461,18 @@
 					<tr><td>pitch</td><td>float</td></tr>
 					<tr><td>headYaw</td><td>float</td></tr>
 					<tr><td>yaw</td><td>float</td></tr>
-					<tr><td>heldItem</td><td><a href="#types.slot">slot</a></td></tr>
+					<tr><td>heldItem</td><td><a href="#types_slot">slot</a></td></tr>
 					<tr><td>metadata</td><td>metadata</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.add-entity"></a>
-				<h3>Add Entity</h3>
-				<p><strong>Id</strong>: 14</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_add-entity">Add Entity</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">14</td><td class="center">00001110₂</td><td class="center">0E₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -546,88 +483,68 @@
 					<tr><td>motion</td><td>float&lt;xyz&gt;</td></tr>
 					<tr><td>pitch</td><td>float</td></tr>
 					<tr><td>yaw</td><td>float</td></tr>
-					<tr><td>attributes</td><td><a href="#types.attribute">attribute</a>[]</td></tr>
+					<tr><td>attributes</td><td><a href="#types_attribute">attribute</a>[]</td></tr>
 					<tr><td>metadata</td><td>metadata</td></tr>
 					<tr><td>links</td><td>varlong[]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.remove-entity"></a>
-				<h3>Remove Entity</h3>
-				<p><strong>Id</strong>: 15</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_remove-entity">Remove Entity</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">15</td><td class="center">00001111₂</td><td class="center">0F₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.add-item-entity"></a>
-				<h3>Add Item Entity</h3>
-				<p><strong>Id</strong>: 16</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_add-item-entity">Add Item Entity</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">16</td><td class="center">00010000₂</td><td class="center">10₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
 					<tr><td>runtimeId</td><td>varlong</td></tr>
-					<tr><td>item</td><td><a href="#types.slot">slot</a></td></tr>
+					<tr><td>item</td><td><a href="#types_slot">slot</a></td></tr>
 					<tr><td>position</td><td>float&lt;xyz&gt;</td></tr>
 					<tr><td>motion</td><td>float&lt;xyz&gt;</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.add-hanging-entity"></a>
-				<h3>Add Hanging Entity</h3>
-				<p><strong>Id</strong>: 17</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_add-hanging-entity">Add Hanging Entity</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">17</td><td class="center">00010001₂</td><td class="center">11₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
 					<tr><td>runtimeId</td><td>varlong</td></tr>
-					<tr><td>position</td><td><a href="#types.block-position">blockPosition</a></td></tr>
+					<tr><td>position</td><td><a href="#types_block-position">blockPosition</a></td></tr>
 					<tr><td>?</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.take-item-entity"></a>
-				<h3>Take Item Entity</h3>
-				<p><strong>Id</strong>: 18</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_take-item-entity">Take Item Entity</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">18</td><td class="center">00010010₂</td><td class="center">12₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -635,16 +552,14 @@
 					<tr><td>collector</td><td>varlong</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.move-entity"></a>
-				<h3>Move Entity</h3>
-				<p><strong>Id</strong>: 19</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_move-entity">Move Entity</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">19</td><td class="center">00010011₂</td><td class="center">13₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -655,19 +570,14 @@
 					<tr><td>yaw</td><td>ubyte</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.move-player"></a>
-				<h3>Move Player</h3>
-				<p><strong>Id</strong>: 20</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_move-player">Move Player</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">20</td><td class="center">00010100₂</td><td class="center">14₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -676,141 +586,121 @@
 					<tr><td>pitch</td><td>float</td></tr>
 					<tr><td>headYaw</td><td>float</td></tr>
 					<tr><td>yaw</td><td>float</td></tr>
-					<tr><td><a href="#play.move-player.animation">animation</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#play_move-player_animation">animation</a></td><td>ubyte</td></tr>
 					<tr><td>onGround</td><td>bool</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 					<li>
-						<a name="play.move-player.animation"></a>
-						<strong>animation</strong>
+						<strong id="play_move-player_animation">animation</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>full</td><td align="center">0</td></tr>
-							<tr><td>none</td><td align="center">1</td></tr>
-							<tr><td>rotation</td><td align="center">2</td></tr>
+							<tr><td>full</td><td class="center">0</td></tr>
+							<tr><td>none</td><td class="center">1</td></tr>
+							<tr><td>rotation</td><td class="center">2</td></tr>
 						</table>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.rider-jump"></a>
-				<h3>Rider Jump</h3>
-				<p><strong>Id</strong>: 21</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_rider-jump">Rider Jump</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">21</td><td class="center">00010101₂</td><td class="center">15₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>rider</td><td>varlong</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.remove-block"></a>
-				<h3>Remove Block</h3>
-				<p><strong>Id</strong>: 22</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_remove-block">Remove Block</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">22</td><td class="center">00010110₂</td><td class="center">16₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>position</td><td><a href="#types.block-position">blockPosition</a></td></tr>
+					<tr><td>position</td><td><a href="#types_block-position">blockPosition</a></td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.update-block"></a>
-				<h3>Update Block</h3>
-				<p><strong>Id</strong>: 23</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_update-block">Update Block</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">23</td><td class="center">00010111₂</td><td class="center">17₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>position</td><td><a href="#types.block-position">blockPosition</a></td></tr>
+					<tr><td>position</td><td><a href="#types_block-position">blockPosition</a></td></tr>
 					<tr><td>block</td><td>varuint</td></tr>
-					<tr><td><a href="#play.update-block.flags-and-meta">flagsAndMeta</a></td><td>varuint</td></tr>
+					<tr><td><a href="#play_update-block_flags-and-meta">flagsAndMeta</a></td><td>varuint</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 					<li>
-						<a name="play.update-block.flags-and-meta"></a>
-						<strong>flagsAndMeta</strong>
+						<strong id="play_update-block_flags-and-meta">flagsAndMeta</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>neighbors</td><td align="center">1</td></tr>
-							<tr><td>network</td><td align="center">2</td></tr>
-							<tr><td>noGraphic</td><td align="center">4</td></tr>
-							<tr><td>priority</td><td align="center">8</td></tr>
+							<tr><td>neighbors</td><td class="center">1</td></tr>
+							<tr><td>network</td><td class="center">2</td></tr>
+							<tr><td>noGraphic</td><td class="center">4</td></tr>
+							<tr><td>priority</td><td class="center">8</td></tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.add-painting"></a>
-				<h3>Add Painting</h3>
-				<p><strong>Id</strong>: 24</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_add-painting">Add Painting</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">24</td><td class="center">00011000₂</td><td class="center">18₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
 					<tr><td>runtimeId</td><td>varlong</td></tr>
-					<tr><td>position</td><td><a href="#types.block-position">blockPosition</a></td></tr>
+					<tr><td>position</td><td><a href="#types_block-position">blockPosition</a></td></tr>
 					<tr><td>direction</td><td>varint</td></tr>
 					<tr><td>title</td><td>string</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.explode"></a>
-				<h3>Explode</h3>
-				<p><strong>Id</strong>: 25</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_explode">Explode</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">25</td><td class="center">00011001₂</td><td class="center">19₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>position</td><td>float&lt;xyz&gt;</td></tr>
 					<tr><td>radius</td><td>float</td></tr>
-					<tr><td>destroyedBlocks</td><td><a href="#types.block-position">blockPosition</a>[]</td></tr>
+					<tr><td>destroyedBlocks</td><td><a href="#types_block-position">blockPosition</a>[]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.level-sound-event"></a>
-				<h3>Level Sound Event</h3>
-				<p><strong>Id</strong>: 26</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_level-sound-event">Level Sound Event</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">26</td><td class="center">00011010₂</td><td class="center">1A₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#play.level-sound-event.sound">sound</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#play_level-sound-event_sound">sound</a></td><td>ubyte</td></tr>
 					<tr><td>position</td><td>float&lt;xyz&gt;</td></tr>
 					<tr><td>volume</td><td>varuint</td></tr>
 					<tr><td>pitch</td><td>varint</td></tr>
@@ -818,475 +708,432 @@
 				</table>
 				<ul>
 					<li>
-						<a name="play.level-sound-event.sound"></a>
-						<strong>sound</strong>
+						<strong id="play_level-sound-event_sound">sound</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>itemUseOn</td><td align="center">0</td></tr>
-							<tr><td>hit</td><td align="center">1</td></tr>
-							<tr><td>step</td><td align="center">2</td></tr>
-							<tr><td>jump</td><td align="center">3</td></tr>
-							<tr><td>break</td><td align="center">4</td></tr>
-							<tr><td>place</td><td align="center">5</td></tr>
-							<tr><td>heavyStep</td><td align="center">6</td></tr>
-							<tr><td>gallop</td><td align="center">7</td></tr>
-							<tr><td>fall</td><td align="center">8</td></tr>
-							<tr><td>ambient</td><td align="center">9</td></tr>
-							<tr><td>ambientBaby</td><td align="center">10</td></tr>
-							<tr><td>ambientInWater</td><td align="center">11</td></tr>
-							<tr><td>breathe</td><td align="center">12</td></tr>
-							<tr><td>death</td><td align="center">13</td></tr>
-							<tr><td>deathInWater</td><td align="center">14</td></tr>
-							<tr><td>deathToZombie</td><td align="center">15</td></tr>
-							<tr><td>hurt</td><td align="center">16</td></tr>
-							<tr><td>hurtInWater</td><td align="center">17</td></tr>
-							<tr><td>mad</td><td align="center">18</td></tr>
-							<tr><td>boost</td><td align="center">19</td></tr>
-							<tr><td>bow</td><td align="center">20</td></tr>
-							<tr><td>squishBig</td><td align="center">21</td></tr>
-							<tr><td>squishSmall</td><td align="center">22</td></tr>
-							<tr><td>fallBig</td><td align="center">23</td></tr>
-							<tr><td>fallSmall</td><td align="center">24</td></tr>
-							<tr><td>splash</td><td align="center">25</td></tr>
-							<tr><td>fizz</td><td align="center">26</td></tr>
-							<tr><td>flap</td><td align="center">27</td></tr>
-							<tr><td>swim</td><td align="center">28</td></tr>
-							<tr><td>drink</td><td align="center">29</td></tr>
-							<tr><td>eat</td><td align="center">30</td></tr>
-							<tr><td>takeoff</td><td align="center">31</td></tr>
-							<tr><td>shake</td><td align="center">32</td></tr>
-							<tr><td>plop</td><td align="center">33</td></tr>
-							<tr><td>land</td><td align="center">34</td></tr>
-							<tr><td>saddle</td><td align="center">35</td></tr>
-							<tr><td>armor</td><td align="center">36</td></tr>
-							<tr><td>addChest</td><td align="center">37</td></tr>
-							<tr><td>throw</td><td align="center">38</td></tr>
-							<tr><td>attack</td><td align="center">39</td></tr>
-							<tr><td>attackNodamage</td><td align="center">40</td></tr>
-							<tr><td>warn</td><td align="center">41</td></tr>
-							<tr><td>shear</td><td align="center">42</td></tr>
-							<tr><td>milk</td><td align="center">43</td></tr>
-							<tr><td>thunder</td><td align="center">44</td></tr>
-							<tr><td>explode</td><td align="center">45</td></tr>
-							<tr><td>fire</td><td align="center">46</td></tr>
-							<tr><td>ignite</td><td align="center">47</td></tr>
-							<tr><td>fuse</td><td align="center">48</td></tr>
-							<tr><td>stare</td><td align="center">49</td></tr>
-							<tr><td>spawn</td><td align="center">50</td></tr>
-							<tr><td>shoot</td><td align="center">51</td></tr>
-							<tr><td>breakBlock</td><td align="center">52</td></tr>
-							<tr><td>remedy</td><td align="center">53</td></tr>
-							<tr><td>unfect</td><td align="center">54</td></tr>
-							<tr><td>levelup</td><td align="center">55</td></tr>
-							<tr><td>bowHit</td><td align="center">56</td></tr>
-							<tr><td>bulletHit</td><td align="center">57</td></tr>
-							<tr><td>extinguishFire</td><td align="center">58</td></tr>
-							<tr><td>itemFizz</td><td align="center">59</td></tr>
-							<tr><td>chestOpen</td><td align="center">60</td></tr>
-							<tr><td>chestClosed</td><td align="center">61</td></tr>
-							<tr><td>powerOn</td><td align="center">62</td></tr>
-							<tr><td>powerOff</td><td align="center">63</td></tr>
-							<tr><td>attach</td><td align="center">64</td></tr>
-							<tr><td>detach</td><td align="center">65</td></tr>
-							<tr><td>deny</td><td align="center">66</td></tr>
-							<tr><td>tripod</td><td align="center">67</td></tr>
-							<tr><td>pop</td><td align="center">68</td></tr>
-							<tr><td>dropSlot</td><td align="center">69</td></tr>
-							<tr><td>note</td><td align="center">70</td></tr>
-							<tr><td>thorns</td><td align="center">71</td></tr>
-							<tr><td>pistonIn</td><td align="center">72</td></tr>
-							<tr><td>pistonOut</td><td align="center">73</td></tr>
-							<tr><td>portal</td><td align="center">74</td></tr>
-							<tr><td>water</td><td align="center">75</td></tr>
-							<tr><td>lavaPop</td><td align="center">76</td></tr>
-							<tr><td>lava</td><td align="center">77</td></tr>
-							<tr><td>burp</td><td align="center">78</td></tr>
-							<tr><td>bucketFillWater</td><td align="center">79</td></tr>
-							<tr><td>bucketFillLava</td><td align="center">80</td></tr>
-							<tr><td>bucketEmptyWater</td><td align="center">81</td></tr>
-							<tr><td>bucketEmptyLava</td><td align="center">82</td></tr>
-							<tr><td>guardianFlop</td><td align="center">83</td></tr>
-							<tr><td>elderguardianCurse</td><td align="center">84</td></tr>
-							<tr><td>mobWarning</td><td align="center">85</td></tr>
-							<tr><td>mobWarningBaby</td><td align="center">86</td></tr>
-							<tr><td>teleport</td><td align="center">87</td></tr>
-							<tr><td>shulkerOpen</td><td align="center">88</td></tr>
-							<tr><td>shulkerClose</td><td align="center">89</td></tr>
-							<tr><td>default</td><td align="center">90</td></tr>
-							<tr><td>undefined</td><td align="center">91</td></tr>
+							<tr><td>itemUseOn</td><td class="center">0</td></tr>
+							<tr><td>hit</td><td class="center">1</td></tr>
+							<tr><td>step</td><td class="center">2</td></tr>
+							<tr><td>jump</td><td class="center">3</td></tr>
+							<tr><td>break</td><td class="center">4</td></tr>
+							<tr><td>place</td><td class="center">5</td></tr>
+							<tr><td>heavyStep</td><td class="center">6</td></tr>
+							<tr><td>gallop</td><td class="center">7</td></tr>
+							<tr><td>fall</td><td class="center">8</td></tr>
+							<tr><td>ambient</td><td class="center">9</td></tr>
+							<tr><td>ambientBaby</td><td class="center">10</td></tr>
+							<tr><td>ambientInWater</td><td class="center">11</td></tr>
+							<tr><td>breathe</td><td class="center">12</td></tr>
+							<tr><td>death</td><td class="center">13</td></tr>
+							<tr><td>deathInWater</td><td class="center">14</td></tr>
+							<tr><td>deathToZombie</td><td class="center">15</td></tr>
+							<tr><td>hurt</td><td class="center">16</td></tr>
+							<tr><td>hurtInWater</td><td class="center">17</td></tr>
+							<tr><td>mad</td><td class="center">18</td></tr>
+							<tr><td>boost</td><td class="center">19</td></tr>
+							<tr><td>bow</td><td class="center">20</td></tr>
+							<tr><td>squishBig</td><td class="center">21</td></tr>
+							<tr><td>squishSmall</td><td class="center">22</td></tr>
+							<tr><td>fallBig</td><td class="center">23</td></tr>
+							<tr><td>fallSmall</td><td class="center">24</td></tr>
+							<tr><td>splash</td><td class="center">25</td></tr>
+							<tr><td>fizz</td><td class="center">26</td></tr>
+							<tr><td>flap</td><td class="center">27</td></tr>
+							<tr><td>swim</td><td class="center">28</td></tr>
+							<tr><td>drink</td><td class="center">29</td></tr>
+							<tr><td>eat</td><td class="center">30</td></tr>
+							<tr><td>takeoff</td><td class="center">31</td></tr>
+							<tr><td>shake</td><td class="center">32</td></tr>
+							<tr><td>plop</td><td class="center">33</td></tr>
+							<tr><td>land</td><td class="center">34</td></tr>
+							<tr><td>saddle</td><td class="center">35</td></tr>
+							<tr><td>armor</td><td class="center">36</td></tr>
+							<tr><td>addChest</td><td class="center">37</td></tr>
+							<tr><td>throw</td><td class="center">38</td></tr>
+							<tr><td>attack</td><td class="center">39</td></tr>
+							<tr><td>attackNodamage</td><td class="center">40</td></tr>
+							<tr><td>warn</td><td class="center">41</td></tr>
+							<tr><td>shear</td><td class="center">42</td></tr>
+							<tr><td>milk</td><td class="center">43</td></tr>
+							<tr><td>thunder</td><td class="center">44</td></tr>
+							<tr><td>explode</td><td class="center">45</td></tr>
+							<tr><td>fire</td><td class="center">46</td></tr>
+							<tr><td>ignite</td><td class="center">47</td></tr>
+							<tr><td>fuse</td><td class="center">48</td></tr>
+							<tr><td>stare</td><td class="center">49</td></tr>
+							<tr><td>spawn</td><td class="center">50</td></tr>
+							<tr><td>shoot</td><td class="center">51</td></tr>
+							<tr><td>breakBlock</td><td class="center">52</td></tr>
+							<tr><td>remedy</td><td class="center">53</td></tr>
+							<tr><td>unfect</td><td class="center">54</td></tr>
+							<tr><td>levelup</td><td class="center">55</td></tr>
+							<tr><td>bowHit</td><td class="center">56</td></tr>
+							<tr><td>bulletHit</td><td class="center">57</td></tr>
+							<tr><td>extinguishFire</td><td class="center">58</td></tr>
+							<tr><td>itemFizz</td><td class="center">59</td></tr>
+							<tr><td>chestOpen</td><td class="center">60</td></tr>
+							<tr><td>chestClosed</td><td class="center">61</td></tr>
+							<tr><td>powerOn</td><td class="center">62</td></tr>
+							<tr><td>powerOff</td><td class="center">63</td></tr>
+							<tr><td>attach</td><td class="center">64</td></tr>
+							<tr><td>detach</td><td class="center">65</td></tr>
+							<tr><td>deny</td><td class="center">66</td></tr>
+							<tr><td>tripod</td><td class="center">67</td></tr>
+							<tr><td>pop</td><td class="center">68</td></tr>
+							<tr><td>dropSlot</td><td class="center">69</td></tr>
+							<tr><td>note</td><td class="center">70</td></tr>
+							<tr><td>thorns</td><td class="center">71</td></tr>
+							<tr><td>pistonIn</td><td class="center">72</td></tr>
+							<tr><td>pistonOut</td><td class="center">73</td></tr>
+							<tr><td>portal</td><td class="center">74</td></tr>
+							<tr><td>water</td><td class="center">75</td></tr>
+							<tr><td>lavaPop</td><td class="center">76</td></tr>
+							<tr><td>lava</td><td class="center">77</td></tr>
+							<tr><td>burp</td><td class="center">78</td></tr>
+							<tr><td>bucketFillWater</td><td class="center">79</td></tr>
+							<tr><td>bucketFillLava</td><td class="center">80</td></tr>
+							<tr><td>bucketEmptyWater</td><td class="center">81</td></tr>
+							<tr><td>bucketEmptyLava</td><td class="center">82</td></tr>
+							<tr><td>guardianFlop</td><td class="center">83</td></tr>
+							<tr><td>elderguardianCurse</td><td class="center">84</td></tr>
+							<tr><td>mobWarning</td><td class="center">85</td></tr>
+							<tr><td>mobWarningBaby</td><td class="center">86</td></tr>
+							<tr><td>teleport</td><td class="center">87</td></tr>
+							<tr><td>shulkerOpen</td><td class="center">88</td></tr>
+							<tr><td>shulkerClose</td><td class="center">89</td></tr>
+							<tr><td>default</td><td class="center">90</td></tr>
+							<tr><td>undefined</td><td class="center">91</td></tr>
 						</table>
-					</li>
-					</li>
-					</li>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.level-event"></a>
-				<h3>Level Event</h3>
-				<p><strong>Id</strong>: 27</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_level-event">Level Event</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">27</td><td class="center">00011011₂</td><td class="center">1B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#play.level-event.event-id">eventId</a></td><td>varint</td></tr>
+					<tr><td><a href="#play_level-event_event-id">eventId</a></td><td>varint</td></tr>
 					<tr><td>position</td><td>float&lt;xyz&gt;</td></tr>
 					<tr><td>data</td><td>varint</td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="play.level-event.event-id"></a>
-						<strong>eventId</strong>
+						<strong id="play_level-event_event-id">eventId</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>startRain</td><td align="center">3001</td></tr>
-							<tr><td>startThunder</td><td align="center">3002</td></tr>
-							<tr><td>stopRain</td><td align="center">3003</td></tr>
-							<tr><td>stopThunder</td><td align="center">3004</td></tr>
-							<tr><td>setData</td><td align="center">4000</td></tr>
-							<tr><td>playersSleeping</td><td align="center">9800</td></tr>
-							<tr><td>bubble</td><td align="center">16385</td></tr>
-							<tr><td>critical</td><td align="center">16386</td></tr>
-							<tr><td>blockForceField</td><td align="center">16387</td></tr>
-							<tr><td>smoke</td><td align="center">16388</td></tr>
-							<tr><td>explode</td><td align="center">16389</td></tr>
-							<tr><td>evaporation</td><td align="center">16390</td></tr>
-							<tr><td>flame</td><td align="center">16391</td></tr>
-							<tr><td>lava</td><td align="center">16392</td></tr>
-							<tr><td>largeSmoke</td><td align="center">16393</td></tr>
-							<tr><td>redstone</td><td align="center">16394</td></tr>
-							<tr><td>risingRedDust</td><td align="center">16395</td></tr>
-							<tr><td>itemBreak</td><td align="center">16396</td></tr>
-							<tr><td>snowballPoof</td><td align="center">16397</td></tr>
-							<tr><td>hugeExplode</td><td align="center">16398</td></tr>
-							<tr><td>hugeExplodeSeed</td><td align="center">16399</td></tr>
-							<tr><td>mobFlame</td><td align="center">16400</td></tr>
-							<tr><td>heart</td><td align="center">16401</td></tr>
-							<tr><td>terrain</td><td align="center">16402</td></tr>
-							<tr><td>townAura</td><td align="center">16403</td></tr>
-							<tr><td>portal</td><td align="center">16404</td></tr>
-							<tr><td>waterSplash</td><td align="center">16405</td></tr>
-							<tr><td>waterWake</td><td align="center">16406</td></tr>
-							<tr><td>dripWater</td><td align="center">16407</td></tr>
-							<tr><td>dripLava</td><td align="center">16408</td></tr>
-							<tr><td>fallingDust</td><td align="center">16409</td></tr>
-							<tr><td>mobSpell</td><td align="center">16410</td></tr>
-							<tr><td>mobSpellAmbient</td><td align="center">16411</td></tr>
-							<tr><td>mobSpellInstantaneous</td><td align="center">16412</td></tr>
-							<tr><td>ink</td><td align="center">16413</td></tr>
-							<tr><td>slime</td><td align="center">16414</td></tr>
-							<tr><td>rainSplash</td><td align="center">16415</td></tr>
-							<tr><td>villagerAngry</td><td align="center">16416</td></tr>
-							<tr><td>villagerHappy</td><td align="center">16417</td></tr>
-							<tr><td>enchantmentTable</td><td align="center">16418</td></tr>
-							<tr><td>trackingEmitter</td><td align="center">16419</td></tr>
-							<tr><td>note</td><td align="center">16420</td></tr>
-							<tr><td>witchSpell</td><td align="center">16421</td></tr>
-							<tr><td>carrot</td><td align="center">16422</td></tr>
-							<tr><td>endRod</td><td align="center">16424</td></tr>
-							<tr><td>dragonBreath</td><td align="center">16425</td></tr>
-							<tr><td>shoot</td><td align="center">2000</td></tr>
-							<tr><td>destroy</td><td align="center">2001</td></tr>
+							<tr><td>startRain</td><td class="center">3001</td></tr>
+							<tr><td>startThunder</td><td class="center">3002</td></tr>
+							<tr><td>stopRain</td><td class="center">3003</td></tr>
+							<tr><td>stopThunder</td><td class="center">3004</td></tr>
+							<tr><td>setData</td><td class="center">4000</td></tr>
+							<tr><td>playersSleeping</td><td class="center">9800</td></tr>
+							<tr><td>bubble</td><td class="center">16385</td></tr>
+							<tr><td>critical</td><td class="center">16386</td></tr>
+							<tr><td>blockForceField</td><td class="center">16387</td></tr>
+							<tr><td>smoke</td><td class="center">16388</td></tr>
+							<tr><td>explode</td><td class="center">16389</td></tr>
+							<tr><td>evaporation</td><td class="center">16390</td></tr>
+							<tr><td>flame</td><td class="center">16391</td></tr>
+							<tr><td>lava</td><td class="center">16392</td></tr>
+							<tr><td>largeSmoke</td><td class="center">16393</td></tr>
+							<tr><td>redstone</td><td class="center">16394</td></tr>
+							<tr><td>risingRedDust</td><td class="center">16395</td></tr>
+							<tr><td>itemBreak</td><td class="center">16396</td></tr>
+							<tr><td>snowballPoof</td><td class="center">16397</td></tr>
+							<tr><td>hugeExplode</td><td class="center">16398</td></tr>
+							<tr><td>hugeExplodeSeed</td><td class="center">16399</td></tr>
+							<tr><td>mobFlame</td><td class="center">16400</td></tr>
+							<tr><td>heart</td><td class="center">16401</td></tr>
+							<tr><td>terrain</td><td class="center">16402</td></tr>
+							<tr><td>townAura</td><td class="center">16403</td></tr>
+							<tr><td>portal</td><td class="center">16404</td></tr>
+							<tr><td>waterSplash</td><td class="center">16405</td></tr>
+							<tr><td>waterWake</td><td class="center">16406</td></tr>
+							<tr><td>dripWater</td><td class="center">16407</td></tr>
+							<tr><td>dripLava</td><td class="center">16408</td></tr>
+							<tr><td>fallingDust</td><td class="center">16409</td></tr>
+							<tr><td>mobSpell</td><td class="center">16410</td></tr>
+							<tr><td>mobSpellAmbient</td><td class="center">16411</td></tr>
+							<tr><td>mobSpellInstantaneous</td><td class="center">16412</td></tr>
+							<tr><td>ink</td><td class="center">16413</td></tr>
+							<tr><td>slime</td><td class="center">16414</td></tr>
+							<tr><td>rainSplash</td><td class="center">16415</td></tr>
+							<tr><td>villagerAngry</td><td class="center">16416</td></tr>
+							<tr><td>villagerHappy</td><td class="center">16417</td></tr>
+							<tr><td>enchantmentTable</td><td class="center">16418</td></tr>
+							<tr><td>trackingEmitter</td><td class="center">16419</td></tr>
+							<tr><td>note</td><td class="center">16420</td></tr>
+							<tr><td>witchSpell</td><td class="center">16421</td></tr>
+							<tr><td>carrot</td><td class="center">16422</td></tr>
+							<tr><td>endRod</td><td class="center">16424</td></tr>
+							<tr><td>dragonBreath</td><td class="center">16425</td></tr>
+							<tr><td>shoot</td><td class="center">2000</td></tr>
+							<tr><td>destroy</td><td class="center">2001</td></tr>
 						</table>
-					</li>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.block-event"></a>
-				<h3>Block Event</h3>
-				<p><strong>Id</strong>: 28</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_block-event">Block Event</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">28</td><td class="center">00011100₂</td><td class="center">1C₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>position</td><td><a href="#types.block-position">blockPosition</a></td></tr>
+					<tr><td>position</td><td><a href="#types_block-position">blockPosition</a></td></tr>
 					<tr><td>data</td><td>varint[2]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.entity-event"></a>
-				<h3>Entity Event</h3>
-				<p><strong>Id</strong>: 29</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_entity-event">Entity Event</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">29</td><td class="center">00011101₂</td><td class="center">1D₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
-					<tr><td><a href="#play.entity-event.event-id">eventId</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#play_entity-event_event-id">eventId</a></td><td>ubyte</td></tr>
 					<tr><td>?</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
 					<li>
-						<a name="play.entity-event.event-id"></a>
-						<strong>eventId</strong>
+						<strong id="play_entity-event_event-id">eventId</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>hurtAnimation</td><td align="center">2</td></tr>
-							<tr><td>deathAnimation</td><td align="center">3</td></tr>
-							<tr><td>tameFail</td><td align="center">6</td></tr>
-							<tr><td>tameSuccess</td><td align="center">7</td></tr>
-							<tr><td>shakeWet</td><td align="center">8</td></tr>
-							<tr><td>useItem</td><td align="center">9</td></tr>
-							<tr><td>eatGrassAnimation</td><td align="center">10</td></tr>
-							<tr><td>fishHookBubbles</td><td align="center">11</td></tr>
-							<tr><td>fishHookPosition</td><td align="center">12</td></tr>
-							<tr><td>fishHookHook</td><td align="center">13</td></tr>
-							<tr><td>fishHookTease</td><td align="center">14</td></tr>
-							<tr><td>squidInkCloud</td><td align="center">15</td></tr>
-							<tr><td>ambientSound</td><td align="center">16</td></tr>
-							<tr><td>respawn</td><td align="center">17</td></tr>
+							<tr><td>hurtAnimation</td><td class="center">2</td></tr>
+							<tr><td>deathAnimation</td><td class="center">3</td></tr>
+							<tr><td>tameFail</td><td class="center">6</td></tr>
+							<tr><td>tameSuccess</td><td class="center">7</td></tr>
+							<tr><td>shakeWet</td><td class="center">8</td></tr>
+							<tr><td>useItem</td><td class="center">9</td></tr>
+							<tr><td>eatGrassAnimation</td><td class="center">10</td></tr>
+							<tr><td>fishHookBubbles</td><td class="center">11</td></tr>
+							<tr><td>fishHookPosition</td><td class="center">12</td></tr>
+							<tr><td>fishHookHook</td><td class="center">13</td></tr>
+							<tr><td>fishHookTease</td><td class="center">14</td></tr>
+							<tr><td>squidInkCloud</td><td class="center">15</td></tr>
+							<tr><td>ambientSound</td><td class="center">16</td></tr>
+							<tr><td>respawn</td><td class="center">17</td></tr>
 						</table>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.mob-effect"></a>
-				<h3>Mob Effect</h3>
-				<p><strong>Id</strong>: 30</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_mob-effect">Mob Effect</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">30</td><td class="center">00011110₂</td><td class="center">1E₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
-					<tr><td><a href="#play.mob-effect.event-id">eventId</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#play_mob-effect_event-id">eventId</a></td><td>ubyte</td></tr>
 					<tr><td>effect</td><td>varint</td></tr>
 					<tr><td>amplifier</td><td>varint</td></tr>
 					<tr><td>particles</td><td>bool</td></tr>
 					<tr><td>duration</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
 					<li>
-						<a name="play.mob-effect.event-id"></a>
-						<strong>eventId</strong>
+						<strong id="play_mob-effect_event-id">eventId</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>add</td><td align="center">1</td></tr>
-							<tr><td>modify</td><td align="center">2</td></tr>
-							<tr><td>remove</td><td align="center">3</td></tr>
+							<tr><td>add</td><td class="center">1</td></tr>
+							<tr><td>modify</td><td class="center">2</td></tr>
+							<tr><td>remove</td><td class="center">3</td></tr>
 						</table>
-					</li>
-					</li>
-					</li>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.update-attributes"></a>
-				<h3>Update Attributes</h3>
-				<p><strong>Id</strong>: 31</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_update-attributes">Update Attributes</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">31</td><td class="center">00011111₂</td><td class="center">1F₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
-					<tr><td>attributes</td><td><a href="#types.attribute">attribute</a>[]</td></tr>
+					<tr><td>attributes</td><td><a href="#types_attribute">attribute</a>[]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.mob-equipment"></a>
-				<h3>Mob Equipment</h3>
-				<p><strong>Id</strong>: 32</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_mob-equipment">Mob Equipment</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">32</td><td class="center">00100000₂</td><td class="center">20₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p>Sent when the client puts an item in its hotbar or selects a new hotbar slot.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
-					<tr><td>item</td><td><a href="#types.slot">slot</a></td></tr>
-					<tr><td><a href="#play.mob-equipment.inventory-slot">inventorySlot</a></td><td>ubyte</td></tr>
-					<tr><td><a href="#play.mob-equipment.hotbar-slot">hotbarSlot</a></td><td>ubyte</td></tr>
+					<tr><td>item</td><td><a href="#types_slot">slot</a></td></tr>
+					<tr><td><a href="#play_mob-equipment_inventory-slot">inventorySlot</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#play_mob-equipment_hotbar-slot">hotbarSlot</a></td><td>ubyte</td></tr>
 					<tr><td>?</td><td>ubyte</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 					<li>
-						<a name="play.mob-equipment.inventory-slot"></a>
-						<strong>inventorySlot</strong>
+						<strong id="play_mob-equipment_inventory-slot">inventorySlot</strong>
 						<p>Slot of the inventory where the item is. The hotbat slots (0-8) are not counted. 255 means that a generic empty slot has been selected.</p>
 					</li>
 					<li>
-						<a name="play.mob-equipment.hotbar-slot"></a>
-						<strong>hotbarSlot</strong>
+						<strong id="play_mob-equipment_hotbar-slot">hotbarSlot</strong>
 						<p>Slot of the hotbar where the item is being moved.</p>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.mob-armor-equipment"></a>
-				<h3>Mob Armor Equipment</h3>
-				<p><strong>Id</strong>: 33</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_mob-armor-equipment">Mob Armor Equipment</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">33</td><td class="center">00100001₂</td><td class="center">21₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
-					<tr><td>armor</td><td><a href="#types.slot">slot</a>[4]</td></tr>
+					<tr><td>armor</td><td><a href="#types_slot">slot</a>[4]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.interact"></a>
-				<h3>Interact</h3>
-				<p><strong>Id</strong>: 34</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_interact">Interact</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">34</td><td class="center">00100010₂</td><td class="center">22₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#play.interact.action">action</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#play_interact_action">action</a></td><td>ubyte</td></tr>
 					<tr><td>target</td><td>varlong</td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="play.interact.action"></a>
-						<strong>action</strong>
+						<strong id="play_interact_action">action</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>attack</td><td align="center">1</td></tr>
-							<tr><td>interact</td><td align="center">2</td></tr>
-							<tr><td>leaveVehicle</td><td align="center">3</td></tr>
-							<tr><td>hover</td><td align="center">4</td></tr>
+							<tr><td>attack</td><td class="center">1</td></tr>
+							<tr><td>interact</td><td class="center">2</td></tr>
+							<tr><td>leaveVehicle</td><td class="center">3</td></tr>
+							<tr><td>hover</td><td class="center">4</td></tr>
 						</table>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.use-item"></a>
-				<h3>Use Item</h3>
-				<p><strong>Id</strong>: 35</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_use-item">Use Item</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">35</td><td class="center">00100011₂</td><td class="center">23₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>blockPosition</td><td><a href="#types.block-position">blockPosition</a></td></tr>
+					<tr><td>blockPosition</td><td><a href="#types_block-position">blockPosition</a></td></tr>
 					<tr><td>hotbarSlot</td><td>varuint</td></tr>
 					<tr><td>face</td><td>varint</td></tr>
 					<tr><td>facePosition</td><td>float&lt;xyz&gt;</td></tr>
 					<tr><td>position</td><td>float&lt;xyz&gt;</td></tr>
 					<tr><td>slot</td><td>varint</td></tr>
-					<tr><td>item</td><td><a href="#types.slot">slot</a></td></tr>
+					<tr><td>item</td><td><a href="#types_slot">slot</a></td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.player-action"></a>
-				<h3>Player Action</h3>
-				<p><strong>Id</strong>: 36</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_player-action">Player Action</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">36</td><td class="center">00100100₂</td><td class="center">24₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
-					<tr><td><a href="#play.player-action.action">action</a></td><td>varint</td></tr>
-					<tr><td>position</td><td><a href="#types.block-position">blockPosition</a></td></tr>
+					<tr><td><a href="#play_player-action_action">action</a></td><td>varint</td></tr>
+					<tr><td>position</td><td><a href="#types_block-position">blockPosition</a></td></tr>
 					<tr><td>face</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
 					<li>
-						<a name="play.player-action.action"></a>
-						<strong>action</strong>
+						<strong id="play_player-action_action">action</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>startBreak</td><td align="center">0</td></tr>
-							<tr><td>abortBreak</td><td align="center">1</td></tr>
-							<tr><td>stopBreak</td><td align="center">2</td></tr>
-							<tr><td>releaseItem</td><td align="center">5</td></tr>
-							<tr><td>stopSleeping</td><td align="center">6</td></tr>
-							<tr><td>respawn</td><td align="center">7</td></tr>
-							<tr><td>jump</td><td align="center">8</td></tr>
-							<tr><td>startSprint</td><td align="center">9</td></tr>
-							<tr><td>stopSprint</td><td align="center">10</td></tr>
-							<tr><td>startSneak</td><td align="center">11</td></tr>
-							<tr><td>stopSneak</td><td align="center">12</td></tr>
-							<tr><td>startGliding</td><td align="center">15</td></tr>
-							<tr><td>stopGliding</td><td align="center">16</td></tr>
+							<tr><td>startBreak</td><td class="center">0</td></tr>
+							<tr><td>abortBreak</td><td class="center">1</td></tr>
+							<tr><td>stopBreak</td><td class="center">2</td></tr>
+							<tr><td>releaseItem</td><td class="center">5</td></tr>
+							<tr><td>stopSleeping</td><td class="center">6</td></tr>
+							<tr><td>respawn</td><td class="center">7</td></tr>
+							<tr><td>jump</td><td class="center">8</td></tr>
+							<tr><td>startSprint</td><td class="center">9</td></tr>
+							<tr><td>stopSprint</td><td class="center">10</td></tr>
+							<tr><td>startSneak</td><td class="center">11</td></tr>
+							<tr><td>stopSneak</td><td class="center">12</td></tr>
+							<tr><td>startGliding</td><td class="center">15</td></tr>
+							<tr><td>stopGliding</td><td class="center">16</td></tr>
 						</table>
-					</li>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.player-fall"></a>
-				<h3>Player Fall</h3>
-				<p><strong>Id</strong>: 37</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_player-fall">Player Fall</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">37</td><td class="center">00100101₂</td><td class="center">25₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>distance</td><td>float</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.hurt-armor"></a>
-				<h3>Hurt Armor</h3>
-				<p><strong>Id</strong>: 38</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_hurt-armor">Hurt Armor</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">38</td><td class="center">00100110₂</td><td class="center">26₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>health</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.set-entity-data"></a>
-				<h3>Set Entity Data</h3>
-				<p><strong>Id</strong>: 39</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_set-entity-data">Set Entity Data</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">39</td><td class="center">00100111₂</td><td class="center">27₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -1294,16 +1141,14 @@
 					<tr><td>metadata</td><td>metadata</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.set-entity-motion"></a>
-				<h3>Set Entity Motion</h3>
-				<p><strong>Id</strong>: 40</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_set-entity-motion">Set Entity Motion</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">40</td><td class="center">00101000₂</td><td class="center">28₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -1311,222 +1156,195 @@
 					<tr><td>motion</td><td>float&lt;xyz&gt;</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.set-entity-link"></a>
-				<h3>Set Entity Link</h3>
-				<p><strong>Id</strong>: 41</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_set-entity-link">Set Entity Link</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">41</td><td class="center">00101001₂</td><td class="center">29₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>from</td><td>varlong</td></tr>
 					<tr><td>to</td><td>varlong</td></tr>
-					<tr><td><a href="#play.set-entity-link.action">action</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#play_set-entity-link_action">action</a></td><td>ubyte</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 					<li>
-						<a name="play.set-entity-link.action"></a>
-						<strong>action</strong>
+						<strong id="play_set-entity-link_action">action</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>add</td><td align="center">0</td></tr>
-							<tr><td>remove</td><td align="center">1</td></tr>
+							<tr><td>add</td><td class="center">0</td></tr>
+							<tr><td>remove</td><td class="center">1</td></tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.set-health"></a>
-				<h3>Set Health</h3>
-				<p><strong>Id</strong>: 42</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_set-health">Set Health</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">42</td><td class="center">00101010₂</td><td class="center">2A₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>health</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.set-spawn-position"></a>
-				<h3>Set Spawn Position</h3>
-				<p><strong>Id</strong>: 43</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_set-spawn-position">Set Spawn Position</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">43</td><td class="center">00101011₂</td><td class="center">2B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>?</td><td>varint</td></tr>
-					<tr><td>position</td><td><a href="#types.block-position">blockPosition</a></td></tr>
+					<tr><td>position</td><td><a href="#types_block-position">blockPosition</a></td></tr>
 					<tr><td>?</td><td>bool</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.animate"></a>
-				<h3>Animate</h3>
-				<p><strong>Id</strong>: 44</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_animate">Animate</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">44</td><td class="center">00101100₂</td><td class="center">2C₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#play.animate.action">action</a></td><td>varint</td></tr>
+					<tr><td><a href="#play_animate_action">action</a></td><td>varint</td></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="play.animate.action"></a>
-						<strong>action</strong>
+						<strong id="play_animate_action">action</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>breaking</td><td align="center">1</td></tr>
-							<tr><td>wakeUp</td><td align="center">3</td></tr>
+							<tr><td>breaking</td><td class="center">1</td></tr>
+							<tr><td>wakeUp</td><td class="center">3</td></tr>
 						</table>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.respawn"></a>
-				<h3>Respawn</h3>
-				<p><strong>Id</strong>: 45</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_respawn">Respawn</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">45</td><td class="center">00101101₂</td><td class="center">2D₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>position</td><td>float&lt;xyz&gt;</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.drop-item"></a>
-				<h3>Drop Item</h3>
-				<p><strong>Id</strong>: 46</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_drop-item">Drop Item</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">46</td><td class="center">00101110₂</td><td class="center">2E₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#play.drop-item.action">action</a></td><td>ubyte</td></tr>
-					<tr><td>item</td><td><a href="#types.slot">slot</a></td></tr>
+					<tr><td><a href="#play_drop-item_action">action</a></td><td>ubyte</td></tr>
+					<tr><td>item</td><td><a href="#types_slot">slot</a></td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="play.drop-item.action"></a>
-						<strong>action</strong>
+						<strong id="play_drop-item_action">action</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>drop</td><td align="center">0</td></tr>
+							<tr><td>drop</td><td class="center">0</td></tr>
 						</table>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.inventory-action"></a>
-				<h3>Inventory Action</h3>
-				<p><strong>Id</strong>: 47</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_inventory-action">Inventory Action</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">47</td><td class="center">00101111₂</td><td class="center">2F₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>action</td><td>varint</td></tr>
-					<tr><td>item</td><td><a href="#types.slot">slot</a></td></tr>
+					<tr><td>item</td><td><a href="#types_slot">slot</a></td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.container-open"></a>
-				<h3>Container Open</h3>
-				<p><strong>Id</strong>: 48</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_container-open">Container Open</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">48</td><td class="center">00110000₂</td><td class="center">30₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>window</td><td>ubyte</td></tr>
 					<tr><td>type</td><td>ubyte</td></tr>
 					<tr><td>slotCount</td><td>varint</td></tr>
-					<tr><td>position</td><td><a href="#types.block-position">blockPosition</a></td></tr>
+					<tr><td>position</td><td><a href="#types_block-position">blockPosition</a></td></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.container-close"></a>
-				<h3>Container Close</h3>
-				<p><strong>Id</strong>: 49</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_container-close">Container Close</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">49</td><td class="center">00110001₂</td><td class="center">31₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>window</td><td>ubyte</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.container-set-slot"></a>
-				<h3>Container Set Slot</h3>
-				<p><strong>Id</strong>: 50</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_container-set-slot">Container Set Slot</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">50</td><td class="center">00110010₂</td><td class="center">32₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>window</td><td>ubyte</td></tr>
 					<tr><td>slot</td><td>varint</td></tr>
 					<tr><td>hotbarSlot</td><td>varint</td></tr>
-					<tr><td>item</td><td><a href="#types.slot">slot</a></td></tr>
+					<tr><td>item</td><td><a href="#types_slot">slot</a></td></tr>
 					<tr><td>?</td><td>ubyte</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.container-set-data"></a>
-				<h3>Container Set Data</h3>
-				<p><strong>Id</strong>: 51</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_container-set-data">Container Set Data</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">51</td><td class="center">00110011₂</td><td class="center">33₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -1535,136 +1353,120 @@
 					<tr><td>value</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.container-set-content"></a>
-				<h3>Container Set Content</h3>
-				<p><strong>Id</strong>: 52</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_container-set-content">Container Set Content</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">52</td><td class="center">00110100₂</td><td class="center">34₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>window</td><td>ubyte</td></tr>
-					<tr><td>slots</td><td><a href="#types.slot">slot</a>[]</td></tr>
+					<tr><td>slots</td><td><a href="#types_slot">slot</a>[]</td></tr>
 					<tr><td>hotbar</td><td>varint[]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.crafting-data"></a>
-				<h3>Crafting Data</h3>
-				<p><strong>Id</strong>: 53</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_crafting-data">Crafting Data</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">53</td><td class="center">00110101₂</td><td class="center">35₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>recipes</td><td><a href="#types.recipe">recipe</a>[]</td></tr>
+					<tr><td>recipes</td><td><a href="#types_recipe">recipe</a>[]</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.crafting-event"></a>
-				<h3>Crafting Event</h3>
-				<p><strong>Id</strong>: 54</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_crafting-event">Crafting Event</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">54</td><td class="center">00110110₂</td><td class="center">36₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>window</td><td>ubyte</td></tr>
 					<tr><td>type</td><td>varint</td></tr>
 					<tr><td>uuid</td><td>uuid</td></tr>
-					<tr><td>input</td><td><a href="#types.slot">slot</a>[]</td></tr>
-					<tr><td>output</td><td><a href="#types.slot">slot</a>[]</td></tr>
+					<tr><td>input</td><td><a href="#types_slot">slot</a>[]</td></tr>
+					<tr><td>output</td><td><a href="#types_slot">slot</a>[]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.adventure-settings"></a>
-				<h3>Adventure Settings</h3>
-				<p><strong>Id</strong>: 55</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_adventure-settings">Adventure Settings</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">55</td><td class="center">00110111₂</td><td class="center">37₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#play.adventure-settings.flags">flags</a></td><td>varuint</td></tr>
-					<tr><td><a href="#play.adventure-settings.permissions">permissions</a></td><td>varuint</td></tr>
+					<tr><td><a href="#play_adventure-settings_flags">flags</a></td><td>varuint</td></tr>
+					<tr><td><a href="#play_adventure-settings_permissions">permissions</a></td><td>varuint</td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="play.adventure-settings.flags"></a>
-						<strong>flags</strong>
+						<strong id="play_adventure-settings_flags">flags</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>immutableWorld</td><td align="center">1</td></tr>
-							<tr><td>pvpDisabled</td><td align="center">2</td></tr>
-							<tr><td>pvmDisabled</td><td align="center">4</td></tr>
-							<tr><td>mvpDisbaled</td><td align="center">8</td></tr>
-							<tr><td>evpDisabled</td><td align="center">16</td></tr>
-							<tr><td>autoJump</td><td align="center">32</td></tr>
-							<tr><td>allowFlight</td><td align="center">64</td></tr>
-							<tr><td>noClip</td><td align="center">128</td></tr>
-							<tr><td>flying</td><td align="center">256</td></tr>
+							<tr><td>immutableWorld</td><td class="center">1</td></tr>
+							<tr><td>pvpDisabled</td><td class="center">2</td></tr>
+							<tr><td>pvmDisabled</td><td class="center">4</td></tr>
+							<tr><td>mvpDisbaled</td><td class="center">8</td></tr>
+							<tr><td>evpDisabled</td><td class="center">16</td></tr>
+							<tr><td>autoJump</td><td class="center">32</td></tr>
+							<tr><td>allowFlight</td><td class="center">64</td></tr>
+							<tr><td>noClip</td><td class="center">128</td></tr>
+							<tr><td>flying</td><td class="center">256</td></tr>
 						</table>
 					</li>
 					<li>
-						<a name="play.adventure-settings.permissions"></a>
-						<strong>permissions</strong>
+						<strong id="play_adventure-settings_permissions">permissions</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>user</td><td align="center">0</td></tr>
-							<tr><td>operator</td><td align="center">1</td></tr>
-							<tr><td>host</td><td align="center">2</td></tr>
-							<tr><td>automation</td><td align="center">3</td></tr>
-							<tr><td>admin</td><td align="center">4</td></tr>
+							<tr><td>user</td><td class="center">0</td></tr>
+							<tr><td>operator</td><td class="center">1</td></tr>
+							<tr><td>host</td><td class="center">2</td></tr>
+							<tr><td>automation</td><td class="center">3</td></tr>
+							<tr><td>admin</td><td class="center">4</td></tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.block-entity-data"></a>
-				<h3>Block Entity Data</h3>
-				<p><strong>Id</strong>: 56</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_block-entity-data">Block Entity Data</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">56</td><td class="center">00111000₂</td><td class="center">38₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>position</td><td><a href="#types.block-position">blockPosition</a></td></tr>
+					<tr><td>position</td><td><a href="#types_block-position">blockPosition</a></td></tr>
 					<tr><td>nbt</td><td>bytes</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.player-input"></a>
-				<h3>Player Input</h3>
-				<p><strong>Id</strong>: 57</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_player-input">Player Input</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">57</td><td class="center">00111001₂</td><td class="center">39₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -1673,17 +1475,14 @@
 					<tr><td>?</td><td>bool</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.full-chunk-data"></a>
-				<h3>Full Chunk Data</h3>
-				<p><strong>Id</strong>: 58</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_full-chunk-data">Full Chunk Data</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">58</td><td class="center">00111010₂</td><td class="center">3A₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -1692,158 +1491,144 @@
 					<tr><td>tiles</td><td>ubyte[]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.set-cheats-enabled"></a>
-				<h3>Set Cheats Enabled</h3>
-				<p><strong>Id</strong>: 59</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_set-cheats-enabled">Set Cheats Enabled</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">59</td><td class="center">00111011₂</td><td class="center">3B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>enabled</td><td>bool</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.set-difficulty"></a>
-				<h3>Set Difficulty</h3>
-				<p><strong>Id</strong>: 60</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_set-difficulty">Set Difficulty</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">60</td><td class="center">00111100₂</td><td class="center">3C₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#play.set-difficulty.difficulty">difficulty</a></td><td>varuint</td></tr>
+					<tr><td><a href="#play_set-difficulty_difficulty">difficulty</a></td><td>varuint</td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="play.set-difficulty.difficulty"></a>
-						<strong>difficulty</strong>
+						<strong id="play_set-difficulty_difficulty">difficulty</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>peaceful</td><td align="center">0</td></tr>
-							<tr><td>easy</td><td align="center">1</td></tr>
-							<tr><td>normal</td><td align="center">2</td></tr>
-							<tr><td>hard</td><td align="center">3</td></tr>
+							<tr><td>peaceful</td><td class="center">0</td></tr>
+							<tr><td>easy</td><td class="center">1</td></tr>
+							<tr><td>normal</td><td class="center">2</td></tr>
+							<tr><td>hard</td><td class="center">3</td></tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.change-dimension"></a>
-				<h3>Change Dimension</h3>
-				<p><strong>Id</strong>: 61</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_change-dimension">Change Dimension</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">61</td><td class="center">00111101₂</td><td class="center">3D₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#play.change-dimension.dimension">dimension</a></td><td>varint</td></tr>
+					<tr><td><a href="#play_change-dimension_dimension">dimension</a></td><td>varint</td></tr>
 					<tr><td>position</td><td>float&lt;xyz&gt;</td></tr>
 					<tr><td>?</td><td>bool</td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="play.change-dimension.dimension"></a>
-						<strong>dimension</strong>
+						<strong id="play_change-dimension_dimension">dimension</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>overworld</td><td align="center">0</td></tr>
-							<tr><td>nether</td><td align="center">1</td></tr>
-							<tr><td>end</td><td align="center">2</td></tr>
+							<tr><td>overworld</td><td class="center">0</td></tr>
+							<tr><td>nether</td><td class="center">1</td></tr>
+							<tr><td>end</td><td class="center">2</td></tr>
 						</table>
-					</li>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.set-player-gametype"></a>
-				<h3>Set Player Gametype</h3>
-				<p><strong>Id</strong>: 62</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_set-player-gametype">Set Player Gametype</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">62</td><td class="center">00111110₂</td><td class="center">3E₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#play.set-player-gametype.gametype">gametype</a></td><td>varint</td></tr>
+					<tr><td><a href="#play_set-player-gametype_gametype">gametype</a></td><td>varint</td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="play.set-player-gametype.gametype"></a>
-						<strong>gametype</strong>
+						<strong id="play_set-player-gametype_gametype">gametype</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>survival</td><td align="center">0</td></tr>
-							<tr><td>creative</td><td align="center">1</td></tr>
+							<tr><td>survival</td><td class="center">0</td></tr>
+							<tr><td>creative</td><td class="center">1</td></tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.player-list"></a>
-				<h3>Player List</h3>
-				<p><strong>Id</strong>: 63</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_player-list">Player List</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">63</td><td class="center">00111111₂</td><td class="center">3F₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>action</td><td>ubyte</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 				<p><strong>Variants</strong>:</p>
 				<table>
 					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="play.player-list.add">Add</a></td><td>action</td><td align="center">0</td></tr>
-					<tr><td><a href="play.player-list.remove">Remove</a></td><td>action</td><td align="center">1</td></tr>
+					<tr><td><a href="play_player-list_add">Add</a></td><td>action</td><td class="center">0</td></tr>
+					<tr><td><a href="play_player-list_remove">Remove</a></td><td>action</td><td class="center">1</td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="play.player-list.add"></a>
-						<h3>Add</h3>
+						<h3 id="play_player-list_add">Add</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Type</th></tr>
-							<tr><td>players</td><td><a href="#types.player-list">playerList</a>[]</td></tr>
+							<tr><td>players</td><td><a href="#types_player-list">playerList</a>[]</td></tr>
 						</table>
 						<ul>
-							</li>
 						</ul>
 					</li>
 					<li>
-						<a name="play.player-list.remove"></a>
-						<h3>Remove</h3>
+						<h3 id="play_player-list_remove">Remove</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Type</th></tr>
 							<tr><td>players</td><td>uuid[]</td></tr>
 						</table>
 						<ul>
-							</li>
 						</ul>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.telemetry-event"></a>
-				<h3>Telemetry Event</h3>
-				<p><strong>Id</strong>: 64</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_telemetry-event">Telemetry Event</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">64</td><td class="center">01000000₂</td><td class="center">40₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -1851,16 +1636,14 @@
 					<tr><td>eventId</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.spawn-experience-orb"></a>
-				<h3>Spawn Experience Orb</h3>
-				<p><strong>Id</strong>: 65</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_spawn-experience-orb">Spawn Experience Orb</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">65</td><td class="center">01000001₂</td><td class="center">41₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -1868,16 +1651,14 @@
 					<tr><td>count</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.clientbound-map-item-data"></a>
-				<h3>Clientbound Map Item Data</h3>
-				<p><strong>Id</strong>: 66</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_clientbound-map-item-data">Clientbound Map Item Data</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">66</td><td class="center">01000010₂</td><td class="center">42₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -1885,7 +1666,7 @@
 					<tr><td>?</td><td>varuint</td></tr>
 					<tr><td>?</td><td>varuint</td></tr>
 					<tr><td>?</td><td>varlong</td></tr>
-					<tr><td><a href="#play.clientbound-map-item-data.action">action</a></td><td>ubyte</td></tr>
+					<tr><td><a href="#play_clientbound-map-item-data_action">action</a></td><td>ubyte</td></tr>
 					<tr><td>?</td><td>varuint</td></tr>
 					<tr><td>?</td><td>varint</td></tr>
 					<tr><td>?</td><td>byte</td></tr>
@@ -1900,117 +1681,94 @@
 					<tr><td>data</td><td>ubyte[]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
 					<li>
-						<a name="play.clientbound-map-item-data.action"></a>
-						<strong>action</strong>
+						<strong id="play_clientbound-map-item-data_action">action</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>update</td><td align="center">4</td></tr>
-							<tr><td>full</td><td align="center">6</td></tr>
+							<tr><td>update</td><td class="center">4</td></tr>
+							<tr><td>full</td><td class="center">6</td></tr>
 						</table>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.map-info-request"></a>
-				<h3>Map Info Request</h3>
-				<p><strong>Id</strong>: 67</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_map-info-request">Map Info Request</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">67</td><td class="center">01000011₂</td><td class="center">43₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>mapId</td><td>varlong</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.request-chunk-radius"></a>
-				<h3>Request Chunk Radius</h3>
-				<p><strong>Id</strong>: 68</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_request-chunk-radius">Request Chunk Radius</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">68</td><td class="center">01000100₂</td><td class="center">44₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>radius</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.chunk-radius-updated"></a>
-				<h3>Chunk Radius Updated</h3>
-				<p><strong>Id</strong>: 69</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_chunk-radius-updated">Chunk Radius Updated</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">69</td><td class="center">01000101₂</td><td class="center">45₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>radius</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.item-frame-drop-item"></a>
-				<h3>Item Frame Drop Item</h3>
-				<p><strong>Id</strong>: 70</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_item-frame-drop-item">Item Frame Drop Item</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">70</td><td class="center">01000110₂</td><td class="center">46₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>position</td><td><a href="#types.block-position">blockPosition</a></td></tr>
-					<tr><td>item</td><td><a href="#types.slot">slot</a></td></tr>
+					<tr><td>position</td><td><a href="#types_block-position">blockPosition</a></td></tr>
+					<tr><td>item</td><td><a href="#types_slot">slot</a></td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.replace-selected-item"></a>
-				<h3>Replace Selected Item</h3>
-				<p><strong>Id</strong>: 71</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_replace-selected-item">Replace Selected Item</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">71</td><td class="center">01000111₂</td><td class="center">47₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>item</td><td><a href="#types.slot">slot</a></td></tr>
+					<tr><td>item</td><td><a href="#types_slot">slot</a></td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.camera"></a>
-				<h3>Camera</h3>
-				<p><strong>Id</strong>: 73</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_camera">Camera</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">73</td><td class="center">01001001₂</td><td class="center">49₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -2018,80 +1776,74 @@
 					<tr><td>runtimeId</td><td>varlong</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.add-item"></a>
-				<h3>Add Item</h3>
-				<p><strong>Id</strong>: 74</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_add-item">Add Item</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">74</td><td class="center">01001010₂</td><td class="center">4A₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>item</td><td><a href="#types.slot">slot</a></td></tr>
+					<tr><td>item</td><td><a href="#types_slot">slot</a></td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.boss-event"></a>
-				<h3>Boss Event</h3>
-				<p><strong>Id</strong>: 75</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_boss-event">Boss Event</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">75</td><td class="center">01001011₂</td><td class="center">4B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
-					<tr><td><a href="#play.boss-event.event-id">eventId</a></td><td>varuint</td></tr>
+					<tr><td><a href="#play_boss-event_event-id">eventId</a></td><td>varuint</td></tr>
 				</table>
 				<ul>
-					</li>
 					<li>
-						<a name="play.boss-event.event-id"></a>
-						<strong>eventId</strong>
+						<strong id="play_boss-event_event-id">eventId</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>add</td><td align="center">0</td></tr>
-							<tr><td>update</td><td align="center">1</td></tr>
-							<tr><td>remove</td><td align="center">2</td></tr>
+							<tr><td>add</td><td class="center">0</td></tr>
+							<tr><td>update</td><td class="center">1</td></tr>
+							<tr><td>remove</td><td class="center">2</td></tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.show-credits"></a>
-				<h3>Show Credits</h3>
-				<p><strong>Id</strong>: 76</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_show-credits">Show Credits</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">76</td><td class="center">01001100₂</td><td class="center">4C₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 			</li>
 			<li>
-				<a name="play.available-commands"></a>
-				<h3>Available Commands</h3>
-				<p><strong>Id</strong>: 77</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_available-commands">Available Commands</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">77</td><td class="center">01001101₂</td><td class="center">4D₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>commands</td><td>string</td></tr>
 				</table>
 				<ul>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.command-step"></a>
-				<h3>Command Step</h3>
-				<p><strong>Id</strong>: 78</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_command-step">Command Step</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">78</td><td class="center">01001110₂</td><td class="center">4E₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -2105,22 +1857,14 @@
 					<tr><td>output</td><td>string</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.resource-pack-data-info"></a>
-				<h3>Resource Pack Data Info</h3>
-				<p><strong>Id</strong>: 79</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_resource-pack-data-info">Resource Pack Data Info</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">79</td><td class="center">01001111₂</td><td class="center">4F₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -2131,19 +1875,14 @@
 					<tr><td>?</td><td>string</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.resource-pack-chunk-data"></a>
-				<h3>Resource Pack Chunk Data</h3>
-				<p><strong>Id</strong>: 80</p>
-				<p><strong>Clientbound</strong>: yes</p>
-				<p><strong>Serverbound</strong>: no</p>
+				<h3 id="play_resource-pack-chunk-data">Resource Pack Chunk Data</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">80</td><td class="center">01010000₂</td><td class="center">50₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -2153,18 +1892,14 @@
 					<tr><td>data</td><td>ubyte[]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="play.resource-pack-chunk-request"></a>
-				<h3>Resource Pack Chunk Request</h3>
-				<p><strong>Id</strong>: 81</p>
-				<p><strong>Clientbound</strong>: no</p>
-				<p><strong>Serverbound</strong>: yes</p>
+				<h3 id="play_resource-pack-chunk-request">Resource Pack Chunk Request</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">81</td><td class="center">01010001₂</td><td class="center">51₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -2172,18 +1907,15 @@
 					<tr><td>index</td><td>uint</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 		</ul>
 		<hr>
-		<h2>Types</h2>
-		<p><strong>Jump to</strong>: <a href="types.pack">Pack</a>, <a href="types.block-position">Block Position</a>, <a href="types.slot">Slot</a>, <a href="types.attribute">Attribute</a>, <a href="types.skin">Skin</a>, <a href="types.player-list">Player List</a>, <a href="types.recipe">Recipe</a></p>
+		<h2 id="types">Types</h2>
+		<p><strong>Jump to</strong>: <a href="#types_pack">Pack</a>, <a href="#types_block-position">Block Position</a>, <a href="#types_slot">Slot</a>, <a href="#types_attribute">Attribute</a>, <a href="#types_skin">Skin</a>, <a href="#types_player-list">Player List</a>, <a href="#types_recipe">Recipe</a></p>
 		<ul>
 			<li>
-				<a name="types.pack"></a>
-				<h3>Pack</h3>
+				<h3 id="types_pack">Pack</h3>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -2192,14 +1924,10 @@
 					<tr><td>size</td><td>ulong</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="types.block-position"></a>
-				<h3>Block Position</h3>
+				<h3 id="types_block-position">Block Position</h3>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -2208,30 +1936,22 @@
 					<tr><td>z</td><td>varint</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="types.slot"></a>
-				<h3>Slot</h3>
+				<h3 id="types_slot">Slot</h3>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th><th>When</th></tr>
-					<tr><td>id</td><td>varint</td><td align="center"></td></tr>
-					<tr><td>metaAndCount</td><td>varint</td><td align="center"><code>id</code> is greater than <code>0</code></td></tr>
-					<tr><td>nbt</td><td><a href="#types.slot-nbt">slotNbt</a></td><td align="center"><code>id</code> is greater than <code>0</code></td></tr>
+					<tr><td>id</td><td>varint</td><td class="center"></td></tr>
+					<tr><td>metaAndCount</td><td>varint</td><td class="center"><code>id</code> is greater than <code>0</code></td></tr>
+					<tr><td>nbt</td><td><a href="#types_slot-nbt">slotNbt</a></td><td class="center"><code>id</code> is greater than <code>0</code></td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="types.attribute"></a>
-				<h3>Attribute</h3>
+				<h3 id="types_attribute">Attribute</h3>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -2242,16 +1962,10 @@
 					<tr><td>name</td><td>string</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="types.skin"></a>
-				<h3>Skin</h3>
+				<h3 id="types_skin">Skin</h3>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -2259,64 +1973,53 @@
 					<tr><td>data</td><td>ubyte[]</td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="types.player-list"></a>
-				<h3>Player List</h3>
+				<h3 id="types_player-list">Player List</h3>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
 					<tr><td>uuid</td><td>uuid</td></tr>
 					<tr><td>entityId</td><td>varlong</td></tr>
 					<tr><td>displayName</td><td>string</td></tr>
-					<tr><td>skin</td><td><a href="#types.skin">skin</a></td></tr>
+					<tr><td>skin</td><td><a href="#types_skin">skin</a></td></tr>
 				</table>
 				<ul>
-					</li>
-					</li>
-					</li>
-					</li>
 				</ul>
 			</li>
 			<li>
-				<a name="types.recipe"></a>
-				<h3>Recipe</h3>
+				<h3 id="types_recipe">Recipe</h3>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#recipe.type">type</a></td><td>varint</td></tr>
+					<tr><td><a href="#types_recipe_type">type</a></td><td>varint</td></tr>
 					<tr><td>data</td><td>bytes</td></tr>
 				</table>
 				<ul>
 					<li>
-						<a name="recipe.type"></a>
-						<strong>type</strong>
+						<strong id="types_recipe_type">type</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>shapeless</td><td align="center">0</td></tr>
-							<tr><td>shaped</td><td align="center">1</td></tr>
-							<tr><td>furnace</td><td align="center">2</td></tr>
-							<tr><td>furnaceData</td><td align="center">3</td></tr>
-							<tr><td>multi</td><td align="center">4</td></tr>
+							<tr><td>shapeless</td><td class="center">0</td></tr>
+							<tr><td>shaped</td><td class="center">1</td></tr>
+							<tr><td>furnace</td><td class="center">2</td></tr>
+							<tr><td>furnaceData</td><td class="center">3</td></tr>
+							<tr><td>multi</td><td class="center">4</td></tr>
 						</table>
-					</li>
 					</li>
 				</ul>
 			</li>
 		</ul>
 		<hr>
-		<a name"types.slot-nbt"></a>
-		<h2>Arrays</h2>
+		<h2 id="arrays">Arrays</h2>
 		<table>
 			<tr><th>Name</th><th>Base</th><th>Length</th><th>Length's Endianness</th></tr>
-			<tr><td>slotNbt</td><td>ubyte</td><td>ushort</td><td>little endian</td></tr>
+			<tr id="types_slot-nbt"><td>slotNbt</td><td>ubyte</td><td>ushort</td><td>little endian</td></tr>
 		</table>
 		<hr>
-		<h2>Metadata</h2>
+		<h2 id="metadata">Metadata</h2>
 		<ul>
 			<li>
 				<h3>Encoding</h3>
@@ -2326,113 +2029,110 @@
 				<h3>Types</h3>
 				<table>
 					<tr><th>Name</th><th>Type</th><th>Id</th></tr>
-					<tr><td>byte</td><td>byte</td><td align="center">0</td></tr>
-					<tr><td>short</td><td>short</td><td align="center">1</td></tr>
-					<tr><td>int</td><td>varint</td><td align="center">2</td></tr>
-					<tr><td>float</td><td>float</td><td align="center">3</td></tr>
-					<tr><td>string</td><td>string</td><td align="center">4</td></tr>
-					<tr><td>slot</td><td><a href="#types.slot">slot</a></td><td align="center">5</td></tr>
-					<tr><td>blockPosition</td><td>varint&lt;xyz&gt;</td><td align="center">6</td></tr>
-					<tr><td>long</td><td>varlong</td><td align="center">7</td></tr>
-					<tr><td>entityPosition</td><td>float&lt;xyz&gt;</td><td align="center">8</td></tr>
+					<tr><td>byte</td><td>byte</td><td class="center">0</td></tr>
+					<tr><td>short</td><td>short</td><td class="center">1</td></tr>
+					<tr><td>int</td><td>varint</td><td class="center">2</td></tr>
+					<tr><td>float</td><td>float</td><td class="center">3</td></tr>
+					<tr><td>string</td><td>string</td><td class="center">4</td></tr>
+					<tr><td>slot</td><td><a href="#types_slot">slot</a></td><td class="center">5</td></tr>
+					<tr><td>blockPosition</td><td>varint&lt;xyz&gt;</td><td class="center">6</td></tr>
+					<tr><td>long</td><td>varlong</td><td class="center">7</td></tr>
+					<tr><td>entityPosition</td><td>float&lt;xyz&gt;</td><td class="center">8</td></tr>
 				</table>
 			</li>
 			<li>
 				<h3>Data</h3>
 				<table>
 					<tr><th>Name</th><th>Type</th><th colspan="2">Id</th><th>Default</th><th>Required</th></tr>
-					<tr><td><a href="#metadata.entity-flags">Entity Flags</a></td><td>long</td><td align="center">0</td><td align="center">0₁₆</td><td align="center">0</td><td align="center">✓</td></tr>
-					<tr><td>Variant</td><td>int</td><td align="center">2</td><td align="center">2₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Color</td><td>byte</td><td align="center">3</td><td align="center">3₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Nametag</td><td>string</td><td align="center">4</td><td align="center">4₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Owner</td><td>long</td><td align="center">5</td><td align="center">5₁₆</td><td align="center">-1</td><td align="center"></td></tr>
-					<tr><td><a href="#metadata.air">Air</a></td><td>short</td><td align="center">7</td><td align="center">7₁₆</td><td align="center">0</td><td align="center">✓</td></tr>
-					<tr><td>Potion Color</td><td>int</td><td align="center">8</td><td align="center">8₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Potion Ambient</td><td>byte</td><td align="center">9</td><td align="center">9₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Slime Size</td><td>byte</td><td align="center">16</td><td align="center">10₁₆</td><td align="center">1</td><td align="center"></td></tr>
-					<tr><td><a href="#metadata.player-flags">Player Flags</a></td><td>byte</td><td align="center">27</td><td align="center">1B₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Player Index</td><td>int</td><td align="center">28</td><td align="center">1C₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Bed Position</td><td><a href="#types.block-position">blockPosition</a></td><td align="center">29</td><td align="center">1D₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Lead Holder</td><td>long</td><td align="center">38</td><td align="center">26₁₆</td><td align="center">-1</td><td align="center">✓</td></tr>
-					<tr><td>Scale</td><td>float</td><td align="center">39</td><td align="center">27₁₆</td><td align="center">1</td><td align="center"></td></tr>
-					<tr><td>Interactive Tag</td><td>string</td><td align="center">40</td><td align="center">28₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Interactive Tag Url</td><td>string</td><td align="center">43</td><td align="center">2B₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Max Air</td><td>short</td><td align="center">44</td><td align="center">2C₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Mark Variant</td><td>int</td><td align="center">45</td><td align="center">2D₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Bounding Box Width</td><td>float</td><td align="center">54</td><td align="center">36₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Bounding Box Height</td><td>float</td><td align="center">55</td><td align="center">37₁₆</td><td align="center"></td><td align="center"></td></tr>
-					<tr><td>Fuse Length</td><td>int</td><td align="center">56</td><td align="center">38₁₆</td><td align="center"></td><td align="center"></td></tr>
+					<tr><td><a href="#metadata_entity-flags">Entity Flags</a></td><td>long</td><td class="center">0</td><td class="center">0₁₆</td><td class="center">0</td><td class="center">✓</td></tr>
+					<tr><td>Variant</td><td>int</td><td class="center">2</td><td class="center">2₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Color</td><td>byte</td><td class="center">3</td><td class="center">3₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Nametag</td><td>string</td><td class="center">4</td><td class="center">4₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Owner</td><td>long</td><td class="center">5</td><td class="center">5₁₆</td><td class="center">-1</td><td class="center"></td></tr>
+					<tr><td><a href="#metadata_air">Air</a></td><td>short</td><td class="center">7</td><td class="center">7₁₆</td><td class="center">0</td><td class="center">✓</td></tr>
+					<tr><td>Potion Color</td><td>int</td><td class="center">8</td><td class="center">8₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Potion Ambient</td><td>byte</td><td class="center">9</td><td class="center">9₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Slime Size</td><td>byte</td><td class="center">16</td><td class="center">10₁₆</td><td class="center">1</td><td class="center"></td></tr>
+					<tr><td><a href="#metadata_player-flags">Player Flags</a></td><td>byte</td><td class="center">27</td><td class="center">1B₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Player Index</td><td>int</td><td class="center">28</td><td class="center">1C₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Bed Position</td><td><a href="#types_block-position">blockPosition</a></td><td class="center">29</td><td class="center">1D₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Lead Holder</td><td>long</td><td class="center">38</td><td class="center">26₁₆</td><td class="center">-1</td><td class="center">✓</td></tr>
+					<tr><td>Scale</td><td>float</td><td class="center">39</td><td class="center">27₁₆</td><td class="center">1</td><td class="center"></td></tr>
+					<tr><td>Interactive Tag</td><td>string</td><td class="center">40</td><td class="center">28₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Interactive Tag Url</td><td>string</td><td class="center">43</td><td class="center">2B₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Max Air</td><td>short</td><td class="center">44</td><td class="center">2C₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Mark Variant</td><td>int</td><td class="center">45</td><td class="center">2D₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Bounding Box Width</td><td>float</td><td class="center">54</td><td class="center">36₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Bounding Box Height</td><td>float</td><td class="center">55</td><td class="center">37₁₆</td><td class="center"></td><td class="center"></td></tr>
+					<tr><td>Fuse Length</td><td>int</td><td class="center">56</td><td class="center">38₁₆</td><td class="center"></td><td class="center"></td></tr>
 				</table>
 				<ul>
 					<li>
-					<a name="metadata.entity-flags"></a>
-					<h4>Entity Flags</h4>
+					<h4 id="metadata_entity-flags">Entity Flags</h4>
 					<table>
 						<tr><th>Flag</th><th colspan="2">Bit</th></tr>
-						<tr><td>onFire</td><td align="center">0</td><td align="center">0₁₆</td></td></tr>
-						<tr><td>sneaking</td><td align="center">1</td><td align="center">1₁₆</td></td></tr>
-						<tr><td>riding</td><td align="center">2</td><td align="center">2₁₆</td></td></tr>
-						<tr><td>sprinting</td><td align="center">3</td><td align="center">3₁₆</td></td></tr>
-						<tr><td>usingItem</td><td align="center">4</td><td align="center">4₁₆</td></td></tr>
-						<tr><td>invisible</td><td align="center">5</td><td align="center">5₁₆</td></td></tr>
-						<tr><td>tempted</td><td align="center">6</td><td align="center">6₁₆</td></td></tr>
-						<tr><td>inLove</td><td align="center">7</td><td align="center">7₁₆</td></td></tr>
-						<tr><td>saddled</td><td align="center">8</td><td align="center">8₁₆</td></td></tr>
-						<tr><td>powered</td><td align="center">9</td><td align="center">9₁₆</td></td></tr>
-						<tr><td>ignited</td><td align="center">10</td><td align="center">A₁₆</td></td></tr>
-						<tr><td>baby</td><td align="center">11</td><td align="center">B₁₆</td></td></tr>
-						<tr><td>converting</td><td align="center">12</td><td align="center">C₁₆</td></td></tr>
-						<tr><td>critical</td><td align="center">13</td><td align="center">D₁₆</td></td></tr>
-						<tr><td>showNametag</td><td align="center">14</td><td align="center">E₁₆</td></td></tr>
-						<tr><td>alwaysShowNametag</td><td align="center">15</td><td align="center">F₁₆</td></td></tr>
-						<tr><td>noAi</td><td align="center">16</td><td align="center">10₁₆</td></td></tr>
-						<tr><td>silent</td><td align="center">17</td><td align="center">11₁₆</td></td></tr>
-						<tr><td>climbing</td><td align="center">18</td><td align="center">12₁₆</td></td></tr>
-						<tr><td>resting</td><td align="center">19</td><td align="center">13₁₆</td></td></tr>
-						<tr><td>sitting</td><td align="center">20</td><td align="center">14₁₆</td></td></tr>
-						<tr><td>angry</td><td align="center">21</td><td align="center">15₁₆</td></td></tr>
-						<tr><td>interested</td><td align="center">22</td><td align="center">16₁₆</td></td></tr>
-						<tr><td>charged</td><td align="center">23</td><td align="center">17₁₆</td></td></tr>
-						<tr><td>tamed</td><td align="center">24</td><td align="center">18₁₆</td></td></tr>
-						<tr><td>leashed</td><td align="center">25</td><td align="center">19₁₆</td></td></tr>
-						<tr><td>sheared</td><td align="center">26</td><td align="center">1A₁₆</td></td></tr>
-						<tr><td>gliding</td><td align="center">27</td><td align="center">1B₁₆</td></td></tr>
-						<tr><td>elder</td><td align="center">28</td><td align="center">1C₁₆</td></td></tr>
-						<tr><td>moving</td><td align="center">29</td><td align="center">1D₁₆</td></td></tr>
-						<tr><td>breathing</td><td align="center">30</td><td align="center">1E₁₆</td></td></tr>
-						<tr><td>chested</td><td align="center">31</td><td align="center">1F₁₆</td></td></tr>
-						<tr><td>stackable</td><td align="center">32</td><td align="center">20₁₆</td></td></tr>
-						<tr><td>idling</td><td align="center">36</td><td align="center">24₁₆</td></td></tr>
+						<tr><td>onFire</td><td class="center">0</td><td class="center">0₁₆</td></tr>
+						<tr><td>sneaking</td><td class="center">1</td><td class="center">1₁₆</td></tr>
+						<tr><td>riding</td><td class="center">2</td><td class="center">2₁₆</td></tr>
+						<tr><td>sprinting</td><td class="center">3</td><td class="center">3₁₆</td></tr>
+						<tr><td>usingItem</td><td class="center">4</td><td class="center">4₁₆</td></tr>
+						<tr><td>invisible</td><td class="center">5</td><td class="center">5₁₆</td></tr>
+						<tr><td>tempted</td><td class="center">6</td><td class="center">6₁₆</td></tr>
+						<tr><td>inLove</td><td class="center">7</td><td class="center">7₁₆</td></tr>
+						<tr><td>saddled</td><td class="center">8</td><td class="center">8₁₆</td></tr>
+						<tr><td>powered</td><td class="center">9</td><td class="center">9₁₆</td></tr>
+						<tr><td>ignited</td><td class="center">10</td><td class="center">A₁₆</td></tr>
+						<tr><td>baby</td><td class="center">11</td><td class="center">B₁₆</td></tr>
+						<tr><td>converting</td><td class="center">12</td><td class="center">C₁₆</td></tr>
+						<tr><td>critical</td><td class="center">13</td><td class="center">D₁₆</td></tr>
+						<tr><td>showNametag</td><td class="center">14</td><td class="center">E₁₆</td></tr>
+						<tr><td>alwaysShowNametag</td><td class="center">15</td><td class="center">F₁₆</td></tr>
+						<tr><td>noAi</td><td class="center">16</td><td class="center">10₁₆</td></tr>
+						<tr><td>silent</td><td class="center">17</td><td class="center">11₁₆</td></tr>
+						<tr><td>climbing</td><td class="center">18</td><td class="center">12₁₆</td></tr>
+						<tr><td>resting</td><td class="center">19</td><td class="center">13₁₆</td></tr>
+						<tr><td>sitting</td><td class="center">20</td><td class="center">14₁₆</td></tr>
+						<tr><td>angry</td><td class="center">21</td><td class="center">15₁₆</td></tr>
+						<tr><td>interested</td><td class="center">22</td><td class="center">16₁₆</td></tr>
+						<tr><td>charged</td><td class="center">23</td><td class="center">17₁₆</td></tr>
+						<tr><td>tamed</td><td class="center">24</td><td class="center">18₁₆</td></tr>
+						<tr><td>leashed</td><td class="center">25</td><td class="center">19₁₆</td></tr>
+						<tr><td>sheared</td><td class="center">26</td><td class="center">1A₁₆</td></tr>
+						<tr><td>gliding</td><td class="center">27</td><td class="center">1B₁₆</td></tr>
+						<tr><td>elder</td><td class="center">28</td><td class="center">1C₁₆</td></tr>
+						<tr><td>moving</td><td class="center">29</td><td class="center">1D₁₆</td></tr>
+						<tr><td>breathing</td><td class="center">30</td><td class="center">1E₁₆</td></tr>
+						<tr><td>chested</td><td class="center">31</td><td class="center">1F₁₆</td></tr>
+						<tr><td>stackable</td><td class="center">32</td><td class="center">20₁₆</td></tr>
+						<tr><td>idling</td><td class="center">36</td><td class="center">24₁₆</td></tr>
 					</table>
 					</li>
 					<li>
-					<a name="metadata.air"></a>
-					<h4>Air</h4>
+					<h4 id="metadata_air">Air</h4>
 					<p>Indicates the percentage of the air for the entity (and shows the right amount of bubbles). 0 means out of water or drowning (no bubbles) and 300 means underwater with full air.</p>
 					</li>
 					<li>
-					<a name="metadata.player-flags"></a>
-					<h4>Player Flags</h4>
+					<h4 id="metadata_player-flags">Player Flags</h4>
 					<table>
 						<tr><th>Flag</th><th colspan="2">Bit</th></tr>
-						<tr><td>asleep</td><td align="center">1</td><td align="center">1₁₆</td></td></tr>
+						<tr><td>asleep</td><td class="center">1</td><td class="center">1₁₆</td></tr>
 					</table>
 					</li>
 				</ul>
 			</li>
 		</ul>
 		<hr>
-		<h2>Attributes</h2>
+		<h2 id="attributes">Attributes</h2>
 		<table>
 			<tr><th>Name</th><th>Key</th><th>Min</th><th>Max</th><th>Default</th></tr>
-			<tr><td>Health</td><td>minecraft:health</td><td align="center">0</td><td align="center">20</td><td align="center">20</td></tr>
-			<tr><td>Absorption</td><td>minecraft:generic.absorption</td><td align="center">0</td><td align="center">4</td><td align="center">0</td></tr>
-			<tr><td>Hunger</td><td>minecraft:player.hunger</td><td align="center">0</td><td align="center">20</td><td align="center">20</td></tr>
-			<tr><td>Saturation</td><td>minecraft:player.saturation</td><td align="center">0</td><td align="center">20</td><td align="center">5</td></tr>
-			<tr><td>Experience</td><td>minecraft:player.experience</td><td align="center">0</td><td align="center">1</td><td align="center">0</td></tr>
-			<tr><td>Level</td><td>minecraft:player.level</td><td align="center">0</td><td align="center">24791</td><td align="center">0</td></tr>
-			<tr><td>Speed</td><td>minecraft:movement</td><td align="center">0</td><td align="center">24791</td><td align="center">0.1</td></tr>
-			<tr><td>Knockback Resistance</td><td>minecraft:generic.knockback_resistance</td><td align="center">0</td><td align="center">1</td><td align="center">0</td></tr>
+			<tr><td>Health</td><td>minecraft:health</td><td class="center">0</td><td class="center">20</td><td class="center">20</td></tr>
+			<tr><td>Absorption</td><td>minecraft:generic.absorption</td><td class="center">0</td><td class="center">4</td><td class="center">0</td></tr>
+			<tr><td>Hunger</td><td>minecraft:player.hunger</td><td class="center">0</td><td class="center">20</td><td class="center">20</td></tr>
+			<tr><td>Saturation</td><td>minecraft:player.saturation</td><td class="center">0</td><td class="center">20</td><td class="center">5</td></tr>
+			<tr><td>Experience</td><td>minecraft:player.experience</td><td class="center">0</td><td class="center">1</td><td class="center">0</td></tr>
+			<tr><td>Level</td><td>minecraft:player.level</td><td class="center">0</td><td class="center">24791</td><td class="center">0</td></tr>
+			<tr><td>Speed</td><td>minecraft:movement</td><td class="center">0</td><td class="center">24791</td><td class="center">0.1</td></tr>
+			<tr><td>Knockback Resistance</td><td>minecraft:generic.knockback_resistance</td><td class="center">0</td><td class="center">1</td><td class="center">0</td></tr>
 		</table>
 	</body>
 </html>
