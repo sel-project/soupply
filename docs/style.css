@@ -52,12 +52,13 @@ table {
 
 table th, table td {
 	padding: 6px 13px;
-	border: 1px solid #DDD;
+	border: 1px solid #AAA;
 }
 
 table th {
 	font-family: "Segoe 600", Helvetica;
 	text-align: center;
+	background-color: #F7F7F7;
 }
 
 h1, h2, h3, h4, h5, h6, strong {
@@ -93,9 +94,9 @@ code {
 }
 
 .added {
-	background-color: #dcedc8;
+	background-color: #C1E9C1;
 }
 
 .removed {
-	background-color: #ffcdd2;
+	background-color: #F1C0C0;
 }
