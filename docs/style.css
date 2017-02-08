@@ -26,9 +26,9 @@ body {
 	word-wrap: break-word;
 }
 
-@media screen and (min-width: 824px) {
+@media screen and (min-width: 1024px) {
 	body {
-		width: 824px;
+		width: 1024px;
 		border-right: 1px solid #DDD;
 		border-left: 1px solid #DDD;
 	}
@@ -43,11 +43,11 @@ hr {
 }
 
 table {
-	display: block;
-	width: -moz-fit-content;
+	display: table;
 	margin: 0 0 16px 0;
 	border-spacing: 0px;
 	border-collapse: collapse;
+	background-color: #FAFAFA;
 }
 
 table th, table td {
@@ -58,7 +58,7 @@ table th, table td {
 table th {
 	font-family: "Segoe 600", Helvetica;
 	text-align: center;
-	background-color: #F7F7F7;
+	background-color: #F4F4F4;
 }
 
 h1, h2, h3, h4, h5, h6, strong {
