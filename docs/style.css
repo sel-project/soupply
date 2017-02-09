@@ -27,9 +27,9 @@ body {
 	background-color: #FCFCFC;
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 960px) {
 	body {
-		width: 1024px;
+		width: 960px;
 		display: block;
 		border-right: 1px solid #DDD;
 		border-left: 1px solid #DDD;
