@@ -89,7 +89,7 @@ public class Welcome extends Packet {
 		public String software;
 
 		/**
-		 * Versions of the server in a 3-btyes array readed as [major, minor, release].
+		 * Versions of the server in a 3-btyes array readed as `[major, minor, release]`.
 		 */
 		public byte[] versions = new byte[3];
 

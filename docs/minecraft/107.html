@@ -3,11 +3,14 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" />
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
 		<title>Minecraft 107 | SEL Utils</title>
-		<link rel="stylesheet" href="../style.css" />
+		<link rel="stylesheet" href="../style.min.css" />
 	</head>
 	<body>
-		<div style="text-align:center;padding-top:16px"><a href="../"><div><img src="../logo.png" alt="" style="width:224px;height:104px" /></div></a><div><a href="../">Index</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/minecraft107.xml">XML</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
+		<div class="logo"><a href="../"><div><img src="../logo.png" alt="SEL" /></div></a><div><a href="../">Index</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/minecraft107.xml">XML</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
 		<h1>Minecraft 107</h1>
 		<p><strong>Compare</strong>: <a href="diff/47-107.html">47</a>, <a href="diff/107-108.html">108</a>, <a href="diff/107-109.html">109</a>, <a href="diff/107-110.html">110</a>, <a href="diff/107-210.html">210</a>, <a href="diff/107-315.html">315</a>, <a href="diff/107-316.html">316</a></p>
 		<p><strong>Jump to</strong>: <a href="#endianness">Endianness</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a>, <a href="#arrays">Arrays</a>, <a href="#attributes">Attributes</a></p>
@@ -582,12 +585,12 @@
 				<p><strong>Variants</strong>:</p>
 				<table>
 					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="clientbound_boss-bar_add">Add</a></td><td>action</td><td class="center">0</td></tr>
-					<tr><td><a href="clientbound_boss-bar_remove">Remove</a></td><td>action</td><td class="center">1</td></tr>
-					<tr><td><a href="clientbound_boss-bar_update-health">Update Health</a></td><td>action</td><td class="center">2</td></tr>
-					<tr><td><a href="clientbound_boss-bar_update-title">Update Title</a></td><td>action</td><td class="center">3</td></tr>
-					<tr><td><a href="clientbound_boss-bar_update-style">Update Style</a></td><td>action</td><td class="center">4</td></tr>
-					<tr><td><a href="clientbound_boss-bar_update-flags">Update Flags</a></td><td>action</td><td class="center">5</td></tr>
+					<tr><td><a href="#clientbound_boss-bar_add">Add</a></td><td>action</td><td class="center">0</td></tr>
+					<tr><td><a href="#clientbound_boss-bar_remove">Remove</a></td><td>action</td><td class="center">1</td></tr>
+					<tr><td><a href="#clientbound_boss-bar_update-health">Update Health</a></td><td>action</td><td class="center">2</td></tr>
+					<tr><td><a href="#clientbound_boss-bar_update-title">Update Title</a></td><td>action</td><td class="center">3</td></tr>
+					<tr><td><a href="#clientbound_boss-bar_update-style">Update Style</a></td><td>action</td><td class="center">4</td></tr>
+					<tr><td><a href="#clientbound_boss-bar_update-flags">Update Flags</a></td><td>action</td><td class="center">5</td></tr>
 				</table>
 				<ul>
 					<li>
@@ -1488,9 +1491,9 @@
 				<p><strong>Variants</strong>:</p>
 				<table>
 					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="clientbound_combat-event_enter-combat">Enter Combat</a></td><td>eventId</td><td class="center">0</td></tr>
-					<tr><td><a href="clientbound_combat-event_end-combat">End Combat</a></td><td>eventId</td><td class="center">1</td></tr>
-					<tr><td><a href="clientbound_combat-event_entity-dead">Entity Dead</a></td><td>eventId</td><td class="center">2</td></tr>
+					<tr><td><a href="#clientbound_combat-event_enter-combat">Enter Combat</a></td><td>eventId</td><td class="center">0</td></tr>
+					<tr><td><a href="#clientbound_combat-event_end-combat">End Combat</a></td><td>eventId</td><td class="center">1</td></tr>
+					<tr><td><a href="#clientbound_combat-event_entity-dead">Entity Dead</a></td><td>eventId</td><td class="center">2</td></tr>
 				</table>
 				<ul>
 					<li>
@@ -1537,11 +1540,11 @@
 				<p><strong>Variants</strong>:</p>
 				<table>
 					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="clientbound_player-list-item_add-player">Add Player</a></td><td>action</td><td class="center">0</td></tr>
-					<tr><td><a href="clientbound_player-list-item_update-gamemode">Update Gamemode</a></td><td>action</td><td class="center">1</td></tr>
-					<tr><td><a href="clientbound_player-list-item_update-latency">Update Latency</a></td><td>action</td><td class="center">2</td></tr>
-					<tr><td><a href="clientbound_player-list-item_update-display-name">Update Display Name</a></td><td>action</td><td class="center">3</td></tr>
-					<tr><td><a href="clientbound_player-list-item_remove-player">Remove Player</a></td><td>action</td><td class="center">4</td></tr>
+					<tr><td><a href="#clientbound_player-list-item_add-player">Add Player</a></td><td>action</td><td class="center">0</td></tr>
+					<tr><td><a href="#clientbound_player-list-item_update-gamemode">Update Gamemode</a></td><td>action</td><td class="center">1</td></tr>
+					<tr><td><a href="#clientbound_player-list-item_update-latency">Update Latency</a></td><td>action</td><td class="center">2</td></tr>
+					<tr><td><a href="#clientbound_player-list-item_update-display-name">Update Display Name</a></td><td>action</td><td class="center">3</td></tr>
+					<tr><td><a href="#clientbound_player-list-item_remove-player">Remove Player</a></td><td>action</td><td class="center">4</td></tr>
 				</table>
 				<ul>
 					<li>
@@ -1776,12 +1779,12 @@
 				<p><strong>Variants</strong>:</p>
 				<table>
 					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="clientbound_world-border_set-size">Set Size</a></td><td>action</td><td class="center">0</td></tr>
-					<tr><td><a href="clientbound_world-border_lerp-size">Lerp Size</a></td><td>action</td><td class="center">1</td></tr>
-					<tr><td><a href="clientbound_world-border_set-center">Set Center</a></td><td>action</td><td class="center">2</td></tr>
-					<tr><td><a href="clientbound_world-border_initialize">Initialize</a></td><td>action</td><td class="center">3</td></tr>
-					<tr><td><a href="clientbound_world-border_set-warning-time">Set Warning Time</a></td><td>action</td><td class="center">4</td></tr>
-					<tr><td><a href="clientbound_world-border_set-warning-blocks">Set Warning Blocks</a></td><td>action</td><td class="center">5</td></tr>
+					<tr><td><a href="#clientbound_world-border_set-size">Set Size</a></td><td>action</td><td class="center">0</td></tr>
+					<tr><td><a href="#clientbound_world-border_lerp-size">Lerp Size</a></td><td>action</td><td class="center">1</td></tr>
+					<tr><td><a href="#clientbound_world-border_set-center">Set Center</a></td><td>action</td><td class="center">2</td></tr>
+					<tr><td><a href="#clientbound_world-border_initialize">Initialize</a></td><td>action</td><td class="center">3</td></tr>
+					<tr><td><a href="#clientbound_world-border_set-warning-time">Set Warning Time</a></td><td>action</td><td class="center">4</td></tr>
+					<tr><td><a href="#clientbound_world-border_set-warning-blocks">Set Warning Blocks</a></td><td>action</td><td class="center">5</td></tr>
 				</table>
 				<ul>
 					<li>
@@ -2068,11 +2071,11 @@
 				<p><strong>Variants</strong>:</p>
 				<table>
 					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="clientbound_teams_create-team">Create Team</a></td><td>mode</td><td class="center">0</td></tr>
-					<tr><td><a href="clientbound_teams_remove-team">Remove Team</a></td><td>mode</td><td class="center">1</td></tr>
-					<tr><td><a href="clientbound_teams_update-team-info">Update Team Info</a></td><td>mode</td><td class="center">2</td></tr>
-					<tr><td><a href="clientbound_teams_add-players">Add Players</a></td><td>mode</td><td class="center">3</td></tr>
-					<tr><td><a href="clientbound_teams_remove-players">Remove Players</a></td><td>mode</td><td class="center">4</td></tr>
+					<tr><td><a href="#clientbound_teams_create-team">Create Team</a></td><td>mode</td><td class="center">0</td></tr>
+					<tr><td><a href="#clientbound_teams_remove-team">Remove Team</a></td><td>mode</td><td class="center">1</td></tr>
+					<tr><td><a href="#clientbound_teams_update-team-info">Update Team Info</a></td><td>mode</td><td class="center">2</td></tr>
+					<tr><td><a href="#clientbound_teams_add-players">Add Players</a></td><td>mode</td><td class="center">3</td></tr>
+					<tr><td><a href="#clientbound_teams_remove-players">Remove Players</a></td><td>mode</td><td class="center">4</td></tr>
 				</table>
 				<ul>
 					<li>
@@ -2266,11 +2269,11 @@
 				<p><strong>Variants</strong>:</p>
 				<table>
 					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="clientbound_title_set-title">Set Title</a></td><td>action</td><td class="center">0</td></tr>
-					<tr><td><a href="clientbound_title_set-subtitle">Set Subtitle</a></td><td>action</td><td class="center">1</td></tr>
-					<tr><td><a href="clientbound_title_set-timings">Set Timings</a></td><td>action</td><td class="center">2</td></tr>
-					<tr><td><a href="clientbound_title_hide">Hide</a></td><td>action</td><td class="center">3</td></tr>
-					<tr><td><a href="clientbound_title_reset">Reset</a></td><td>action</td><td class="center">4</td></tr>
+					<tr><td><a href="#clientbound_title_set-title">Set Title</a></td><td>action</td><td class="center">0</td></tr>
+					<tr><td><a href="#clientbound_title_set-subtitle">Set Subtitle</a></td><td>action</td><td class="center">1</td></tr>
+					<tr><td><a href="#clientbound_title_set-timings">Set Timings</a></td><td>action</td><td class="center">2</td></tr>
+					<tr><td><a href="#clientbound_title_hide">Hide</a></td><td>action</td><td class="center">3</td></tr>
+					<tr><td><a href="#clientbound_title_reset">Reset</a></td><td>action</td><td class="center">4</td></tr>
 				</table>
 				<ul>
 					<li>

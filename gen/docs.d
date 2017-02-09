@@ -46,7 +46,8 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		immutable gameName = game[0..$-ptrs.protocol.to!string.length];
 		auto attributes = game in attributes;
 		auto metadata = game in metadatas;
-		string data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, game) ~ "\t\t<h1>" ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "</h1>\n";
+		string data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, game, ptrs.data.description.length ? ptrs.data.description.replaceAll(ctRegex!`<[a-z0-9]+>|<\/[a-z0-9]+>`, "").replaceAll(ctRegex!`\[([a-zA-Z0-9_\-\. ]+)\]\([a-zA-Z0-9_\-\.:\#\/]+\)`, "$1").split("\n")[0].strip : "");
+		data ~= "\t\t<h1>" ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "</h1>\n";
 		uint[] others;
 		foreach(otherGame, op; protocols) {
 			if(otherGame != game && otherGame.startsWith(gameName)) {
@@ -257,7 +258,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 					data ~= "\t\t\t\t<table>\n";
 					data ~= "\t\t\t\t\t<tr><th>Variant</th><th>Field</th><th>Value</th></tr>\n";
 					foreach(variant ; packet.variants) {
-						data ~= "\t\t\t\t\t<tr><td><a href=\"" ~ link(section.name, packet.name, variant.name) ~ "\">" ~ pretty(toCamelCase(variant.name)) ~ "</a></td><td>" ~ toCamelCase(packet.variantField) ~ "</td><td class=\"center\">" ~ variant.value ~ "</td></tr>\n";
+						data ~= "\t\t\t\t\t<tr><td><a href=\"#" ~ link(section.name, packet.name, variant.name) ~ "\">" ~ pretty(toCamelCase(variant.name)) ~ "</a></td><td>" ~ toCamelCase(packet.variantField) ~ "</td><td class=\"center\">" ~ variant.value ~ "</td></tr>\n";
 					}
 					data ~= "\t\t\t\t</table>\n";
 					data ~= "\t\t\t\t<ul>\n";
@@ -436,14 +437,23 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	}
 	data ~= "\t</body>\n</html>\n";
 	std.file.write("../docs/index.html", data);
+
+	// minify style.css
+	std.file.write("../docs/style.min.css", (cast(string)std.file.read("../docs/style.css")).replaceAll(ctRegex!`[\r\n\t]*`, "").replaceAll(ctRegex!`[ ]*([\{\:\,])[ ]*`, "$1"));
 	
 }
 
-string head(string title, bool back, string xml="") {
+string head(string title, bool back, string xml="", string description="") {
 	string b = back ? "../" : "";
 	return "<!DOCTYPE html>\n<html lang=\"en\">\n" ~
-		"\t<head>\n\t\t<meta charset=\"UTF-8\" />\n\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n\t\t<title>" ~ title ~ " | SEL Utils</title>\n\t\t<link rel=\"stylesheet\" href=\"" ~ b ~ "style.css\" />\n\t</head>\n" ~
-			"\t<body>\n\t\t<div style=\"text-align:center;padding-top:16px\"><a href=\"" ~ b ~ "\"><div><img src=\"" ~ b ~ "logo.png\" alt=\"\" style=\"width:224px;height:104px\" /></div></a>" ~
+			"\t<head>\n\t\t<meta charset=\"UTF-8\" />\n" ~
+			"\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n" ~
+			(description.length ? "\t\t<meta name=\"description\" content=\"" ~ description.replace(`"`, `\"`) ~ "\" />\n" : "") ~
+			"\t\t<link rel=\"stylesheet\" href=\"http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css\" />\n" ~
+			"\t\t<script src=\"http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js\"></script>\n" ~
+			"\t\t<script>hljs.initHighlightingOnLoad();</script>\n" ~
+			"\t\t<title>" ~ title ~ " | SEL Utils</title>\n\t\t<link rel=\"stylesheet\" href=\"" ~ b ~ "style.min.css\" />\n\t</head>\n" ~
+			"\t<body>\n\t\t<div class=\"logo\"><a href=\"" ~ b ~ "\"><div><img src=\"" ~ b ~ "logo.png\" alt=\"SEL\" /></div></a>" ~
 			"<div><a href=\"" ~ b ~ "\">Index</a>&nbsp;&nbsp;" ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/README.md\">About</a>&nbsp;&nbsp;" ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/TYPES.md\">Types</a>&nbsp;&nbsp;" ~
@@ -468,22 +478,17 @@ string link(string[] pieces...) {
 }
 
 string desc(string space, string description) {
-	bool search = true;
-	while(search) {
-		auto m = matchFirst(description, ctRegex!`\[[a-zA-Z0-9 \.]{2,30}\]\([a-zA-Z0-9_\#\.:\/-]{2,64}\)`);
-		if(m) {
-			auto dest = m.hit[m.hit.indexOf("(")+1..$-1];
-			description = m.pre ~ "<a href=\"" ~ dest ~ "\"" ~ (!dest.startsWith("#") ? " target=\"_blank\"" : "") ~ ">" ~ m.hit[1..m.hit.indexOf("]")] ~ "</a>" ~ m.post;
-		} else {
-			search = false;
-		}
-	}
 	string ret;
 	bool code = false, list = false;
-	foreach(s ; description.replaceAll(ctRegex!"[\\r\\t]+", "").split("\n")) {
+	foreach(s ; description
+		.replaceAll(ctRegex!`[\r\t]+`, "")
+		.replaceAll(ctRegex!`\[([a-zA-Z0-9_\-\.]+)\]\((#[a-z0-9_\-]+)\)`, `<a href="$2">$1</a>`)
+		.replaceAll(ctRegex!`\[([a-zA-Z0-9_\-\. ]+)\]\(([a-zA-Z0-9_\-\.\:\/\#]+)\)`, `<a href="$2" target="_blank">$1</a>`)
+		.split("\n")) {
+
 		if(code) {
 			if(s.startsWith("```")) {
-				ret ~= "</pre>\n";
+				ret ~= "</code></pre>\n";
 				code = false;
 			} else {
 				ret ~= s ~ "\n";
@@ -502,7 +507,7 @@ string desc(string space, string description) {
 				list = false;
 			}
 			if(s.startsWith("```")) {
-				ret ~= space ~ "<pre data-language=\"" ~ s[3..$] ~ "\">";
+				ret ~= space ~ "<pre><code class=\"" ~ s[3..$] ~ "\">";
 				code = true;
 			} else {
 				string h = "######";
@@ -512,16 +517,7 @@ string desc(string space, string description) {
 						break;
 					}
 				}
-				auto ss = s.split("`");
-				if(ss.length > 1) {
-					s = ss[0];
-					foreach(i, str; ss[1..$]) {
-						if(i % 2 == 0) s ~= "<code>";
-						else s ~= "</code>";
-						s ~= str;
-					}
-				}
-				if(!h.length) ret ~= space ~ "<p>" ~ s ~ "</p>\n";
+				if(!h.length) ret ~= space ~ "<p>" ~ s.replaceAll(ctRegex!"`([^`]+)`", `<code>$1</code>`) ~ "</p>\n";
 			}
 		}
 	}

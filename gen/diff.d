@@ -343,7 +343,7 @@ void diff(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 string head(string title) {
 	return "<!DOCTYPE html>\n<html lang=\"en\">\n" ~
 		"\t<head>\n\t\t<meta charset=\"UTF-8\" />\n\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n\t\t<title>" ~ title ~ " | SEL Utils</title>\n\t\t<link rel=\"stylesheet\" href=\"../../style.css\" />\n\t</head>\n" ~
-			"\t<body>\n\t\t<div style=\"text-align:center;padding-top:16px\"><a href=\"../..\"><div><img src=\"../../logo.png\" alt=\"\" style=\"width:224px;height:104px\" /></div></a>" ~
+			"\t<body>\n\t\t<div style=\"text-align:center;padding-top:16px\"><a href=\"../..\"><div><img src=\"../../logo.png\" alt=\"SEL\" style=\"width:224px;height:104px\" /></div></a>" ~
 			"<div><a href=\"../..\">Index</a>&nbsp;&nbsp;" ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/README.md\">About</a>&nbsp;&nbsp;" ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/TYPES.md\">Types</a>&nbsp;&nbsp;" ~

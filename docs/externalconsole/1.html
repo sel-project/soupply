@@ -3,11 +3,15 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="description" content="Protocol used to communicate with external sources using a raw TCP protocol or Web Sockets." />
+		<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" />
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
 		<title>External Console 1 | SEL Utils</title>
-		<link rel="stylesheet" href="../style.css" />
+		<link rel="stylesheet" href="../style.min.css" />
 	</head>
 	<body>
-		<div style="text-align:center;padding-top:16px"><a href="../"><div><img src="../logo.png" alt="" style="width:224px;height:104px" /></div></a><div><a href="../">Index</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/externalconsole1.xml">XML</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
+		<div class="logo"><a href="../"><div><img src="../logo.png" alt="SEL" /></div></a><div><a href="../">Index</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/externalconsole1.xml">XML</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
 		<h1>External Console 1</h1>
 		<p><strong>Compare</strong>: <a href="diff/1-2.html">2</a></p>
 		<p><strong>Jump to</strong>: <a href="#endianness">Endianness</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a></p>
@@ -24,25 +28,25 @@
 		<h2>Connecting</h2>
 		<h3>Using raw TCP sockets</h3>
 		<p>The raw TCP protocol, also referred as "classic", uses a stream-oriented TCP connection. This means that packets are not prefixed with their length and every packet's length is fixed or can be retrieved at runtime.</p>
-		<p>The connection starts with the client sending the string <code>classic</code> encoded as UTF-8 to the server, which replies with an <a href="#login.auth-credentials">AuthCredentials</a> packet and waits for the client to authenticate.</p>
+		<p>The connection starts with the client sending the string <code>classic</code> encoded as UTF-8 to the server, which replies with an <a href="#login_auth-credentials">AuthCredentials</a> packet and waits for the client to authenticate.</p>
 		<h3>Using Web Sockets</h3>
-		<p>The websocket protocol uses json packets instead of binary ones (with the keys in snake case) and encodes the arrays of bytes (<a href="#login.auth-credentials.payload">AuthCredentials.payload</a> and <a href="#login.auth.hash">Auth.hash</a>) into strings using base64. The connection is established like every web socket connection and, if successfull, continues with the <a href="#login.auth-credentials">AuthCredentials</a> packet sent by the server.</p>
+		<p>The websocket protocol uses json packets instead of binary ones (with the keys in snake case) and encodes the arrays of bytes (<a href="#login_auth-credentials_payload">AuthCredentials.payload</a> and <a href="#login_auth_hash">Auth.hash</a>) into strings using base64. The connection is established like every web socket connection and, if successfull, continues with the <a href="#login_auth-credentials">AuthCredentials</a> packet sent by the server.</p>
 		<p>Example of a connection in javascript:</p>
-		<pre data-language="javascript">var socket = new WebSocket("example.com:19134");
+		<pre><code class="javascript">var socket = new WebSocket("example.com:19134");
 socket.onmessage = function(event){
    var json = JSON.parse(event.data);
    if(json.hash) console.log("The server requires hash " + json.hash_algorithm);
    else console.log("The server doesn't require hashing");
 }
-</pre>
+</code></pre>
 		<h2>Authenticating</h2>
-		<p>After receiving the <a href="#login.auth-credentials">AuthCredentials</a> packet, the external console, if able to perform authentication, has to send the password or its hash through the <a href="#login.auth">Auth</a> packet and waits for a response, given by the <a href="#login.welcome">Welcome</a> packet. If the server accepts the external console the status in the packet will be "accepted", the additional fields of the <a href="#login.welcome.accepted">Welcome.Accepted</a> packet can be read and the external console can proceed keeping the connection alive, sending commands, receiving logs and other updates.</p>
+		<p>After receiving the <a href="#login_auth-credentials">AuthCredentials</a> packet, the external console, if able to perform authentication, has to send the password or its hash through the <a href="#login.auth" target="_blank">Auth</a> packet and waits for a response, given by the <a href="#login_welcome">Welcome</a> packet. If the server accepts the external console the status in the packet will be "accepted", the additional fields of the <a href="#login_welcome_accepted">Welcome.Accepted</a> packet can be read and the external console can proceed keeping the connection alive, sending commands, receiving logs and other updates.</p>
 		<h2>Keeping the connection alive</h2>
-		<p>The server may disconnect the external console after a period of inactivity (which shouldn't be shorter than 8 seconds). For this reason the external console needs to send a <a href="#status.keep-alive">KeepAlive</a> packet to notify the server that it is still perfectly connected.</p>
+		<p>The server may disconnect the external console after a period of inactivity (which shouldn't be shorter than 8 seconds). For this reason the external console needs to send a <a href="#status_keep-alive">KeepAlive</a> packet to notify the server that it is still perfectly connected.</p>
 		<h2>Server's logs</h2>
-		<p>Every time a log is created on the server it sends a <a href="#connected.console-message">ConsoleMessage</a> to the external console that contains informations about when the log was generated, from whom was generated and the log itself.</p>
+		<p>Every time a log is created on the server it sends a <a href="#connected_console-message">ConsoleMessage</a> to the external console that contains informations about when the log was generated, from whom was generated and the log itself.</p>
 		<h2>Executing commands</h2>
-		<p>If the <a href="#login.welcome.accepted.remote-command">remoteCommand</a> field in the <a href="#login.welcome.accepted">Welcome.Accepted</a> packet is true, the server allows the execution of commands from the external console. That's done using the <a href="#connected.command">Command</a> packet, which has only one field that is the raw command.</p>
+		<p>If the <a href="#login_welcome_accepted_remote-command">remoteCommand</a> field in the <a href="#login_welcome_accepted">Welcome.Accepted</a> packet is true, the server allows the execution of commands from the external console. That's done using the <a href="#connected_command">Command</a> packet, which has only one field that is the raw command.</p>
 		<hr>
 		<h2 id="endianness">Endianness</h2>
 		<table>
@@ -94,12 +98,12 @@ socket.onmessage = function(event){
 					</li>
 					<li>
 						<strong id="login_auth-credentials_hash-algorithm">hashAlgorithm</strong>
-						<p>Algorithm used by the server to hash the concatenation of the password and the <a href="#login.auth-credentials.payload">payload</a>. The value should be sent in lower case without any separation symbol (for example <code>md5</code> instead of <code>MD5</code>, <code>sha256</code> instead of <code>SHA-256</code>).</p>
-						<p>See <a href="#login.auth.hash">Auth.hash</a> for more details.</p>
+						<p>Algorithm used by the server to hash the concatenation of the password and the <a href="#login_auth-credentials_payload">payload</a>. The value should be sent in lower case without any separation symbol (for example <code>md5</code> instead of <code>MD5</code>, <code>sha256</code> instead of <code>SHA-256</code>).</p>
+						<p>See <a href="#login_auth_hash">Auth.hash</a> for more details.</p>
 					</li>
 					<li>
 						<strong id="login_auth-credentials_payload">payload</strong>
-						<p>Payload to cancatenate to the password before hashing it, as described in the <a href="#login.auth.hash">Auth.hash</a>'s field description.</p>
+						<p>Payload to cancatenate to the password before hashing it, as described in the <a href="#login_auth_hash">Auth.hash</a>'s field description.</p>
 					</li>
 				</ul>
 			</li>
@@ -109,7 +113,7 @@ socket.onmessage = function(event){
 					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
 					<tr><td class="center">1</td><td class="center">00000001₂</td><td class="center">01₁₆</td><td class="center"></td><td class="center">✓</td></tr>
 				</table>
-				<p>Performs authentication following the instruncions given by the <a href="#login.auth-credentials">AuthCredentials</a> packet.</p>
+				<p>Performs authentication following the instruncions given by the <a href="#login_auth-credentials">AuthCredentials</a> packet.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -118,16 +122,16 @@ socket.onmessage = function(event){
 				<ul>
 					<li>
 						<strong id="login_auth_hash">hash</strong>
-						<p>Pasword encoded as UTF-8 if <a href="#login.auth-credentials.auth">AuthCredentials.hash</a> is <code>false</code> or the hash (specified in <a href="#login.auth-credentials.hash-algorithm">AuthCredentials.hashAlgorithm</a>) of the password encoded as UTF-8 concatenated with the bytes from <a href="#login.auth-credentials.payload">AuthCredentials.payload</a> if <code>true</code>.</p>
+						<p>Pasword encoded as UTF-8 if <a href="#login_auth-credentials_auth">AuthCredentials.hash</a> is <code>false</code> or the hash (specified in <a href="#login_auth-credentials_hash-algorithm">AuthCredentials.hashAlgorithm</a>) of the password encoded as UTF-8 concatenated with the bytes from <a href="#login_auth-credentials_payload">AuthCredentials.payload</a> if <code>true</code>.</p>
 						<p>The hash can be done with a function (if hashAlgorithm is <code>sha1</code>) in D:</p>
-						<pre data-language="d">sha1Of(cast(ubyte[])password ~ authCredentials.payload);
-</pre>
+						<pre><code class="d">sha1Of(cast(ubyte[])password ~ authCredentials.payload);
+</code></pre>
 						<p>Or using <code>MessageDigest</code> in Java:</p>
-						<pre data-language="java">MessageDigest md = MessageDigest.getInstance(authCredentials.hashAlgorithm);
+						<pre><code class="java">MessageDigest md = MessageDigest.getInstance(authCredentials.hashAlgorithm);
 md.update(password.getBytes(StandardCharsets.UTF_8));
 md.update(authCredentials.payload);
 byte[] hash = md.digest();
-</pre>
+</code></pre>
 					</li>
 				</ul>
 			</li>
@@ -148,14 +152,14 @@ byte[] hash = md.digest();
 				<p><strong>Variants</strong>:</p>
 				<table>
 					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="login_welcome_accepted">Accepted</a></td><td>status</td><td class="center">0</td></tr>
-					<tr><td><a href="login_welcome_wrong-hash">Wrong Hash</a></td><td>status</td><td class="center">1</td></tr>
-					<tr><td><a href="login_welcome_timed-out">Timed Out</a></td><td>status</td><td class="center">2</td></tr>
+					<tr><td><a href="#login_welcome_accepted">Accepted</a></td><td>status</td><td class="center">0</td></tr>
+					<tr><td><a href="#login_welcome_wrong-hash">Wrong Hash</a></td><td>status</td><td class="center">1</td></tr>
+					<tr><td><a href="#login_welcome_timed-out">Timed Out</a></td><td>status</td><td class="center">2</td></tr>
 				</table>
 				<ul>
 					<li>
 						<h3 id="login_welcome_accepted">Accepted</h3>
-						<p>Sent when the hash sent in <a href="#login.auth">Auth</a> matches the server's.</p>
+						<p>Sent when the hash sent in <a href="#login_auth">Auth</a> matches the server's.</p>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Type</th></tr>
@@ -169,7 +173,7 @@ byte[] hash = md.digest();
 						<ul>
 							<li>
 								<strong id="login_welcome_accepted_remote-commands">remoteCommands</strong>
-								<p>Indicates whether the external console can execute command remotely through the <a href="#connected.command">Command</a> packet.</p>
+								<p>Indicates whether the external console can execute command remotely through the <a href="#connected_command">Command</a> packet.</p>
 							</li>
 							<li>
 								<strong id="login_welcome_accepted_software">software</strong>
@@ -177,7 +181,7 @@ byte[] hash = md.digest();
 							</li>
 							<li>
 								<strong id="login_welcome_accepted_versions">versions</strong>
-								<p>Versions of the server in a 3-btyes array readed as [major, minor, release].</p>
+								<p>Versions of the server in a 3-btyes array readed as <code>[major, minor, release]</code>.</p>
 							</li>
 							<li>
 								<strong id="login_welcome_accepted_display-name">displayName</strong>
@@ -195,11 +199,11 @@ byte[] hash = md.digest();
 					</li>
 					<li>
 						<h3 id="login_welcome_wrong-hash">Wrong Hash</h3>
-						<p>Sent when <a href="#login.auth">Auth</a> is received but the given password or hash doesn't match the server's one.</p>
+						<p>Sent when <a href="#login_auth">Auth</a> is received but the given password or hash doesn't match the server's one.</p>
 					</li>
 					<li>
 						<h3 id="login_welcome_timed-out">Timed Out</h3>
-						<p>Sent when <a href="#login.auth">Auth</a> is not received and the server decides to close the connection because too much time has elapsed since the creation of the socket.</p>
+						<p>Sent when <a href="#login_auth">Auth</a> is not received and the server decides to close the connection because too much time has elapsed since the creation of the socket.</p>
 					</li>
 				</ul>
 			</li>
@@ -270,7 +274,7 @@ byte[] hash = md.digest();
 					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
 					<tr><td class="center">2</td><td class="center">00000010₂</td><td class="center">02₁₆</td><td class="center"></td><td class="center">✓</td></tr>
 				</table>
-				<p>Requests an <a href="#stats.update-stats">UpdateStats</a> packet to the server, which should sent it immediately instead of waiting for the next automatic update (if the server does one).</p>
+				<p>Requests an <a href="#stats_update-stats">UpdateStats</a> packet to the server, which should sent it immediately instead of waiting for the next automatic update (if the server does one).</p>
 			</li>
 			<li>
 				<h3 id="status_update-stats">Update Stats</h3>
@@ -279,7 +283,7 @@ byte[] hash = md.digest();
 					<tr><td class="center">3</td><td class="center">00000011₂</td><td class="center">03₁₆</td><td class="center">✓</td><td class="center"></td></tr>
 				</table>
 				<p>Updates the statistics about the usage of the server and, eventually, the connected nodes.</p>
-				<p>This packet is sent in response to <a href="#status.request-stats">RequestStats</a> and every time the server retains that the stats should be updated (usually in a range of 5 to 30 seconds).</p>
+				<p>This packet is sent in response to <a href="#status_request-stats">RequestStats</a> and every time the server retains that the stats should be updated (usually in a range of 5 to 30 seconds).</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -368,7 +372,7 @@ byte[] hash = md.digest();
 					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
 					<tr><td class="center">5</td><td class="center">00000101₂</td><td class="center">05₁₆</td><td class="center"></td><td class="center">✓</td></tr>
 				</table>
-				<p>Executes a command remotely if the server allows it. If not a <a href="#connected.permission-denied">Permission Denied</a> is sent back. A good implementation of the external console client should never send this packet if <a href="#login.welcome.accepted.remote-commands">remoteCommands</a> field in <a href="#login.welcome.accepted">Welcome.Accepted</a> is not true.</p>
+				<p>Executes a command remotely if the server allows it. If not a <a href="#connected.permission-denied" target="_blank">Permission Denied</a> is sent back. A good implementation of the external console client should never send this packet if <a href="#login_welcome_accepted_remote-commands">remoteCommands</a> field in <a href="#login_welcome_accepted">Welcome.Accepted</a> is not true.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -387,7 +391,7 @@ byte[] hash = md.digest();
 					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
 					<tr><td class="center">6</td><td class="center">00000110₂</td><td class="center">06₁₆</td><td class="center">✓</td><td class="center"></td></tr>
 				</table>
-				<p>Bodyless packet only sent in response to <a href="#connected.command">Command</a> when the server doesn't allow the execution of remote commands through the external console. A good implementation of the external console client should never receive this packet avoiding the use of the <a href="#connected.command">Command</a> packet when the <a href="#login.welcome.accepted.remote-command">remoteCommands</a> field is false.</p>
+				<p>Bodyless packet only sent in response to <a href="#connected_command">Command</a> when the server doesn't allow the execution of remote commands through the external console. A good implementation of the external console client should never receive this packet avoiding the use of the <a href="#connected_command">Command</a> packet when the <a href="#login_welcome_accepted_remote-command">remoteCommands</a> field is false.</p>
 			</li>
 		</ul>
 		<hr>
@@ -432,7 +436,7 @@ byte[] hash = md.digest();
 				<ul>
 					<li>
 						<strong id="types_node-stats_name">name</strong>
-						<p>Name of the node. Should match one of the names given in [Welcome.Accepted.connectedNodes](#login.welcome.accepted.connected-nodes) or one added using the <a href="#status.update-nodes">UpdateNodes</a> packet.</p>
+						<p>Name of the node. Should match one of the names given in <a href="#login_welcome_accepted_connected-nodes">Welcome.Accepted.connectedNodes</a> or one added using the <a href="#status.update-nodes" target="_blank">UpdateNodes</a> packet.</p>
 						<p>If the server isn't built on the hub-node layout the name is an empty string and the following values are for the whole server and not for a node.</p>
 					</li>
 					<li>

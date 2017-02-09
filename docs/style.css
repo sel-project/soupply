@@ -1,19 +1,19 @@
 @font-face {
-    font-family: "Segoe 400";
-    font-weight: 400;
-    src: local("Segoe UI");
+	font-family: "Segoe 400";
+	font-weight: 400;
+	src: local("Segoe UI");
 }
 
 @font-face {
-    font-family: "Segoe 600";
-    font-weight: 600;
-    src: local("Segoe UI");
+	font-family: "Segoe 600";
+	font-weight: 600;
+	src: local("Segoe UI");
 }
 
 @font-face {
-    font-family: "Consolas";
-    font-weight: 400;
-    src: local("Consolas");
+	font-family: "Consolas";
+	font-weight: 400;
+	src: local("Consolas");
 }
 
 body {
@@ -24,11 +24,13 @@ body {
 	color: #333;
 	line-height: 1.5;
 	word-wrap: break-word;
+	background-color: #FCFCFC;
 }
 
 @media screen and (min-width: 1024px) {
 	body {
 		width: 1024px;
+		display: block;
 		border-right: 1px solid #DDD;
 		border-left: 1px solid #DDD;
 	}
@@ -47,18 +49,18 @@ table {
 	margin: 0 0 16px 0;
 	border-spacing: 0px;
 	border-collapse: collapse;
-	background-color: #FAFAFA;
+	background-color: #FEFEFE;
 }
 
 table th, table td {
 	padding: 6px 13px;
-	border: 1px solid #AAA;
+	border: 1px solid #CCC;
 }
 
 table th {
 	font-family: "Segoe 600", Helvetica;
 	text-align: center;
-	background-color: #F4F4F4;
+	background-color: #F7F7F7;
 }
 
 h1, h2, h3, h4, h5, h6, strong {
@@ -82,11 +84,10 @@ code, pre {
 	font-size: 15px;
 	border-radius: 3px;
 	background-color: rgba(0, 0, 0, 0.04);
-	padding: 4px 8px;
 }
 
 code {
-	padding: 0.2em 0;
+	padding: 2px 6px 1px 6px;
 }
 
 .center {
@@ -99,4 +100,14 @@ code {
 
 .removed {
 	background-color: #F1C0C0;
+}
+
+.logo {
+	text-align: center;
+	padding-top: 16px;
+}
+
+.logo img {
+	width: 224px;
+	height: 104px;
 }
