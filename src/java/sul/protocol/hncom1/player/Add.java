@@ -210,8 +210,9 @@ public class Add extends Packet {
 		public static final byte TYPE = (byte)1;
 
 		// device os
-		public static final byte UNKNOWN = 0;
-		public static final byte ANDROID = 2;
+		public static final byte UNKNOWN = -1;
+		public static final byte ANDROID = 1;
+		public static final byte WINDOWS10 = 7;
 
 		/**
 		 * XBOX Live id, which is a unique identifier for authenticated players or 0 if the

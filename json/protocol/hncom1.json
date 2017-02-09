@@ -564,10 +564,11 @@
 								},
 								{
 									"name": "device_os",
-									"type": "ubyte",
+									"type": "byte",
 									"constants": {
-										"unknown": 0,
-										"android": 2
+										"unknown": "-1",
+										"android": 1,
+										"windows10": 7
 									}
 								},
 								{

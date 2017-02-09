@@ -215,8 +215,9 @@ class Add : Buffer {
 		public enum typeof(type) TYPE = 1;
 
 		// device os
-		public enum ubyte UNKNOWN = 0;
-		public enum ubyte ANDROID = 2;
+		public enum byte UNKNOWN = -1;
+		public enum byte ANDROID = 1;
+		public enum byte WINDOWS10 = 7;
 
 		public enum string[] FIELDS = ["xuid", "edu", "packetLoss", "deviceOs", "deviceModel"];
 
@@ -241,7 +242,7 @@ class Add : Buffer {
 		 * Client's operative system, if supplied by the client. This field's value may be
 		 * used to divide players that play from a phone from players that play on a computer.
 		 */
-		public ubyte deviceOs;
+		public byte deviceOs;
 
 		/**
 		 * Client's device model, if supplied by the client. This field is usually a string
@@ -252,7 +253,7 @@ class Add : Buffer {
 
 		public pure nothrow @safe @nogc this() {}
 
-		public pure nothrow @safe @nogc this(long xuid, bool edu=bool.init, float packetLoss=float.init, ubyte deviceOs=ubyte.init, string deviceModel=string.init) {
+		public pure nothrow @safe @nogc this(long xuid, bool edu=bool.init, float packetLoss=float.init, byte deviceOs=byte.init, string deviceModel=string.init) {
 			this.xuid = xuid;
 			this.edu = edu;
 			this.packetLoss = packetLoss;
@@ -266,7 +267,7 @@ class Add : Buffer {
 			writeBytes(varlong.encode(xuid));
 			writeBigEndianBool(edu);
 			writeBigEndianFloat(packetLoss);
-			writeBigEndianUbyte(deviceOs);
+			writeBigEndianByte(deviceOs);
 			writeBytes(varuint.encode(cast(uint)deviceModel.length)); writeString(deviceModel);
 			return _buffer;
 		}
@@ -275,7 +276,7 @@ class Add : Buffer {
 			xuid=varlong.decode(_buffer, &_index);
 			edu=readBigEndianBool();
 			packetLoss=readBigEndianFloat();
-			deviceOs=readBigEndianUbyte();
+			deviceOs=readBigEndianByte();
 			uint zgv2awnltw9kzww=varuint.decode(_buffer, &_index); deviceModel=readString(zgv2awnltw9kzww);
 		}
 

@@ -447,12 +447,14 @@ string head(string title, bool back, string xml="", string description="") {
 	string b = back ? "../" : "";
 	return "<!DOCTYPE html>\n<html lang=\"en\">\n" ~
 			"\t<head>\n\t\t<meta charset=\"UTF-8\" />\n" ~
+			"\t\t<title>" ~ title ~ " | SEL Utils</title>\n" ~
 			"\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n" ~
 			(description.length ? "\t\t<meta name=\"description\" content=\"" ~ description.replace(`"`, `\"`) ~ "\" />\n" : "") ~
-			"\t\t<link rel=\"stylesheet\" href=\"http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css\" />\n" ~
-			"\t\t<script src=\"http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js\"></script>\n" ~
+			"\t\t<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css\" />\n" ~
+			"\t\t<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js\"></script>\n" ~
 			"\t\t<script>hljs.initHighlightingOnLoad();</script>\n" ~
-			"\t\t<title>" ~ title ~ " | SEL Utils</title>\n\t\t<link rel=\"stylesheet\" href=\"" ~ b ~ "style.min.css\" />\n\t</head>\n" ~
+			"\t\t<link rel=\"icon\" type=\"image/png\" href=\"" ~ b ~ "favicon.png\" />\n" ~
+			"\t\t<link rel=\"stylesheet\" href=\"" ~ b ~ "style.min.css\" />\n\t</head>\n" ~
 			"\t<body>\n\t\t<div class=\"logo\"><a href=\"" ~ b ~ "\"><div><img src=\"" ~ b ~ "logo.png\" alt=\"SEL\" /></div></a>" ~
 			"<div><a href=\"" ~ b ~ "\">Index</a>&nbsp;&nbsp;" ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/README.md\">About</a>&nbsp;&nbsp;" ~

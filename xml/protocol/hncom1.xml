@@ -468,10 +468,11 @@
 						<field name="packet-loss" type="float">
 							Client's packet loss calculated from the hub in the range 0 (no packet lost) to 100 (every packet lost).
 						</field>
-						<field name="device-os" type="ubyte">
+						<field name="device-os" type="byte">
 							Client's operative system, if supplied by the client. This field's value may be used to divide players that play from a phone from players that play on a computer.
-							<constant name="unknown" value="0" />
-							<constant name="android" value="2" />
+							<constant name="unknown" value="-1" />
+							<constant name="android" value="1" />
+							<constant name="windows10" value="7" />
 						</field>
 						<field name="device-model" type="string">
 							Client's device model, if supplied by the client. This field is usually a string in the format `MANUFACTURES MODEL`: for example, the Oneplus one is `ONEPLUS A0001`. This field's value may be used to exclude devices with bad performances.
