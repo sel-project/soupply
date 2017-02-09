@@ -221,7 +221,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		data ~= "\t\t</table>\n";
 		// sections
 		foreach(section ; ptrs.data.sections) {
-			data ~= "\t\t<h3>" ~ pretty(toCamelCase(section.name)) ~ "</h3>\n";
+			data ~= "\t\t<h3 id=\"" ~ link(section.name) ~ "\">" ~ pretty(toCamelCase(section.name)) ~ "</h3>\n";
 			if(section.description.length) data ~= desc("\t\t", section.description);
 			data ~= "\t\t<table>\n";
 			data ~= "\t\t\t<tr><th>Packets</th><th colspan=\"2\">Id</th><th>Clientbound</th><th>Serverbound</th></tr>\n";

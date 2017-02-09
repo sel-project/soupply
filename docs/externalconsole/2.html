@@ -69,7 +69,7 @@ socket.onmessage = function(event){
 			<tr><td><a href="#status">Status</a></td><td class="center">4</td></tr>
 			<tr><td><a href="#connected">Connected</a></td><td class="center">3</td></tr>
 		</table>
-		<h3>Login</h3>
+		<h3 id="login">Login</h3>
 		<p>Packets used during the authentication process and to exhange the initial server's informations.</p>
 		<table>
 			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
@@ -214,7 +214,7 @@ byte[] hash = md.digest();
 				</ul>
 			</li>
 		</ul>
-		<h3>Status</h3>
+		<h3 id="status">Status</h3>
 		<p>Packets about the informations and the usage of the server.</p>
 		<table>
 			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
@@ -328,7 +328,7 @@ byte[] hash = md.digest();
 				</ul>
 			</li>
 		</ul>
-		<h3>Connected</h3>
+		<h3 id="connected">Connected</h3>
 		<p>Packets regarding the server's console and commands.</p>
 		<table>
 			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
