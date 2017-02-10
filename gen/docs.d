@@ -16,15 +16,10 @@ module docs;
 
 import std.algorithm : min, max, canFind, sort;
 import std.conv : to;
-import std.datetime : Date;
 static import std.file;
-import std.xml;
-import std.path : dirSeparator;
 import std.regex : ctRegex, replaceAll, matchFirst;
 import std.string;
 import std.typecons : Tuple, tuple;
-
-import std.stdio : writeln;
 
 import all;
 
@@ -96,7 +91,6 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 						case 12: return "December";
 					}
 				}();
-				auto date = Date(to!int(spl[0]), to!int(spl[1]), to!int(spl[2]));
 				data ~= "\t\t<p><strong>Released</strong>: " ~ month ~ " " ~ day ~ ", " ~ spl[0] ~ "</p>\n";
 			}
 		}

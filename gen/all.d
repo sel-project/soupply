@@ -359,7 +359,7 @@ void main(string[] args) {
 	if(wall || wjs) js.js(attributes, protocols, creative);
 
 	if(wall || wdiff) diff.diff(attributes, protocols, metadata);
-	if(wall || wdoc) doc.doc(attributes, protocols, metadata);
+	if(wall || wdoc) doc.doc(protocols);
 	if(wall || wdocs) docs.docs(attributes, protocols, metadata);
 	if(wall || wjson) json.json(attributes, protocols, metadata, creative);
 
