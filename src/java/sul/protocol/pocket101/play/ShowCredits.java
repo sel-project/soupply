@@ -10,12 +10,16 @@ package sul.protocol.pocket101.play;
 
 import sul.utils.*;
 
+/**
+ * Shows the end credits to the player. They are always skippable client-side and a
+ * packet of this type is sent back by the client when the credits are skipped or finished.
+ */
 public class ShowCredits extends Packet {
 
 	public static final byte ID = (byte)76;
 
 	public static final boolean CLIENTBOUND = true;
-	public static final boolean SERVERBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
 	@Override
 	public int length() {

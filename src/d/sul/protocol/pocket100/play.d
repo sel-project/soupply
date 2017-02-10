@@ -4177,30 +4177,30 @@ class Camera : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["entityId", "runtimeId"];
+	public enum string[] FIELDS = ["unknown0", "unknown1"];
 
-	public long entityId;
-	public long runtimeId;
+	public long unknown0;
+	public long unknown1;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init) {
-		this.entityId = entityId;
-		this.runtimeId = runtimeId;
+	public pure nothrow @safe @nogc this(long unknown0, long unknown1=long.init) {
+		this.unknown0 = unknown0;
+		this.unknown1 = unknown1;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varlong.encode(entityId));
-		writeBytes(varlong.encode(runtimeId));
+		writeBytes(varlong.encode(unknown0));
+		writeBytes(varlong.encode(unknown1));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		entityId=varlong.decode(_buffer, &_index);
-		runtimeId=varlong.decode(_buffer, &_index);
+		unknown0=varlong.decode(_buffer, &_index);
+		unknown1=varlong.decode(_buffer, &_index);
 	}
 
 	public static pure nothrow @safe Camera fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -4211,7 +4211,7 @@ class Camera : Buffer {
 	}
 
 	public override string toString() {
-		return "Camera(entityId: " ~ std.conv.to!string(this.entityId) ~ ", runtimeId: " ~ std.conv.to!string(this.runtimeId) ~ ")";
+		return "Camera(unknown0: " ~ std.conv.to!string(this.unknown0) ~ ", unknown1: " ~ std.conv.to!string(this.unknown1) ~ ")";
 	}
 
 }
@@ -4314,7 +4314,7 @@ class ShowCredits : Buffer {
 	public enum ubyte ID = 76;
 
 	public enum bool CLIENTBOUND = true;
-	public enum bool SERVERBOUND = false;
+	public enum bool SERVERBOUND = true;
 
 	public enum string[] FIELDS = [];
 
@@ -4348,26 +4348,30 @@ class AvailableCommands : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["commands"];
+	public enum string[] FIELDS = ["commands", "unknown1"];
 
 	public string commands;
+	public string unknown1;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(string commands) {
+	public pure nothrow @safe @nogc this(string commands, string unknown1=string.init) {
 		this.commands = commands;
+		this.unknown1 = unknown1;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(cast(uint)commands.length)); writeString(commands);
+		writeBytes(varuint.encode(cast(uint)unknown1.length)); writeString(unknown1);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		uint y29tbwfuzhm=varuint.decode(_buffer, &_index); commands=readString(y29tbwfuzhm);
+		uint dw5rbm93bje=varuint.decode(_buffer, &_index); unknown1=readString(dw5rbm93bje);
 	}
 
 	public static pure nothrow @safe AvailableCommands fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -4378,7 +4382,7 @@ class AvailableCommands : Buffer {
 	}
 
 	public override string toString() {
-		return "AvailableCommands(commands: " ~ std.conv.to!string(this.commands) ~ ")";
+		return "AvailableCommands(commands: " ~ std.conv.to!string(this.commands) ~ ", unknown1: " ~ std.conv.to!string(this.unknown1) ~ ")";
 	}
 
 }

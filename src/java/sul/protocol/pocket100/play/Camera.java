@@ -17,27 +17,27 @@ public class Camera extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
-	public long entityId;
-	public long runtimeId;
+	public long unknown0;
+	public long unknown1;
 
 	public Camera() {}
 
-	public Camera(long entityId, long runtimeId) {
-		this.entityId = entityId;
-		this.runtimeId = runtimeId;
+	public Camera(long unknown0, long unknown1) {
+		this.unknown0 = unknown0;
+		this.unknown1 = unknown1;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varlongLength(entityId) + Buffer.varlongLength(runtimeId) + 1;
+		return Buffer.varlongLength(unknown0) + Buffer.varlongLength(unknown1) + 1;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeVarlong(entityId);
-		this.writeVarlong(runtimeId);
+		this.writeVarlong(unknown0);
+		this.writeVarlong(unknown1);
 		return this.getBuffer();
 	}
 
@@ -45,8 +45,8 @@ public class Camera extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		entityId=this.readVarlong();
-		runtimeId=this.readVarlong();
+		unknown0=this.readVarlong();
+		unknown1=this.readVarlong();
 	}
 
 	public static Camera fromBuffer(byte[] buffer) {
@@ -57,7 +57,7 @@ public class Camera extends Packet {
 
 	@Override
 	public String toString() {
-		return "Camera(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ")";
+		return "Camera(unknown0: " + this.unknown0 + ", unknown1: " + this.unknown1 + ")";
 	}
 
 }

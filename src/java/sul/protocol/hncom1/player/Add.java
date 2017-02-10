@@ -28,6 +28,11 @@ public class Add extends Packet {
 	public static final byte TRANSFERRED = 1;
 	public static final byte FORCIBLY_TRANSFERRED = 2;
 
+	// input mode
+	public static final byte KEYBOARD = 0;
+	public static final byte TOUCH = 1;
+	public static final byte CONTROLLER = 2;
+
 	public int hubId;
 
 	/**
@@ -105,19 +110,24 @@ public class Add extends Packet {
 	public sul.protocol.hncom1.types.Skin skin;
 
 	/**
-	 * Client's latency (ping time).
-	 */
-	public int latency;
-
-	/**
 	 * Client's language, in the same format as HubInfo.language, which should be updated
-	 * from the node when the client changes it.
+	 * from the node when the client changes it. See also UpdateLanguage.language.
 	 */
 	public String language;
 
+	/**
+	 * Client's input mode. See UpdateInputMode.inputMode for more informations.
+	 */
+	public byte inputMode;
+
+	/**
+	 * Client's latency (ping time). See UpdateLatency.latency for more informations.
+	 */
+	public int latency;
+
 	public Add() {}
 
-	public Add(int hubId, byte reason, byte type, int protocol, String version, String username, String displayName, byte dimension, sul.protocol.hncom1.types.Address clientAddress, String serverAddress, short serverPort, UUID uuid, sul.protocol.hncom1.types.Skin skin, int latency, String language) {
+	public Add(int hubId, byte reason, byte type, int protocol, String version, String username, String displayName, byte dimension, sul.protocol.hncom1.types.Address clientAddress, String serverAddress, short serverPort, UUID uuid, sul.protocol.hncom1.types.Skin skin, String language, byte inputMode, int latency) {
 		this.hubId = hubId;
 		this.reason = reason;
 		this.type = type;
@@ -131,13 +141,14 @@ public class Add extends Packet {
 		this.serverPort = serverPort;
 		this.uuid = uuid;
 		this.skin = skin;
-		this.latency = latency;
 		this.language = language;
+		this.inputMode = inputMode;
+		this.latency = latency;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(hubId) + Buffer.varuintLength(protocol) + Buffer.varuintLength(version.getBytes(StandardCharsets.UTF_8).length) + version.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + clientAddress.length() + Buffer.varuintLength(serverAddress.getBytes(StandardCharsets.UTF_8).length) + serverAddress.getBytes(StandardCharsets.UTF_8).length + skin.length() + Buffer.varuintLength(latency) + Buffer.varuintLength(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + 22;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(protocol) + Buffer.varuintLength(version.getBytes(StandardCharsets.UTF_8).length) + version.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + clientAddress.length() + Buffer.varuintLength(serverAddress.getBytes(StandardCharsets.UTF_8).length) + serverAddress.getBytes(StandardCharsets.UTF_8).length + skin.length() + Buffer.varuintLength(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(latency) + 23;
 	}
 
 	@Override
@@ -161,8 +172,9 @@ public class Add extends Packet {
 		this.writeBigEndianShort(serverPort);
 		this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
 		this.writeBytes(skin.encode());
-		this.writeVaruint(latency);
 		byte[] bgfuz3vhz2u=language.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bgfuz3vhz2u.length); this.writeBytes(bgfuz3vhz2u);
+		this.writeBigEndianByte(inputMode);
+		this.writeVaruint(latency);
 		return this.getBuffer();
 	}
 
@@ -183,8 +195,9 @@ public class Add extends Packet {
 		serverPort=readBigEndianShort();
 		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
 		skin=new sul.protocol.hncom1.types.Skin(); skin._index=this._index; skin.decode(this._buffer); this._index=skin._index;
-		latency=this.readVaruint();
 		int bgvubgfuz3vhz2u=this.readVaruint(); language=new String(this.readBytes(bgvubgfuz3vhz2u), StandardCharsets.UTF_8);
+		inputMode=readBigEndianByte();
+		latency=this.readVaruint();
 	}
 
 	private byte[] remainingBuffer() {
@@ -199,7 +212,7 @@ public class Add extends Packet {
 
 	@Override
 	public String toString() {
-		return "Add(hubId: " + this.hubId + ", reason: " + this.reason + ", type: " + this.type + ", protocol: " + this.protocol + ", version: " + this.version + ", username: " + this.username + ", displayName: " + this.displayName + ", dimension: " + this.dimension + ", clientAddress: " + this.clientAddress.toString() + ", serverAddress: " + this.serverAddress + ", serverPort: " + this.serverPort + ", uuid: " + this.uuid.toString() + ", skin: " + this.skin.toString() + ", latency: " + this.latency + ", language: " + this.language + ")";
+		return "Add(hubId: " + this.hubId + ", reason: " + this.reason + ", type: " + this.type + ", protocol: " + this.protocol + ", version: " + this.version + ", username: " + this.username + ", displayName: " + this.displayName + ", dimension: " + this.dimension + ", clientAddress: " + this.clientAddress.toString() + ", serverAddress: " + this.serverAddress + ", serverPort: " + this.serverPort + ", uuid: " + this.uuid.toString() + ", skin: " + this.skin.toString() + ", language: " + this.language + ", inputMode: " + this.inputMode + ", latency: " + this.latency + ")";
 	}
 
 	/**
@@ -210,8 +223,9 @@ public class Add extends Packet {
 		public static final byte TYPE = (byte)1;
 
 		// device os
-		public static final byte UNKNOWN = -1;
+		public static final byte UNKNOWN = 0;
 		public static final byte ANDROID = 1;
+		public static final byte IOS = 2;
 		public static final byte WINDOWS10 = 7;
 
 		/**
@@ -226,8 +240,8 @@ public class Add extends Packet {
 		public boolean edu;
 
 		/**
-		 * Client's packet loss calculated from the hub in the range 0 (no packet lost) to
-		 * 100 (every packet lost).
+		 * Client's packet loss calculated from the hub. See UpdatePacketLoss.packetLoss for
+		 * more informations.
 		 */
 		public float packetLoss;
 
@@ -239,8 +253,8 @@ public class Add extends Packet {
 
 		/**
 		 * Client's device model, if supplied by the client. This field is usually a string
-		 * in the format `MANUFACTURES MODEL`: for example, the Oneplus one is `ONEPLUS A0001`.
-		 * This field's value may be used to exclude devices with bad performances.
+		 * in the format `MANUFACTURER MODEL`: for example, the Oneplus one is `ONEPLUS A0001`.
+		 * This field's value may be used to ban low-end devices.
 		 */
 		public String deviceModel;
 

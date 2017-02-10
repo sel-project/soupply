@@ -11,34 +11,37 @@ package sul.protocol.hncom1.player;
 import sul.utils.*;
 
 /**
- * Updates the between the player and the hub.
+ * Update the player's current input mode.
  */
-public class UpdateLatency extends Packet {
+public class UpdateInputMode extends Packet {
 
-	public static final byte ID = (byte)22;
+	public static final byte ID = (byte)21;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	// input mode
+	public static final byte KEYBOARD = 0;
+	public static final byte TOUCH = 1;
+	public static final byte CONTROLLER = 2;
+
 	public int hubId;
 
 	/**
-	 * Player's latency in milliseconds. The latency between the client and the node is
-	 * then calculated adding the latency between the node and the hub (calculated using
-	 * HubInfo.time) to this field's value.
+	 * Player's input mode.
 	 */
-	public int latency;
+	public byte inputMode;
 
-	public UpdateLatency() {}
+	public UpdateInputMode() {}
 
-	public UpdateLatency(int hubId, int latency) {
+	public UpdateInputMode(int hubId, byte inputMode) {
 		this.hubId = hubId;
-		this.latency = latency;
+		this.inputMode = inputMode;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(hubId) + Buffer.varuintLength(latency) + 1;
+		return Buffer.varuintLength(hubId) + 2;
 	}
 
 	@Override
@@ -46,7 +49,7 @@ public class UpdateLatency extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
-		this.writeVaruint(latency);
+		this.writeBigEndianByte(inputMode);
 		return this.getBuffer();
 	}
 
@@ -55,18 +58,18 @@ public class UpdateLatency extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		hubId=this.readVaruint();
-		latency=this.readVaruint();
+		inputMode=readBigEndianByte();
 	}
 
-	public static UpdateLatency fromBuffer(byte[] buffer) {
-		UpdateLatency ret = new UpdateLatency();
+	public static UpdateInputMode fromBuffer(byte[] buffer) {
+		UpdateInputMode ret = new UpdateInputMode();
 		ret.decode(buffer);
 		return ret;
 	}
 
 	@Override
 	public String toString() {
-		return "UpdateLatency(hubId: " + this.hubId + ", latency: " + this.latency + ")";
+		return "UpdateInputMode(hubId: " + this.hubId + ", inputMode: " + this.inputMode + ")";
 	}
 
 }

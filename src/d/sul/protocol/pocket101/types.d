@@ -49,6 +49,10 @@ struct Pack {
 
 }
 
+/**
+ * Position of a block, where x and z are signed and y is always positive (as blocks
+ * cannot be placed under 0).
+ */
 struct BlockPosition {
 
 	public enum string[] FIELDS = ["x", "y", "z"];
@@ -79,12 +83,35 @@ struct BlockPosition {
 
 }
 
+/**
+ * Informations about a slot, that, if not empty, contains an item id and meta, the
+ * count (0-255) and, optionally, an nbt tag for enchantments, custom name, colours
+ * and more.
+ */
 struct Slot {
 
 	public enum string[] FIELDS = ["id", "metaAndCount", "nbt"];
 
+	/**
+	 * Item's id or 0 if the slot is empty.
+	 */
 	public int id;
+
+	/**
+	 * Item's meta or uses (unsigned short) left-shifted 8 times and the count (unisgned
+	 * byte).
+	 * Examples:
+	 * ---
+	 * var encoded = item.meta << 8 | item.count
+	 * var meta = encoded >> 8
+	 * var count = count & 255
+	 * ---
+	 */
 	public int metaAndCount;
+
+	/**
+	 * Optional nbt data encoded as a nameless little-endian compound tag.
+	 */
 	public ubyte[] nbt;
 
 	public pure nothrow @safe void encode(Buffer buffer) {
@@ -145,11 +172,21 @@ struct Attribute {
 
 }
 
+/**
+ * Player's skin.
+ */
 struct Skin {
 
 	public enum string[] FIELDS = ["name", "data"];
 
+	/**
+	 * Name of the skin. It's used to render the shape of the skin correctly.
+	 */
 	public string name;
+
+	/**
+	 * Bytes of the skin in format RGBA. The length should be 8192 or 16382.
+	 */
 	public ubyte[] data;
 
 	public pure nothrow @safe void encode(Buffer buffer) {

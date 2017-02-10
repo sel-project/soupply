@@ -2,7 +2,7 @@
 
 Protocol | Packets | Released | From | To
 :---:|:---:|:---:|:---:|:---:
-[316](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/316.md) | 116 | 2016/12/20 | 1.11.1 | 
+[316](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/316.md) | 116 | 2016/12/20 | 1.11.1 | 1.11.2
 [315](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/315.md) | 116 | 2016/11/14 | 1.11 | 1.11
 [210](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/210.md) | 116 | 2016/6/8 | 1.10 | 1.10.2
 [110](https://github.com/sel-project/sel-utils/tree/master/doc/minecraft/110.md) | 116 | 2016/4/27 | 1.9.3 | 1.9.4
@@ -15,7 +15,7 @@ Protocol | Packets | Released | From | To
 
 Protocol | Packets | Released | From | To
 :---:|:---:|:---:|:---:|:---:
-[101](https://github.com/sel-project/sel-utils/tree/master/doc/pocket/101.md) | 80 | 2017/2/1 | 1.0.3 | 
+[101](https://github.com/sel-project/sel-utils/tree/master/doc/pocket/101.md) | 80 | 2017/2/9 | 1.0.3 | 
 [100](https://github.com/sel-project/sel-utils/tree/master/doc/pocket/100.md) | 79 | 2016/12/19 | 1.0.0 | 1.0.2
 
 ## Raknet
@@ -28,7 +28,7 @@ Protocol | Packets | Released | From
 
 Protocol | Packets | Released
 :---:|:---:|:---:
-[1](https://github.com/sel-project/sel-utils/tree/master/doc/hncom/1.md) | 25 | 2017/1/25
+[1](https://github.com/sel-project/sel-utils/tree/master/doc/hncom/1.md) | 26 | 2017/1/25
 
 ## External Console
 

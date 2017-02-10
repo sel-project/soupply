@@ -41,7 +41,7 @@
 			<tr><th>Section</th><th>Packets</th></tr>
 			<tr><td><a href="#login">Login</a></td><td class="center">4</td></tr>
 			<tr><td><a href="#status">Status</a></td><td class="center">10</td></tr>
-			<tr><td><a href="#player">Player</a></td><td class="center">11</td></tr>
+			<tr><td><a href="#player">Player</a></td><td class="center">12</td></tr>
 		</table>
 		<h3 id="login">Login</h3>
 		<p>Packets used during the authentication process to exchange informations.</p>
@@ -566,6 +566,7 @@
 					</li>
 					<li>
 						<strong id="status_update-list_action">action</strong>
+						<p>Whether to add or removed the player from the list.</p>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
@@ -597,9 +598,13 @@
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Type</th></tr>
-							<tr><td>username</td><td>string</td></tr>
+							<tr><td><a href="#status_update-list_by-name_username">username</a></td><td>string</td></tr>
 						</table>
 						<ul>
+							<li>
+								<strong id="status_update-list_by-name_username">username</strong>
+								<p>Case-insensitive player's username. Spaces may be replaced by dashes.</p>
+							</li>
 						</ul>
 					</li>
 					<li>
@@ -641,13 +646,14 @@
 			<tr><td><a href="#player_remove">Remove</a></td><td class="center">15</td><td class="center">0F₁₆</td><td class="center">✓</td><td class="center"></td></tr>
 			<tr><td><a href="#player_kick">Kick</a></td><td class="center">16</td><td class="center">10₁₆</td><td class="center"></td><td class="center">✓</td></tr>
 			<tr><td><a href="#player_transfer">Transfer</a></td><td class="center">17</td><td class="center">11₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#player_update-language">Update Language</a></td><td class="center">18</td><td class="center">12₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#player_update-display-name">Update Display Name</a></td><td class="center">19</td><td class="center">13₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#player_update-world">Update World</a></td><td class="center">20</td><td class="center">14₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#player_update-latency">Update Latency</a></td><td class="center">21</td><td class="center">15₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#player_update-packet-loss">Update Packet Loss</a></td><td class="center">22</td><td class="center">16₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#player_game-packet">Game Packet</a></td><td class="center">23</td><td class="center">17₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
-			<tr><td><a href="#player_ordered-game-packet">Ordered Game Packet</a></td><td class="center">24</td><td class="center">18₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#player_update-display-name">Update Display Name</a></td><td class="center">18</td><td class="center">12₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#player_update-world">Update World</a></td><td class="center">19</td><td class="center">13₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#player_update-language">Update Language</a></td><td class="center">20</td><td class="center">14₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr><td><a href="#player_update-input-mode">Update Input Mode</a></td><td class="center">21</td><td class="center">15₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#player_update-latency">Update Latency</a></td><td class="center">22</td><td class="center">16₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#player_update-packet-loss">Update Packet Loss</a></td><td class="center">23</td><td class="center">17₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr><td><a href="#player_game-packet">Game Packet</a></td><td class="center">24</td><td class="center">18₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+			<tr><td><a href="#player_ordered-game-packet">Ordered Game Packet</a></td><td class="center">25</td><td class="center">19₁₆</td><td class="center"></td><td class="center">✓</td></tr>
 		</table>
 		<ul>
 			<li>
@@ -673,8 +679,9 @@
 					<tr><td><a href="#player_add_server-port">serverPort</a></td><td>ushort</td><td class="center"></td></tr>
 					<tr><td><a href="#player_add_uuid">uuid</a></td><td>uuid</td><td class="center"></td></tr>
 					<tr><td><a href="#player_add_skin">skin</a></td><td><a href="#types_skin">skin</a></td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_latency">latency</a></td><td>varuint</td><td class="center"></td></tr>
 					<tr><td><a href="#player_add_language">language</a></td><td>string</td><td class="center"></td></tr>
+					<tr><td><a href="#player_add_input-mode">inputMode</a></td><td>ubyte</td><td class="center"></td></tr>
+					<tr><td><a href="#player_add_latency">latency</a></td><td>varuint</td><td class="center"></td></tr>
 				</table>
 				<ul>
 					<li>
@@ -734,12 +741,23 @@
 						<p>Client's skin, given by the client or downloaded from Mojang's services in online mode.</p>
 					</li>
 					<li>
-						<strong id="player_add_latency">latency</strong>
-						<p>Client's latency (ping time).</p>
+						<strong id="player_add_language">language</strong>
+						<p>Client's language, in the same format as <a href="#login_hub-info_language">HubInfo.language</a>, which should be updated from the node when the client changes it. See also <a href="#player_update-language_language">UpdateLanguage.language</a>.</p>
 					</li>
 					<li>
-						<strong id="player_add_language">language</strong>
-						<p>Client's language, in the same format as <a href="#login_hub-info_language">HubInfo.language</a>, which should be updated from the node when the client changes it.</p>
+						<strong id="player_add_input-mode">inputMode</strong>
+						<p>Client's input mode. See <a href="#player_update-input-mode_input-mode">UpdateInputMode.inputMode</a> for more informations.</p>
+						<p><strong>Constants</strong>:</p>
+						<table>
+							<tr><th>Name</th><th>Value</th></tr>
+							<tr><td>keyboard</td><td class="center">0</td></tr>
+							<tr><td>touch</td><td class="center">1</td></tr>
+							<tr><td>controller</td><td class="center">2</td></tr>
+						</table>
+					</li>
+					<li>
+						<strong id="player_add_latency">latency</strong>
+						<p>Client's latency (ping time). See <a href="#player_update-latency_latency">UpdateLatency.latency</a> for more informations.</p>
 					</li>
 				</ul>
 				<p><strong>Variants</strong>:</p>
@@ -758,7 +776,7 @@
 							<tr><td><a href="#player_add_pocket_xuid">xuid</a></td><td>varlong</td></tr>
 							<tr><td><a href="#player_add_pocket_edu">edu</a></td><td>bool</td></tr>
 							<tr><td><a href="#player_add_pocket_packet-loss">packetLoss</a></td><td>float</td></tr>
-							<tr><td><a href="#player_add_pocket_device-os">deviceOs</a></td><td>byte</td></tr>
+							<tr><td><a href="#player_add_pocket_device-os">deviceOs</a></td><td>ubyte</td></tr>
 							<tr><td><a href="#player_add_pocket_device-model">deviceModel</a></td><td>string</td></tr>
 						</table>
 						<ul>
@@ -772,7 +790,7 @@
 							</li>
 							<li>
 								<strong id="player_add_pocket_packet-loss">packetLoss</strong>
-								<p>Client's packet loss calculated from the hub in the range 0 (no packet lost) to 100 (every packet lost).</p>
+								<p>Client's packet loss calculated from the hub. See <a href="#player_update-packet-loss_packet-loss">UpdatePacketLoss.packetLoss</a> for more informations.</p>
 							</li>
 							<li>
 								<strong id="player_add_pocket_device-os">deviceOs</strong>
@@ -780,14 +798,15 @@
 								<p><strong>Constants</strong>:</p>
 								<table>
 									<tr><th>Name</th><th>Value</th></tr>
-									<tr><td>unknown</td><td class="center">-1</td></tr>
+									<tr><td>unknown</td><td class="center">0</td></tr>
 									<tr><td>android</td><td class="center">1</td></tr>
+									<tr><td>ios</td><td class="center">2</td></tr>
 									<tr><td>windows10</td><td class="center">7</td></tr>
 								</table>
 							</li>
 							<li>
 								<strong id="player_add_pocket_device-model">deviceModel</strong>
-								<p>Client's device model, if supplied by the client. This field is usually a string in the format <code>MANUFACTURES MODEL</code>: for example, the Oneplus one is <code>ONEPLUS A0001</code>. This field's value may be used to exclude devices with bad performances.</p>
+								<p>Client's device model, if supplied by the client. This field is usually a string in the format <code>MANUFACTURER MODEL</code>: for example, the Oneplus one is <code>ONEPLUS A0001</code>. This field's value may be used to ban low-end devices.</p>
 							</li>
 						</ul>
 					</li>
@@ -888,30 +907,10 @@
 				</ul>
 			</li>
 			<li>
-				<h3 id="player_update-language">Update Language</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">18</td><td class="center">00010010₂</td><td class="center">12₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
-				<p>Updates the player's language when the client changes it.</p>
-				<p><strong>Fields</strong>:</p>
-				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>hubId</td><td>varuint</td></tr>
-					<tr><td><a href="#player_update-language_language">language</a></td><td>string</td></tr>
-				</table>
-				<ul>
-					<li>
-						<strong id="player_update-language_language">language</strong>
-						<p>Player's language in the same format as <a href="#login_hub-info_language">HubInfo.language</a>.</p>
-					</li>
-				</ul>
-			</li>
-			<li>
 				<h3 id="player_update-display-name">Update Display Name</h3>
 				<table>
 					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">19</td><td class="center">00010011₂</td><td class="center">13₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+					<tr><td class="center">18</td><td class="center">00010010₂</td><td class="center">12₁₆</td><td class="center"></td><td class="center">✓</td></tr>
 				</table>
 				<p>Updates the player's display name when it changes.</p>
 				<p><strong>Fields</strong>:</p>
@@ -931,7 +930,7 @@
 				<h3 id="player_update-world">Update World</h3>
 				<table>
 					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">20</td><td class="center">00010100₂</td><td class="center">14₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+					<tr><td class="center">19</td><td class="center">00010011₂</td><td class="center">13₁₆</td><td class="center"></td><td class="center">✓</td></tr>
 				</table>
 				<p>Updates player's world and dimension.</p>
 				<p><strong>Fields</strong>:</p>
@@ -953,12 +952,59 @@
 				</ul>
 			</li>
 			<li>
-				<h3 id="player_update-latency">Update Latency</h3>
+				<h3 id="player_update-language">Update Language</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">20</td><td class="center">00010100₂</td><td class="center">14₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+				</table>
+				<p>Updates the player's language when the client changes it.</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>hubId</td><td>varuint</td></tr>
+					<tr><td><a href="#player_update-language_language">language</a></td><td>string</td></tr>
+				</table>
+				<ul>
+					<li>
+						<strong id="player_update-language_language">language</strong>
+						<p>Player's language in the same format as <a href="#login_hub-info_language">HubInfo.language</a>.</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<h3 id="player_update-input-mode">Update Input Mode</h3>
 				<table>
 					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
 					<tr><td class="center">21</td><td class="center">00010101₂</td><td class="center">15₁₆</td><td class="center">✓</td><td class="center"></td></tr>
 				</table>
-				<p>Updates the player's latenct with the hub.</p>
+				<p>Update the player's current input mode.</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr><th>Name</th><th>Type</th></tr>
+					<tr><td>hubId</td><td>varuint</td></tr>
+					<tr><td><a href="#player_update-input-mode_input-mode">inputMode</a></td><td>ubyte</td></tr>
+				</table>
+				<ul>
+					<li>
+						<strong id="player_update-input-mode_input-mode">inputMode</strong>
+						<p>Player's input mode.</p>
+						<p><strong>Constants</strong>:</p>
+						<table>
+							<tr><th>Name</th><th>Value</th><th></th></tr>
+							<tr><td>keyboard</td><td class="center">0</td><td>Keyboard and mouse</td></tr>
+							<tr><td>touch</td><td class="center">1</td><td>Touchscreen</td></tr>
+							<tr><td>controller</td><td class="center">2</td><td>Generic controller</td></tr>
+						</table>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<h3 id="player_update-latency">Update Latency</h3>
+				<table>
+					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
+					<tr><td class="center">22</td><td class="center">00010110₂</td><td class="center">16₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+				</table>
+				<p>Updates the between the player and the hub.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -976,9 +1022,9 @@
 				<h3 id="player_update-packet-loss">Update Packet Loss</h3>
 				<table>
 					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">22</td><td class="center">00010110₂</td><td class="center">16₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+					<tr><td class="center">23</td><td class="center">00010111₂</td><td class="center">17₁₆</td><td class="center">✓</td><td class="center"></td></tr>
 				</table>
-				<p>Updates the player's packet loss if it uses a connectionless protocol.</p>
+				<p>Updates the player's packet loss if it uses a connectionless protocol like UDP.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr><th>Name</th><th>Type</th></tr>
@@ -996,7 +1042,7 @@
 				<h3 id="player_game-packet">Game Packet</h3>
 				<table>
 					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">23</td><td class="center">00010111₂</td><td class="center">17₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
+					<tr><td class="center">24</td><td class="center">00011000₂</td><td class="center">18₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
 				</table>
 				<p>Sends data to client or handles data received from the client.</p>
 				<p><strong>Fields</strong>:</p>
@@ -1008,7 +1054,7 @@
 				<ul>
 					<li>
 						<strong id="player_game-packet_packet">packet</strong>
-						<p>Serialised packet ready to be encrypted or encapsulated and sent to the client.</p>
+						<p>Serialised packet ready to be encrypted or encapsulated and sent to the client when this packet is serverbound or packet already unencrypted and uncompressed ready to be handled by the node otherwise.</p>
 						<h4>Format</h4>
 						<h5>Minecraft (serverbound)</h5>
 						<p>The packet is prefixed with a varuint-encoded 0 if the packet is not compressed or with the uncompressed packet's length encoded as a varuint if the packet is compressed.</p>
@@ -1025,7 +1071,7 @@
 				<h3 id="player_ordered-game-packet">Ordered Game Packet</h3>
 				<table>
 					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">24</td><td class="center">00011000₂</td><td class="center">18₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+					<tr><td class="center">25</td><td class="center">00011001₂</td><td class="center">19₁₆</td><td class="center"></td><td class="center">✓</td></tr>
 				</table>
 				<p>Sends data to the client but order it because it could be sent by the node unordered, due to compressed packet sent delayed.</p>
 				<p><strong>Fields</strong>:</p>

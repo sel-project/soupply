@@ -87,13 +87,14 @@ public final class Packets {
 		player.put(15, sul.protocol.hncom1.player.Remove.class);
 		player.put(16, sul.protocol.hncom1.player.Kick.class);
 		player.put(17, sul.protocol.hncom1.player.Transfer.class);
-		player.put(18, sul.protocol.hncom1.player.UpdateLanguage.class);
-		player.put(19, sul.protocol.hncom1.player.UpdateDisplayName.class);
-		player.put(20, sul.protocol.hncom1.player.UpdateWorld.class);
-		player.put(21, sul.protocol.hncom1.player.UpdateLatency.class);
-		player.put(22, sul.protocol.hncom1.player.UpdatePacketLoss.class);
-		player.put(23, sul.protocol.hncom1.player.GamePacket.class);
-		player.put(24, sul.protocol.hncom1.player.OrderedGamePacket.class);
+		player.put(18, sul.protocol.hncom1.player.UpdateDisplayName.class);
+		player.put(19, sul.protocol.hncom1.player.UpdateWorld.class);
+		player.put(20, sul.protocol.hncom1.player.UpdateLanguage.class);
+		player.put(21, sul.protocol.hncom1.player.UpdateInputMode.class);
+		player.put(22, sul.protocol.hncom1.player.UpdateLatency.class);
+		player.put(23, sul.protocol.hncom1.player.UpdatePacketLoss.class);
+		player.put(24, sul.protocol.hncom1.player.GamePacket.class);
+		player.put(25, sul.protocol.hncom1.player.OrderedGamePacket.class);
 		PLAYER = Collections.unmodifiableMap(player);
 
 	}

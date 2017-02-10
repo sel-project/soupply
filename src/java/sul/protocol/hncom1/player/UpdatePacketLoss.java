@@ -11,11 +11,11 @@ package sul.protocol.hncom1.player;
 import sul.utils.*;
 
 /**
- * Updates the player's packet loss if it uses a connectionless protocol.
+ * Updates the player's packet loss if it uses a connectionless protocol like UDP.
  */
 public class UpdatePacketLoss extends Packet {
 
-	public static final byte ID = (byte)22;
+	public static final byte ID = (byte)23;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

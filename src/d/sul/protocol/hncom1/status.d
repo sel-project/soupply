@@ -562,6 +562,10 @@ class UpdateList : Buffer {
 	 * Type of the list to update.
 	 */
 	public ubyte list;
+
+	/**
+	 * Whether to add or removed the player from the list.
+	 */
 	public ubyte action;
 	public ubyte type;
 
@@ -643,6 +647,9 @@ class UpdateList : Buffer {
 
 		public enum string[] FIELDS = ["username"];
 
+		/**
+		 * Case-insensitive player's username. Spaces may be replaced by dashes.
+		 */
 		public string username;
 
 		public pure nothrow @safe @nogc this() {}

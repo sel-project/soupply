@@ -430,6 +430,8 @@ const Status = {
 		/**
 		 * @param list
 		 *        Type of the list to update.
+		 * @param action
+		 *        Whether to add or removed the player from the list.
 		 */
 		constructor(list=0, action=0, type=0) {
 			this.list = list;

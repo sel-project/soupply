@@ -13,9 +13,19 @@ import java.util.Arrays;
 
 import sul.utils.*;
 
+/**
+ * Player's skin.
+ */
 public class Skin extends Packet {
 
+	/**
+	 * Name of the skin. It's used to render the shape of the skin correctly.
+	 */
 	public String name;
+
+	/**
+	 * Bytes of the skin in format RGBA. The length should be 8192 or 16382.
+	 */
 	public byte[] data;
 
 	public Skin() {}

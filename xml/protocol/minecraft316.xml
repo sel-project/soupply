@@ -10,6 +10,8 @@
 
 	<from>1.11.1</from>
 
+	<to>1.11.2</to>
+
 	<encoding id="varuint" arraylength="varuint">
 
 		<endianness type="*" value="big-endian" />

@@ -536,12 +536,21 @@
 						"type": "skin"
 					},
 					{
-						"name": "latency",
-						"type": "varuint"
-					},
-					{
 						"name": "language",
 						"type": "string"
+					},
+					{
+						"name": "input_mode",
+						"type": "ubyte",
+						"constants": {
+							"keyboard": 0,
+							"touch": 1,
+							"controller": 2
+						}
+					},
+					{
+						"name": "latency",
+						"type": "varuint"
 					}
 				],
 				"variants": {
@@ -564,10 +573,11 @@
 								},
 								{
 									"name": "device_os",
-									"type": "byte",
+									"type": "ubyte",
 									"constants": {
-										"unknown": "-1",
+										"unknown": 0,
 										"android": 1,
+										"ios": 2,
 										"windows10": 7
 									}
 								},
@@ -657,24 +667,8 @@
 				]
 			},
 
-			"update_language": {
-				"id": 18,
-				"clientbound": false,
-				"serverbound": true,
-				"fields": [
-					{
-						"name": "hub_id",
-						"type": "varuint"
-					},
-					{
-						"name": "language",
-						"type": "string"
-					}
-				]
-			},
-
 			"update_display_name": {
-				"id": 19,
+				"id": 18,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -690,7 +684,7 @@
 			},
 
 			"update_world": {
-				"id": 20,
+				"id": 19,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -709,8 +703,45 @@
 				]
 			},
 
-			"update_latency": {
+			"update_language": {
+				"id": 20,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "language",
+						"type": "string"
+					}
+				]
+			},
+
+			"update_input_mode": {
 				"id": 21,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "input_mode",
+						"type": "ubyte",
+						"constants": {
+							"keyboard": 0,
+							"touch": 1,
+							"controller": 2
+						}
+					}
+				]
+			},
+
+			"update_latency": {
+				"id": 22,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -726,7 +757,7 @@
 			},
 
 			"update_packet_loss": {
-				"id": 22,
+				"id": 23,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -742,7 +773,7 @@
 			},
 
 			"game_packet": {
-				"id": 23,
+				"id": 24,
 				"clientbound": true,
 				"serverbound": true,
 				"fields": [
@@ -758,7 +789,7 @@
 			},
 
 			"ordered_game_packet": {
-				"id": 24,
+				"id": 25,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [

@@ -35,6 +35,10 @@ public class UpdateList extends Packet {
 	 * Type of the list to update.
 	 */
 	public byte list;
+
+	/**
+	 * Whether to add or removed the player from the list.
+	 */
 	public byte action;
 	public byte type;
 
@@ -136,6 +140,9 @@ public class UpdateList extends Packet {
 
 		public static final byte TYPE = (byte)1;
 
+		/**
+		 * Case-insensitive player's username. Spaces may be replaced by dashes.
+		 */
 		public String username;
 
 		public ByName() {}

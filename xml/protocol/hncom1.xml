@@ -370,6 +370,7 @@
 					<constant name="blacklist" value="1" />
 				</field>
 				<field name="action" type="ubyte">
+					Whether to add or removed the player from the list.
 					<constant name="add" value="0" />
 					<constant name="remove" value="1" />
 				</field>
@@ -379,7 +380,9 @@
 						<field name="hub-id" type="hub-id" />
 					</variant>
 					<variant name="by-name" value="1">
-						<field name="username" type="string" />
+						<field name="username" type="string">
+							Case-insensitive player's username. Spaces may be replaced by dashes.
+						</field>
 					</variant>
 					<variant name="by-uuid" value="2">
 						<field name="game" type="ubyte">
@@ -450,11 +453,17 @@
 				<field name="skin" type="skin">
 					Client's skin, given by the client or downloaded from Mojang's services in online mode.
 				</field>
-				<field name="latency" type="varuint">
-					Client's latency (ping time).
-				</field>
 				<field name="language" type="string">
-					Client's language, in the same format as [HubInfo.language](#login_hub-info_language), which should be updated from the node when the client changes it.
+					Client's language, in the same format as [HubInfo.language](#login_hub-info_language), which should be updated from the node when the client changes it. See also [UpdateLanguage.language](#player_update-language_language).
+				</field>
+				<field name="input-mode" type="ubyte">
+					Client's input mode. See [UpdateInputMode.inputMode](#player_update-input-mode_input-mode) for more informations.
+					<constant name="keyboard" value="0" />
+					<constant name="touch" value="1" />
+					<constant name="controller" value="2" />
+				</field>
+				<field name="latency" type="varuint">
+					Client's latency (ping time). See [UpdateLatency.latency](#player_update-latency_latency) for more informations.
 				</field>
 				<variants field="type">
 					<variant name="pocket" value="1">
@@ -466,16 +475,17 @@
 							Indicates whether the client is using the [Education Edition](https://education.minecraft.net) variant of the game.
 						</field>
 						<field name="packet-loss" type="float">
-							Client's packet loss calculated from the hub in the range 0 (no packet lost) to 100 (every packet lost).
+							Client's packet loss calculated from the hub. See [UpdatePacketLoss.packetLoss](#player_update-packet-loss_packet-loss) for more informations.
 						</field>
-						<field name="device-os" type="byte">
+						<field name="device-os" type="ubyte">
 							Client's operative system, if supplied by the client. This field's value may be used to divide players that play from a phone from players that play on a computer.
-							<constant name="unknown" value="-1" />
+							<constant name="unknown" value="0" />
 							<constant name="android" value="1" />
+							<constant name="ios" value="2" />
 							<constant name="windows10" value="7" />
 						</field>
 						<field name="device-model" type="string">
-							Client's device model, if supplied by the client. This field is usually a string in the format `MANUFACTURES MODEL`: for example, the Oneplus one is `ONEPLUS A0001`. This field's value may be used to exclude devices with bad performances.
+							Client's device model, if supplied by the client. This field is usually a string in the format `MANUFACTURER MODEL`: for example, the Oneplus one is `ONEPLUS A0001`. This field's value may be used to ban low-end devices.
 						</field>
 					</variant>
 					<variant name="minecraft" value="2">
@@ -536,15 +546,7 @@
 				</field>
 			</packet>
 
-			<packet name="update-language" id="18" clientbound="false" serverbound="true">
-				Updates the player's language when the client changes it.
-				<field name="hub-id" type="hub-id" />
-				<field name="language" type="string">
-					Player's language in the same format as [HubInfo.language](#login_hub-info_language).
-				</field>
-			</packet>
-
-			<packet name="update-display-name" id="19" clientbound="false" serverbound="true">
+			<packet name="update-display-name" id="18" clientbound="false" serverbound="true">
 				Updates the player's display name when it changes.
 				<field name="hub-id" type="hub-id" />
 				<field name="display-name" type="string">
@@ -552,7 +554,7 @@
 				</field>
 			</packet>
 
-			<packet name="update-world" id="20" clientbound="false" serverbound="true">
+			<packet name="update-world" id="19" clientbound="false" serverbound="true">
 				Updates player's world and dimension.
 				<field name="hub-id" type="hub-id" />
 				<field name="world" type="string">
@@ -563,27 +565,52 @@
 				</field>
 			</packet>
 
-			<packet name="update-latency" id="21" clientbound="true" serverbound="false">
-				Updates the player's latenct with the hub.
+			<packet name="update-language" id="20" clientbound="false" serverbound="true">
+				Updates the player's language when the client changes it.
+				<field name="hub-id" type="hub-id" />
+				<field name="language" type="string">
+					Player's language in the same format as [HubInfo.language](#login_hub-info_language).
+				</field>
+			</packet>
+
+			<packet name="update-input-mode" id="21" clientbound="true" serverbound="false">
+				Update the player's current input mode.
+				<field name="hub-id" type="hub-id" />
+				<field name="input-mode" type="ubyte">
+					Player's input mode.
+					<constant name="keyboard" value="0">
+						Keyboard and mouse
+					</constant>
+					<constant name="touch" value="1">
+						Touchscreen
+					</constant>
+					<constant name="controller" value="2">
+						Generic controller
+					</constant>
+				</field>
+			</packet>
+
+			<packet name="update-latency" id="22" clientbound="true" serverbound="false">
+				Updates the between the player and the hub.
 				<field name="hub-id" type="hub-id" />
 				<field name="latency" type="varuint">
 					Player's latency in milliseconds. The latency between the client and the node is then calculated adding the latency between the node and the hub (calculated using [HubInfo.time](#login_hub-info_time)) to this field's value.
 				</field>
 			</packet>
 
-			<packet name="update-packet-loss" id="22" clientbound="true" serverbound="false">
-				Updates the player's packet loss if it uses a connectionless protocol.
+			<packet name="update-packet-loss" id="23" clientbound="true" serverbound="false">
+				Updates the player's packet loss if it uses a connectionless protocol like UDP.
 				<field name="hub-id" type="hub-id" />
 				<field name="packet-loss" type="float">
 					Percentage of lost packets in range 0 (no packet lost) to 100 (every packet lost).
 				</field>
 			</packet>
 
-			<packet name="game-packet" id="23" clientbound="true" serverbound="true">
+			<packet name="game-packet" id="24" clientbound="true" serverbound="true">
 				Sends data to client or handles data received from the client.
 				<field name="hub-id" type="hub-id" />
 				<field name="packet" type="bytes">
-					Serialised packet ready to be encrypted or encapsulated and sent to the client.
+					Serialised packet ready to be encrypted or encapsulated and sent to the client when this packet is serverbound or packet already unencrypted and uncompressed ready to be handled by the node otherwise.
 					#### Format
 
 					##### Minecraft (serverbound)
@@ -600,7 +627,7 @@
 				</field>
 			</packet>
 
-			<packet name="ordered-game-packet" id="24" clientbound="false" serverbound="true">
+			<packet name="ordered-game-packet" id="25" clientbound="false" serverbound="true">
 				Sends data to the client but order it because it could be sent by the node unordered, due to compressed packet sent delayed.
 				<field name="hub-id" type="hub-id" />
 				<field name="order" type="varuint">

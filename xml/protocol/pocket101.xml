@@ -6,7 +6,7 @@
 
 	<protocol>101</protocol>
 
-	<released>2017/2/1</released>
+	<released>2017/2/9</released>
 
 	<from>1.0.3</from>
 
@@ -24,6 +24,8 @@
 
 		<alias name="angle" type="ubyte" />
 
+		<alias name="json" type="string" />
+
 		<type name="pack">
 			<field name="id" type="string" />
 			<field name="version" type="string" />
@@ -31,15 +33,29 @@
 		</type>
 
 		<type name="block-position">
+			Position of a block, where x and z are signed and y is always positive (as blocks cannot be placed under 0).
 			<field name="x" type="varint" />
 			<field name="y" type="varuint" />
 			<field name="z" type="varint" />
 		</type>
 
 		<type name="slot">
-			<field name="id" type="varint" />
-			<field name="meta-and-count" type="varint" when="id>0" />
-			<field name="nbt" type="slot-nbt" when="id>0" />
+			Informations about a slot, that, if not empty, contains an item id and meta, the count (0-255) and, optionally, an nbt tag for enchantments, custom name, colours and more.
+			<field name="id" type="varint">
+				Item's id or 0 if the slot is empty.
+			</field>
+			<field name="meta-and-count" type="varint" when="id>0">
+				Item's meta or uses (unsigned short) left-shifted 8 times and the count (unisgned byte).
+				Examples:
+				```javascript
+				var encoded = item.meta &lt;&lt; 8 | item.count
+				var meta = encoded &gt;&gt; 8
+				var count = count & 255
+				```
+			</field>
+			<field name="nbt" type="slot-nbt" when="id>0">
+				Optional nbt data encoded as a nameless little-endian compound tag.
+			</field>
 		</type>
 
 		<array name="slot-nbt" base="ubyte" length="ushort" endianness="little-endian" />
@@ -53,8 +69,13 @@
 		</type>
 
 		<type name="skin">
-			<field name="name" type="string" />
-			<field name="data" type="ubyte[]" />
+			Player's [skin](http://minecraft.gamepedia.com/Skin).
+			<field name="name" type="string">
+				Name of the skin. It's used to render the shape of the skin correctly.
+			</field>
+			<field name="data" type="ubyte[]">
+				Bytes of the skin in format RGBA. The length should be 8192 or 16382.
+			</field>
 		</type>
 
 		<type name="player-list">
@@ -82,12 +103,18 @@
 		<section name="play">
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
-				<field name="protocol" type="uint" />
+				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
+				<field name="protocol" type="uint">
+					Version of the protocol used by the player.
+				</field>
 				<field name="edition" type="ubyte">
+					Edition that the player is using to join the server. The different editions may have different features and servers may block the access from unaccepted editions of the game.
 					<constant name="classic" value="0" />
 					<constant name="education" value="1" />
 				</field>
-				<field name="body" type="ubyte[]" />
+				<field name="body" type="ubyte[]">
+					Zlib-compressed bytes that contains 2 JWTs with more informations about the player and its account. Once uncompressed the resulting payload will contain 2 JWTs which length is indicated by a little-endian unsigned integer each.
+				</field>
 			</packet>
 
 			<packet name="play-status" id="2" clientbound="true" serverbound="false">
@@ -813,8 +840,8 @@
 			</packet>
 
 			<packet name="camera" id="73" clientbound="true" serverbound="false">
-				<field name="entity-id" type="entity-id" />
-				<field name="runtime-id" type="runtime-id" />
+				<field name="?" type="entity-id" />
+				<field name="?" type="entity-id" />
 			</packet>
 
 			<packet name="add-item" id="74" clientbound="true" serverbound="false">
@@ -830,12 +857,14 @@
 				</field>
 			</packet>
 
-			<packet name="show-credits" id="76" clientbound="true" serverbound="false">
-
+			<packet name="show-credits" id="76" clientbound="true" serverbound="true">
+				Shows the end credits to the player. They are always skippable client-side and a packet of this type is sent back by the client when the credits are skipped or finished.
 			</packet>
 
 			<packet name="available-commands" id="77" clientbound="true" serverbound="false">
-				<field name="commands" type="string" />
+				Sends a list of the commands that the player can use through the [CommandStep](#play_command-step) packet.
+				<field name="commands" type="json" />
+				<field name="?" type="json" />
 			</packet>
 
 			<packet name="command-step" id="78" clientbound="false" serverbound="true">
@@ -845,8 +874,8 @@
 				<field name="?" type="varuint" />
 				<field name="is-output" type="bool" />
 				<field name="?" type="varulong" />
-				<field name="input" type="string" />
-				<field name="output" type="string" />
+				<field name="input" type="json" />
+				<field name="output" type="json" />
 			</packet>
 
 			<packet name="resource-pack-data-info" id="79" clientbound="true" serverbound="false">
@@ -870,8 +899,13 @@
 			</packet>
 
 			<packet name="transfer" id="82" clientbound="true" serverbound="false">
-				<field name="ip" type="string" />
-				<field name="port" type="ushort" endianness="little-endian" />
+				Transfers the player to another server. Once transferred the player will immediately close the connection with the transferring server, try to resolve the ip and join the new server starting a new raknet session.
+				<field name="ip" type="string">
+					Address of the new server. It can be an dotted ip (for example `127.0.0.1`) or an URI (for example `localhost` or `play.example.com`). Only IP of version 4 are currently allowed.
+				</field>
+				<field name="port" type="ushort" endianness="little-endian">
+					Port of the new server. If 0 the server will try to connect to the default port.
+				</field>
 			</packet>
 
 		</section>

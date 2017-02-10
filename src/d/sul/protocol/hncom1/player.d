@@ -24,7 +24,7 @@ import sul.utils.var;
 
 static import sul.protocol.hncom1.types;
 
-alias Packets = TypeTuple!(Add, Remove, Kick, Transfer, UpdateLanguage, UpdateDisplayName, UpdateWorld, UpdateLatency, UpdatePacketLoss, GamePacket, OrderedGamePacket);
+alias Packets = TypeTuple!(Add, Remove, Kick, Transfer, UpdateDisplayName, UpdateWorld, UpdateLanguage, UpdateInputMode, UpdateLatency, UpdatePacketLoss, GamePacket, OrderedGamePacket);
 
 /**
  * Adds a player to the node.
@@ -41,7 +41,12 @@ class Add : Buffer {
 	public enum ubyte TRANSFERRED = 1;
 	public enum ubyte FORCIBLY_TRANSFERRED = 2;
 
-	public enum string[] FIELDS = ["hubId", "reason", "type", "protocol", "vers", "username", "displayName", "dimension", "clientAddress", "serverAddress", "serverPort", "uuid", "skin", "latency", "language"];
+	// input mode
+	public enum ubyte KEYBOARD = 0;
+	public enum ubyte TOUCH = 1;
+	public enum ubyte CONTROLLER = 2;
+
+	public enum string[] FIELDS = ["hubId", "reason", "type", "protocol", "vers", "username", "displayName", "dimension", "clientAddress", "serverAddress", "serverPort", "uuid", "skin", "language", "inputMode", "latency"];
 
 	public uint hubId;
 
@@ -120,19 +125,24 @@ class Add : Buffer {
 	public sul.protocol.hncom1.types.Skin skin;
 
 	/**
-	 * Client's latency (ping time).
-	 */
-	public uint latency;
-
-	/**
 	 * Client's language, in the same format as HubInfo.language, which should be updated
-	 * from the node when the client changes it.
+	 * from the node when the client changes it. See also UpdateLanguage.language.
 	 */
 	public string language;
 
+	/**
+	 * Client's input mode. See UpdateInputMode.inputMode for more informations.
+	 */
+	public ubyte inputMode;
+
+	/**
+	 * Client's latency (ping time). See UpdateLatency.latency for more informations.
+	 */
+	public uint latency;
+
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, ubyte type=ubyte.init, uint protocol=uint.init, string vers=string.init, string username=string.init, string displayName=string.init, byte dimension=byte.init, sul.protocol.hncom1.types.Address clientAddress=sul.protocol.hncom1.types.Address.init, string serverAddress=string.init, ushort serverPort=ushort.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, uint latency=uint.init, string language=string.init) {
+	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, ubyte type=ubyte.init, uint protocol=uint.init, string vers=string.init, string username=string.init, string displayName=string.init, byte dimension=byte.init, sul.protocol.hncom1.types.Address clientAddress=sul.protocol.hncom1.types.Address.init, string serverAddress=string.init, ushort serverPort=ushort.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, string language=string.init, ubyte inputMode=ubyte.init, uint latency=uint.init) {
 		this.hubId = hubId;
 		this.reason = reason;
 		this.type = type;
@@ -146,8 +156,9 @@ class Add : Buffer {
 		this.serverPort = serverPort;
 		this.uuid = uuid;
 		this.skin = skin;
-		this.latency = latency;
 		this.language = language;
+		this.inputMode = inputMode;
+		this.latency = latency;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
@@ -166,8 +177,9 @@ class Add : Buffer {
 		writeBigEndianUshort(serverPort);
 		writeBytes(uuid.data);
 		skin.encode(bufferInstance);
-		writeBytes(varuint.encode(latency));
 		writeBytes(varuint.encode(cast(uint)language.length)); writeString(language);
+		writeBigEndianUbyte(inputMode);
+		writeBytes(varuint.encode(latency));
 		return _buffer;
 	}
 
@@ -186,8 +198,9 @@ class Add : Buffer {
 		serverPort=readBigEndianUshort();
 		if(_buffer.length>=_index+16){ ubyte[16] dxvpza=_buffer[_index.._index+16].dup; _index+=16; uuid=UUID(dxvpza); }
 		skin.decode(bufferInstance);
-		latency=varuint.decode(_buffer, &_index);
 		uint bgfuz3vhz2u=varuint.decode(_buffer, &_index); language=readString(bgfuz3vhz2u);
+		inputMode=readBigEndianUbyte();
+		latency=varuint.decode(_buffer, &_index);
 	}
 
 	public static pure nothrow @safe Add fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -198,7 +211,7 @@ class Add : Buffer {
 	}
 
 	public override string toString() {
-		return "Add(hubId: " ~ std.conv.to!string(this.hubId) ~ ", reason: " ~ std.conv.to!string(this.reason) ~ ", type: " ~ std.conv.to!string(this.type) ~ ", protocol: " ~ std.conv.to!string(this.protocol) ~ ", vers: " ~ std.conv.to!string(this.vers) ~ ", username: " ~ std.conv.to!string(this.username) ~ ", displayName: " ~ std.conv.to!string(this.displayName) ~ ", dimension: " ~ std.conv.to!string(this.dimension) ~ ", clientAddress: " ~ std.conv.to!string(this.clientAddress) ~ ", serverAddress: " ~ std.conv.to!string(this.serverAddress) ~ ", serverPort: " ~ std.conv.to!string(this.serverPort) ~ ", uuid: " ~ std.conv.to!string(this.uuid) ~ ", skin: " ~ std.conv.to!string(this.skin) ~ ", latency: " ~ std.conv.to!string(this.latency) ~ ", language: " ~ std.conv.to!string(this.language) ~ ")";
+		return "Add(hubId: " ~ std.conv.to!string(this.hubId) ~ ", reason: " ~ std.conv.to!string(this.reason) ~ ", type: " ~ std.conv.to!string(this.type) ~ ", protocol: " ~ std.conv.to!string(this.protocol) ~ ", vers: " ~ std.conv.to!string(this.vers) ~ ", username: " ~ std.conv.to!string(this.username) ~ ", displayName: " ~ std.conv.to!string(this.displayName) ~ ", dimension: " ~ std.conv.to!string(this.dimension) ~ ", clientAddress: " ~ std.conv.to!string(this.clientAddress) ~ ", serverAddress: " ~ std.conv.to!string(this.serverAddress) ~ ", serverPort: " ~ std.conv.to!string(this.serverPort) ~ ", uuid: " ~ std.conv.to!string(this.uuid) ~ ", skin: " ~ std.conv.to!string(this.skin) ~ ", language: " ~ std.conv.to!string(this.language) ~ ", inputMode: " ~ std.conv.to!string(this.inputMode) ~ ", latency: " ~ std.conv.to!string(this.latency) ~ ")";
 	}
 
 	alias _encode = encode;
@@ -215,9 +228,10 @@ class Add : Buffer {
 		public enum typeof(type) TYPE = 1;
 
 		// device os
-		public enum byte UNKNOWN = -1;
-		public enum byte ANDROID = 1;
-		public enum byte WINDOWS10 = 7;
+		public enum ubyte UNKNOWN = 0;
+		public enum ubyte ANDROID = 1;
+		public enum ubyte IOS = 2;
+		public enum ubyte WINDOWS10 = 7;
 
 		public enum string[] FIELDS = ["xuid", "edu", "packetLoss", "deviceOs", "deviceModel"];
 
@@ -233,8 +247,8 @@ class Add : Buffer {
 		public bool edu;
 
 		/**
-		 * Client's packet loss calculated from the hub in the range 0 (no packet lost) to
-		 * 100 (every packet lost).
+		 * Client's packet loss calculated from the hub. See UpdatePacketLoss.packetLoss for
+		 * more informations.
 		 */
 		public float packetLoss;
 
@@ -242,18 +256,18 @@ class Add : Buffer {
 		 * Client's operative system, if supplied by the client. This field's value may be
 		 * used to divide players that play from a phone from players that play on a computer.
 		 */
-		public byte deviceOs;
+		public ubyte deviceOs;
 
 		/**
 		 * Client's device model, if supplied by the client. This field is usually a string
-		 * in the format `MANUFACTURES MODEL`: for example, the Oneplus one is `ONEPLUS A0001`.
-		 * This field's value may be used to exclude devices with bad performances.
+		 * in the format `MANUFACTURER MODEL`: for example, the Oneplus one is `ONEPLUS A0001`.
+		 * This field's value may be used to ban low-end devices.
 		 */
 		public string deviceModel;
 
 		public pure nothrow @safe @nogc this() {}
 
-		public pure nothrow @safe @nogc this(long xuid, bool edu=bool.init, float packetLoss=float.init, byte deviceOs=byte.init, string deviceModel=string.init) {
+		public pure nothrow @safe @nogc this(long xuid, bool edu=bool.init, float packetLoss=float.init, ubyte deviceOs=ubyte.init, string deviceModel=string.init) {
 			this.xuid = xuid;
 			this.edu = edu;
 			this.packetLoss = packetLoss;
@@ -267,7 +281,7 @@ class Add : Buffer {
 			writeBytes(varlong.encode(xuid));
 			writeBigEndianBool(edu);
 			writeBigEndianFloat(packetLoss);
-			writeBigEndianByte(deviceOs);
+			writeBigEndianUbyte(deviceOs);
 			writeBytes(varuint.encode(cast(uint)deviceModel.length)); writeString(deviceModel);
 			return _buffer;
 		}
@@ -276,7 +290,7 @@ class Add : Buffer {
 			xuid=varlong.decode(_buffer, &_index);
 			edu=readBigEndianBool();
 			packetLoss=readBigEndianFloat();
-			deviceOs=readBigEndianByte();
+			deviceOs=readBigEndianUbyte();
 			uint zgv2awnltw9kzww=varuint.decode(_buffer, &_index); deviceModel=readString(zgv2awnltw9kzww);
 		}
 
@@ -518,64 +532,11 @@ class Transfer : Buffer {
 }
 
 /**
- * Updates the player's language when the client changes it.
- */
-class UpdateLanguage : Buffer {
-
-	public enum ubyte ID = 18;
-
-	public enum bool CLIENTBOUND = false;
-	public enum bool SERVERBOUND = true;
-
-	public enum string[] FIELDS = ["hubId", "language"];
-
-	public uint hubId;
-
-	/**
-	 * Player's language in the same format as HubInfo.language.
-	 */
-	public string language;
-
-	public pure nothrow @safe @nogc this() {}
-
-	public pure nothrow @safe @nogc this(uint hubId, string language=string.init) {
-		this.hubId = hubId;
-		this.language = language;
-	}
-
-	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
-		_buffer.length = 0;
-		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varuint.encode(hubId));
-		writeBytes(varuint.encode(cast(uint)language.length)); writeString(language);
-		return _buffer;
-	}
-
-	public pure nothrow @safe void decode(bool readId=true)() {
-		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		hubId=varuint.decode(_buffer, &_index);
-		uint bgfuz3vhz2u=varuint.decode(_buffer, &_index); language=readString(bgfuz3vhz2u);
-	}
-
-	public static pure nothrow @safe UpdateLanguage fromBuffer(bool readId=true)(ubyte[] buffer) {
-		UpdateLanguage ret = new UpdateLanguage();
-		ret._buffer = buffer;
-		ret.decode!readId();
-		return ret;
-	}
-
-	public override string toString() {
-		return "UpdateLanguage(hubId: " ~ std.conv.to!string(this.hubId) ~ ", language: " ~ std.conv.to!string(this.language) ~ ")";
-	}
-
-}
-
-/**
  * Updates the player's display name when it changes.
  */
 class UpdateDisplayName : Buffer {
 
-	public enum ubyte ID = 19;
+	public enum ubyte ID = 18;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -629,7 +590,7 @@ class UpdateDisplayName : Buffer {
  */
 class UpdateWorld : Buffer {
 
-	public enum ubyte ID = 20;
+	public enum ubyte ID = 19;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -687,11 +648,122 @@ class UpdateWorld : Buffer {
 }
 
 /**
- * Updates the player's latenct with the hub.
+ * Updates the player's language when the client changes it.
+ */
+class UpdateLanguage : Buffer {
+
+	public enum ubyte ID = 20;
+
+	public enum bool CLIENTBOUND = false;
+	public enum bool SERVERBOUND = true;
+
+	public enum string[] FIELDS = ["hubId", "language"];
+
+	public uint hubId;
+
+	/**
+	 * Player's language in the same format as HubInfo.language.
+	 */
+	public string language;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint hubId, string language=string.init) {
+		this.hubId = hubId;
+		this.language = language;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(hubId));
+		writeBytes(varuint.encode(cast(uint)language.length)); writeString(language);
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		hubId=varuint.decode(_buffer, &_index);
+		uint bgfuz3vhz2u=varuint.decode(_buffer, &_index); language=readString(bgfuz3vhz2u);
+	}
+
+	public static pure nothrow @safe UpdateLanguage fromBuffer(bool readId=true)(ubyte[] buffer) {
+		UpdateLanguage ret = new UpdateLanguage();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+	public override string toString() {
+		return "UpdateLanguage(hubId: " ~ std.conv.to!string(this.hubId) ~ ", language: " ~ std.conv.to!string(this.language) ~ ")";
+	}
+
+}
+
+/**
+ * Update the player's current input mode.
+ */
+class UpdateInputMode : Buffer {
+
+	public enum ubyte ID = 21;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	// input mode
+	public enum ubyte KEYBOARD = 0;
+	public enum ubyte TOUCH = 1;
+	public enum ubyte CONTROLLER = 2;
+
+	public enum string[] FIELDS = ["hubId", "inputMode"];
+
+	public uint hubId;
+
+	/**
+	 * Player's input mode.
+	 */
+	public ubyte inputMode;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint hubId, ubyte inputMode=ubyte.init) {
+		this.hubId = hubId;
+		this.inputMode = inputMode;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(hubId));
+		writeBigEndianUbyte(inputMode);
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		hubId=varuint.decode(_buffer, &_index);
+		inputMode=readBigEndianUbyte();
+	}
+
+	public static pure nothrow @safe UpdateInputMode fromBuffer(bool readId=true)(ubyte[] buffer) {
+		UpdateInputMode ret = new UpdateInputMode();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+	public override string toString() {
+		return "UpdateInputMode(hubId: " ~ std.conv.to!string(this.hubId) ~ ", inputMode: " ~ std.conv.to!string(this.inputMode) ~ ")";
+	}
+
+}
+
+/**
+ * Updates the between the player and the hub.
  */
 class UpdateLatency : Buffer {
 
-	public enum ubyte ID = 21;
+	public enum ubyte ID = 22;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -742,11 +814,11 @@ class UpdateLatency : Buffer {
 }
 
 /**
- * Updates the player's packet loss if it uses a connectionless protocol.
+ * Updates the player's packet loss if it uses a connectionless protocol like UDP.
  */
 class UpdatePacketLoss : Buffer {
 
-	public enum ubyte ID = 22;
+	public enum ubyte ID = 23;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -799,7 +871,7 @@ class UpdatePacketLoss : Buffer {
  */
 class GamePacket : Buffer {
 
-	public enum ubyte ID = 23;
+	public enum ubyte ID = 24;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
@@ -809,7 +881,9 @@ class GamePacket : Buffer {
 	public uint hubId;
 
 	/**
-	 * Serialised packet ready to be encrypted or encapsulated and sent to the client.
+	 * Serialised packet ready to be encrypted or encapsulated and sent to the client when
+	 * this packet is serverbound or packet already unencrypted and uncompressed ready
+	 * to be handled by the node otherwise.
 	 * <h4>Format</h4>
 	 * 
 	 * <h5>Minecraft (serverbound)</h5>
@@ -870,7 +944,7 @@ class GamePacket : Buffer {
  */
 class OrderedGamePacket : Buffer {
 
-	public enum ubyte ID = 24;
+	public enum ubyte ID = 25;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;

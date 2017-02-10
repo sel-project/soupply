@@ -1998,11 +1998,11 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "entity_id",
+						"name": "?",
 						"type": "varlong"
 					},
 					{
-						"name": "runtime_id",
+						"name": "?",
 						"type": "varlong"
 					}
 				]
@@ -2044,7 +2044,7 @@
 			"show_credits": {
 				"id": 76,
 				"clientbound": true,
-				"serverbound": false,
+				"serverbound": true,
 				"fields": []
 			},
 
@@ -2055,6 +2055,10 @@
 				"fields": [
 					{
 						"name": "commands",
+						"type": "string"
+					},
+					{
+						"name": "?",
 						"type": "string"
 					}
 				]

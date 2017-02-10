@@ -397,19 +397,22 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	}
 	
 	// index
-	Tuple!(Protocol, string)[size_t][string] p;
+	Tuple!(Protocol, size_t, string)[][string] p;
 	foreach(game, prts; protocols) {
-		p[prts.software][prts.protocol] = tuple(prts.data, game);
+		p[prts.software] ~= tuple(prts.data, prts.protocol, game);
 	}
 	string data = head("Index", false);
-	//TODO order with algorithm
 	foreach(string name ; ["Minecraft", "Minecraft: Pocket Edition", "Raknet", "Hub-Node Communication", "External Console"]) {
-		auto sorted = sort(p[name].keys).release();
+		size_t date(string str) {
+			auto spl = str.split("/");
+			return (to!size_t(spl[0]) * 366 + to!size_t(spl[1])) * 31 + to!size_t(spl[2]);
+		}
+		auto sorted = sort!((a, b) => date(a[0].released) > date(b[0].released))(p[name]).release();
 		bool _released, _from, _to;
-		foreach(protocols ; p[name]) {
-			_released |= protocols[0].released.length != 0;
-			_from |= protocols[0].from.length != 0;
-			_to |= protocols[0].to.length != 0;
+		foreach(pr ; sorted) {
+			_released |= pr[0].released.length != 0;
+			_from |= pr[0].from.length != 0;
+			_to |= pr[0].to.length != 0;
 		}
 		data ~= "\t\t<h2>" ~ name ~ "</h2>\n";
 		data ~= "\t\t<table>\n";
@@ -420,13 +423,12 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		if(_from) data ~= "\t\t\t\t<th>From</th>\n";
 		if(_to) data ~= "\t\t\t\t<th>To</th>\n";
 		data ~= "\t\t\t</tr>\n";
-		foreach(size_t protocol ; sort!"a > b"(p[name].keys).release()) {
-			immutable ps = to!string(protocol);
-			auto cp = p[name][protocol];
+		foreach(cp ; sorted) {
+			immutable ps = to!string(cp[1]);
 			size_t packets = 0;
 			foreach(section ; cp[0].sections) packets += section.packets.length;
 			data ~= "\t\t\t<tr>\n";
-			data ~= "\t\t\t\t<td class=\"center\"><a href=\"" ~ cp[1][0..$-ps.length] ~ "/" ~ ps ~ ".html\">" ~ ps ~ "</a></td>\n";
+			data ~= "\t\t\t\t<td class=\"center\"><a href=\"" ~ cp[2][0..$-ps.length] ~ "/" ~ ps ~ ".html\">" ~ ps ~ "</a></td>\n";
 			data ~= "\t\t\t\t<td class=\"center\">" ~ to!string(packets) ~ "</td>\n";
 			if(_released) data ~= "\t\t\t\t<td class=\"center\">" ~ cp[0].released ~ "</td>\n";
 			if(_from) data ~= "\t\t\t\t<td class=\"center\">" ~ cp[0].from ~ "</td>\n";

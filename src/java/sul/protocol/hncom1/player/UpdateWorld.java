@@ -17,7 +17,7 @@ import sul.utils.*;
  */
 public class UpdateWorld extends Packet {
 
-	public static final byte ID = (byte)20;
+	public static final byte ID = (byte)19;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;

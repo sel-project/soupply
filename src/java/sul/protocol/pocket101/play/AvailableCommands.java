@@ -12,6 +12,9 @@ import java.nio.charset.StandardCharsets;
 
 import sul.utils.*;
 
+/**
+ * Sends a list of the commands that the player can use through the CommandStep packet.
+ */
 public class AvailableCommands extends Packet {
 
 	public static final byte ID = (byte)77;
@@ -20,16 +23,18 @@ public class AvailableCommands extends Packet {
 	public static final boolean SERVERBOUND = false;
 
 	public String commands;
+	public String unknown1;
 
 	public AvailableCommands() {}
 
-	public AvailableCommands(String commands) {
+	public AvailableCommands(String commands, String unknown1) {
 		this.commands = commands;
+		this.unknown1 = unknown1;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(commands.getBytes(StandardCharsets.UTF_8).length) + commands.getBytes(StandardCharsets.UTF_8).length + 1;
+		return Buffer.varuintLength(commands.getBytes(StandardCharsets.UTF_8).length) + commands.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(unknown1.getBytes(StandardCharsets.UTF_8).length) + unknown1.getBytes(StandardCharsets.UTF_8).length + 1;
 	}
 
 	@Override
@@ -37,6 +42,7 @@ public class AvailableCommands extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		byte[] y29tbwfuzhm=commands.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)y29tbwfuzhm.length); this.writeBytes(y29tbwfuzhm);
+		byte[] dw5rbm93bje=unknown1.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dw5rbm93bje.length); this.writeBytes(dw5rbm93bje);
 		return this.getBuffer();
 	}
 
@@ -45,6 +51,7 @@ public class AvailableCommands extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		int bgvuy29tbwfuzhm=this.readVaruint(); commands=new String(this.readBytes(bgvuy29tbwfuzhm), StandardCharsets.UTF_8);
+		int bgvudw5rbm93bje=this.readVaruint(); unknown1=new String(this.readBytes(bgvudw5rbm93bje), StandardCharsets.UTF_8);
 	}
 
 	public static AvailableCommands fromBuffer(byte[] buffer) {
@@ -55,7 +62,7 @@ public class AvailableCommands extends Packet {
 
 	@Override
 	public String toString() {
-		return "AvailableCommands(commands: " + this.commands + ")";
+		return "AvailableCommands(commands: " + this.commands + ", unknown1: " + this.unknown1 + ")";
 	}
 
 }

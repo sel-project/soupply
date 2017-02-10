@@ -2996,16 +2996,16 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityId=0, runtimeId=0) {
-			this.entityId = entityId;
-			this.runtimeId = runtimeId;
+		constructor(unknown0=0, unknown1=0) {
+			this.unknown0 = unknown0;
+			this.unknown1 = unknown1;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
 			this.writeByte(this.ID);
-			this.writeVarlong(entityId);
-			this.writeVarlong(runtimeId);
+			this.writeVarlong(unknown0);
+			this.writeVarlong(unknown1);
 		}
 
 		/** @param {Uint8Array} buffer */
@@ -3020,7 +3020,7 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "Camera(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ")";
+			return "Camera(unknown0: " + this.unknown0 + ", unknown1: " + this.unknown1 + ")";
 		}
 
 	},
@@ -3105,7 +3105,7 @@ const Play = {
 		static get ID(){ return 76; }
 
 		static get CLIENTBOUND(){ return true; }
-		static get SERVERBOUND(){ return false; }
+		static get SERVERBOUND(){ return true; }
 
 		constructor() {
 		}
@@ -3139,14 +3139,16 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(commands="") {
+		constructor(commands="", unknown1="") {
 			this.commands = commands;
+			this.unknown1 = unknown1;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
 			this.writeByte(this.ID);
 			this.writeString(commands);
+			this.writeString(unknown1);
 		}
 
 		/** @param {Uint8Array} buffer */
@@ -3161,7 +3163,7 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "AvailableCommands(commands: " + this.commands + ")";
+			return "AvailableCommands(commands: " + this.commands + ", unknown1: " + this.unknown1 + ")";
 		}
 
 	},

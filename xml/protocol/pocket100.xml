@@ -815,8 +815,8 @@
 			</packet>
 
 			<packet name="camera" id="73" clientbound="true" serverbound="false">
-				<field name="entity-id" type="entity-id" />
-				<field name="runtime-id" type="runtime-id" />
+				<field name="?" type="entity-id" />
+				<field name="?" type="entity-id" />
 			</packet>
 
 			<packet name="add-item" id="74" clientbound="true" serverbound="false">
@@ -832,12 +832,11 @@
 				</field>
 			</packet>
 
-			<packet name="show-credits" id="76" clientbound="true" serverbound="false">
-
-			</packet>
+			<packet name="show-credits" id="76" clientbound="true" serverbound="true"></packet>
 
 			<packet name="available-commands" id="77" clientbound="true" serverbound="false">
 				<field name="commands" type="string" />
+				<field name="?" type="string" />
 			</packet>
 
 			<packet name="command-step" id="78" clientbound="false" serverbound="true">

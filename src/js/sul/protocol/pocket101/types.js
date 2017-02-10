@@ -68,6 +68,15 @@ const Types = {
 
 	Slot: class {
 
+		/**
+		 * @param id
+		 *        Item's id or 0 if the slot is empty.
+		 * @param metaAndCount
+		 *        Item's meta or uses (unsigned short) left-shifted 8 times and the count (unisgned byte).Examples:```javascriptvar
+		 *        encoded = item.meta << 8 | item.countvar meta = encoded >> 8var count = count & 255```
+		 * @param nbt
+		 *        Optional nbt data encoded as a nameless little-endian compound tag.
+		 */
 		constructor(id=0, metaAndCount=0, nbt=null) {
 			this.id = id;
 			this.metaAndCount = metaAndCount;
@@ -128,6 +137,12 @@ const Types = {
 
 	Skin: class {
 
+		/**
+		 * @param name
+		 *        Name of the skin. It's used to render the shape of the skin correctly.
+		 * @param data
+		 *        Bytes of the skin in format RGBA. The length should be 8192 or 16382.
+		 */
 		constructor(name="", data=[]) {
 			this.name = name;
 			this.data = data;

@@ -24,6 +24,10 @@ import sul.metadata.pocket101;
 
 alias Packets = TypeTuple!(Login, PlayStatus, ServerHandshake, ClientMagic, Disconnect, Batch, ResourcePacksInfo, ResourcePackClientResponse, Text, SetTime, StartGame, AddPlayer, AddEntity, RemoveEntity, AddItemEntity, AddHangingEntity, TakeItemEntity, MoveEntity, MovePlayer, RiderJump, RemoveBlock, UpdateBlock, AddPainting, Explode, LevelSoundEvent, LevelEvent, BlockEvent, EntityEvent, MobEffect, UpdateAttributes, MobEquipment, MobArmorEquipment, Interact, UseItem, PlayerAction, PlayerFall, HurtArmor, SetEntityData, SetEntityMotion, SetEntityLink, SetHealth, SetSpawnPosition, Animate, Respawn, DropItem, InventoryAction, ContainerOpen, ContainerClose, ContainerSetSlot, ContainerSetData, ContainerSetContent, CraftingData, CraftingEvent, AdventureSettings, BlockEntityData, PlayerInput, FullChunkData, SetCheatsEnabled, SetDifficulty, ChangeDimension, SetPlayerGametype, PlayerList, TelemetryEvent, SpawnExperienceOrb, ClientboundMapItemData, MapInfoRequest, RequestChunkRadius, ChunkRadiusUpdated, ItemFrameDropItem, ReplaceSelectedItem, Camera, AddItem, BossEvent, ShowCredits, AvailableCommands, CommandStep, ResourcePackDataInfo, ResourcePackChunkData, ResourcePackChunkRequest, Transfer);
 
+/**
+ * First MCPE packet sent after the establishment of the connection through raknet.
+ * It contains informations about the player.
+ */
 class Login : Buffer {
 
 	public enum ubyte ID = 1;
@@ -37,8 +41,23 @@ class Login : Buffer {
 
 	public enum string[] FIELDS = ["protocol", "edition", "body_"];
 
+	/**
+	 * Version of the protocol used by the player.
+	 */
 	public uint protocol;
+
+	/**
+	 * Edition that the player is using to join the server. The different editions may
+	 * have different features and servers may block the access from unaccepted editions
+	 * of the game.
+	 */
 	public ubyte edition;
+
+	/**
+	 * Zlib-compressed bytes that contains 2 JWTs with more informations about the player
+	 * and its account. Once uncompressed the resulting payload will contain 2 JWTs which
+	 * length is indicated by a little-endian unsigned integer each.
+	 */
 	public ubyte[] body_;
 
 	public pure nothrow @safe @nogc this() {}
@@ -4177,30 +4196,30 @@ class Camera : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["entityId", "runtimeId"];
+	public enum string[] FIELDS = ["unknown0", "unknown1"];
 
-	public long entityId;
-	public long runtimeId;
+	public long unknown0;
+	public long unknown1;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init) {
-		this.entityId = entityId;
-		this.runtimeId = runtimeId;
+	public pure nothrow @safe @nogc this(long unknown0, long unknown1=long.init) {
+		this.unknown0 = unknown0;
+		this.unknown1 = unknown1;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varlong.encode(entityId));
-		writeBytes(varlong.encode(runtimeId));
+		writeBytes(varlong.encode(unknown0));
+		writeBytes(varlong.encode(unknown1));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		entityId=varlong.decode(_buffer, &_index);
-		runtimeId=varlong.decode(_buffer, &_index);
+		unknown0=varlong.decode(_buffer, &_index);
+		unknown1=varlong.decode(_buffer, &_index);
 	}
 
 	public static pure nothrow @safe Camera fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -4211,7 +4230,7 @@ class Camera : Buffer {
 	}
 
 	public override string toString() {
-		return "Camera(entityId: " ~ std.conv.to!string(this.entityId) ~ ", runtimeId: " ~ std.conv.to!string(this.runtimeId) ~ ")";
+		return "Camera(unknown0: " ~ std.conv.to!string(this.unknown0) ~ ", unknown1: " ~ std.conv.to!string(this.unknown1) ~ ")";
 	}
 
 }
@@ -4309,12 +4328,16 @@ class BossEvent : Buffer {
 
 }
 
+/**
+ * Shows the end credits to the player. They are always skippable client-side and a
+ * packet of this type is sent back by the client when the credits are skipped or finished.
+ */
 class ShowCredits : Buffer {
 
 	public enum ubyte ID = 76;
 
 	public enum bool CLIENTBOUND = true;
-	public enum bool SERVERBOUND = false;
+	public enum bool SERVERBOUND = true;
 
 	public enum string[] FIELDS = [];
 
@@ -4341,6 +4364,9 @@ class ShowCredits : Buffer {
 
 }
 
+/**
+ * Sends a list of the commands that the player can use through the CommandStep packet.
+ */
 class AvailableCommands : Buffer {
 
 	public enum ubyte ID = 77;
@@ -4348,26 +4374,30 @@ class AvailableCommands : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["commands"];
+	public enum string[] FIELDS = ["commands", "unknown1"];
 
 	public string commands;
+	public string unknown1;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(string commands) {
+	public pure nothrow @safe @nogc this(string commands, string unknown1=string.init) {
 		this.commands = commands;
+		this.unknown1 = unknown1;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(cast(uint)commands.length)); writeString(commands);
+		writeBytes(varuint.encode(cast(uint)unknown1.length)); writeString(unknown1);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		uint y29tbwfuzhm=varuint.decode(_buffer, &_index); commands=readString(y29tbwfuzhm);
+		uint dw5rbm93bje=varuint.decode(_buffer, &_index); unknown1=readString(dw5rbm93bje);
 	}
 
 	public static pure nothrow @safe AvailableCommands fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -4378,7 +4408,7 @@ class AvailableCommands : Buffer {
 	}
 
 	public override string toString() {
-		return "AvailableCommands(commands: " ~ std.conv.to!string(this.commands) ~ ")";
+		return "AvailableCommands(commands: " ~ std.conv.to!string(this.commands) ~ ", unknown1: " ~ std.conv.to!string(this.unknown1) ~ ")";
 	}
 
 }
@@ -4611,6 +4641,11 @@ class ResourcePackChunkRequest : Buffer {
 
 }
 
+/**
+ * Transfers the player to another server. Once transferred the player will immediately
+ * close the connection with the transferring server, try to resolve the ip and join
+ * the new server starting a new raknet session.
+ */
 class Transfer : Buffer {
 
 	public enum ubyte ID = 82;
@@ -4620,7 +4655,16 @@ class Transfer : Buffer {
 
 	public enum string[] FIELDS = ["ip", "port"];
 
+	/**
+	 * Address of the new server. It can be an dotted ip (for example `127.0.0.1`) or an
+	 * URI (for example `localhost` or `play.example.com`). Only IP of version 4 are currently
+	 * allowed.
+	 */
 	public string ip;
+
+	/**
+	 * Port of the new server. If 0 the server will try to connect to the default port.
+	 */
 	public ushort port;
 
 	public pure nothrow @safe @nogc this() {}

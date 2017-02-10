@@ -10,6 +10,10 @@ package sul.protocol.pocket101.types;
 
 import sul.utils.*;
 
+/**
+ * Position of a block, where x and z are signed and y is always positive (as blocks
+ * cannot be placed under 0).
+ */
 public class BlockPosition extends Packet {
 
 	public int x;

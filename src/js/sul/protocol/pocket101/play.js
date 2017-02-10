@@ -12,6 +12,10 @@
 
 const Play = {
 
+	/**
+	 * First MCPE packet sent after the establishment of the connection through raknet.
+	 * It contains informations about the player.
+	 */
 	Login: class {
 
 		static get ID(){ return 1; }
@@ -23,6 +27,17 @@ const Play = {
 		static get CLASSIC(){ return 0; }
 		static get EDUCATION(){ return 1; }
 
+		/**
+		 * @param protocol
+		 *        Version of the protocol used by the player.
+		 * @param edition
+		 *        Edition that the player is using to join the server. The different editions may have different features
+		 *        and servers may block the access from unaccepted editions of the game.
+		 * @param body
+		 *        Zlib-compressed bytes that contains 2 JWTs with more informations about the player and its account.
+		 *        Once uncompressed the resulting payload will contain 2 JWTs which length is indicated by a little-endian
+		 *        unsigned integer each.
+		 */
 		constructor(protocol=0, edition=0, body=[]) {
 			this.protocol = protocol;
 			this.edition = edition;
@@ -2996,16 +3011,16 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityId=0, runtimeId=0) {
-			this.entityId = entityId;
-			this.runtimeId = runtimeId;
+		constructor(unknown0=0, unknown1=0) {
+			this.unknown0 = unknown0;
+			this.unknown1 = unknown1;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
 			this.writeByte(this.ID);
-			this.writeVarlong(entityId);
-			this.writeVarlong(runtimeId);
+			this.writeVarlong(unknown0);
+			this.writeVarlong(unknown1);
 		}
 
 		/** @param {Uint8Array} buffer */
@@ -3020,7 +3035,7 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "Camera(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ")";
+			return "Camera(unknown0: " + this.unknown0 + ", unknown1: " + this.unknown1 + ")";
 		}
 
 	},
@@ -3100,12 +3115,16 @@ const Play = {
 
 	},
 
+	/**
+	 * Shows the end credits to the player. They are always skippable client-side and a
+	 * packet of this type is sent back by the client when the credits are skipped or finished.
+	 */
 	ShowCredits: class {
 
 		static get ID(){ return 76; }
 
 		static get CLIENTBOUND(){ return true; }
-		static get SERVERBOUND(){ return false; }
+		static get SERVERBOUND(){ return true; }
 
 		constructor() {
 		}
@@ -3132,6 +3151,9 @@ const Play = {
 
 	},
 
+	/**
+	 * Sends a list of the commands that the player can use through the CommandStep packet.
+	 */
 	AvailableCommands: class {
 
 		static get ID(){ return 77; }
@@ -3139,14 +3161,16 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(commands="") {
+		constructor(commands="", unknown1="") {
 			this.commands = commands;
+			this.unknown1 = unknown1;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
 			this.writeByte(this.ID);
 			this.writeString(commands);
+			this.writeString(unknown1);
 		}
 
 		/** @param {Uint8Array} buffer */
@@ -3161,7 +3185,7 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "AvailableCommands(commands: " + this.commands + ")";
+			return "AvailableCommands(commands: " + this.commands + ", unknown1: " + this.unknown1 + ")";
 		}
 
 	},
@@ -3332,6 +3356,11 @@ const Play = {
 
 	},
 
+	/**
+	 * Transfers the player to another server. Once transferred the player will immediately
+	 * close the connection with the transferring server, try to resolve the ip and join
+	 * the new server starting a new raknet session.
+	 */
 	Transfer: class {
 
 		static get ID(){ return 82; }
@@ -3339,6 +3368,13 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		/**
+		 * @param ip
+		 *        Address of the new server. It can be an dotted ip (for example `127.0.0.1`) or an URI (for example
+		 *        `localhost` or `play.example.com`). Only IP of version 4 are currently allowed.
+		 * @param port
+		 *        Port of the new server. If 0 the server will try to connect to the default port.
+		 */
 		constructor(ip="", port=0) {
 			this.ip = ip;
 			this.port = port;

@@ -31,6 +31,11 @@ const Player = {
 		static get TRANSFERRED(){ return 1; }
 		static get FORCIBLY_TRANSFERRED(){ return 2; }
 
+		// input mode
+		static get KEYBOARD(){ return 0; }
+		static get TOUCH(){ return 1; }
+		static get CONTROLLER(){ return 2; }
+
 		/**
 		 * @param reason
 		 *        Reason why the player has joined the node.
@@ -66,13 +71,15 @@ const Player = {
 		 *        by the client (and not verified) if the server is in offline mode.
 		 * @param skin
 		 *        Client's skin, given by the client or downloaded from Mojang's services in online mode.
-		 * @param latency
-		 *        Client's latency (ping time).
 		 * @param language
 		 *        Client's language, in the same format as HubInfo.language, which should be updated from the node
-		 *        when the client changes it.
+		 *        when the client changes it. See also UpdateLanguage.language.
+		 * @param inputMode
+		 *        Client's input mode. See UpdateInputMode.inputMode for more informations.
+		 * @param latency
+		 *        Client's latency (ping time). See UpdateLatency.latency for more informations.
 		 */
-		constructor(hubId=0, reason=0, type=0, protocol=0, version="", username="", displayName="", dimension=0, clientAddress=null, serverAddress="", serverPort=0, uuid=new Uint8Array(16), skin=null, latency=0, language="") {
+		constructor(hubId=0, reason=0, type=0, protocol=0, version="", username="", displayName="", dimension=0, clientAddress=null, serverAddress="", serverPort=0, uuid=new Uint8Array(16), skin=null, language="", inputMode=0, latency=0) {
 			this.hubId = hubId;
 			this.reason = reason;
 			this.type = type;
@@ -86,8 +93,9 @@ const Player = {
 			this.serverPort = serverPort;
 			this.uuid = uuid;
 			this.skin = skin;
-			this.latency = latency;
 			this.language = language;
+			this.inputMode = inputMode;
+			this.latency = latency;
 		}
 
 		/** @return {Uint8Array} */
@@ -106,8 +114,9 @@ const Player = {
 			this.writeBigEndianShort(serverPort);
 			this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
 			this.writeBytes(skin.encode());
-			this.writeVaruint(latency);
 			this.writeString(language);
+			this.writeByte(inputMode);
+			this.writeVaruint(latency);
 		}
 
 		/** @param {Uint8Array} buffer */
@@ -122,7 +131,7 @@ const Player = {
 
 		/** @return {string} */
 		toString() {
-			return "Add(hubId: " + this.hubId + ", reason: " + this.reason + ", type: " + this.type + ", protocol: " + this.protocol + ", version: " + this.version + ", username: " + this.username + ", displayName: " + this.displayName + ", dimension: " + this.dimension + ", clientAddress: " + this.clientAddress + ", serverAddress: " + this.serverAddress + ", serverPort: " + this.serverPort + ", uuid: " + this.uuid + ", skin: " + this.skin + ", latency: " + this.latency + ", language: " + this.language + ")";
+			return "Add(hubId: " + this.hubId + ", reason: " + this.reason + ", type: " + this.type + ", protocol: " + this.protocol + ", version: " + this.version + ", username: " + this.username + ", displayName: " + this.displayName + ", dimension: " + this.dimension + ", clientAddress: " + this.clientAddress + ", serverAddress: " + this.serverAddress + ", serverPort: " + this.serverPort + ", uuid: " + this.uuid + ", skin: " + this.skin + ", language: " + this.language + ", inputMode: " + this.inputMode + ", latency: " + this.latency + ")";
 		}
 
 	},
@@ -289,54 +298,11 @@ const Player = {
 	},
 
 	/**
-	 * Updates the player's language when the client changes it.
-	 */
-	UpdateLanguage: class {
-
-		static get ID(){ return 18; }
-
-		static get CLIENTBOUND(){ return false; }
-		static get SERVERBOUND(){ return true; }
-
-		/**
-		 * @param language
-		 *        Player's language in the same format as HubInfo.language.
-		 */
-		constructor(hubId=0, language="") {
-			this.hubId = hubId;
-			this.language = language;
-		}
-
-		/** @return {Uint8Array} */
-		encode() {
-			this.writeByte(this.ID);
-			this.writeVaruint(hubId);
-			this.writeString(language);
-		}
-
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
-			return this;
-		}
-
-		static fromBuffer(buffer) {
-			return new Player.UpdateLanguage().decode(buffer);
-		}
-
-		/** @return {string} */
-		toString() {
-			return "UpdateLanguage(hubId: " + this.hubId + ", language: " + this.language + ")";
-		}
-
-	},
-
-	/**
 	 * Updates the player's display name when it changes.
 	 */
 	UpdateDisplayName: class {
 
-		static get ID(){ return 19; }
+		static get ID(){ return 18; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -379,7 +345,7 @@ const Player = {
 	 */
 	UpdateWorld: class {
 
-		static get ID(){ return 20; }
+		static get ID(){ return 19; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -423,11 +389,102 @@ const Player = {
 	},
 
 	/**
-	 * Updates the player's latenct with the hub.
+	 * Updates the player's language when the client changes it.
+	 */
+	UpdateLanguage: class {
+
+		static get ID(){ return 20; }
+
+		static get CLIENTBOUND(){ return false; }
+		static get SERVERBOUND(){ return true; }
+
+		/**
+		 * @param language
+		 *        Player's language in the same format as HubInfo.language.
+		 */
+		constructor(hubId=0, language="") {
+			this.hubId = hubId;
+			this.language = language;
+		}
+
+		/** @return {Uint8Array} */
+		encode() {
+			this.writeByte(this.ID);
+			this.writeVaruint(hubId);
+			this.writeString(language);
+		}
+
+		/** @param {Uint8Array} buffer */
+		decode(buffer) {
+			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Player.UpdateLanguage().decode(buffer);
+		}
+
+		/** @return {string} */
+		toString() {
+			return "UpdateLanguage(hubId: " + this.hubId + ", language: " + this.language + ")";
+		}
+
+	},
+
+	/**
+	 * Update the player's current input mode.
+	 */
+	UpdateInputMode: class {
+
+		static get ID(){ return 21; }
+
+		static get CLIENTBOUND(){ return true; }
+		static get SERVERBOUND(){ return false; }
+
+		// input mode
+		static get KEYBOARD(){ return 0; }
+		static get TOUCH(){ return 1; }
+		static get CONTROLLER(){ return 2; }
+
+		/**
+		 * @param inputMode
+		 *        Player's input mode.
+		 */
+		constructor(hubId=0, inputMode=0) {
+			this.hubId = hubId;
+			this.inputMode = inputMode;
+		}
+
+		/** @return {Uint8Array} */
+		encode() {
+			this.writeByte(this.ID);
+			this.writeVaruint(hubId);
+			this.writeByte(inputMode);
+		}
+
+		/** @param {Uint8Array} buffer */
+		decode(buffer) {
+			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Player.UpdateInputMode().decode(buffer);
+		}
+
+		/** @return {string} */
+		toString() {
+			return "UpdateInputMode(hubId: " + this.hubId + ", inputMode: " + this.inputMode + ")";
+		}
+
+	},
+
+	/**
+	 * Updates the between the player and the hub.
 	 */
 	UpdateLatency: class {
 
-		static get ID(){ return 21; }
+		static get ID(){ return 22; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -468,11 +525,11 @@ const Player = {
 	},
 
 	/**
-	 * Updates the player's packet loss if it uses a connectionless protocol.
+	 * Updates the player's packet loss if it uses a connectionless protocol like UDP.
 	 */
 	UpdatePacketLoss: class {
 
-		static get ID(){ return 22; }
+		static get ID(){ return 23; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -515,21 +572,22 @@ const Player = {
 	 */
 	GamePacket: class {
 
-		static get ID(){ return 23; }
+		static get ID(){ return 24; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return true; }
 
 		/**
 		 * @param packet
-		 *        Serialised packet ready to be encrypted or encapsulated and sent to the client.#### Format#####
-		 *        Minecraft (serverbound)The packet is prefixed with a varuint-encoded 0 if the packet is not compressed
-		 *        or with the uncompressed packet's length encoded as a varuint if the packet is compressed.#####
-		 *        Minecraft (clientbound)The packet is already unencrypted and uncompressed and ready to be handled
-		 *        as a serverbound packet.##### Minecraft: Pocket Edition (serverbound)The packet is simply encoded
-		 *        (may be compressed in a Batch packet) and ready to be encapsulated using RakNet.##### Minecraft:
-		 *        Pocket Edition (clientbound)The packet is already unencrypted and uncompressed if it was a Batch
-		 *        packet and ready to be handled as a serverbound packet.
+		 *        Serialised packet ready to be encrypted or encapsulated and sent to the client when this packet
+		 *        is serverbound or packet already unencrypted and uncompressed ready to be handled by the node otherwise.####
+		 *        Format##### Minecraft (serverbound)The packet is prefixed with a varuint-encoded 0 if the packet
+		 *        is not compressed or with the uncompressed packet's length encoded as a varuint if the packet is
+		 *        compressed.##### Minecraft (clientbound)The packet is already unencrypted and uncompressed
+		 *        and ready to be handled as a serverbound packet.##### Minecraft: Pocket Edition (serverbound)The
+		 *        packet is simply encoded (may be compressed in a Batch packet) and ready to be encapsulated using
+		 *        RakNet.##### Minecraft: Pocket Edition (clientbound)The packet is already unencrypted and
+		 *        uncompressed if it was a Batch packet and ready to be handled as a serverbound packet.
 		 */
 		constructor(hubId=0, packet=null) {
 			this.hubId = hubId;
@@ -566,7 +624,7 @@ const Player = {
 	 */
 	OrderedGamePacket: class {
 
-		static get ID(){ return 24; }
+		static get ID(){ return 25; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
