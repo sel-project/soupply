@@ -17,7 +17,7 @@ import sul.utils.*;
  */
 public class MessageServerbound extends Packet {
 
-	public static final byte ID = (byte)6;
+	public static final byte ID = (byte)7;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;

@@ -20,7 +20,7 @@ const Login = {
 	 */
 	ConnectionRequest: class {
 
-		static get ID(){ return 0; }
+		static get ID(){ return 1; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -76,7 +76,7 @@ const Login = {
 	 */
 	ConnectionResponse: class {
 
-		static get ID(){ return 1; }
+		static get ID(){ return 2; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -132,7 +132,7 @@ const Login = {
 	 */
 	HubInfo: class {
 
-		static get ID(){ return 2; }
+		static get ID(){ return 3; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -166,17 +166,14 @@ const Login = {
 		 *        for players that don't specify their language or for the ones which language is not supported by
 		 *        the server.
 		 * @param acceptedLanguages
-		 *        Languages accepted by the server in the same format as language. The list should always contain
+		 *        Languages accepted by the server in the same format as {language}. The list should always contain
 		 *        at least one element (the default language).
 		 * @param socialJson
 		 *        Optional informations about the server's website and social accounts in the format indicated
-		 *        below.```json{   "website": "example.com",   "facebook": "example-official",   "twitter": "example_tweets",
-		 *          "youtube": "examplechannel",   "instagram": "example",   "google_plus": "example-plus"}```
+		 *        below.
 		 * @param additionalJson
 		 *        Optional informations about the server's software, system and options in the format indicated
-		 *        below.```json{   "software": {      "name": "SEL",      "version": "1.0.4",      "stable": true   },   "minecraft":
-		 *        {      "edu": false,      "realm": true   },   "system": {      "os": "Ubuntu 16.04",      "cpu": "Intel(R) Core(TM) i5-5200U
-		 *        CPU @ 2.20GHz",      "cores": 2,      "ram": 2147483648   }}```
+		 *        below.
 		 */
 		constructor(time=0, serverId=0, reservedUuids=0, displayName="", onlineMode=false, gamesInfo=[], online=0, max=0, language="", acceptedLanguages=[], socialJson="", additionalJson="") {
 			this.time = time;
@@ -232,7 +229,7 @@ const Login = {
 	 */
 	NodeInfo: class {
 
-		static get ID(){ return 3; }
+		static get ID(){ return 4; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -248,14 +245,12 @@ const Login = {
 		 *        Maximum number of players accepted by node.
 		 * @param acceptedGames
 		 *        Informations about the games accepted by the node. There should be at least one combination of game/protocol
-		 *        that is also accepted by hub as indicated in HubInfo.gamesInfo, otherwise the node will never receive
-		 *        any player.
+		 *        that is also accepted by hub as indicated in {HubInfo.gamesInfo}, otherwise the node will never
+		 *        receive any player.
 		 * @param plugins
 		 *        List of plugins loaded on the node for creating queries on the hub.
 		 * @param additionalJson
-		 *        Optional informations about the server's software and system, similar to HubInfo.additionalJson.```json{
-		 *          "software": {      "name": "SEL",      "version": "1.0.4",      "stable": true   },   "system": {      "os": "Windows
-		 *        10",      "cpu": "Intel(R) Core(TM) i7-5700U CPU @ 3.40GHz",      "cores": 4,      "ram": 8589934592   }}```
+		 *        Optional informations about the server's software and system, similar to {HubInfo.additionalJson}.
 		 */
 		constructor(time=0, max=0, acceptedGames=[], plugins=[], additionalJson="") {
 			this.time = time;

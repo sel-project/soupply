@@ -72,8 +72,8 @@ const Types = {
 		 * @param id
 		 *        Item's id or 0 if the slot is empty.
 		 * @param metaAndCount
-		 *        Item's meta or uses (unsigned short) left-shifted 8 times and the count (unisgned byte).Examples:```javascriptvar
-		 *        encoded = item.meta << 8 | item.countvar meta = encoded >> 8var count = count & 255```
+		 *        Item's meta or uses (unsigned short) left-shifted 8 times and the count (unisgned byte).
+		 *        Examples:
 		 * @param nbt
 		 *        Optional nbt data encoded as a nameless little-endian compound tag.
 		 */

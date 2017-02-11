@@ -7,8 +7,8 @@
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
 /**
- * Packets related to a player. The first field of every packet is an hubId that uniquely
- * identifies a player in the hub and never changes during the session.
+ * Packets related to a player. The first field of every packet is an `hub id` that
+ * uniquely identifies a player in the hub and never changes until it's disconnected.
  */
 module sul.protocol.hncom1.player;
 
@@ -24,14 +24,14 @@ import sul.utils.var;
 
 static import sul.protocol.hncom1.types;
 
-alias Packets = TypeTuple!(Add, Remove, Kick, Transfer, UpdateDisplayName, UpdateWorld, UpdateLanguage, UpdateInputMode, UpdateLatency, UpdatePacketLoss, GamePacket, OrderedGamePacket);
+alias Packets = TypeTuple!(Add, Remove, Kick, Transfer, UpdateDisplayName, UpdateWorld, UpdateViewDistance, UpdateLanguage, UpdateInputMode, UpdateLatency, UpdatePacketLoss, GamePacket, OrderedGamePacket);
 
 /**
  * Adds a player to the node.
  */
 class Add : Buffer {
 
-	public enum ubyte ID = 14;
+	public enum ubyte ID = 15;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -46,12 +46,12 @@ class Add : Buffer {
 	public enum ubyte TOUCH = 1;
 	public enum ubyte CONTROLLER = 2;
 
-	public enum string[] FIELDS = ["hubId", "reason", "type", "protocol", "vers", "username", "displayName", "dimension", "clientAddress", "serverAddress", "serverPort", "uuid", "skin", "language", "inputMode", "latency"];
+	public enum string[] FIELDS = ["hubId", "reason", "type", "protocol", "vers", "username", "displayName", "dimension", "viewDistance", "clientAddress", "serverAddress", "serverPort", "uuid", "skin", "language", "inputMode", "latency"];
 
 	public uint hubId;
 
 	/**
-	 * Reason why the player has joined the node.
+	 * Reason for which the player has been added to the node.
 	 */
 	public ubyte reason;
 
@@ -92,6 +92,12 @@ class Add : Buffer {
 	 * delete old chunks.
 	 */
 	public byte dimension;
+
+	/**
+	 * Client's view distance (or chunk radius). See [UpdateViewDistance.viewDistance](#player_update-view-distance_view-distance)
+	 * for more informations.
+	 */
+	public uint viewDistance;
 
 	/**
 	 * Remote address of the client.
@@ -142,7 +148,7 @@ class Add : Buffer {
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, ubyte type=ubyte.init, uint protocol=uint.init, string vers=string.init, string username=string.init, string displayName=string.init, byte dimension=byte.init, sul.protocol.hncom1.types.Address clientAddress=sul.protocol.hncom1.types.Address.init, string serverAddress=string.init, ushort serverPort=ushort.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, string language=string.init, ubyte inputMode=ubyte.init, uint latency=uint.init) {
+	public pure nothrow @safe @nogc this(uint hubId, ubyte reason=ubyte.init, ubyte type=ubyte.init, uint protocol=uint.init, string vers=string.init, string username=string.init, string displayName=string.init, byte dimension=byte.init, uint viewDistance=uint.init, sul.protocol.hncom1.types.Address clientAddress=sul.protocol.hncom1.types.Address.init, string serverAddress=string.init, ushort serverPort=ushort.init, UUID uuid=UUID.init, sul.protocol.hncom1.types.Skin skin=sul.protocol.hncom1.types.Skin.init, string language=string.init, ubyte inputMode=ubyte.init, uint latency=uint.init) {
 		this.hubId = hubId;
 		this.reason = reason;
 		this.type = type;
@@ -151,6 +157,7 @@ class Add : Buffer {
 		this.username = username;
 		this.displayName = displayName;
 		this.dimension = dimension;
+		this.viewDistance = viewDistance;
 		this.clientAddress = clientAddress;
 		this.serverAddress = serverAddress;
 		this.serverPort = serverPort;
@@ -172,6 +179,7 @@ class Add : Buffer {
 		writeBytes(varuint.encode(cast(uint)username.length)); writeString(username);
 		writeBytes(varuint.encode(cast(uint)displayName.length)); writeString(displayName);
 		if(reason!=0){ writeBigEndianByte(dimension); }
+		if(reason!=0){ writeBytes(varuint.encode(viewDistance)); }
 		clientAddress.encode(bufferInstance);
 		writeBytes(varuint.encode(cast(uint)serverAddress.length)); writeString(serverAddress);
 		writeBigEndianUshort(serverPort);
@@ -193,6 +201,7 @@ class Add : Buffer {
 		uint dxnlcm5hbwu=varuint.decode(_buffer, &_index); username=readString(dxnlcm5hbwu);
 		uint zglzcgxheu5hbwu=varuint.decode(_buffer, &_index); displayName=readString(zglzcgxheu5hbwu);
 		if(reason!=0){ dimension=readBigEndianByte(); }
+		if(reason!=0){ viewDistance=varuint.decode(_buffer, &_index); }
 		clientAddress.decode(bufferInstance);
 		uint c2vydmvyqwrkcmvz=varuint.decode(_buffer, &_index); serverAddress=readString(c2vydmvyqwrkcmvz);
 		serverPort=readBigEndianUshort();
@@ -211,7 +220,7 @@ class Add : Buffer {
 	}
 
 	public override string toString() {
-		return "Add(hubId: " ~ std.conv.to!string(this.hubId) ~ ", reason: " ~ std.conv.to!string(this.reason) ~ ", type: " ~ std.conv.to!string(this.type) ~ ", protocol: " ~ std.conv.to!string(this.protocol) ~ ", vers: " ~ std.conv.to!string(this.vers) ~ ", username: " ~ std.conv.to!string(this.username) ~ ", displayName: " ~ std.conv.to!string(this.displayName) ~ ", dimension: " ~ std.conv.to!string(this.dimension) ~ ", clientAddress: " ~ std.conv.to!string(this.clientAddress) ~ ", serverAddress: " ~ std.conv.to!string(this.serverAddress) ~ ", serverPort: " ~ std.conv.to!string(this.serverPort) ~ ", uuid: " ~ std.conv.to!string(this.uuid) ~ ", skin: " ~ std.conv.to!string(this.skin) ~ ", language: " ~ std.conv.to!string(this.language) ~ ", inputMode: " ~ std.conv.to!string(this.inputMode) ~ ", latency: " ~ std.conv.to!string(this.latency) ~ ")";
+		return "Add(hubId: " ~ std.conv.to!string(this.hubId) ~ ", reason: " ~ std.conv.to!string(this.reason) ~ ", type: " ~ std.conv.to!string(this.type) ~ ", protocol: " ~ std.conv.to!string(this.protocol) ~ ", vers: " ~ std.conv.to!string(this.vers) ~ ", username: " ~ std.conv.to!string(this.username) ~ ", displayName: " ~ std.conv.to!string(this.displayName) ~ ", dimension: " ~ std.conv.to!string(this.dimension) ~ ", viewDistance: " ~ std.conv.to!string(this.viewDistance) ~ ", clientAddress: " ~ std.conv.to!string(this.clientAddress) ~ ", serverAddress: " ~ std.conv.to!string(this.serverAddress) ~ ", serverPort: " ~ std.conv.to!string(this.serverPort) ~ ", uuid: " ~ std.conv.to!string(this.uuid) ~ ", skin: " ~ std.conv.to!string(this.skin) ~ ", language: " ~ std.conv.to!string(this.language) ~ ", inputMode: " ~ std.conv.to!string(this.inputMode) ~ ", latency: " ~ std.conv.to!string(this.latency) ~ ")";
 	}
 
 	alias _encode = encode;
@@ -327,12 +336,12 @@ class Add : Buffer {
 }
 
 /**
- * Removes a player from the node. If the player is removed from the node using Kick
- * or Transfer this packet is not sent.
+ * Removes a player from the node. If the player is removed using Kick or Transfer
+ * this packet is not sent.
  */
 class Remove : Buffer {
 
-	public enum ubyte ID = 15;
+	public enum ubyte ID = 16;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -392,7 +401,7 @@ class Remove : Buffer {
  */
 class Kick : Buffer {
 
-	public enum ubyte ID = 16;
+	public enum ubyte ID = 17;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -465,7 +474,7 @@ class Kick : Buffer {
  */
 class Transfer : Buffer {
 
-	public enum ubyte ID = 17;
+	public enum ubyte ID = 18;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -536,7 +545,7 @@ class Transfer : Buffer {
  */
 class UpdateDisplayName : Buffer {
 
-	public enum ubyte ID = 18;
+	public enum ubyte ID = 19;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -590,7 +599,7 @@ class UpdateDisplayName : Buffer {
  */
 class UpdateWorld : Buffer {
 
-	public enum ubyte ID = 19;
+	public enum ubyte ID = 20;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -605,7 +614,7 @@ class UpdateWorld : Buffer {
 	public string world;
 
 	/**
-	 * World's dimension, that may different from Minecraft's version. It used for synchronise
+	 * World's dimension, that may differ from Minecraft's version. It's used for synchronise
 	 * entities and chunks when changing node as described at Add.dimension.
 	 */
 	public byte dimension;
@@ -647,12 +656,58 @@ class UpdateWorld : Buffer {
 
 }
 
+class UpdateViewDistance : Buffer {
+
+	public enum ubyte ID = 21;
+
+	public enum bool CLIENTBOUND = false;
+	public enum bool SERVERBOUND = true;
+
+	public enum string[] FIELDS = ["hubId", "viewDistance"];
+
+	public uint hubId;
+	public uint viewDistance;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(uint hubId, uint viewDistance=uint.init) {
+		this.hubId = hubId;
+		this.viewDistance = viewDistance;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varuint.encode(hubId));
+		writeBytes(varuint.encode(viewDistance));
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		hubId=varuint.decode(_buffer, &_index);
+		viewDistance=varuint.decode(_buffer, &_index);
+	}
+
+	public static pure nothrow @safe UpdateViewDistance fromBuffer(bool readId=true)(ubyte[] buffer) {
+		UpdateViewDistance ret = new UpdateViewDistance();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+	public override string toString() {
+		return "UpdateViewDistance(hubId: " ~ std.conv.to!string(this.hubId) ~ ", viewDistance: " ~ std.conv.to!string(this.viewDistance) ~ ")";
+	}
+
+}
+
 /**
  * Updates the player's language when the client changes it.
  */
 class UpdateLanguage : Buffer {
 
-	public enum ubyte ID = 20;
+	public enum ubyte ID = 22;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -705,7 +760,7 @@ class UpdateLanguage : Buffer {
  */
 class UpdateInputMode : Buffer {
 
-	public enum ubyte ID = 21;
+	public enum ubyte ID = 23;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -759,11 +814,11 @@ class UpdateInputMode : Buffer {
 }
 
 /**
- * Updates the between the player and the hub.
+ * Updates the latency between the player and the hub.
  */
 class UpdateLatency : Buffer {
 
-	public enum ubyte ID = 22;
+	public enum ubyte ID = 24;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -818,7 +873,7 @@ class UpdateLatency : Buffer {
  */
 class UpdatePacketLoss : Buffer {
 
-	public enum ubyte ID = 23;
+	public enum ubyte ID = 25;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -871,7 +926,7 @@ class UpdatePacketLoss : Buffer {
  */
 class GamePacket : Buffer {
 
-	public enum ubyte ID = 24;
+	public enum ubyte ID = 26;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
@@ -884,6 +939,7 @@ class GamePacket : Buffer {
 	 * Serialised packet ready to be encrypted or encapsulated and sent to the client when
 	 * this packet is serverbound or packet already unencrypted and uncompressed ready
 	 * to be handled by the node otherwise.
+	 * 
 	 * <h4>Format</h4>
 	 * 
 	 * <h5>Minecraft (serverbound)</h5>
@@ -944,7 +1000,7 @@ class GamePacket : Buffer {
  */
 class OrderedGamePacket : Buffer {
 
-	public enum ubyte ID = 25;
+	public enum ubyte ID = 27;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;

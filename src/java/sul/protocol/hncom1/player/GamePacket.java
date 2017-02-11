@@ -17,7 +17,7 @@ import sul.utils.*;
  */
 public class GamePacket extends Packet {
 
-	public static final byte ID = (byte)24;
+	public static final byte ID = (byte)26;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
@@ -28,6 +28,7 @@ public class GamePacket extends Packet {
 	 * Serialised packet ready to be encrypted or encapsulated and sent to the client when
 	 * this packet is serverbound or packet already unencrypted and uncompressed ready
 	 * to be handled by the node otherwise.
+	 * 
 	 * <h4>Format</h4>
 	 * 
 	 * <h5>Minecraft (serverbound)</h5>

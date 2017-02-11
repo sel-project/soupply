@@ -43,6 +43,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		auto metadata = game in metadatas;
 		string data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, game, ptrs.data.description.length ? ptrs.data.description.replaceAll(ctRegex!`<[a-z0-9]+>|<\/[a-z0-9]+>`, "").replaceAll(ctRegex!`\[([a-zA-Z0-9_\-\. ]+)\]\([a-zA-Z0-9_\-\.:\#\/]+\)`, "$1").split("\n")[0].strip : "");
 		data ~= "\t\t<h1>" ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "</h1>\n";
+		data ~= "\t\t<div class=\"g-plusone\" data-size=\"tall\"></div>\n";
 		uint[] others;
 		foreach(otherGame, op; protocols) {
 			if(otherGame != game && otherGame.startsWith(gameName)) {
@@ -118,23 +119,33 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 					condition |= field.condition.length != 0;
 				}
 				data ~= space ~ "<table>\n";
-				data ~= space ~ "\t<tr><th>Name</th><th>Type</th>" ~ (endianness ? "<th>Endianness</th>" : "") ~ (condition ? "<th>When</th>" : "") ~ "</tr>\n";
+				data ~= space ~ "\t<tr>\n";
+				data ~= space ~ "\t\t<th>Name</th>\n";
+				data ~= space ~ "\t\t<th>Type</th>\n";
+				if(endianness) data ~= space ~ "\t\t<th>Endianness</th>\n";
+				if(condition) data ~= space ~ "\t\t<th>When</th>\n";
+				data ~= space ~ "\t</tr>\n";
+				bool descripted = false;
 				foreach(field ; fields) {
-					data ~= space ~ "\t<tr><td>";
-					if(field.description.length || field.constants.length) data ~= "<a href=\"#" ~ link(namespace ~ field.name) ~ "\">" ~ toCamelCase(field.name) ~ "</a>";
-					else data ~= toCamelCase(field.name);
-					data ~= "</td><td>" ~ convert(field.type) ~ "</td>";
-					if(endianness) data ~= "<td class=\"center\">" ~ field.endianness.replace("_", " ") ~ "</td>";
-					if(condition) data ~= "<td class=\"center\">" ~ (field.condition.length ? cond(toCamelCase(field.condition)) : "") ~ "</td>";
-					data ~= "</tr>\n";
+					data ~= space ~ "\t<tr>\n" ~ space ~ "\t\t<td>";
+					if(field.description.length || field.constants.length) {
+						descripted = true;
+						data ~= "<a href=\"#" ~ link(namespace ~ field.name) ~ "\">" ~ field.name.replace("_", " ") ~ "</a>";
+					} else {
+						data ~= field.name.replace("_", " ");
+					}
+					data ~= "</td>\n" ~ space ~ "\t\t<td>" ~ convert(field.type) ~ "</td>\n";
+					if(endianness) data ~= space ~ "\t\t<td class=\"center\">" ~ field.endianness.replace("_", " ") ~ "</td>\n";
+					if(condition) data ~= space ~ "\t\t<td class=\"center\">" ~ (field.condition.length ? cond(field.condition.replace("_", " ")) : "") ~ "</td>\n";
+					data ~= space ~ "\t</tr>\n";
 				}
 				data ~= space ~ "</table>\n";
-				if(fields.length) {
+				if(descripted) {
 					data ~= space ~ "<ul>\n";
 					foreach(field ; fields) {
 						if(field.description.length || field.constants.length) {
 							data ~= space ~ "\t<li>\n";
-							data ~= space ~ "\t\t<strong id=\"" ~ link(namespace ~ field.name) ~ "\">" ~ toCamelCase(field.name) ~ "</strong>\n";
+							data ~= space ~ "\t\t<strong id=\"" ~ link(namespace ~ field.name) ~ "\">" ~ field.name.replace("_", " ") ~ "</strong>\n";
 							if(field.description.length) data ~= desc(space ~ "\t\t", field.description);
 							if(field.constants.length) {
 								bool notes;
@@ -148,7 +159,11 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 								data ~= space ~ "\t\t<table>\n";
 								data ~= space ~ "\t\t\t<tr><th>Name</th><th>Value</th>" ~ (notes ? "<th></th>" : "") ~ "</tr>\n";
 								foreach(constant ; field.constants) {
-									data ~= space ~ "\t\t\t<tr><td>" ~ toCamelCase(constant.name) ~ "</td><td class=\"center\">" ~ constant.value ~ "</td>" ~ (notes ? "<td>" ~ constant.description ~ "</td>" : "") ~ "</tr>\n";
+									data ~= space ~ "\t\t\t<tr>\n";
+									data ~= space ~ "\t\t\t\t<td>" ~ constant.name.replace("_", " ") ~ "</td>\n";
+									data ~= space ~ "\t\t\t\t<td class=\"center\">" ~ constant.value ~ "</td>\n";
+									if(notes) data ~= space ~ "\t\t\t\t<td>" ~ constant.description ~ "</td>\n";
+									data ~= space ~ "\t\t\t</tr>\n";
 								}
 								data ~= space ~ "\t\t</table>\n";
 							}
@@ -199,8 +214,8 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 				}
 			}();
 		}
-		data ~= "\t\t\t<tr><td>big endian</td><td>" ~ be.join(", ") ~ "</td></tr>\n";
-		data ~= "\t\t\t<tr><td>little endian</td><td>" ~ le.join(", ") ~ "</td></tr>\n";
+		data ~= "\t\t\t<tr>\n\t\t\t\t<td>big endian</td>\n\t\t\t\t<td>" ~ be.join(", ") ~ "</td>\n\t\t\t</tr>\n";
+		data ~= "\t\t\t<tr>\n\t\t\t\t<td>little endian</td>\n\t\t\t\t<td>" ~ le.join(", ") ~ "</td>\n\t\t\t</tr>\n";
 		data ~= "\t\t</table>\n";
 		data ~= "\t\t<p><strong>Ids</strong>: " ~ ptrs.data.id ~ "</p>\n";
 		data ~= "\t\t<p><strong>Array's length</strong>: " ~ ptrs.data.arrayLength ~ "</p>\n";
@@ -208,9 +223,12 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		// sections (legend)
 		data ~= "\t\t<h2 id=\"packets\">Packets</h2>\n";
 		data ~= "\t\t<table>\n";
-		data ~= "\t\t\t<tr><th>Section</th><th>Packets</th></tr>\n";
+		data ~= "\t\t\t<tr>\n\t\t\t\t<th>Section</th>\n\t\t\t\t<th>Packets</th>\n\t\t\t</tr>\n";
 		foreach(section ; ptrs.data.sections) {
-			data ~= "\t\t\t<tr><td><a href=\"#" ~ section.name.replace("_", "-") ~ "\">" ~ pretty(toCamelCase(section.name)) ~ "</a></td><td class=\"center\">" ~ to!string(section.packets.length) ~ "</td></tr>\n";
+			data ~= "\t\t\t<tr>\n";
+			data ~= "\t\t\t\t<td><a href=\"#" ~ section.name.replace("_", "-") ~ "\">" ~ pretty(toCamelCase(section.name)) ~ "</a></td>\n";
+			data ~= "\t\t\t\t<td class=\"center\">" ~ to!string(section.packets.length) ~ "</td>\n";
+			data ~= "\t\t\t</tr>\n";
 		}
 		data ~= "\t\t</table>\n";
 		// sections
@@ -218,15 +236,15 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t<h3 id=\"" ~ link(section.name) ~ "\">" ~ pretty(toCamelCase(section.name)) ~ "</h3>\n";
 			if(section.description.length) data ~= desc("\t\t", section.description);
 			data ~= "\t\t<table>\n";
-			data ~= "\t\t\t<tr><th>Packets</th><th colspan=\"2\">Id</th><th>Clientbound</th><th>Serverbound</th></tr>\n";
+			data ~= "\t\t\t<tr>\n\t\t\t\t<th>Packets</th>\n\t\t\t\t<th colspan=\"2\">Id</th>\n\t\t\t\t<th>Clientbound</th>\n\t\t\t\t<th>Serverbound</th>\n\t\t\t</tr>\n";
 			foreach(packet ; section.packets) {
-				data ~= "\t\t\t<tr>";
-				data ~= "<td><a href=\"#" ~ link(section.name, packet.name) ~ "\">" ~ pretty(toCamelCase(packet.name)) ~ "</a></td>";
-				data ~= "<td class=\"center\">" ~ packet.id.to!string ~ "</td>";
-				data ~= "<td class=\"center\">" ~ ("0" ~ packet.id.to!string(16))[$-2..$] ~ "₁₆</td>";
-				data ~= "<td class=\"center\">" ~ (packet.clientbound ? "✓" : "") ~ "</td>";
-				data ~= "<td class=\"center\">" ~ (packet.serverbound ? "✓" : "") ~ "</td>";
-				data ~= "</tr>\n";
+				data ~= "\t\t\t<tr>\n";
+				data ~= "\t\t\t\t<td><a href=\"#" ~ link(section.name, packet.name) ~ "\">" ~ pretty(toCamelCase(packet.name)) ~ "</a></td>\n";
+				data ~= "\t\t\t\t<td class=\"center\">" ~ packet.id.to!string ~ "</td>\n";
+				data ~= "\t\t\t\t<td class=\"center\">" ~ ("0" ~ packet.id.to!string(16))[$-2..$] ~ "₁₆</td>\n";
+				data ~= "\t\t\t\t<td class=\"center\">" ~ (packet.clientbound ? "✓" : "") ~ "</td>\n";
+				data ~= "\t\t\t\t<td class=\"center\">" ~ (packet.serverbound ? "✓" : "") ~ "</td>\n";
+				data ~= "\t\t\t</tr>\n";
 			}
 			data ~= "\t\t</table>\n";
 			// packets
@@ -234,25 +252,40 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			foreach(packet ; section.packets) {
 				data ~= "\t\t\t<li>\n";
 				data ~= "\t\t\t\t<h3 id=\"" ~ link(section.name, packet.name) ~ "\">" ~ pretty(toCamelCase(packet.name)) ~ "</h3>\n";
-				/*data ~= "\t\t\t\t<p><strong>Id</strong>: " ~ to!string(packet.id) ~ "</p>\n";
-				data ~= "\t\t\t\t<p><strong>Clientbound</strong>: " ~ (packet.clientbound ? "yes" : "no") ~ "</p>\n";
-				data ~= "\t\t\t\t<p><strong>Serverbound</strong>: " ~ (packet.serverbound ? "yes" : "no") ~ "</p>\n";*/
-				data ~= "\t\t\t\t<table>\n";
+				/*data ~= "\t\t\t\t<table>\n";
 				data ~= "\t\t\t\t\t<tr><th colspan=\"3\">Id</th><th>Clientbound</th><th>Serverbound</th></tr>\n";
 				data ~= "\t\t\t\t\t<tr><td class=\"center\">" ~ packet.id.to!string ~ "</td>";
 				data ~= "<td class=\"center\">" ~ ("00000000" ~ packet.id.to!string(2))[$-8..$] ~ "₂</td>";
 				data ~= "<td class=\"center\">" ~ ("00" ~ packet.id.to!string(16))[$-2..$] ~ "₁₆</td>";
 				data ~= "<td class=\"center\">" ~ (packet.clientbound ? "✓" : "") ~ "</td>";
 				data ~= "<td class=\"center\">" ~ (packet.serverbound ? "✓" : "") ~ "</td></tr>\n";
-				data ~= "\t\t\t\t</table>\n";
+				data ~= "\t\t\t\t</table>\n";*/
+				data ~= "\t\t\t\t<div class=\"desc\">\n";
+				data ~= "\t\t\t\t\t<p><strong>Id</strong>: " ~ packet.id.to!string ~ "</p>\n";
+				data ~= "\t\t\t\t\t<p><strong>Hex</strong>: " ~ ("00" ~ packet.id.to!string(16))[$-2..$] ~ "</p>\n";
+				data ~= "\t\t\t\t\t<p>";
+				if(packet.clientbound && packet.serverbound) data ~= "Sent by the <strong>server</strong> and the <strong>client</strong>";
+				else if(packet.clientbound) data ~= "Sent by the <strong>server</strong>";
+				else if(packet.serverbound) data ~= "Sent by the <strong>client</strong>";
+				else data ~= "Unbounded (not sent by the <strong>server</strong> nor by the <strong>client</strong>";
+				data ~= "</p>\n";
+				data ~= "\t\t\t\t</div>\n";
 				if(packet.description.length) data ~= desc("\t\t\t\t", packet.description);
 				writeFields([section.name, packet.name], packet.fields, 4);
 				if(packet.variants.length) {
 					data ~= "\t\t\t\t<p><strong>Variants</strong>:</p>\n";
 					data ~= "\t\t\t\t<table>\n";
-					data ~= "\t\t\t\t\t<tr><th>Variant</th><th>Field</th><th>Value</th></tr>\n";
+					data ~= "\t\t\t\t\t<tr>\n";
+					data ~= "\t\t\t\t\t\t<th>Variant</th>\n";
+					data ~= "\t\t\t\t\t\t<th>Field</th>\n";
+					data ~= "\t\t\t\t\t\t<th>Value</th>\n";
+					data ~= "\t\t\t\t\t</tr>\n";
 					foreach(variant ; packet.variants) {
-						data ~= "\t\t\t\t\t<tr><td><a href=\"#" ~ link(section.name, packet.name, variant.name) ~ "\">" ~ pretty(toCamelCase(variant.name)) ~ "</a></td><td>" ~ toCamelCase(packet.variantField) ~ "</td><td class=\"center\">" ~ variant.value ~ "</td></tr>\n";
+						data ~= "\t\t\t\t\t<tr>\n";
+						data ~= "\t\t\t\t\t\t<td><a href=\"#" ~ link(section.name, packet.name, variant.name) ~ "\">" ~ pretty(toCamelCase(variant.name)) ~ "</a></td>\n";
+						data ~= "\t\t\t\t\t\t<td>" ~ toCamelCase(packet.variantField) ~ "</td>\n";
+						data ~= "\t\t\t\t\t\t<td class=\"center\">" ~ variant.value ~ "</td>\n";
+						data ~= "\t\t\t\t\t</tr>\n";
 					}
 					data ~= "\t\t\t\t</table>\n";
 					data ~= "\t\t\t\t<ul>\n";
@@ -299,9 +332,19 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 				e |= a.endianness.length != 0;
 			}
 			data ~= "\t\t<table>\n";
-			data ~= "\t\t\t<tr><th>Name</th><th>Base</th><th>Length</th>" ~ (e ? "<th>Length's Endianness</th>" : "") ~ "</tr>\n";
+			data ~= "\t\t\t<tr>\n";
+			data ~= "\t\t\t\t<th>Name</th>\n";
+			data ~= "\t\t\t\t<th>Base</th>\n";
+			data ~= "\t\t\t\t<th>Length</th>\n";
+			if(e) data ~= "\t\t\t\t<th>Length's Endianness</th>\n";
+			data ~= "\t\t\t</tr>\n";
 			foreach(name, a ; ptrs.data.arrays) {
-				data ~= "\t\t\t<tr id=\"" ~ link("types", name) ~ "\"><td>" ~ toCamelCase(name) ~ "</td><td>" ~ convert(a.base) ~ "</td><td>" ~ convert(a.length) ~ "</td>" ~ (e ? "<td>" ~ a.endianness.replace("_", " ") ~ "</td>" : "") ~ "</tr>\n";
+				data ~= "\t\t\t<tr id=\"" ~ link("types", name) ~ "\">\n";
+				data ~= "\t\t\t\t<td>" ~ toCamelCase(name) ~ "</td>\n";
+				data ~= "\t\t\t\t<td>" ~ convert(a.base) ~ "</td>\n";
+				data ~= "\t\t\t\t<td>" ~ convert(a.length) ~ "</td>\n";
+				if(e) data ~= "\t\t\t\t<td>" ~ a.endianness.replace("_", " ") ~ "</td>\n";
+				data ~= "\t\t\t</tr>\n";
 			}
 			data ~= "\t\t</table>\n";
 		}
@@ -326,9 +369,17 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t\t<li>\n";
 			data ~= "\t\t\t\t<h3>Types</h3>\n";
 			data ~= "\t\t\t\t<table>\n";
-			data ~= "\t\t\t\t\t<tr><th>Name</th><th>Type</th><th>Id</th></tr>\n";
+			data ~= "\t\t\t\t\t<tr>\n";
+			data ~= "\t\t\t\t\t\t<th>Name</th>\n";
+			data ~= "\t\t\t\t\t\t<th>Type</th>\n";
+			data ~= "\t\t\t\t\t\t<th>Id</th>\n";
+			data ~= "\t\t\t\t\t</tr>\n";
 			foreach(type ; (*metadata).data.types) {
-				data ~= "\t\t\t\t\t<tr><td>" ~ toCamelCase(type.name) ~ "</td><td>" ~ convert(type.type) ~ "</td><td class=\"center\">" ~ type.id.to!string ~ "</td></tr>\n";
+				data ~= "\t\t\t\t\t<tr>\n";
+				data ~= "\t\t\t\t\t\t<td>" ~ toCamelCase(type.name) ~ "</td>\n";
+				data ~= "\t\t\t\t\t\t<td>" ~ convert(type.type) ~ "</td>\n";
+				data ~= "\t\t\t\t\t\t<td class=\"center\">" ~ type.id.to!string ~ "</td>\n";
+				data ~= "\t\t\t\t\t</tr>\n";
 			}
 			data ~= "\t\t\t\t</table>\n";
 			data ~= "\t\t\t</li>\n";
@@ -336,13 +387,26 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t\t<li>\n";
 			data ~= "\t\t\t\t<h3>Data</h3>\n";
 			data ~= "\t\t\t\t<table>\n";
-			data ~= "\t\t\t\t\t<tr><th>Name</th><th>Type</th><th colspan=\"2\">Id</th><th>Default</th><th>Required</th></tr>\n";
+			data ~= "\t\t\t\t\t<tr>\n";
+			data ~= "\t\t\t\t\t\t<th>Name</th>\n";
+			data ~= "\t\t\t\t\t\t<th>Type</th>\n";
+			data ~= "\t\t\t\t\t\t<th colspan=\"2\">Id</th>\n";
+			data ~= "\t\t\t\t\t\t<th>Default</th>\n";
+			data ~= "\t\t\t\t\t\t<th>Required</th>\n";
+			data ~= "\t\t\t\t\t</tr>\n";
 			foreach(meta ; (*metadata).data.data) {
-				data ~= "\t\t\t\t\t<tr><td>";
+				data ~= "\t\t\t\t\t<tr>\n";
+				data ~= "\t\t\t\t\t\t<td>";
 				immutable name = pretty(toCamelCase(meta.name));
 				if(meta.description.length || meta.flags.length) data ~= "<a href=\"#" ~ link("metadata", meta.name) ~ "\">" ~ name ~ "</a>";
 				else data ~= name;
-				data ~= "</td><td>" ~ convert(meta.type) ~ "</td><td class=\"center\">" ~ meta.id.to!string ~ "</td><td class=\"center\">" ~ meta.id.to!string(16) ~ "₁₆</td><td class=\"center\">" ~ meta.def ~ "</td><td class=\"center\">" ~ (meta.required ? "✓" : "") ~ "</td></tr>\n";
+				data ~= "</td>\n";
+				data ~= "\t\t\t\t\t\t<td>" ~ convert(meta.type) ~ "</td>\n";
+				data ~= "\t\t\t\t\t\t<td class=\"center\">" ~ meta.id.to!string ~ "</td>\n";
+				data ~= "\t\t\t\t\t\t<td class=\"center\">" ~ meta.id.to!string(16) ~ "₁₆</td>\n";
+				data ~= "\t\t\t\t\t\t<td class=\"center\">" ~ meta.def ~ "</td>\n";
+				data ~= "\t\t\t\t\t\t<td class=\"center\">" ~ (meta.required ? "✓" : "") ~ "</td>\n";
+				data ~= "\t\t\t\t\t</tr>\n";
 			}
 			data ~= "\t\t\t\t</table>\n";
 			data ~= "\t\t\t\t<ul>\n";
@@ -360,9 +424,18 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 							}
 						}
 						data ~= "\t\t\t\t\t<table>\n";
-						data ~= "\t\t\t\t\t\t<tr><th>Flag</th><th colspan=\"2\">Bit</th>" ~ (description ? "<th>Description</th>" : "") ~ "</tr>\n";
+						data ~= "\t\t\t\t\t\t<tr>\n";
+						data ~= "\t\t\t\t\t\t\t<th>Flag</th>\n";
+						data ~= "\t\t\t\t\t\t\t<th colspan=\"2\">Bit</th>\n";
+						if(description) data ~= "\t\t\t\t\t\t\t<th>Description</th>\n";
+						data ~= "\t\t\t\t\t\t</tr>\n";
 						foreach(flag ; meta.flags) {
-							data ~= "\t\t\t\t\t\t<tr><td>" ~ toCamelCase(flag.name) ~ "</td><td class=\"center\">" ~ flag.bit.to!string ~ "</td><td class=\"center\">" ~ flag.bit.to!string(16) ~ "₁₆</td>" ~ (description ? "<td>" ~ flag.description.replace("\n", " ") ~ "</td>" : "") ~ "</tr>\n";
+							data ~= "\t\t\t\t\t\t<tr>\n";
+							data ~= "\t\t\t\t\t\t\t<td>" ~ toCamelCase(flag.name) ~ "</td>\n";
+							data ~= "\t\t\t\t\t\t\t<td class=\"center\">" ~ flag.bit.to!string ~ "</td>\n";
+							data ~= "\t\t\t\t\t\t\t<td class=\"center\">" ~ flag.bit.to!string(16) ~ "₁₆</td>\n";
+							if(description) data ~= "\t\t\t\t\t\t\t<td>" ~ flag.description.replace("\n", " ") ~ "</td>\n";
+							data ~= "\t\t\t\t\t\t</tr>\n";
 						}
 						data ~= "\t\t\t\t\t</table>\n";
 					}
@@ -378,9 +451,21 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t<hr>\n";
 			data ~= "\t\t<h2 id=\"attributes\">Attributes</h2>\n";
 			data ~= "\t\t<table>\n";
-			data ~= "\t\t\t<tr><th>Name</th><th>Key</th><th>Min</th><th>Max</th><th>Default</th></tr>\n";
+			data ~= "\t\t\t<tr>\n";
+			data ~= "\t\t\t\t<th>Name</th>\n";
+			data ~= "\t\t\t\t<th>Key</th>\n";
+			data ~= "\t\t\t\t<th>Min</th>\n";
+			data ~= "\t\t\t\t<th>Max</th>\n";
+			data ~= "\t\t\t\t<th>Default</th>\n";
+			data ~= "\t\t\t</tr>\n";
 			foreach(attribute ; (*attributes).data) {
-				data ~= "\t\t\t<tr><td>" ~ pretty(toCamelCase(attribute.id)) ~ "</td><td>" ~ attribute.name ~ "</td><td class=\"center\">" ~ attribute.min.to!string ~ "</td><td class=\"center\">" ~ attribute.max.to!string ~ "</td><td class=\"center\">" ~ attribute.def.to!string ~ "</td></tr>\n";
+				data ~= "\t\t\t<tr>\n";
+				data ~= "\t\t\t\t<td>" ~ pretty(toCamelCase(attribute.id)) ~ "</td>\n";
+				data ~= "\t\t\t\t<td>" ~ attribute.name ~ "</td>\n";
+				data ~= "\t\t\t\t<td class=\"center\">" ~ attribute.min.to!string ~ "</td>\n";
+				data ~= "\t\t\t\t<td class=\"center\">" ~ attribute.max.to!string ~ "</td>\n";
+				data ~= "\t\t\t\t<td class=\"center\">" ~ attribute.def.to!string ~ "</td>\n";
+				data ~= "\t\t\t</tr>\n";
 			}
 			data ~= "\t\t</table>\n";
 		}
@@ -446,11 +531,13 @@ string head(string title, bool back, string xml="", string description="") {
 			"\t\t<title>" ~ title ~ " | SEL Utils</title>\n" ~
 			"\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n" ~
 			(description.length ? "\t\t<meta name=\"description\" content=\"" ~ description.replace(`"`, `\"`) ~ "\" />\n" : "") ~
+			"\t\t<link rel=\"icon\" type=\"image/png\" href=\"" ~ b ~ "favicon.png\" />\n" ~
+			"\t\t<link rel=\"stylesheet\" href=\"" ~ b ~ "style.min.css\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css\" />\n" ~
+			"\t\t<script src=\"https://apis.google.com/js/platform.js\" async defer></script>\n" ~
 			"\t\t<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js\"></script>\n" ~
 			"\t\t<script>hljs.initHighlightingOnLoad();</script>\n" ~
-			"\t\t<link rel=\"icon\" type=\"image/png\" href=\"" ~ b ~ "favicon.png\" />\n" ~
-			"\t\t<link rel=\"stylesheet\" href=\"" ~ b ~ "style.min.css\" />\n\t</head>\n" ~
+			"\t</head>\n" ~
 			"\t<body>\n\t\t<div class=\"logo\"><a href=\"" ~ b ~ "\"><div><img src=\"" ~ b ~ "logo.png\" alt=\"SEL\" /></div></a>" ~
 			"<div><a href=\"" ~ b ~ "\">Index</a>&nbsp;&nbsp;" ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/README.md\">About</a>&nbsp;&nbsp;" ~
@@ -486,7 +573,7 @@ string desc(string space, string description) {
 
 		if(code) {
 			if(s.startsWith("```")) {
-				ret ~= "</code></pre>\n";
+				ret ~= "</code>\n" ~ space ~ "</pre>\n";
 				code = false;
 			} else {
 				ret ~= s ~ "\n";
@@ -505,7 +592,7 @@ string desc(string space, string description) {
 				list = false;
 			}
 			if(s.startsWith("```")) {
-				ret ~= space ~ "<pre><code class=\"" ~ s[3..$] ~ "\">";
+				ret ~= space ~ "<pre>\n" ~ space ~ "\t<code class=\"" ~ s[3..$] ~ "\">";
 				code = true;
 			} else {
 				string h = "######";

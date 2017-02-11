@@ -17,7 +17,7 @@ import sul.utils.*;
  */
 public class Log extends Packet {
 
-	public static final byte ID = (byte)10;
+	public static final byte ID = (byte)11;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;

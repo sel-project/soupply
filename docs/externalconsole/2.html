@@ -5,15 +5,17 @@
 		<title>External Console 2 | SEL Utils</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<meta name="description" content="Protocol used to communicate with external sources using a raw TCP protocol or Web Sockets." />
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" />
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
-		<script>hljs.initHighlightingOnLoad();</script>
 		<link rel="icon" type="image/png" href="../favicon.png" />
 		<link rel="stylesheet" href="../style.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" />
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
 	</head>
 	<body>
 		<div class="logo"><a href="../"><div><img src="../logo.png" alt="SEL" /></div></a><div><a href="../">Index</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/externalconsole2.xml">XML</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
 		<h1>External Console 2</h1>
+		<div class="g-plusone" data-size="tall"></div>
 		<p><strong>Compare</strong>: <a href="diff/1-2.html">1</a></p>
 		<p><strong>Jump to</strong>: <a href="#endianness">Endianness</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a></p>
 		<p><strong>Released</strong>: February 7th, 2017</p>
@@ -38,13 +40,15 @@
 		<h3>Using Web Sockets</h3>
 		<p>The websocket protocol uses json packets instead of binary ones (with the keys in snake case) and encodes the arrays of bytes (<a href="#login_auth-credentials_payload">AuthCredentials.payload</a> and <a href="#login_auth_hash">Auth.hash</a>) into strings using base64. The connection is established like every web socket connection and, if successfull, continues with the <a href="#login_auth-credentials">AuthCredentials</a> packet sent by the server.</p>
 		<p>Example of a connection in javascript:</p>
-		<pre><code class="javascript">var socket = new WebSocket("example.com:19134");
+		<pre>
+			<code class="javascript">var socket = new WebSocket("example.com:19134");
 socket.onmessage = function(event){
    var json = JSON.parse(event.data);
    if(json.hash) console.log("The server requires hash " + json.hash_algorithm);
    else console.log("The server doesn't require hashing");
 }
-</code></pre>
+</code>
+		</pre>
 		<h2>Authenticating</h2>
 		<p>After receiving the <a href="#login_auth-credentials">AuthCredentials</a> packet, the external console, if able to perform authentication, has to send the password or its hash through the <a href="#login_auth">Auth</a> packet and waits for a response, given by the <a href="#login_welcome">Welcome</a> packet. If the server accepts the external console the status in the packet will be "accepted", the additional fields of the <a href="#login.welcome.accepted" target="_blank">Welcome.Accepted</a> packet can be read and the external console can proceed keeping the connection alive, sending commands, receiving logs and other updates.</p>
 		<h2>Keeping the connection alive</h2>
@@ -56,42 +60,104 @@ socket.onmessage = function(event){
 		<hr>
 		<h2 id="endianness">Endianness</h2>
 		<table>
-			<tr><td>big endian</td><td>ushort, int, uint, ulong, float</td></tr>
-			<tr><td>little endian</td><td></td></tr>
+			<tr>
+				<td>big endian</td>
+				<td>ushort, int, uint, ulong, float</td>
+			</tr>
+			<tr>
+				<td>little endian</td>
+				<td></td>
+			</tr>
 		</table>
 		<p><strong>Ids</strong>: ubyte</p>
 		<p><strong>Array's length</strong>: ushort</p>
 		<hr>
 		<h2 id="packets">Packets</h2>
 		<table>
-			<tr><th>Section</th><th>Packets</th></tr>
-			<tr><td><a href="#login">Login</a></td><td class="center">3</td></tr>
-			<tr><td><a href="#status">Status</a></td><td class="center">4</td></tr>
-			<tr><td><a href="#connected">Connected</a></td><td class="center">3</td></tr>
+			<tr>
+				<th>Section</th>
+				<th>Packets</th>
+			</tr>
+			<tr>
+				<td><a href="#login">Login</a></td>
+				<td class="center">3</td>
+			</tr>
+			<tr>
+				<td><a href="#status">Status</a></td>
+				<td class="center">4</td>
+			</tr>
+			<tr>
+				<td><a href="#connected">Connected</a></td>
+				<td class="center">3</td>
+			</tr>
 		</table>
 		<h3 id="login">Login</h3>
 		<p>Packets used during the authentication process and to exhange the initial server's informations.</p>
 		<table>
-			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-			<tr><td><a href="#login_auth-credentials">Auth Credentials</a></td><td class="center">0</td><td class="center">00₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#login_auth">Auth</a></td><td class="center">1</td><td class="center">01₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#login_welcome">Welcome</a></td><td class="center">2</td><td class="center">02₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr>
+				<th>Packets</th>
+				<th colspan="2">Id</th>
+				<th>Clientbound</th>
+				<th>Serverbound</th>
+			</tr>
+			<tr>
+				<td><a href="#login_auth-credentials">Auth Credentials</a></td>
+				<td class="center">0</td>
+				<td class="center">00₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#login_auth">Auth</a></td>
+				<td class="center">1</td>
+				<td class="center">01₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#login_welcome">Welcome</a></td>
+				<td class="center">2</td>
+				<td class="center">02₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
 		</table>
 		<ul>
 			<li>
 				<h3 id="login_auth-credentials">Auth Credentials</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">0</td><td class="center">00000000₂</td><td class="center">00₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 0</p>
+					<p><strong>Hex</strong>: 00</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>First packet sent by the server when the connection is successfully established. It contains informations about how the external console shall authenticate itself.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th><th>When</th></tr>
-					<tr><td><a href="#login_auth-credentials_protocol">protocol</a></td><td>ubyte</td><td class="center"></td></tr>
-					<tr><td><a href="#login_auth-credentials_hash">hash</a></td><td>bool</td><td class="center"></td></tr>
-					<tr><td><a href="#login_auth-credentials_hash-algorithm">hashAlgorithm</a></td><td>string</td><td class="center"><code>hash</code> is <code><span style="color:#009688">true</span></code></td></tr>
-					<tr><td><a href="#login_auth-credentials_payload">payload</a></td><td>ubyte[]</td><td class="center"><code>hash</code> is <code><span style="color:#009688">true</span></code></td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+						<th>When</th>
+					</tr>
+					<tr>
+						<td><a href="#login_auth-credentials_protocol">protocol</a></td>
+						<td>ubyte</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#login_auth-credentials_hash">hash</a></td>
+						<td>bool</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#login_auth-credentials_hash-algorithm">hash algorithm</a></td>
+						<td>string</td>
+						<td class="center"><code>hash</code> is <code><span style="color:#009688">true</span></code></td>
+					</tr>
+					<tr>
+						<td><a href="#login_auth-credentials_payload">payload</a></td>
+						<td>ubyte[]</td>
+						<td class="center"><code>hash</code> is <code><span style="color:#009688">true</span></code></td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -103,7 +169,7 @@ socket.onmessage = function(event){
 						<p>Whether to perform hashing on the password or not.</p>
 					</li>
 					<li>
-						<strong id="login_auth-credentials_hash-algorithm">hashAlgorithm</strong>
+						<strong id="login_auth-credentials_hash-algorithm">hash algorithm</strong>
 						<p>Algorithm used by the server to hash the concatenation of the password and the <a href="#login_auth-credentials_payload">payload</a>. The value should be sent in lower case without any separation symbol (for example <code>md5</code> instead of <code>MD5</code>, <code>sha256</code> instead of <code>SHA-256</code>).</p>
 						<p>See <a href="#login_auth_hash">Auth.hash</a> for more details.</p>
 					</li>
@@ -115,52 +181,84 @@ socket.onmessage = function(event){
 			</li>
 			<li>
 				<h3 id="login_auth">Auth</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">1</td><td class="center">00000001₂</td><td class="center">01₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 1</p>
+					<p><strong>Hex</strong>: 01</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Performs authentication following the instruncions given by the <a href="#login_auth-credentials">AuthCredentials</a> packet.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#login_auth_hash">hash</a></td><td>ubyte[]</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#login_auth_hash">hash</a></td>
+						<td>ubyte[]</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
 						<strong id="login_auth_hash">hash</strong>
 						<p>Pasword encoded as UTF-8 if <a href="#login.auth_credentials_auth" target="_blank">AuthCredentials.hash</a> is <code>false</code> or the hash (specified in <a href="#login_auth-credentials_hash-algorithm">AuthCredentials.hashAlgorithm</a>) of the password encoded as UTF-8 concatenated with the bytes from <a href="#login_auth-credentials_payload">AuthCredentials.payload</a> if <code>true</code>.</p>
 						<p>The hash can be done with a function (if hashAlgorithm is <code>sha1</code>) in D:</p>
-						<pre><code class="d">sha1Of(cast(ubyte[])password ~ authCredentials.payload);
-</code></pre>
+						<pre>
+							<code class="d">sha1Of(cast(ubyte[])password ~ authCredentials.payload);
+</code>
+						</pre>
 						<p>Or using <code>MessageDigest</code> in Java:</p>
-						<pre><code class="java">MessageDigest md = MessageDigest.getInstance(authCredentials.hashAlgorithm);
+						<pre>
+							<code class="java">MessageDigest md = MessageDigest.getInstance(authCredentials.hashAlgorithm);
 md.update(password.getBytes(StandardCharsets.UTF_8));
 md.update(authCredentials.payload);
 byte[] hash = md.digest();
-</code></pre>
+</code>
+						</pre>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="login_welcome">Welcome</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">2</td><td class="center">00000010₂</td><td class="center">02₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 2</p>
+					<p><strong>Hex</strong>: 02</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Indicates the status of the authentication process.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>status</td><td>ubyte</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>status</td>
+						<td>ubyte</td>
+					</tr>
 				</table>
-				<ul>
-				</ul>
 				<p><strong>Variants</strong>:</p>
 				<table>
-					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="#login_welcome_accepted">Accepted</a></td><td>status</td><td class="center">0</td></tr>
-					<tr><td><a href="#login_welcome_wrong-hash">Wrong Hash</a></td><td>status</td><td class="center">1</td></tr>
-					<tr><td><a href="#login_welcome_timed-out">Timed Out</a></td><td>status</td><td class="center">2</td></tr>
+					<tr>
+						<th>Variant</th>
+						<th>Field</th>
+						<th>Value</th>
+					</tr>
+					<tr>
+						<td><a href="#login_welcome_accepted">Accepted</a></td>
+						<td>status</td>
+						<td class="center">0</td>
+					</tr>
+					<tr>
+						<td><a href="#login_welcome_wrong-hash">Wrong Hash</a></td>
+						<td>status</td>
+						<td class="center">1</td>
+					</tr>
+					<tr>
+						<td><a href="#login_welcome_timed-out">Timed Out</a></td>
+						<td>status</td>
+						<td class="center">2</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -168,17 +266,38 @@ byte[] hash = md.digest();
 						<p>Sent when the hash sent in <a href="#login_auth">Auth</a> matches the server's.</p>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
-							<tr><th>Name</th><th>Type</th></tr>
-							<tr><td><a href="#login_welcome_accepted_remote-commands">remoteCommands</a></td><td>bool</td></tr>
-							<tr><td><a href="#login_welcome_accepted_software">software</a></td><td>string</td></tr>
-							<tr><td><a href="#login_welcome_accepted_versions">versions</a></td><td>ubyte[3]</td></tr>
-							<tr><td><a href="#login_welcome_accepted_display-name">displayName</a></td><td>string</td></tr>
-							<tr><td><a href="#login_welcome_accepted_games">games</a></td><td><a href="#types_game">game</a>[]</td></tr>
-							<tr><td><a href="#login_welcome_accepted_connected-nodes">connectedNodes</a></td><td>string[]</td></tr>
+							<tr>
+								<th>Name</th>
+								<th>Type</th>
+							</tr>
+							<tr>
+								<td><a href="#login_welcome_accepted_remote-commands">remote commands</a></td>
+								<td>bool</td>
+							</tr>
+							<tr>
+								<td><a href="#login_welcome_accepted_software">software</a></td>
+								<td>string</td>
+							</tr>
+							<tr>
+								<td><a href="#login_welcome_accepted_versions">versions</a></td>
+								<td>ubyte[3]</td>
+							</tr>
+							<tr>
+								<td><a href="#login_welcome_accepted_display-name">display name</a></td>
+								<td>string</td>
+							</tr>
+							<tr>
+								<td><a href="#login_welcome_accepted_games">games</a></td>
+								<td><a href="#types_game">game</a>[]</td>
+							</tr>
+							<tr>
+								<td><a href="#login_welcome_accepted_connected-nodes">connected nodes</a></td>
+								<td>string[]</td>
+							</tr>
 						</table>
 						<ul>
 							<li>
-								<strong id="login_welcome_accepted_remote-commands">remoteCommands</strong>
+								<strong id="login_welcome_accepted_remote-commands">remote commands</strong>
 								<p>Indicates whether the external console can execute command remotely through the <a href="#connected_command">Command</a> packet.</p>
 							</li>
 							<li>
@@ -190,7 +309,7 @@ byte[] hash = md.digest();
 								<p>Versions of the server in a 3-btyes array readed as <code>[major, minor, release]</code>.</p>
 							</li>
 							<li>
-								<strong id="login_welcome_accepted_display-name">displayName</strong>
+								<strong id="login_welcome_accepted_display-name">display name</strong>
 								<p>Name of the server (not the game's MOTD!). It shouldn't contain Minecraft formatting codes.</p>
 							</li>
 							<li>
@@ -198,7 +317,7 @@ byte[] hash = md.digest();
 								<p>Informations about the games and their protocols supported by the server.</p>
 							</li>
 							<li>
-								<strong id="login_welcome_accepted_connected-nodes">connectedNodes</strong>
+								<strong id="login_welcome_accepted_connected-nodes">connected nodes</strong>
 								<p>List of names of the nodes connected to the server, if it uses the hub-node layout, or an empty list.</p>
 							</li>
 						</ul>
@@ -217,24 +336,60 @@ byte[] hash = md.digest();
 		<h3 id="status">Status</h3>
 		<p>Packets about the informations and the usage of the server.</p>
 		<table>
-			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-			<tr><td><a href="#status_keep-alive">Keep Alive</a></td><td class="center">0</td><td class="center">00₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
-			<tr><td><a href="#status_update-nodes">Update Nodes</a></td><td class="center">1</td><td class="center">01₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#status_request-stats">Request Stats</a></td><td class="center">2</td><td class="center">02₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#status_update-stats">Update Stats</a></td><td class="center">3</td><td class="center">03₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr>
+				<th>Packets</th>
+				<th colspan="2">Id</th>
+				<th>Clientbound</th>
+				<th>Serverbound</th>
+			</tr>
+			<tr>
+				<td><a href="#status_keep-alive">Keep Alive</a></td>
+				<td class="center">0</td>
+				<td class="center">00₁₆</td>
+				<td class="center">✓</td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#status_update-nodes">Update Nodes</a></td>
+				<td class="center">1</td>
+				<td class="center">01₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#status_request-stats">Request Stats</a></td>
+				<td class="center">2</td>
+				<td class="center">02₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#status_update-stats">Update Stats</a></td>
+				<td class="center">3</td>
+				<td class="center">03₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
 		</table>
 		<ul>
 			<li>
 				<h3 id="status_keep-alive">Keep Alive</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">0</td><td class="center">00000000₂</td><td class="center">00₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 0</p>
+					<p><strong>Hex</strong>: 00</p>
+					<p>Sent by the <strong>server</strong> and the <strong>client</strong></p>
+				</div>
 				<p>Keeps the connection alive and/or calculates the latency. This packet should be sent at least every 5 seconds to avoid the disconnection caused by timeout and update the latency. The external console can send this packet whenever it wants it and the server must reply with the same packet with the same field's value.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#status_keep-alive_count">count</a></td><td>uint</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#status_keep-alive_count">count</a></td>
+						<td>uint</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -245,17 +400,27 @@ byte[] hash = md.digest();
 			</li>
 			<li>
 				<h3 id="status_update-nodes">Update Nodes</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">1</td><td class="center">00000001₂</td><td class="center">01₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 1</p>
+					<p><strong>Hex</strong>: 01</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Updates the list of the nodes connected to the hub, adding or removing one.</p>
 				<p>If the server isn't built on the hub-node layout this packet is never sent.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#status_update-nodes_action">action</a></td><td>ubyte</td></tr>
-					<tr><td><a href="#status_update-nodes_node">node</a></td><td>string</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#status_update-nodes_action">action</a></td>
+						<td>ubyte</td>
+					</tr>
+					<tr>
+						<td><a href="#status_update-nodes_node">node</a></td>
+						<td>string</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -264,8 +429,14 @@ byte[] hash = md.digest();
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>add</td><td class="center">0</td></tr>
-							<tr><td>remove</td><td class="center">1</td></tr>
+							<tr>
+								<td>add</td>
+								<td class="center">0</td>
+							</tr>
+							<tr>
+								<td>remove</td>
+								<td class="center">1</td>
+							</tr>
 						</table>
 					</li>
 					<li>
@@ -276,37 +447,60 @@ byte[] hash = md.digest();
 			</li>
 			<li>
 				<h3 id="status_request-stats">Request Stats</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">2</td><td class="center">00000010₂</td><td class="center">02₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 2</p>
+					<p><strong>Hex</strong>: 02</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Requests an <a href="#stats_update-stats">UpdateStats</a> packet to the server, which should sent it immediately instead of waiting for the next automatic update (if the server does one).</p>
 			</li>
 			<li>
 				<h3 id="status_update-stats">Update Stats</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">3</td><td class="center">00000011₂</td><td class="center">03₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 3</p>
+					<p><strong>Hex</strong>: 03</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Updates the statistics about the usage of the server and, eventually, the connected nodes.</p>
 				<p>This packet is sent in response to <a href="#status_request-stats">RequestStats</a> and every time the server retains that the stats should be updated (usually in a range of 5 to 30 seconds).</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#status_update-stats_online-players">onlinePlayers</a></td><td>uint</td></tr>
-					<tr><td><a href="#status_update-stats_max-players">maxPlayers</a></td><td>uint</td></tr>
-					<tr><td><a href="#status_update-stats_uptime">uptime</a></td><td>uint</td></tr>
-					<tr><td><a href="#status_update-stats_upload">upload</a></td><td>uint</td></tr>
-					<tr><td><a href="#status_update-stats_download">download</a></td><td>uint</td></tr>
-					<tr><td><a href="#status_update-stats_nodes">nodes</a></td><td><a href="#types_node-stats">nodeStats</a>[]</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#status_update-stats_online-players">online players</a></td>
+						<td>uint</td>
+					</tr>
+					<tr>
+						<td><a href="#status_update-stats_max-players">max players</a></td>
+						<td>uint</td>
+					</tr>
+					<tr>
+						<td><a href="#status_update-stats_uptime">uptime</a></td>
+						<td>uint</td>
+					</tr>
+					<tr>
+						<td><a href="#status_update-stats_upload">upload</a></td>
+						<td>uint</td>
+					</tr>
+					<tr>
+						<td><a href="#status_update-stats_download">download</a></td>
+						<td>uint</td>
+					</tr>
+					<tr>
+						<td><a href="#status_update-stats_nodes">nodes</a></td>
+						<td><a href="#types_node-stats">nodeStats</a>[]</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
-						<strong id="status_update-stats_online-players">onlinePlayers</strong>
+						<strong id="status_update-stats_online-players">online players</strong>
 						<p>Number of players currently online on the server. Players that are performing authentication are not included in the count.</p>
 					</li>
 					<li>
-						<strong id="status_update-stats_max-players">maxPlayers</strong>
+						<strong id="status_update-stats_max-players">max players</strong>
 						<p>Highest number of players that can join the server simultaneously. If 0, there is not maximum number of players.</p>
 					</li>
 					<li>
@@ -331,27 +525,69 @@ byte[] hash = md.digest();
 		<h3 id="connected">Connected</h3>
 		<p>Packets regarding the server's console and commands.</p>
 		<table>
-			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-			<tr><td><a href="#connected_console-message">Console Message</a></td><td class="center">4</td><td class="center">04₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#connected_command">Command</a></td><td class="center">5</td><td class="center">05₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#connected_permission-denied">Permission Denied</a></td><td class="center">6</td><td class="center">06₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr>
+				<th>Packets</th>
+				<th colspan="2">Id</th>
+				<th>Clientbound</th>
+				<th>Serverbound</th>
+			</tr>
+			<tr>
+				<td><a href="#connected_console-message">Console Message</a></td>
+				<td class="center">4</td>
+				<td class="center">04₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#connected_command">Command</a></td>
+				<td class="center">5</td>
+				<td class="center">05₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#connected_permission-denied">Permission Denied</a></td>
+				<td class="center">6</td>
+				<td class="center">06₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
 		</table>
 		<ul>
 			<li>
 				<h3 id="connected_console-message">Console Message</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">4</td><td class="center">00000100₂</td><td class="center">04₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 4</p>
+					<p><strong>Hex</strong>: 04</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Logs a message from the server's console. It may be the output of a command, a debug message or any other message that the server retains able to be seen by the External Console.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#connected_console-message_node">node</a></td><td>string</td></tr>
-					<tr><td><a href="#connected_console-message_timestamp">timestamp</a></td><td>ulong</td></tr>
-					<tr><td><a href="#connected_console-message_logger">logger</a></td><td>string</td></tr>
-					<tr><td><a href="#connected_console-message_message">message</a></td><td>string</td></tr>
-					<tr><td><a href="#connected_console-message_command-id">commandId</a></td><td>int</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#connected_console-message_node">node</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#connected_console-message_timestamp">timestamp</a></td>
+						<td>ulong</td>
+					</tr>
+					<tr>
+						<td><a href="#connected_console-message_logger">logger</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#connected_console-message_message">message</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#connected_console-message_command-id">command id</a></td>
+						<td>int</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -372,23 +608,33 @@ byte[] hash = md.digest();
 						<p>The logged message. It may contain Minecraft's formatting codes which should be translated into appropriate colours and formatting (bold, italic and strikethrough) by the client implementation of the external console.</p>
 					</li>
 					<li>
-						<strong id="connected_console-message_command-id">commandId</strong>
+						<strong id="connected_console-message_command-id">command id</strong>
 						<p>Identifier given in <a href="#connected_command_command-id">Command.commandId</a> if the log was generated by a command sent by the external console or -1 if the log was not related to a command sent from the external console.</p>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="connected_command">Command</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">5</td><td class="center">00000101₂</td><td class="center">05₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 5</p>
+					<p><strong>Hex</strong>: 05</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Executes a command remotely if the server allows it. If not a <a href="#connected_permission-denied" target="_blank">Permission Denied</a> is sent back. A good implementation of the external console client should never send this packet if <a href="#login_welcome_accepted_remote-commands">remoteCommands</a> field in <a href="#login.welcome.accepted" target="_blank">Welcome.Accepted</a> is not true.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#connected_command_command">command</a></td><td>string</td></tr>
-					<tr><td><a href="#connected_command_command-id">commandId</a></td><td>uint</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#connected_command_command">command</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#connected_command_command-id">command id</a></td>
+						<td>uint</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -396,17 +642,18 @@ byte[] hash = md.digest();
 						<p>Command to execute on the server.</p>
 					</li>
 					<li>
-						<strong id="connected_command_command-id">commandId</strong>
+						<strong id="connected_command_command-id">command id</strong>
 						<p>Identifier for the command that will be sent in <a href="#connected_console-message_command-id">ConsoleMessage.commandId</a> if the command generates an output.</p>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="connected_permission-denied">Permission Denied</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">6</td><td class="center">00000110₂</td><td class="center">06₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 6</p>
+					<p><strong>Hex</strong>: 06</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Bodyless packet only sent in response to <a href="#connected_command">Command</a> when the server doesn't allow the execution of remote commands through the external console. A good implementation of the external console client should never receive this packet avoiding the use of the <a href="#connected_command">Command</a> packet when the <a href="#login_welcome_accepted_remote-command">remoteCommands</a> field is false.</p>
 			</li>
 		</ul>
@@ -417,9 +664,18 @@ byte[] hash = md.digest();
 				<h3 id="types_game">Game</h3>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#types_game_type">type</a></td><td>ubyte</td></tr>
-					<tr><td><a href="#types_game_protocols">protocols</a></td><td>uint[]</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#types_game_type">type</a></td>
+						<td>ubyte</td>
+					</tr>
+					<tr>
+						<td><a href="#types_game_protocols">protocols</a></td>
+						<td>uint[]</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -428,8 +684,16 @@ byte[] hash = md.digest();
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th><th></th></tr>
-							<tr><td>pocket</td><td class="center">1</td><td>Minecraft: Pocket Edition and derivated</td></tr>
-							<tr><td>minecraft</td><td class="center">2</td><td>Classic minecraft (Java version)</td></tr>
+							<tr>
+								<td>pocket</td>
+								<td class="center">1</td>
+								<td>Minecraft: Pocket Edition and derivated</td>
+							</tr>
+							<tr>
+								<td>minecraft</td>
+								<td class="center">2</td>
+								<td>Classic minecraft (Java version)</td>
+							</tr>
 						</table>
 					</li>
 					<li>
@@ -443,11 +707,26 @@ byte[] hash = md.digest();
 				<p>Resources usage of a node.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#types_node-stats_name">name</a></td><td>string</td></tr>
-					<tr><td><a href="#types_node-stats_tps">tps</a></td><td>float</td></tr>
-					<tr><td><a href="#types_node-stats_ram">ram</a></td><td>ulong</td></tr>
-					<tr><td><a href="#types_node-stats_cpu">cpu</a></td><td>float</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#types_node-stats_name">name</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#types_node-stats_tps">tps</a></td>
+						<td>float</td>
+					</tr>
+					<tr>
+						<td><a href="#types_node-stats_ram">ram</a></td>
+						<td>ulong</td>
+					</tr>
+					<tr>
+						<td><a href="#types_node-stats_cpu">cpu</a></td>
+						<td>float</td>
+					</tr>
 				</table>
 				<ul>
 					<li>

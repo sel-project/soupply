@@ -15,7 +15,7 @@ import sul.utils.*;
  */
 public class UpdatePacketLoss extends Packet {
 
-	public static final byte ID = (byte)23;
+	public static final byte ID = (byte)25;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

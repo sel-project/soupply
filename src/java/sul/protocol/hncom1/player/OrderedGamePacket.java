@@ -18,7 +18,7 @@ import sul.utils.*;
  */
 public class OrderedGamePacket extends Packet {
 
-	public static final byte ID = (byte)25;
+	public static final byte ID = (byte)27;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;

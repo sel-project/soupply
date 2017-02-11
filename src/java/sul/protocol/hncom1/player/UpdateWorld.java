@@ -17,7 +17,7 @@ import sul.utils.*;
  */
 public class UpdateWorld extends Packet {
 
-	public static final byte ID = (byte)19;
+	public static final byte ID = (byte)20;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
@@ -30,7 +30,7 @@ public class UpdateWorld extends Packet {
 	public String world;
 
 	/**
-	 * World's dimension, that may different from Minecraft's version. It used for synchronise
+	 * World's dimension, that may differ from Minecraft's version. It's used for synchronise
 	 * entities and chunks when changing node as described at Add.dimension.
 	 */
 	public byte dimension;

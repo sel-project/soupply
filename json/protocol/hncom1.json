@@ -88,7 +88,7 @@
 		"login": {
 
 			"connection_request": {
-				"id": 0,
+				"id": 1,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -112,7 +112,7 @@
 			},
 
 			"connection_response": {
-				"id": 1,
+				"id": 2,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -139,7 +139,7 @@
 			},
 
 			"hub_info": {
-				"id": 2,
+				"id": 3,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -198,7 +198,7 @@
 			},
 
 			"node_info": {
-				"id": 3,
+				"id": 4,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -233,7 +233,7 @@
 		"status": {
 
 			"add_node": {
-				"id": 4,
+				"id": 5,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -257,7 +257,7 @@
 			},
 
 			"remove_node": {
-				"id": 5,
+				"id": 6,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -269,7 +269,7 @@
 			},
 
 			"message_serverbound": {
-				"id": 6,
+				"id": 7,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -285,7 +285,7 @@
 			},
 
 			"message_clientbound": {
-				"id": 7,
+				"id": 8,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -301,7 +301,7 @@
 			},
 
 			"players": {
-				"id": 8,
+				"id": 9,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -320,7 +320,7 @@
 			},
 
 			"resources_usage": {
-				"id": 9,
+				"id": 10,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -340,7 +340,7 @@
 			},
 
 			"log": {
-				"id": 10,
+				"id": 11,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -364,7 +364,7 @@
 			},
 
 			"remote_command": {
-				"id": 11,
+				"id": 12,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -394,7 +394,7 @@
 			},
 
 			"update_list": {
-				"id": 12,
+				"id": 13,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -462,7 +462,7 @@
 			},
 
 			"reload": {
-				"id": 13,
+				"id": 14,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": []
@@ -473,7 +473,7 @@
 		"player": {
 
 			"add": {
-				"id": 14,
+				"id": 15,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -513,6 +513,11 @@
 					{
 						"name": "dimension",
 						"type": "byte",
+						"when": "reason!=0"
+					},
+					{
+						"name": "view_distance",
+						"type": "varuint",
 						"when": "reason!=0"
 					},
 					{
@@ -596,7 +601,7 @@
 			},
 
 			"remove": {
-				"id": 15,
+				"id": 16,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -618,7 +623,7 @@
 			},
 
 			"kick": {
-				"id": 16,
+				"id": 17,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -643,7 +648,7 @@
 			},
 
 			"transfer": {
-				"id": 17,
+				"id": 18,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -668,7 +673,7 @@
 			},
 
 			"update_display_name": {
-				"id": 18,
+				"id": 19,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -684,7 +689,7 @@
 			},
 
 			"update_world": {
-				"id": 19,
+				"id": 20,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -703,8 +708,24 @@
 				]
 			},
 
+			"update_view_distance": {
+				"id": 21,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "view_distance",
+						"type": "varuint"
+					}
+				]
+			},
+
 			"update_language": {
-				"id": 20,
+				"id": 22,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [
@@ -720,7 +741,7 @@
 			},
 
 			"update_input_mode": {
-				"id": 21,
+				"id": 23,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -741,7 +762,7 @@
 			},
 
 			"update_latency": {
-				"id": 22,
+				"id": 24,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -757,7 +778,7 @@
 			},
 
 			"update_packet_loss": {
-				"id": 23,
+				"id": 25,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -773,7 +794,7 @@
 			},
 
 			"game_packet": {
-				"id": 24,
+				"id": 26,
 				"clientbound": true,
 				"serverbound": true,
 				"fields": [
@@ -789,7 +810,7 @@
 			},
 
 			"ordered_game_packet": {
-				"id": 25,
+				"id": 27,
 				"clientbound": false,
 				"serverbound": true,
 				"fields": [

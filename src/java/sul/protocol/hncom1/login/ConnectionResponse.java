@@ -16,7 +16,7 @@ import sul.utils.*;
  */
 public class ConnectionResponse extends Packet {
 
-	public static final byte ID = (byte)1;
+	public static final byte ID = (byte)2;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

@@ -18,7 +18,7 @@ import sul.utils.*;
  */
 public class Transfer extends Packet {
 
-	public static final byte ID = (byte)17;
+	public static final byte ID = (byte)18;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;

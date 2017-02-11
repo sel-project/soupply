@@ -16,7 +16,7 @@ import sul.utils.*;
  */
 public class Reload extends Packet {
 
-	public static final byte ID = (byte)13;
+	public static final byte ID = (byte)14;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

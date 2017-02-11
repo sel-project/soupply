@@ -5,15 +5,17 @@
 		<title>Hub-Node Communication 1 | SEL Utils</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<meta name="description" content="Protocol used for the communication between an hub and multiple nodes with support for Minecraft and Minecraft: Pocket Edition and different versions of their protocols." />
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" />
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
-		<script>hljs.initHighlightingOnLoad();</script>
 		<link rel="icon" type="image/png" href="../favicon.png" />
 		<link rel="stylesheet" href="../style.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" />
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
 	</head>
 	<body>
 		<div class="logo"><a href="../"><div><img src="../logo.png" alt="SEL" /></div></a><div><a href="../">Index</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml">XML</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
 		<h1>Hub-Node Communication 1</h1>
+		<div class="g-plusone" data-size="tall"></div>
 		<p><strong>Jump to</strong>: <a href="#endianness">Endianness</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a></p>
 		<p><strong>Released</strong>: January 25th, 2017</p>
 		<p>Protocol used for the communication between an hub and multiple nodes with support for Minecraft and Minecraft: Pocket Edition and different versions of their protocols.</p>
@@ -30,43 +32,106 @@
 		<hr>
 		<h2 id="endianness">Endianness</h2>
 		<table>
-			<tr><td>big endian</td><td>ushort, float</td></tr>
-			<tr><td>little endian</td><td></td></tr>
+			<tr>
+				<td>big endian</td>
+				<td>ushort, float</td>
+			</tr>
+			<tr>
+				<td>little endian</td>
+				<td></td>
+			</tr>
 		</table>
 		<p><strong>Ids</strong>: ubyte</p>
 		<p><strong>Array's length</strong>: varuint</p>
 		<hr>
 		<h2 id="packets">Packets</h2>
 		<table>
-			<tr><th>Section</th><th>Packets</th></tr>
-			<tr><td><a href="#login">Login</a></td><td class="center">4</td></tr>
-			<tr><td><a href="#status">Status</a></td><td class="center">10</td></tr>
-			<tr><td><a href="#player">Player</a></td><td class="center">12</td></tr>
+			<tr>
+				<th>Section</th>
+				<th>Packets</th>
+			</tr>
+			<tr>
+				<td><a href="#login">Login</a></td>
+				<td class="center">4</td>
+			</tr>
+			<tr>
+				<td><a href="#status">Status</a></td>
+				<td class="center">10</td>
+			</tr>
+			<tr>
+				<td><a href="#player">Player</a></td>
+				<td class="center">13</td>
+			</tr>
 		</table>
 		<h3 id="login">Login</h3>
 		<p>Packets used during the authentication process to exchange informations.</p>
 		<table>
-			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-			<tr><td><a href="#login_connection-request">Connection Request</a></td><td class="center">0</td><td class="center">00₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#login_connection-response">Connection Response</a></td><td class="center">1</td><td class="center">01₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#login_hub-info">Hub Info</a></td><td class="center">2</td><td class="center">02₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#login_node-info">Node Info</a></td><td class="center">3</td><td class="center">03₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr>
+				<th>Packets</th>
+				<th colspan="2">Id</th>
+				<th>Clientbound</th>
+				<th>Serverbound</th>
+			</tr>
+			<tr>
+				<td><a href="#login_connection-request">Connection Request</a></td>
+				<td class="center">1</td>
+				<td class="center">01₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#login_connection-response">Connection Response</a></td>
+				<td class="center">2</td>
+				<td class="center">02₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#login_hub-info">Hub Info</a></td>
+				<td class="center">3</td>
+				<td class="center">03₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#login_node-info">Node Info</a></td>
+				<td class="center">4</td>
+				<td class="center">04₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
 		</table>
 		<ul>
 			<li>
 				<h3 id="login_connection-request">Connection Request</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">0</td><td class="center">00000000₂</td><td class="center">00₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 1</p>
+					<p><strong>Hex</strong>: 01</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>First real packet sent by the client with its informations.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#login_connection-request_protocol">protocol</a></td><td>varuint</td></tr>
-					<tr><td><a href="#login_connection-request_password">password</a></td><td>string</td></tr>
-					<tr><td><a href="#login_connection-request_name">name</a></td><td>string</td></tr>
-					<tr><td><a href="#login_connection-request_main">main</a></td><td>bool</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#login_connection-request_protocol">protocol</a></td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#login_connection-request_password">password</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#login_connection-request_name">name</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#login_connection-request_main">main</a></td>
+						<td>bool</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -89,16 +154,26 @@
 			</li>
 			<li>
 				<h3 id="login_connection-response">Connection Response</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">1</td><td class="center">00000001₂</td><td class="center">01₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 2</p>
+					<p><strong>Hex</strong>: 02</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Reply always sent after the <a href="#login_connection-request">ConnectionRequest</a> packet. It indicates the status of the connection, which is accepted only when every field of the packet is true.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#login_connection-response_protocol">protocol</a></td><td>varuint</td></tr>
-					<tr><td><a href="#login_connection-response_status">status</a></td><td>ubyte</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#login_connection-response_protocol">protocol</a></td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#login_connection-response_status">status</a></td>
+						<td>ubyte</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -111,41 +186,117 @@
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th><th></th></tr>
-							<tr><td>ok</td><td class="center">0</td><td></td></tr>
-							<tr><td>outdatedHub</td><td class="center">1</td><td>The hub uses an old version of hncom</td></tr>
-							<tr><td>outdatedNode</td><td class="center">2</td><td>The node uses an old version of hncom</td></tr>
-							<tr><td>passwordRequired</td><td class="center">3</td><td>A password is required to connect</td></tr>
-							<tr><td>wrongPassword</td><td class="center">4</td><td>The password doesn't match the hub's</td></tr>
-							<tr><td>invalidNameLength</td><td class="center">5</td><td>The name is too short or too long</td></tr>
-							<tr><td>invalidNameCharacters</td><td class="center">6</td><td>The name contains invalid characters</td></tr>
-							<tr><td>nameAlreadyUsed</td><td class="center">7</td><td>There's already a node connected with the same name</td></tr>
-							<tr><td>nameReserved</td><td class="center">8</td><td>The name cannot be used because the hub has reserved it for something else</td></tr>
+							<tr>
+								<td>ok</td>
+								<td class="center">0</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>outdated hub</td>
+								<td class="center">1</td>
+								<td>The hub uses an old version of hncom</td>
+							</tr>
+							<tr>
+								<td>outdated node</td>
+								<td class="center">2</td>
+								<td>The node uses an old version of hncom</td>
+							</tr>
+							<tr>
+								<td>password required</td>
+								<td class="center">3</td>
+								<td>A password is required to connect</td>
+							</tr>
+							<tr>
+								<td>wrong password</td>
+								<td class="center">4</td>
+								<td>The password doesn't match the hub's</td>
+							</tr>
+							<tr>
+								<td>invalid name length</td>
+								<td class="center">5</td>
+								<td>The name is too short or too long</td>
+							</tr>
+							<tr>
+								<td>invalid name characters</td>
+								<td class="center">6</td>
+								<td>The name contains invalid characters</td>
+							</tr>
+							<tr>
+								<td>name already used</td>
+								<td class="center">7</td>
+								<td>There's already a node connected with the same name</td>
+							</tr>
+							<tr>
+								<td>name reserved</td>
+								<td class="center">8</td>
+								<td>The name cannot be used because the hub has reserved it for something else</td>
+							</tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="login_hub-info">Hub Info</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">2</td><td class="center">00000010₂</td><td class="center">02₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 3</p>
+					<p><strong>Hex</strong>: 03</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Informations about the hub.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#login_hub-info_time">time</a></td><td>varulong</td></tr>
-					<tr><td><a href="#login_hub-info_server-id">serverId</a></td><td>varulong</td></tr>
-					<tr><td><a href="#login_hub-info_reserved-uuids">reservedUuids</a></td><td>varulong</td></tr>
-					<tr><td><a href="#login_hub-info_display-name">displayName</a></td><td>string</td></tr>
-					<tr><td><a href="#login_hub-info_online-mode">onlineMode</a></td><td>bool</td></tr>
-					<tr><td><a href="#login_hub-info_games-info">gamesInfo</a></td><td><a href="#types_game-info">gameInfo</a>[]</td></tr>
-					<tr><td><a href="#login_hub-info_online">online</a></td><td>varuint</td></tr>
-					<tr><td><a href="#login_hub-info_max">max</a></td><td>varint</td></tr>
-					<tr><td><a href="#login_hub-info_language">language</a></td><td>string</td></tr>
-					<tr><td><a href="#login_hub-info_accepted-languages">acceptedLanguages</a></td><td>string[]</td></tr>
-					<tr><td><a href="#login_hub-info_social-json">socialJson</a></td><td>string</td></tr>
-					<tr><td><a href="#login_hub-info_additional-json">additionalJson</a></td><td>string</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_time">time</a></td>
+						<td>varulong</td>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_server-id">server id</a></td>
+						<td>varulong</td>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_reserved-uuids">reserved uuids</a></td>
+						<td>varulong</td>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_display-name">display name</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_online-mode">online mode</a></td>
+						<td>bool</td>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_games-info">games info</a></td>
+						<td><a href="#types_game-info">gameInfo</a>[]</td>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_online">online</a></td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_max">max</a></td>
+						<td>varint</td>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_language">language</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_accepted-languages">accepted languages</a></td>
+						<td>string[]</td>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_social-json">social json</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#login_hub-info_additional-json">additional json</a></td>
+						<td>string</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -153,23 +304,23 @@
 						<p>Unix time in microseconds precision that indicates the exact moment when this packet was created. It's used by the node to calculate the latency.</p>
 					</li>
 					<li>
-						<strong id="login_hub-info_server-id">serverId</strong>
+						<strong id="login_hub-info_server-id">server id</strong>
 						<p>Server's id, either given by a snoop system or randomly generated at runtime.</p>
 					</li>
 					<li>
-						<strong id="login_hub-info_reserved-uuids">reservedUuids</strong>
+						<strong id="login_hub-info_reserved-uuids">reserved uuids</strong>
 						<p>First number of the 4,294,967,296 (2³²) reserved by the hub to create the node's UUIDs. Every UUID generated by the node is formed by the server's id (most signicant) and the next reserved uuid (least significant). This way every UUID in the hub and in the connected nodes is always different.</p>
 					</li>
 					<li>
-						<strong id="login_hub-info_display-name">displayName</strong>
+						<strong id="login_hub-info_display-name">display name</strong>
 						<p>Unformatted name of the server as indicated in the hub's configuration file.</p>
 					</li>
 					<li>
-						<strong id="login_hub-info_online-mode">onlineMode</strong>
+						<strong id="login_hub-info_online-mode">online mode</strong>
 						<p>Indicates whether the player are authenticated using the games' official authentication services and their identity should be trusted.</p>
 					</li>
 					<li>
-						<strong id="login_hub-info_games-info">gamesInfo</strong>
+						<strong id="login_hub-info_games-info">games info</strong>
 						<p>Informations about the games supported by the hub.</p>
 					</li>
 					<li>
@@ -182,7 +333,10 @@
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>unlimited</td><td class="center">-1</td></tr>
+							<tr>
+								<td>unlimited</td>
+								<td class="center">-1</td>
+							</tr>
 						</table>
 					</li>
 					<li>
@@ -190,13 +344,14 @@
 						<p>Default server's language in format (language_COUNTRY, e.g. en_GB) and also the default language for players that don't specify their language or for the ones which language is not supported by the server.</p>
 					</li>
 					<li>
-						<strong id="login_hub-info_accepted-languages">acceptedLanguages</strong>
+						<strong id="login_hub-info_accepted-languages">accepted languages</strong>
 						<p>Languages accepted by the server in the same format as <a href="#login_hub-info_language">language</a>. The list should always contain at least one element (the default language).</p>
 					</li>
 					<li>
-						<strong id="login_hub-info_social-json">socialJson</strong>
+						<strong id="login_hub-info_social-json">social json</strong>
 						<p>Optional informations about the server's website and social accounts in the format indicated below.</p>
-						<pre><code class="json">{
+						<pre>
+							<code class="json">{
    "website": "example.com",
    "facebook": "example-official",
    "twitter": "example_tweets",
@@ -204,12 +359,14 @@
    "instagram": "example",
    "google_plus": "example-plus"
 }
-</code></pre>
+</code>
+						</pre>
 					</li>
 					<li>
-						<strong id="login_hub-info_additional-json">additionalJson</strong>
+						<strong id="login_hub-info_additional-json">additional json</strong>
 						<p>Optional informations about the server's software, system and options in the format indicated below.</p>
-						<pre><code class="json">{
+						<pre>
+							<code class="json">{
    "software": {
       "name": "SEL",
       "version": "1.0.4",
@@ -226,25 +383,45 @@
       "ram": 2147483648
    }
 }
-</code></pre>
+</code>
+						</pre>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="login_node-info">Node Info</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">3</td><td class="center">00000011₂</td><td class="center">03₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 4</p>
+					<p><strong>Hex</strong>: 04</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Informations about the node.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#login_node-info_time">time</a></td><td>varulong</td></tr>
-					<tr><td><a href="#login_node-info_max">max</a></td><td>varuint</td></tr>
-					<tr><td><a href="#login_node-info_accepted-games">acceptedGames</a></td><td><a href="#types_game">game</a>[]</td></tr>
-					<tr><td><a href="#login_node-info_plugins">plugins</a></td><td><a href="#types_plugin">plugin</a>[]</td></tr>
-					<tr><td><a href="#login_node-info_additional-json">additionalJson</a></td><td>string</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#login_node-info_time">time</a></td>
+						<td>varulong</td>
+					</tr>
+					<tr>
+						<td><a href="#login_node-info_max">max</a></td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#login_node-info_accepted-games">accepted games</a></td>
+						<td><a href="#types_game">game</a>[]</td>
+					</tr>
+					<tr>
+						<td><a href="#login_node-info_plugins">plugins</a></td>
+						<td><a href="#types_plugin">plugin</a>[]</td>
+					</tr>
+					<tr>
+						<td><a href="#login_node-info_additional-json">additional json</a></td>
+						<td>string</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -257,11 +434,14 @@
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>unlimited</td><td class="center">0</td></tr>
+							<tr>
+								<td>unlimited</td>
+								<td class="center">0</td>
+							</tr>
 						</table>
 					</li>
 					<li>
-						<strong id="login_node-info_accepted-games">acceptedGames</strong>
+						<strong id="login_node-info_accepted-games">accepted games</strong>
 						<p>Informations about the games accepted by the node. There should be at least one combination of game/protocol that is also accepted by hub as indicated in <a href="#login_hub-info_games-info">HubInfo.gamesInfo</a>, otherwise the node will never receive any player.</p>
 					</li>
 					<li>
@@ -269,9 +449,10 @@
 						<p>List of plugins loaded on the node for creating queries on the hub.</p>
 					</li>
 					<li>
-						<strong id="login_node-info_additional-json">additionalJson</strong>
+						<strong id="login_node-info_additional-json">additional json</strong>
 						<p>Optional informations about the server's software and system, similar to <a href="#login_hub-info_additional-json">HubInfo.additionalJson</a>.</p>
-						<pre><code class="json">{
+						<pre>
+							<code class="json">{
    "software": {
       "name": "SEL",
       "version": "1.0.4",
@@ -284,7 +465,8 @@
       "ram": 8589934592
    }
 }
-</code></pre>
+</code>
+						</pre>
 					</li>
 				</ul>
 			</li>
@@ -292,37 +474,118 @@
 		<h3 id="status">Status</h3>
 		<p>Node-related packets and updates.</p>
 		<table>
-			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-			<tr><td><a href="#status_add-node">Add Node</a></td><td class="center">4</td><td class="center">04₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#status_remove-node">Remove Node</a></td><td class="center">5</td><td class="center">05₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#status_message-serverbound">Message Serverbound</a></td><td class="center">6</td><td class="center">06₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#status_message-clientbound">Message Clientbound</a></td><td class="center">7</td><td class="center">07₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#status_players">Players</a></td><td class="center">8</td><td class="center">08₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#status_resources-usage">Resources Usage</a></td><td class="center">9</td><td class="center">09₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#status_log">Log</a></td><td class="center">10</td><td class="center">0A₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#status_remote-command">Remote Command</a></td><td class="center">11</td><td class="center">0B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#status_update-list">Update List</a></td><td class="center">12</td><td class="center">0C₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#status_reload">Reload</a></td><td class="center">13</td><td class="center">0D₁₆</td><td class="center">✓</td><td class="center"></td></tr>
+			<tr>
+				<th>Packets</th>
+				<th colspan="2">Id</th>
+				<th>Clientbound</th>
+				<th>Serverbound</th>
+			</tr>
+			<tr>
+				<td><a href="#status_add-node">Add Node</a></td>
+				<td class="center">5</td>
+				<td class="center">05₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#status_remove-node">Remove Node</a></td>
+				<td class="center">6</td>
+				<td class="center">06₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#status_message-serverbound">Message Serverbound</a></td>
+				<td class="center">7</td>
+				<td class="center">07₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#status_message-clientbound">Message Clientbound</a></td>
+				<td class="center">8</td>
+				<td class="center">08₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#status_players">Players</a></td>
+				<td class="center">9</td>
+				<td class="center">09₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#status_resources-usage">Resources Usage</a></td>
+				<td class="center">10</td>
+				<td class="center">0A₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#status_log">Log</a></td>
+				<td class="center">11</td>
+				<td class="center">0B₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#status_remote-command">Remote Command</a></td>
+				<td class="center">12</td>
+				<td class="center">0C₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#status_update-list">Update List</a></td>
+				<td class="center">13</td>
+				<td class="center">0D₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#status_reload">Reload</a></td>
+				<td class="center">14</td>
+				<td class="center">0E₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
 		</table>
 		<ul>
 			<li>
 				<h3 id="status_add-node">Add Node</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">4</td><td class="center">00000100₂</td><td class="center">04₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 5</p>
+					<p><strong>Hex</strong>: 05</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Notifies the node that another node (that is not itelf) has connected to the hub.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#status_add-node_hub-id">hubId</a></td><td>varuint</td></tr>
-					<tr><td><a href="#status_add-node_name">name</a></td><td>string</td></tr>
-					<tr><td><a href="#status_add-node_main">main</a></td><td>bool</td></tr>
-					<tr><td><a href="#status_add-node_accepted-games">acceptedGames</a></td><td><a href="#types_game">game</a>[]</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#status_add-node_hub-id">hub id</a></td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#status_add-node_name">name</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#status_add-node_main">main</a></td>
+						<td>bool</td>
+					</tr>
+					<tr>
+						<td><a href="#status_add-node_accepted-games">accepted games</a></td>
+						<td><a href="#types_game">game</a>[]</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
-						<strong id="status_add-node_hub-id">hubId</strong>
+						<strong id="status_add-node_hub-id">hub id</strong>
 						<p>Identifier given by the hub to uniquey identify the node.</p>
 					</li>
 					<li>
@@ -334,42 +597,59 @@
 						<p>Whether the node is a main node (see <a href="#login_connection-request_main">ConnectionRequest.main</a>).</p>
 					</li>
 					<li>
-						<strong id="status_add-node_accepted-games">acceptedGames</strong>
+						<strong id="status_add-node_accepted-games">accepted games</strong>
 						<p>Indicates the game accepted by the node.</p>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="status_remove-node">Remove Node</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">5</td><td class="center">00000101₂</td><td class="center">05₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 6</p>
+					<p><strong>Hex</strong>: 06</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Notifies the node that another node, previously added with <a href="#status_add-node">AddNode</a> has disconnected from the hub.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#status_remove-node_hub-id">hubId</a></td><td>varuint</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#status_remove-node_hub-id">hub id</a></td>
+						<td>varuint</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
-						<strong id="status_remove-node_hub-id">hubId</strong>
+						<strong id="status_remove-node_hub-id">hub id</strong>
 						<p>Node's id given by the hub.</p>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="status_message-serverbound">Message Serverbound</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">6</td><td class="center">00000110₂</td><td class="center">06₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 7</p>
+					<p><strong>Hex</strong>: 07</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Sends a binary message to some selected nodes or broadcast it.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#status_message-serverbound_addressees">addressees</a></td><td>varuint[]</td></tr>
-					<tr><td><a href="#status_message-serverbound_payload">payload</a></td><td>ubyte[]</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#status_message-serverbound_addressees">addressees</a></td>
+						<td>varuint[]</td>
+					</tr>
+					<tr>
+						<td><a href="#status_message-serverbound_payload">payload</a></td>
+						<td>ubyte[]</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -384,16 +664,26 @@
 			</li>
 			<li>
 				<h3 id="status_message-clientbound">Message Clientbound</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">7</td><td class="center">00000111₂</td><td class="center">07₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 8</p>
+					<p><strong>Hex</strong>: 08</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Receives a binary message sent by another node using <a href="#status_message-serverbound">MessageServerbound</a>.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#status_message-clientbound_sender">sender</a></td><td>varuint</td></tr>
-					<tr><td><a href="#status_message-clientbound_payload">payload</a></td><td>ubyte[]</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#status_message-clientbound_sender">sender</a></td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#status_message-clientbound_payload">payload</a></td>
+						<td>ubyte[]</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -408,16 +698,26 @@
 			</li>
 			<li>
 				<h3 id="status_players">Players</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">8</td><td class="center">00001000₂</td><td class="center">08₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 9</p>
+					<p><strong>Hex</strong>: 09</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Updates the number of players on the server.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#status_players_online">online</a></td><td>varuint</td></tr>
-					<tr><td><a href="#status_players_max">max</a></td><td>varint</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#status_players_online">online</a></td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#status_players_max">max</a></td>
+						<td>varint</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -430,24 +730,40 @@
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>unlimited</td><td class="center">-1</td></tr>
+							<tr>
+								<td>unlimited</td>
+								<td class="center">-1</td>
+							</tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="status_resources-usage">Resources Usage</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">9</td><td class="center">00001001₂</td><td class="center">09₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 10</p>
+					<p><strong>Hex</strong>: 0A</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Updates the usage of the system's resources of the node.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#status_resources-usage_tps">tps</a></td><td>float</td></tr>
-					<tr><td><a href="#status_resources-usage_ram">ram</a></td><td>varulong</td></tr>
-					<tr><td><a href="#status_resources-usage_cpu">cpu</a></td><td>float</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#status_resources-usage_tps">tps</a></td>
+						<td>float</td>
+					</tr>
+					<tr>
+						<td><a href="#status_resources-usage_ram">ram</a></td>
+						<td>varulong</td>
+					</tr>
+					<tr>
+						<td><a href="#status_resources-usage_cpu">cpu</a></td>
+						<td>float</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -466,18 +782,34 @@
 			</li>
 			<li>
 				<h3 id="status_log">Log</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">10</td><td class="center">00001010₂</td><td class="center">0A₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 11</p>
+					<p><strong>Hex</strong>: 0B</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Sends a log to the hub.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#status_log_timestamp">timestamp</a></td><td>varulong</td></tr>
-					<tr><td><a href="#status_log_logger">logger</a></td><td>string</td></tr>
-					<tr><td><a href="#status_log_message">message</a></td><td>string</td></tr>
-					<tr><td><a href="#status_log_command-id">commandId</a></td><td>varint</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#status_log_timestamp">timestamp</a></td>
+						<td>varulong</td>
+					</tr>
+					<tr>
+						<td><a href="#status_log_logger">logger</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#status_log_message">message</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#status_log_command-id">command id</a></td>
+						<td>varint</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -493,25 +825,46 @@
 						<p>Logged message. It may contain Minecraft formatting codes.</p>
 					</li>
 					<li>
-						<strong id="status_log_command-id">commandId</strong>
+						<strong id="status_log_command-id">command id</strong>
 						<p>Identifier of the command that has generated the output or -1 if the log wasn't generated by a command.</p>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="status_remote-command">Remote Command</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">11</td><td class="center">00001011₂</td><td class="center">0B₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 12</p>
+					<p><strong>Hex</strong>: 0C</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Executes a command on the node.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th><th>When</th></tr>
-					<tr><td><a href="#status_remote-command_origin">origin</a></td><td>ubyte</td><td class="center"></td></tr>
-					<tr><td><a href="#status_remote-command_sender">sender</a></td><td><a href="#types_address">address</a></td><td class="center"><code>origin</code> is not equal to <code>0</code></td></tr>
-					<tr><td><a href="#status_remote-command_command">command</a></td><td>string</td><td class="center"></td></tr>
-					<tr><td><a href="#status_remote-command_command-id">commandId</a></td><td>varint</td><td class="center"></td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+						<th>When</th>
+					</tr>
+					<tr>
+						<td><a href="#status_remote-command_origin">origin</a></td>
+						<td>ubyte</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#status_remote-command_sender">sender</a></td>
+						<td><a href="#types_address">address</a></td>
+						<td class="center"><code>origin</code> is not equal to <code>0</code></td>
+					</tr>
+					<tr>
+						<td><a href="#status_remote-command_command">command</a></td>
+						<td>string</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#status_remote-command_command-id">command id</a></td>
+						<td>varint</td>
+						<td class="center"></td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -520,9 +873,18 @@
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>hub</td><td class="center">0</td></tr>
-							<tr><td>externalConsole</td><td class="center">1</td></tr>
-							<tr><td>rcon</td><td class="center">2</td></tr>
+							<tr>
+								<td>hub</td>
+								<td class="center">0</td>
+							</tr>
+							<tr>
+								<td>external console</td>
+								<td class="center">1</td>
+							</tr>
+							<tr>
+								<td>rcon</td>
+								<td class="center">2</td>
+							</tr>
 						</table>
 					</li>
 					<li>
@@ -534,24 +896,37 @@
 						<p>Commands and arguments that should be executed on the node. For example <code>say hello world</code> or <code>transfer steve lobby12</code>.</p>
 					</li>
 					<li>
-						<strong id="status_remote-command_command-id">commandId</strong>
+						<strong id="status_remote-command_command-id">command id</strong>
 						<p>Identifier of the command. It's sent in <a href="#status_log_command-id">Log.commandId</a> if the command generates an output.</p>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="status_update-list">Update List</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">12</td><td class="center">00001100₂</td><td class="center">0C₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 13</p>
+					<p><strong>Hex</strong>: 0D</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Updates a list.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#status_update-list_list">list</a></td><td>ubyte</td></tr>
-					<tr><td><a href="#status_update-list_action">action</a></td><td>ubyte</td></tr>
-					<tr><td>type</td><td>ubyte</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#status_update-list_list">list</a></td>
+						<td>ubyte</td>
+					</tr>
+					<tr>
+						<td><a href="#status_update-list_action">action</a></td>
+						<td>ubyte</td>
+					</tr>
+					<tr>
+						<td>type</td>
+						<td>ubyte</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -560,8 +935,14 @@
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>whitelist</td><td class="center">0</td></tr>
-							<tr><td>blacklist</td><td class="center">1</td></tr>
+							<tr>
+								<td>whitelist</td>
+								<td class="center">0</td>
+							</tr>
+							<tr>
+								<td>blacklist</td>
+								<td class="center">1</td>
+							</tr>
 						</table>
 					</li>
 					<li>
@@ -570,35 +951,67 @@
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>add</td><td class="center">0</td></tr>
-							<tr><td>remove</td><td class="center">1</td></tr>
+							<tr>
+								<td>add</td>
+								<td class="center">0</td>
+							</tr>
+							<tr>
+								<td>remove</td>
+								<td class="center">1</td>
+							</tr>
 						</table>
 					</li>
 				</ul>
 				<p><strong>Variants</strong>:</p>
 				<table>
-					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="#status_update-list_by-hub-id">By Hub Id</a></td><td>type</td><td class="center">0</td></tr>
-					<tr><td><a href="#status_update-list_by-name">By Name</a></td><td>type</td><td class="center">1</td></tr>
-					<tr><td><a href="#status_update-list_by-uuid">By Uuid</a></td><td>type</td><td class="center">2</td></tr>
+					<tr>
+						<th>Variant</th>
+						<th>Field</th>
+						<th>Value</th>
+					</tr>
+					<tr>
+						<td><a href="#status_update-list_by-hub-id">By Hub Id</a></td>
+						<td>type</td>
+						<td class="center">0</td>
+					</tr>
+					<tr>
+						<td><a href="#status_update-list_by-name">By Name</a></td>
+						<td>type</td>
+						<td class="center">1</td>
+					</tr>
+					<tr>
+						<td><a href="#status_update-list_by-uuid">By Uuid</a></td>
+						<td>type</td>
+						<td class="center">2</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
 						<h3 id="status_update-list_by-hub-id">By Hub Id</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
-							<tr><th>Name</th><th>Type</th></tr>
-							<tr><td>hubId</td><td>varuint</td></tr>
+							<tr>
+								<th>Name</th>
+								<th>Type</th>
+							</tr>
+							<tr>
+								<td>hub id</td>
+								<td>varuint</td>
+							</tr>
 						</table>
-						<ul>
-						</ul>
 					</li>
 					<li>
 						<h3 id="status_update-list_by-name">By Name</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
-							<tr><th>Name</th><th>Type</th></tr>
-							<tr><td><a href="#status_update-list_by-name_username">username</a></td><td>string</td></tr>
+							<tr>
+								<th>Name</th>
+								<th>Type</th>
+							</tr>
+							<tr>
+								<td><a href="#status_update-list_by-name_username">username</a></td>
+								<td>string</td>
+							</tr>
 						</table>
 						<ul>
 							<li>
@@ -611,9 +1024,18 @@
 						<h3 id="status_update-list_by-uuid">By Uuid</h3>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
-							<tr><th>Name</th><th>Type</th></tr>
-							<tr><td><a href="#status_update-list_by-uuid_game">game</a></td><td>ubyte</td></tr>
-							<tr><td>uuid</td><td>uuid</td></tr>
+							<tr>
+								<th>Name</th>
+								<th>Type</th>
+							</tr>
+							<tr>
+								<td><a href="#status_update-list_by-uuid_game">game</a></td>
+								<td>ubyte</td>
+							</tr>
+							<tr>
+								<td>uuid</td>
+								<td>uuid</td>
+							</tr>
 						</table>
 						<ul>
 							<li>
@@ -621,8 +1043,14 @@
 								<p><strong>Constants</strong>:</p>
 								<table>
 									<tr><th>Name</th><th>Value</th></tr>
-									<tr><td>pocket</td><td class="center">1</td></tr>
-									<tr><td>minecraft</td><td class="center">2</td></tr>
+									<tr>
+										<td>pocket</td>
+										<td class="center">1</td>
+									</tr>
+									<tr>
+										<td>minecraft</td>
+										<td class="center">2</td>
+									</tr>
 								</table>
 							</li>
 						</ul>
@@ -631,68 +1059,239 @@
 			</li>
 			<li>
 				<h3 id="status_reload">Reload</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">13</td><td class="center">00001101₂</td><td class="center">0D₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 14</p>
+					<p><strong>Hex</strong>: 0E</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Notifies the node that the hub's reloadeable settings have been reloaded and that the node should also reload its resources (for example plugin's settings).</p>
 			</li>
 		</ul>
 		<h3 id="player">Player</h3>
-		<p>Packets related to a player. The first field of every packet is an hubId that uniquely identifies a player in the hub and never changes during the session.</p>
+		<p>Packets related to a player. The first field of every packet is an <code>hub id</code> that uniquely identifies a player in the hub and never changes until it's disconnected.</p>
 		<table>
-			<tr><th>Packets</th><th colspan="2">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-			<tr><td><a href="#player_add">Add</a></td><td class="center">14</td><td class="center">0E₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#player_remove">Remove</a></td><td class="center">15</td><td class="center">0F₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#player_kick">Kick</a></td><td class="center">16</td><td class="center">10₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#player_transfer">Transfer</a></td><td class="center">17</td><td class="center">11₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#player_update-display-name">Update Display Name</a></td><td class="center">18</td><td class="center">12₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#player_update-world">Update World</a></td><td class="center">19</td><td class="center">13₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#player_update-language">Update Language</a></td><td class="center">20</td><td class="center">14₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-			<tr><td><a href="#player_update-input-mode">Update Input Mode</a></td><td class="center">21</td><td class="center">15₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#player_update-latency">Update Latency</a></td><td class="center">22</td><td class="center">16₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#player_update-packet-loss">Update Packet Loss</a></td><td class="center">23</td><td class="center">17₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-			<tr><td><a href="#player_game-packet">Game Packet</a></td><td class="center">24</td><td class="center">18₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
-			<tr><td><a href="#player_ordered-game-packet">Ordered Game Packet</a></td><td class="center">25</td><td class="center">19₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+			<tr>
+				<th>Packets</th>
+				<th colspan="2">Id</th>
+				<th>Clientbound</th>
+				<th>Serverbound</th>
+			</tr>
+			<tr>
+				<td><a href="#player_add">Add</a></td>
+				<td class="center">15</td>
+				<td class="center">0F₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#player_remove">Remove</a></td>
+				<td class="center">16</td>
+				<td class="center">10₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#player_kick">Kick</a></td>
+				<td class="center">17</td>
+				<td class="center">11₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#player_transfer">Transfer</a></td>
+				<td class="center">18</td>
+				<td class="center">12₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#player_update-display-name">Update Display Name</a></td>
+				<td class="center">19</td>
+				<td class="center">13₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#player_update-world">Update World</a></td>
+				<td class="center">20</td>
+				<td class="center">14₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#player_update-view-distance">Update View Distance</a></td>
+				<td class="center">21</td>
+				<td class="center">15₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#player_update-language">Update Language</a></td>
+				<td class="center">22</td>
+				<td class="center">16₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#player_update-input-mode">Update Input Mode</a></td>
+				<td class="center">23</td>
+				<td class="center">17₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#player_update-latency">Update Latency</a></td>
+				<td class="center">24</td>
+				<td class="center">18₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#player_update-packet-loss">Update Packet Loss</a></td>
+				<td class="center">25</td>
+				<td class="center">19₁₆</td>
+				<td class="center">✓</td>
+				<td class="center"></td>
+			</tr>
+			<tr>
+				<td><a href="#player_game-packet">Game Packet</a></td>
+				<td class="center">26</td>
+				<td class="center">1A₁₆</td>
+				<td class="center">✓</td>
+				<td class="center">✓</td>
+			</tr>
+			<tr>
+				<td><a href="#player_ordered-game-packet">Ordered Game Packet</a></td>
+				<td class="center">27</td>
+				<td class="center">1B₁₆</td>
+				<td class="center"></td>
+				<td class="center">✓</td>
+			</tr>
 		</table>
 		<ul>
 			<li>
 				<h3 id="player_add">Add</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">14</td><td class="center">00001110₂</td><td class="center">0E₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 15</p>
+					<p><strong>Hex</strong>: 0F</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Adds a player to the node.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th><th>When</th></tr>
-					<tr><td>hubId</td><td>varuint</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_reason">reason</a></td><td>ubyte</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_type">type</a></td><td>ubyte</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_protocol">protocol</a></td><td>varuint</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_version">version</a></td><td>string</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_username">username</a></td><td>string</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_display-name">displayName</a></td><td>string</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_dimension">dimension</a></td><td>byte</td><td class="center"><code>reason</code> is not equal to <code>0</code></td></tr>
-					<tr><td><a href="#player_add_client-address">clientAddress</a></td><td><a href="#types_address">address</a></td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_server-address">serverAddress</a></td><td>string</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_server-port">serverPort</a></td><td>ushort</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_uuid">uuid</a></td><td>uuid</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_skin">skin</a></td><td><a href="#types_skin">skin</a></td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_language">language</a></td><td>string</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_input-mode">inputMode</a></td><td>ubyte</td><td class="center"></td></tr>
-					<tr><td><a href="#player_add_latency">latency</a></td><td>varuint</td><td class="center"></td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+						<th>When</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_reason">reason</a></td>
+						<td>ubyte</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_type">type</a></td>
+						<td>ubyte</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_protocol">protocol</a></td>
+						<td>varuint</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_version">version</a></td>
+						<td>string</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_username">username</a></td>
+						<td>string</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_display-name">display name</a></td>
+						<td>string</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_dimension">dimension</a></td>
+						<td>byte</td>
+						<td class="center"><code>reason</code> is not equal to <code>0</code></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_view-distance">view distance</a></td>
+						<td>varuint</td>
+						<td class="center"><code>reason</code> is not equal to <code>0</code></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_client-address">client address</a></td>
+						<td><a href="#types_address">address</a></td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_server-address">server address</a></td>
+						<td>string</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_server-port">server port</a></td>
+						<td>ushort</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_uuid">uuid</a></td>
+						<td>uuid</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_skin">skin</a></td>
+						<td><a href="#types_skin">skin</a></td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_language">language</a></td>
+						<td>string</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_input-mode">input mode</a></td>
+						<td>ubyte</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_latency">latency</a></td>
+						<td>varuint</td>
+						<td class="center"></td>
+					</tr>
 				</table>
 				<ul>
 					<li>
 						<strong id="player_add_reason">reason</strong>
-						<p>Reason why the player has joined the node.</p>
+						<p>Reason for which the player has been added to the node.</p>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th><th></th></tr>
-							<tr><td>firstJoin</td><td class="center">0</td><td>The player has been automatically put on this node because it's a non-full main node</td></tr>
-							<tr><td>transferred</td><td class="center">1</td><td>The player has been transferred to this node</td></tr>
-							<tr><td>forciblyTransferred</td><td class="center">2</td><td>The player was on a node that has wrongly disconnected (probably crashing) and the player has been transferred to the first non-full main node</td></tr>
+							<tr>
+								<td>first join</td>
+								<td class="center">0</td>
+								<td>The player has been automatically put on this node because it's a non-full main node</td>
+							</tr>
+							<tr>
+								<td>transferred</td>
+								<td class="center">1</td>
+								<td>The player has been transferred to this node</td>
+							</tr>
+							<tr>
+								<td>forcibly transferred</td>
+								<td class="center">2</td>
+								<td>The player was on a node that has wrongly disconnected (probably crashing) and the player has been transferred to the first non-full main node</td>
+							</tr>
 						</table>
 					</li>
 					<li>
@@ -712,7 +1311,7 @@
 						<p>Username of the player.</p>
 					</li>
 					<li>
-						<strong id="player_add_display-name">displayName</strong>
+						<strong id="player_add_display-name">display name</strong>
 						<p>Display name of the player, which can contain formatting codes. By default it's equals to the username but it can be updated by the node using <a href="#player_update-display-name">UpdateDisplayName</a>.</p>
 					</li>
 					<li>
@@ -721,15 +1320,19 @@
 						<p>It's used to send the game's change dimension packet to despawn old entities and delete old chunks.</p>
 					</li>
 					<li>
-						<strong id="player_add_client-address">clientAddress</strong>
+						<strong id="player_add_view-distance">view distance</strong>
+						<p>Client's view distance (or chunk radius). See <a href="#player_update-view-distance_view-distance">UpdateViewDistance.viewDistance</a> for more informations.</p>
+					</li>
+					<li>
+						<strong id="player_add_client-address">client address</strong>
 						<p>Remote address of the client.</p>
 					</li>
 					<li>
-						<strong id="player_add_server-address">serverAddress</strong>
+						<strong id="player_add_server-address">server address</strong>
 						<p>Ip used by the client to connect to the server. The value of this field is the address the client has saved in its servers list. For example a client that joins through <code>localhost</code> and a client that joins through <code>127.0.0.1</code> will connect to the same server but the field of this value will be different (<code>localhost</code> for the first client and <code>127.0.0.1</code> for the second).</p>
 					</li>
 					<li>
-						<strong id="player_add_server-port">serverPort</strong>
+						<strong id="player_add_server-port">server port</strong>
 						<p>Port used by the client to connect to the server.</p>
 					</li>
 					<li>
@@ -745,14 +1348,23 @@
 						<p>Client's language, in the same format as <a href="#login_hub-info_language">HubInfo.language</a>, which should be updated from the node when the client changes it. See also <a href="#player_update-language_language">UpdateLanguage.language</a>.</p>
 					</li>
 					<li>
-						<strong id="player_add_input-mode">inputMode</strong>
+						<strong id="player_add_input-mode">input mode</strong>
 						<p>Client's input mode. See <a href="#player_update-input-mode_input-mode">UpdateInputMode.inputMode</a> for more informations.</p>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>keyboard</td><td class="center">0</td></tr>
-							<tr><td>touch</td><td class="center">1</td></tr>
-							<tr><td>controller</td><td class="center">2</td></tr>
+							<tr>
+								<td>keyboard</td>
+								<td class="center">0</td>
+							</tr>
+							<tr>
+								<td>touch</td>
+								<td class="center">1</td>
+							</tr>
+							<tr>
+								<td>controller</td>
+								<td class="center">2</td>
+							</tr>
 						</table>
 					</li>
 					<li>
@@ -762,9 +1374,21 @@
 				</ul>
 				<p><strong>Variants</strong>:</p>
 				<table>
-					<tr><th>Variant</th><th>Field</th><th>Value</th></tr>
-					<tr><td><a href="#player_add_pocket">Pocket</a></td><td>type</td><td class="center">1</td></tr>
-					<tr><td><a href="#player_add_minecraft">Minecraft</a></td><td>type</td><td class="center">2</td></tr>
+					<tr>
+						<th>Variant</th>
+						<th>Field</th>
+						<th>Value</th>
+					</tr>
+					<tr>
+						<td><a href="#player_add_pocket">Pocket</a></td>
+						<td>type</td>
+						<td class="center">1</td>
+					</tr>
+					<tr>
+						<td><a href="#player_add_minecraft">Minecraft</a></td>
+						<td>type</td>
+						<td class="center">2</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -772,12 +1396,30 @@
 						<p>A Minecraft: Pocket Edition client.</p>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
-							<tr><th>Name</th><th>Type</th></tr>
-							<tr><td><a href="#player_add_pocket_xuid">xuid</a></td><td>varlong</td></tr>
-							<tr><td><a href="#player_add_pocket_edu">edu</a></td><td>bool</td></tr>
-							<tr><td><a href="#player_add_pocket_packet-loss">packetLoss</a></td><td>float</td></tr>
-							<tr><td><a href="#player_add_pocket_device-os">deviceOs</a></td><td>ubyte</td></tr>
-							<tr><td><a href="#player_add_pocket_device-model">deviceModel</a></td><td>string</td></tr>
+							<tr>
+								<th>Name</th>
+								<th>Type</th>
+							</tr>
+							<tr>
+								<td><a href="#player_add_pocket_xuid">xuid</a></td>
+								<td>varlong</td>
+							</tr>
+							<tr>
+								<td><a href="#player_add_pocket_edu">edu</a></td>
+								<td>bool</td>
+							</tr>
+							<tr>
+								<td><a href="#player_add_pocket_packet-loss">packet loss</a></td>
+								<td>float</td>
+							</tr>
+							<tr>
+								<td><a href="#player_add_pocket_device-os">device os</a></td>
+								<td>ubyte</td>
+							</tr>
+							<tr>
+								<td><a href="#player_add_pocket_device-model">device model</a></td>
+								<td>string</td>
+							</tr>
 						</table>
 						<ul>
 							<li>
@@ -789,23 +1431,35 @@
 								<p>Indicates whether the client is using the <a href="https://education.minecraft.net" target="_blank">Education Edition</a> variant of the game.</p>
 							</li>
 							<li>
-								<strong id="player_add_pocket_packet-loss">packetLoss</strong>
+								<strong id="player_add_pocket_packet-loss">packet loss</strong>
 								<p>Client's packet loss calculated from the hub. See <a href="#player_update-packet-loss_packet-loss">UpdatePacketLoss.packetLoss</a> for more informations.</p>
 							</li>
 							<li>
-								<strong id="player_add_pocket_device-os">deviceOs</strong>
+								<strong id="player_add_pocket_device-os">device os</strong>
 								<p>Client's operative system, if supplied by the client. This field's value may be used to divide players that play from a phone from players that play on a computer.</p>
 								<p><strong>Constants</strong>:</p>
 								<table>
 									<tr><th>Name</th><th>Value</th></tr>
-									<tr><td>unknown</td><td class="center">0</td></tr>
-									<tr><td>android</td><td class="center">1</td></tr>
-									<tr><td>ios</td><td class="center">2</td></tr>
-									<tr><td>windows10</td><td class="center">7</td></tr>
+									<tr>
+										<td>unknown</td>
+										<td class="center">0</td>
+									</tr>
+									<tr>
+										<td>android</td>
+										<td class="center">1</td>
+									</tr>
+									<tr>
+										<td>ios</td>
+										<td class="center">2</td>
+									</tr>
+									<tr>
+										<td>windows10</td>
+										<td class="center">7</td>
+									</tr>
 								</table>
 							</li>
 							<li>
-								<strong id="player_add_pocket_device-model">deviceModel</strong>
+								<strong id="player_add_pocket_device-model">device model</strong>
 								<p>Client's device model, if supplied by the client. This field is usually a string in the format <code>MANUFACTURER MODEL</code>: for example, the Oneplus one is <code>ONEPLUS A0001</code>. This field's value may be used to ban low-end devices.</p>
 							</li>
 						</ul>
@@ -818,16 +1472,26 @@
 			</li>
 			<li>
 				<h3 id="player_remove">Remove</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">15</td><td class="center">00001111₂</td><td class="center">0F₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
-				<p>Removes a player from the node. If the player is removed from the node using <a href="#player_kick">Kick</a> or <a href="#player_transfer">Transfer</a> this packet is not sent.</p>
+				<div class="desc">
+					<p><strong>Id</strong>: 16</p>
+					<p><strong>Hex</strong>: 10</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
+				<p>Removes a player from the node. If the player is removed using <a href="#player_kick">Kick</a> or <a href="#player_transfer">Transfer</a> this packet is not sent.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>hubId</td><td>varuint</td></tr>
-					<tr><td><a href="#player_remove_reason">reason</a></td><td>ubyte</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_remove_reason">reason</a></td>
+						<td>ubyte</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -836,28 +1500,65 @@
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th><th></th></tr>
-							<tr><td>left</td><td class="center">0</td><td></td></tr>
-							<tr><td>timedOut</td><td class="center">1</td><td>Kicked due to timeout</td></tr>
-							<tr><td>kicked</td><td class="center">2</td><td>Kicked by the hub</td></tr>
-							<tr><td>transferred</td><td class="center">3</td><td>Transferred by the hub</td></tr>
+							<tr>
+								<td>left</td>
+								<td class="center">0</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>timed out</td>
+								<td class="center">1</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>kicked</td>
+								<td class="center">2</td>
+								<td>Kicked by the hub</td>
+							</tr>
+							<tr>
+								<td>transferred</td>
+								<td class="center">3</td>
+								<td>Transferred by the hub</td>
+							</tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="player_kick">Kick</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">16</td><td class="center">00010000₂</td><td class="center">10₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 17</p>
+					<p><strong>Hex</strong>: 11</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Kicks a player from the node and the whole server. When a player is disconnected from the node using this packet the hub will not send the <a href="#player_remove">Remove</a> packet.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th><th>When</th></tr>
-					<tr><td>hubId</td><td>varuint</td><td class="center"></td></tr>
-					<tr><td><a href="#player_kick_reason">reason</a></td><td>string</td><td class="center"></td></tr>
-					<tr><td><a href="#player_kick_translation">translation</a></td><td>bool</td><td class="center"></td></tr>
-					<tr><td><a href="#player_kick_parameters">parameters</a></td><td>string[]</td><td class="center"><code>translation</code> is <code><span style="color:#009688">true</span></code></td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+						<th>When</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_kick_reason">reason</a></td>
+						<td>string</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_kick_translation">translation</a></td>
+						<td>bool</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#player_kick_parameters">parameters</a></td>
+						<td>string[]</td>
+						<td class="center"><code>translation</code> is <code><span style="color:#009688">true</span></code></td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -876,17 +1577,30 @@
 			</li>
 			<li>
 				<h3 id="player_transfer">Transfer</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">17</td><td class="center">00010001₂</td><td class="center">11₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 18</p>
+					<p><strong>Hex</strong>: 12</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Transfers a player to another node. When a player is transferred from the node the hub will not send the <a href="#login_remove">Remove</a> packet and there's no way, for the node, to know whether the player was disconnected or successfully transferred, if not using messages through a user-defined protocol.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>hubId</td><td>varuint</td></tr>
-					<tr><td><a href="#player_transfer_node">node</a></td><td>varuint</td></tr>
-					<tr><td><a href="#player_transfer_on-fail">onFail</a></td><td>ubyte</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_transfer_node">node</a></td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_transfer_on-fail">on fail</a></td>
+						<td>ubyte</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -894,51 +1608,86 @@
 						<p>Id of the node that player will be transferred to. It should be an id of a connected node (which can be calculated using <a href="#status_add-node">AddNode</a> and <a href="#status_remove-node">RemoveNode</a>), otherwise the player will be disconnected or moved to another node (see the following field).</p>
 					</li>
 					<li>
-						<strong id="player_transfer_on-fail">onFail</strong>
+						<strong id="player_transfer_on-fail">on fail</strong>
 						<p>Indicates the action to be taken when a transfer fails because the indicated node is not connected anymore or it cannot accept the given player's game type or protocol. If the indicated node is full the player will be simply disconnected with the <code>Server Full</code> message.</p>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th><th></th></tr>
-							<tr><td>disconnect</td><td class="center">0</td><td>Disconnect with `End of Stream` message</td></tr>
-							<tr><td>auto</td><td class="center">1</td><td>Connect to the first available node or disconnects if there isn't one</td></tr>
-							<tr><td>reconnect</td><td class="center">2</td><td>Connect to this node, but as a new player</td></tr>
+							<tr>
+								<td>disconnect</td>
+								<td class="center">0</td>
+								<td>Disconnect with `End of Stream` message</td>
+							</tr>
+							<tr>
+								<td>auto</td>
+								<td class="center">1</td>
+								<td>Connect to the first available node or disconnects if there isn't one</td>
+							</tr>
+							<tr>
+								<td>reconnect</td>
+								<td class="center">2</td>
+								<td>Connect to this node, but as a new player</td>
+							</tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="player_update-display-name">Update Display Name</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">18</td><td class="center">00010010₂</td><td class="center">12₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 19</p>
+					<p><strong>Hex</strong>: 13</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Updates the player's display name when it changes.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>hubId</td><td>varuint</td></tr>
-					<tr><td><a href="#player_update-display-name_display-name">displayName</a></td><td>string</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_update-display-name_display-name">display name</a></td>
+						<td>string</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
-						<strong id="player_update-display-name_display-name">displayName</strong>
+						<strong id="player_update-display-name_display-name">display name</strong>
 						<p>Player's display name that can contain formatting codes. Prefixes and suffixes should be avoided.</p>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="player_update-world">Update World</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">19</td><td class="center">00010011₂</td><td class="center">13₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 20</p>
+					<p><strong>Hex</strong>: 14</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Updates player's world and dimension.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>hubId</td><td>varuint</td></tr>
-					<tr><td><a href="#player_update-world_world">world</a></td><td>string</td></tr>
-					<tr><td><a href="#player_update-world_dimension">dimension</a></td><td>byte</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_update-world_world">world</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#player_update-world_dimension">dimension</a></td>
+						<td>byte</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -947,22 +1696,55 @@
 					</li>
 					<li>
 						<strong id="player_update-world_dimension">dimension</strong>
-						<p>World's dimension, that may different from Minecraft's version. It used for synchronise entities and chunks when changing node as described at <a href="#player_add_dimension">Add.dimension</a>.</p>
+						<p>World's dimension, that may differ from Minecraft's version. It's used for synchronise entities and chunks when changing node as described at <a href="#player_add_dimension">Add.dimension</a>.</p>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<h3 id="player_update-language">Update Language</h3>
+				<h3 id="player_update-view-distance">Update View Distance</h3>
+				<div class="desc">
+					<p><strong>Id</strong>: 21</p>
+					<p><strong>Hex</strong>: 15</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
+				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">20</td><td class="center">00010100₂</td><td class="center">14₁₆</td><td class="center"></td><td class="center">✓</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td>view distance</td>
+						<td>varuint</td>
+					</tr>
 				</table>
+			</li>
+			<li>
+				<h3 id="player_update-language">Update Language</h3>
+				<div class="desc">
+					<p><strong>Id</strong>: 22</p>
+					<p><strong>Hex</strong>: 16</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Updates the player's language when the client changes it.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>hubId</td><td>varuint</td></tr>
-					<tr><td><a href="#player_update-language_language">language</a></td><td>string</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_update-language_language">language</a></td>
+						<td>string</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -973,43 +1755,75 @@
 			</li>
 			<li>
 				<h3 id="player_update-input-mode">Update Input Mode</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">21</td><td class="center">00010101₂</td><td class="center">15₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 23</p>
+					<p><strong>Hex</strong>: 17</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Update the player's current input mode.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>hubId</td><td>varuint</td></tr>
-					<tr><td><a href="#player_update-input-mode_input-mode">inputMode</a></td><td>ubyte</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_update-input-mode_input-mode">input mode</a></td>
+						<td>ubyte</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
-						<strong id="player_update-input-mode_input-mode">inputMode</strong>
+						<strong id="player_update-input-mode_input-mode">input mode</strong>
 						<p>Player's input mode.</p>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th><th></th></tr>
-							<tr><td>keyboard</td><td class="center">0</td><td>Keyboard and mouse</td></tr>
-							<tr><td>touch</td><td class="center">1</td><td>Touchscreen</td></tr>
-							<tr><td>controller</td><td class="center">2</td><td>Generic controller</td></tr>
+							<tr>
+								<td>keyboard</td>
+								<td class="center">0</td>
+								<td>Keyboard and mouse</td>
+							</tr>
+							<tr>
+								<td>touch</td>
+								<td class="center">1</td>
+								<td>Touchscreen</td>
+							</tr>
+							<tr>
+								<td>controller</td>
+								<td class="center">2</td>
+								<td>Generic controller</td>
+							</tr>
 						</table>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="player_update-latency">Update Latency</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">22</td><td class="center">00010110₂</td><td class="center">16₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
-				<p>Updates the between the player and the hub.</p>
+				<div class="desc">
+					<p><strong>Id</strong>: 24</p>
+					<p><strong>Hex</strong>: 18</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
+				<p>Updates the latency between the player and the hub.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>hubId</td><td>varuint</td></tr>
-					<tr><td><a href="#player_update-latency_latency">latency</a></td><td>varuint</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_update-latency_latency">latency</a></td>
+						<td>varuint</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -1020,36 +1834,56 @@
 			</li>
 			<li>
 				<h3 id="player_update-packet-loss">Update Packet Loss</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">23</td><td class="center">00010111₂</td><td class="center">17₁₆</td><td class="center">✓</td><td class="center"></td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 25</p>
+					<p><strong>Hex</strong>: 19</p>
+					<p>Sent by the <strong>server</strong></p>
+				</div>
 				<p>Updates the player's packet loss if it uses a connectionless protocol like UDP.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>hubId</td><td>varuint</td></tr>
-					<tr><td><a href="#player_update-packet-loss_packet-loss">packetLoss</a></td><td>float</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_update-packet-loss_packet-loss">packet loss</a></td>
+						<td>float</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
-						<strong id="player_update-packet-loss_packet-loss">packetLoss</strong>
+						<strong id="player_update-packet-loss_packet-loss">packet loss</strong>
 						<p>Percentage of lost packets in range 0 (no packet lost) to 100 (every packet lost).</p>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<h3 id="player_game-packet">Game Packet</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">24</td><td class="center">00011000₂</td><td class="center">18₁₆</td><td class="center">✓</td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 26</p>
+					<p><strong>Hex</strong>: 1A</p>
+					<p>Sent by the <strong>server</strong> and the <strong>client</strong></p>
+				</div>
 				<p>Sends data to client or handles data received from the client.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>hubId</td><td>varuint</td></tr>
-					<tr><td><a href="#player_game-packet_packet">packet</a></td><td>bytes</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_game-packet_packet">packet</a></td>
+						<td>bytes</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -1069,17 +1903,30 @@
 			</li>
 			<li>
 				<h3 id="player_ordered-game-packet">Ordered Game Packet</h3>
-				<table>
-					<tr><th colspan="3">Id</th><th>Clientbound</th><th>Serverbound</th></tr>
-					<tr><td class="center">25</td><td class="center">00011001₂</td><td class="center">19₁₆</td><td class="center"></td><td class="center">✓</td></tr>
-				</table>
+				<div class="desc">
+					<p><strong>Id</strong>: 27</p>
+					<p><strong>Hex</strong>: 1B</p>
+					<p>Sent by the <strong>client</strong></p>
+				</div>
 				<p>Sends data to the client but order it because it could be sent by the node unordered, due to compressed packet sent delayed.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td>hubId</td><td>varuint</td></tr>
-					<tr><td><a href="#player_ordered-game-packet_order">order</a></td><td>varuint</td></tr>
-					<tr><td><a href="#player_ordered-game-packet_packet">packet</a></td><td>bytes</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>hub id</td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_ordered-game-packet_order">order</a></td>
+						<td>varuint</td>
+					</tr>
+					<tr>
+						<td><a href="#player_ordered-game-packet_packet">packet</a></td>
+						<td>bytes</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -1102,9 +1949,18 @@
 				<p>Internet protocol address. Could be either version 4 or 6.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#types_address_bytes">bytes</a></td><td>ubyte[]</td></tr>
-					<tr><td><a href="#types_address_port">port</a></td><td>ushort</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#types_address_bytes">bytes</a></td>
+						<td>ubyte[]</td>
+					</tr>
+					<tr>
+						<td><a href="#types_address_port">port</a></td>
+						<td>ushort</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -1122,9 +1978,18 @@
 				<p>Indicates a game and informations about its accepted protocols.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#types_game_type">type</a></td><td>ubyte</td></tr>
-					<tr><td><a href="#types_game_protocols">protocols</a></td><td>varuint[]</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#types_game_type">type</a></td>
+						<td>ubyte</td>
+					</tr>
+					<tr>
+						<td><a href="#types_game_protocols">protocols</a></td>
+						<td>varuint[]</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -1133,8 +1998,14 @@
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
-							<tr><td>pocket</td><td class="center">1</td></tr>
-							<tr><td>minecraft</td><td class="center">2</td></tr>
+							<tr>
+								<td>pocket</td>
+								<td class="center">1</td>
+							</tr>
+							<tr>
+								<td>minecraft</td>
+								<td class="center">2</td>
+							</tr>
 						</table>
 					</li>
 					<li>
@@ -1148,10 +2019,22 @@
 				<p>Indicates a game and informations about it.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#types_game-info_game">game</a></td><td><a href="#types_game">game</a></td></tr>
-					<tr><td><a href="#types_game-info_motd">motd</a></td><td>string</td></tr>
-					<tr><td><a href="#types_game-info_port">port</a></td><td>ushort</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#types_game-info_game">game</a></td>
+						<td><a href="#types_game">game</a></td>
+					</tr>
+					<tr>
+						<td><a href="#types_game-info_motd">motd</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#types_game-info_port">port</a></td>
+						<td>ushort</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -1173,9 +2056,18 @@
 				<p>A plugin loaded on the node. It may be used by the hub to display the plugins loaded on the server in queries.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#types_plugin_name">name</a></td><td>string</td></tr>
-					<tr><td><a href="#types_plugin_version">version</a></td><td>string</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#types_plugin_name">name</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#types_plugin_version">version</a></td>
+						<td>string</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -1194,9 +2086,18 @@
 				<p>If the server only allows Minecraft player to connect the following fields should be empty.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
-					<tr><th>Name</th><th>Type</th></tr>
-					<tr><td><a href="#types_skin_name">name</a></td><td>string</td></tr>
-					<tr><td><a href="#types_skin_data">data</a></td><td>ubyte[]</td></tr>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td><a href="#types_skin_name">name</a></td>
+						<td>string</td>
+					</tr>
+					<tr>
+						<td><a href="#types_skin_data">data</a></td>
+						<td>ubyte[]</td>
+					</tr>
 				</table>
 				<ul>
 					<li>

@@ -55,46 +55,47 @@ public final class Packets {
 	public static final Map<Integer, Class<? extends Packet>> STATUS;
 
 	/**
-	 * Packets related to a player. The first field of every packet is an hubId that uniquely
-	 * identifies a player in the hub and never changes during the session.
+	 * Packets related to a player. The first field of every packet is an `hub id` that
+	 * uniquely identifies a player in the hub and never changes until it's disconnected.
 	 */
 	public static final Map<Integer, Class<? extends Packet>> PLAYER;
 
 	static {
 
 		HashMap<Integer, Class<? extends Packet>> login = new HashMap<Integer, Class<? extends Packet>>();
-		login.put(0, sul.protocol.hncom1.login.ConnectionRequest.class);
-		login.put(1, sul.protocol.hncom1.login.ConnectionResponse.class);
-		login.put(2, sul.protocol.hncom1.login.HubInfo.class);
-		login.put(3, sul.protocol.hncom1.login.NodeInfo.class);
+		login.put(1, sul.protocol.hncom1.login.ConnectionRequest.class);
+		login.put(2, sul.protocol.hncom1.login.ConnectionResponse.class);
+		login.put(3, sul.protocol.hncom1.login.HubInfo.class);
+		login.put(4, sul.protocol.hncom1.login.NodeInfo.class);
 		LOGIN = Collections.unmodifiableMap(login);
 
 		HashMap<Integer, Class<? extends Packet>> status = new HashMap<Integer, Class<? extends Packet>>();
-		status.put(4, sul.protocol.hncom1.status.AddNode.class);
-		status.put(5, sul.protocol.hncom1.status.RemoveNode.class);
-		status.put(6, sul.protocol.hncom1.status.MessageServerbound.class);
-		status.put(7, sul.protocol.hncom1.status.MessageClientbound.class);
-		status.put(8, sul.protocol.hncom1.status.Players.class);
-		status.put(9, sul.protocol.hncom1.status.ResourcesUsage.class);
-		status.put(10, sul.protocol.hncom1.status.Log.class);
-		status.put(11, sul.protocol.hncom1.status.RemoteCommand.class);
-		status.put(12, sul.protocol.hncom1.status.UpdateList.class);
-		status.put(13, sul.protocol.hncom1.status.Reload.class);
+		status.put(5, sul.protocol.hncom1.status.AddNode.class);
+		status.put(6, sul.protocol.hncom1.status.RemoveNode.class);
+		status.put(7, sul.protocol.hncom1.status.MessageServerbound.class);
+		status.put(8, sul.protocol.hncom1.status.MessageClientbound.class);
+		status.put(9, sul.protocol.hncom1.status.Players.class);
+		status.put(10, sul.protocol.hncom1.status.ResourcesUsage.class);
+		status.put(11, sul.protocol.hncom1.status.Log.class);
+		status.put(12, sul.protocol.hncom1.status.RemoteCommand.class);
+		status.put(13, sul.protocol.hncom1.status.UpdateList.class);
+		status.put(14, sul.protocol.hncom1.status.Reload.class);
 		STATUS = Collections.unmodifiableMap(status);
 
 		HashMap<Integer, Class<? extends Packet>> player = new HashMap<Integer, Class<? extends Packet>>();
-		player.put(14, sul.protocol.hncom1.player.Add.class);
-		player.put(15, sul.protocol.hncom1.player.Remove.class);
-		player.put(16, sul.protocol.hncom1.player.Kick.class);
-		player.put(17, sul.protocol.hncom1.player.Transfer.class);
-		player.put(18, sul.protocol.hncom1.player.UpdateDisplayName.class);
-		player.put(19, sul.protocol.hncom1.player.UpdateWorld.class);
-		player.put(20, sul.protocol.hncom1.player.UpdateLanguage.class);
-		player.put(21, sul.protocol.hncom1.player.UpdateInputMode.class);
-		player.put(22, sul.protocol.hncom1.player.UpdateLatency.class);
-		player.put(23, sul.protocol.hncom1.player.UpdatePacketLoss.class);
-		player.put(24, sul.protocol.hncom1.player.GamePacket.class);
-		player.put(25, sul.protocol.hncom1.player.OrderedGamePacket.class);
+		player.put(15, sul.protocol.hncom1.player.Add.class);
+		player.put(16, sul.protocol.hncom1.player.Remove.class);
+		player.put(17, sul.protocol.hncom1.player.Kick.class);
+		player.put(18, sul.protocol.hncom1.player.Transfer.class);
+		player.put(19, sul.protocol.hncom1.player.UpdateDisplayName.class);
+		player.put(20, sul.protocol.hncom1.player.UpdateWorld.class);
+		player.put(21, sul.protocol.hncom1.player.UpdateViewDistance.class);
+		player.put(22, sul.protocol.hncom1.player.UpdateLanguage.class);
+		player.put(23, sul.protocol.hncom1.player.UpdateInputMode.class);
+		player.put(24, sul.protocol.hncom1.player.UpdateLatency.class);
+		player.put(25, sul.protocol.hncom1.player.UpdatePacketLoss.class);
+		player.put(26, sul.protocol.hncom1.player.GamePacket.class);
+		player.put(27, sul.protocol.hncom1.player.OrderedGamePacket.class);
 		PLAYER = Collections.unmodifiableMap(player);
 
 	}

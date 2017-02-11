@@ -11,8 +11,8 @@
 //import Types from 'types';
 
 /**
- * Packets related to a player. The first field of every packet is an hubId that uniquely
- * identifies a player in the hub and never changes during the session.
+ * Packets related to a player. The first field of every packet is an `hub id` that
+ * uniquely identifies a player in the hub and never changes until it's disconnected.
  */
 const Player = {
 
@@ -21,7 +21,7 @@ const Player = {
 	 */
 	Add: class {
 
-		static get ID(){ return 14; }
+		static get ID(){ return 15; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -38,7 +38,7 @@ const Player = {
 
 		/**
 		 * @param reason
-		 *        Reason why the player has joined the node.
+		 *        Reason for which the player has been added to the node.
 		 * @param type
 		 *        Game of the client, which could either be Minecraft or Minecraft: Pocket Edition.
 		 * @param protocol
@@ -51,12 +51,14 @@ const Player = {
 		 *        Username of the player.
 		 * @param displayName
 		 *        Display name of the player, which can contain formatting codes. By default it's equals to the username
-		 *        but it can be updated by the node using UpdateDisplayName.
+		 *        but it can be updated by the node using {UpdateDisplayName}.
 		 * @param dimension
 		 *        Dimension in which the player was playing before being transferred. It could diffent from client's
 		 *        game type and version because the dimension's ids are different in Minecraft and Minecraft: Pocket
-		 *        Edition.It's used to send the game's change dimension packet to despawn old entities and delete
-		 *        old chunks.
+		 *        Edition.
+		 *        It's used to send the game's change dimension packet to despawn old entities and delete old chunks.
+		 * @param viewDistance
+		 *        Client's view distance (or chunk radius). See {UpdateViewDistance.viewDistance} for more informations.
 		 * @param clientAddress
 		 *        Remote address of the client.
 		 * @param serverAddress
@@ -72,14 +74,14 @@ const Player = {
 		 * @param skin
 		 *        Client's skin, given by the client or downloaded from Mojang's services in online mode.
 		 * @param language
-		 *        Client's language, in the same format as HubInfo.language, which should be updated from the node
-		 *        when the client changes it. See also UpdateLanguage.language.
+		 *        Client's language, in the same format as {HubInfo.language}, which should be updated from the
+		 *        node when the client changes it. See also {UpdateLanguage.language}.
 		 * @param inputMode
-		 *        Client's input mode. See UpdateInputMode.inputMode for more informations.
+		 *        Client's input mode. See {UpdateInputMode.inputMode} for more informations.
 		 * @param latency
-		 *        Client's latency (ping time). See UpdateLatency.latency for more informations.
+		 *        Client's latency (ping time). See {UpdateLatency.latency} for more informations.
 		 */
-		constructor(hubId=0, reason=0, type=0, protocol=0, version="", username="", displayName="", dimension=0, clientAddress=null, serverAddress="", serverPort=0, uuid=new Uint8Array(16), skin=null, language="", inputMode=0, latency=0) {
+		constructor(hubId=0, reason=0, type=0, protocol=0, version="", username="", displayName="", dimension=0, viewDistance=0, clientAddress=null, serverAddress="", serverPort=0, uuid=new Uint8Array(16), skin=null, language="", inputMode=0, latency=0) {
 			this.hubId = hubId;
 			this.reason = reason;
 			this.type = type;
@@ -88,6 +90,7 @@ const Player = {
 			this.username = username;
 			this.displayName = displayName;
 			this.dimension = dimension;
+			this.viewDistance = viewDistance;
 			this.clientAddress = clientAddress;
 			this.serverAddress = serverAddress;
 			this.serverPort = serverPort;
@@ -109,6 +112,7 @@ const Player = {
 			this.writeString(username);
 			this.writeString(displayName);
 			this.writeByte(dimension);
+			this.writeVaruint(viewDistance);
 			this.writeBytes(clientAddress.encode());
 			this.writeString(serverAddress);
 			this.writeBigEndianShort(serverPort);
@@ -131,18 +135,18 @@ const Player = {
 
 		/** @return {string} */
 		toString() {
-			return "Add(hubId: " + this.hubId + ", reason: " + this.reason + ", type: " + this.type + ", protocol: " + this.protocol + ", version: " + this.version + ", username: " + this.username + ", displayName: " + this.displayName + ", dimension: " + this.dimension + ", clientAddress: " + this.clientAddress + ", serverAddress: " + this.serverAddress + ", serverPort: " + this.serverPort + ", uuid: " + this.uuid + ", skin: " + this.skin + ", language: " + this.language + ", inputMode: " + this.inputMode + ", latency: " + this.latency + ")";
+			return "Add(hubId: " + this.hubId + ", reason: " + this.reason + ", type: " + this.type + ", protocol: " + this.protocol + ", version: " + this.version + ", username: " + this.username + ", displayName: " + this.displayName + ", dimension: " + this.dimension + ", viewDistance: " + this.viewDistance + ", clientAddress: " + this.clientAddress + ", serverAddress: " + this.serverAddress + ", serverPort: " + this.serverPort + ", uuid: " + this.uuid + ", skin: " + this.skin + ", language: " + this.language + ", inputMode: " + this.inputMode + ", latency: " + this.latency + ")";
 		}
 
 	},
 
 	/**
-	 * Removes a player from the node. If the player is removed from the node using Kick
-	 * or Transfer this packet is not sent.
+	 * Removes a player from the node. If the player is removed using Kick or Transfer
+	 * this packet is not sent.
 	 */
 	Remove: class {
 
-		static get ID(){ return 15; }
+		static get ID(){ return 16; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -192,7 +196,7 @@ const Player = {
 	 */
 	Kick: class {
 
-		static get ID(){ return 16; }
+		static get ID(){ return 17; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -246,7 +250,7 @@ const Player = {
 	 */
 	Transfer: class {
 
-		static get ID(){ return 17; }
+		static get ID(){ return 18; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -259,8 +263,8 @@ const Player = {
 		/**
 		 * @param node
 		 *        Id of the node that player will be transferred to. It should be an id of a connected node (which can
-		 *        be calculated using AddNode and RemoveNode), otherwise the player will be disconnected or moved
-		 *        to another node (see the following field).
+		 *        be calculated using {AddNode} and {RemoveNode}), otherwise the player will be disconnected or
+		 *        moved to another node (see the following field).
 		 * @param onFail
 		 *        Indicates the action to be taken when a transfer fails because the indicated node is not connected
 		 *        anymore or it cannot accept the given player's game type or protocol. If the indicated node is full
@@ -302,7 +306,7 @@ const Player = {
 	 */
 	UpdateDisplayName: class {
 
-		static get ID(){ return 18; }
+		static get ID(){ return 19; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -345,7 +349,7 @@ const Player = {
 	 */
 	UpdateWorld: class {
 
-		static get ID(){ return 19; }
+		static get ID(){ return 20; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -354,8 +358,8 @@ const Player = {
 		 * @param world
 		 *        World's name, used mainly for display purposes.
 		 * @param dimension
-		 *        World's dimension, that may different from Minecraft's version. It used for synchronise entities
-		 *        and chunks when changing node as described at Add.dimension.
+		 *        World's dimension, that may differ from Minecraft's version. It's used for synchronise entities
+		 *        and chunks when changing node as described at {Add.dimension}.
 		 */
 		constructor(hubId=0, world="", dimension=0) {
 			this.hubId = hubId;
@@ -388,19 +392,55 @@ const Player = {
 
 	},
 
+	UpdateViewDistance: class {
+
+		static get ID(){ return 21; }
+
+		static get CLIENTBOUND(){ return false; }
+		static get SERVERBOUND(){ return true; }
+
+		constructor(hubId=0, viewDistance=0) {
+			this.hubId = hubId;
+			this.viewDistance = viewDistance;
+		}
+
+		/** @return {Uint8Array} */
+		encode() {
+			this.writeByte(this.ID);
+			this.writeVaruint(hubId);
+			this.writeVaruint(viewDistance);
+		}
+
+		/** @param {Uint8Array} buffer */
+		decode(buffer) {
+			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Player.UpdateViewDistance().decode(buffer);
+		}
+
+		/** @return {string} */
+		toString() {
+			return "UpdateViewDistance(hubId: " + this.hubId + ", viewDistance: " + this.viewDistance + ")";
+		}
+
+	},
+
 	/**
 	 * Updates the player's language when the client changes it.
 	 */
 	UpdateLanguage: class {
 
-		static get ID(){ return 20; }
+		static get ID(){ return 22; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
 
 		/**
 		 * @param language
-		 *        Player's language in the same format as HubInfo.language.
+		 *        Player's language in the same format as {HubInfo.language}.
 		 */
 		constructor(hubId=0, language="") {
 			this.hubId = hubId;
@@ -436,7 +476,7 @@ const Player = {
 	 */
 	UpdateInputMode: class {
 
-		static get ID(){ return 21; }
+		static get ID(){ return 23; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -480,11 +520,11 @@ const Player = {
 	},
 
 	/**
-	 * Updates the between the player and the hub.
+	 * Updates the latency between the player and the hub.
 	 */
 	UpdateLatency: class {
 
-		static get ID(){ return 22; }
+		static get ID(){ return 24; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -492,7 +532,7 @@ const Player = {
 		/**
 		 * @param latency
 		 *        Player's latency in milliseconds. The latency between the client and the node is then calculated
-		 *        adding the latency between the node and the hub (calculated using HubInfo.time) to this field's
+		 *        adding the latency between the node and the hub (calculated using {HubInfo.time}) to this field's
 		 *        value.
 		 */
 		constructor(hubId=0, latency=0) {
@@ -529,7 +569,7 @@ const Player = {
 	 */
 	UpdatePacketLoss: class {
 
-		static get ID(){ return 23; }
+		static get ID(){ return 25; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -572,7 +612,7 @@ const Player = {
 	 */
 	GamePacket: class {
 
-		static get ID(){ return 24; }
+		static get ID(){ return 26; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return true; }
@@ -580,14 +620,7 @@ const Player = {
 		/**
 		 * @param packet
 		 *        Serialised packet ready to be encrypted or encapsulated and sent to the client when this packet
-		 *        is serverbound or packet already unencrypted and uncompressed ready to be handled by the node otherwise.####
-		 *        Format##### Minecraft (serverbound)The packet is prefixed with a varuint-encoded 0 if the packet
-		 *        is not compressed or with the uncompressed packet's length encoded as a varuint if the packet is
-		 *        compressed.##### Minecraft (clientbound)The packet is already unencrypted and uncompressed
-		 *        and ready to be handled as a serverbound packet.##### Minecraft: Pocket Edition (serverbound)The
-		 *        packet is simply encoded (may be compressed in a Batch packet) and ready to be encapsulated using
-		 *        RakNet.##### Minecraft: Pocket Edition (clientbound)The packet is already unencrypted and
-		 *        uncompressed if it was a Batch packet and ready to be handled as a serverbound packet.
+		 *        is serverbound or packet already unencrypted and uncompressed ready to be handled by the node otherwise.
 		 */
 		constructor(hubId=0, packet=null) {
 			this.hubId = hubId;
@@ -624,7 +657,7 @@ const Player = {
 	 */
 	OrderedGamePacket: class {
 
-		static get ID(){ return 25; }
+		static get ID(){ return 27; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -634,7 +667,7 @@ const Player = {
 		 *        Order of the packet. If the hub receives a packet with an id different from 0 or the latest ordered
 		 *        packet's order + 1 it should wait for the packets with the missing order(s) before sending.
 		 * @param packet
-		 *        Serialised packet (see GamePacket.packet).
+		 *        Serialised packet (see {GamePacket.packet}).
 		 */
 		constructor(hubId=0, order=0, packet=null) {
 			this.hubId = hubId;

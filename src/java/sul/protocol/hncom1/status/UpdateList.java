@@ -18,7 +18,7 @@ import sul.utils.*;
  */
 public class UpdateList extends Packet {
 
-	public static final byte ID = (byte)12;
+	public static final byte ID = (byte)13;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;

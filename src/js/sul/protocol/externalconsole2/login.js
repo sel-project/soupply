@@ -34,11 +34,12 @@ const Login = {
 		 * @param hash
 		 *        Whether to perform hashing on the password or not.
 		 * @param hashAlgorithm
-		 *        Algorithm used by the server to hash the concatenation of the password and the payload. The value
+		 *        Algorithm used by the server to hash the concatenation of the password and the {payload}. The value
 		 *        should be sent in lower case without any separation symbol (for example `md5` instead of `MD5`,
-		 *        `sha256` instead of `SHA-256`).See Auth.hash for more details.
+		 *        `sha256` instead of `SHA-256`).
+		 *        See {Auth.hash} for more details.
 		 * @param payload
-		 *        Payload to cancatenate to the password before hashing it, as described in the Auth.hash's field
+		 *        Payload to cancatenate to the password before hashing it, as described in the {Auth.hash}'s field
 		 *        description.
 		 */
 		constructor(protocol=0, hash=false, hashAlgorithm="", payload=[]) {
@@ -87,12 +88,10 @@ const Login = {
 
 		/**
 		 * @param hash
-		 *        Pasword encoded as UTF-8 if AuthCredentials.hash is `false` or the hash (specified in AuthCredentials.hashAlgorithm)
-		 *        of the password encoded as UTF-8 concatenated with the bytes from AuthCredentials.payload if
-		 *        `true`.The hash can be done with a function (if hashAlgorithm is `sha1`) in D:```dsha1Of(cast(ubyte[])password
-		 *        ~ authCredentials.payload);```Or using `MessageDigest` in Java:```javaMessageDigest md
-		 *        = MessageDigest.getInstance(authCredentials.hashAlgorithm);md.update(password.getBytes(StandardCharsets.UTF_8));md.update(authCredentials.payload);byte[]
-		 *        hash = md.digest();```
+		 *        Pasword encoded as UTF-8 if {AuthCredentials.hash} is `false` or the hash (specified in {AuthCredentials.hashAlgorithm})
+		 *        of the password encoded as UTF-8 concatenated with the bytes from {AuthCredentials.payload}
+		 *        if `true`.
+		 *        The hash can be done with a function (if hashAlgorithm is `sha1`) in D:
 		 */
 		constructor(hash=[]) {
 			this.hash = hash;

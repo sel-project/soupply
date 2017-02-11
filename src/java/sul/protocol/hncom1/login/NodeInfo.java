@@ -18,7 +18,7 @@ import sul.utils.*;
  */
 public class NodeInfo extends Packet {
 
-	public static final byte ID = (byte)3;
+	public static final byte ID = (byte)4;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;

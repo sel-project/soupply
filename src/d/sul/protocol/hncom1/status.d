@@ -30,7 +30,7 @@ alias Packets = TypeTuple!(AddNode, RemoveNode, MessageServerbound, MessageClien
  */
 class AddNode : Buffer {
 
-	public enum ubyte ID = 4;
+	public enum ubyte ID = 5;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -103,7 +103,7 @@ class AddNode : Buffer {
  */
 class RemoveNode : Buffer {
 
-	public enum ubyte ID = 5;
+	public enum ubyte ID = 6;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -151,7 +151,7 @@ class RemoveNode : Buffer {
  */
 class MessageServerbound : Buffer {
 
-	public enum ubyte ID = 6;
+	public enum ubyte ID = 7;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -209,7 +209,7 @@ class MessageServerbound : Buffer {
  */
 class MessageClientbound : Buffer {
 
-	public enum ubyte ID = 7;
+	public enum ubyte ID = 8;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -265,7 +265,7 @@ class MessageClientbound : Buffer {
  */
 class Players : Buffer {
 
-	public enum ubyte ID = 8;
+	public enum ubyte ID = 9;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -324,7 +324,7 @@ class Players : Buffer {
  */
 class ResourcesUsage : Buffer {
 
-	public enum ubyte ID = 9;
+	public enum ubyte ID = 10;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -390,7 +390,7 @@ class ResourcesUsage : Buffer {
  */
 class Log : Buffer {
 
-	public enum ubyte ID = 10;
+	public enum ubyte ID = 11;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -463,7 +463,7 @@ class Log : Buffer {
  */
 class RemoteCommand : Buffer {
 
-	public enum ubyte ID = 11;
+	public enum ubyte ID = 12;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -543,7 +543,7 @@ class RemoteCommand : Buffer {
  */
 class UpdateList : Buffer {
 
-	public enum ubyte ID = 12;
+	public enum ubyte ID = 13;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -722,7 +722,7 @@ class UpdateList : Buffer {
  */
 class Reload : Buffer {
 
-	public enum ubyte ID = 13;
+	public enum ubyte ID = 14;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;

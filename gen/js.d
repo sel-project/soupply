@@ -274,11 +274,18 @@ string[] paramDoc(string desc) {
 		next.length = 0;
 		length = 0;
 	}
-	foreach(s ; desc.replaceAll(ctRegex!`\[([a-zA-Z0-9\.]+)\]\([a-zA-Z0-9_\-\#\.\:]+\)`, "$1").replaceAll(ctRegex!`[\r\n\t]+`, "").split(" ")) {
+	bool empty = false;
+	foreach(s ; desc.replaceAll(ctRegex!`\[([a-zA-Z0-9\.]+)\]\([a-zA-Z0-9_\-\#\.\:]+\)`, "{$1}").matchFirst(ctRegex!"[\\r]{0,1}\\n(\\r|\\n|\\#|\\`)").pre.replaceAll(ctRegex!`\n|\r\n`, "  ").split(" ")) {
 		s = s.strip;
-		length += s.length;
-		next ~= s;
-		if(length >= 80) add();
+		if(s.length) {
+			empty = false;
+			length += s.length;
+			next ~= s;
+			if(length >= 80) add();
+		} else if(!empty) {
+			empty = true;
+			add();
+		}
 	}
 	if(next.length) add();
 	return data;

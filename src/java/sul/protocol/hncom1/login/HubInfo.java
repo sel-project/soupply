@@ -18,7 +18,7 @@ import sul.utils.*;
  */
 public class HubInfo extends Packet {
 
-	public static final byte ID = (byte)2;
+	public static final byte ID = (byte)3;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

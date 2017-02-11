@@ -11,11 +11,11 @@ package sul.protocol.hncom1.player;
 import sul.utils.*;
 
 /**
- * Updates the between the player and the hub.
+ * Updates the latency between the player and the hub.
  */
 public class UpdateLatency extends Packet {
 
-	public static final byte ID = (byte)22;
+	public static final byte ID = (byte)24;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

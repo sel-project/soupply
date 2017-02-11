@@ -17,7 +17,7 @@ import sul.utils.*;
  */
 public class UpdateDisplayName extends Packet {
 
-	public static final byte ID = (byte)18;
+	public static final byte ID = (byte)19;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;

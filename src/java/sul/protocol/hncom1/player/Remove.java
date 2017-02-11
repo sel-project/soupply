@@ -11,12 +11,12 @@ package sul.protocol.hncom1.player;
 import sul.utils.*;
 
 /**
- * Removes a player from the node. If the player is removed from the node using Kick
- * or Transfer this packet is not sent.
+ * Removes a player from the node. If the player is removed using Kick or Transfer
+ * this packet is not sent.
  */
 public class Remove extends Packet {
 
-	public static final byte ID = (byte)15;
+	public static final byte ID = (byte)16;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;

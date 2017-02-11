@@ -50,18 +50,19 @@ const Types = {
 
 		/**
 		 * @param name
-		 *        Name of the node. Should match one of the names given in Welcome.Accepted.connectedNodes or one
-		 *        added using the UpdateNodes packet.If the server isn't built on the hub-node layout the name is
-		 *        an empty string and the following values are for the whole server and not for a node.
+		 *        Name of the node. Should match one of the names given in {Welcome.Accepted.connectedNodes} or
+		 *        one added using the {UpdateNodes} packet.
+		 *        If the server isn't built on the hub-node layout the name is an empty string and the following values
+		 *        are for the whole server and not for a node.
 		 * @param tps
 		 *        Ticks per second of the node in range 0 to 20. If the value is less than 20, the server is lagging.
 		 * @param ram
-		 *        RAM allocated by the node in bytes.If the value is 0 the node couldn't retrieve the amount of memory
-		 *        allocated by its process.
+		 *        RAM allocated by the node in bytes.
+		 *        If the value is 0 the node couldn't retrieve the amount of memory allocated by its process.
 		 * @param cpu
 		 *        Percentage of CPU used by the node. The value can be higher than 100 when the machine where the node
-		 *        is running has more than one CPU.If the value is `not a number` the node couldn't retrieve the amount
-		 *        of CPU used by its process.
+		 *        is running has more than one CPU.
+		 *        If the value is `not a number` the node couldn't retrieve the amount of CPU used by its process.
 		 */
 		constructor(name="", tps=.0, ram=0, cpu=.0) {
 			this.name = name;

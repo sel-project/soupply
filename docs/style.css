@@ -16,9 +16,13 @@
 	src: local("Consolas");
 }
 
+html {
+	background: url(http://i.imgur.com/dlwRr20.png) center center;
+}
+
 body {
 	margin: 0 auto;
-	padding: 0 16px 16px 16px;
+	padding: 0 24px 16px 24px;
 	font-family: "Segoe 400", Helvetica;
 	font-size: 16px;
 	color: #333;
@@ -27,18 +31,16 @@ body {
 	background-color: #FCFCFC;
 }
 
-@media screen and (min-width: 960px) {
+@media screen and (min-width: 912px) {
 	body {
-		width: 960px;
+		width: 912px;
 		display: block;
-		border-right: 1px solid #DDD;
-		border-left: 1px solid #DDD;
 	}
 }
 
 hr {
 	width: 100%;
-	height: 0.2em;
+	height: 0.1em;
 	background-color: #DDD;
 	border: 0;
 	margin: 24px 0;
@@ -57,7 +59,7 @@ table th, table td {
 	border: 1px solid #CCC;
 }
 
-table th {
+table th, table .th {
 	font-family: "Segoe 600", Helvetica;
 	text-align: center;
 	background-color: #F7F7F7;
@@ -100,6 +102,14 @@ code {
 
 .removed {
 	background-color: #F1C0C0;
+}
+
+.desc {
+	padding-left: 16px;
+}
+
+.desc p {
+	margin: 6px 0;
 }
 
 .logo {

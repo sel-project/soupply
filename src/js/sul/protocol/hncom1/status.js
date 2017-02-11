@@ -20,7 +20,7 @@ const Status = {
 	 */
 	AddNode: class {
 
-		static get ID(){ return 4; }
+		static get ID(){ return 5; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -31,7 +31,7 @@ const Status = {
 		 * @param name
 		 *        Node's name used for displaying and identification purposes.
 		 * @param main
-		 *        Whether the node is a main node (see ConnectionRequest.main).
+		 *        Whether the node is a main node (see {ConnectionRequest.main}).
 		 * @param acceptedGames
 		 *        Indicates the game accepted by the node.
 		 */
@@ -74,7 +74,7 @@ const Status = {
 	 */
 	RemoveNode: class {
 
-		static get ID(){ return 5; }
+		static get ID(){ return 6; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -115,7 +115,7 @@ const Status = {
 	 */
 	MessageServerbound: class {
 
-		static get ID(){ return 6; }
+		static get ID(){ return 7; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -160,7 +160,7 @@ const Status = {
 	 */
 	MessageClientbound: class {
 
-		static get ID(){ return 7; }
+		static get ID(){ return 8; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -205,7 +205,7 @@ const Status = {
 	 */
 	Players: class {
 
-		static get ID(){ return 8; }
+		static get ID(){ return 9; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -253,7 +253,7 @@ const Status = {
 	 */
 	ResourcesUsage: class {
 
-		static get ID(){ return 9; }
+		static get ID(){ return 10; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -302,7 +302,7 @@ const Status = {
 	 */
 	Log: class {
 
-		static get ID(){ return 10; }
+		static get ID(){ return 11; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -355,7 +355,7 @@ const Status = {
 	 */
 	RemoteCommand: class {
 
-		static get ID(){ return 11; }
+		static get ID(){ return 12; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
@@ -374,7 +374,7 @@ const Status = {
 		 *        Commands and arguments that should be executed on the node. For example `say hello world` or `transfer
 		 *        steve lobby12`.
 		 * @param commandId
-		 *        Identifier of the command. It's sent in Log.commandId if the command generates an output.
+		 *        Identifier of the command. It's sent in {Log.commandId} if the command generates an output.
 		 */
 		constructor(origin=0, sender=null, command="", commandId=0) {
 			this.origin = origin;
@@ -414,7 +414,7 @@ const Status = {
 	 */
 	UpdateList: class {
 
-		static get ID(){ return 12; }
+		static get ID(){ return 13; }
 
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
@@ -470,7 +470,7 @@ const Status = {
 	 */
 	Reload: class {
 
-		static get ID(){ return 13; }
+		static get ID(){ return 14; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }

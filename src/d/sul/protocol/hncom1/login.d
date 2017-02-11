@@ -30,7 +30,7 @@ alias Packets = TypeTuple!(ConnectionRequest, ConnectionResponse, HubInfo, NodeI
  */
 class ConnectionRequest : Buffer {
 
-	public enum ubyte ID = 0;
+	public enum ubyte ID = 1;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
@@ -105,7 +105,7 @@ class ConnectionRequest : Buffer {
  */
 class ConnectionResponse : Buffer {
 
-	public enum ubyte ID = 1;
+	public enum ubyte ID = 2;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -173,7 +173,7 @@ class ConnectionResponse : Buffer {
  */
 class HubInfo : Buffer {
 
-	public enum ubyte ID = 2;
+	public enum ubyte ID = 3;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
@@ -352,7 +352,7 @@ class HubInfo : Buffer {
  */
 class NodeInfo : Buffer {
 
-	public enum ubyte ID = 3;
+	public enum ubyte ID = 4;
 
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;

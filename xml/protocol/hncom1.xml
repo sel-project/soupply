@@ -98,7 +98,7 @@
 
 			Packets used during the authentication process to exchange informations.
 
-			<packet name="connection-request" id="0" clientbound="false" serverbound="true">
+			<packet name="connection-request" id="1" clientbound="false" serverbound="true">
 				First real packet sent by the client with its informations.
 				<field name="protocol" type="varuint">
 					Version of the protocol used by the client that must match the hub's one
@@ -114,7 +114,7 @@
 				</field>
 			</packet>
 
-			<packet name="connection-response" id="1" clientbound="true" serverbound="false">
+			<packet name="connection-response" id="2" clientbound="true" serverbound="false">
 				Reply always sent after the [ConnectionRequest](#login_connection-request) packet. It indicates the status of the connection, which is accepted only when every field of the packet is true.
 				<field name="protocol" type="varuint">
 					Protocol used by the hub. It must match the node's one otherwise the connection cannot be established.
@@ -149,7 +149,7 @@
 				</field>
 			</packet>
 
-			<packet name="hub-info" id="2" clientbound="true" serverbound="false">
+			<packet name="hub-info" id="3" clientbound="true" serverbound="false">
 				Informations about the hub.
 				<field name="time" type="varulong">
 					Unix time in microseconds precision that indicates the exact moment when this packet was created. It's used by the node to calculate the latency.
@@ -219,7 +219,7 @@
 				</field>
 			</packet>
 
-			<packet name="node-info" id="3" clientbound="false" serverbound="true">
+			<packet name="node-info" id="4" clientbound="false" serverbound="true">
 				Informations about the node.
 				<field name="time" type="varulong">
 					Unix time in microseconds precision that indicates the exact moment when this packet was created. It's used by the hub to calculate the latency.
@@ -260,7 +260,7 @@
 
 			Node-related packets and updates.
 
-			<packet name="add-node" id="4" clientbound="true" serverbound="false">
+			<packet name="add-node" id="5" clientbound="true" serverbound="false">
 				Notifies the node that another node (that is not itelf) has connected to the hub.
 				<field name="hub-id" type="hub-id">
 					Identifier given by the hub to uniquey identify the node.
@@ -276,14 +276,14 @@
 				</field>
 			</packet>
 
-			<packet name="remove-node" id="5" clientbound="true" serverbound="false">
+			<packet name="remove-node" id="6" clientbound="true" serverbound="false">
 				Notifies the node that another node, previously added with [AddNode](#status_add-node) has disconnected from the hub.
 				<field name="hub-id" type="hub-id">
 					Node's id given by the hub.
 				</field>
 			</packet>
 
-			<packet name="message-serverbound" id="6" clientbound="false" serverbound="true">
+			<packet name="message-serverbound" id="7" clientbound="false" serverbound="true">
 				Sends a binary message to some selected nodes or broadcast it.
 				<field name="addressees" type="hub-id[]">
 					Addressees of the message. If the array is empty the message is broadcasted to every connected node.
@@ -293,7 +293,7 @@
 				</field>
 			</packet>
 
-			<packet name="message-clientbound" id="7" clientbound="true" serverbound="false">
+			<packet name="message-clientbound" id="8" clientbound="true" serverbound="false">
 				Receives a binary message sent by another node using [MessageServerbound](#status_message-serverbound).
 				<field name="sender" type="hub-id">
 					Id of the node that has sent the message.
@@ -303,7 +303,7 @@
 				</field>
 			</packet>
 
-			<packet name="players" id="8" clientbound="true" serverbound="false">
+			<packet name="players" id="9" clientbound="true" serverbound="false">
 				Updates the number of players on the server.
 				<field name="online" type="varuint">
 					Players currently online in the whole server (connected to a node).
@@ -314,7 +314,7 @@
 				</field>
 			</packet>
 
-			<packet name="resources-usage" id="9" clientbound="false" serverbound="true">
+			<packet name="resources-usage" id="10" clientbound="false" serverbound="true">
 				Updates the usage of the system's resources of the node.
 				<field name="tps" type="float">
 					Ticks per second of the node, in the range 0 to 20, where a number lower than 20 indicates lag.
@@ -327,7 +327,7 @@
 				</field>
 			</packet>
 
-			<packet name="log" id="10" clientbound="false" serverbound="true">
+			<packet name="log" id="11" clientbound="false" serverbound="true">
 				Sends a log to the hub.
 				<field name="timestamp" type="varulong">
 					Unix time (in milliseconds) that indicates the exact creation time of the log.
@@ -343,7 +343,7 @@
 				</field>
 			</packet>
 
-			<packet name="remote-command" id="11" clientbound="true" serverbound="false">
+			<packet name="remote-command" id="12" clientbound="true" serverbound="false">
 				Executes a command on the node.
 				<field name="origin" type="ubyte">
 					Origin of the command. It could be the hub itself or an external source.
@@ -362,7 +362,7 @@
 				</field>
 			</packet>
 
-			<packet name="update-list" id="12" clientbound="false" serverbound="true">
+			<packet name="update-list" id="13" clientbound="false" serverbound="true">
 				Updates a list.
 				<field name="list" type="ubyte">
 					Type of the list to update.
@@ -394,7 +394,7 @@
 				</variants>
 			</packet>
 
-			<packet name="reload" id="13" clientbound="true" serverbound="false">
+			<packet name="reload" id="14" clientbound="true" serverbound="false">
 				Notifies the node that the hub's reloadeable settings have been reloaded and that the node should also reload its resources (for example plugin's settings).
 			</packet>
 
@@ -402,13 +402,13 @@
 
 		<section name="player">
 
-			Packets related to a player. The first field of every packet is an hubId that uniquely identifies a player in the hub and never changes during the session.
+			Packets related to a player. The first field of every packet is an `hub id` that uniquely identifies a player in the hub and never changes until it's disconnected.
 
-			<packet name="add" id="14" clientbound="true" serverbound="false">
+			<packet name="add" id="15" clientbound="true" serverbound="false">
 				Adds a player to the node.
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="ubyte">
-					Reason why the player has joined the node.
+					Reason for which the player has been added to the node.
 					<constant name="first-join" value="0">
 						The player has been automatically put on this node because it's a non-full main node
 					</constant>
@@ -437,6 +437,9 @@
 				<field name="dimension" type="byte" when="reason!=0">
 					Dimension in which the player was playing before being transferred. It could diffent from client's game type and version because the dimension's ids are different in Minecraft and Minecraft: Pocket Edition.
 					It's used to send the game's change dimension packet to despawn old entities and delete old chunks.
+				</field>
+				<field name="view-distance" type="varuint" when="reason!=0">
+					Client's view distance (or chunk radius). See [UpdateViewDistance.viewDistance](#player_update-view-distance_view-distance) for more informations.
 				</field>
 				<field name="client-address" type="address">
 					Remote address of the client.
@@ -494,15 +497,13 @@
 				</variants>
 			</packet>
 
-			<packet name="remove" id="15" clientbound="true" serverbound="false">
-				Removes a player from the node. If the player is removed from the node using [Kick](#player_kick) or [Transfer](#player_transfer) this packet is not sent.
+			<packet name="remove" id="16" clientbound="true" serverbound="false">
+				Removes a player from the node. If the player is removed using [Kick](#player_kick) or [Transfer](#player_transfer) this packet is not sent.
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="ubyte">
 					Reason of the disconnection.
 					<constant name="left" value="0" />
-					<constant name="timed-out" value="1">
-						Kicked due to timeout
-					</constant>
+					<constant name="timed-out" value="1" />
 					<constant name="kicked" value="2">
 						Kicked by the hub
 					</constant>
@@ -512,7 +513,7 @@
 				</field>
 			</packet>
 
-			<packet name="kick" id="16" clientbound="false" serverbound="true">
+			<packet name="kick" id="17" clientbound="false" serverbound="true">
 				Kicks a player from the node and the whole server. When a player is disconnected from the node using this packet the hub will not send the [Remove](#player_remove) packet.
 				<field name="hub-id" type="hub-id" />
 				<field name="reason" type="string">
@@ -526,7 +527,7 @@
 				</field>
 			</packet>
 
-			<packet name="transfer" id="17" clientbound="false" serverbound="true">
+			<packet name="transfer" id="18" clientbound="false" serverbound="true">
 				Transfers a player to another node. When a player is transferred from the node the hub will not send the [Remove](#login_remove) packet and there's no way, for the node, to know whether the player was disconnected or successfully transferred, if not using messages through a user-defined protocol.
 				<field name="hub-id" type="hub-id" />
 				<field name="node" type="hub-id">
@@ -546,7 +547,7 @@
 				</field>
 			</packet>
 
-			<packet name="update-display-name" id="18" clientbound="false" serverbound="true">
+			<packet name="update-display-name" id="19" clientbound="false" serverbound="true">
 				Updates the player's display name when it changes.
 				<field name="hub-id" type="hub-id" />
 				<field name="display-name" type="string">
@@ -554,18 +555,23 @@
 				</field>
 			</packet>
 
-			<packet name="update-world" id="19" clientbound="false" serverbound="true">
+			<packet name="update-world" id="20" clientbound="false" serverbound="true">
 				Updates player's world and dimension.
 				<field name="hub-id" type="hub-id" />
 				<field name="world" type="string">
 					World's name, used mainly for display purposes.
 				</field>
 				<field name="dimension" type="byte">
-					World's dimension, that may different from Minecraft's version. It used for synchronise entities and chunks when changing node as described at [Add.dimension](#player_add_dimension).
+					World's dimension, that may differ from Minecraft's version. It's used for synchronise entities and chunks when changing node as described at [Add.dimension](#player_add_dimension).
 				</field>
 			</packet>
 
-			<packet name="update-language" id="20" clientbound="false" serverbound="true">
+			<packet name="update-view-distance" id="21" clientbound="false" serverbound="true">
+				<field name="hub-id" type="hub-id" />
+				<field name="view-distance" type="varuint" />
+			</packet>
+
+			<packet name="update-language" id="22" clientbound="false" serverbound="true">
 				Updates the player's language when the client changes it.
 				<field name="hub-id" type="hub-id" />
 				<field name="language" type="string">
@@ -573,7 +579,7 @@
 				</field>
 			</packet>
 
-			<packet name="update-input-mode" id="21" clientbound="true" serverbound="false">
+			<packet name="update-input-mode" id="23" clientbound="true" serverbound="false">
 				Update the player's current input mode.
 				<field name="hub-id" type="hub-id" />
 				<field name="input-mode" type="ubyte">
@@ -590,15 +596,15 @@
 				</field>
 			</packet>
 
-			<packet name="update-latency" id="22" clientbound="true" serverbound="false">
-				Updates the between the player and the hub.
+			<packet name="update-latency" id="24" clientbound="true" serverbound="false">
+				Updates the latency between the player and the hub.
 				<field name="hub-id" type="hub-id" />
 				<field name="latency" type="varuint">
 					Player's latency in milliseconds. The latency between the client and the node is then calculated adding the latency between the node and the hub (calculated using [HubInfo.time](#login_hub-info_time)) to this field's value.
 				</field>
 			</packet>
 
-			<packet name="update-packet-loss" id="23" clientbound="true" serverbound="false">
+			<packet name="update-packet-loss" id="25" clientbound="true" serverbound="false">
 				Updates the player's packet loss if it uses a connectionless protocol like UDP.
 				<field name="hub-id" type="hub-id" />
 				<field name="packet-loss" type="float">
@@ -606,11 +612,12 @@
 				</field>
 			</packet>
 
-			<packet name="game-packet" id="24" clientbound="true" serverbound="true">
+			<packet name="game-packet" id="26" clientbound="true" serverbound="true">
 				Sends data to client or handles data received from the client.
 				<field name="hub-id" type="hub-id" />
 				<field name="packet" type="bytes">
 					Serialised packet ready to be encrypted or encapsulated and sent to the client when this packet is serverbound or packet already unencrypted and uncompressed ready to be handled by the node otherwise.
+
 					#### Format
 
 					##### Minecraft (serverbound)
@@ -627,7 +634,7 @@
 				</field>
 			</packet>
 
-			<packet name="ordered-game-packet" id="25" clientbound="false" serverbound="true">
+			<packet name="ordered-game-packet" id="27" clientbound="false" serverbound="true">
 				Sends data to the client but order it because it could be sent by the node unordered, due to compressed packet sent delayed.
 				<field name="hub-id" type="hub-id" />
 				<field name="order" type="varuint">

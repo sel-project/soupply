@@ -6,35 +6,30 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml
  */
-package sul.protocol.hncom1.status;
+package sul.protocol.hncom1.player;
 
 import sul.utils.*;
 
-/**
- * Notifies the node that another node, previously added with AddNode has disconnected
- * from the hub.
- */
-public class RemoveNode extends Packet {
+public class UpdateViewDistance extends Packet {
 
-	public static final byte ID = (byte)6;
+	public static final byte ID = (byte)21;
 
-	public static final boolean CLIENTBOUND = true;
-	public static final boolean SERVERBOUND = false;
+	public static final boolean CLIENTBOUND = false;
+	public static final boolean SERVERBOUND = true;
 
-	/**
-	 * Node's id given by the hub.
-	 */
 	public int hubId;
+	public int viewDistance;
 
-	public RemoveNode() {}
+	public UpdateViewDistance() {}
 
-	public RemoveNode(int hubId) {
+	public UpdateViewDistance(int hubId, int viewDistance) {
 		this.hubId = hubId;
+		this.viewDistance = viewDistance;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(hubId) + 1;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(viewDistance) + 1;
 	}
 
 	@Override
@@ -42,6 +37,7 @@ public class RemoveNode extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVaruint(hubId);
+		this.writeVaruint(viewDistance);
 		return this.getBuffer();
 	}
 
@@ -50,17 +46,18 @@ public class RemoveNode extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		hubId=this.readVaruint();
+		viewDistance=this.readVaruint();
 	}
 
-	public static RemoveNode fromBuffer(byte[] buffer) {
-		RemoveNode ret = new RemoveNode();
+	public static UpdateViewDistance fromBuffer(byte[] buffer) {
+		UpdateViewDistance ret = new UpdateViewDistance();
 		ret.decode(buffer);
 		return ret;
 	}
 
 	@Override
 	public String toString() {
-		return "RemoveNode(hubId: " + this.hubId + ")";
+		return "UpdateViewDistance(hubId: " + this.hubId + ", viewDistance: " + this.viewDistance + ")";
 	}
 
 }

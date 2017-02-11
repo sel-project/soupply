@@ -18,7 +18,7 @@ import sul.utils.*;
  */
 public class Add extends Packet {
 
-	public static final byte ID = (byte)14;
+	public static final byte ID = (byte)15;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
@@ -36,7 +36,7 @@ public class Add extends Packet {
 	public int hubId;
 
 	/**
-	 * Reason why the player has joined the node.
+	 * Reason for which the player has been added to the node.
 	 */
 	public byte reason;
 
@@ -77,6 +77,12 @@ public class Add extends Packet {
 	 * delete old chunks.
 	 */
 	public byte dimension;
+
+	/**
+	 * Client's view distance (or chunk radius). See [UpdateViewDistance.viewDistance](#player_update-view-distance_view-distance)
+	 * for more informations.
+	 */
+	public int viewDistance;
 
 	/**
 	 * Remote address of the client.
@@ -127,7 +133,7 @@ public class Add extends Packet {
 
 	public Add() {}
 
-	public Add(int hubId, byte reason, byte type, int protocol, String version, String username, String displayName, byte dimension, sul.protocol.hncom1.types.Address clientAddress, String serverAddress, short serverPort, UUID uuid, sul.protocol.hncom1.types.Skin skin, String language, byte inputMode, int latency) {
+	public Add(int hubId, byte reason, byte type, int protocol, String version, String username, String displayName, byte dimension, int viewDistance, sul.protocol.hncom1.types.Address clientAddress, String serverAddress, short serverPort, UUID uuid, sul.protocol.hncom1.types.Skin skin, String language, byte inputMode, int latency) {
 		this.hubId = hubId;
 		this.reason = reason;
 		this.type = type;
@@ -136,6 +142,7 @@ public class Add extends Packet {
 		this.username = username;
 		this.displayName = displayName;
 		this.dimension = dimension;
+		this.viewDistance = viewDistance;
 		this.clientAddress = clientAddress;
 		this.serverAddress = serverAddress;
 		this.serverPort = serverPort;
@@ -148,7 +155,7 @@ public class Add extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(hubId) + Buffer.varuintLength(protocol) + Buffer.varuintLength(version.getBytes(StandardCharsets.UTF_8).length) + version.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + clientAddress.length() + Buffer.varuintLength(serverAddress.getBytes(StandardCharsets.UTF_8).length) + serverAddress.getBytes(StandardCharsets.UTF_8).length + skin.length() + Buffer.varuintLength(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(latency) + 23;
+		return Buffer.varuintLength(hubId) + Buffer.varuintLength(protocol) + Buffer.varuintLength(version.getBytes(StandardCharsets.UTF_8).length) + version.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(displayName.getBytes(StandardCharsets.UTF_8).length) + displayName.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(viewDistance) + clientAddress.length() + Buffer.varuintLength(serverAddress.getBytes(StandardCharsets.UTF_8).length) + serverAddress.getBytes(StandardCharsets.UTF_8).length + skin.length() + Buffer.varuintLength(language.getBytes(StandardCharsets.UTF_8).length) + language.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(latency) + 23;
 	}
 
 	@Override
@@ -167,6 +174,7 @@ public class Add extends Packet {
 		byte[] dxnlcm5hbwu=username.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dxnlcm5hbwu.length); this.writeBytes(dxnlcm5hbwu);
 		byte[] zglzcgxheu5hbwu=displayName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)zglzcgxheu5hbwu.length); this.writeBytes(zglzcgxheu5hbwu);
 		if(reason!=0){ this.writeBigEndianByte(dimension); }
+		if(reason!=0){ this.writeVaruint(viewDistance); }
 		this.writeBytes(clientAddress.encode());
 		byte[] c2vydmvyqwrkcmvz=serverAddress.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)c2vydmvyqwrkcmvz.length); this.writeBytes(c2vydmvyqwrkcmvz);
 		this.writeBigEndianShort(serverPort);
@@ -190,6 +198,7 @@ public class Add extends Packet {
 		int bgvudxnlcm5hbwu=this.readVaruint(); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
 		int bgvuzglzcgxheu5h=this.readVaruint(); displayName=new String(this.readBytes(bgvuzglzcgxheu5h), StandardCharsets.UTF_8);
 		if(reason!=0){ dimension=readBigEndianByte(); }
+		if(reason!=0){ viewDistance=this.readVaruint(); }
 		clientAddress=new sul.protocol.hncom1.types.Address(); clientAddress._index=this._index; clientAddress.decode(this._buffer); this._index=clientAddress._index;
 		int bgvuc2vydmvyqwrk=this.readVaruint(); serverAddress=new String(this.readBytes(bgvuc2vydmvyqwrk), StandardCharsets.UTF_8);
 		serverPort=readBigEndianShort();
@@ -212,7 +221,7 @@ public class Add extends Packet {
 
 	@Override
 	public String toString() {
-		return "Add(hubId: " + this.hubId + ", reason: " + this.reason + ", type: " + this.type + ", protocol: " + this.protocol + ", version: " + this.version + ", username: " + this.username + ", displayName: " + this.displayName + ", dimension: " + this.dimension + ", clientAddress: " + this.clientAddress.toString() + ", serverAddress: " + this.serverAddress + ", serverPort: " + this.serverPort + ", uuid: " + this.uuid.toString() + ", skin: " + this.skin.toString() + ", language: " + this.language + ", inputMode: " + this.inputMode + ", latency: " + this.latency + ")";
+		return "Add(hubId: " + this.hubId + ", reason: " + this.reason + ", type: " + this.type + ", protocol: " + this.protocol + ", version: " + this.version + ", username: " + this.username + ", displayName: " + this.displayName + ", dimension: " + this.dimension + ", viewDistance: " + this.viewDistance + ", clientAddress: " + this.clientAddress.toString() + ", serverAddress: " + this.serverAddress + ", serverPort: " + this.serverPort + ", uuid: " + this.uuid.toString() + ", skin: " + this.skin.toString() + ", language: " + this.language + ", inputMode: " + this.inputMode + ", latency: " + this.latency + ")";
 	}
 
 	/**
