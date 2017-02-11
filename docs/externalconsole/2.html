@@ -13,10 +13,9 @@
 		<script>hljs.initHighlightingOnLoad();</script>
 	</head>
 	<body>
-		<div class="logo"><a href="../"><div><img src="../logo.png" alt="SEL" /></div></a><div><a href="../">Index</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/externalconsole2.xml">XML</a>&nbsp;&nbsp;<a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
+		<div class="logo"><a href="../"><div><img src="../logo.png" alt="SEL" /></div></a><div><a href="../">Index</a>  <a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>  <a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>  <a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>  <a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/externalconsole2.xml">XML</a>  <a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
 		<h1>External Console 2</h1>
-		<div class="g-plusone" data-size="tall"></div>
-		<p><strong>Compare</strong>: <a href="diff/1-2.html">1</a></p>
+		<div class="g-plusone" data-size="medium"></div>
 		<p><strong>Jump to</strong>: <a href="#endianness">Endianness</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a></p>
 		<p><strong>Released</strong>: February 7th, 2017</p>
 		<p>Protocol used to communicate with external sources using a raw TCP protocol or <a href="https://en.wikipedia.org/wiki/WebSocket" target="_blank">Web Sockets</a>.</p>
@@ -96,28 +95,25 @@ socket.onmessage = function(event){
 		<table>
 			<tr>
 				<th>Packets</th>
-				<th colspan="2">Id</th>
+				<th>Id</th>
 				<th>Clientbound</th>
 				<th>Serverbound</th>
 			</tr>
 			<tr>
 				<td><a href="#login_auth-credentials">Auth Credentials</a></td>
 				<td class="center">0</td>
-				<td class="center">00₁₆</td>
 				<td class="center">✓</td>
 				<td class="center"></td>
 			</tr>
 			<tr>
 				<td><a href="#login_auth">Auth</a></td>
 				<td class="center">1</td>
-				<td class="center">01₁₆</td>
 				<td class="center"></td>
 				<td class="center">✓</td>
 			</tr>
 			<tr>
 				<td><a href="#login_welcome">Welcome</a></td>
 				<td class="center">2</td>
-				<td class="center">02₁₆</td>
 				<td class="center">✓</td>
 				<td class="center"></td>
 			</tr>
@@ -128,6 +124,7 @@ socket.onmessage = function(event){
 				<div class="desc">
 					<p><strong>Id</strong>: 0</p>
 					<p><strong>Hex</strong>: 00</p>
+					<p><strong>Bin</strong>: 00000000</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
 				<p>First packet sent by the server when the connection is successfully established. It contains informations about how the external console shall authenticate itself.</p>
@@ -184,6 +181,7 @@ socket.onmessage = function(event){
 				<div class="desc">
 					<p><strong>Id</strong>: 1</p>
 					<p><strong>Hex</strong>: 01</p>
+					<p><strong>Bin</strong>: 00000001</p>
 					<p>Sent by the <strong>client</strong></p>
 				</div>
 				<p>Performs authentication following the instruncions given by the <a href="#login_auth-credentials">AuthCredentials</a> packet.</p>
@@ -223,6 +221,7 @@ byte[] hash = md.digest();
 				<div class="desc">
 					<p><strong>Id</strong>: 2</p>
 					<p><strong>Hex</strong>: 02</p>
+					<p><strong>Bin</strong>: 00000010</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
 				<p>Indicates the status of the authentication process.</p>
@@ -338,35 +337,31 @@ byte[] hash = md.digest();
 		<table>
 			<tr>
 				<th>Packets</th>
-				<th colspan="2">Id</th>
+				<th>Id</th>
 				<th>Clientbound</th>
 				<th>Serverbound</th>
 			</tr>
 			<tr>
 				<td><a href="#status_keep-alive">Keep Alive</a></td>
 				<td class="center">0</td>
-				<td class="center">00₁₆</td>
 				<td class="center">✓</td>
 				<td class="center">✓</td>
 			</tr>
 			<tr>
 				<td><a href="#status_update-nodes">Update Nodes</a></td>
 				<td class="center">1</td>
-				<td class="center">01₁₆</td>
 				<td class="center">✓</td>
 				<td class="center"></td>
 			</tr>
 			<tr>
 				<td><a href="#status_request-stats">Request Stats</a></td>
 				<td class="center">2</td>
-				<td class="center">02₁₆</td>
 				<td class="center"></td>
 				<td class="center">✓</td>
 			</tr>
 			<tr>
 				<td><a href="#status_update-stats">Update Stats</a></td>
 				<td class="center">3</td>
-				<td class="center">03₁₆</td>
 				<td class="center">✓</td>
 				<td class="center"></td>
 			</tr>
@@ -377,6 +372,7 @@ byte[] hash = md.digest();
 				<div class="desc">
 					<p><strong>Id</strong>: 0</p>
 					<p><strong>Hex</strong>: 00</p>
+					<p><strong>Bin</strong>: 00000000</p>
 					<p>Sent by the <strong>server</strong> and the <strong>client</strong></p>
 				</div>
 				<p>Keeps the connection alive and/or calculates the latency. This packet should be sent at least every 5 seconds to avoid the disconnection caused by timeout and update the latency. The external console can send this packet whenever it wants it and the server must reply with the same packet with the same field's value.</p>
@@ -403,6 +399,7 @@ byte[] hash = md.digest();
 				<div class="desc">
 					<p><strong>Id</strong>: 1</p>
 					<p><strong>Hex</strong>: 01</p>
+					<p><strong>Bin</strong>: 00000001</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
 				<p>Updates the list of the nodes connected to the hub, adding or removing one.</p>
@@ -450,6 +447,7 @@ byte[] hash = md.digest();
 				<div class="desc">
 					<p><strong>Id</strong>: 2</p>
 					<p><strong>Hex</strong>: 02</p>
+					<p><strong>Bin</strong>: 00000010</p>
 					<p>Sent by the <strong>client</strong></p>
 				</div>
 				<p>Requests an <a href="#stats_update-stats">UpdateStats</a> packet to the server, which should sent it immediately instead of waiting for the next automatic update (if the server does one).</p>
@@ -459,6 +457,7 @@ byte[] hash = md.digest();
 				<div class="desc">
 					<p><strong>Id</strong>: 3</p>
 					<p><strong>Hex</strong>: 03</p>
+					<p><strong>Bin</strong>: 00000011</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
 				<p>Updates the statistics about the usage of the server and, eventually, the connected nodes.</p>
@@ -527,28 +526,25 @@ byte[] hash = md.digest();
 		<table>
 			<tr>
 				<th>Packets</th>
-				<th colspan="2">Id</th>
+				<th>Id</th>
 				<th>Clientbound</th>
 				<th>Serverbound</th>
 			</tr>
 			<tr>
 				<td><a href="#connected_console-message">Console Message</a></td>
 				<td class="center">4</td>
-				<td class="center">04₁₆</td>
 				<td class="center">✓</td>
 				<td class="center"></td>
 			</tr>
 			<tr>
 				<td><a href="#connected_command">Command</a></td>
 				<td class="center">5</td>
-				<td class="center">05₁₆</td>
 				<td class="center"></td>
 				<td class="center">✓</td>
 			</tr>
 			<tr>
 				<td><a href="#connected_permission-denied">Permission Denied</a></td>
 				<td class="center">6</td>
-				<td class="center">06₁₆</td>
 				<td class="center">✓</td>
 				<td class="center"></td>
 			</tr>
@@ -559,6 +555,7 @@ byte[] hash = md.digest();
 				<div class="desc">
 					<p><strong>Id</strong>: 4</p>
 					<p><strong>Hex</strong>: 04</p>
+					<p><strong>Bin</strong>: 00000100</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
 				<p>Logs a message from the server's console. It may be the output of a command, a debug message or any other message that the server retains able to be seen by the External Console.</p>
@@ -618,6 +615,7 @@ byte[] hash = md.digest();
 				<div class="desc">
 					<p><strong>Id</strong>: 5</p>
 					<p><strong>Hex</strong>: 05</p>
+					<p><strong>Bin</strong>: 00000101</p>
 					<p>Sent by the <strong>client</strong></p>
 				</div>
 				<p>Executes a command remotely if the server allows it. If not a <a href="#connected_permission-denied" target="_blank">Permission Denied</a> is sent back. A good implementation of the external console client should never send this packet if <a href="#login_welcome_accepted_remote-commands">remoteCommands</a> field in <a href="#login.welcome.accepted" target="_blank">Welcome.Accepted</a> is not true.</p>
@@ -652,6 +650,7 @@ byte[] hash = md.digest();
 				<div class="desc">
 					<p><strong>Id</strong>: 6</p>
 					<p><strong>Hex</strong>: 06</p>
+					<p><strong>Bin</strong>: 00000110</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
 				<p>Bodyless packet only sent in response to <a href="#connected_command">Command</a> when the server doesn't allow the execution of remote commands through the external console. A good implementation of the external console client should never receive this packet avoiding the use of the <a href="#connected_command">Command</a> packet when the <a href="#login_welcome_accepted_remote-command">remoteCommands</a> field is false.</p>

@@ -38,7 +38,7 @@ static import json;
 alias File(T) = Tuple!(string, "software", size_t, "protocol", T, "data");
 
 
-alias Attribute = Tuple!(string, "id", string, "name", float, "min", float, "max", float, "def");
+alias Attribute = Tuple!(string, "id", string, "name", float, "min", float, "max", float, "def", string, "description");
 
 alias Attributes = File!(Attribute[]);
 
@@ -105,7 +105,7 @@ void main(string[] args) {
 						curr.protocol = element.text.strip.to!size_t;
 						break;
 					case "attribute":
-						with(element.tag) curr.data ~= Attribute(attr["id"].replace("-", "_"), attr["name"], attr["min"].to!float, attr["max"].to!float, attr["default"].to!float);
+						with(element.tag) curr.data ~= Attribute(attr["id"].replace("-", "_"), attr["name"], attr["min"].to!float, attr["max"].to!float, attr["default"].to!float, text(element));
 						break;
 					default:
 						break;

@@ -104,12 +104,16 @@ code {
 	background-color: #F1C0C0;
 }
 
-.desc {
-	padding-left: 16px;
+.desc p {
+	margin: 4px 0;
 }
 
-.desc p {
-	margin: 6px 0;
+code.attribute {
+	color: orange;
+}
+
+div.attribute {
+	margin-top: 16px;
 }
 
 .logo {
