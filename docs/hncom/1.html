@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<meta name="description" content="Protocol used for the communication between an hub and multiple nodes with support for Minecraft and Minecraft: Pocket Edition and different versions of their protocols." />
 		<link rel="icon" type="image/png" href="../favicon.png" />
+		<link rel="canonical" href="https://sel-project.github.io/sel-utils/index.html" />
 		<link rel="stylesheet" href="../style.min.css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" />
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
@@ -13,10 +14,12 @@
 		<script>hljs.initHighlightingOnLoad();</script>
 	</head>
 	<body>
-		<div class="logo"><a href="../"><div><img src="../logo.png" alt="SEL" /></div></a><div><a href="../">Index</a>  <a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>  <a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>  <a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>  <a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml">XML</a>  <a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
+		<div class="nav"><a href="../">Index</a>  <a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>    <a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>    <a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>    <a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom1.xml">XML</a>    <a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
+</div>
+		<div class="logo" onclick="if(document.body.classList.contains('dark')){document.body.classList.remove('dark');}else{document.body.classList.add('dark');}"></div>
 		<h1>Hub-Node Communication 1</h1>
 		<div class="g-plusone" data-size="medium"></div>
-		<p><strong>Jump to</strong>: <a href="#endianness">Endianness</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a></p>
+		<p><strong>Jump to</strong>: <a href="#encoding">Encoding</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a></p>
 		<p><strong>Released</strong>: January 25th, 2017</p>
 		<p>Protocol used for the communication between an hub and multiple nodes with support for Minecraft and Minecraft: Pocket Edition and different versions of their protocols.</p>
 		<h2>Definitions</h2>
@@ -30,7 +33,8 @@
 		<h3>Authentication</h3>
 		<p>The node starts the connection sending a <a href="#login_connection-request">ConnectionRequest</a> packet with its credentials and waits for a <a href="#login_connection-response">ConnectionResponse</a> packet.</p>
 		<hr>
-		<h2 id="endianness">Endianness</h2>
+		<h2 id="encoding">Encoding</h2>
+		<p><strong>Endianness</strong>:</p>
 		<table>
 			<tr>
 				<td>big endian</td>
@@ -1607,7 +1611,7 @@
 							<tr>
 								<td>disconnect</td>
 								<td class="center">0</td>
-								<td>Disconnect with `End of Stream` message</td>
+								<td>Disconnect with <code>End of Stream</code> message</td>
 							</tr>
 							<tr>
 								<td>auto</td>

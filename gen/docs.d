@@ -41,7 +41,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		immutable gameName = game[0..$-ptrs.protocol.to!string.length];
 		auto attributes = game in attributes;
 		auto metadata = game in metadatas;
-		string data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, game, ptrs.data.description.length ? ptrs.data.description.replaceAll(ctRegex!`<[a-z0-9]+>|<\/[a-z0-9]+>`, "").replaceAll(ctRegex!`\[([a-zA-Z0-9_\-\. ]+)\]\([a-zA-Z0-9_\-\.:\#\/]+\)`, "$1").split("\n")[0].strip : "");
+		string data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, gameName, ptrs.protocol.to!string, ptrs.data.description.length ? ptrs.data.description.replaceAll(ctRegex!`<[a-z0-9]+>|<\/[a-z0-9]+>`, "").replaceAll(ctRegex!`\[([a-zA-Z0-9_\-\. ]+)\]\([a-zA-Z0-9_\-\.:\#\/]+\)`, "$1").split("\n")[0].strip : "");
 		data ~= "\t\t<h1>" ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "</h1>\n";
 		data ~= "\t\t<div class=\"g-plusone\" data-size=\"medium\"></div>\n";
 		uint[] others;
@@ -58,7 +58,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			}
 			//data ~= "\t\t<p><strong>Compare</strong>: " ~ str.join(", ") ~ "</p>\n";
 		}
-		string[] jumps = ["<a href=\"#endianness\">Endianness</a>", "<a href=\"#packets\">Packets</a>"];
+		string[] jumps = ["<a href=\"#encoding\">Encoding</a>", "<a href=\"#packets\">Packets</a>"];
 		if(ptrs.data.types.length) jumps ~= "<a href=\"#types\">Types</a>";
 		if(ptrs.data.arrays.length) jumps ~= "<a href=\"#arrays\">Arrays</a>";
 		if(metadata) jumps ~= "<a href=\"#metadata\">Metadata</a>";
@@ -162,7 +162,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 									data ~= space ~ "\t\t\t<tr>\n";
 									data ~= space ~ "\t\t\t\t<td>" ~ constant.name.replace("_", " ") ~ "</td>\n";
 									data ~= space ~ "\t\t\t\t<td class=\"center\">" ~ constant.value ~ "</td>\n";
-									if(notes) data ~= space ~ "\t\t\t\t<td>" ~ constant.description ~ "</td>\n";
+									if(notes) data ~= space ~ "\t\t\t\t<td>" ~ constant.description.replaceAll(ctRegex!"`([^`]*)`", "<code>$1</code>") ~ "</td>\n";
 									data ~= space ~ "\t\t\t</tr>\n";
 								}
 								data ~= space ~ "\t\t</table>\n";
@@ -175,7 +175,8 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			}
 		}
 		// endianness
-		data ~= "\t\t<h2 id=\"endianness\">Endianness</h2>\n";
+		data ~= "\t\t<h2 id=\"encoding\">Encoding</h2>\n";
+		data ~= "\t\t<p><strong>Endianness</strong>:</p>\n";
 		data ~= "\t\t<table>\n";
 		string def = "big_endian";
 		string[string] change;
@@ -487,6 +488,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		p[prts.software] ~= tuple(prts.data, prts.protocol, game);
 	}
 	string data = head("Index", false);
+	data ~= "\t\t<div style=\"padding-top:84px\"></div>\n";
 	foreach(string name ; ["Minecraft", "Minecraft: Pocket Edition", "Raknet", "Hub-Node Communication", "External Console"]) {
 		size_t date(string str) {
 			auto spl = str.split("/");
@@ -530,7 +532,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	
 }
 
-string head(string title, bool back, string xml="", string description="") {
+string head(string title, bool back, string game="", string protocol="", string description="") {
 	string b = back ? "../" : "";
 	return "<!DOCTYPE html>\n<html lang=\"en\">\n" ~
 			"\t<head>\n\t\t<meta charset=\"UTF-8\" />\n" ~
@@ -538,19 +540,23 @@ string head(string title, bool back, string xml="", string description="") {
 			"\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n" ~
 			(description.length ? "\t\t<meta name=\"description\" content=\"" ~ description.replace(`"`, `\"`) ~ "\" />\n" : "") ~
 			"\t\t<link rel=\"icon\" type=\"image/png\" href=\"" ~ b ~ "favicon.png\" />\n" ~
+			"\t\t<link rel=\"canonical\" href=\"https://sel-project.github.io/sel-utils/" ~ (back ? "index" : game ~ "/" ~ protocol) ~ ".html\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"" ~ b ~ "style.min.css\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css\" />\n" ~
 			"\t\t<script src=\"https://apis.google.com/js/platform.js\" async defer></script>\n" ~
 			"\t\t<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js\"></script>\n" ~
 			"\t\t<script>hljs.initHighlightingOnLoad();</script>\n" ~
 			"\t</head>\n" ~
-			"\t<body>\n\t\t<div class=\"logo\"><a href=\"" ~ b ~ "\"><div><img src=\"" ~ b ~ "logo.png\" alt=\"SEL\" /></div></a>" ~
-			"<div><a href=\"" ~ b ~ "\">Index</a>  " ~
-			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/README.md\">About</a>  " ~
-			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/TYPES.md\">Types</a>  " ~
-			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md\">Contribute</a>  " ~
-			(xml.length ? "<a href=\"https://github.com/sel-project/sel-utils/blob/master/xml/protocol/" ~ xml ~ ".xml\">XML</a>  " : "") ~
-			"<a href=\"https://github.com/sel-project/sel-utils\">Github</a></div></div>\n";
+			"\t<body>\n" ~
+			"\t\t<div class=\"nav\">" ~
+			"<a href=\"" ~ b ~ "\">Index</a>  " ~
+			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/README.md\">About</a>    " ~
+			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/TYPES.md\">Types</a>    " ~
+			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md\">Contribute</a>    " ~
+			(game.length ? "<a href=\"https://github.com/sel-project/sel-utils/blob/master/xml/protocol/" ~ game ~ protocol ~ ".xml\">XML</a>    " : "") ~
+			"<a href=\"https://github.com/sel-project/sel-utils\">Github</a></div></div>\n" ~
+			"</div>\n" ~
+			"\t\t<div class=\"logo\" onclick=\"if(document.body.classList.contains('dark')){document.body.classList.remove('dark');}else{document.body.classList.add('dark');}\"></div>\n"; //TODO remember theme
 }
 
 @property string pretty(string name) {
