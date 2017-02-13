@@ -10,6 +10,10 @@ package sul.protocol.pocket101.play;
 
 import sul.utils.*;
 
+/**
+ * Packet sent as response to Login to indicate whether the connection has been accepted
+ * and when the player is ready to spawn in the world.
+ */
 public class PlayStatus extends Packet {
 
 	public static final byte ID = (byte)2;

@@ -10,7 +10,7 @@
 
 const Types = {
 
-	Address: class {
+	Address: class extends Buffer {
 
 		/**
 		 * @param bytes
@@ -20,20 +20,30 @@ const Types = {
 		 *        Port of the address.
 		 */
 		constructor(bytes=[], port=0) {
+			super();
 			this.bytes = bytes;
 			this.port = port;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVaruint(bytes.length); for(ynl0zxm in bytes){ this.writeByte(bytes[ynl0zxm]); }
-			this.writeBigEndianShort(port);
+			this._buffer = [];
+			this.writeVaruint(this.bytes.length); this.writeBytes(this.bytes);
+			this.writeBigEndianShort(this.port);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var bhroaxmuynl0zxm=this.readVaruint(); this.bytes=this.readBytes(bhroaxmuynl0zxm);
+			this.port=this.readBigEndianShort();
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Address().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -43,7 +53,7 @@ const Types = {
 
 	},
 
-	Game: class {
+	Game: class extends Buffer {
 
 		// type
 		static get POCKET(){ return 1; }
@@ -56,20 +66,30 @@ const Types = {
 		 *        Protocols accepted by the server for the game. They should be ordered from oldest to newest.
 		 */
 		constructor(type=0, protocols=0) {
+			super();
 			this.type = type;
 			this.protocols = protocols;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(type);
-			this.writeVaruint(protocols.length); for(chjvdg9jb2xz in protocols){ this.writeVaruint(protocols[chjvdg9jb2xz]); }
+			this._buffer = [];
+			this.writeBigEndianByte(this.type);
+			this.writeVaruint(this.protocols.length); for(var dghpcy5wcm90b2nv in this.protocols){ this.writeVaruint(this.protocols[dghpcy5wcm90b2nv]); }
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.type=this.readBigEndianByte();
+			var bhroaxmuchjvdg9j=this.readVaruint(); this.protocols=[]; for(var dghpcy5wcm90b2nv in this.protocols){ this.protocols[dghpcy5wcm90b2nv]=this.readVaruint(); }
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Game().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -79,7 +99,7 @@ const Types = {
 
 	},
 
-	GameInfo: class {
+	GameInfo: class extends Buffer {
 
 		/**
 		 * @param game
@@ -92,6 +112,7 @@ const Types = {
 		 *        for connections.
 		 */
 		constructor(game=null, motd="", port=0) {
+			super();
 			this.game = game;
 			this.motd = motd;
 			this.port = port;
@@ -99,15 +120,25 @@ const Types = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeBytes(game.encode());
-			this.writeString(motd);
-			this.writeBigEndianShort(port);
+			this._buffer = [];
+			this.writeBytes(this.game.encode());
+			var dghpcy5tb3rk=this.encodeString(this.motd); this.writeVaruint(dghpcy5tb3rk.length); this.writeBytes(dghpcy5tb3rk);
+			this.writeBigEndianShort(this.port);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.game=Types.Game.fromBuffer(this._buffer.slice(this._index)); this._index+=this.game._index;
+			this.motd=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.port=this.readBigEndianShort();
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.GameInfo().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -117,7 +148,7 @@ const Types = {
 
 	},
 
-	Plugin: class {
+	Plugin: class extends Buffer {
 
 		/**
 		 * @param name
@@ -126,20 +157,30 @@ const Types = {
 		 *        Version of the plugin, usually in the format `major.minor[.release] [alpha|beta]`.
 		 */
 		constructor(name="", version="") {
+			super();
 			this.name = name;
 			this.version = version;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeString(name);
-			this.writeString(version);
+			this._buffer = [];
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			var dghpcy52zxjzaw9u=this.encodeString(this.version); this.writeVaruint(dghpcy52zxjzaw9u.length); this.writeBytes(dghpcy52zxjzaw9u);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.version=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Plugin().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -149,7 +190,7 @@ const Types = {
 
 	},
 
-	Skin: class {
+	Skin: class extends Buffer {
 
 		/**
 		 * @param name
@@ -158,20 +199,30 @@ const Types = {
 		 *        RGBA map of the skin colours. Length should be, if the skin is not empty, 8192 or 16384.
 		 */
 		constructor(name="", data=[]) {
+			super();
 			this.name = name;
 			this.data = data;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeString(name);
-			this.writeVaruint(data.length); for(zgf0yq in data){ this.writeByte(data[zgf0yq]); }
+			this._buffer = [];
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			this.writeVaruint(this.data.length); this.writeBytes(this.data);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Skin().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -183,4 +234,4 @@ const Types = {
 
 }
 
-export { Types }
+//export { Types }

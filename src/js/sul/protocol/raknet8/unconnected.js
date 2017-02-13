@@ -12,7 +12,7 @@
 
 const Unconnected = {
 
-	Ping: class {
+	Ping: class extends Buffer {
 
 		static get ID(){ return 1; }
 
@@ -20,20 +20,27 @@ const Unconnected = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(pingId=0, magic=[]) {
+			super();
 			this.pingId = pingId;
 			this.magic = magic;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBigEndianLong(pingId);
-			for(bwfnawm in magic){ this.writeByte(magic[bwfnawm]); }
+			this._buffer = [];
+			this.writeBigEndianByte(1);
+			this.writeBigEndianLong(this.pingId);
+			this.writeBytes(this.magic);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.pingId=this.readBigEndianLong();
+			var bhroaxmubwfnawm=16; this.magic=this.readBytes(bhroaxmubwfnawm);
 			return this;
 		}
 
@@ -48,7 +55,7 @@ const Unconnected = {
 
 	},
 
-	Pong: class {
+	Pong: class extends Buffer {
 
 		static get ID(){ return 28; }
 
@@ -56,6 +63,7 @@ const Unconnected = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor(pingId=0, serverId=0, magic=[], status="") {
+			super();
 			this.pingId = pingId;
 			this.serverId = serverId;
 			this.magic = magic;
@@ -64,16 +72,24 @@ const Unconnected = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBigEndianLong(pingId);
-			this.writeBigEndianLong(serverId);
-			for(bwfnawm in magic){ this.writeByte(magic[bwfnawm]); }
-			this.writeString(status);
+			this._buffer = [];
+			this.writeBigEndianByte(28);
+			this.writeBigEndianLong(this.pingId);
+			this.writeBigEndianLong(this.serverId);
+			this.writeBytes(this.magic);
+			var dghpcy5zdgf0dxm=this.encodeString(this.status); this.writeBigEndianShort(dghpcy5zdgf0dxm.length); this.writeBytes(dghpcy5zdgf0dxm);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.pingId=this.readBigEndianLong();
+			this.serverId=this.readBigEndianLong();
+			var bhroaxmubwfnawm=16; this.magic=this.readBytes(bhroaxmubwfnawm);
+			this.status=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
 			return this;
 		}
 
@@ -88,7 +104,7 @@ const Unconnected = {
 
 	},
 
-	OpenConnectionRequest1: class {
+	OpenConnectionRequest1: class extends Buffer {
 
 		static get ID(){ return 5; }
 
@@ -96,6 +112,7 @@ const Unconnected = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(magic=[], protocol=0, mtu=null) {
+			super();
 			this.magic = magic;
 			this.protocol = protocol;
 			this.mtu = mtu;
@@ -103,15 +120,22 @@ const Unconnected = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			for(bwfnawm in magic){ this.writeByte(magic[bwfnawm]); }
-			this.writeByte(protocol);
-			this.writeBytes(mtu);
+			this._buffer = [];
+			this.writeBigEndianByte(5);
+			this.writeBytes(this.magic);
+			this.writeBigEndianByte(this.protocol);
+			this.writeBytes(this.mtu);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			var bhroaxmubwfnawm=16; this.magic=this.readBytes(bhroaxmubwfnawm);
+			this.protocol=this.readBigEndianByte();
+			this.mtu=this.readBytes(this._buffer.length-this._index);
 			return this;
 		}
 
@@ -126,7 +150,7 @@ const Unconnected = {
 
 	},
 
-	OpenConnectionReply1: class {
+	OpenConnectionReply1: class extends Buffer {
 
 		static get ID(){ return 6; }
 
@@ -134,6 +158,7 @@ const Unconnected = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor(magic=[], serverId=0, security=false, mtuLength=0) {
+			super();
 			this.magic = magic;
 			this.serverId = serverId;
 			this.security = security;
@@ -142,16 +167,24 @@ const Unconnected = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			for(bwfnawm in magic){ this.writeByte(magic[bwfnawm]); }
-			this.writeBigEndianLong(serverId);
-			this.writeBool(security);
-			this.writeBigEndianShort(mtuLength);
+			this._buffer = [];
+			this.writeBigEndianByte(6);
+			this.writeBytes(this.magic);
+			this.writeBigEndianLong(this.serverId);
+			this.writeBigEndianByte(this.security?1:0);
+			this.writeBigEndianShort(this.mtuLength);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			var bhroaxmubwfnawm=16; this.magic=this.readBytes(bhroaxmubwfnawm);
+			this.serverId=this.readBigEndianLong();
+			this.security=this.readBigEndianByte()!==0;
+			this.mtuLength=this.readBigEndianShort();
 			return this;
 		}
 
@@ -166,7 +199,7 @@ const Unconnected = {
 
 	},
 
-	OpenConnectionRequest2: class {
+	OpenConnectionRequest2: class extends Buffer {
 
 		static get ID(){ return 7; }
 
@@ -174,6 +207,7 @@ const Unconnected = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(magic=[], serverAddress=null, mtuLength=0, clientId=0) {
+			super();
 			this.magic = magic;
 			this.serverAddress = serverAddress;
 			this.mtuLength = mtuLength;
@@ -182,16 +216,24 @@ const Unconnected = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			for(bwfnawm in magic){ this.writeByte(magic[bwfnawm]); }
-			this.writeBytes(serverAddress.encode());
-			this.writeBigEndianShort(mtuLength);
-			this.writeBigEndianLong(clientId);
+			this._buffer = [];
+			this.writeBigEndianByte(7);
+			this.writeBytes(this.magic);
+			this.writeBytes(this.serverAddress.encode());
+			this.writeBigEndianShort(this.mtuLength);
+			this.writeBigEndianLong(this.clientId);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			var bhroaxmubwfnawm=16; this.magic=this.readBytes(bhroaxmubwfnawm);
+			this.serverAddress=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.serverAddress._index;
+			this.mtuLength=this.readBigEndianShort();
+			this.clientId=this.readBigEndianLong();
 			return this;
 		}
 
@@ -206,7 +248,7 @@ const Unconnected = {
 
 	},
 
-	OpenConnectionReply2: class {
+	OpenConnectionReply2: class extends Buffer {
 
 		static get ID(){ return 8; }
 
@@ -214,6 +256,7 @@ const Unconnected = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor(magic=[], serverId=0, clientAddress=null, mtuLength=0, security=false) {
+			super();
 			this.magic = magic;
 			this.serverId = serverId;
 			this.clientAddress = clientAddress;
@@ -223,17 +266,26 @@ const Unconnected = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			for(bwfnawm in magic){ this.writeByte(magic[bwfnawm]); }
-			this.writeBigEndianLong(serverId);
-			this.writeBytes(clientAddress.encode());
-			this.writeBigEndianShort(mtuLength);
-			this.writeBool(security);
+			this._buffer = [];
+			this.writeBigEndianByte(8);
+			this.writeBytes(this.magic);
+			this.writeBigEndianLong(this.serverId);
+			this.writeBytes(this.clientAddress.encode());
+			this.writeBigEndianShort(this.mtuLength);
+			this.writeBigEndianByte(this.security?1:0);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			var bhroaxmubwfnawm=16; this.magic=this.readBytes(bhroaxmubwfnawm);
+			this.serverId=this.readBigEndianLong();
+			this.clientAddress=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.clientAddress._index;
+			this.mtuLength=this.readBigEndianShort();
+			this.security=this.readBigEndianByte()!==0;
 			return this;
 		}
 

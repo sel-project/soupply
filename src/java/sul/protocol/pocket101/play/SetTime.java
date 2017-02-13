@@ -10,6 +10,9 @@ package sul.protocol.pocket101.play;
 
 import sul.utils.*;
 
+/**
+ * Sets the time.
+ */
 public class SetTime extends Packet {
 
 	public static final byte ID = (byte)11;
@@ -17,7 +20,16 @@ public class SetTime extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	/**
+	 * Time of the day in a range from 0 to 24000. If higher or lower it will be moduled
+	 * to 24000.
+	 */
 	public int time;
+
+	/**
+	 * Indicates whether the daylight cycle is active. If not, the time will be stopped
+	 * at the value given in the previous field.
+	 */
 	public boolean daylightCycle;
 
 	public SetTime() {}

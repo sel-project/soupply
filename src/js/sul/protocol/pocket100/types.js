@@ -10,9 +10,10 @@
 
 const Types = {
 
-	Pack: class {
+	Pack: class extends Buffer {
 
 		constructor(id="", version="", size=0) {
+			super();
 			this.id = id;
 			this.version = version;
 			this.size = size;
@@ -20,15 +21,25 @@ const Types = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeString(id);
-			this.writeString(version);
-			this.writeBigEndianLong(size);
+			this._buffer = [];
+			var dghpcy5pza=this.encodeString(this.id); this.writeVaruint(dghpcy5pza.length); this.writeBytes(dghpcy5pza);
+			var dghpcy52zxjzaw9u=this.encodeString(this.version); this.writeVaruint(dghpcy52zxjzaw9u.length); this.writeBytes(dghpcy52zxjzaw9u);
+			this.writeBigEndianLong(this.size);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.id=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.version=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.size=this.readBigEndianLong();
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Pack().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -38,9 +49,10 @@ const Types = {
 
 	},
 
-	BlockPosition: class {
+	BlockPosition: class extends Buffer {
 
 		constructor(x=0, y=0, z=0) {
+			super();
 			this.x = x;
 			this.y = y;
 			this.z = z;
@@ -48,15 +60,25 @@ const Types = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVarint(x);
-			this.writeVaruint(y);
-			this.writeVarint(z);
+			this._buffer = [];
+			this.writeVarint(this.x);
+			this.writeVaruint(this.y);
+			this.writeVarint(this.z);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.x=this.readVarint();
+			this.y=this.readVaruint();
+			this.z=this.readVarint();
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.BlockPosition().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -66,9 +88,10 @@ const Types = {
 
 	},
 
-	Slot: class {
+	Slot: class extends Buffer {
 
 		constructor(id=0, metaAndCount=0, nbt=null) {
+			super();
 			this.id = id;
 			this.metaAndCount = metaAndCount;
 			this.nbt = nbt;
@@ -76,15 +99,25 @@ const Types = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVarint(id);
-			this.writeVarint(metaAndCount);
-			this.writeLittleEndianShort(nbt.length); for(bmj0 in nbt){ this.writeByte(nbt[bmj0]); }
+			this._buffer = [];
+			this.writeVarint(this.id);
+			this.writeVarint(this.metaAndCount);
+			this.writeLittleEndianShort(this.nbt.length); this.writeBytes(this.nbt);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.id=this.readVarint();
+			this.metaAndCount=this.readVarint();
+			var bhroaxmubmj0=this.readLittleEndianShort(); this.nbt=this.readBytes(bhroaxmubmj0);
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Slot().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -94,9 +127,10 @@ const Types = {
 
 	},
 
-	Attribute: class {
+	Attribute: class extends Buffer {
 
 		constructor(min=.0, max=.0, value=.0, default=.0, name="") {
+			super();
 			this.min = min;
 			this.max = max;
 			this.value = value;
@@ -106,17 +140,29 @@ const Types = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeLittleEndianFloat(min);
-			this.writeLittleEndianFloat(max);
-			this.writeLittleEndianFloat(value);
-			this.writeLittleEndianFloat(default);
-			this.writeString(name);
+			this._buffer = [];
+			this.writeLittleEndianFloat(this.min);
+			this.writeLittleEndianFloat(this.max);
+			this.writeLittleEndianFloat(this.value);
+			this.writeLittleEndianFloat(this.default);
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.min=this.readLittleEndianFloat();
+			this.max=this.readLittleEndianFloat();
+			this.value=this.readLittleEndianFloat();
+			this.default=this.readLittleEndianFloat();
+			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Attribute().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -126,23 +172,33 @@ const Types = {
 
 	},
 
-	Skin: class {
+	Skin: class extends Buffer {
 
 		constructor(name="", data=[]) {
+			super();
 			this.name = name;
 			this.data = data;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeString(name);
-			this.writeVaruint(data.length); for(zgf0yq in data){ this.writeByte(data[zgf0yq]); }
+			this._buffer = [];
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			this.writeVaruint(this.data.length); this.writeBytes(this.data);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Skin().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -152,9 +208,10 @@ const Types = {
 
 	},
 
-	PlayerList: class {
+	PlayerList: class extends Buffer {
 
 		constructor(uuid=new Uint8Array(16), entityId=0, displayName="", skin=null) {
+			super();
 			this.uuid = uuid;
 			this.entityId = entityId;
 			this.displayName = displayName;
@@ -163,16 +220,27 @@ const Types = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeBigEndianLong(uuid.getLeastSignificantBits()); this.writeBigEndianLong(uuid.getMostSignificantBits());
-			this.writeVarlong(entityId);
-			this.writeString(displayName);
-			this.writeBytes(skin.encode());
+			this._buffer = [];
+			this.writeBytes(this.uuid);
+			this.writeVarlong(this.entityId);
+			var dghpcy5kaxnwbgf5=this.encodeString(this.displayName); this.writeVaruint(dghpcy5kaxnwbgf5.length); this.writeBytes(dghpcy5kaxnwbgf5);
+			this.writeBytes(this.skin.encode());
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.uuid=this.readBytes(16);
+			this.entityId=this.readVarlong();
+			this.displayName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.skin=Types.Skin.fromBuffer(this._buffer.slice(this._index)); this._index+=this.skin._index;
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.PlayerList().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -182,7 +250,7 @@ const Types = {
 
 	},
 
-	Recipe: class {
+	Recipe: class extends Buffer {
 
 		// type
 		static get SHAPELESS(){ return 0; }
@@ -192,20 +260,30 @@ const Types = {
 		static get MULTI(){ return 4; }
 
 		constructor(type=0, data=null) {
+			super();
 			this.type = type;
 			this.data = data;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVarint(type);
-			this.writeBytes(data);
+			this._buffer = [];
+			this.writeVarint(this.type);
+			this.writeBytes(this.data);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.type=this.readVarint();
+			this.data=this.readBytes(this._buffer.length-this._index);
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Recipe().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -217,4 +295,4 @@ const Types = {
 
 }
 
-export { Types }
+//export { Types }

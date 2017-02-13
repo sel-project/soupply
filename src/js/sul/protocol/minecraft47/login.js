@@ -12,7 +12,7 @@
 
 const Login = {
 
-	Disconnect: class {
+	Disconnect: class extends Buffer {
 
 		static get ID(){ return 0; }
 
@@ -20,18 +20,24 @@ const Login = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor(reason="") {
+			super();
 			this.reason = reason;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVaruint(this.ID);
-			this.writeString(reason);
+			this._buffer = [];
+			this.writeVaruint(0);
+			var dghpcy5yzwfzb24=this.encodeString(this.reason); this.writeVaruint(dghpcy5yzwfzb24.length); this.writeBytes(dghpcy5yzwfzb24);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readVaruint();
+			this.reason=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
 			return this;
 		}
 
@@ -46,7 +52,7 @@ const Login = {
 
 	},
 
-	LoginStart: class {
+	LoginStart: class extends Buffer {
 
 		static get ID(){ return 0; }
 
@@ -54,18 +60,24 @@ const Login = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(username="") {
+			super();
 			this.username = username;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVaruint(this.ID);
-			this.writeString(username);
+			this._buffer = [];
+			this.writeVaruint(0);
+			var dghpcy51c2vybmft=this.encodeString(this.username); this.writeVaruint(dghpcy51c2vybmft.length); this.writeBytes(dghpcy51c2vybmft);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readVaruint();
+			this.username=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
 			return this;
 		}
 
@@ -80,7 +92,7 @@ const Login = {
 
 	},
 
-	EncryptionRequest: class {
+	EncryptionRequest: class extends Buffer {
 
 		static get ID(){ return 1; }
 
@@ -88,6 +100,7 @@ const Login = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor(serverId="", publicKey=[], verifyToken=[]) {
+			super();
 			this.serverId = serverId;
 			this.publicKey = publicKey;
 			this.verifyToken = verifyToken;
@@ -95,15 +108,22 @@ const Login = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVaruint(this.ID);
-			this.writeString(serverId);
-			this.writeVaruint(publicKey.length); for(chvibgljs2v5 in publicKey){ this.writeByte(publicKey[chvibgljs2v5]); }
-			this.writeVaruint(verifyToken.length); for(dmvyawz5vg9rzw4 in verifyToken){ this.writeByte(verifyToken[dmvyawz5vg9rzw4]); }
+			this._buffer = [];
+			this.writeVaruint(1);
+			var dghpcy5zzxj2zxjj=this.encodeString(this.serverId); this.writeVaruint(dghpcy5zzxj2zxjj.length); this.writeBytes(dghpcy5zzxj2zxjj);
+			this.writeVaruint(this.publicKey.length); this.writeBytes(this.publicKey);
+			this.writeVaruint(this.verifyToken.length); this.writeBytes(this.verifyToken);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readVaruint();
+			this.serverId=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			var bhroaxmuchvibglj=this.readVaruint(); this.publicKey=this.readBytes(bhroaxmuchvibglj);
+			var bhroaxmudmvyawz5=this.readVaruint(); this.verifyToken=this.readBytes(bhroaxmudmvyawz5);
 			return this;
 		}
 
@@ -118,7 +138,7 @@ const Login = {
 
 	},
 
-	EncryptionResponse: class {
+	EncryptionResponse: class extends Buffer {
 
 		static get ID(){ return 1; }
 
@@ -126,20 +146,27 @@ const Login = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(sharedSecret=[], verifyToken=[]) {
+			super();
 			this.sharedSecret = sharedSecret;
 			this.verifyToken = verifyToken;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVaruint(this.ID);
-			this.writeVaruint(sharedSecret.length); for(c2hhcmvku2vjcmv0 in sharedSecret){ this.writeByte(sharedSecret[c2hhcmvku2vjcmv0]); }
-			this.writeVaruint(verifyToken.length); for(dmvyawz5vg9rzw4 in verifyToken){ this.writeByte(verifyToken[dmvyawz5vg9rzw4]); }
+			this._buffer = [];
+			this.writeVaruint(1);
+			this.writeVaruint(this.sharedSecret.length); this.writeBytes(this.sharedSecret);
+			this.writeVaruint(this.verifyToken.length); this.writeBytes(this.verifyToken);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readVaruint();
+			var bhroaxmuc2hhcmvk=this.readVaruint(); this.sharedSecret=this.readBytes(bhroaxmuc2hhcmvk);
+			var bhroaxmudmvyawz5=this.readVaruint(); this.verifyToken=this.readBytes(bhroaxmudmvyawz5);
 			return this;
 		}
 
@@ -154,7 +181,7 @@ const Login = {
 
 	},
 
-	LoginSuccess: class {
+	LoginSuccess: class extends Buffer {
 
 		static get ID(){ return 2; }
 
@@ -162,20 +189,27 @@ const Login = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor(uuid="", username="") {
+			super();
 			this.uuid = uuid;
 			this.username = username;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVaruint(this.ID);
-			this.writeString(uuid);
-			this.writeString(username);
+			this._buffer = [];
+			this.writeVaruint(2);
+			var dghpcy51dwlk=this.encodeString(this.uuid); this.writeVaruint(dghpcy51dwlk.length); this.writeBytes(dghpcy51dwlk);
+			var dghpcy51c2vybmft=this.encodeString(this.username); this.writeVaruint(dghpcy51c2vybmft.length); this.writeBytes(dghpcy51c2vybmft);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readVaruint();
+			this.uuid=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.username=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
 			return this;
 		}
 
@@ -190,7 +224,7 @@ const Login = {
 
 	},
 
-	SetCompression: class {
+	SetCompression: class extends Buffer {
 
 		static get ID(){ return 3; }
 
@@ -198,18 +232,24 @@ const Login = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor(thresold=0) {
+			super();
 			this.thresold = thresold;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVaruint(this.ID);
-			this.writeVaruint(thresold);
+			this._buffer = [];
+			this.writeVaruint(3);
+			this.writeVaruint(this.thresold);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readVaruint();
+			this.thresold=this.readVaruint();
 			return this;
 		}
 

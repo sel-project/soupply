@@ -12,7 +12,7 @@
 
 const Status = {
 
-	Handshake: class {
+	Handshake: class extends Buffer {
 
 		static get ID(){ return 0; }
 
@@ -24,6 +24,7 @@ const Status = {
 		static get LOGIN(){ return 2; }
 
 		constructor(protocol=0, serverAddress="", serverPort=0, next=0) {
+			super();
 			this.protocol = protocol;
 			this.serverAddress = serverAddress;
 			this.serverPort = serverPort;
@@ -32,16 +33,24 @@ const Status = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVaruint(this.ID);
-			this.writeVaruint(protocol);
-			this.writeString(serverAddress);
-			this.writeBigEndianShort(serverPort);
-			this.writeVaruint(next);
+			this._buffer = [];
+			this.writeVaruint(0);
+			this.writeVaruint(this.protocol);
+			var dghpcy5zzxj2zxjb=this.encodeString(this.serverAddress); this.writeVaruint(dghpcy5zzxj2zxjb.length); this.writeBytes(dghpcy5zzxj2zxjb);
+			this.writeBigEndianShort(this.serverPort);
+			this.writeVaruint(this.next);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readVaruint();
+			this.protocol=this.readVaruint();
+			this.serverAddress=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.serverPort=this.readBigEndianShort();
+			this.next=this.readVaruint();
 			return this;
 		}
 
@@ -56,7 +65,7 @@ const Status = {
 
 	},
 
-	Request: class {
+	Request: class extends Buffer {
 
 		static get ID(){ return 0; }
 
@@ -64,16 +73,21 @@ const Status = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor() {
+			super();
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVaruint(this.ID);
+			this._buffer = [];
+			this.writeVaruint(0);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readVaruint();
 			return this;
 		}
 
@@ -88,7 +102,7 @@ const Status = {
 
 	},
 
-	Response: class {
+	Response: class extends Buffer {
 
 		static get ID(){ return 0; }
 
@@ -96,18 +110,24 @@ const Status = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor(json="") {
+			super();
 			this.json = json;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVaruint(this.ID);
-			this.writeString(json);
+			this._buffer = [];
+			this.writeVaruint(0);
+			var dghpcy5qc29u=this.encodeString(this.json); this.writeVaruint(dghpcy5qc29u.length); this.writeBytes(dghpcy5qc29u);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readVaruint();
+			this.json=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
 			return this;
 		}
 
@@ -122,7 +142,7 @@ const Status = {
 
 	},
 
-	Latency: class {
+	Latency: class extends Buffer {
 
 		static get ID(){ return 1; }
 
@@ -130,18 +150,24 @@ const Status = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(id=0) {
+			super();
 			this.id = id;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeVaruint(this.ID);
-			this.writeBigEndianLong(id);
+			this._buffer = [];
+			this.writeVaruint(1);
+			this.writeBigEndianLong(this.id);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readVaruint();
+			this.id=this.readBigEndianLong();
 			return this;
 		}
 

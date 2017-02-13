@@ -10,9 +10,10 @@
 
 const Types = {
 
-	Address: class {
+	Address: class extends Buffer {
 
 		constructor(type=0, ipv4=0, ipv6=[], port=0) {
+			super();
 			this.type = type;
 			this.ipv4 = ipv4;
 			this.ipv6 = ipv6;
@@ -21,16 +22,27 @@ const Types = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(type);
-			this.writeBigEndianInt(ipv4);
-			for(axb2ng in ipv6){ this.writeByte(ipv6[axb2ng]); }
-			this.writeBigEndianShort(port);
+			this._buffer = [];
+			this.writeBigEndianByte(this.type);
+			this.writeBigEndianInt(this.ipv4);
+			this.writeBytes(this.ipv6);
+			this.writeBigEndianShort(this.port);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.type=this.readBigEndianByte();
+			this.ipv4=this.readBigEndianInt();
+			var bhroaxmuaxb2ng=16; this.ipv6=this.readBytes(bhroaxmuaxb2ng);
+			this.port=this.readBigEndianShort();
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Address().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -40,9 +52,10 @@ const Types = {
 
 	},
 
-	Acknowledge: class {
+	Acknowledge: class extends Buffer {
 
 		constructor(unique=false, first=0, last=0) {
+			super();
 			this.unique = unique;
 			this.first = first;
 			this.last = last;
@@ -50,15 +63,25 @@ const Types = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeBool(unique);
-			this.writeLittleEndianTriad(first);
-			this.writeLittleEndianTriad(last);
+			this._buffer = [];
+			this.writeBigEndianByte(this.unique?1:0);
+			this.writeLittleEndianTriad(this.first);
+			this.writeLittleEndianTriad(this.last);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.unique=this.readBigEndianByte()!==0;
+			this.first=this.readLittleEndianTriad();
+			this.last=this.readLittleEndianTriad();
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Acknowledge().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -68,9 +91,10 @@ const Types = {
 
 	},
 
-	Encapsulation: class {
+	Encapsulation: class extends Buffer {
 
 		constructor(info=0, length=0, messageIndex=0, orderIndex=0, orderChannel=0, split=null, payload=null) {
+			super();
 			this.info = info;
 			this.length = length;
 			this.messageIndex = messageIndex;
@@ -82,19 +106,33 @@ const Types = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(info);
-			this.writeBigEndianShort(length);
-			this.writeLittleEndianTriad(messageIndex);
-			this.writeLittleEndianTriad(orderIndex);
-			this.writeByte(orderChannel);
-			this.writeBytes(split.encode());
-			this.writeBytes(payload);
+			this._buffer = [];
+			this.writeBigEndianByte(this.info);
+			this.writeBigEndianShort(this.length);
+			this.writeLittleEndianTriad(this.messageIndex);
+			this.writeLittleEndianTriad(this.orderIndex);
+			this.writeBigEndianByte(this.orderChannel);
+			this.writeBytes(this.split.encode());
+			this.writeBytes(this.payload);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.info=this.readBigEndianByte();
+			this.length=this.readBigEndianShort();
+			this.messageIndex=this.readLittleEndianTriad();
+			this.orderIndex=this.readLittleEndianTriad();
+			this.orderChannel=this.readBigEndianByte();
+			this.split=Types.Split.fromBuffer(this._buffer.slice(this._index)); this._index+=this.split._index;
+			this.payload=this.readBytes(this._buffer.length-this._index);
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Encapsulation().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -104,9 +142,10 @@ const Types = {
 
 	},
 
-	Split: class {
+	Split: class extends Buffer {
 
 		constructor(count=0, id=0, order=0) {
+			super();
 			this.count = count;
 			this.id = id;
 			this.order = order;
@@ -114,15 +153,25 @@ const Types = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeBigEndianInt(count);
-			this.writeBigEndianShort(id);
-			this.writeBigEndianInt(order);
+			this._buffer = [];
+			this.writeBigEndianInt(this.count);
+			this.writeBigEndianShort(this.id);
+			this.writeBigEndianInt(this.order);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.count=this.readBigEndianInt();
+			this.id=this.readBigEndianShort();
+			this.order=this.readBigEndianInt();
 			return this;
+		}
+
+		static fromBuffer(buffer) {
+			return new Types.Split().decode(buffer);
 		}
 
 		/** @return {string} */
@@ -134,4 +183,4 @@ const Types = {
 
 }
 
-export { Types }
+//export { Types }

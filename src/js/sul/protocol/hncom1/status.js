@@ -18,7 +18,7 @@ const Status = {
 	/**
 	 * Notifies the node that another node (that is not itelf) has connected to the hub.
 	 */
-	AddNode: class {
+	AddNode: class extends Buffer {
 
 		static get ID(){ return 5; }
 
@@ -36,6 +36,7 @@ const Status = {
 		 *        Indicates the game accepted by the node.
 		 */
 		constructor(hubId=0, name="", main=false, acceptedGames=[]) {
+			super();
 			this.hubId = hubId;
 			this.name = name;
 			this.main = main;
@@ -44,16 +45,24 @@ const Status = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeVaruint(hubId);
-			this.writeString(name);
-			this.writeBool(main);
-			this.writeVaruint(acceptedGames.length); for(ywnjzxb0zwrhyw1l in acceptedGames){ this.writeBytes(acceptedGames[ywnjzxb0zwrhyw1l].encode()); }
+			this._buffer = [];
+			this.writeBigEndianByte(5);
+			this.writeVaruint(this.hubId);
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			this.writeBigEndianByte(this.main?1:0);
+			this.writeVaruint(this.acceptedGames.length); for(var dghpcy5hy2nlchrl in this.acceptedGames){ this.writeBytes(this.acceptedGames[dghpcy5hy2nlchrl].encode()); }
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.hubId=this.readVaruint();
+			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.main=this.readBigEndianByte()!==0;
+			var bhroaxmuywnjzxb0=this.readVaruint(); this.acceptedGames=[]; for(var dghpcy5hy2nlchrl in this.acceptedGames){ this.acceptedGames[dghpcy5hy2nlchrl]=Types.Game.fromBuffer(this._buffer.slice(this._index)); this._index+=this.acceptedGames[dghpcy5hy2nlchrl]._index; }
 			return this;
 		}
 
@@ -72,7 +81,7 @@ const Status = {
 	 * Notifies the node that another node, previously added with AddNode has disconnected
 	 * from the hub.
 	 */
-	RemoveNode: class {
+	RemoveNode: class extends Buffer {
 
 		static get ID(){ return 6; }
 
@@ -84,18 +93,24 @@ const Status = {
 		 *        Node's id given by the hub.
 		 */
 		constructor(hubId=0) {
+			super();
 			this.hubId = hubId;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeVaruint(hubId);
+			this._buffer = [];
+			this.writeBigEndianByte(6);
+			this.writeVaruint(this.hubId);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.hubId=this.readVaruint();
 			return this;
 		}
 
@@ -113,7 +128,7 @@ const Status = {
 	/**
 	 * Sends a binary message to some selected nodes or broadcast it.
 	 */
-	MessageServerbound: class {
+	MessageServerbound: class extends Buffer {
 
 		static get ID(){ return 7; }
 
@@ -127,20 +142,27 @@ const Status = {
 		 *        Bytes to be sent/broadcasted. It may be a serialised packet of a plugin-defined protocol.
 		 */
 		constructor(addressees=0, payload=[]) {
+			super();
 			this.addressees = addressees;
 			this.payload = payload;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeVaruint(addressees.length); for(ywrkcmvzc2vlcw in addressees){ this.writeVaruint(addressees[ywrkcmvzc2vlcw]); }
-			this.writeVaruint(payload.length); for(cgf5bg9hza in payload){ this.writeByte(payload[cgf5bg9hza]); }
+			this._buffer = [];
+			this.writeBigEndianByte(7);
+			this.writeVaruint(this.addressees.length); for(var dghpcy5hzgryzxnz in this.addressees){ this.writeVaruint(this.addressees[dghpcy5hzgryzxnz]); }
+			this.writeVaruint(this.payload.length); this.writeBytes(this.payload);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			var bhroaxmuywrkcmvz=this.readVaruint(); this.addressees=[]; for(var dghpcy5hzgryzxnz in this.addressees){ this.addressees[dghpcy5hzgryzxnz]=this.readVaruint(); }
+			var bhroaxmucgf5bg9h=this.readVaruint(); this.payload=this.readBytes(bhroaxmucgf5bg9h);
 			return this;
 		}
 
@@ -158,7 +180,7 @@ const Status = {
 	/**
 	 * Receives a binary message sent by another node using MessageServerbound.
 	 */
-	MessageClientbound: class {
+	MessageClientbound: class extends Buffer {
 
 		static get ID(){ return 8; }
 
@@ -172,20 +194,27 @@ const Status = {
 		 *        Bytes received. It could be a serialised packet of a plugin-defined packet.
 		 */
 		constructor(sender=0, payload=[]) {
+			super();
 			this.sender = sender;
 			this.payload = payload;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeVaruint(sender);
-			this.writeVaruint(payload.length); for(cgf5bg9hza in payload){ this.writeByte(payload[cgf5bg9hza]); }
+			this._buffer = [];
+			this.writeBigEndianByte(8);
+			this.writeVaruint(this.sender);
+			this.writeVaruint(this.payload.length); this.writeBytes(this.payload);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.sender=this.readVaruint();
+			var bhroaxmucgf5bg9h=this.readVaruint(); this.payload=this.readBytes(bhroaxmucgf5bg9h);
 			return this;
 		}
 
@@ -203,7 +232,7 @@ const Status = {
 	/**
 	 * Updates the number of players on the server.
 	 */
-	Players: class {
+	Players: class extends Buffer {
 
 		static get ID(){ return 9; }
 
@@ -220,20 +249,27 @@ const Status = {
 		 *        Maximum number of players that can connect to server.
 		 */
 		constructor(online=0, max=0) {
+			super();
 			this.online = online;
 			this.max = max;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeVaruint(online);
-			this.writeVarint(max);
+			this._buffer = [];
+			this.writeBigEndianByte(9);
+			this.writeVaruint(this.online);
+			this.writeVarint(this.max);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.online=this.readVaruint();
+			this.max=this.readVarint();
 			return this;
 		}
 
@@ -251,7 +287,7 @@ const Status = {
 	/**
 	 * Updates the usage of the system's resources of the node.
 	 */
-	ResourcesUsage: class {
+	ResourcesUsage: class extends Buffer {
 
 		static get ID(){ return 10; }
 
@@ -267,6 +303,7 @@ const Status = {
 		 *        Percentage of CPU used by the node. It may be higher than 100 if the node has more than 1 CPU.
 		 */
 		constructor(tps=.0, ram=0, cpu=.0) {
+			super();
 			this.tps = tps;
 			this.ram = ram;
 			this.cpu = cpu;
@@ -274,15 +311,22 @@ const Status = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBigEndianFloat(tps);
-			this.writeVarulong(ram);
-			this.writeBigEndianFloat(cpu);
+			this._buffer = [];
+			this.writeBigEndianByte(10);
+			this.writeBigEndianFloat(this.tps);
+			this.writeVarulong(this.ram);
+			this.writeBigEndianFloat(this.cpu);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.tps=this.readBigEndianFloat();
+			this.ram=this.readVarulong();
+			this.cpu=this.readBigEndianFloat();
 			return this;
 		}
 
@@ -300,7 +344,7 @@ const Status = {
 	/**
 	 * Sends a log to the hub.
 	 */
-	Log: class {
+	Log: class extends Buffer {
 
 		static get ID(){ return 11; }
 
@@ -318,6 +362,7 @@ const Status = {
 		 *        Identifier of the command that has generated the output or -1 if the log wasn't generated by a command.
 		 */
 		constructor(timestamp=0, logger="", message="", commandId=0) {
+			super();
 			this.timestamp = timestamp;
 			this.logger = logger;
 			this.message = message;
@@ -326,16 +371,24 @@ const Status = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeVarulong(timestamp);
-			this.writeString(logger);
-			this.writeString(message);
-			this.writeVarint(commandId);
+			this._buffer = [];
+			this.writeBigEndianByte(11);
+			this.writeVarulong(this.timestamp);
+			var dghpcy5sb2dnzxi=this.encodeString(this.logger); this.writeVaruint(dghpcy5sb2dnzxi.length); this.writeBytes(dghpcy5sb2dnzxi);
+			var dghpcy5tzxnzywdl=this.encodeString(this.message); this.writeVaruint(dghpcy5tzxnzywdl.length); this.writeBytes(dghpcy5tzxnzywdl);
+			this.writeVarint(this.commandId);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.timestamp=this.readVarulong();
+			this.logger=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.message=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.commandId=this.readVarint();
 			return this;
 		}
 
@@ -353,7 +406,7 @@ const Status = {
 	/**
 	 * Executes a command on the node.
 	 */
-	RemoteCommand: class {
+	RemoteCommand: class extends Buffer {
 
 		static get ID(){ return 12; }
 
@@ -377,6 +430,7 @@ const Status = {
 		 *        Identifier of the command. It's sent in {Log.commandId} if the command generates an output.
 		 */
 		constructor(origin=0, sender=null, command="", commandId=0) {
+			super();
 			this.origin = origin;
 			this.sender = sender;
 			this.command = command;
@@ -385,16 +439,24 @@ const Status = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeByte(origin);
-			this.writeBytes(sender.encode());
-			this.writeString(command);
-			this.writeVarint(commandId);
+			this._buffer = [];
+			this.writeBigEndianByte(12);
+			this.writeBigEndianByte(this.origin);
+			this.writeBytes(this.sender.encode());
+			var dghpcy5jb21tyw5k=this.encodeString(this.command); this.writeVaruint(dghpcy5jb21tyw5k.length); this.writeBytes(dghpcy5jb21tyw5k);
+			this.writeVarint(this.commandId);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.origin=this.readBigEndianByte();
+			this.sender=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.sender._index;
+			this.command=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.commandId=this.readVarint();
 			return this;
 		}
 
@@ -412,7 +474,7 @@ const Status = {
 	/**
 	 * Updates a list.
 	 */
-	UpdateList: class {
+	UpdateList: class extends Buffer {
 
 		static get ID(){ return 13; }
 
@@ -434,6 +496,7 @@ const Status = {
 		 *        Whether to add or removed the player from the list.
 		 */
 		constructor(list=0, action=0, type=0) {
+			super();
 			this.list = list;
 			this.action = action;
 			this.type = type;
@@ -441,15 +504,22 @@ const Status = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeByte(list);
-			this.writeByte(action);
-			this.writeByte(type);
+			this._buffer = [];
+			this.writeBigEndianByte(13);
+			this.writeBigEndianByte(this.list);
+			this.writeBigEndianByte(this.action);
+			this.writeBigEndianByte(this.type);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.list=this.readBigEndianByte();
+			this.action=this.readBigEndianByte();
+			this.type=this.readBigEndianByte();
 			return this;
 		}
 
@@ -468,7 +538,7 @@ const Status = {
 	 * Notifies the node that the hub's reloadeable settings have been reloaded and that
 	 * the node should also reload its resources (for example plugin's settings).
 	 */
-	Reload: class {
+	Reload: class extends Buffer {
 
 		static get ID(){ return 14; }
 
@@ -476,16 +546,21 @@ const Status = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor() {
+			super();
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
+			this._buffer = [];
+			this.writeBigEndianByte(14);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
 			return this;
 		}
 

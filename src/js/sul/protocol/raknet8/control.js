@@ -12,7 +12,7 @@
 
 const Control = {
 
-	Ack: class {
+	Ack: class extends Buffer {
 
 		static get ID(){ return 192; }
 
@@ -20,18 +20,24 @@ const Control = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(packets=[]) {
+			super();
 			this.packets = packets;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBigEndianShort(packets.length); for(cgfja2v0cw in packets){ this.writeBytes(packets[cgfja2v0cw].encode()); }
+			this._buffer = [];
+			this.writeBigEndianByte(192);
+			this.writeBigEndianShort(this.packets.length); for(var dghpcy5wywnrzxrz in this.packets){ this.writeBytes(this.packets[dghpcy5wywnrzxrz].encode()); }
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			var bhroaxmucgfja2v0=this.readBigEndianShort(); this.packets=[]; for(var dghpcy5wywnrzxrz in this.packets){ this.packets[dghpcy5wywnrzxrz]=Types.Acknowledge.fromBuffer(this._buffer.slice(this._index)); this._index+=this.packets[dghpcy5wywnrzxrz]._index; }
 			return this;
 		}
 
@@ -46,7 +52,7 @@ const Control = {
 
 	},
 
-	Nack: class {
+	Nack: class extends Buffer {
 
 		static get ID(){ return 160; }
 
@@ -54,18 +60,24 @@ const Control = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(packets=[]) {
+			super();
 			this.packets = packets;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBigEndianShort(packets.length); for(cgfja2v0cw in packets){ this.writeBytes(packets[cgfja2v0cw].encode()); }
+			this._buffer = [];
+			this.writeBigEndianByte(160);
+			this.writeBigEndianShort(this.packets.length); for(var dghpcy5wywnrzxrz in this.packets){ this.writeBytes(this.packets[dghpcy5wywnrzxrz].encode()); }
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			var bhroaxmucgfja2v0=this.readBigEndianShort(); this.packets=[]; for(var dghpcy5wywnrzxrz in this.packets){ this.packets[dghpcy5wywnrzxrz]=Types.Acknowledge.fromBuffer(this._buffer.slice(this._index)); this._index+=this.packets[dghpcy5wywnrzxrz]._index; }
 			return this;
 		}
 
@@ -80,7 +92,7 @@ const Control = {
 
 	},
 
-	Encapsulated: class {
+	Encapsulated: class extends Buffer {
 
 		static get ID(){ return 132; }
 
@@ -88,20 +100,27 @@ const Control = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(count=0, encapsulation=null) {
+			super();
 			this.count = count;
 			this.encapsulation = encapsulation;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeLittleEndianTriad(count);
-			this.writeBytes(encapsulation.encode());
+			this._buffer = [];
+			this.writeBigEndianByte(132);
+			this.writeLittleEndianTriad(this.count);
+			this.writeBytes(this.encapsulation.encode());
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.count=this.readLittleEndianTriad();
+			this.encapsulation=Types.Encapsulation.fromBuffer(this._buffer.slice(this._index)); this._index+=this.encapsulation._index;
 			return this;
 		}
 

@@ -10,6 +10,11 @@ package sul.protocol.pocket101.play;
 
 import sul.utils.*;
 
+/**
+ * Sets the player's gamemode. This packet is sent by the player when it has the operator
+ * status (set in AdventureSettings.permissions) and it changes the gamemode in the
+ * settings screen.
+ */
 public class SetPlayerGametype extends Packet {
 
 	public static final byte ID = (byte)62;

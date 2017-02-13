@@ -12,7 +12,7 @@
 
 const Encapsulated = {
 
-	ClientConnect: class {
+	ClientConnect: class extends Buffer {
 
 		static get ID(){ return 9; }
 
@@ -20,20 +20,27 @@ const Encapsulated = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(clientId=0, pingId=0) {
+			super();
 			this.clientId = clientId;
 			this.pingId = pingId;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBigEndianLong(clientId);
-			this.writeBigEndianLong(pingId);
+			this._buffer = [];
+			this.writeBigEndianByte(9);
+			this.writeBigEndianLong(this.clientId);
+			this.writeBigEndianLong(this.pingId);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.clientId=this.readBigEndianLong();
+			this.pingId=this.readBigEndianLong();
 			return this;
 		}
 
@@ -48,7 +55,7 @@ const Encapsulated = {
 
 	},
 
-	ServerHandshake: class {
+	ServerHandshake: class extends Buffer {
 
 		static get ID(){ return 16; }
 
@@ -56,6 +63,7 @@ const Encapsulated = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor(clientAddress=null, mtuLength=0, systemAddresses=[], pingId=0, serverId=0) {
+			super();
 			this.clientAddress = clientAddress;
 			this.mtuLength = mtuLength;
 			this.systemAddresses = systemAddresses;
@@ -65,17 +73,26 @@ const Encapsulated = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBytes(clientAddress.encode());
-			this.writeBigEndianShort(mtuLength);
-			for(c3lzdgvtqwrkcmvz in systemAddresses){ this.writeBytes(systemAddresses[c3lzdgvtqwrkcmvz].encode()); }
-			this.writeBigEndianLong(pingId);
-			this.writeBigEndianLong(serverId);
+			this._buffer = [];
+			this.writeBigEndianByte(16);
+			this.writeBytes(this.clientAddress.encode());
+			this.writeBigEndianShort(this.mtuLength);
+			for(var dghpcy5zexn0zw1b in this.systemAddresses){ this.writeBytes(this.systemAddresses[dghpcy5zexn0zw1b].encode()); }
+			this.writeBigEndianLong(this.pingId);
+			this.writeBigEndianLong(this.serverId);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.clientAddress=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.clientAddress._index;
+			this.mtuLength=this.readBigEndianShort();
+			var bhroaxmuc3lzdgvt=10; this.systemAddresses=[]; for(var dghpcy5zexn0zw1b in this.systemAddresses){ this.systemAddresses[dghpcy5zexn0zw1b]=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.systemAddresses[dghpcy5zexn0zw1b]._index; }
+			this.pingId=this.readBigEndianLong();
+			this.serverId=this.readBigEndianLong();
 			return this;
 		}
 
@@ -90,7 +107,7 @@ const Encapsulated = {
 
 	},
 
-	ClientHandshake: class {
+	ClientHandshake: class extends Buffer {
 
 		static get ID(){ return 19; }
 
@@ -98,6 +115,7 @@ const Encapsulated = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(clientAddress=null, systemAddresses=[], pingId=0, clientId=0) {
+			super();
 			this.clientAddress = clientAddress;
 			this.systemAddresses = systemAddresses;
 			this.pingId = pingId;
@@ -106,16 +124,24 @@ const Encapsulated = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBytes(clientAddress.encode());
-			for(c3lzdgvtqwrkcmvz in systemAddresses){ this.writeBytes(systemAddresses[c3lzdgvtqwrkcmvz].encode()); }
-			this.writeBigEndianLong(pingId);
-			this.writeBigEndianLong(clientId);
+			this._buffer = [];
+			this.writeBigEndianByte(19);
+			this.writeBytes(this.clientAddress.encode());
+			for(var dghpcy5zexn0zw1b in this.systemAddresses){ this.writeBytes(this.systemAddresses[dghpcy5zexn0zw1b].encode()); }
+			this.writeBigEndianLong(this.pingId);
+			this.writeBigEndianLong(this.clientId);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.clientAddress=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.clientAddress._index;
+			var bhroaxmuc3lzdgvt=10; this.systemAddresses=[]; for(var dghpcy5zexn0zw1b in this.systemAddresses){ this.systemAddresses[dghpcy5zexn0zw1b]=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.systemAddresses[dghpcy5zexn0zw1b]._index; }
+			this.pingId=this.readBigEndianLong();
+			this.clientId=this.readBigEndianLong();
 			return this;
 		}
 
@@ -130,7 +156,7 @@ const Encapsulated = {
 
 	},
 
-	ClientCancelConnection: class {
+	ClientCancelConnection: class extends Buffer {
 
 		static get ID(){ return 21; }
 
@@ -138,16 +164,21 @@ const Encapsulated = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor() {
+			super();
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
+			this._buffer = [];
+			this.writeBigEndianByte(21);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
 			return this;
 		}
 
@@ -162,7 +193,7 @@ const Encapsulated = {
 
 	},
 
-	Ping: class {
+	Ping: class extends Buffer {
 
 		static get ID(){ return 0; }
 
@@ -170,18 +201,24 @@ const Encapsulated = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(time=0) {
+			super();
 			this.time = time;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBigEndianLong(time);
+			this._buffer = [];
+			this.writeBigEndianByte(0);
+			this.writeBigEndianLong(this.time);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.time=this.readBigEndianLong();
 			return this;
 		}
 
@@ -196,7 +233,7 @@ const Encapsulated = {
 
 	},
 
-	Pong: class {
+	Pong: class extends Buffer {
 
 		static get ID(){ return 3; }
 
@@ -204,18 +241,24 @@ const Encapsulated = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor(time=0) {
+			super();
 			this.time = time;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBigEndianLong(time);
+			this._buffer = [];
+			this.writeBigEndianByte(3);
+			this.writeBigEndianLong(this.time);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.time=this.readBigEndianLong();
 			return this;
 		}
 
@@ -230,7 +273,7 @@ const Encapsulated = {
 
 	},
 
-	Mcpe: class {
+	Mcpe: class extends Buffer {
 
 		static get ID(){ return 254; }
 
@@ -238,18 +281,24 @@ const Encapsulated = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor(packet=null) {
+			super();
 			this.packet = packet;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBytes(packet);
+			this._buffer = [];
+			this.writeBigEndianByte(254);
+			this.writeBytes(this.packet);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.packet=this.readBytes(this._buffer.length-this._index);
 			return this;
 		}
 

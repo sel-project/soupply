@@ -18,7 +18,7 @@ const Login = {
 	/**
 	 * First real packet sent by the client with its informations.
 	 */
-	ConnectionRequest: class {
+	ConnectionRequest: class extends Buffer {
 
 		static get ID(){ return 1; }
 
@@ -38,6 +38,7 @@ const Login = {
 		 *        they are manually transferred.
 		 */
 		constructor(protocol=0, password="", name="", main=false) {
+			super();
 			this.protocol = protocol;
 			this.password = password;
 			this.name = name;
@@ -46,16 +47,24 @@ const Login = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeVaruint(protocol);
-			this.writeString(password);
-			this.writeString(name);
-			this.writeBool(main);
+			this._buffer = [];
+			this.writeBigEndianByte(1);
+			this.writeVaruint(this.protocol);
+			var dghpcy5wyxnzd29y=this.encodeString(this.password); this.writeVaruint(dghpcy5wyxnzd29y.length); this.writeBytes(dghpcy5wyxnzd29y);
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			this.writeBigEndianByte(this.main?1:0);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.protocol=this.readVaruint();
+			this.password=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.main=this.readBigEndianByte()!==0;
 			return this;
 		}
 
@@ -74,7 +83,7 @@ const Login = {
 	 * Reply always sent after the ConnectionRequest packet. It indicates the status of
 	 * the connection, which is accepted only when every field of the packet is true.
 	 */
-	ConnectionResponse: class {
+	ConnectionResponse: class extends Buffer {
 
 		static get ID(){ return 2; }
 
@@ -99,20 +108,27 @@ const Login = {
 		 *        Indicates the status of connection. If not 0, it indicates an error.
 		 */
 		constructor(protocol=0, status=0) {
+			super();
 			this.protocol = protocol;
 			this.status = status;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeVaruint(protocol);
-			this.writeByte(status);
+			this._buffer = [];
+			this.writeBigEndianByte(2);
+			this.writeVaruint(this.protocol);
+			this.writeBigEndianByte(this.status);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.protocol=this.readVaruint();
+			this.status=this.readBigEndianByte();
 			return this;
 		}
 
@@ -130,7 +146,7 @@ const Login = {
 	/**
 	 * Informations about the hub.
 	 */
-	HubInfo: class {
+	HubInfo: class extends Buffer {
 
 		static get ID(){ return 3; }
 
@@ -176,6 +192,7 @@ const Login = {
 		 *        below.
 		 */
 		constructor(time=0, serverId=0, reservedUuids=0, displayName="", onlineMode=false, gamesInfo=[], online=0, max=0, language="", acceptedLanguages=[], socialJson="", additionalJson="") {
+			super();
 			this.time = time;
 			this.serverId = serverId;
 			this.reservedUuids = reservedUuids;
@@ -192,24 +209,40 @@ const Login = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeVarulong(time);
-			this.writeVarulong(serverId);
-			this.writeVarulong(reservedUuids);
-			this.writeString(displayName);
-			this.writeBool(onlineMode);
-			this.writeVaruint(gamesInfo.length); for(z2ftzxnjbmzv in gamesInfo){ this.writeBytes(gamesInfo[z2ftzxnjbmzv].encode()); }
-			this.writeVaruint(online);
-			this.writeVarint(max);
-			this.writeString(language);
-			this.writeVaruint(acceptedLanguages.length); for(ywnjzxb0zwrmyw5n in acceptedLanguages){ this.writeString(acceptedLanguages[ywnjzxb0zwrmyw5n]); }
-			this.writeString(socialJson);
-			this.writeString(additionalJson);
+			this._buffer = [];
+			this.writeBigEndianByte(3);
+			this.writeVarulong(this.time);
+			this.writeVarulong(this.serverId);
+			this.writeVarulong(this.reservedUuids);
+			var dghpcy5kaxnwbgf5=this.encodeString(this.displayName); this.writeVaruint(dghpcy5kaxnwbgf5.length); this.writeBytes(dghpcy5kaxnwbgf5);
+			this.writeBigEndianByte(this.onlineMode?1:0);
+			this.writeVaruint(this.gamesInfo.length); for(var dghpcy5nyw1lc0lu in this.gamesInfo){ this.writeBytes(this.gamesInfo[dghpcy5nyw1lc0lu].encode()); }
+			this.writeVaruint(this.online);
+			this.writeVarint(this.max);
+			var dghpcy5syw5ndwfn=this.encodeString(this.language); this.writeVaruint(dghpcy5syw5ndwfn.length); this.writeBytes(dghpcy5syw5ndwfn);
+			this.writeVaruint(this.acceptedLanguages.length); for(var dghpcy5hy2nlchrl in this.acceptedLanguages){ var dghpcy5hy2nlchrl=this.encodeString(this.acceptedLanguages[dghpcy5hy2nlchrl]); this.writeVaruint(dghpcy5hy2nlchrl.length); this.writeBytes(dghpcy5hy2nlchrl); }
+			var dghpcy5zb2npywxk=this.encodeString(this.socialJson); this.writeVaruint(dghpcy5zb2npywxk.length); this.writeBytes(dghpcy5zb2npywxk);
+			var dghpcy5hzgrpdglv=this.encodeString(this.additionalJson); this.writeVaruint(dghpcy5hzgrpdglv.length); this.writeBytes(dghpcy5hzgrpdglv);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.time=this.readVarulong();
+			this.serverId=this.readVarulong();
+			this.reservedUuids=this.readVarulong();
+			this.displayName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.onlineMode=this.readBigEndianByte()!==0;
+			var bhroaxmuz2ftzxnj=this.readVaruint(); this.gamesInfo=[]; for(var dghpcy5nyw1lc0lu in this.gamesInfo){ this.gamesInfo[dghpcy5nyw1lc0lu]=Types.GameInfo.fromBuffer(this._buffer.slice(this._index)); this._index+=this.gamesInfo[dghpcy5nyw1lc0lu]._index; }
+			this.online=this.readVaruint();
+			this.max=this.readVarint();
+			this.language=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			var bhroaxmuywnjzxb0=this.readVaruint(); this.acceptedLanguages=[]; for(var dghpcy5hy2nlchrl in this.acceptedLanguages){ this.acceptedLanguages[dghpcy5hy2nlchrl]=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint())))); }
+			this.socialJson=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.additionalJson=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
 			return this;
 		}
 
@@ -227,7 +260,7 @@ const Login = {
 	/**
 	 * Informations about the node.
 	 */
-	NodeInfo: class {
+	NodeInfo: class extends Buffer {
 
 		static get ID(){ return 4; }
 
@@ -253,6 +286,7 @@ const Login = {
 		 *        Optional informations about the server's software and system, similar to {HubInfo.additionalJson}.
 		 */
 		constructor(time=0, max=0, acceptedGames=[], plugins=[], additionalJson="") {
+			super();
 			this.time = time;
 			this.max = max;
 			this.acceptedGames = acceptedGames;
@@ -262,17 +296,26 @@ const Login = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeVarulong(time);
-			this.writeVaruint(max);
-			this.writeVaruint(acceptedGames.length); for(ywnjzxb0zwrhyw1l in acceptedGames){ this.writeBytes(acceptedGames[ywnjzxb0zwrhyw1l].encode()); }
-			this.writeVaruint(plugins.length); for(cgx1z2lucw in plugins){ this.writeBytes(plugins[cgx1z2lucw].encode()); }
-			this.writeString(additionalJson);
+			this._buffer = [];
+			this.writeBigEndianByte(4);
+			this.writeVarulong(this.time);
+			this.writeVaruint(this.max);
+			this.writeVaruint(this.acceptedGames.length); for(var dghpcy5hy2nlchrl in this.acceptedGames){ this.writeBytes(this.acceptedGames[dghpcy5hy2nlchrl].encode()); }
+			this.writeVaruint(this.plugins.length); for(var dghpcy5wbhvnaw5z in this.plugins){ this.writeBytes(this.plugins[dghpcy5wbhvnaw5z].encode()); }
+			var dghpcy5hzgrpdglv=this.encodeString(this.additionalJson); this.writeVaruint(dghpcy5hzgrpdglv.length); this.writeBytes(dghpcy5hzgrpdglv);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.time=this.readVarulong();
+			this.max=this.readVaruint();
+			var bhroaxmuywnjzxb0=this.readVaruint(); this.acceptedGames=[]; for(var dghpcy5hy2nlchrl in this.acceptedGames){ this.acceptedGames[dghpcy5hy2nlchrl]=Types.Game.fromBuffer(this._buffer.slice(this._index)); this._index+=this.acceptedGames[dghpcy5hy2nlchrl]._index; }
+			var bhroaxmucgx1z2lu=this.readVaruint(); this.plugins=[]; for(var dghpcy5wbhvnaw5z in this.plugins){ this.plugins[dghpcy5wbhvnaw5z]=Types.Plugin.fromBuffer(this._buffer.slice(this._index)); this._index+=this.plugins[dghpcy5wbhvnaw5z]._index; }
+			this.additionalJson=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
 			return this;
 		}
 

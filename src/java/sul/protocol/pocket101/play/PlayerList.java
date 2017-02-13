@@ -13,6 +13,11 @@ import java.util.UUID;
 
 import sul.utils.*;
 
+/**
+ * Adds or removes a player from the player's list displayed in the pause menu. This
+ * packet should be sent before spawning a player with AddPlayer, otherwise the skin
+ * is not applied.
+ */
 public class PlayerList extends Packet {
 
 	public static final byte ID = (byte)63;

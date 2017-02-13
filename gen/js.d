@@ -14,7 +14,7 @@
  */
 module js;
 
-import std.algorithm : canFind, min;
+import std.algorithm : canFind, min, reverse;
 import std.ascii : newline;
 import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
@@ -22,6 +22,7 @@ import std.json;
 import std.path : dirSeparator;
 import std.regex : ctRegex, replaceAll, matchFirst;
 import std.string;
+import std.typecons;
 
 import all;
 import java : javadoc;
@@ -60,6 +61,104 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 	}
 
 	enum defaultTypes = ["byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double"];
+
+	// utils
+	string utils = "";
+	utils ~= "class Buffer {\n\n";
+	utils ~= "\tconstructor() {\n";
+	utils ~= "\t\tthis._buffer = [];\n";
+	utils ~= "\t\tthis._index = 0;\n";
+	utils ~= "\t}\n\n";
+	utils ~= "\twriteBytes(a) {\n";
+	utils ~= "\t\tfor(var i in a) {\n";
+	utils ~= "\t\t\tthis._buffer.push(a[i]);\n";
+	utils ~= "\t\t}\n";
+	utils ~= "\t}\n\n";
+	utils ~= "\treadBytes(a) {\n";
+	utils ~= "\t\tvar ret = this._buffer.slice(this._index, this._index+a);\n";
+	utils ~= "\t\tthis._index += a;\n";
+	utils ~= "\t\treturn ret;\n";
+	utils ~= "\t}\n\n";
+	foreach(type ; [tuple("byte", 1, "byte"), tuple("short", 2, "short"), tuple("triad", 3, "int"), tuple("int", 4, "int"), tuple("long", 8, "long")]) {
+		foreach(e ; ["BigEndian", "LittleEndian"]) {
+			// write
+			utils ~= "\twrite" ~ e ~ capitalize(type[0]) ~ "(a) {\n";
+			if(type[1] == 1) utils ~= "\t\tthis._buffer.push(a);\n";
+			else {
+				int[] shift;
+				foreach(i ; 0..type[1]) shift ~= i * 8;
+				if(e == "BigEndian") reverse(shift);
+				foreach(i ; shift) {
+					utils ~= "\t\tthis._buffer.push((a" ~ (i != 0 ? " >>> " ~ to!string(i) : "") ~ ") & 255);\n";
+				}
+			}
+			utils ~= "\t}\n\n";
+			// read
+			utils ~= "\tread" ~ e ~ capitalize(type[0]) ~ "(a) {\n";
+			//utils ~= "\t\tif(this._buffer.length < this._index + " ~ to!string(type[1]) ~ ") return 0;\n";
+			if(type[1] == 1) utils ~= "\t\treturn this._buffer[this._index++];\n";
+			else {
+				utils ~= "\t\tvar _ret = 0;\n";
+				int[] shift;
+				foreach(i ; 0..type[1]) shift ~= i * 8;
+				if(e == "BigEndian") reverse(shift);
+				foreach(i ; shift) {
+					utils ~= "\t\t_ret |= this._buffer[this._index++]" ~ (i != 0 ? " << " ~ to!string(i) : "") ~ ";\n";
+				}
+				utils ~= "\t\treturn _ret;\n";
+			}
+			utils ~= "\t}\n\n";
+		}
+	}
+	foreach(type ; [tuple("float", 4), tuple("double", 8)]) {
+		foreach(e ; ["BigEndian", "LittleEndian"]) {
+			utils ~= "\twrite" ~ e ~ capitalize(type[0]) ~ "(a) {\n";
+			utils ~= "\t\tthis.writeBytes(new Uint8Array(new Float" ~ to!string(type[1] * 8) ~ "Array([a]).buffer));\n";
+			utils ~= "\t}\n\n";
+			utils ~= "\tread" ~ e ~ capitalize(type[0]) ~ "() {\n";
+			utils ~= "\t\treturn new Float" ~ to!string(type[1] * 8) ~ "Array(new Uint8Array(this.readBytes(" ~ to!string(type[1]) ~ ")).buffer, 0, 1)[0];\n";
+			utils ~= "\t}\n\n";
+		}
+	}
+	foreach(varint ; [tuple("short", 3, 15), tuple("int", 5, 31), tuple("long", 10, 63)]) {
+		foreach(sign ; ["", "u"]) {
+			// write
+			utils ~= "\twriteVar" ~ sign ~ varint[0] ~ "(a) {\n";
+			if(sign.length) {
+				utils ~= "\t\tthis._buffer.push(a & 0x7F);\n";
+				utils ~= "\t\twhile((a & 0x80) != 0) {\n";
+				utils ~= "\t\t\ta >>>= 7;\n";
+				utils ~= "\t\t\tthis._buffer.push(a & 0x7F);\n";
+				utils ~= "\t\t}\n";
+			} else {
+				utils ~= "\t\tthis.writeVaru" ~ varint[0] ~ "((a >> 1) | (a << " ~ to!string(varint[2]) ~ "));\n";
+			}
+			utils ~= "\t}\n\n";
+			// read
+			utils ~= "\treadVar" ~ sign ~ varint[0] ~ "() {\n";
+			if(sign.length) {
+				utils ~= "\t\tvar limit = 0;\n";
+				utils ~= "\t\tvar ret = 0;\n";
+				utils ~= "\t\tdo {\n";
+				utils ~= "\t\t\tret |= (this._buffer[this._index] & 0x7F) << (limit * 7);\n";
+				utils ~= "\t\t} while((this._buffer[this._index++] & 0x80) != 0 && ++limit < " ~ to!string(varint[1]) ~ ");\n";
+				utils ~= "\t\treturn ret;\n";
+			} else {
+				utils ~= "\t\tvar ret = this.readVaru" ~ varint[0] ~ "();\n";;
+				utils ~= "\t\treturn (ret << 1) | (ret >> " ~ to!string(varint[2]) ~ ");\n";
+			}
+			utils ~= "\t}\n\n";
+		}
+	}
+	utils ~= "\tencodeString(string) {\n";
+	utils ~= "\t\tvar conv = unescape(encodeURIComponent(string));\n";
+	utils ~= "\t\tvar ret = [];\n";
+	utils ~= "\t\tfor(var i in conv) ret.push(conv.charCodeAt(i));\n";
+	utils ~= "\t\treturn ret;\n";
+	utils ~= "\t}\n\n";
+	utils ~= "}";
+	mkdirRecurse("../src/js/sul/utils");
+	write("../src/js/sul/utils/buffer.js", utils);
 
 	// protocol
 	foreach(string game, Protocols prs; protocols) {
@@ -112,8 +211,8 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 					}
 					ret ~= " ";
 				}
-				if(cnt == "byte") return ret ~ "this.writeBytes(" ~ name ~ ");";
-				else return ret ~ "for(" ~ hash(name) ~ " in " ~ name ~ "){ " ~ createEncoding(nt, name ~ "[" ~ hash(name) ~ "]") ~ " }";
+				if(cnt == "ubyte") return ret ~ "this.writeBytes(" ~ name ~ ");";
+				else return ret ~ "for(var " ~ hash(name) ~ " in " ~ name ~ "){ " ~ createEncoding(nt, name ~ "[" ~ hash(name) ~ "]") ~ " }";
 			}
 			auto ts = conv.lastIndexOf("<");
 			if(ts > 0) {
@@ -127,16 +226,60 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 			}
 			type = conv;
 			if(type.startsWith("var")) return "this.write" ~ capitalize(type) ~ "(" ~ name ~ ");";
-			else if(type == "string") return "this.writeString(" ~ name ~ ");";
-			else if(type == "uuid") return "this.writeBigEndianLong(" ~ name ~ ".getLeastSignificantBits()); this.writeBigEndianLong(" ~ name ~ ".getMostSignificantBits());";
+			else if(type == "string") return "var " ~ hash(name) ~"=this.encodeString(" ~ name ~"); " ~ createEncoding(prs.data.arrayLength, hash(name) ~ ".length") ~ " this.writeBytes(" ~ hash(name) ~ ");";
+			else if(type == "uuid") return "this.writeBytes(" ~ name ~ ");";
 			else if(type == "bytes") return "this.writeBytes(" ~ name ~ ");";
-			else if(type == "bool") return "this.writeBool(" ~ name ~ ");";
-			else if(type == "byte" || type == "ubyte") return "this.writeByte(" ~ name ~ ");";
+			else if(type == "bool") return "this.writeBigEndianByte(" ~ name ~ "?1:0);";
 			else if(type == "triad" || defaultTypes.canFind(type)) return "this.write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ");";
 			else return "this.writeBytes(" ~ name ~ ".encode());";
 		}
 
-		void writeFields(ref string data, string space, string className, Field[] fields, string cont="") {
+		// decoding expressions
+		string createDecoding(string type, string name, string e="") {
+			if(type[0] == 'u' && defaultTypes.canFind(type[1..$])) type = type[1..$];
+			auto conv = type in prs.data.arrays ? prs.data.arrays[type].base ~ "[]" : type;
+			auto lo = conv.lastIndexOf("[");
+			if(lo > 0) {
+				string ret = "";
+				auto lc = conv.lastIndexOf("]");
+				immutable nt = conv[0..lo];
+				immutable cnt = convert(nt);
+				if(lo == lc - 1) {
+					auto ca = type in prs.data.arrays;
+					if(ca) {
+						auto c = *ca;
+						ret ~= createDecoding(c.length, "var " ~ hash("l" ~ name), c.endianness);
+					} else {
+						ret ~= createDecoding(prs.data.arrayLength, "var " ~ hash("l" ~ name));
+					}
+					ret ~= " ";
+				} else {
+					ret ~= "var " ~ hash("l" ~ name) ~ "=" ~ conv[lo+1..lc] ~ "; ";
+				}
+				if(cnt == "ubyte") return ret ~ name ~ "=this.readBytes(" ~ hash("l" ~ name) ~ ");";
+				else return ret ~ name ~ "=[]; for(var " ~ hash(name) ~ " in " ~ name ~ "){ " ~ createDecoding(nt, name ~ "[" ~ hash(name) ~ "]") ~ " }";
+			}
+			auto ts = conv.lastIndexOf("<");
+			if(ts > 0) {
+				auto te = conv.lastIndexOf(">");
+				string nt = conv[0..ts];
+				string[] ret;
+				foreach(i ; conv[ts+1..te]) {
+					ret ~= createDecoding(nt, name ~ "." ~ i);
+				}
+				return ret.join(" ");
+			}
+			type = conv;
+			if(type.startsWith("var")) return name ~ "=this.read" ~ capitalize(type) ~ "();";
+			else if(type == "string") return name ~ "=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(" ~ createDecoding(prs.data.arrayLength, "")[1..$-1] ~ "))));";
+			else if(type == "uuid") return name ~ "=this.readBytes(16);";
+			else if(type == "bytes") return name ~ "=this.readBytes(this._buffer.length-this._index);";
+			else if(type == "bool") return name ~ "=this.readBigEndianByte()!==0;";
+			else if(defaultTypes.canFind(type) || type == "triad") return name ~ "=this.read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "();";
+			else return name ~ "=" ~ convert(type) ~ ".fromBuffer(this._buffer.slice(this._index)); this._index+=" ~ name ~ "._index;";
+		}
+
+		void writeFields(ref string data, string space, string className, Field[] fields, string cont, ptrdiff_t id=-1) {
 			// constants
 			foreach(field ; fields) {
 				if(field.constants.length) {
@@ -167,6 +310,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				data ~= space ~ " */\n";
 			}
 			data ~= space ~ "constructor(" ~ f.join(", ") ~ ") {\n";
+			data ~= space ~ "\tsuper();\n";
 			foreach(i, field; fields) {
 				immutable name = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
 				data ~= space ~ "\tthis." ~ name ~ " = " ~ name ~ ";\n";
@@ -176,27 +320,32 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 			{
 				data ~= space ~ "/** @return {Uint8Array} */\n";
 				data ~= space ~ "encode() {\n";
-				if(cont.length) data ~= space ~ "\t" ~ createEncoding(prs.data.id, "this.ID") ~ "\n";
+				data ~= space ~ "\tthis._buffer = [];\n";
+				if(id >= 0) data ~= space ~ "\t" ~ createEncoding(prs.data.id, to!string(id)) ~ "\n";
 				foreach(i, field; fields) {
 					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
-					data ~= space ~ "\t" ~ createEncoding(field.type, name, field.endianness) ~ "\n";
+					data ~= space ~ "\t" ~ createEncoding(field.type, "this." ~ name, field.endianness) ~ "\n";
 				}
+				data ~= space ~ "\treturn new Uint8Array(this._buffer);\n";
 				data ~= space ~ "}\n\n";
 			}
 			// decode
 			{
-				data ~= space ~ "/** @param {Uint8Array} buffer */\n";
-				data ~= space ~ "decode(buffer) {\n";
-				data ~= space ~ "\tif(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');\n";
-				//TODO
+				data ~= space ~ "/** @param {Uint8Array}|{Array} buffer */\n";
+				data ~= space ~ "decode(_buffer) {\n";
+				data ~= space ~ "\tthis._buffer = Array.from(_buffer);\n";
+				data ~= space ~ "\tthis._index = 0;\n";
+				if(id >= 0) data ~= space ~ "\t" ~ createDecoding(prs.data.id, "var _id") ~ "\n";
+				foreach(i, field; fields) {
+					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
+					data ~= space ~ "\t" ~ createDecoding(field.type, "this." ~ name, field.endianness) ~ "\n";
+				}
 				data ~= space ~ "\treturn this;\n";
 				data ~= space ~ "}\n\n";
 				// from buffer
-				if(cont.length) {
-					data ~= space ~ "static fromBuffer(buffer) {\n";
-					data ~= space ~ "\treturn new " ~ cont ~ "." ~ className ~ "().decode(buffer);\n";
-					data ~= space ~ "}\n\n";
-				}
+				data ~= space ~ "static fromBuffer(buffer) {\n";
+				data ~= space ~ "\treturn new " ~ cont ~ "." ~ className ~ "().decode(buffer);\n";
+				data ~= space ~ "}\n\n";
 			}
 			{
 				data ~= space ~ "/** @return {string} */\n";
@@ -219,12 +368,12 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				if(type.description.length) {
 
 				}
-				data ~= "\t" ~ toPascalCase(type.name) ~ ": class {\n\n";
-				writeFields(data, "\t\t", toPascalCase(type.name), type.fields);
+				data ~= "\t" ~ toPascalCase(type.name) ~ ": class extends Buffer {\n\n";
+				writeFields(data, "\t\t", toPascalCase(type.name), type.fields, "Types");
 				data ~= "\t}" ~ (i != prs.data.types.length - 1 ? "," : "") ~ "\n\n";
 			}
 			data ~= "}\n\n";
-			data ~= "export { Types }";
+			data ~= "//export { Types }";
 			write("../src/js/sul/protocol/" ~ game ~ "/types.js", data, "protocol/" ~ game);
 		}
 		// sections
@@ -239,11 +388,11 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				if(packet.description.length) {
 					data ~= javadoc("\t", packet.description);
 				}
-				data ~= "\t" ~ toPascalCase(packet.name) ~ ": class {\n\n";
+				data ~= "\t" ~ toPascalCase(packet.name) ~ ": class extends Buffer {\n\n";
 				data ~= "\t\tstatic get ID(){ return " ~ packet.id.to!string ~ "; }\n\n";
 				data ~= "\t\tstatic get CLIENTBOUND(){ return " ~ packet.clientbound.to!string ~ "; }\n";
 				data ~= "\t\tstatic get SERVERBOUND(){ return " ~ packet.serverbound.to!string ~ "; }\n\n";
-				writeFields(data, "\t\t", toPascalCase(packet.name), packet.fields, toPascalCase(section.name));
+				writeFields(data, "\t\t", toPascalCase(packet.name), packet.fields, toPascalCase(section.name), packet.id);
 				data ~= "\t}" ~ (i != section.packets.length ? "," : "") ~ "\n\n";
 			}
 			data ~= "}\n\n";

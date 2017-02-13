@@ -21,7 +21,7 @@ const Status = {
 	 * the latency. The external console can send this packet whenever it wants it and
 	 * the server must reply with the same packet with the same field's value.
 	 */
-	KeepAlive: class {
+	KeepAlive: class extends Buffer {
 
 		static get ID(){ return 0; }
 
@@ -33,18 +33,24 @@ const Status = {
 		 *        An identifier chosen by the external console to uniquely identify the packet.
 		 */
 		constructor(count=0) {
+			super();
 			this.count = count;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBigEndianInt(count);
+			this._buffer = [];
+			this.writeBigEndianByte(0);
+			this.writeBigEndianInt(this.count);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.count=this.readBigEndianInt();
 			return this;
 		}
 
@@ -63,7 +69,7 @@ const Status = {
 	 * Updates the list of the nodes connected to the hub, adding or removing one.
 	 * If the server isn't built on the hub-node layout this packet is never sent.
 	 */
-	UpdateNodes: class {
+	UpdateNodes: class extends Buffer {
 
 		static get ID(){ return 1; }
 
@@ -81,20 +87,27 @@ const Status = {
 		 *        Name of the node.
 		 */
 		constructor(action=0, node="") {
+			super();
 			this.action = action;
 			this.node = node;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeByte(action);
-			this.writeString(node);
+			this._buffer = [];
+			this.writeBigEndianByte(1);
+			this.writeBigEndianByte(this.action);
+			var dghpcy5ub2rl=this.encodeString(this.node); this.writeBigEndianShort(dghpcy5ub2rl.length); this.writeBytes(dghpcy5ub2rl);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.action=this.readBigEndianByte();
+			this.node=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
 			return this;
 		}
 
@@ -113,7 +126,7 @@ const Status = {
 	 * Requests an UpdateStats packet to the server, which should sent it immediately instead
 	 * of waiting for the next automatic update (if the server does one).
 	 */
-	RequestStats: class {
+	RequestStats: class extends Buffer {
 
 		static get ID(){ return 2; }
 
@@ -121,16 +134,21 @@ const Status = {
 		static get SERVERBOUND(){ return true; }
 
 		constructor() {
+			super();
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
+			this._buffer = [];
+			this.writeBigEndianByte(2);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
 			return this;
 		}
 
@@ -151,7 +169,7 @@ const Status = {
 	 * This packet is sent in response to RequestStats and every time the server retains
 	 * that the stats should be updated (usually in a range of 5 to 30 seconds).
 	 */
-	UpdateStats: class {
+	UpdateStats: class extends Buffer {
 
 		static get ID(){ return 3; }
 
@@ -175,6 +193,7 @@ const Status = {
 		 *        Resources usage of the connected nodes, if the server uses the hub-node layout, or an empty list.
 		 */
 		constructor(onlinePlayers=0, maxPlayers=0, uptime=0, upload=0, download=0, nodes=[]) {
+			super();
 			this.onlinePlayers = onlinePlayers;
 			this.maxPlayers = maxPlayers;
 			this.uptime = uptime;
@@ -185,18 +204,28 @@ const Status = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBigEndianInt(onlinePlayers);
-			this.writeBigEndianInt(maxPlayers);
-			this.writeBigEndianInt(uptime);
-			this.writeBigEndianInt(upload);
-			this.writeBigEndianInt(download);
-			this.writeBigEndianShort(nodes.length); for(bm9kzxm in nodes){ this.writeBytes(nodes[bm9kzxm].encode()); }
+			this._buffer = [];
+			this.writeBigEndianByte(3);
+			this.writeBigEndianInt(this.onlinePlayers);
+			this.writeBigEndianInt(this.maxPlayers);
+			this.writeBigEndianInt(this.uptime);
+			this.writeBigEndianInt(this.upload);
+			this.writeBigEndianInt(this.download);
+			this.writeBigEndianShort(this.nodes.length); for(var dghpcy5ub2rlcw in this.nodes){ this.writeBytes(this.nodes[dghpcy5ub2rlcw].encode()); }
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.onlinePlayers=this.readBigEndianInt();
+			this.maxPlayers=this.readBigEndianInt();
+			this.uptime=this.readBigEndianInt();
+			this.upload=this.readBigEndianInt();
+			this.download=this.readBigEndianInt();
+			var bhroaxmubm9kzxm=this.readBigEndianShort(); this.nodes=[]; for(var dghpcy5ub2rlcw in this.nodes){ this.nodes[dghpcy5ub2rlcw]=Types.NodeStats.fromBuffer(this._buffer.slice(this._index)); this._index+=this.nodes[dghpcy5ub2rlcw]._index; }
 			return this;
 		}
 

@@ -12,6 +12,9 @@ import java.nio.charset.StandardCharsets;
 
 import sul.utils.*;
 
+/**
+ * Disconnects the player from the server.
+ */
 public class Disconnect extends Packet {
 
 	public static final byte ID = (byte)5;
@@ -19,7 +22,15 @@ public class Disconnect extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	/**
+	 * Indicates whether to display the main menu screen or a disconnection message.
+	 */
 	public boolean hideDisconnectionScreen;
+
+	/**
+	 * The message to display in the disconnection screen. If the message is in the game's
+	 * language file it will be translated client-side.
+	 */
 	public String message;
 
 	public Disconnect() {}
@@ -39,7 +50,7 @@ public class Disconnect extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBool(hideDisconnectionScreen);
-		byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq);
+		if(hideDisconnectionScreen==false){ byte[] bwvzc2fnzq=message.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bwvzc2fnzq.length); this.writeBytes(bwvzc2fnzq); }
 		return this.getBuffer();
 	}
 
@@ -48,7 +59,7 @@ public class Disconnect extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		hideDisconnectionScreen=this.readBool();
-		int bgvubwvzc2fnzq=this.readVaruint(); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8);
+		if(hideDisconnectionScreen==false){ int bgvubwvzc2fnzq=this.readVaruint(); message=new String(this.readBytes(bgvubwvzc2fnzq), StandardCharsets.UTF_8); }
 	}
 
 	public static Disconnect fromBuffer(byte[] buffer) {

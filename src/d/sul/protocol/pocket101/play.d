@@ -6,6 +6,11 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/pocket101.xml
  */
+/**
+ * Packets related to the gameplay. Network-related packets (encapsulation, acks, nacks)
+ * are managed by RakNet and every packet in this section is encapsualted in an Encapsualted
+ * packet.
+ */
 module sul.protocol.pocket101.play;
 
 import std.bitmanip : write, peek;
@@ -97,6 +102,10 @@ class Login : Buffer {
 
 }
 
+/**
+ * Packet sent as response to Login to indicate whether the connection has been accepted
+ * and when the player is ready to spawn in the world.
+ */
 class PlayStatus : Buffer {
 
 	public enum ubyte ID = 2;
@@ -225,6 +234,9 @@ class ClientMagic : Buffer {
 
 }
 
+/**
+ * Disconnects the player from the server.
+ */
 class Disconnect : Buffer {
 
 	public enum ubyte ID = 5;
@@ -234,7 +246,15 @@ class Disconnect : Buffer {
 
 	public enum string[] FIELDS = ["hideDisconnectionScreen", "message"];
 
+	/**
+	 * Indicates whether to display the main menu screen or a disconnection message.
+	 */
 	public bool hideDisconnectionScreen;
+
+	/**
+	 * The message to display in the disconnection screen. If the message is in the game's
+	 * language file it will be translated client-side.
+	 */
 	public string message;
 
 	public pure nothrow @safe @nogc this() {}
@@ -248,14 +268,14 @@ class Disconnect : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBigEndianBool(hideDisconnectionScreen);
-		writeBytes(varuint.encode(cast(uint)message.length)); writeString(message);
+		if(hideDisconnectionScreen==false){ writeBytes(varuint.encode(cast(uint)message.length)); writeString(message); }
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		hideDisconnectionScreen=readBigEndianBool();
-		uint bwvzc2fnzq=varuint.decode(_buffer, &_index); message=readString(bwvzc2fnzq);
+		if(hideDisconnectionScreen==false){ uint bwvzc2fnzq=varuint.decode(_buffer, &_index); message=readString(bwvzc2fnzq); }
 	}
 
 	public static pure nothrow @safe Disconnect fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -271,6 +291,10 @@ class Disconnect : Buffer {
 
 }
 
+/**
+ * One ore more packet, each prefixed with their varuint-encoded length, compressed
+ * with zlib's deflate algorithm.
+ */
 class Batch : Buffer {
 
 	public enum ubyte ID = 6;
@@ -280,6 +304,32 @@ class Batch : Buffer {
 
 	public enum string[] FIELDS = ["data"];
 
+	/**
+	 * Compressed data.
+	 * 
+	 * Pseudo-code for decompression:
+	 * ---
+	 * ubyte[] uncompressed = uncompress(batch.payload);
+	 * size_t index = 0;
+	 * while(index < uncompressed.length) {
+	 *    size_t length = varuint.decode(uncompressed, &index);
+	 *    if(length < uncompressed.length - index) {}
+	 *       ubyte[] packet = uncompressed[0..length];
+	 *       index += length;
+	 *    }
+	 * }
+	 * ---
+	 * 
+	 * Pseudo-code for compression:
+	 * ---
+	 * ubyte[] payload;
+	 * foreach(ubyte[] packet ; packets) {
+	 *    payload ~= varuint.encode(packet.length);
+	 *    payload ~= packet;
+	 * }
+	 * Batch batch = new Batch(compress(payload));
+	 * ---
+	 */
 	public ubyte[] data;
 
 	public pure nothrow @safe @nogc this() {}
@@ -409,6 +459,10 @@ class ResourcePackClientResponse : Buffer {
 
 }
 
+/**
+ * Sends or receives a message from the player. Every variant's field can contain Minecraft's
+ * formatting codes.
+ */
 class Text : Buffer {
 
 	public enum ubyte ID = 10;
@@ -455,6 +509,9 @@ class Text : Buffer {
 
 	alias Variants = TypeTuple!(Raw, Chat, Translation, Popup, Tip, System, Whisper);
 
+	/**
+	 * Raw message that will be printed in the chat as it is.
+	 */
 	public class Raw {
 
 		public enum typeof(type) TYPE = 0;
@@ -486,13 +543,25 @@ class Text : Buffer {
 
 	}
 
+	/**
+	 * Chat message sent by the player to the server. If sent from the server it will display
+	 * as `&lt;sender&gt; message`.
+	 */
 	public class Chat {
 
 		public enum typeof(type) TYPE = 1;
 
 		public enum string[] FIELDS = ["sender", "message"];
 
+		/**
+		 * Case sensitive name of the player that has sent the message.
+		 */
 		public string sender;
+
+		/**
+		 * Message sent by the player. It should be unformatted (regular expression: `§[a-fA-F0-9k-or]`)
+		 * before being processed as chat message by the server.
+		 */
 		public string message;
 
 		public pure nothrow @safe @nogc this() {}
@@ -521,13 +590,23 @@ class Text : Buffer {
 
 	}
 
+	/**
+	 * Sends a message that will be translated client-side using the player's language.
+	 */
 	public class Translation {
 
 		public enum typeof(type) TYPE = 2;
 
 		public enum string[] FIELDS = ["message", "parameters"];
 
+		/**
+		 * A message in the game's language file.
+		 */
 		public string message;
+
+		/**
+		 * Parameters that will be placed instead of the replacement symbols (%1, %2, etc...).
+		 */
 		public string[] parameters;
 
 		public pure nothrow @safe @nogc this() {}
@@ -556,6 +635,10 @@ class Text : Buffer {
 
 	}
 
+	/**
+	 * Displays popups messages for one tick before fading out. The popup messages are
+	 * displayed at the centre of the screen and are not automatically aligned horizontally.
+	 */
 	public class Popup {
 
 		public enum typeof(type) TYPE = 3;
@@ -591,6 +674,10 @@ class Text : Buffer {
 
 	}
 
+	/**
+	 * Displays a tip message for one tick before fading out. The tip message is displayed
+	 * on top of the inventory bar and can contain multiple lines separated with `\n`.
+	 */
 	public class Tip {
 
 		public enum typeof(type) TYPE = 4;
@@ -653,6 +740,10 @@ class Text : Buffer {
 
 	}
 
+	/**
+	 * Sends a whisper message to the client that will be displayed in the format `<i>sender
+	 * has whispered to you:</i> message`.
+	 */
 	public class Whisper {
 
 		public enum typeof(type) TYPE = 6;
@@ -690,6 +781,9 @@ class Text : Buffer {
 
 }
 
+/**
+ * Sets the time.
+ */
 class SetTime : Buffer {
 
 	public enum ubyte ID = 11;
@@ -699,7 +793,16 @@ class SetTime : Buffer {
 
 	public enum string[] FIELDS = ["time", "daylightCycle"];
 
+	/**
+	 * Time of the day in a range from 0 to 24000. If higher or lower it will be moduled
+	 * to 24000.
+	 */
 	public int time;
+
+	/**
+	 * Indicates whether the daylight cycle is active. If not, the time will be stopped
+	 * at the value given in the previous field.
+	 */
 	public bool daylightCycle;
 
 	public pure nothrow @safe @nogc this() {}
@@ -1038,6 +1141,9 @@ class AddEntity : Buffer {
 
 }
 
+/**
+ * Despawns an entity or a player.
+ */
 class RemoveEntity : Buffer {
 
 	public enum ubyte ID = 15;
@@ -3472,6 +3578,9 @@ class FullChunkData : Buffer {
 
 }
 
+/**
+ * Indicates whether the cheats are enabled. If not the client cannot send commands.
+ */
 class SetCheatsEnabled : Buffer {
 
 	public enum ubyte ID = 59;
@@ -3514,6 +3623,9 @@ class SetCheatsEnabled : Buffer {
 
 }
 
+/**
+ * Sets the world's difficulty.
+ */
 class SetDifficulty : Buffer {
 
 	public enum ubyte ID = 60;
@@ -3617,6 +3729,11 @@ class ChangeDimension : Buffer {
 
 }
 
+/**
+ * Sets the player's gamemode. This packet is sent by the player when it has the operator
+ * status (set in AdventureSettings.permissions) and it changes the gamemode in the
+ * settings screen.
+ */
 class SetPlayerGametype : Buffer {
 
 	public enum ubyte ID = 62;
@@ -3663,6 +3780,11 @@ class SetPlayerGametype : Buffer {
 
 }
 
+/**
+ * Adds or removes a player from the player's list displayed in the pause menu. This
+ * packet should be sent before spawning a player with AddPlayer, otherwise the skin
+ * is not applied.
+ */
 class PlayerList : Buffer {
 
 	public enum ubyte ID = 63;

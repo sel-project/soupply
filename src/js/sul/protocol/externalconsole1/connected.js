@@ -20,7 +20,7 @@ const Connected = {
 	 * message or any other message that the server retains able to be seen by the External
 	 * Console.
 	 */
-	ConsoleMessage: class {
+	ConsoleMessage: class extends Buffer {
 
 		static get ID(){ return 4; }
 
@@ -47,6 +47,7 @@ const Connected = {
 		 *        of the external console.
 		 */
 		constructor(node="", timestamp=0, logger="", message="") {
+			super();
 			this.node = node;
 			this.timestamp = timestamp;
 			this.logger = logger;
@@ -55,16 +56,24 @@ const Connected = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeString(node);
-			this.writeBigEndianLong(timestamp);
-			this.writeString(logger);
-			this.writeString(message);
+			this._buffer = [];
+			this.writeBigEndianByte(4);
+			var dghpcy5ub2rl=this.encodeString(this.node); this.writeBigEndianShort(dghpcy5ub2rl.length); this.writeBytes(dghpcy5ub2rl);
+			this.writeBigEndianLong(this.timestamp);
+			var dghpcy5sb2dnzxi=this.encodeString(this.logger); this.writeBigEndianShort(dghpcy5sb2dnzxi.length); this.writeBytes(dghpcy5sb2dnzxi);
+			var dghpcy5tzxnzywdl=this.encodeString(this.message); this.writeBigEndianShort(dghpcy5tzxnzywdl.length); this.writeBytes(dghpcy5tzxnzywdl);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.node=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
+			this.timestamp=this.readBigEndianLong();
+			this.logger=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
+			this.message=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
 			return this;
 		}
 
@@ -84,7 +93,7 @@ const Connected = {
 	 * is sent back. A good implementation of the external console client should never
 	 * send this packet if remoteCommands field in Welcome.Accepted is not true.
 	 */
-	Command: class {
+	Command: class extends Buffer {
 
 		static get ID(){ return 5; }
 
@@ -96,18 +105,24 @@ const Connected = {
 		 *        Command to execute on the server.
 		 */
 		constructor(command="") {
+			super();
 			this.command = command;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeString(command);
+			this._buffer = [];
+			this.writeBigEndianByte(5);
+			var dghpcy5jb21tyw5k=this.encodeString(this.command); this.writeBigEndianShort(dghpcy5jb21tyw5k.length); this.writeBytes(dghpcy5jb21tyw5k);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.command=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
 			return this;
 		}
 
@@ -128,7 +143,7 @@ const Connected = {
 	 * of the external console client should never receive this packet avoiding the use
 	 * of the Command packet when the remoteCommands field is false.
 	 */
-	PermissionDenied: class {
+	PermissionDenied: class extends Buffer {
 
 		static get ID(){ return 6; }
 
@@ -136,16 +151,21 @@ const Connected = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor() {
+			super();
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
+			this._buffer = [];
+			this.writeBigEndianByte(6);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
 			return this;
 		}
 

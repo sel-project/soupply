@@ -13,11 +13,32 @@ import java.util.UUID;
 
 import sul.utils.*;
 
+/**
+ * Informations about a player that will be added to the player's list in the pause
+ * menu.
+ */
 public class PlayerList extends Packet {
 
+	/**
+	 * UUID of the player. If it's associated with an XBOX Live account the player's profile
+	 * will also be available in pause menu.
+	 */
 	public UUID uuid;
+
+	/**
+	 * Player's id, used to associate the skin with the game's entity spawned with AddPlayer.
+	 */
 	public long entityId;
+
+	/**
+	 * Player's display name, that can contain Minecraft's formatting codes. It shouldn't
+	 * contain suffixes nor prefixes.
+	 */
 	public String displayName;
+
+	/**
+	 * Player's skin usually given in the Login's packet body.
+	 */
 	public sul.protocol.pocket101.types.Skin skin;
 
 	public PlayerList() {}

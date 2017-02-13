@@ -68,14 +68,14 @@ void diff(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		string con;
 		foreach(i ; 0..max(a.length, b.length)) {
 			void writeImpl(Field field, string cls="", bool cons=false) {
-				data ~= space ~ "\t<tr" ~ (cls.length ? " class=\"" ~ cls ~ "\"" : "") ~ "><td>" ~ toCamelCase(field.name) ~ "</td><td>" ~ convert(field.type) ~ "</td></tr>\n";
+				data ~= space ~ "\t<tr" ~ (cls.length ? " class=\"" ~ cls ~ "\"" : "") ~ "><td>" ~ field.name.replace("_", " ") ~ "</td><td>" ~ convert(field.type) ~ "</td></tr>\n";
 				if(field.constants.length && cons) {
 					con ~= space ~ "\t<li>\n";
-					con ~= space ~ "\t\t<p>" ~ toCamelCase(field.name) ~ "</p>\n";
+					con ~= space ~ "\t\t<p>" ~ field.name.replace("_", " ") ~ "</p>\n";
 					con ~= space ~ "\t\t<table>\n";
 					con ~= space ~ "\t\t\t<tr><th>Constant</th><th>Value</th></tr>\n";
 					foreach(c ; field.constants) {
-						con ~= space ~ "\t\t\t<tr><td>" ~ toCamelCase(c.name) ~ "</td><td class=\"center\">" ~ c.value ~ "</td></tr>\n";
+						con ~= space ~ "\t\t\t<tr><td>" ~ c.name.replace("_", " ") ~ "</td><td class=\"center\">" ~ c.value ~ "</td></tr>\n";
 					}
 					con ~= space ~ "\t\t</table>\n";
 					con ~= space ~ "\t</li>\n";
@@ -108,12 +108,12 @@ void diff(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 						con ~= space ~ "\t\t\t<tr><th>Constant</th><th>Value</th></tr>\n";
 						foreach(j ; 0..max(a[i].constants.length, b[i].constants.length)) {
 							if(j >= a[i].constants.length) {
-								con ~= space ~ "\t\t\t<tr class=\"added\"><td>" ~ toCamelCase(b[i].constants[j].name) ~ "</td><td class=\"center\">" ~ b[i].constants[j].value ~ "</td></tr>\n";
+								con ~= space ~ "\t\t\t<tr class=\"added\"><td>" ~ b[i].constants[j].name.replace("_", " ") ~ "</td><td class=\"center\">" ~ b[i].constants[j].value ~ "</td></tr>\n";
 							} else if(j >= b[i].constants.length) {
-								con ~= space ~ "\t\t\t<tr class=\"removed\"><td>" ~ toCamelCase(a[i].constants[j].name) ~ "</td><td class=\"center\">" ~ a[i].constants[j].value ~ "</td></tr>\n";
+								con ~= space ~ "\t\t\t<tr class=\"removed\"><td>" ~ a[i].constants[j].name.replace("_", " ") ~ "</td><td class=\"center\">" ~ a[i].constants[j].value ~ "</td></tr>\n";
 							} else {
 								//TODO could be changed
-								con ~= space ~ "\t\t\t<tr><td>" ~ toCamelCase(b[i].constants[j].name) ~ "</td><td class=\"center\">" ~ b[i].constants[j].value ~ "</td></tr>\n";
+								con ~= space ~ "\t\t\t<tr><td>" ~ b[i].constants[j].name.replace("_", " ") ~ "</td><td class=\"center\">" ~ b[i].constants[j].value ~ "</td></tr>\n";
 							}
 						}
 						/*foreach(c ; field.constants) {

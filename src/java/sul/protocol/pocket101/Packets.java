@@ -17,6 +17,11 @@ public final class Packets {
 
 	private Packets() {}
 
+	/**
+	 * Packets related to the gameplay. Network-related packets (encapsulation, acks, nacks)
+	 * are managed by RakNet and every packet in this section is encapsualted in an Encapsualted
+	 * packet.
+	 */
 	public static final Map<Integer, Class<? extends Packet>> PLAY;
 
 	static {

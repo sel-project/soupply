@@ -20,7 +20,7 @@ const Login = {
 	 * First packet sent by the server when the connection is successfully established.
 	 * It contains informations about how the external console shall authenticate itself.
 	 */
-	AuthCredentials: class {
+	AuthCredentials: class extends Buffer {
 
 		static get ID(){ return 0; }
 
@@ -43,6 +43,7 @@ const Login = {
 		 *        description.
 		 */
 		constructor(protocol=0, hash=false, hashAlgorithm="", payload=[]) {
+			super();
 			this.protocol = protocol;
 			this.hash = hash;
 			this.hashAlgorithm = hashAlgorithm;
@@ -51,16 +52,24 @@ const Login = {
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeByte(protocol);
-			this.writeBool(hash);
-			this.writeString(hashAlgorithm);
-			this.writeBigEndianShort(payload.length); for(cgf5bg9hza in payload){ this.writeByte(payload[cgf5bg9hza]); }
+			this._buffer = [];
+			this.writeBigEndianByte(0);
+			this.writeBigEndianByte(this.protocol);
+			this.writeBigEndianByte(this.hash?1:0);
+			var dghpcy5oyxnoqwxn=this.encodeString(this.hashAlgorithm); this.writeBigEndianShort(dghpcy5oyxnoqwxn.length); this.writeBytes(dghpcy5oyxnoqwxn);
+			this.writeBigEndianShort(this.payload.length); this.writeBytes(this.payload);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.protocol=this.readBigEndianByte();
+			this.hash=this.readBigEndianByte()!==0;
+			this.hashAlgorithm=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
+			var bhroaxmucgf5bg9h=this.readBigEndianShort(); this.payload=this.readBytes(bhroaxmucgf5bg9h);
 			return this;
 		}
 
@@ -79,7 +88,7 @@ const Login = {
 	 * Performs authentication following the instruncions given by the AuthCredentials
 	 * packet.
 	 */
-	Auth: class {
+	Auth: class extends Buffer {
 
 		static get ID(){ return 1; }
 
@@ -94,18 +103,24 @@ const Login = {
 		 *        The hash can be done with a function (if hashAlgorithm is `sha1`) in D:
 		 */
 		constructor(hash=[]) {
+			super();
 			this.hash = hash;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeBigEndianShort(hash.length); for(agfzaa in hash){ this.writeByte(hash[agfzaa]); }
+			this._buffer = [];
+			this.writeBigEndianByte(1);
+			this.writeBigEndianShort(this.hash.length); this.writeBytes(this.hash);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			var bhroaxmuagfzaa=this.readBigEndianShort(); this.hash=this.readBytes(bhroaxmuagfzaa);
 			return this;
 		}
 
@@ -123,7 +138,7 @@ const Login = {
 	/**
 	 * Indicates the status of the authentication process.
 	 */
-	Welcome: class {
+	Welcome: class extends Buffer {
 
 		static get ID(){ return 2; }
 
@@ -131,18 +146,24 @@ const Login = {
 		static get SERVERBOUND(){ return false; }
 
 		constructor(status=0) {
+			super();
 			this.status = status;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
-			this.writeByte(this.ID);
-			this.writeByte(status);
+			this._buffer = [];
+			this.writeBigEndianByte(2);
+			this.writeBigEndianByte(this.status);
+			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array} buffer */
-		decode(buffer) {
-			if(!(buffer instanceof Uint8Array)) throw new TypeError('buffer is not a Uint8Array');
+		/** @param {Uint8Array}|{Array} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.status=this.readBigEndianByte();
 			return this;
 		}
 
