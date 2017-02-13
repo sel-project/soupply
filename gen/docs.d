@@ -43,6 +43,8 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		auto metadata = game in metadatas;
 		string data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, gameName, ptrs.protocol.to!string, ptrs.data.description.length ? ptrs.data.description.replaceAll(ctRegex!`<[a-z0-9]+>|<\/[a-z0-9]+>`, "").replaceAll(ctRegex!`\[([a-zA-Z0-9_\-\. ]+)\]\([a-zA-Z0-9_\-\.:\#\/]+\)`, "$1").split("\n")[0].strip : "");
 		data ~= "\t\t<h1>" ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "</h1>\n";
+		data ~= "\t\t<a href=\"https://twitter.com/__selproject\" class=\"twitter-follow-button\" data-lang=\"en\" data-show-count=\"true\">Follow @__selproject</a>\n";
+		data ~= "\t\t<div style=\"height:4px\"></div>\n";
 		data ~= "\t\t<div class=\"g-plusone\" data-size=\"medium\"></div>\n";
 		uint[] others;
 		foreach(otherGame, op; protocols) {
@@ -546,6 +548,7 @@ string head(string title, bool back, string game="", string protocol="", string 
 			"\t\t<script src=\"https://apis.google.com/js/platform.js\" async defer></script>\n" ~
 			"\t\t<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js\"></script>\n" ~
 			"\t\t<script>hljs.initHighlightingOnLoad();</script>\n" ~
+			"\t\t<script src=\"https://platform.twitter.com/widgets.js\"></script>\n" ~
 			"\t</head>\n" ~
 			"\t<body>\n" ~
 			"\t\t<div class=\"nav\">" ~

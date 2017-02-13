@@ -11,12 +11,15 @@
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="https://platform.twitter.com/widgets.js"></script>
 	</head>
 	<body>
 		<div class="nav"><a href="../">Index</a>  <a href="https://github.com/sel-project/sel-utils/blob/master/README.md">About</a>    <a href="https://github.com/sel-project/sel-utils/blob/master/TYPES.md">Types</a>    <a href="https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md">Contribute</a>    <a href="https://github.com/sel-project/sel-utils/blob/master/xml/protocol/pocket101.xml">XML</a>    <a href="https://github.com/sel-project/sel-utils">Github</a></div></div>
 </div>
 		<div class="logo" onclick="if(document.body.classList.contains('dark')){document.body.classList.remove('dark');}else{document.body.classList.add('dark');}"></div>
 		<h1>Minecraft: Pocket Edition 101</h1>
+		<a href="https://twitter.com/__selproject" class="twitter-follow-button" data-lang="en" data-show-count="true">Follow @__selproject</a>
+		<div style="height:4px"></div>
 		<div class="g-plusone" data-size="medium"></div>
 		<p><strong>Jump to</strong>: <a href="#encoding">Encoding</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a>, <a href="#arrays">Arrays</a>, <a href="#metadata">Metadata</a>, <a href="#attributes">Attributes</a></p>
 		<p><strong>Released</strong>: February 9th, 2017</p>
@@ -49,6 +52,7 @@
 			</tr>
 		</table>
 		<h3 id="play">Play</h3>
+		<p>Packets related to the gameplay. Network-related packets (encapsulation, acks, nacks) are managed by <a href="../raknet/8.html" target="_blank">RakNet</a> and every packet in this section is encapsualted in an <a href="../raknet/8.html#control_encapsulated" target="_blank">Encapsualted</a> packet.</p>
 		<table>
 			<tr>
 				<th>Packets</th>
@@ -601,6 +605,7 @@
 					<p><strong>Bin</strong>: 00000010</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Packet sent as response to <a href="#play_login">Login</a> to indicate whether the connection has been accepted and when the player is ready to spawn in the world.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -617,30 +622,36 @@
 						<strong id="play_play-status_status">status</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
-							<tr><th>Name</th><th>Value</th></tr>
+							<tr><th>Name</th><th>Value</th><th></th></tr>
 							<tr>
 								<td>ok</td>
 								<td class="center">0</td>
+								<td>Keep the connection alive</td>
 							</tr>
 							<tr>
 								<td>outdated client</td>
 								<td class="center">1</td>
+								<td>Disconnect with outdated client message</td>
 							</tr>
 							<tr>
 								<td>outdated server</td>
 								<td class="center">2</td>
+								<td>Disconnect with outdated server message</td>
 							</tr>
 							<tr>
 								<td>spawned</td>
 								<td class="center">3</td>
+								<td>Spawn in a world</td>
 							</tr>
 							<tr>
 								<td>invalid tenant</td>
 								<td class="center">4</td>
+								<td></td>
 							</tr>
 							<tr>
 								<td>edition mismatch</td>
 								<td class="center">5</td>
+								<td></td>
 							</tr>
 						</table>
 					</li>
@@ -687,21 +698,35 @@
 					<p><strong>Bin</strong>: 00000101</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Disconnects the player from the server.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
 						<th>Name</th>
 						<th>Type</th>
+						<th>When</th>
 					</tr>
 					<tr>
-						<td>hide disconnection screen</td>
+						<td><a href="#play_disconnect_hide-disconnection-screen">hide disconnection screen</a></td>
 						<td>bool</td>
+						<td class="center"></td>
 					</tr>
 					<tr>
-						<td>message</td>
+						<td><a href="#play_disconnect_message">message</a></td>
 						<td>string</td>
+						<td class="center"><code>hide disconnection screen</code> is <code><span style="color:#009688">false</span></code></td>
 					</tr>
 				</table>
+				<ul>
+					<li>
+						<strong id="play_disconnect_hide-disconnection-screen">hide disconnection screen</strong>
+						<p>Indicates whether to display the main menu screen or a disconnection message.</p>
+					</li>
+					<li>
+						<strong id="play_disconnect_message">message</strong>
+						<p>The message to display in the disconnection screen. If the message is in the game's language file it will be translated client-side.</p>
+					</li>
+				</ul>
 			</li>
 			<li>
 				<h3 id="play_batch">Batch</h3>
@@ -711,6 +736,7 @@
 					<p><strong>Bin</strong>: 00000110</p>
 					<p>Sent by the <strong>server</strong> and the <strong>client</strong></p>
 				</div>
+				<p>One ore more packet, each prefixed with their varuint-encoded length, compressed with zlib's deflate algorithm.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -718,10 +744,39 @@
 						<th>Type</th>
 					</tr>
 					<tr>
-						<td>data</td>
+						<td><a href="#play_batch_data">data</a></td>
 						<td>ubyte[]</td>
 					</tr>
 				</table>
+				<ul>
+					<li>
+						<strong id="play_batch_data">data</strong>
+						<p>Compressed data.</p>
+						<p>Pseudo-code for decompression:</p>
+						<pre>
+							<code class="c">ubyte[] uncompressed = uncompress(batch.payload);
+size_t index = 0;
+while(index < uncompressed.length) {
+   size_t length = varuint.decode(uncompressed, &index);
+   if(length < uncompressed.length - index) {}
+      ubyte[] packet = uncompressed[0..length];
+      index += length;
+   }
+}
+</code>
+						</pre>
+						<p>Pseudo-code for compression:</p>
+						<pre>
+							<code class="c">ubyte[] payload;
+foreach(ubyte[] packet ; packets) {
+   payload ~= varuint.encode(packet.length);
+   payload ~= packet;
+}
+Batch batch = new Batch(compress(payload));
+</code>
+						</pre>
+					</li>
+				</ul>
 			</li>
 			<li>
 				<h3 id="play_resource-packs-info">Resource Packs Info</h3>
@@ -783,6 +838,7 @@
 					<p><strong>Bin</strong>: 00001010</p>
 					<p>Sent by the <strong>server</strong> and the <strong>client</strong></p>
 				</div>
+				<p>Sends or receives a message from the player. Every variant's field can contain Minecraft's formatting codes.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -840,6 +896,7 @@
 				<ul>
 					<li>
 						<h3 id="play_text_raw">Raw</h3>
+						<p>Raw message that will be printed in the chat as it is.</p>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr>
@@ -854,6 +911,7 @@
 					</li>
 					<li>
 						<h3 id="play_text_chat">Chat</h3>
+						<p>Chat message sent by the player to the server. If sent from the server it will display as <code>&lt;sender&gt; message</code>.</p>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr>
@@ -861,17 +919,28 @@
 								<th>Type</th>
 							</tr>
 							<tr>
-								<td>sender</td>
+								<td><a href="#play_text_chat_sender">sender</a></td>
 								<td>string</td>
 							</tr>
 							<tr>
-								<td>message</td>
+								<td><a href="#play_text_chat_message">message</a></td>
 								<td>string</td>
 							</tr>
 						</table>
+						<ul>
+							<li>
+								<strong id="play_text_chat_sender">sender</strong>
+								<p>Case sensitive name of the player that has sent the message.</p>
+							</li>
+							<li>
+								<strong id="play_text_chat_message">message</strong>
+								<p>Message sent by the player. It should be unformatted (regular expression: <code>§[a-fA-F0-9k-or]</code>) before being processed as chat message by the server.</p>
+							</li>
+						</ul>
 					</li>
 					<li>
 						<h3 id="play_text_translation">Translation</h3>
+						<p>Sends a message that will be translated client-side using the player's language.</p>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr>
@@ -879,17 +948,28 @@
 								<th>Type</th>
 							</tr>
 							<tr>
-								<td>message</td>
+								<td><a href="#play_text_translation_message">message</a></td>
 								<td>string</td>
 							</tr>
 							<tr>
-								<td>parameters</td>
+								<td><a href="#play_text_translation_parameters">parameters</a></td>
 								<td>string[]</td>
 							</tr>
 						</table>
+						<ul>
+							<li>
+								<strong id="play_text_translation_message">message</strong>
+								<p>A message in the game's language file.</p>
+							</li>
+							<li>
+								<strong id="play_text_translation_parameters">parameters</strong>
+								<p>Parameters that will be placed instead of the replacement symbols (%1, %2, etc...).</p>
+							</li>
+						</ul>
 					</li>
 					<li>
 						<h3 id="play_text_popup">Popup</h3>
+						<p>Displays popups messages for one tick before fading out. The popup messages are displayed at the centre of the screen and are not automatically aligned horizontally.</p>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr>
@@ -908,6 +988,7 @@
 					</li>
 					<li>
 						<h3 id="play_text_tip">Tip</h3>
+						<p>Displays a tip message for one tick before fading out. The tip message is displayed on top of the inventory bar and can contain multiple lines separated with <code>\n</code>.</p>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr>
@@ -936,6 +1017,7 @@
 					</li>
 					<li>
 						<h3 id="play_text_whisper">Whisper</h3>
+						<p>Sends a whisper message to the client that will be displayed in the format <code><i>sender has whispered to you:</i> message</code>.</p>
 						<p><strong>Additional Fields</strong>:</p>
 						<table>
 							<tr>
@@ -962,6 +1044,7 @@
 					<p><strong>Bin</strong>: 00001011</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Sets the <a href="http://minecraft.gamepedia.com/Day-night_cycle" target="_blank">time</a>.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -969,14 +1052,24 @@
 						<th>Type</th>
 					</tr>
 					<tr>
-						<td>time</td>
+						<td><a href="#play_set-time_time">time</a></td>
 						<td>varint</td>
 					</tr>
 					<tr>
-						<td>daylight cycle</td>
+						<td><a href="#play_set-time_daylight-cycle">daylight cycle</a></td>
 						<td>bool</td>
 					</tr>
 				</table>
+				<ul>
+					<li>
+						<strong id="play_set-time_time">time</strong>
+						<p>Time of the day in a range from 0 to 24000. If higher or lower it will be moduled to 24000.</p>
+					</li>
+					<li>
+						<strong id="play_set-time_daylight-cycle">daylight cycle</strong>
+						<p>Indicates whether the daylight cycle is active. If not, the time will be stopped at the value given in the previous field.</p>
+					</li>
+				</ul>
 			</li>
 			<li>
 				<h3 id="play_start-game">Start Game</h3>
@@ -1291,6 +1384,7 @@
 					<p><strong>Bin</strong>: 00001111</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Despawns an entity or a player.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -3445,6 +3539,7 @@
 					<p><strong>Bin</strong>: 00111011</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Indicates whether the cheats are enabled. If not the client cannot send commands.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -3465,6 +3560,7 @@
 					<p><strong>Bin</strong>: 00111100</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Sets the world's difficulty.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -3559,6 +3655,7 @@
 					<p><strong>Bin</strong>: 00111110</p>
 					<p>Sent by the <strong>server</strong> and the <strong>client</strong></p>
 				</div>
+				<p>Sets the player's gamemode. This packet is sent by the player when it has the operator status (set in <a href="#play_adventure-settings_permissions">AdventureSettings.permissions</a>) and it changes the gamemode in the settings screen.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -3596,6 +3693,7 @@
 					<p><strong>Bin</strong>: 00111111</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Adds or removes a player from the player's list displayed in the pause menu. This packet should be sent before spawning a player with <a href="#play_add-player">AddPlayer</a>, otherwise the skin is not applied.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -4370,6 +4468,7 @@ var count = count & 255
 			</li>
 			<li>
 				<h3 id="types_player-list">Player List</h3>
+				<p>Informations about a player that will be added to the player's list in the pause menu.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -4377,22 +4476,40 @@ var count = count & 255
 						<th>Type</th>
 					</tr>
 					<tr>
-						<td>uuid</td>
+						<td><a href="#types_player-list_uuid">uuid</a></td>
 						<td>uuid</td>
 					</tr>
 					<tr>
-						<td>entity id</td>
+						<td><a href="#types_player-list_entity-id">entity id</a></td>
 						<td>varlong</td>
 					</tr>
 					<tr>
-						<td>display name</td>
+						<td><a href="#types_player-list_display-name">display name</a></td>
 						<td>string</td>
 					</tr>
 					<tr>
-						<td>skin</td>
+						<td><a href="#types_player-list_skin">skin</a></td>
 						<td><a href="#types_skin">skin</a></td>
 					</tr>
 				</table>
+				<ul>
+					<li>
+						<strong id="types_player-list_uuid">uuid</strong>
+						<p>UUID of the player. If it's associated with an XBOX Live account the player's profile will also be available in pause menu.</p>
+					</li>
+					<li>
+						<strong id="types_player-list_entity-id">entity id</strong>
+						<p>Player's id, used to associate the skin with the game's entity spawned with <a href="#play_add-player">AddPlayer</a>.</p>
+					</li>
+					<li>
+						<strong id="types_player-list_display-name">display name</strong>
+						<p>Player's display name, that can contain Minecraft's formatting codes. It shouldn't contain suffixes nor prefixes.</p>
+					</li>
+					<li>
+						<strong id="types_player-list_skin">skin</strong>
+						<p>Player's skin usually given in the <a href="#play_login">Login</a>'s packet body.</p>
+					</li>
+				</ul>
 			</li>
 			<li>
 				<h3 id="types_recipe">Recipe</h3>

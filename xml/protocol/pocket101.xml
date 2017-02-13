@@ -79,10 +79,19 @@
 		</type>
 
 		<type name="player-list">
-			<field name="uuid" type="uuid" />
-			<field name="entity-id" type="entity-id" />
-			<field name="display-name" type="string" />
-			<field name="skin" type="skin" />
+			Informations about a player that will be added to the player's list in the pause menu.
+			<field name="uuid" type="uuid">
+				UUID of the player. If it's associated with an XBOX Live account the player's profile will also be available in pause menu.
+			</field>
+			<field name="entity-id" type="entity-id">
+				Player's id, used to associate the skin with the game's entity spawned with [AddPlayer](#play_add-player).
+			</field>
+			<field name="display-name" type="string">
+				Player's display name, that can contain Minecraft's formatting codes. It shouldn't contain suffixes nor prefixes.
+			</field>
+			<field name="skin" type="skin">
+				Player's skin usually given in the [Login](#play_login)'s packet body.
+			</field>
 		</type>
 
 		<type name="recipe">
@@ -102,6 +111,8 @@
 
 		<section name="play">
 
+			Packets related to the gameplay. Network-related packets (encapsulation, acks, nacks) are managed by [RakNet](../raknet/8.html) and every packet in this section is encapsualted in an [Encapsualted](../raknet/8.html#control_encapsulated) packet.
+
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
 				<field name="protocol" type="uint">
@@ -118,11 +129,20 @@
 			</packet>
 
 			<packet name="play-status" id="2" clientbound="true" serverbound="false">
+				Packet sent as response to [Login](#play_login) to indicate whether the connection has been accepted and when the player is ready to spawn in the world.
 				<field name="status" type="uint">
-					<constant name="ok" value="0" />
-					<constant name="outdated-client" value="1" />
-					<constant name="outdated-server" value="2" />
-					<constant name="spawned" value="3" />
+					<constant name="ok" value="0">
+						Keep the connection alive
+					</constant>
+					<constant name="outdated-client" value="1">
+						Disconnect with outdated client message
+					</constant>
+					<constant name="outdated-server" value="2">
+						Disconnect with outdated server message
+					</constant>
+					<constant name="spawned" value="3">
+						Spawn in a world
+					</constant>
 					<constant name="invalid-tenant" value="4" />
 					<constant name="edition-mismatch" value="5" />
 				</field>
@@ -138,12 +158,43 @@
 			</packet>
 
 			<packet name="disconnect" id="5" clientbound="true" serverbound="false">
-				<field name="hide-disconnection-screen" type="bool" />
-				<field name="message" type="string" />
+				Disconnects the player from the server.
+				<field name="hide-disconnection-screen" type="bool">
+					Indicates whether to display the main menu screen or a disconnection message.
+				</field>
+				<field name="message" type="string" when="hide-disconnection-screen==false">
+					The message to display in the disconnection screen. If the message is in the game's language file it will be translated client-side.
+				</field>
 			</packet>
 
 			<packet name="batch" id="6" clientbound="true" serverbound="true">
-				<field name="data" type="ubyte[]" />
+				One ore more packet, each prefixed with their varuint-encoded length, compressed with zlib's deflate algorithm.
+				<field name="data" type="ubyte[]">
+					Compressed data.
+
+					Pseudo-code for decompression:
+					```c
+					ubyte[] uncompressed = uncompress(batch.payload);
+					size_t index = 0;
+					while(index &lt; uncompressed.length) {
+					   size_t length = varuint.decode(uncompressed, &index);
+					   if(length &lt; uncompressed.length - index) {}
+					      ubyte[] packet = uncompressed[0..length];
+					      index += length;
+					   }
+					}
+					```
+
+					Pseudo-code for compression:
+					```c
+					ubyte[] payload;
+					foreach(ubyte[] packet ; packets) {
+					   payload ~= varuint.encode(packet.length);
+					   payload ~= packet;
+					}
+					Batch batch = new Batch(compress(payload));
+					```
+				</field>
 			</packet>
 
 			<packet name="resource-packs-info" id="7" clientbound="true" serverbound="false">
@@ -158,30 +209,45 @@
 			</packet>
 
 			<packet name="text" id="10" clientbound="true" serverbound="true">
+				Sends or receives a message from the player. Every variant's field can contain Minecraft's formatting codes.
 				<field name="type" type="ubyte" />
 				<variants field="type">
 					<variant name="raw" value="0">
+						Raw message that will be printed in the chat as it is.
 						<field name="message" type="string" />
 					</variant>
 					<variant name="chat" value="1">
-						<field name="sender" type="string" />
-						<field name="message" type="string" />
+						Chat message sent by the player to the server. If sent from the server it will display as `&amp;lt;sender&amp;gt; message`.
+						<field name="sender" type="string">
+							Case sensitive name of the player that has sent the message.
+						</field>
+						<field name="message" type="string">
+							Message sent by the player. It should be unformatted (regular expression: `§[a-fA-F0-9k-or]`) before being processed as chat message by the server.
+						</field>
 					</variant>
 					<variant name="translation" value="2">
-						<field name="message" type="string" />
-						<field name="parameters" type="string[]" />
+						Sends a message that will be translated client-side using the player's language.
+						<field name="message" type="string">
+							A message in the game's language file.
+						</field>
+						<field name="parameters" type="string[]">
+							Parameters that will be placed instead of the replacement symbols (%1, %2, etc...).
+						</field>
 					</variant>
 					<variant name="popup" value="3">
+						Displays popups messages for one tick before fading out. The popup messages are displayed at the centre of the screen and are not automatically aligned horizontally.
 						<field name="title" type="string" />
 						<field name="subtitle" type="string" />
 					</variant>
 					<variant name="tip" value="4">
+						Displays a tip message for one tick before fading out. The tip message is displayed on top of the inventory bar and can contain multiple lines separated with `\n`.
 						<field name="message" type="string" />
 					</variant>
 					<variant name="system" value="5">
 						<field name="message" type="string" />
 					</variant>
 					<variant name="whisper" value="6">
+						Sends a whisper message to the client that will be displayed in the format `&lt;i&gt;sender has whispered to you:&lt;/i&gt; message`.
 						<field name="sender" type="string" />
 						<field name="message" type="string" />
 					</variant>
@@ -189,8 +255,13 @@
 			</packet>
 
 			<packet name="set-time" id="11" clientbound="true" serverbound="false">
-				<field name="time" type="varint" />
-				<field name="daylight-cycle" type="bool" />
+				Sets the [time](http://minecraft.gamepedia.com/Day-night_cycle).
+				<field name="time" type="varint">
+					Time of the day in a range from 0 to 24000. If higher or lower it will be moduled to 24000.
+				</field>
+				<field name="daylight-cycle" type="bool">
+					Indicates whether the daylight cycle is active. If not, the time will be stopped at the value given in the previous field.
+				</field>
 			</packet>
 
 			<packet name="start-game" id="12" clientbound="true" serverbound="false">
@@ -263,6 +334,7 @@
 			</packet>
 
 			<packet name="remove-entity" id="15" clientbound="true" serverbound="false">
+				Despawns an entity or a player.
 				<field name="entity-id" type="entity-id" />
 			</packet>
 
@@ -744,10 +816,12 @@
 			</packet>
 
 			<packet name="set-cheats-enabled" id="59" clientbound="true" serverbound="false">
+				Indicates whether the cheats are enabled. If not the client cannot send commands.
 				<field name="enabled" type="bool" />
 			</packet>
 
 			<packet name="set-difficulty" id="60" clientbound="true" serverbound="false">
+				Sets the world's difficulty.
 				<field name="difficulty" type="varuint">
 					<constant name="peaceful" value="0" />
 					<constant name="easy" value="1" />
@@ -767,6 +841,7 @@
 			</packet>
 
 			<packet name="set-player-gametype" id="62" clientbound="true" serverbound="true">
+				Sets the player's gamemode. This packet is sent by the player when it has the operator status (set in [AdventureSettings.permissions](#play_adventure-settings_permissions)) and it changes the gamemode in the settings screen.
 				<field name="gametype" type="varint">
 					<constant name="survival" value="0" />
 					<constant name="creative" value="1" />
@@ -774,6 +849,7 @@
 			</packet>
 
 			<packet name="player-list" id="63" clientbound="true" serverbound="false">
+				Adds or removes a player from the player's list displayed in the pause menu. This packet should be sent before spawning a player with [AddPlayer](#play_add-player), otherwise the skin is not applied.
 				<field name="action" type="ubyte" />
 				<variants field="action">
 					<variant name="add" value="0">
