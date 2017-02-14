@@ -21,6 +21,7 @@ class Buffer {
 	readBytes(a) {
 		var ret = this._buffer.slice(0, a);
 		this._buffer = this._buffer.slice(a, this._buffer.length);
+		while(ret.length < a) ret.push(0)
 		return ret;
 	}
 

@@ -131,7 +131,7 @@ const Types = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
-			this.game=Types.Game.fromBuffer(this._buffer.slice(this._index)); this._index+=this.game._index;
+			this.game=Types.Game.fromBuffer(this._buffer); this._buffer=this.game._buffer;
 			this.motd=this.decodeString(this.readBytes(this.readVaruint()));
 			this.port=this.readBigEndianShort();
 			return this;

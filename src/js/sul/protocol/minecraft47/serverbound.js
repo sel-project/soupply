@@ -128,7 +128,7 @@ const Serverbound = {
 			var _id=this.readVaruint();
 			this.target=this.readVaruint();
 			this.type=this.readVaruint();
-			if(type==2){ this.targetPosition={} this.targetPosition.x=this.readBigEndianFloat(); this.targetPosition.y=this.readBigEndianFloat(); this.targetPosition.z=this.readBigEndianFloat(); }
+			if(type==2){ this.targetPosition={}; this.targetPosition.x=this.readBigEndianFloat(); this.targetPosition.y=this.readBigEndianFloat(); this.targetPosition.z=this.readBigEndianFloat(); }
 			return this;
 		}
 
@@ -210,7 +210,7 @@ const Serverbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={}; this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.onGround=this.readBigEndianByte()!==0;
 			return this;
 		}
@@ -303,7 +303,7 @@ const Serverbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={}; this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.yaw=this.readBigEndianFloat();
 			this.pitch=this.readBigEndianFloat();
 			this.onGround=this.readBigEndianByte()!==0;
@@ -409,8 +409,8 @@ const Serverbound = {
 			var _id=this.readVaruint();
 			this.position=this.readBigEndianLong();
 			this.face=this.readBigEndianByte();
-			this.heldItem=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.heldItem._index;
-			this.cursorPosition={} this.cursorPosition.x=this.readBigEndianByte(); this.cursorPosition.y=this.readBigEndianByte(); this.cursorPosition.z=this.readBigEndianByte();
+			this.heldItem=Types.Slot.fromBuffer(this._buffer); this._buffer=this.heldItem._buffer;
+			this.cursorPosition={}; this.cursorPosition.x=this.readBigEndianByte(); this.cursorPosition.y=this.readBigEndianByte(); this.cursorPosition.z=this.readBigEndianByte();
 			return this;
 		}
 
@@ -687,7 +687,7 @@ const Serverbound = {
 			this.button=this.readBigEndianByte();
 			this.action=this.readBigEndianShort();
 			this.mode=this.readVaruint();
-			this.clickedItem=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.clickedItem._index;
+			this.clickedItem=Types.Slot.fromBuffer(this._buffer); this._buffer=this.clickedItem._buffer;
 			return this;
 		}
 
@@ -776,7 +776,7 @@ const Serverbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.slot=this.readBigEndianShort();
-			this.clickedItem=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.clickedItem._index;
+			this.clickedItem=Types.Slot.fromBuffer(this._buffer); this._buffer=this.clickedItem._buffer;
 			return this;
 		}
 
@@ -1121,7 +1121,7 @@ const Serverbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.channel=this.decodeString(this.readBytes(this.readVaruint()));
-			this.data=this.readBytes(this._buffer.length-this._index);
+			this.data=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 

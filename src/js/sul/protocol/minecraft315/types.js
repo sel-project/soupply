@@ -112,7 +112,7 @@ const Types = {
 			this.id=this.readBigEndianShort();
 			if(id>0){ this.count=this.readBigEndianByte(); }
 			if(id>0){ this.damage=this.readBigEndianShort(); }
-			if(id>0){ this.nbt=this.readBytes(this._buffer.length-this._index); }
+			if(id>0){ this.nbt=Array.from(this._buffer); this._buffer=[]; }
 			return this;
 		}
 
@@ -160,7 +160,7 @@ const Types = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			this.directionAndType=this.readBigEndianByte();
-			this.position={} this.position.x=this.readBigEndianByte(); this.position.z=this.readBigEndianByte();
+			this.position={}; this.position.x=this.readBigEndianByte(); this.position.z=this.readBigEndianByte();
 			return this;
 		}
 
@@ -255,7 +255,7 @@ const Types = {
 			this._index = 0;
 			this.uuid=this.readBytes(16);
 			this.name=this.decodeString(this.readBytes(this.readVaruint()));
-			var bhroaxmuchjvcgvy=this.readVaruint(); this.properties=[]; for(var dghpcy5wcm9wzxj0 in this.properties){ this.properties[dghpcy5wcm9wzxj0]=Types.Property.fromBuffer(this._buffer.slice(this._index)); this._index+=this.properties[dghpcy5wcm9wzxj0]._index; }
+			var bhroaxmuchjvcgvy=this.readVaruint(); this.properties=[]; for(var dghpcy5wcm9wzxj0 in this.properties){ this.properties[dghpcy5wcm9wzxj0]=Types.Property.fromBuffer(this._buffer); this._buffer=this.properties[dghpcy5wcm9wzxj0]._buffer; }
 			this.gamemode=this.readVaruint();
 			this.latency=this.readVaruint();
 			this.hasDisplayName=this.readBigEndianByte()!==0;
@@ -459,7 +459,7 @@ const Types = {
 			this._index = 0;
 			this.key=this.decodeString(this.readBytes(this.readVaruint()));
 			this.value=this.readBigEndianDouble();
-			var bhroaxmubw9kawzp=this.readVaruint(); this.modifiers=[]; for(var dghpcy5tb2rpzmll in this.modifiers){ this.modifiers[dghpcy5tb2rpzmll]=Types.Modifier.fromBuffer(this._buffer.slice(this._index)); this._index+=this.modifiers[dghpcy5tb2rpzmll]._index; }
+			var bhroaxmubw9kawzp=this.readVaruint(); this.modifiers=[]; for(var dghpcy5tb2rpzmll in this.modifiers){ this.modifiers[dghpcy5tb2rpzmll]=Types.Modifier.fromBuffer(this._buffer); this._buffer=this.modifiers[dghpcy5tb2rpzmll]._buffer; }
 			return this;
 		}
 

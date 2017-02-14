@@ -225,7 +225,7 @@ const Status = {
 			this.uptime=this.readBigEndianInt();
 			this.upload=this.readBigEndianInt();
 			this.download=this.readBigEndianInt();
-			var bhroaxmubm9kzxm=this.readBigEndianShort(); this.nodes=[]; for(var dghpcy5ub2rlcw in this.nodes){ this.nodes[dghpcy5ub2rlcw]=Types.NodeStats.fromBuffer(this._buffer.slice(this._index)); this._index+=this.nodes[dghpcy5ub2rlcw]._index; }
+			var bhroaxmubm9kzxm=this.readBigEndianShort(); this.nodes=[]; for(var dghpcy5ub2rlcw in this.nodes){ this.nodes[dghpcy5ub2rlcw]=Types.NodeStats.fromBuffer(this._buffer); this._buffer=this.nodes[dghpcy5ub2rlcw]._buffer; }
 			return this;
 		}
 

@@ -303,8 +303,8 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.mustAccept=this.readBigEndianByte()!==0;
-			var bhroaxmuymvoyxzp=this.readVaruint(); this.behaviourPacks=[]; for(var dghpcy5izwhhdmlv in this.behaviourPacks){ this.behaviourPacks[dghpcy5izwhhdmlv]=Types.Pack.fromBuffer(this._buffer.slice(this._index)); this._index+=this.behaviourPacks[dghpcy5izwhhdmlv]._index; }
-			var bhroaxmucmvzb3vy=this.readVaruint(); this.resourcePacks=[]; for(var dghpcy5yzxnvdxjj in this.resourcePacks){ this.resourcePacks[dghpcy5yzxnvdxjj]=Types.Pack.fromBuffer(this._buffer.slice(this._index)); this._index+=this.resourcePacks[dghpcy5yzxnvdxjj]._index; }
+			var bhroaxmuymvoyxzp=this.readVaruint(); this.behaviourPacks=[]; for(var dghpcy5izwhhdmlv in this.behaviourPacks){ this.behaviourPacks[dghpcy5izwhhdmlv]=Types.Pack.fromBuffer(this._buffer); this._buffer=this.behaviourPacks[dghpcy5izwhhdmlv]._buffer; }
+			var bhroaxmucmvzb3vy=this.readVaruint(); this.resourcePacks=[]; for(var dghpcy5yzxnvdxjj in this.resourcePacks){ this.resourcePacks[dghpcy5yzxnvdxjj]=Types.Pack.fromBuffer(this._buffer); this._buffer=this.resourcePacks[dghpcy5yzxnvdxjj]._buffer; }
 			return this;
 		}
 
@@ -369,6 +369,15 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return true; }
 
+		// type (variant)
+		static get RAW(){ return 0; }
+		static get CHAT(){ return 1; }
+		static get TRANSLATION(){ return 2; }
+		static get POPUP(){ return 3; }
+		static get TIP(){ return 4; }
+		static get SYSTEM(){ return 5; }
+		static get WHISPER(){ return 6; }
+
 		constructor(type=0) {
 			super();
 			this.type = type;
@@ -388,6 +397,34 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.type=this.readBigEndianByte();
+			switch(this.type) {
+				case 0:
+					this.message=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				case 1:
+					this.sender=this.decodeString(this.readBytes(this.readVaruint()));
+					this.message=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				case 2:
+					this.message=this.decodeString(this.readBytes(this.readVaruint()));
+					var bhroaxmucgfyyw1l=this.readVaruint(); this.parameters=[]; for(var dghpcy5wyxjhbwv0 in this.parameters){ this.parameters[dghpcy5wyxjhbwv0]=this.decodeString(this.readBytes(this.readVaruint())); }
+					break;
+				case 3:
+					this.title=this.decodeString(this.readBytes(this.readVaruint()));
+					this.subtitle=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				case 4:
+					this.message=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				case 5:
+					this.message=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				case 6:
+					this.sender=this.decodeString(this.readBytes(this.readVaruint()));
+					this.message=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				default: break;
+			}
 			return this;
 		}
 
@@ -534,7 +571,7 @@ const Play = {
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
 			this.runtimeId=this.readVarlong();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.yaw=this.readLittleEndianFloat();
 			this.pitch=this.readLittleEndianFloat();
 			this.seed=this.readVarint();
@@ -542,7 +579,7 @@ const Play = {
 			this.generator=this.readVarint();
 			this.worldGamemode=this.readVarint();
 			this.difficulty=this.readVarint();
-			this.spawnPosition={} this.spawnPosition.x=this.readVarint(); this.spawnPosition.y=this.readVarint(); this.spawnPosition.z=this.readVarint();
+			this.spawnPosition={}; this.spawnPosition.x=this.readVarint(); this.spawnPosition.y=this.readVarint(); this.spawnPosition.z=this.readVarint();
 			this.loadedInCreative=this.readBigEndianByte()!==0;
 			this.time=this.readVarint();
 			this.edition=this.readBigEndianByte();
@@ -615,13 +652,13 @@ const Play = {
 			this.username=this.decodeString(this.readBytes(this.readVaruint()));
 			this.entityId=this.readVarlong();
 			this.runtimeId=this.readVarlong();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
-			this.motion={} this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.motion={}; this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
 			this.pitch=this.readLittleEndianFloat();
 			this.headYaw=this.readLittleEndianFloat();
 			this.yaw=this.readLittleEndianFloat();
-			this.heldItem=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.heldItem._index;
-			this.metadata=Metadata.fromBuffer(this._buffer.slice(this._index)); this._index+=this.metadata._index;
+			this.heldItem=Types.Slot.fromBuffer(this._buffer); this._buffer=this.heldItem._buffer;
+			this.metadata=Metadata.fromBuffer(this._buffer); this._buffer=this.metadata._buffer;
 			return this;
 		}
 
@@ -682,12 +719,12 @@ const Play = {
 			this.entityId=this.readVarlong();
 			this.runtimeId=this.readVarlong();
 			this.type=this.readVaruint();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
-			this.motion={} this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.motion={}; this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
 			this.pitch=this.readLittleEndianFloat();
 			this.yaw=this.readLittleEndianFloat();
-			var bhroaxmuyxr0cmli=this.readVaruint(); this.attributes=[]; for(var dghpcy5hdhryawj1 in this.attributes){ this.attributes[dghpcy5hdhryawj1]=Types.Attribute.fromBuffer(this._buffer.slice(this._index)); this._index+=this.attributes[dghpcy5hdhryawj1]._index; }
-			this.metadata=Metadata.fromBuffer(this._buffer.slice(this._index)); this._index+=this.metadata._index;
+			var bhroaxmuyxr0cmli=this.readVaruint(); this.attributes=[]; for(var dghpcy5hdhryawj1 in this.attributes){ this.attributes[dghpcy5hdhryawj1]=Types.Attribute.fromBuffer(this._buffer); this._buffer=this.attributes[dghpcy5hdhryawj1]._buffer; }
+			this.metadata=Metadata.fromBuffer(this._buffer); this._buffer=this.metadata._buffer;
 			var bhroaxmubglua3m=this.readVaruint(); this.links=[]; for(var dghpcy5saw5rcw in this.links){ this.links[dghpcy5saw5rcw]=this.readVarlong(); }
 			return this;
 		}
@@ -778,9 +815,9 @@ const Play = {
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
 			this.runtimeId=this.readVarlong();
-			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
-			this.motion={} this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
+			this.item=Types.Slot.fromBuffer(this._buffer); this._buffer=this.item._buffer;
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.motion={}; this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
 			return this;
 		}
 
@@ -828,7 +865,7 @@ const Play = {
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
 			this.runtimeId=this.readVarlong();
-			this.position=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.position._index;
+			this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer;
 			this.unknown3=this.readVarint();
 			return this;
 		}
@@ -921,7 +958,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.pitch=this.readBigEndianByte();
 			this.headYaw=this.readBigEndianByte();
 			this.yaw=this.readBigEndianByte();
@@ -982,7 +1019,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.pitch=this.readLittleEndianFloat();
 			this.headYaw=this.readLittleEndianFloat();
 			this.yaw=this.readLittleEndianFloat();
@@ -1067,7 +1104,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.position._index;
+			this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer;
 			return this;
 		}
 
@@ -1117,7 +1154,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.position._index;
+			this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer;
 			this.block=this.readVaruint();
 			this.flagsAndMeta=this.readVaruint();
 			return this;
@@ -1169,7 +1206,7 @@ const Play = {
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
 			this.runtimeId=this.readVarlong();
-			this.position=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.position._index;
+			this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer;
 			this.direction=this.readVarint();
 			this.title=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
@@ -1215,9 +1252,9 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.radius=this.readLittleEndianFloat();
-			var bhroaxmuzgvzdhjv=this.readVaruint(); this.destroyedBlocks=[]; for(var dghpcy5kzxn0cm95 in this.destroyedBlocks){ this.destroyedBlocks[dghpcy5kzxn0cm95]=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.destroyedBlocks[dghpcy5kzxn0cm95]._index; }
+			var bhroaxmuzgvzdhjv=this.readVaruint(); this.destroyedBlocks=[]; for(var dghpcy5kzxn0cm95 in this.destroyedBlocks){ this.destroyedBlocks[dghpcy5kzxn0cm95]=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.destroyedBlocks[dghpcy5kzxn0cm95]._buffer; }
 			return this;
 		}
 
@@ -1360,7 +1397,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.sound=this.readBigEndianByte();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.volume=this.readVaruint();
 			this.pitch=this.readVarint();
 			this.unknown4=this.readBigEndianByte()!==0;
@@ -1458,7 +1495,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.eventId=this.readVarint();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.data=this.readVarint();
 			return this;
 		}
@@ -1501,7 +1538,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.position._index;
+			this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer;
 			var bhroaxmuzgf0yq=2; this.data=[]; for(var dghpcy5kyxrh in this.data){ this.data[dghpcy5kyxrh]=this.readVarint(); }
 			return this;
 		}
@@ -1667,7 +1704,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
-			var bhroaxmuyxr0cmli=this.readVaruint(); this.attributes=[]; for(var dghpcy5hdhryawj1 in this.attributes){ this.attributes[dghpcy5hdhryawj1]=Types.Attribute.fromBuffer(this._buffer.slice(this._index)); this._index+=this.attributes[dghpcy5hdhryawj1]._index; }
+			var bhroaxmuyxr0cmli=this.readVaruint(); this.attributes=[]; for(var dghpcy5hdhryawj1 in this.attributes){ this.attributes[dghpcy5hdhryawj1]=Types.Attribute.fromBuffer(this._buffer); this._buffer=this.attributes[dghpcy5hdhryawj1]._buffer; }
 			return this;
 		}
 
@@ -1726,7 +1763,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
-			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
+			this.item=Types.Slot.fromBuffer(this._buffer); this._buffer=this.item._buffer;
 			this.inventorySlot=this.readBigEndianByte();
 			this.hotbarSlot=this.readBigEndianByte();
 			this.unknown4=this.readBigEndianByte();
@@ -1772,7 +1809,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
-			var bhroaxmuyxjtb3i=4; this.armor=[]; for(var dghpcy5hcm1vcg in this.armor){ this.armor[dghpcy5hcm1vcg]=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.armor[dghpcy5hcm1vcg]._index; }
+			var bhroaxmuyxjtb3i=4; this.armor=[]; for(var dghpcy5hcm1vcg in this.armor){ this.armor[dghpcy5hcm1vcg]=Types.Slot.fromBuffer(this._buffer); this._buffer=this.armor[dghpcy5hcm1vcg]._buffer; }
 			return this;
 		}
 
@@ -1873,13 +1910,13 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.blockPosition=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.blockPosition._index;
+			this.blockPosition=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.blockPosition._buffer;
 			this.hotbarSlot=this.readVaruint();
 			this.face=this.readVarint();
-			this.facePosition={} this.facePosition.x=this.readLittleEndianFloat(); this.facePosition.y=this.readLittleEndianFloat(); this.facePosition.z=this.readLittleEndianFloat();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.facePosition={}; this.facePosition.x=this.readLittleEndianFloat(); this.facePosition.y=this.readLittleEndianFloat(); this.facePosition.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.slot=this.readVarint();
-			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
+			this.item=Types.Slot.fromBuffer(this._buffer); this._buffer=this.item._buffer;
 			return this;
 		}
 
@@ -1942,7 +1979,7 @@ const Play = {
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
 			this.action=this.readVarint();
-			this.position=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.position._index;
+			this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer;
 			this.face=this.readVarint();
 			return this;
 		}
@@ -2066,7 +2103,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
-			this.metadata=Metadata.fromBuffer(this._buffer.slice(this._index)); this._index+=this.metadata._index;
+			this.metadata=Metadata.fromBuffer(this._buffer); this._buffer=this.metadata._buffer;
 			return this;
 		}
 
@@ -2109,7 +2146,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
-			this.motion={} this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
+			this.motion={}; this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
 			return this;
 		}
 
@@ -2244,7 +2281,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.unknown0=this.readVarint();
-			this.position=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.position._index;
+			this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer;
 			this.unknown2=this.readBigEndianByte()!==0;
 			return this;
 		}
@@ -2332,7 +2369,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			return this;
 		}
 
@@ -2378,7 +2415,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.action=this.readBigEndianByte();
-			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
+			this.item=Types.Slot.fromBuffer(this._buffer); this._buffer=this.item._buffer;
 			return this;
 		}
 
@@ -2421,7 +2458,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.action=this.readVarint();
-			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
+			this.item=Types.Slot.fromBuffer(this._buffer); this._buffer=this.item._buffer;
 			return this;
 		}
 
@@ -2472,7 +2509,7 @@ const Play = {
 			this.window=this.readBigEndianByte();
 			this.type=this.readBigEndianByte();
 			this.slotCount=this.readVarint();
-			this.position=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.position._index;
+			this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer;
 			this.entityId=this.readVarlong();
 			return this;
 		}
@@ -2564,7 +2601,7 @@ const Play = {
 			this.window=this.readBigEndianByte();
 			this.slot=this.readVarint();
 			this.hotbarSlot=this.readVarint();
-			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
+			this.item=Types.Slot.fromBuffer(this._buffer); this._buffer=this.item._buffer;
 			this.unknown4=this.readBigEndianByte();
 			return this;
 		}
@@ -2656,7 +2693,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.window=this.readBigEndianByte();
-			var bhroaxmuc2xvdhm=this.readVaruint(); this.slots=[]; for(var dghpcy5zbg90cw in this.slots){ this.slots[dghpcy5zbg90cw]=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.slots[dghpcy5zbg90cw]._index; }
+			var bhroaxmuc2xvdhm=this.readVaruint(); this.slots=[]; for(var dghpcy5zbg90cw in this.slots){ this.slots[dghpcy5zbg90cw]=Types.Slot.fromBuffer(this._buffer); this._buffer=this.slots[dghpcy5zbg90cw]._buffer; }
 			var bhroaxmuag90ymfy=this.readVaruint(); this.hotbar=[]; for(var dghpcy5ob3riyxi in this.hotbar){ this.hotbar[dghpcy5ob3riyxi]=this.readVarint(); }
 			return this;
 		}
@@ -2697,7 +2734,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			var bhroaxmucmvjaxbl=this.readVaruint(); this.recipes=[]; for(var dghpcy5yzwnpcgvz in this.recipes){ this.recipes[dghpcy5yzwnpcgvz]=Types.Recipe.fromBuffer(this._buffer.slice(this._index)); this._index+=this.recipes[dghpcy5yzwnpcgvz]._index; }
+			var bhroaxmucmvjaxbl=this.readVaruint(); this.recipes=[]; for(var dghpcy5yzwnpcgvz in this.recipes){ this.recipes[dghpcy5yzwnpcgvz]=Types.Recipe.fromBuffer(this._buffer); this._buffer=this.recipes[dghpcy5yzwnpcgvz]._buffer; }
 			return this;
 		}
 
@@ -2748,8 +2785,8 @@ const Play = {
 			this.window=this.readBigEndianByte();
 			this.type=this.readVarint();
 			this.uuid=this.readBytes(16);
-			var bhroaxmuaw5wdxq=this.readVaruint(); this.input=[]; for(var dghpcy5pbnb1da in this.input){ this.input[dghpcy5pbnb1da]=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.input[dghpcy5pbnb1da]._index; }
-			var bhroaxmub3v0chv0=this.readVaruint(); this.output=[]; for(var dghpcy5vdxrwdxq in this.output){ this.output[dghpcy5vdxrwdxq]=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.output[dghpcy5vdxrwdxq]._index; }
+			var bhroaxmuaw5wdxq=this.readVaruint(); this.input=[]; for(var dghpcy5pbnb1da in this.input){ this.input[dghpcy5pbnb1da]=Types.Slot.fromBuffer(this._buffer); this._buffer=this.input[dghpcy5pbnb1da]._buffer; }
+			var bhroaxmub3v0chv0=this.readVaruint(); this.output=[]; for(var dghpcy5vdxrwdxq in this.output){ this.output[dghpcy5vdxrwdxq]=Types.Slot.fromBuffer(this._buffer); this._buffer=this.output[dghpcy5vdxrwdxq]._buffer; }
 			return this;
 		}
 
@@ -2852,8 +2889,8 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.position._index;
-			this.nbt=this.readBytes(this._buffer.length-this._index);
+			this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer;
+			this.nbt=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 
@@ -2897,7 +2934,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.motion={} this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
+			this.motion={}; this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
 			this.flags=this.readBigEndianByte();
 			this.unknown2=this.readBigEndianByte()!==0;
 			return this;
@@ -2943,7 +2980,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position={} this.position.x=this.readVarint(); this.position.z=this.readVarint();
+			this.position={}; this.position.x=this.readVarint(); this.position.z=this.readVarint();
 			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
 			var bhroaxmudglszxm=this.readVaruint(); this.tiles=this.readBytes(bhroaxmudglszxm);
 			return this;
@@ -3081,7 +3118,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.dimension=this.readVarint();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.unknown2=this.readBigEndianByte()!==0;
 			return this;
 		}
@@ -3148,6 +3185,10 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		// action (variant)
+		static get ADD(){ return 0; }
+		static get REMOVE(){ return 1; }
+
 		constructor(action=0) {
 			super();
 			this.action = action;
@@ -3167,6 +3208,15 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.action=this.readBigEndianByte();
+			switch(this.action) {
+				case 0:
+					var bhroaxmucgxhewvy=this.readVaruint(); this.players=[]; for(var dghpcy5wbgf5zxjz in this.players){ this.players[dghpcy5wbgf5zxjz]=Types.PlayerList.fromBuffer(this._buffer); this._buffer=this.players[dghpcy5wbgf5zxjz]._buffer; }
+					break;
+				case 1:
+					var bhroaxmucgxhewvy=this.readVaruint(); this.players=[]; for(var dghpcy5wbgf5zxjz in this.players){ this.players[dghpcy5wbgf5zxjz]=this.readBytes(16); }
+					break;
+				default: break;
+			}
 			return this;
 		}
 
@@ -3251,7 +3301,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={}; this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.count=this.readVarint();
 			return this;
 		}
@@ -3338,12 +3388,12 @@ const Play = {
 			this.unknown7=this.readBigEndianByte();
 			this.unknown8=this.readBigEndianByte();
 			this.showIcons=this.readBigEndianByte()!==0;
-			var bhroaxmuawnvbnm=this.readVaruint(); this.icons=[]; for(var dghpcy5py29ucw in this.icons){ this.icons[dghpcy5py29ucw]={} this.icons[dghpcy5py29ucw].x=this.readVarint(); this.icons[dghpcy5py29ucw].z=this.readVarint(); }
+			var bhroaxmuawnvbnm=this.readVaruint(); this.icons=[]; for(var dghpcy5py29ucw in this.icons){ this.icons[dghpcy5py29ucw]={}; this.icons[dghpcy5py29ucw].x=this.readVarint(); this.icons[dghpcy5py29ucw].z=this.readVarint(); }
 			this.direction=this.readVarint();
-			this.position={} this.position.x=this.readVarint(); this.position.z=this.readVarint();
+			this.position={}; this.position.x=this.readVarint(); this.position.z=this.readVarint();
 			this.columns=this.readVarint();
 			this.rows=this.readVarint();
-			this.offset={} this.offset.x=this.readVarint(); this.offset.z=this.readVarint();
+			this.offset={}; this.offset.x=this.readVarint(); this.offset.z=this.readVarint();
 			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
 			return this;
 		}
@@ -3506,8 +3556,8 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.position._index;
-			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
+			this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer;
+			this.item=Types.Slot.fromBuffer(this._buffer); this._buffer=this.item._buffer;
 			return this;
 		}
 
@@ -3547,7 +3597,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
+			this.item=Types.Slot.fromBuffer(this._buffer); this._buffer=this.item._buffer;
 			return this;
 		}
 
@@ -3630,7 +3680,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
+			this.item=Types.Slot.fromBuffer(this._buffer); this._buffer=this.item._buffer;
 			return this;
 		}
 

@@ -236,7 +236,7 @@ const Login = {
 			this.reservedUuids=this.readVarulong();
 			this.displayName=this.decodeString(this.readBytes(this.readVaruint()));
 			this.onlineMode=this.readBigEndianByte()!==0;
-			var bhroaxmuz2ftzxnj=this.readVaruint(); this.gamesInfo=[]; for(var dghpcy5nyw1lc0lu in this.gamesInfo){ this.gamesInfo[dghpcy5nyw1lc0lu]=Types.GameInfo.fromBuffer(this._buffer.slice(this._index)); this._index+=this.gamesInfo[dghpcy5nyw1lc0lu]._index; }
+			var bhroaxmuz2ftzxnj=this.readVaruint(); this.gamesInfo=[]; for(var dghpcy5nyw1lc0lu in this.gamesInfo){ this.gamesInfo[dghpcy5nyw1lc0lu]=Types.GameInfo.fromBuffer(this._buffer); this._buffer=this.gamesInfo[dghpcy5nyw1lc0lu]._buffer; }
 			this.online=this.readVaruint();
 			this.max=this.readVarint();
 			this.language=this.decodeString(this.readBytes(this.readVaruint()));
@@ -313,8 +313,8 @@ const Login = {
 			var _id=this.readBigEndianByte();
 			this.time=this.readVarulong();
 			this.max=this.readVaruint();
-			var bhroaxmuywnjzxb0=this.readVaruint(); this.acceptedGames=[]; for(var dghpcy5hy2nlchrl in this.acceptedGames){ this.acceptedGames[dghpcy5hy2nlchrl]=Types.Game.fromBuffer(this._buffer.slice(this._index)); this._index+=this.acceptedGames[dghpcy5hy2nlchrl]._index; }
-			var bhroaxmucgx1z2lu=this.readVaruint(); this.plugins=[]; for(var dghpcy5wbhvnaw5z in this.plugins){ this.plugins[dghpcy5wbhvnaw5z]=Types.Plugin.fromBuffer(this._buffer.slice(this._index)); this._index+=this.plugins[dghpcy5wbhvnaw5z]._index; }
+			var bhroaxmuywnjzxb0=this.readVaruint(); this.acceptedGames=[]; for(var dghpcy5hy2nlchrl in this.acceptedGames){ this.acceptedGames[dghpcy5hy2nlchrl]=Types.Game.fromBuffer(this._buffer); this._buffer=this.acceptedGames[dghpcy5hy2nlchrl]._buffer; }
+			var bhroaxmucgx1z2lu=this.readVaruint(); this.plugins=[]; for(var dghpcy5wbhvnaw5z in this.plugins){ this.plugins[dghpcy5wbhvnaw5z]=Types.Plugin.fromBuffer(this._buffer); this._buffer=this.plugins[dghpcy5wbhvnaw5z]._buffer; }
 			this.additionalJson=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}

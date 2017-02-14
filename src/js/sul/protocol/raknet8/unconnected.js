@@ -135,7 +135,7 @@ const Unconnected = {
 			var _id=this.readBigEndianByte();
 			var bhroaxmubwfnawm=16; this.magic=this.readBytes(bhroaxmubwfnawm);
 			this.protocol=this.readBigEndianByte();
-			this.mtu=this.readBytes(this._buffer.length-this._index);
+			this.mtu=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 
@@ -231,7 +231,7 @@ const Unconnected = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			var bhroaxmubwfnawm=16; this.magic=this.readBytes(bhroaxmubwfnawm);
-			this.serverAddress=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.serverAddress._index;
+			this.serverAddress=Types.Address.fromBuffer(this._buffer); this._buffer=this.serverAddress._buffer;
 			this.mtuLength=this.readBigEndianShort();
 			this.clientId=this.readBigEndianLong();
 			return this;
@@ -283,7 +283,7 @@ const Unconnected = {
 			var _id=this.readBigEndianByte();
 			var bhroaxmubwfnawm=16; this.magic=this.readBytes(bhroaxmubwfnawm);
 			this.serverId=this.readBigEndianLong();
-			this.clientAddress=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.clientAddress._index;
+			this.clientAddress=Types.Address.fromBuffer(this._buffer); this._buffer=this.clientAddress._buffer;
 			this.mtuLength=this.readBigEndianShort();
 			this.security=this.readBigEndianByte()!==0;
 			return this;

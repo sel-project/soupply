@@ -6,9 +6,11 @@
 
 	<protocol>101</protocol>
 
-	<released>2017/2/9</released>
+	<released>2017/2/8</released>
 
 	<from>1.0.3</from>
+
+	<!--<to>1.0.4</to>-->
 
 	<encoding id="ubyte" arraylength="varuint">
 

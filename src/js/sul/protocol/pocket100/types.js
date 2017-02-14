@@ -235,7 +235,7 @@ const Types = {
 			this.uuid=this.readBytes(16);
 			this.entityId=this.readVarlong();
 			this.displayName=this.decodeString(this.readBytes(this.readVaruint()));
-			this.skin=Types.Skin.fromBuffer(this._buffer.slice(this._index)); this._index+=this.skin._index;
+			this.skin=Types.Skin.fromBuffer(this._buffer); this._buffer=this.skin._buffer;
 			return this;
 		}
 
@@ -278,7 +278,7 @@ const Types = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			this.type=this.readVarint();
-			this.data=this.readBytes(this._buffer.length-this._index);
+			this.data=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 

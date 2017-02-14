@@ -145,6 +145,11 @@ const Login = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		// status (variant)
+		static get ACCEPTED(){ return 0; }
+		static get WRONG_HASH(){ return 1; }
+		static get TIMED_OUT(){ return 2; }
+
 		constructor(status=0) {
 			super();
 			this.status = status;
@@ -164,6 +169,21 @@ const Login = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.status=this.readBigEndianByte();
+			switch(this.status) {
+				case 0:
+					this.remoteCommands=this.readBigEndianByte()!==0;
+					this.software=this.decodeString(this.readBytes(this.readBigEndianShort()));
+					var bhroaxmudmvyc2lv=3; this.versions=this.readBytes(bhroaxmudmvyc2lv);
+					this.displayName=this.decodeString(this.readBytes(this.readBigEndianShort()));
+					var bhroaxmuz2ftzxm=this.readBigEndianShort(); this.games=[]; for(var dghpcy5nyw1lcw in this.games){ this.games[dghpcy5nyw1lcw]=Types.Game.fromBuffer(this._buffer); this._buffer=this.games[dghpcy5nyw1lcw]._buffer; }
+					var bhroaxmuy29ubmvj=this.readBigEndianShort(); this.connectedNodes=[]; for(var dghpcy5jb25uzwn0 in this.connectedNodes){ this.connectedNodes[dghpcy5jb25uzwn0]=this.decodeString(this.readBytes(this.readBigEndianShort())); }
+					break;
+				case 1:
+					break;
+				case 2:
+					break;
+				default: break;
+			}
 			return this;
 		}
 

@@ -54,11 +54,11 @@ const Clientbound = {
 			this.entityId=this.readVaruint();
 			this.uuid=this.readBytes(16);
 			this.type=this.readBigEndianByte();
-			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={}; this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.pitch=this.readBigEndianByte();
 			this.yaw=this.readBigEndianByte();
 			this.data=this.readBigEndianInt();
-			this.velocity={} this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
+			this.velocity={}; this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
 			return this;
 		}
 
@@ -103,7 +103,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={}; this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.count=this.readBigEndianShort();
 			return this;
 		}
@@ -153,7 +153,7 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
 			this.type=this.readBigEndianByte();
-			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={}; this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			return this;
 		}
 
@@ -212,12 +212,12 @@ const Clientbound = {
 			this.entityId=this.readVaruint();
 			this.uuid=this.readBytes(16);
 			this.type=this.readBigEndianByte();
-			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={}; this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.yaw=this.readBigEndianByte();
 			this.pitch=this.readBigEndianByte();
 			this.headPitch=this.readBigEndianByte();
-			this.velocity={} this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
-			this.metadata=Metadata.fromBuffer(this._buffer.slice(this._index)); this._index+=this.metadata._index;
+			this.velocity={}; this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
+			this.metadata=Metadata.fromBuffer(this._buffer); this._buffer=this.metadata._buffer;
 			return this;
 		}
 
@@ -327,10 +327,10 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
 			this.uuid=this.readBytes(16);
-			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={}; this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.yaw=this.readBigEndianByte();
 			this.pitch=this.readBigEndianByte();
-			this.metadata=Metadata.fromBuffer(this._buffer.slice(this._index)); this._index+=this.metadata._index;
+			this.metadata=Metadata.fromBuffer(this._buffer); this._buffer=this.metadata._buffer;
 			return this;
 		}
 
@@ -421,7 +421,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			var bhroaxmuc3rhdglz=this.readVaruint(); this.statistics=[]; for(var dghpcy5zdgf0axn0 in this.statistics){ this.statistics[dghpcy5zdgf0axn0]=Types.Statistic.fromBuffer(this._buffer.slice(this._index)); this._index+=this.statistics[dghpcy5zdgf0axn0]._index; }
+			var bhroaxmuc3rhdglz=this.readVaruint(); this.statistics=[]; for(var dghpcy5zdgf0axn0 in this.statistics){ this.statistics[dghpcy5zdgf0axn0]=Types.Statistic.fromBuffer(this._buffer); this._buffer=this.statistics[dghpcy5zdgf0axn0]._buffer; }
 			return this;
 		}
 
@@ -521,7 +521,7 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.position=this.readBigEndianLong();
 			this.action=this.readBigEndianByte();
-			this.nbt=this.readBytes(this._buffer.length-this._index);
+			this.nbt=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 
@@ -657,6 +657,14 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		// action (variant)
+		static get ADD(){ return 0; }
+		static get REMOVE(){ return 1; }
+		static get UPDATE_HEALTH(){ return 2; }
+		static get UPDATE_TITLE(){ return 3; }
+		static get UPDATE_STYLE(){ return 4; }
+		static get UPDATE_FLAGS(){ return 5; }
+
 		constructor(uuid=new Uint8Array(16), action=0) {
 			super();
 			this.uuid = uuid;
@@ -679,6 +687,31 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.uuid=this.readBytes(16);
 			this.action=this.readVaruint();
+			switch(this.action) {
+				case 0:
+					this.title=this.decodeString(this.readBytes(this.readVaruint()));
+					this.health=this.readBigEndianFloat();
+					this.color=this.readVaruint();
+					this.division=this.readVaruint();
+					this.flags=this.readBigEndianByte();
+					break;
+				case 1:
+					break;
+				case 2:
+					this.health=this.readBigEndianFloat();
+					break;
+				case 3:
+					this.title=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				case 4:
+					this.color=this.readVaruint();
+					this.division=this.readVaruint();
+					break;
+				case 5:
+					this.flags=this.readBigEndianByte();
+					break;
+				default: break;
+			}
 			return this;
 		}
 
@@ -854,8 +887,8 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.chunk={} this.chunk.x=this.readBigEndianInt(); this.chunk.z=this.readBigEndianInt();
-			var bhroaxmuy2hhbmdl=this.readVaruint(); this.changes=[]; for(var dghpcy5jagfuz2vz in this.changes){ this.changes[dghpcy5jagfuz2vz]=Types.BlockChange.fromBuffer(this._buffer.slice(this._index)); this._index+=this.changes[dghpcy5jagfuz2vz]._index; }
+			this.chunk={}; this.chunk.x=this.readBigEndianInt(); this.chunk.z=this.readBigEndianInt();
+			var bhroaxmuy2hhbmdl=this.readVaruint(); this.changes=[]; for(var dghpcy5jagfuz2vz in this.changes){ this.changes[dghpcy5jagfuz2vz]=Types.BlockChange.fromBuffer(this._buffer); this._buffer=this.changes[dghpcy5jagfuz2vz]._buffer; }
 			return this;
 		}
 
@@ -1033,7 +1066,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.window=this.readBigEndianByte();
-			var bhroaxmuc2xvdhm=this.readBigEndianShort(); this.slots=[]; for(var dghpcy5zbg90cw in this.slots){ this.slots[dghpcy5zbg90cw]=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.slots[dghpcy5zbg90cw]._index; }
+			var bhroaxmuc2xvdhm=this.readBigEndianShort(); this.slots=[]; for(var dghpcy5zbg90cw in this.slots){ this.slots[dghpcy5zbg90cw]=Types.Slot.fromBuffer(this._buffer); this._buffer=this.slots[dghpcy5zbg90cw]._buffer; }
 			return this;
 		}
 
@@ -1146,7 +1179,7 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.window=this.readBigEndianByte();
 			this.slot=this.readBigEndianShort();
-			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
+			this.item=Types.Slot.fromBuffer(this._buffer); this._buffer=this.item._buffer;
 			return this;
 		}
 
@@ -1232,7 +1265,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.channel=this.decodeString(this.readBytes(this.readVaruint()));
-			this.data=this.readBytes(this._buffer.length-this._index);
+			this.data=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 
@@ -1282,7 +1315,7 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			this.category=this.readVaruint();
-			this.position={} this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.position={}; this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			this.volume=this.readBigEndianFloat();
 			this.pitch=this.readBigEndianByte();
 			return this;
@@ -1445,10 +1478,10 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position={} this.position.x=this.readBigEndianFloat(); this.position.y=this.readBigEndianFloat(); this.position.z=this.readBigEndianFloat();
+			this.position={}; this.position.x=this.readBigEndianFloat(); this.position.y=this.readBigEndianFloat(); this.position.z=this.readBigEndianFloat();
 			this.radius=this.readBigEndianFloat();
-			var bhroaxmucmvjb3jk=this.readBigEndianInt(); this.records=[]; for(var dghpcy5yzwnvcmrz in this.records){ this.records[dghpcy5yzwnvcmrz]={} this.records[dghpcy5yzwnvcmrz].x=this.readBigEndianByte(); this.records[dghpcy5yzwnvcmrz].y=this.readBigEndianByte(); this.records[dghpcy5yzwnvcmrz].z=this.readBigEndianByte(); }
-			this.motion={} this.motion.x=this.readBigEndianFloat(); this.motion.y=this.readBigEndianFloat(); this.motion.z=this.readBigEndianFloat();
+			var bhroaxmucmvjb3jk=this.readBigEndianInt(); this.records=[]; for(var dghpcy5yzwnvcmrz in this.records){ this.records[dghpcy5yzwnvcmrz]={}; this.records[dghpcy5yzwnvcmrz].x=this.readBigEndianByte(); this.records[dghpcy5yzwnvcmrz].y=this.readBigEndianByte(); this.records[dghpcy5yzwnvcmrz].z=this.readBigEndianByte(); }
+			this.motion={}; this.motion.x=this.readBigEndianFloat(); this.motion.y=this.readBigEndianFloat(); this.motion.z=this.readBigEndianFloat();
 			return this;
 		}
 
@@ -1488,7 +1521,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position={} this.position.x=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.position={}; this.position.x=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			return this;
 		}
 
@@ -1641,7 +1674,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position={} this.position.x=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.position={}; this.position.x=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			this.full=this.readBigEndianByte()!==0;
 			this.sections=this.readVaruint();
 			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
@@ -1822,8 +1855,8 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.particleId=this.readBigEndianInt();
 			this.longDistance=this.readBigEndianByte()!==0;
-			this.position={} this.position.x=this.readBigEndianFloat(); this.position.y=this.readBigEndianFloat(); this.position.z=this.readBigEndianFloat();
-			this.offset={} this.offset.x=this.readBigEndianFloat(); this.offset.y=this.readBigEndianFloat(); this.offset.z=this.readBigEndianFloat();
+			this.position={}; this.position.x=this.readBigEndianFloat(); this.position.y=this.readBigEndianFloat(); this.position.z=this.readBigEndianFloat();
+			this.offset={}; this.offset.x=this.readBigEndianFloat(); this.offset.y=this.readBigEndianFloat(); this.offset.z=this.readBigEndianFloat();
 			this.data=this.readBigEndianFloat();
 			this.count=this.readBigEndianInt();
 			var bhroaxmuywrkaxrp=2; this.additionalData=[]; for(var dghpcy5hzgrpdglv in this.additionalData){ this.additionalData[dghpcy5hzgrpdglv]=this.readVaruint(); }
@@ -1964,10 +1997,10 @@ const Clientbound = {
 			this.mapId=this.readVaruint();
 			this.scale=this.readBigEndianByte();
 			this.showIcons=this.readBigEndianByte()!==0;
-			var bhroaxmuawnvbnm=this.readVaruint(); this.icons=[]; for(var dghpcy5py29ucw in this.icons){ this.icons[dghpcy5py29ucw]=Types.Icon.fromBuffer(this._buffer.slice(this._index)); this._index+=this.icons[dghpcy5py29ucw]._index; }
+			var bhroaxmuawnvbnm=this.readVaruint(); this.icons=[]; for(var dghpcy5py29ucw in this.icons){ this.icons[dghpcy5py29ucw]=Types.Icon.fromBuffer(this._buffer); this._buffer=this.icons[dghpcy5py29ucw]._buffer; }
 			this.colums=this.readBigEndianByte();
 			this.rows=this.readBigEndianByte();
-			this.offset={} this.offset.x=this.readBigEndianByte(); this.offset.z=this.readBigEndianByte();
+			this.offset={}; this.offset.x=this.readBigEndianByte(); this.offset.z=this.readBigEndianByte();
 			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
 			return this;
 		}
@@ -2013,7 +2046,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.delta={} this.delta.x=this.readBigEndianShort(); this.delta.y=this.readBigEndianShort(); this.delta.z=this.readBigEndianShort();
+			this.delta={}; this.delta.x=this.readBigEndianShort(); this.delta.y=this.readBigEndianShort(); this.delta.z=this.readBigEndianShort();
 			this.onGround=this.readBigEndianByte()!==0;
 			return this;
 		}
@@ -2063,7 +2096,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.delta={} this.delta.x=this.readBigEndianShort(); this.delta.y=this.readBigEndianShort(); this.delta.z=this.readBigEndianShort();
+			this.delta={}; this.delta.x=this.readBigEndianShort(); this.delta.y=this.readBigEndianShort(); this.delta.z=this.readBigEndianShort();
 			this.yaw=this.readBigEndianByte();
 			this.pitch=this.readBigEndianByte();
 			this.onGround=this.readBigEndianByte()!==0;
@@ -2199,7 +2232,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={}; this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.yaw=this.readBigEndianFloat();
 			this.pitch=this.readBigEndianFloat();
 			return this;
@@ -2315,6 +2348,11 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		// event id (variant)
+		static get ENTER_COMBAT(){ return 0; }
+		static get END_COMBAT(){ return 1; }
+		static get ENTITY_DEAD(){ return 2; }
+
 		constructor(eventId=0) {
 			super();
 			this.eventId = eventId;
@@ -2334,6 +2372,20 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.eventId=this.readBigEndianByte();
+			switch(this.eventId) {
+				case 0:
+					break;
+				case 1:
+					this.duration=this.readVaruint();
+					this.entityId=this.readBigEndianInt();
+					break;
+				case 2:
+					this.playerId=this.readVaruint();
+					this.entityId=this.readBigEndianInt();
+					this.message=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				default: break;
+			}
 			return this;
 		}
 
@@ -2355,6 +2407,13 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		// action (variant)
+		static get ADD_PLAYER(){ return 0; }
+		static get UPDATE_GAMEMODE(){ return 1; }
+		static get UPDATE_LATENCY(){ return 2; }
+		static get UPDATE_DISPLAY_NAME(){ return 3; }
+		static get REMOVE_PLAYER(){ return 4; }
+
 		constructor(action=0) {
 			super();
 			this.action = action;
@@ -2374,6 +2433,24 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.action=this.readVaruint();
+			switch(this.action) {
+				case 0:
+					var bhroaxmucgxhewvy=this.readVaruint(); this.players=[]; for(var dghpcy5wbgf5zxjz in this.players){ this.players[dghpcy5wbgf5zxjz]=Types.ListAddPlayer.fromBuffer(this._buffer); this._buffer=this.players[dghpcy5wbgf5zxjz]._buffer; }
+					break;
+				case 1:
+					var bhroaxmucgxhewvy=this.readVaruint(); this.players=[]; for(var dghpcy5wbgf5zxjz in this.players){ this.players[dghpcy5wbgf5zxjz]=Types.ListUpdateGamemode.fromBuffer(this._buffer); this._buffer=this.players[dghpcy5wbgf5zxjz]._buffer; }
+					break;
+				case 2:
+					var bhroaxmucgxhewvy=this.readVaruint(); this.players=[]; for(var dghpcy5wbgf5zxjz in this.players){ this.players[dghpcy5wbgf5zxjz]=Types.ListUpdateLatency.fromBuffer(this._buffer); this._buffer=this.players[dghpcy5wbgf5zxjz]._buffer; }
+					break;
+				case 3:
+					var bhroaxmucgxhewvy=this.readVaruint(); this.players=[]; for(var dghpcy5wbgf5zxjz in this.players){ this.players[dghpcy5wbgf5zxjz]=Types.ListUpdateDisplayName.fromBuffer(this._buffer); this._buffer=this.players[dghpcy5wbgf5zxjz]._buffer; }
+					break;
+				case 4:
+					var bhroaxmucgxhewvy=this.readVaruint(); this.players=[]; for(var dghpcy5wbgf5zxjz in this.players){ this.players[dghpcy5wbgf5zxjz]=this.readBytes(16); }
+					break;
+				default: break;
+			}
 			return this;
 		}
 
@@ -2428,7 +2505,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={}; this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.yaw=this.readBigEndianFloat();
 			this.pitch=this.readBigEndianFloat();
 			this.flags=this.readBigEndianByte();
@@ -2738,6 +2815,14 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		// action (variant)
+		static get SET_SIZE(){ return 0; }
+		static get LERP_SIZE(){ return 1; }
+		static get SET_CENTER(){ return 2; }
+		static get INITIALIZE(){ return 3; }
+		static get SET_WARNING_TIME(){ return 4; }
+		static get SET_WARNING_BLOCKS(){ return 5; }
+
 		constructor(action=0) {
 			super();
 			this.action = action;
@@ -2757,6 +2842,35 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.action=this.readVaruint();
+			switch(this.action) {
+				case 0:
+					this.diameter=this.readBigEndianDouble();
+					break;
+				case 1:
+					this.oldDiameter=this.readBigEndianDouble();
+					this.newDiameter=this.readBigEndianDouble();
+					this.speed=this.readVarulong();
+					break;
+				case 2:
+					this.center={}; this.center.x=this.readBigEndianDouble(); this.center.y=this.readBigEndianDouble(); this.center.z=this.readBigEndianDouble();
+					break;
+				case 3:
+					this.center={}; this.center.x=this.readBigEndianDouble(); this.center.y=this.readBigEndianDouble(); this.center.z=this.readBigEndianDouble();
+					this.oldDiameter=this.readBigEndianDouble();
+					this.newDiameter=this.readBigEndianDouble();
+					this.speed=this.readVarulong();
+					this.portalTeleportBoundary=this.readVaruint();
+					this.warningTime=this.readVaruint();
+					this.warningBlocks=this.readVaruint();
+					break;
+				case 4:
+					this.warningTime=this.readVaruint();
+					break;
+				case 5:
+					this.warningBlocks=this.readVaruint();
+					break;
+				default: break;
+			}
 			return this;
 		}
 
@@ -2927,7 +3041,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.metadata=Metadata.fromBuffer(this._buffer.slice(this._index)); this._index+=this.metadata._index;
+			this.metadata=Metadata.fromBuffer(this._buffer); this._buffer=this.metadata._buffer;
 			return this;
 		}
 
@@ -3013,7 +3127,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.velocity={} this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
+			this.velocity={}; this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
 			return this;
 		}
 
@@ -3059,7 +3173,7 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
 			this.slot=this.readVaruint();
-			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
+			this.item=Types.Slot.fromBuffer(this._buffer); this._buffer=this.item._buffer;
 			return this;
 		}
 
@@ -3274,6 +3388,13 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		// mode (variant)
+		static get CREATE_TEAM(){ return 0; }
+		static get REMOVE_TEAM(){ return 1; }
+		static get UPDATE_TEAM_INFO(){ return 2; }
+		static get ADD_PLAYERS(){ return 3; }
+		static get REMOVE_PLAYERS(){ return 4; }
+
 		constructor(name="", mode=0) {
 			super();
 			this.name = name;
@@ -3296,6 +3417,36 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			this.mode=this.readBigEndianByte();
+			switch(this.mode) {
+				case 0:
+					this.displayName=this.decodeString(this.readBytes(this.readVaruint()));
+					this.prefix=this.decodeString(this.readBytes(this.readVaruint()));
+					this.suffix=this.decodeString(this.readBytes(this.readVaruint()));
+					this.friendlyFlags=this.readBigEndianByte();
+					this.nametagVisibility=this.decodeString(this.readBytes(this.readVaruint()));
+					this.collisionRule=this.decodeString(this.readBytes(this.readVaruint()));
+					this.color=this.readBigEndianByte();
+					var bhroaxmucgxhewvy=this.readVaruint(); this.players=[]; for(var dghpcy5wbgf5zxjz in this.players){ this.players[dghpcy5wbgf5zxjz]=this.decodeString(this.readBytes(this.readVaruint())); }
+					break;
+				case 1:
+					break;
+				case 2:
+					this.displayName=this.decodeString(this.readBytes(this.readVaruint()));
+					this.prefix=this.decodeString(this.readBytes(this.readVaruint()));
+					this.suffix=this.decodeString(this.readBytes(this.readVaruint()));
+					this.friendlyFlags=this.readBigEndianByte();
+					this.nametagVisibility=this.decodeString(this.readBytes(this.readVaruint()));
+					this.collisionRule=this.decodeString(this.readBytes(this.readVaruint()));
+					this.color=this.readBigEndianByte();
+					break;
+				case 3:
+					var bhroaxmucgxhewvy=this.readVaruint(); this.players=[]; for(var dghpcy5wbgf5zxjz in this.players){ this.players[dghpcy5wbgf5zxjz]=this.decodeString(this.readBytes(this.readVaruint())); }
+					break;
+				case 4:
+					var bhroaxmucgxhewvy=this.readVaruint(); this.players=[]; for(var dghpcy5wbgf5zxjz in this.players){ this.players[dghpcy5wbgf5zxjz]=this.decodeString(this.readBytes(this.readVaruint())); }
+					break;
+				default: break;
+			}
 			return this;
 		}
 
@@ -3453,6 +3604,13 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		// action (variant)
+		static get SET_TITLE(){ return 0; }
+		static get SET_SUBTITLE(){ return 1; }
+		static get SET_TIMINGS(){ return 2; }
+		static get HIDE(){ return 3; }
+		static get RESET(){ return 4; }
+
 		constructor(action=0) {
 			super();
 			this.action = action;
@@ -3472,6 +3630,24 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.action=this.readVaruint();
+			switch(this.action) {
+				case 0:
+					this.text=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				case 1:
+					this.text=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				case 2:
+					this.fadeIn=this.readBigEndianInt();
+					this.stay=this.readBigEndianInt();
+					this.fadeOut=this.readBigEndianInt();
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+				default: break;
+			}
 			return this;
 		}
 
@@ -3564,7 +3740,7 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.soundId=this.readVaruint();
 			this.category=this.readVaruint();
-			this.position={} this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.position={}; this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			this.volume=this.readBigEndianFloat();
 			this.pitch=this.readBigEndianByte();
 			return this;
@@ -3701,7 +3877,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={}; this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.yaw=this.readBigEndianByte();
 			this.pitch=this.readBigEndianByte();
 			this.onGround=this.readBigEndianByte()!==0;
@@ -3747,7 +3923,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			var bhroaxmuyxr0cmli=this.readBigEndianInt(); this.attributes=[]; for(var dghpcy5hdhryawj1 in this.attributes){ this.attributes[dghpcy5hdhryawj1]=Types.Attribute.fromBuffer(this._buffer.slice(this._index)); this._index+=this.attributes[dghpcy5hdhryawj1]._index; }
+			var bhroaxmuyxr0cmli=this.readBigEndianInt(); this.attributes=[]; for(var dghpcy5hdhryawj1 in this.attributes){ this.attributes[dghpcy5hdhryawj1]=Types.Attribute.fromBuffer(this._buffer); this._buffer=this.attributes[dghpcy5hdhryawj1]._buffer; }
 			return this;
 		}
 

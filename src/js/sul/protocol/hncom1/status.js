@@ -62,7 +62,7 @@ const Status = {
 			this.hubId=this.readVaruint();
 			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			this.main=this.readBigEndianByte()!==0;
-			var bhroaxmuywnjzxb0=this.readVaruint(); this.acceptedGames=[]; for(var dghpcy5hy2nlchrl in this.acceptedGames){ this.acceptedGames[dghpcy5hy2nlchrl]=Types.Game.fromBuffer(this._buffer.slice(this._index)); this._index+=this.acceptedGames[dghpcy5hy2nlchrl]._index; }
+			var bhroaxmuywnjzxb0=this.readVaruint(); this.acceptedGames=[]; for(var dghpcy5hy2nlchrl in this.acceptedGames){ this.acceptedGames[dghpcy5hy2nlchrl]=Types.Game.fromBuffer(this._buffer); this._buffer=this.acceptedGames[dghpcy5hy2nlchrl]._buffer; }
 			return this;
 		}
 
@@ -454,7 +454,7 @@ const Status = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.origin=this.readBigEndianByte();
-			if(origin!=0){ this.sender=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.sender._index; }
+			if(origin!=0){ this.sender=Types.Address.fromBuffer(this._buffer); this._buffer=this.sender._buffer; }
 			this.command=this.decodeString(this.readBytes(this.readVaruint()));
 			this.commandId=this.readVarint();
 			return this;
@@ -489,6 +489,11 @@ const Status = {
 		static get ADD(){ return 0; }
 		static get REMOVE(){ return 1; }
 
+		// type (variant)
+		static get BY_HUB_ID(){ return 0; }
+		static get BY_NAME(){ return 1; }
+		static get BY_UUID(){ return 2; }
+
 		/**
 		 * @param list
 		 *        Type of the list to update.
@@ -520,6 +525,19 @@ const Status = {
 			this.list=this.readBigEndianByte();
 			this.action=this.readBigEndianByte();
 			this.type=this.readBigEndianByte();
+			switch(this.type) {
+				case 0:
+					this.hubId=this.readVaruint();
+					break;
+				case 1:
+					this.username=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				case 2:
+					this.game=this.readBigEndianByte();
+					this.uuid=this.readBytes(16);
+					break;
+				default: break;
+			}
 			return this;
 		}
 

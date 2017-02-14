@@ -126,8 +126,8 @@ const Types = {
 			if((info&0x7F)>=64){ this.messageIndex=this.readLittleEndianTriad(); }
 			if((info&0x7F)>=96){ this.orderIndex=this.readLittleEndianTriad(); }
 			if((info&0x7F)>=96){ this.orderChannel=this.readBigEndianByte(); }
-			if((info&0x10)!=0){ this.split=Types.Split.fromBuffer(this._buffer.slice(this._index)); this._index+=this.split._index; }
-			this.payload=this.readBytes(this._buffer.length-this._index);
+			if((info&0x10)!=0){ this.split=Types.Split.fromBuffer(this._buffer); this._buffer=this.split._buffer; }
+			this.payload=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 

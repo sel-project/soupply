@@ -37,7 +37,7 @@ const Control = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			var bhroaxmucgfja2v0=this.readBigEndianShort(); this.packets=[]; for(var dghpcy5wywnrzxrz in this.packets){ this.packets[dghpcy5wywnrzxrz]=Types.Acknowledge.fromBuffer(this._buffer.slice(this._index)); this._index+=this.packets[dghpcy5wywnrzxrz]._index; }
+			var bhroaxmucgfja2v0=this.readBigEndianShort(); this.packets=[]; for(var dghpcy5wywnrzxrz in this.packets){ this.packets[dghpcy5wywnrzxrz]=Types.Acknowledge.fromBuffer(this._buffer); this._buffer=this.packets[dghpcy5wywnrzxrz]._buffer; }
 			return this;
 		}
 
@@ -77,7 +77,7 @@ const Control = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			var bhroaxmucgfja2v0=this.readBigEndianShort(); this.packets=[]; for(var dghpcy5wywnrzxrz in this.packets){ this.packets[dghpcy5wywnrzxrz]=Types.Acknowledge.fromBuffer(this._buffer.slice(this._index)); this._index+=this.packets[dghpcy5wywnrzxrz]._index; }
+			var bhroaxmucgfja2v0=this.readBigEndianShort(); this.packets=[]; for(var dghpcy5wywnrzxrz in this.packets){ this.packets[dghpcy5wywnrzxrz]=Types.Acknowledge.fromBuffer(this._buffer); this._buffer=this.packets[dghpcy5wywnrzxrz]._buffer; }
 			return this;
 		}
 
@@ -120,7 +120,7 @@ const Control = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.count=this.readLittleEndianTriad();
-			this.encapsulation=Types.Encapsulation.fromBuffer(this._buffer.slice(this._index)); this._index+=this.encapsulation._index;
+			this.encapsulation=Types.Encapsulation.fromBuffer(this._buffer); this._buffer=this.encapsulation._buffer;
 			return this;
 		}
 

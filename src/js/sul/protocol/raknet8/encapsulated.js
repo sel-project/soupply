@@ -88,9 +88,9 @@ const Encapsulated = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.clientAddress=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.clientAddress._index;
+			this.clientAddress=Types.Address.fromBuffer(this._buffer); this._buffer=this.clientAddress._buffer;
 			this.mtuLength=this.readBigEndianShort();
-			var bhroaxmuc3lzdgvt=10; this.systemAddresses=[]; for(var dghpcy5zexn0zw1b in this.systemAddresses){ this.systemAddresses[dghpcy5zexn0zw1b]=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.systemAddresses[dghpcy5zexn0zw1b]._index; }
+			var bhroaxmuc3lzdgvt=10; this.systemAddresses=[]; for(var dghpcy5zexn0zw1b in this.systemAddresses){ this.systemAddresses[dghpcy5zexn0zw1b]=Types.Address.fromBuffer(this._buffer); this._buffer=this.systemAddresses[dghpcy5zexn0zw1b]._buffer; }
 			this.pingId=this.readBigEndianLong();
 			this.serverId=this.readBigEndianLong();
 			return this;
@@ -138,8 +138,8 @@ const Encapsulated = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.clientAddress=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.clientAddress._index;
-			var bhroaxmuc3lzdgvt=10; this.systemAddresses=[]; for(var dghpcy5zexn0zw1b in this.systemAddresses){ this.systemAddresses[dghpcy5zexn0zw1b]=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.systemAddresses[dghpcy5zexn0zw1b]._index; }
+			this.clientAddress=Types.Address.fromBuffer(this._buffer); this._buffer=this.clientAddress._buffer;
+			var bhroaxmuc3lzdgvt=10; this.systemAddresses=[]; for(var dghpcy5zexn0zw1b in this.systemAddresses){ this.systemAddresses[dghpcy5zexn0zw1b]=Types.Address.fromBuffer(this._buffer); this._buffer=this.systemAddresses[dghpcy5zexn0zw1b]._buffer; }
 			this.pingId=this.readBigEndianLong();
 			this.clientId=this.readBigEndianLong();
 			return this;
@@ -298,7 +298,7 @@ const Encapsulated = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.packet=this.readBytes(this._buffer.length-this._index);
+			this.packet=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 

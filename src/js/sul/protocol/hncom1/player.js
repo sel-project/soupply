@@ -36,6 +36,10 @@ const Player = {
 		static get TOUCH(){ return 1; }
 		static get CONTROLLER(){ return 2; }
 
+		// type (variant)
+		static get POCKET(){ return 1; }
+		static get MINECRAFT(){ return 2; }
+
 		/**
 		 * @param reason
 		 *        Reason for which the player has been added to the node.
@@ -140,14 +144,26 @@ const Player = {
 			this.displayName=this.decodeString(this.readBytes(this.readVaruint()));
 			if(reason!=0){ this.dimension=this.readBigEndianByte(); }
 			if(reason!=0){ this.viewDistance=this.readVaruint(); }
-			this.clientAddress=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.clientAddress._index;
+			this.clientAddress=Types.Address.fromBuffer(this._buffer); this._buffer=this.clientAddress._buffer;
 			this.serverAddress=this.decodeString(this.readBytes(this.readVaruint()));
 			this.serverPort=this.readBigEndianShort();
 			this.uuid=this.readBytes(16);
-			this.skin=Types.Skin.fromBuffer(this._buffer.slice(this._index)); this._index+=this.skin._index;
+			this.skin=Types.Skin.fromBuffer(this._buffer); this._buffer=this.skin._buffer;
 			this.language=this.decodeString(this.readBytes(this.readVaruint()));
 			this.inputMode=this.readBigEndianByte();
 			this.latency=this.readVaruint();
+			switch(this.type) {
+				case 1:
+					this.xuid=this.readVarlong();
+					this.edu=this.readBigEndianByte()!==0;
+					this.packetLoss=this.readBigEndianFloat();
+					this.deviceOs=this.readBigEndianByte();
+					this.deviceModel=this.decodeString(this.readBytes(this.readVaruint()));
+					break;
+				case 2:
+					break;
+				default: break;
+			}
 			return this;
 		}
 
@@ -739,7 +755,7 @@ const Player = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.hubId=this.readVaruint();
-			this.packet=this.readBytes(this._buffer.length-this._index);
+			this.packet=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 
@@ -796,7 +812,7 @@ const Player = {
 			var _id=this.readBigEndianByte();
 			this.hubId=this.readVaruint();
 			this.order=this.readVaruint();
-			this.packet=this.readBytes(this._buffer.length-this._index);
+			this.packet=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 
