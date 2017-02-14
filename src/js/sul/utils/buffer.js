@@ -19,8 +19,8 @@ class Buffer {
 	}
 
 	readBytes(a) {
-		var ret = this._buffer.slice(this._index, this._index+a);
-		this._index += a;
+		var ret = this._buffer.slice(0, a);
+		this._buffer = this._buffer.slice(a, this._buffer.length);
 		return ret;
 	}
 
@@ -29,7 +29,7 @@ class Buffer {
 	}
 
 	readBigEndianByte(a) {
-		return this._buffer[this._index++];
+		return this._buffer.shift();
 	}
 
 	writeLittleEndianByte(a) {
@@ -37,7 +37,7 @@ class Buffer {
 	}
 
 	readLittleEndianByte(a) {
-		return this._buffer[this._index++];
+		return this._buffer.shift();
 	}
 
 	writeBigEndianShort(a) {
@@ -47,8 +47,8 @@ class Buffer {
 
 	readBigEndianShort(a) {
 		var _ret = 0;
-		_ret |= this._buffer[this._index++] << 8;
-		_ret |= this._buffer[this._index++];
+		_ret |= this._buffer.shift() << 8;
+		_ret |= this._buffer.shift();
 		return _ret;
 	}
 
@@ -59,8 +59,8 @@ class Buffer {
 
 	readLittleEndianShort(a) {
 		var _ret = 0;
-		_ret |= this._buffer[this._index++];
-		_ret |= this._buffer[this._index++] << 8;
+		_ret |= this._buffer.shift();
+		_ret |= this._buffer.shift() << 8;
 		return _ret;
 	}
 
@@ -72,9 +72,9 @@ class Buffer {
 
 	readBigEndianTriad(a) {
 		var _ret = 0;
-		_ret |= this._buffer[this._index++] << 16;
-		_ret |= this._buffer[this._index++] << 8;
-		_ret |= this._buffer[this._index++];
+		_ret |= this._buffer.shift() << 16;
+		_ret |= this._buffer.shift() << 8;
+		_ret |= this._buffer.shift();
 		return _ret;
 	}
 
@@ -86,9 +86,9 @@ class Buffer {
 
 	readLittleEndianTriad(a) {
 		var _ret = 0;
-		_ret |= this._buffer[this._index++];
-		_ret |= this._buffer[this._index++] << 8;
-		_ret |= this._buffer[this._index++] << 16;
+		_ret |= this._buffer.shift();
+		_ret |= this._buffer.shift() << 8;
+		_ret |= this._buffer.shift() << 16;
 		return _ret;
 	}
 
@@ -101,10 +101,10 @@ class Buffer {
 
 	readBigEndianInt(a) {
 		var _ret = 0;
-		_ret |= this._buffer[this._index++] << 24;
-		_ret |= this._buffer[this._index++] << 16;
-		_ret |= this._buffer[this._index++] << 8;
-		_ret |= this._buffer[this._index++];
+		_ret |= this._buffer.shift() << 24;
+		_ret |= this._buffer.shift() << 16;
+		_ret |= this._buffer.shift() << 8;
+		_ret |= this._buffer.shift();
 		return _ret;
 	}
 
@@ -117,10 +117,10 @@ class Buffer {
 
 	readLittleEndianInt(a) {
 		var _ret = 0;
-		_ret |= this._buffer[this._index++];
-		_ret |= this._buffer[this._index++] << 8;
-		_ret |= this._buffer[this._index++] << 16;
-		_ret |= this._buffer[this._index++] << 24;
+		_ret |= this._buffer.shift();
+		_ret |= this._buffer.shift() << 8;
+		_ret |= this._buffer.shift() << 16;
+		_ret |= this._buffer.shift() << 24;
 		return _ret;
 	}
 
@@ -137,14 +137,14 @@ class Buffer {
 
 	readBigEndianLong(a) {
 		var _ret = 0;
-		_ret |= this._buffer[this._index++] << 56;
-		_ret |= this._buffer[this._index++] << 48;
-		_ret |= this._buffer[this._index++] << 40;
-		_ret |= this._buffer[this._index++] << 32;
-		_ret |= this._buffer[this._index++] << 24;
-		_ret |= this._buffer[this._index++] << 16;
-		_ret |= this._buffer[this._index++] << 8;
-		_ret |= this._buffer[this._index++];
+		_ret |= this._buffer.shift() << 56;
+		_ret |= this._buffer.shift() << 48;
+		_ret |= this._buffer.shift() << 40;
+		_ret |= this._buffer.shift() << 32;
+		_ret |= this._buffer.shift() << 24;
+		_ret |= this._buffer.shift() << 16;
+		_ret |= this._buffer.shift() << 8;
+		_ret |= this._buffer.shift();
 		return _ret;
 	}
 
@@ -161,14 +161,14 @@ class Buffer {
 
 	readLittleEndianLong(a) {
 		var _ret = 0;
-		_ret |= this._buffer[this._index++];
-		_ret |= this._buffer[this._index++] << 8;
-		_ret |= this._buffer[this._index++] << 16;
-		_ret |= this._buffer[this._index++] << 24;
-		_ret |= this._buffer[this._index++] << 32;
-		_ret |= this._buffer[this._index++] << 40;
-		_ret |= this._buffer[this._index++] << 48;
-		_ret |= this._buffer[this._index++] << 56;
+		_ret |= this._buffer.shift();
+		_ret |= this._buffer.shift() << 8;
+		_ret |= this._buffer.shift() << 16;
+		_ret |= this._buffer.shift() << 24;
+		_ret |= this._buffer.shift() << 32;
+		_ret |= this._buffer.shift() << 40;
+		_ret |= this._buffer.shift() << 48;
+		_ret |= this._buffer.shift() << 56;
 		return _ret;
 	}
 
@@ -225,8 +225,8 @@ class Buffer {
 		var limit = 0;
 		var ret = 0;
 		do {
-			ret |= (this._buffer[this._index] & 0x7F) << (limit * 7);
-		} while((this._buffer[this._index++] & 0x80) != 0 && ++limit < 3);
+			ret |= (this._buffer[0] & 0x7F) << (limit * 7);
+		} while((this._buffer.shift() & 0x80) != 0 && ++limit < 3);
 		return ret;
 	}
 
@@ -251,8 +251,8 @@ class Buffer {
 		var limit = 0;
 		var ret = 0;
 		do {
-			ret |= (this._buffer[this._index] & 0x7F) << (limit * 7);
-		} while((this._buffer[this._index++] & 0x80) != 0 && ++limit < 5);
+			ret |= (this._buffer[0] & 0x7F) << (limit * 7);
+		} while((this._buffer.shift() & 0x80) != 0 && ++limit < 5);
 		return ret;
 	}
 
@@ -277,8 +277,8 @@ class Buffer {
 		var limit = 0;
 		var ret = 0;
 		do {
-			ret |= (this._buffer[this._index] & 0x7F) << (limit * 7);
-		} while((this._buffer[this._index++] & 0x80) != 0 && ++limit < 10);
+			ret |= (this._buffer[0] & 0x7F) << (limit * 7);
+		} while((this._buffer.shift() & 0x80) != 0 && ++limit < 10);
 		return ret;
 	}
 
@@ -287,6 +287,10 @@ class Buffer {
 		var ret = [];
 		for(var i in conv) ret.push(conv.charCodeAt(i));
 		return ret;
+	}
+
+	decodeString(array) {
+		return decodeURIComponent(escape(String.fromCharCode.apply(null, array)));
 	}
 
 }

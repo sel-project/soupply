@@ -48,7 +48,7 @@ const Status = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.protocol=this.readVaruint();
-			this.serverAddress=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.serverAddress=this.decodeString(this.readBytes(this.readVaruint()));
 			this.serverPort=this.readBigEndianShort();
 			this.next=this.readVaruint();
 			return this;
@@ -127,7 +127,7 @@ const Status = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.json=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.json=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 

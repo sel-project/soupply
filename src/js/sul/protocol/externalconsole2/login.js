@@ -56,8 +56,8 @@ const Login = {
 			this.writeBigEndianByte(0);
 			this.writeBigEndianByte(this.protocol);
 			this.writeBigEndianByte(this.hash?1:0);
-			var dghpcy5oyxnoqwxn=this.encodeString(this.hashAlgorithm); this.writeBigEndianShort(dghpcy5oyxnoqwxn.length); this.writeBytes(dghpcy5oyxnoqwxn);
-			this.writeBigEndianShort(this.payload.length); this.writeBytes(this.payload);
+			if(hash==true){ var dghpcy5oyxnoqwxn=this.encodeString(this.hashAlgorithm); this.writeBigEndianShort(dghpcy5oyxnoqwxn.length); this.writeBytes(dghpcy5oyxnoqwxn); }
+			if(hash==true){ this.writeBigEndianShort(this.payload.length); this.writeBytes(this.payload); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -68,8 +68,8 @@ const Login = {
 			var _id=this.readBigEndianByte();
 			this.protocol=this.readBigEndianByte();
 			this.hash=this.readBigEndianByte()!==0;
-			this.hashAlgorithm=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
-			var bhroaxmucgf5bg9h=this.readBigEndianShort(); this.payload=this.readBytes(bhroaxmucgf5bg9h);
+			if(hash==true){ this.hashAlgorithm=this.decodeString(this.readBytes(this.readBigEndianShort())); }
+			if(hash==true){ var bhroaxmucgf5bg9h=this.readBigEndianShort(); this.payload=this.readBytes(bhroaxmucgf5bg9h); }
 			return this;
 		}
 

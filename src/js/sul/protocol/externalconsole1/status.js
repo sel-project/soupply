@@ -107,7 +107,7 @@ const Status = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.action=this.readBigEndianByte();
-			this.node=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
+			this.node=this.decodeString(this.readBytes(this.readBigEndianShort()));
 			return this;
 		}
 

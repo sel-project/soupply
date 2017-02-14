@@ -60,7 +60,7 @@ const Status = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.hubId=this.readVaruint();
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			this.main=this.readBigEndianByte()!==0;
 			var bhroaxmuywnjzxb0=this.readVaruint(); this.acceptedGames=[]; for(var dghpcy5hy2nlchrl in this.acceptedGames){ this.acceptedGames[dghpcy5hy2nlchrl]=Types.Game.fromBuffer(this._buffer.slice(this._index)); this._index+=this.acceptedGames[dghpcy5hy2nlchrl]._index; }
 			return this;
@@ -386,8 +386,8 @@ const Status = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.timestamp=this.readVarulong();
-			this.logger=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.message=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.logger=this.decodeString(this.readBytes(this.readVaruint()));
+			this.message=this.decodeString(this.readBytes(this.readVaruint()));
 			this.commandId=this.readVarint();
 			return this;
 		}
@@ -442,7 +442,7 @@ const Status = {
 			this._buffer = [];
 			this.writeBigEndianByte(12);
 			this.writeBigEndianByte(this.origin);
-			this.writeBytes(this.sender.encode());
+			if(origin!=0){ this.writeBytes(this.sender.encode()); }
 			var dghpcy5jb21tyw5k=this.encodeString(this.command); this.writeVaruint(dghpcy5jb21tyw5k.length); this.writeBytes(dghpcy5jb21tyw5k);
 			this.writeVarint(this.commandId);
 			return new Uint8Array(this._buffer);
@@ -454,8 +454,8 @@ const Status = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.origin=this.readBigEndianByte();
-			this.sender=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.sender._index;
-			this.command=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			if(origin!=0){ this.sender=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.sender._index; }
+			this.command=this.decodeString(this.readBytes(this.readVaruint()));
 			this.commandId=this.readVarint();
 			return this;
 		}

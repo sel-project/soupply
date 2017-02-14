@@ -132,7 +132,7 @@ const Types = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			this.game=Types.Game.fromBuffer(this._buffer.slice(this._index)); this._index+=this.game._index;
-			this.motd=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.motd=this.decodeString(this.readBytes(this.readVaruint()));
 			this.port=this.readBigEndianShort();
 			return this;
 		}
@@ -174,8 +174,8 @@ const Types = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.version=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
+			this.version=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -216,7 +216,7 @@ const Types = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
 			return this;
 		}

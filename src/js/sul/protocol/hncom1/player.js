@@ -113,8 +113,8 @@ const Player = {
 			var dghpcy52zxjzaw9u=this.encodeString(this.version); this.writeVaruint(dghpcy52zxjzaw9u.length); this.writeBytes(dghpcy52zxjzaw9u);
 			var dghpcy51c2vybmft=this.encodeString(this.username); this.writeVaruint(dghpcy51c2vybmft.length); this.writeBytes(dghpcy51c2vybmft);
 			var dghpcy5kaxnwbgf5=this.encodeString(this.displayName); this.writeVaruint(dghpcy5kaxnwbgf5.length); this.writeBytes(dghpcy5kaxnwbgf5);
-			this.writeBigEndianByte(this.dimension);
-			this.writeVaruint(this.viewDistance);
+			if(reason!=0){ this.writeBigEndianByte(this.dimension); }
+			if(reason!=0){ this.writeVaruint(this.viewDistance); }
 			this.writeBytes(this.clientAddress.encode());
 			var dghpcy5zzxj2zxjb=this.encodeString(this.serverAddress); this.writeVaruint(dghpcy5zzxj2zxjb.length); this.writeBytes(dghpcy5zzxj2zxjb);
 			this.writeBigEndianShort(this.serverPort);
@@ -135,17 +135,17 @@ const Player = {
 			this.reason=this.readBigEndianByte();
 			this.type=this.readBigEndianByte();
 			this.protocol=this.readVaruint();
-			this.version=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.username=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.displayName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.dimension=this.readBigEndianByte();
-			this.viewDistance=this.readVaruint();
+			this.version=this.decodeString(this.readBytes(this.readVaruint()));
+			this.username=this.decodeString(this.readBytes(this.readVaruint()));
+			this.displayName=this.decodeString(this.readBytes(this.readVaruint()));
+			if(reason!=0){ this.dimension=this.readBigEndianByte(); }
+			if(reason!=0){ this.viewDistance=this.readVaruint(); }
 			this.clientAddress=Types.Address.fromBuffer(this._buffer.slice(this._index)); this._index+=this.clientAddress._index;
-			this.serverAddress=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.serverAddress=this.decodeString(this.readBytes(this.readVaruint()));
 			this.serverPort=this.readBigEndianShort();
 			this.uuid=this.readBytes(16);
 			this.skin=Types.Skin.fromBuffer(this._buffer.slice(this._index)); this._index+=this.skin._index;
-			this.language=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.language=this.decodeString(this.readBytes(this.readVaruint()));
 			this.inputMode=this.readBigEndianByte();
 			this.latency=this.readVaruint();
 			return this;
@@ -253,7 +253,7 @@ const Player = {
 			this.writeVaruint(this.hubId);
 			var dghpcy5yzwfzb24=this.encodeString(this.reason); this.writeVaruint(dghpcy5yzwfzb24.length); this.writeBytes(dghpcy5yzwfzb24);
 			this.writeBigEndianByte(this.translation?1:0);
-			this.writeVaruint(this.parameters.length); for(var dghpcy5wyxjhbwv0 in this.parameters){ var dghpcy5wyxjhbwv0=this.encodeString(this.parameters[dghpcy5wyxjhbwv0]); this.writeVaruint(dghpcy5wyxjhbwv0.length); this.writeBytes(dghpcy5wyxjhbwv0); }
+			if(translation==true){ this.writeVaruint(this.parameters.length); for(var dghpcy5wyxjhbwv0 in this.parameters){ var dghpcy5wyxjhbwv0=this.encodeString(this.parameters[dghpcy5wyxjhbwv0]); this.writeVaruint(dghpcy5wyxjhbwv0.length); this.writeBytes(dghpcy5wyxjhbwv0); } }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -263,9 +263,9 @@ const Player = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.hubId=this.readVaruint();
-			this.reason=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.reason=this.decodeString(this.readBytes(this.readVaruint()));
 			this.translation=this.readBigEndianByte()!==0;
-			var bhroaxmucgfyyw1l=this.readVaruint(); this.parameters=[]; for(var dghpcy5wyxjhbwv0 in this.parameters){ this.parameters[dghpcy5wyxjhbwv0]=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint())))); }
+			if(translation==true){ var bhroaxmucgfyyw1l=this.readVaruint(); this.parameters=[]; for(var dghpcy5wyxjhbwv0 in this.parameters){ this.parameters[dghpcy5wyxjhbwv0]=this.decodeString(this.readBytes(this.readVaruint())); } }
 			return this;
 		}
 
@@ -382,7 +382,7 @@ const Player = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.hubId=this.readVaruint();
-			this.displayName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.displayName=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -437,7 +437,7 @@ const Player = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.hubId=this.readVaruint();
-			this.world=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.world=this.decodeString(this.readBytes(this.readVaruint()));
 			this.dimension=this.readBigEndianByte();
 			return this;
 		}
@@ -531,7 +531,7 @@ const Player = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.hubId=this.readVaruint();
-			this.language=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.language=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 

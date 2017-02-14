@@ -62,8 +62,8 @@ const Login = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.protocol=this.readVaruint();
-			this.password=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.password=this.decodeString(this.readBytes(this.readVaruint()));
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			this.main=this.readBigEndianByte()!==0;
 			return this;
 		}
@@ -234,15 +234,15 @@ const Login = {
 			this.time=this.readVarulong();
 			this.serverId=this.readVarulong();
 			this.reservedUuids=this.readVarulong();
-			this.displayName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.displayName=this.decodeString(this.readBytes(this.readVaruint()));
 			this.onlineMode=this.readBigEndianByte()!==0;
 			var bhroaxmuz2ftzxnj=this.readVaruint(); this.gamesInfo=[]; for(var dghpcy5nyw1lc0lu in this.gamesInfo){ this.gamesInfo[dghpcy5nyw1lc0lu]=Types.GameInfo.fromBuffer(this._buffer.slice(this._index)); this._index+=this.gamesInfo[dghpcy5nyw1lc0lu]._index; }
 			this.online=this.readVaruint();
 			this.max=this.readVarint();
-			this.language=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			var bhroaxmuywnjzxb0=this.readVaruint(); this.acceptedLanguages=[]; for(var dghpcy5hy2nlchrl in this.acceptedLanguages){ this.acceptedLanguages[dghpcy5hy2nlchrl]=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint())))); }
-			this.socialJson=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.additionalJson=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.language=this.decodeString(this.readBytes(this.readVaruint()));
+			var bhroaxmuywnjzxb0=this.readVaruint(); this.acceptedLanguages=[]; for(var dghpcy5hy2nlchrl in this.acceptedLanguages){ this.acceptedLanguages[dghpcy5hy2nlchrl]=this.decodeString(this.readBytes(this.readVaruint())); }
+			this.socialJson=this.decodeString(this.readBytes(this.readVaruint()));
+			this.additionalJson=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -315,7 +315,7 @@ const Login = {
 			this.max=this.readVaruint();
 			var bhroaxmuywnjzxb0=this.readVaruint(); this.acceptedGames=[]; for(var dghpcy5hy2nlchrl in this.acceptedGames){ this.acceptedGames[dghpcy5hy2nlchrl]=Types.Game.fromBuffer(this._buffer.slice(this._index)); this._index+=this.acceptedGames[dghpcy5hy2nlchrl]._index; }
 			var bhroaxmucgx1z2lu=this.readVaruint(); this.plugins=[]; for(var dghpcy5wbhvnaw5z in this.plugins){ this.plugins[dghpcy5wbhvnaw5z]=Types.Plugin.fromBuffer(this._buffer.slice(this._index)); this._index+=this.plugins[dghpcy5wbhvnaw5z]._index; }
-			this.additionalJson=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.additionalJson=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 

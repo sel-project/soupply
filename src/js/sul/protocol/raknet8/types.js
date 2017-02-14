@@ -24,8 +24,8 @@ const Types = {
 		encode() {
 			this._buffer = [];
 			this.writeBigEndianByte(this.type);
-			this.writeBigEndianInt(this.ipv4);
-			this.writeBytes(this.ipv6);
+			if(type==4){ this.writeBigEndianInt(this.ipv4); }
+			if(type==6){ this.writeBytes(this.ipv6); }
 			this.writeBigEndianShort(this.port);
 			return new Uint8Array(this._buffer);
 		}
@@ -35,8 +35,8 @@ const Types = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			this.type=this.readBigEndianByte();
-			this.ipv4=this.readBigEndianInt();
-			var bhroaxmuaxb2ng=16; this.ipv6=this.readBytes(bhroaxmuaxb2ng);
+			if(type==4){ this.ipv4=this.readBigEndianInt(); }
+			if(type==6){ var bhroaxmuaxb2ng=16; this.ipv6=this.readBytes(bhroaxmuaxb2ng); }
 			this.port=this.readBigEndianShort();
 			return this;
 		}
@@ -66,7 +66,7 @@ const Types = {
 			this._buffer = [];
 			this.writeBigEndianByte(this.unique?1:0);
 			this.writeLittleEndianTriad(this.first);
-			this.writeLittleEndianTriad(this.last);
+			if(unique==false){ this.writeLittleEndianTriad(this.last); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -76,7 +76,7 @@ const Types = {
 			this._index = 0;
 			this.unique=this.readBigEndianByte()!==0;
 			this.first=this.readLittleEndianTriad();
-			this.last=this.readLittleEndianTriad();
+			if(unique==false){ this.last=this.readLittleEndianTriad(); }
 			return this;
 		}
 
@@ -109,10 +109,10 @@ const Types = {
 			this._buffer = [];
 			this.writeBigEndianByte(this.info);
 			this.writeBigEndianShort(this.length);
-			this.writeLittleEndianTriad(this.messageIndex);
-			this.writeLittleEndianTriad(this.orderIndex);
-			this.writeBigEndianByte(this.orderChannel);
-			this.writeBytes(this.split.encode());
+			if((info&0x7F)>=64){ this.writeLittleEndianTriad(this.messageIndex); }
+			if((info&0x7F)>=96){ this.writeLittleEndianTriad(this.orderIndex); }
+			if((info&0x7F)>=96){ this.writeBigEndianByte(this.orderChannel); }
+			if((info&0x10)!=0){ this.writeBytes(this.split.encode()); }
 			this.writeBytes(this.payload);
 			return new Uint8Array(this._buffer);
 		}
@@ -123,10 +123,10 @@ const Types = {
 			this._index = 0;
 			this.info=this.readBigEndianByte();
 			this.length=this.readBigEndianShort();
-			this.messageIndex=this.readLittleEndianTriad();
-			this.orderIndex=this.readLittleEndianTriad();
-			this.orderChannel=this.readBigEndianByte();
-			this.split=Types.Split.fromBuffer(this._buffer.slice(this._index)); this._index+=this.split._index;
+			if((info&0x7F)>=64){ this.messageIndex=this.readLittleEndianTriad(); }
+			if((info&0x7F)>=96){ this.orderIndex=this.readLittleEndianTriad(); }
+			if((info&0x7F)>=96){ this.orderChannel=this.readBigEndianByte(); }
+			if((info&0x10)!=0){ this.split=Types.Split.fromBuffer(this._buffer.slice(this._index)); this._index+=this.split._index; }
 			this.payload=this.readBytes(this._buffer.length-this._index);
 			return this;
 		}

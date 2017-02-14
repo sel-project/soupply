@@ -32,8 +32,8 @@ const Types = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
-			this.id=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.version=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.id=this.decodeString(this.readBytes(this.readVaruint()));
+			this.version=this.decodeString(this.readBytes(this.readVaruint()));
 			this.size=this.readBigEndianLong();
 			return this;
 		}
@@ -110,8 +110,8 @@ const Types = {
 		encode() {
 			this._buffer = [];
 			this.writeVarint(this.id);
-			this.writeVarint(this.metaAndCount);
-			this.writeLittleEndianShort(this.nbt.length); this.writeBytes(this.nbt);
+			if(id>0){ this.writeVarint(this.metaAndCount); }
+			if(id>0){ this.writeLittleEndianShort(this.nbt.length); this.writeBytes(this.nbt); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -120,8 +120,8 @@ const Types = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			this.id=this.readVarint();
-			this.metaAndCount=this.readVarint();
-			var bhroaxmubmj0=this.readLittleEndianShort(); this.nbt=this.readBytes(bhroaxmubmj0);
+			if(id>0){ this.metaAndCount=this.readVarint(); }
+			if(id>0){ var bhroaxmubmj0=this.readLittleEndianShort(); this.nbt=this.readBytes(bhroaxmubmj0); }
 			return this;
 		}
 
@@ -166,7 +166,7 @@ const Types = {
 			this.max=this.readLittleEndianFloat();
 			this.value=this.readLittleEndianFloat();
 			this.default=this.readLittleEndianFloat();
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -207,7 +207,7 @@ const Types = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
 			return this;
 		}
@@ -261,7 +261,7 @@ const Types = {
 			this._index = 0;
 			this.uuid=this.readBytes(16);
 			this.entityId=this.readVarlong();
-			this.displayName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.displayName=this.decodeString(this.readBytes(this.readVaruint()));
 			this.skin=Types.Skin.fromBuffer(this._buffer.slice(this._index)); this._index+=this.skin._index;
 			return this;
 		}

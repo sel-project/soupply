@@ -161,7 +161,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.serverPublicKey=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.serverPublicKey=this.decodeString(this.readBytes(this.readVaruint()));
 			var bhroaxmudg9rzw4=this.readVaruint(); this.token=this.readBytes(bhroaxmudg9rzw4);
 			return this;
 		}
@@ -242,7 +242,7 @@ const Play = {
 			this._buffer = [];
 			this.writeBigEndianByte(5);
 			this.writeBigEndianByte(this.hideDisconnectionScreen?1:0);
-			var dghpcy5tzxnzywdl=this.encodeString(this.message); this.writeVaruint(dghpcy5tzxnzywdl.length); this.writeBytes(dghpcy5tzxnzywdl);
+			if(hideDisconnectionScreen==false){ var dghpcy5tzxnzywdl=this.encodeString(this.message); this.writeVaruint(dghpcy5tzxnzywdl.length); this.writeBytes(dghpcy5tzxnzywdl); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -252,7 +252,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.hideDisconnectionScreen=this.readBigEndianByte()!==0;
-			this.message=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			if(hideDisconnectionScreen==false){ this.message=this.decodeString(this.readBytes(this.readVaruint())); }
 			return this;
 		}
 
@@ -590,7 +590,7 @@ const Play = {
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
 			this.runtimeId=this.readVarlong();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.yaw=this.readLittleEndianFloat();
 			this.pitch=this.readLittleEndianFloat();
 			this.seed=this.readVarint();
@@ -598,7 +598,7 @@ const Play = {
 			this.generator=this.readVarint();
 			this.worldGamemode=this.readVarint();
 			this.difficulty=this.readVarint();
-			this.spawnPosition.x=this.readVarint(); this.spawnPosition.y=this.readVarint(); this.spawnPosition.z=this.readVarint();
+			this.spawnPosition={} this.spawnPosition.x=this.readVarint(); this.spawnPosition.y=this.readVarint(); this.spawnPosition.z=this.readVarint();
 			this.loadedInCreative=this.readBigEndianByte()!==0;
 			this.time=this.readVarint();
 			this.edition=this.readBigEndianByte();
@@ -606,8 +606,8 @@ const Play = {
 			this.lightingLevel=this.readLittleEndianFloat();
 			this.cheatsEnabled=this.readBigEndianByte()!==0;
 			this.textureRequired=this.readBigEndianByte()!==0;
-			this.levelId=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.worldName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.levelId=this.decodeString(this.readBytes(this.readVaruint()));
+			this.worldName=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -668,11 +668,11 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.uuid=this.readBytes(16);
-			this.username=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.username=this.decodeString(this.readBytes(this.readVaruint()));
 			this.entityId=this.readVarlong();
 			this.runtimeId=this.readVarlong();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
-			this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.motion={} this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
 			this.pitch=this.readLittleEndianFloat();
 			this.headYaw=this.readLittleEndianFloat();
 			this.yaw=this.readLittleEndianFloat();
@@ -738,8 +738,8 @@ const Play = {
 			this.entityId=this.readVarlong();
 			this.runtimeId=this.readVarlong();
 			this.type=this.readVaruint();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
-			this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.motion={} this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
 			this.pitch=this.readLittleEndianFloat();
 			this.yaw=this.readLittleEndianFloat();
 			var bhroaxmuyxr0cmli=this.readVaruint(); this.attributes=[]; for(var dghpcy5hdhryawj1 in this.attributes){ this.attributes[dghpcy5hdhryawj1]=Types.Attribute.fromBuffer(this._buffer.slice(this._index)); this._index+=this.attributes[dghpcy5hdhryawj1]._index; }
@@ -838,8 +838,8 @@ const Play = {
 			this.entityId=this.readVarlong();
 			this.runtimeId=this.readVarlong();
 			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
-			this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.motion={} this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
 			return this;
 		}
 
@@ -980,7 +980,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.pitch=this.readBigEndianByte();
 			this.headYaw=this.readBigEndianByte();
 			this.yaw=this.readBigEndianByte();
@@ -1041,7 +1041,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.pitch=this.readLittleEndianFloat();
 			this.headYaw=this.readLittleEndianFloat();
 			this.yaw=this.readLittleEndianFloat();
@@ -1230,7 +1230,7 @@ const Play = {
 			this.runtimeId=this.readVarlong();
 			this.position=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.position._index;
 			this.direction=this.readVarint();
-			this.title=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.title=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -1274,7 +1274,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.radius=this.readLittleEndianFloat();
 			var bhroaxmuzgvzdhjv=this.readVaruint(); this.destroyedBlocks=[]; for(var dghpcy5kzxn0cm95 in this.destroyedBlocks){ this.destroyedBlocks[dghpcy5kzxn0cm95]=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.destroyedBlocks[dghpcy5kzxn0cm95]._index; }
 			return this;
@@ -1419,7 +1419,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.sound=this.readBigEndianByte();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.volume=this.readVaruint();
 			this.pitch=this.readVarint();
 			this.unknown4=this.readBigEndianByte()!==0;
@@ -1517,7 +1517,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.eventId=this.readVarint();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.data=this.readVarint();
 			return this;
 		}
@@ -1935,8 +1935,8 @@ const Play = {
 			this.blockPosition=Types.BlockPosition.fromBuffer(this._buffer.slice(this._index)); this._index+=this.blockPosition._index;
 			this.hotbarSlot=this.readVaruint();
 			this.face=this.readVarint();
-			this.facePosition.x=this.readLittleEndianFloat(); this.facePosition.y=this.readLittleEndianFloat(); this.facePosition.z=this.readLittleEndianFloat();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.facePosition={} this.facePosition.x=this.readLittleEndianFloat(); this.facePosition.y=this.readLittleEndianFloat(); this.facePosition.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.slot=this.readVarint();
 			this.item=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.item._index;
 			return this;
@@ -2168,7 +2168,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.entityId=this.readVarlong();
-			this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
+			this.motion={} this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
 			return this;
 		}
 
@@ -2391,7 +2391,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			return this;
 		}
 
@@ -2956,7 +2956,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
+			this.motion={} this.motion.x=this.readLittleEndianFloat(); this.motion.y=this.readLittleEndianFloat(); this.motion.z=this.readLittleEndianFloat();
 			this.flags=this.readBigEndianByte();
 			this.unknown2=this.readBigEndianByte()!==0;
 			return this;
@@ -3002,7 +3002,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position.x=this.readVarint(); this.position.z=this.readVarint();
+			this.position={} this.position.x=this.readVarint(); this.position.z=this.readVarint();
 			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
 			var bhroaxmudglszxm=this.readVaruint(); this.tiles=this.readBytes(bhroaxmudglszxm);
 			return this;
@@ -3146,7 +3146,7 @@ const Play = {
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.dimension=this.readVarint();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.unknown2=this.readBigEndianByte()!==0;
 			return this;
 		}
@@ -3326,7 +3326,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
+			this.position={} this.position.x=this.readLittleEndianFloat(); this.position.y=this.readLittleEndianFloat(); this.position.z=this.readLittleEndianFloat();
 			this.count=this.readVarint();
 			return this;
 		}
@@ -3413,12 +3413,12 @@ const Play = {
 			this.unknown7=this.readBigEndianByte();
 			this.unknown8=this.readBigEndianByte();
 			this.showIcons=this.readBigEndianByte()!==0;
-			var bhroaxmuawnvbnm=this.readVaruint(); this.icons=[]; for(var dghpcy5py29ucw in this.icons){ this.icons[dghpcy5py29ucw].x=this.readVarint(); this.icons[dghpcy5py29ucw].z=this.readVarint(); }
+			var bhroaxmuawnvbnm=this.readVaruint(); this.icons=[]; for(var dghpcy5py29ucw in this.icons){ this.icons[dghpcy5py29ucw]={} this.icons[dghpcy5py29ucw].x=this.readVarint(); this.icons[dghpcy5py29ucw].z=this.readVarint(); }
 			this.direction=this.readVarint();
-			this.position.x=this.readVarint(); this.position.z=this.readVarint();
+			this.position={} this.position.x=this.readVarint(); this.position.z=this.readVarint();
 			this.columns=this.readVarint();
 			this.rows=this.readVarint();
-			this.offset.x=this.readVarint(); this.offset.z=this.readVarint();
+			this.offset={} this.offset.x=this.readVarint(); this.offset.z=this.readVarint();
 			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
 			return this;
 		}
@@ -3839,8 +3839,8 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.commands=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.unknown1=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.commands=this.decodeString(this.readBytes(this.readVaruint()));
+			this.unknown1=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -3894,14 +3894,14 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.command=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.overload=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.command=this.decodeString(this.readBytes(this.readVaruint()));
+			this.overload=this.decodeString(this.readBytes(this.readVaruint()));
 			this.unknown2=this.readVaruint();
 			this.unknown3=this.readVaruint();
 			this.isOutput=this.readBigEndianByte()!==0;
 			this.unknown5=this.readVarulong();
-			this.input=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.output=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.input=this.decodeString(this.readBytes(this.readVaruint()));
+			this.output=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -3949,11 +3949,11 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.id=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.id=this.decodeString(this.readBytes(this.readVaruint()));
 			this.unknown1=this.readBigEndianInt();
 			this.unknown2=this.readBigEndianInt();
 			this.unknown3=this.readBigEndianLong();
-			this.unknown4=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.unknown4=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -3999,7 +3999,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.id=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.id=this.decodeString(this.readBytes(this.readVaruint()));
 			this.unknown1=this.readBigEndianInt();
 			this.unknown2=this.readBigEndianLong();
 			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
@@ -4044,7 +4044,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.id=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.id=this.decodeString(this.readBytes(this.readVaruint()));
 			this.index=this.readBigEndianInt();
 			return this;
 		}
@@ -4099,7 +4099,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.ip=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.ip=this.decodeString(this.readBytes(this.readVaruint()));
 			this.port=this.readLittleEndianShort();
 			return this;
 		}

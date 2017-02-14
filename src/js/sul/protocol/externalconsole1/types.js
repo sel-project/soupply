@@ -96,7 +96,7 @@ const Types = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
+			this.name=this.decodeString(this.readBytes(this.readBigEndianShort()));
 			this.tps=this.readBigEndianFloat();
 			this.ram=this.readBigEndianLong();
 			this.cpu=this.readBigEndianFloat();

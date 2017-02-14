@@ -77,7 +77,7 @@ const Serverbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.text=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.text=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -117,7 +117,7 @@ const Serverbound = {
 			this.writeVaruint(2);
 			this.writeVaruint(this.target);
 			this.writeVaruint(this.type);
-			this.writeBigEndianFloat(this.targetPosition.x); this.writeBigEndianFloat(this.targetPosition.y); this.writeBigEndianFloat(this.targetPosition.z);
+			if(type==2){ this.writeBigEndianFloat(this.targetPosition.x); this.writeBigEndianFloat(this.targetPosition.y); this.writeBigEndianFloat(this.targetPosition.z); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -128,7 +128,7 @@ const Serverbound = {
 			var _id=this.readVaruint();
 			this.target=this.readVaruint();
 			this.type=this.readVaruint();
-			this.targetPosition.x=this.readBigEndianFloat(); this.targetPosition.y=this.readBigEndianFloat(); this.targetPosition.z=this.readBigEndianFloat();
+			if(type==2){ this.targetPosition={} this.targetPosition.x=this.readBigEndianFloat(); this.targetPosition.y=this.readBigEndianFloat(); this.targetPosition.z=this.readBigEndianFloat(); }
 			return this;
 		}
 
@@ -210,7 +210,7 @@ const Serverbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.onGround=this.readBigEndianByte()!==0;
 			return this;
 		}
@@ -303,7 +303,7 @@ const Serverbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.yaw=this.readBigEndianFloat();
 			this.pitch=this.readBigEndianFloat();
 			this.onGround=this.readBigEndianByte()!==0;
@@ -410,7 +410,7 @@ const Serverbound = {
 			this.position=this.readBigEndianLong();
 			this.face=this.readBigEndianByte();
 			this.heldItem=Types.Slot.fromBuffer(this._buffer.slice(this._index)); this._index+=this.heldItem._index;
-			this.cursorPosition.x=this.readBigEndianByte(); this.cursorPosition.y=this.readBigEndianByte(); this.cursorPosition.z=this.readBigEndianByte();
+			this.cursorPosition={} this.cursorPosition.x=this.readBigEndianByte(); this.cursorPosition.y=this.readBigEndianByte(); this.cursorPosition.z=this.readBigEndianByte();
 			return this;
 		}
 
@@ -531,7 +531,7 @@ const Serverbound = {
 			this.writeVaruint(11);
 			this.writeVaruint(this.entityId);
 			this.writeVaruint(this.action);
-			this.writeVaruint(this.jumpBoost);
+			if(action==5){ this.writeVaruint(this.jumpBoost); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -542,7 +542,7 @@ const Serverbound = {
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
 			this.action=this.readVaruint();
-			this.jumpBoost=this.readVaruint();
+			if(action==5){ this.jumpBoost=this.readVaruint(); }
 			return this;
 		}
 
@@ -862,7 +862,7 @@ const Serverbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.position=this.readBigEndianLong();
-			var bhroaxmubgluzxm=4; this.lines=[]; for(var dghpcy5saw5lcw in this.lines){ this.lines[dghpcy5saw5lcw]=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint())))); }
+			var bhroaxmubgluzxm=4; this.lines=[]; for(var dghpcy5saw5lcw in this.lines){ this.lines[dghpcy5saw5lcw]=this.decodeString(this.readBytes(this.readVaruint())); }
 			return this;
 		}
 
@@ -949,7 +949,7 @@ const Serverbound = {
 			this.writeVaruint(20);
 			var dghpcy50zxh0=this.encodeString(this.text); this.writeVaruint(dghpcy50zxh0.length); this.writeBytes(dghpcy50zxh0);
 			this.writeBigEndianByte(this.hasPosition?1:0);
-			this.writeBigEndianLong(this.block);
+			if(hasPosition==true){ this.writeBigEndianLong(this.block); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -958,9 +958,9 @@ const Serverbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.text=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.text=this.decodeString(this.readBytes(this.readVaruint()));
 			this.hasPosition=this.readBigEndianByte()!==0;
-			this.block=this.readBigEndianLong();
+			if(hasPosition==true){ this.block=this.readBigEndianLong(); }
 			return this;
 		}
 
@@ -1028,7 +1028,7 @@ const Serverbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.language=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.language=this.decodeString(this.readBytes(this.readVaruint()));
 			this.viewDistance=this.readBigEndianByte();
 			this.chatMode=this.readBigEndianByte();
 			this.chatColors=this.readBigEndianByte()!==0;
@@ -1120,7 +1120,7 @@ const Serverbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.channel=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.channel=this.decodeString(this.readBytes(this.readVaruint()));
 			this.data=this.readBytes(this._buffer.length-this._index);
 			return this;
 		}
@@ -1209,7 +1209,7 @@ const Serverbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.hash=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.hash=this.decodeString(this.readBytes(this.readVaruint()));
 			this.result=this.readVaruint();
 			return this;
 		}

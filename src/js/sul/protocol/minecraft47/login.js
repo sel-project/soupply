@@ -37,7 +37,7 @@ const Login = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.reason=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.reason=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -77,7 +77,7 @@ const Login = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.username=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.username=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -121,7 +121,7 @@ const Login = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.serverId=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.serverId=this.decodeString(this.readBytes(this.readVaruint()));
 			var bhroaxmuchvibglj=this.readVaruint(); this.publicKey=this.readBytes(bhroaxmuchvibglj);
 			var bhroaxmudmvyawz5=this.readVaruint(); this.verifyToken=this.readBytes(bhroaxmudmvyawz5);
 			return this;
@@ -208,8 +208,8 @@ const Login = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.uuid=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.username=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.uuid=this.decodeString(this.readBytes(this.readVaruint()));
+			this.username=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 

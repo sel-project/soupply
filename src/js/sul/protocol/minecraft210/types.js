@@ -30,7 +30,7 @@ const Types = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			this.value=this.readVaruint();
 			return this;
 		}
@@ -99,9 +99,9 @@ const Types = {
 		encode() {
 			this._buffer = [];
 			this.writeBigEndianShort(this.id);
-			this.writeBigEndianByte(this.count);
-			this.writeBigEndianShort(this.damage);
-			this.writeBytes(this.nbt);
+			if(id>0){ this.writeBigEndianByte(this.count); }
+			if(id>0){ this.writeBigEndianShort(this.damage); }
+			if(id>0){ this.writeBytes(this.nbt); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -110,9 +110,9 @@ const Types = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			this.id=this.readBigEndianShort();
-			this.count=this.readBigEndianByte();
-			this.damage=this.readBigEndianShort();
-			this.nbt=this.readBytes(this._buffer.length-this._index);
+			if(id>0){ this.count=this.readBigEndianByte(); }
+			if(id>0){ this.damage=this.readBigEndianShort(); }
+			if(id>0){ this.nbt=this.readBytes(this._buffer.length-this._index); }
 			return this;
 		}
 
@@ -157,7 +157,7 @@ const Types = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			this.directionAndType=this.readBigEndianByte();
-			this.position.x=this.readBigEndianByte(); this.position.z=this.readBigEndianByte();
+			this.position={} this.position.x=this.readBigEndianByte(); this.position.z=this.readBigEndianByte();
 			return this;
 		}
 
@@ -188,7 +188,7 @@ const Types = {
 			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
 			var dghpcy52ywx1zq=this.encodeString(this.value); this.writeVaruint(dghpcy52ywx1zq.length); this.writeBytes(dghpcy52ywx1zq);
 			this.writeBigEndianByte(this.signed?1:0);
-			var dghpcy5zawduyxr1=this.encodeString(this.signature); this.writeVaruint(dghpcy5zawduyxr1.length); this.writeBytes(dghpcy5zawduyxr1);
+			if(signed==true){ var dghpcy5zawduyxr1=this.encodeString(this.signature); this.writeVaruint(dghpcy5zawduyxr1.length); this.writeBytes(dghpcy5zawduyxr1); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -196,10 +196,10 @@ const Types = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.value=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
+			this.value=this.decodeString(this.readBytes(this.readVaruint()));
 			this.signed=this.readBigEndianByte()!==0;
-			this.signature=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			if(signed==true){ this.signature=this.decodeString(this.readBytes(this.readVaruint())); }
 			return this;
 		}
 
@@ -242,7 +242,7 @@ const Types = {
 			this.writeVaruint(this.gamemode);
 			this.writeVaruint(this.latency);
 			this.writeBigEndianByte(this.hasDisplayName?1:0);
-			var dghpcy5kaxnwbgf5=this.encodeString(this.displayName); this.writeVaruint(dghpcy5kaxnwbgf5.length); this.writeBytes(dghpcy5kaxnwbgf5);
+			if(hasDisplayName==true){ var dghpcy5kaxnwbgf5=this.encodeString(this.displayName); this.writeVaruint(dghpcy5kaxnwbgf5.length); this.writeBytes(dghpcy5kaxnwbgf5); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -251,12 +251,12 @@ const Types = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			this.uuid=this.readBytes(16);
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			var bhroaxmuchjvcgvy=this.readVaruint(); this.properties=[]; for(var dghpcy5wcm9wzxj0 in this.properties){ this.properties[dghpcy5wcm9wzxj0]=Types.Property.fromBuffer(this._buffer.slice(this._index)); this._index+=this.properties[dghpcy5wcm9wzxj0]._index; }
 			this.gamemode=this.readVaruint();
 			this.latency=this.readVaruint();
 			this.hasDisplayName=this.readBigEndianByte()!==0;
-			this.displayName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			if(hasDisplayName==true){ this.displayName=this.decodeString(this.readBytes(this.readVaruint())); }
 			return this;
 		}
 
@@ -363,7 +363,7 @@ const Types = {
 			this._buffer = [];
 			this.writeBytes(this.uuid);
 			this.writeBigEndianByte(this.hasDisplayName?1:0);
-			var dghpcy5kaxnwbgf5=this.encodeString(this.displayName); this.writeVaruint(dghpcy5kaxnwbgf5.length); this.writeBytes(dghpcy5kaxnwbgf5);
+			if(hasDisplayName==true){ var dghpcy5kaxnwbgf5=this.encodeString(this.displayName); this.writeVaruint(dghpcy5kaxnwbgf5.length); this.writeBytes(dghpcy5kaxnwbgf5); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -373,7 +373,7 @@ const Types = {
 			this._index = 0;
 			this.uuid=this.readBytes(16);
 			this.hasDisplayName=this.readBigEndianByte()!==0;
-			this.displayName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			if(hasDisplayName==true){ this.displayName=this.decodeString(this.readBytes(this.readVaruint())); }
 			return this;
 		}
 
@@ -454,7 +454,7 @@ const Types = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
-			this.key=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.key=this.decodeString(this.readBytes(this.readVaruint()));
 			this.value=this.readBigEndianDouble();
 			var bhroaxmubw9kawzp=this.readVaruint(); this.modifiers=[]; for(var dghpcy5tb2rpzmll in this.modifiers){ this.modifiers[dghpcy5tb2rpzmll]=Types.Modifier.fromBuffer(this._buffer.slice(this._index)); this._index+=this.modifiers[dghpcy5tb2rpzmll]._index; }
 			return this;
@@ -483,7 +483,7 @@ const Types = {
 		encode() {
 			this._buffer = [];
 			this.writeBigEndianByte(this.hasPosition?1:0);
-			this.writeBigEndianLong(this.position);
+			if(hasPosition==true){ this.writeBigEndianLong(this.position); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -492,7 +492,7 @@ const Types = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			this.hasPosition=this.readBigEndianByte()!==0;
-			this.position=this.readBigEndianLong();
+			if(hasPosition==true){ this.position=this.readBigEndianLong(); }
 			return this;
 		}
 

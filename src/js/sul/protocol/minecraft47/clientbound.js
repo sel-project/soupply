@@ -117,7 +117,7 @@ const Clientbound = {
 			this.dimension=this.readBigEndianByte();
 			this.difficulty=this.readBigEndianByte();
 			this.maxPlayers=this.readBigEndianByte();
-			this.levelType=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.levelType=this.decodeString(this.readBytes(this.readVaruint()));
 			this.reducedDebug=this.readBigEndianByte()!==0;
 			return this;
 		}
@@ -165,7 +165,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.message=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.message=this.decodeString(this.readBytes(this.readVaruint()));
 			this.position=this.readBigEndianByte();
 			return this;
 		}
@@ -420,7 +420,7 @@ const Clientbound = {
 			this.dimension=this.readBigEndianInt();
 			this.difficulty=this.readBigEndianByte();
 			this.gamemode=this.readBigEndianByte();
-			this.levelType=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.levelType=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -473,7 +473,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
+			this.position={} this.position.x=this.readBigEndianDouble(); this.position.y=this.readBigEndianDouble(); this.position.z=this.readBigEndianDouble();
 			this.yaw=this.readBigEndianFloat();
 			this.pitch=this.readBigEndianFloat();
 			this.flags=this.readBigEndianByte();
@@ -664,7 +664,7 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
 			this.uuid=this.readBytes(16);
-			this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.position={} this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			this.yaw=this.readBigEndianByte();
 			this.pitch=this.readBigEndianByte();
 			this.currentItem=this.readBigEndianShort();
@@ -765,11 +765,11 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
 			this.type=this.readBigEndianByte();
-			this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.position={} this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			this.pitch=this.readBigEndianByte();
 			this.yaw=this.readBigEndianByte();
 			this.data=this.readBigEndianInt();
-			this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
+			this.velocity={} this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
 			return this;
 		}
 
@@ -825,11 +825,11 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
 			this.type=this.readBigEndianByte();
-			this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.position={} this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			this.yaw=this.readBigEndianByte();
 			this.pitch=this.readBigEndianByte();
 			this.headPitch=this.readBigEndianByte();
-			this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
+			this.velocity={} this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
 			this.metadata=Metadata.fromBuffer(this._buffer.slice(this._index)); this._index+=this.metadata._index;
 			return this;
 		}
@@ -883,7 +883,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.title=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.title=this.decodeString(this.readBytes(this.readVaruint()));
 			this.position=this.readBigEndianLong();
 			this.direction=this.readBigEndianByte();
 			return this;
@@ -930,7 +930,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.position={} this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			this.count=this.readBigEndianShort();
 			return this;
 		}
@@ -974,7 +974,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
+			this.velocity={} this.velocity.x=this.readBigEndianShort(); this.velocity.y=this.readBigEndianShort(); this.velocity.z=this.readBigEndianShort();
 			return this;
 		}
 
@@ -1099,7 +1099,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.delta.x=this.readBigEndianByte(); this.delta.y=this.readBigEndianByte(); this.delta.z=this.readBigEndianByte();
+			this.delta={} this.delta.x=this.readBigEndianByte(); this.delta.y=this.readBigEndianByte(); this.delta.z=this.readBigEndianByte();
 			this.onGround=this.readBigEndianByte()!==0;
 			return this;
 		}
@@ -1198,7 +1198,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.delta.x=this.readBigEndianByte(); this.delta.y=this.readBigEndianByte(); this.delta.z=this.readBigEndianByte();
+			this.delta={} this.delta.x=this.readBigEndianByte(); this.delta.y=this.readBigEndianByte(); this.delta.z=this.readBigEndianByte();
 			this.yaw=this.readBigEndianByte();
 			this.pitch=this.readBigEndianByte();
 			this.onGround=this.readBigEndianByte()!==0;
@@ -1250,7 +1250,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
-			this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.position={} this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			this.yaw=this.readBigEndianByte();
 			this.pitch=this.readBigEndianByte();
 			this.onGround=this.readBigEndianByte()!==0;
@@ -1685,7 +1685,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position.x=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.position={} this.position.x=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			this.full=this.readBigEndianByte()!==0;
 			this.sections=this.readBigEndianShort();
 			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
@@ -1730,7 +1730,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.chunk.x=this.readBigEndianInt(); this.chunk.z=this.readBigEndianInt();
+			this.chunk={} this.chunk.x=this.readBigEndianInt(); this.chunk.z=this.readBigEndianInt();
 			var bhroaxmuy2hhbmdl=this.readVaruint(); this.changes=[]; for(var dghpcy5jagfuz2vz in this.changes){ this.changes[dghpcy5jagfuz2vz]=Types.BlockChange.fromBuffer(this._buffer.slice(this._index)); this._index+=this.changes[dghpcy5jagfuz2vz]._index; }
 			return this;
 		}
@@ -1937,10 +1937,10 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.position.x=this.readBigEndianFloat(); this.position.y=this.readBigEndianFloat(); this.position.z=this.readBigEndianFloat();
+			this.position={} this.position.x=this.readBigEndianFloat(); this.position.y=this.readBigEndianFloat(); this.position.z=this.readBigEndianFloat();
 			this.radius=this.readBigEndianFloat();
-			var bhroaxmucmvjb3jk=this.readBigEndianInt(); this.records=[]; for(var dghpcy5yzwnvcmrz in this.records){ this.records[dghpcy5yzwnvcmrz].x=this.readBigEndianByte(); this.records[dghpcy5yzwnvcmrz].y=this.readBigEndianByte(); this.records[dghpcy5yzwnvcmrz].z=this.readBigEndianByte(); }
-			this.motion.x=this.readBigEndianFloat(); this.motion.y=this.readBigEndianFloat(); this.motion.z=this.readBigEndianFloat();
+			var bhroaxmucmvjb3jk=this.readBigEndianInt(); this.records=[]; for(var dghpcy5yzwnvcmrz in this.records){ this.records[dghpcy5yzwnvcmrz]={} this.records[dghpcy5yzwnvcmrz].x=this.readBigEndianByte(); this.records[dghpcy5yzwnvcmrz].y=this.readBigEndianByte(); this.records[dghpcy5yzwnvcmrz].z=this.readBigEndianByte(); }
+			this.motion={} this.motion.x=this.readBigEndianFloat(); this.motion.y=this.readBigEndianFloat(); this.motion.z=this.readBigEndianFloat();
 			return this;
 		}
 
@@ -2062,8 +2062,8 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.soundName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.soundName=this.decodeString(this.readBytes(this.readVaruint()));
+			this.position={} this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			this.volume=this.readBigEndianFloat();
 			this.pitch=this.readBigEndianByte();
 			return this;
@@ -2163,8 +2163,8 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.particleId=this.readBigEndianInt();
 			this.longDistance=this.readBigEndianByte()!==0;
-			this.position.x=this.readBigEndianFloat(); this.position.y=this.readBigEndianFloat(); this.position.z=this.readBigEndianFloat();
-			this.offset.x=this.readBigEndianFloat(); this.offset.y=this.readBigEndianFloat(); this.offset.z=this.readBigEndianFloat();
+			this.position={} this.position.x=this.readBigEndianFloat(); this.position.y=this.readBigEndianFloat(); this.position.z=this.readBigEndianFloat();
+			this.offset={} this.offset.x=this.readBigEndianFloat(); this.offset.y=this.readBigEndianFloat(); this.offset.z=this.readBigEndianFloat();
 			this.data=this.readBigEndianFloat();
 			this.count=this.readBigEndianInt();
 			var bhroaxmuywrkaxrp=2; this.additionalData=[]; for(var dghpcy5hzgrpdglv in this.additionalData){ this.additionalData[dghpcy5hzgrpdglv]=this.readVaruint(); }
@@ -2283,7 +2283,7 @@ const Clientbound = {
 			var _id=this.readVaruint();
 			this.entityId=this.readVaruint();
 			this.type=this.readBigEndianByte();
-			this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
+			this.position={} this.position.x=this.readBigEndianInt(); this.position.y=this.readBigEndianInt(); this.position.z=this.readBigEndianInt();
 			return this;
 		}
 
@@ -2332,8 +2332,8 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.window=this.readBigEndianByte();
-			this.type=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.title=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.type=this.decodeString(this.readBytes(this.readVaruint()));
+			this.title=this.decodeString(this.readBytes(this.readVaruint()));
 			this.slots=this.readBigEndianByte();
 			this.horseId=this.readBigEndianInt();
 			return this;
@@ -2620,7 +2620,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.position=this.readBigEndianLong();
-			var bhroaxmubgluzxm=4; this.lines=[]; for(var dghpcy5saw5lcw in this.lines){ this.lines[dghpcy5saw5lcw]=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint())))); }
+			var bhroaxmubgluzxm=4; this.lines=[]; for(var dghpcy5saw5lcw in this.lines){ this.lines[dghpcy5saw5lcw]=this.decodeString(this.readBytes(this.readVaruint())); }
 			return this;
 		}
 
@@ -2677,7 +2677,7 @@ const Clientbound = {
 			var bhroaxmuawnvbnm=this.readVaruint(); this.icons=[]; for(var dghpcy5py29ucw in this.icons){ this.icons[dghpcy5py29ucw]=Types.Icon.fromBuffer(this._buffer.slice(this._index)); this._index+=this.icons[dghpcy5py29ucw]._index; }
 			this.colums=this.readBigEndianByte();
 			this.rows=this.readBigEndianByte();
-			this.offset.x=this.readBigEndianByte(); this.offset.z=this.readBigEndianByte();
+			this.offset={} this.offset.x=this.readBigEndianByte(); this.offset.z=this.readBigEndianByte();
 			var bhroaxmuzgf0yq=this.readVaruint(); this.data=this.readBytes(bhroaxmuzgf0yq);
 			return this;
 		}
@@ -2944,7 +2944,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			var bhroaxmubwf0y2hl=this.readVaruint(); this.matches=[]; for(var dghpcy5tyxrjagvz in this.matches){ this.matches[dghpcy5tyxrjagvz]=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint())))); }
+			var bhroaxmubwf0y2hl=this.readVaruint(); this.matches=[]; for(var dghpcy5tyxrjagvz in this.matches){ this.matches[dghpcy5tyxrjagvz]=this.decodeString(this.readBytes(this.readVaruint())); }
 			return this;
 		}
 
@@ -2989,8 +2989,8 @@ const Clientbound = {
 			this.writeVaruint(59);
 			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
 			this.writeBigEndianByte(this.mode);
-			var dghpcy52ywx1zq=this.encodeString(this.value); this.writeVaruint(dghpcy52ywx1zq.length); this.writeBytes(dghpcy52ywx1zq);
-			var dghpcy50exbl=this.encodeString(this.type); this.writeVaruint(dghpcy50exbl.length); this.writeBytes(dghpcy50exbl);
+			if(mode!=1){ var dghpcy52ywx1zq=this.encodeString(this.value); this.writeVaruint(dghpcy52ywx1zq.length); this.writeBytes(dghpcy52ywx1zq); }
+			if(mode!=1){ var dghpcy50exbl=this.encodeString(this.type); this.writeVaruint(dghpcy50exbl.length); this.writeBytes(dghpcy50exbl); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -2999,10 +2999,10 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			this.mode=this.readBigEndianByte();
-			this.value=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.type=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			if(mode!=1){ this.value=this.decodeString(this.readBytes(this.readVaruint())); }
+			if(mode!=1){ this.type=this.decodeString(this.readBytes(this.readVaruint())); }
 			return this;
 		}
 
@@ -3043,7 +3043,7 @@ const Clientbound = {
 			var dghpcy5zy29yzu5h=this.encodeString(this.scoreName); this.writeVaruint(dghpcy5zy29yzu5h.length); this.writeBytes(dghpcy5zy29yzu5h);
 			this.writeBigEndianByte(this.action);
 			var dghpcy5vymply3rp=this.encodeString(this.objectiveName); this.writeVaruint(dghpcy5vymply3rp.length); this.writeBytes(dghpcy5vymply3rp);
-			this.writeVaruint(this.value);
+			if(action==0){ this.writeVaruint(this.value); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -3052,10 +3052,10 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.scoreName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.scoreName=this.decodeString(this.readBytes(this.readVaruint()));
 			this.action=this.readBigEndianByte();
-			this.objectiveName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.value=this.readVaruint();
+			this.objectiveName=this.decodeString(this.readBytes(this.readVaruint()));
+			if(action==0){ this.value=this.readVaruint(); }
 			return this;
 		}
 
@@ -3103,7 +3103,7 @@ const Clientbound = {
 			this._index = 0;
 			var _id=this.readVaruint();
 			this.position=this.readBigEndianByte();
-			this.scoreName=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.scoreName=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -3145,7 +3145,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.name=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			this.mode=this.readBigEndianByte();
 			return this;
 		}
@@ -3188,7 +3188,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.channel=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.channel=this.decodeString(this.readBytes(this.readVaruint()));
 			this.data=this.readBytes(this._buffer.length-this._index);
 			return this;
 		}
@@ -3229,7 +3229,7 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.reason=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.reason=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -3477,8 +3477,8 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.header=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.footer=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.header=this.decodeString(this.readBytes(this.readVaruint()));
+			this.footer=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -3520,8 +3520,8 @@ const Clientbound = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readVaruint();
-			this.url=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
-			this.hash=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readVaruint()))));
+			this.url=this.decodeString(this.readBytes(this.readVaruint()));
+			this.hash=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 

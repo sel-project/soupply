@@ -70,10 +70,10 @@ const Connected = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.node=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
+			this.node=this.decodeString(this.readBytes(this.readBigEndianShort()));
 			this.timestamp=this.readBigEndianLong();
-			this.logger=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
-			this.message=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
+			this.logger=this.decodeString(this.readBytes(this.readBigEndianShort()));
+			this.message=this.decodeString(this.readBytes(this.readBigEndianShort()));
 			return this;
 		}
 
@@ -122,7 +122,7 @@ const Connected = {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.command=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
+			this.command=this.decodeString(this.readBytes(this.readBigEndianShort()));
 			return this;
 		}
 

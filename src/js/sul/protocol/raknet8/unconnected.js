@@ -89,7 +89,7 @@ const Unconnected = {
 			this.pingId=this.readBigEndianLong();
 			this.serverId=this.readBigEndianLong();
 			var bhroaxmubwfnawm=16; this.magic=this.readBytes(bhroaxmubwfnawm);
-			this.status=decodeURIComponent(escape(String.fromCharCode.apply(null, this.readBytes(this.readBigEndianShort()))));
+			this.status=this.decodeString(this.readBytes(this.readBigEndianShort()));
 			return this;
 		}
 
