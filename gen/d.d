@@ -32,6 +32,9 @@ void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[str
 	mkdirRecurse("../src/d/sul/metadata");
 	mkdirRecurse("../src/d/sul/utils");
 
+	// about
+	write("../src/d/sul/utils/about.d", "package sul.utils.about;\n\nenum __sul = " ~ to!string(sulVersion) ~ ";");
+
 	// write varints
 	write("../src/d/sul/utils/var.d", q{
 module sul.utils.var;

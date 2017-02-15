@@ -16,8 +16,9 @@ module all;
 
 import std.algorithm : canFind, min;
 import std.base64 : Base64URL;
+import std.bitmanip : nativeToLittleEndian, littleEndianToNative;
 import std.conv : to;
-import std.file : dirEntries, SpanMode, read, isFile, _write = write;
+import std.file : dirEntries, SpanMode, read, isFile, _write = write, exists;
 import std.json;
 import std.path : dirSeparator;
 import std.regex : ctRegex, replaceAll;
@@ -80,7 +81,22 @@ alias Protocol = Tuple!(string, "released", string, "from", string, "to", string
 alias Protocols = File!Protocol;
 
 
+private uint n_version;
+
+public @property uint sulVersion() {
+	return n_version;
+}
+
+
 void main(string[] args) {
+
+	// update generation version
+	if(exists(".version")) {
+		ubyte[4] data = cast(ubyte[])read(".version");
+		n_version = littleEndianToNative!uint(data);
+	}
+	n_version++;
+	_write(".version", nativeToLittleEndian(n_version));
 
 	bool wd = args.canFind("d");
 	bool wjava = args.canFind("java");

@@ -49,6 +49,19 @@ void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		"varlong": "long",
 		"varulong": "long"
 	];
+
+	// about
+	write("../src/java/sul/utils/About.java", q{
+package sul.utils;
+
+public final class About {
+
+	private About() {}
+
+	public static final int VERSION = _;
+
+}
+	}.replace("_", to!string(sulVersion)));
 	
 	string io = "package sul.utils;\n\nimport java.util.Arrays;\n\n";
 	io ~= "public class Buffer {\n\n";
@@ -174,7 +187,7 @@ public abstract class Stream extends Buffer {
 	public abstract void decode(byte[] buffer);
 
 }
-		});
+	});
 	
 	write("../src/java/sul/utils/Packet.java", q{
 package sul.utils;
@@ -184,7 +197,7 @@ public abstract class Packet extends Stream {
 	public abstract int getId();
 
 }
-		});
+	});
 	
 	write("../src/java/sul/utils/Item.java", q{
 package sul.utils;
@@ -203,7 +216,7 @@ public class Item {
 	}
 
 }
-		});
+	});
 	
 	write("../src/java/sul/utils/Enchantment.java", q{
 package sul.utils;
@@ -219,7 +232,7 @@ public class Enchantment {
 	}
 
 }
-		});
+	});
 
 	write("../src/java/sul/utils/MetadataException.java", q{
 package sul.utils;
@@ -233,7 +246,7 @@ public class MetadataException extends RuntimeException {
 	}
 
 }
-		});
+	});
 	
 	// attributes
 	foreach(string game, Attributes attrs; attributes) {
