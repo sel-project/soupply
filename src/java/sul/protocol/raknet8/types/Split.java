@@ -10,7 +10,7 @@ package sul.protocol.raknet8.types;
 
 import sul.utils.*;
 
-public class Split extends Packet {
+public class Split extends Stream {
 
 	public int count;
 	public short id;

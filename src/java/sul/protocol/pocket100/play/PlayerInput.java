@@ -17,6 +17,11 @@ public class PlayerInput extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public Tuples.FloatXYZ motion;
 	public byte flags;
 	public boolean unknown2;
@@ -48,7 +53,7 @@ public class PlayerInput extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
+		motion=new Tuples.FloatXYZ(); motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 		flags=readBigEndianByte();
 		unknown2=this.readBool();
 	}

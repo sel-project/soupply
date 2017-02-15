@@ -23,6 +23,11 @@ public class Login extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// edition
 	public static final byte CLASSIC = 0;
 	public static final byte EDUCATION = 1;

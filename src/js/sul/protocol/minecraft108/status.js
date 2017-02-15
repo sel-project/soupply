@@ -42,7 +42,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -54,6 +54,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.Handshake().decode(buffer);
 		}
@@ -83,7 +84,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -91,6 +92,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.Request().decode(buffer);
 		}
@@ -122,7 +124,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -131,6 +133,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.Response().decode(buffer);
 		}
@@ -162,7 +165,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -171,6 +174,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.Latency().decode(buffer);
 		}

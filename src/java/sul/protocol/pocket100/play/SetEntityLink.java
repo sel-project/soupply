@@ -17,9 +17,15 @@ public class SetEntityLink extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// action
 	public static final byte ADD = 0;
-	public static final byte REMOVE = 1;
+	public static final byte RIDE = 1;
+	public static final byte REMOVE = 2;
 
 	public long from;
 	public long to;

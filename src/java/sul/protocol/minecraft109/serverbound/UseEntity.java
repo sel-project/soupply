@@ -17,6 +17,11 @@ public class UseEntity extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// type
 	public static final int INTERACT = 0;
 	public static final int ATTACK = 1;
@@ -62,7 +67,7 @@ public class UseEntity extends Packet {
 		this.readVaruint();
 		target=this.readVaruint();
 		type=this.readVaruint();
-		if(type==2){ targetPosition.x=readBigEndianFloat(); targetPosition.y=readBigEndianFloat(); targetPosition.z=readBigEndianFloat(); }
+		if(type==2){ targetPosition=new Tuples.FloatXYZ(); targetPosition.x=readBigEndianFloat(); targetPosition.y=readBigEndianFloat(); targetPosition.z=readBigEndianFloat(); }
 		if(type==2){ hand=this.readVaruint(); }
 	}
 

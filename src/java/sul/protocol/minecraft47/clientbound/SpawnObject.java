@@ -17,6 +17,11 @@ public class SpawnObject extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int entityId;
 	public byte type;
 	public Tuples.IntXYZ position;
@@ -62,11 +67,11 @@ public class SpawnObject extends Packet {
 		this.readVaruint();
 		entityId=this.readVaruint();
 		type=readBigEndianByte();
-		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
+		position=new Tuples.IntXYZ(); position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 		pitch=readBigEndianByte();
 		yaw=readBigEndianByte();
 		data=readBigEndianInt();
-		velocity.x=readBigEndianShort(); velocity.y=readBigEndianShort(); velocity.z=readBigEndianShort();
+		velocity=new Tuples.ShortXYZ(); velocity.x=readBigEndianShort(); velocity.y=readBigEndianShort(); velocity.z=readBigEndianShort();
 	}
 
 	public static SpawnObject fromBuffer(byte[] buffer) {

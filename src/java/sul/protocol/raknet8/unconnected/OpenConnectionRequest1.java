@@ -19,6 +19,11 @@ public class OpenConnectionRequest1 extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte[] magic = new byte[16];
 	public byte protocol;
 	public byte[] mtu;

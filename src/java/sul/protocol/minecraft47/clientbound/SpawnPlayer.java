@@ -19,6 +19,11 @@ public class SpawnPlayer extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int entityId;
 	public UUID uuid;
 	public Tuples.IntXYZ position;
@@ -64,7 +69,7 @@ public class SpawnPlayer extends Packet {
 		this.readVaruint();
 		entityId=this.readVaruint();
 		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
-		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
+		position=new Tuples.IntXYZ(); position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 		yaw=readBigEndianByte();
 		pitch=readBigEndianByte();
 		currentItem=readBigEndianShort();

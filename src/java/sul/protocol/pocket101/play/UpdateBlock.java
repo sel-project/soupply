@@ -17,6 +17,11 @@ public class UpdateBlock extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// flags and meta
 	public static final int NEIGHBORS = 1;
 	public static final int NETWORK = 2;

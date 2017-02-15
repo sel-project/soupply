@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import sul.utils.*;
 
-public class ListUpdateLatency extends Packet {
+public class ListUpdateLatency extends Stream {
 
 	public UUID uuid;
 	public int latency;

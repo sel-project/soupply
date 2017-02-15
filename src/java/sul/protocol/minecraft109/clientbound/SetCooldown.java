@@ -17,6 +17,11 @@ public class SetCooldown extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int item;
 	public int cooldown;
 

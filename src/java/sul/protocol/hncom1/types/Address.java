@@ -15,7 +15,7 @@ import sul.utils.*;
 /**
  * Internet protocol address. Could be either version 4 or 6.
  */
-public class Address extends Packet {
+public class Address extends Stream {
 
 	/**
 	 * Bytes of the address. The length may be 4 (for ipv4 addresses) or 16 (for ipv6 addresses).

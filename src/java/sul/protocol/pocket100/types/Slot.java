@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 import sul.utils.*;
 
-public class Slot extends Packet {
+public class Slot extends Stream {
 
 	public int id;
 	public int metaAndCount;

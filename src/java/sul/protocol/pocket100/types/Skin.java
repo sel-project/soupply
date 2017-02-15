@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 import sul.utils.*;
 
-public class Skin extends Packet {
+public class Skin extends Stream {
 
 	public String name;
 	public byte[] data;

@@ -10,7 +10,7 @@ package sul.protocol.minecraft315.types;
 
 import sul.utils.*;
 
-public class OptionalPosition extends Packet {
+public class OptionalPosition extends Stream {
 
 	public boolean hasPosition;
 	public long position;

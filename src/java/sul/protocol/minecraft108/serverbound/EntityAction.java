@@ -17,6 +17,11 @@ public class EntityAction extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// action
 	public static final int START_SNEAKING = 0;
 	public static final int STOP_SNEAKING = 1;

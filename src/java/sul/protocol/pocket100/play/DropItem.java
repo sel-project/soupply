@@ -17,6 +17,11 @@ public class DropItem extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// action
 	public static final byte DROP = 0;
 

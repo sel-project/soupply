@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 import sul.utils.*;
 
-public class Attribute extends Packet {
+public class Attribute extends Stream {
 
 	public float min;
 	public float max;

@@ -10,12 +10,17 @@ package sul.protocol.pocket101.play;
 
 import sul.utils.*;
 
-public class ClientMagic extends Packet {
+public class ClientToServerHandshake extends Packet {
 
 	public static final byte ID = (byte)4;
 
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 	@Override
 	public int length() {
@@ -35,15 +40,15 @@ public class ClientMagic extends Packet {
 		readBigEndianByte();
 	}
 
-	public static ClientMagic fromBuffer(byte[] buffer) {
-		ClientMagic ret = new ClientMagic();
+	public static ClientToServerHandshake fromBuffer(byte[] buffer) {
+		ClientToServerHandshake ret = new ClientToServerHandshake();
 		ret.decode(buffer);
 		return ret;
 	}
 
 	@Override
 	public String toString() {
-		return "ClientMagic()";
+		return "ClientToServerHandshake()";
 	}
 
 }

@@ -24,11 +24,12 @@ public final class Packets {
 		HashMap<Integer, Class<? extends Packet>> play = new HashMap<Integer, Class<? extends Packet>>();
 		play.put(1, sul.protocol.pocket100.play.Login.class);
 		play.put(2, sul.protocol.pocket100.play.PlayStatus.class);
-		play.put(3, sul.protocol.pocket100.play.ServerHandshake.class);
-		play.put(4, sul.protocol.pocket100.play.ClientMagic.class);
+		play.put(3, sul.protocol.pocket100.play.ServerToClientHandshake.class);
+		play.put(4, sul.protocol.pocket100.play.ClientToServerHandshake.class);
 		play.put(5, sul.protocol.pocket100.play.Disconnect.class);
 		play.put(6, sul.protocol.pocket100.play.Batch.class);
 		play.put(7, sul.protocol.pocket100.play.ResourcePacksInfo.class);
+		play.put(8, sul.protocol.pocket100.play.ResourcePacksStackPacket.class);
 		play.put(9, sul.protocol.pocket100.play.ResourcePackClientResponse.class);
 		play.put(10, sul.protocol.pocket100.play.Text.class);
 		play.put(11, sul.protocol.pocket100.play.SetTime.class);
@@ -79,10 +80,10 @@ public final class Packets {
 		play.put(56, sul.protocol.pocket100.play.BlockEntityData.class);
 		play.put(57, sul.protocol.pocket100.play.PlayerInput.class);
 		play.put(58, sul.protocol.pocket100.play.FullChunkData.class);
-		play.put(59, sul.protocol.pocket100.play.SetCheatsEnabled.class);
+		play.put(59, sul.protocol.pocket100.play.SetCommandsEnabled.class);
 		play.put(60, sul.protocol.pocket100.play.SetDifficulty.class);
 		play.put(61, sul.protocol.pocket100.play.ChangeDimension.class);
-		play.put(62, sul.protocol.pocket100.play.SetPlayerGametype.class);
+		play.put(62, sul.protocol.pocket100.play.SetPlayerGameType.class);
 		play.put(63, sul.protocol.pocket100.play.PlayerList.class);
 		play.put(64, sul.protocol.pocket100.play.TelemetryEvent.class);
 		play.put(65, sul.protocol.pocket100.play.SpawnExperienceOrb.class);
@@ -92,6 +93,7 @@ public final class Packets {
 		play.put(69, sul.protocol.pocket100.play.ChunkRadiusUpdated.class);
 		play.put(70, sul.protocol.pocket100.play.ItemFrameDropItem.class);
 		play.put(71, sul.protocol.pocket100.play.ReplaceSelectedItem.class);
+		play.put(72, sul.protocol.pocket100.play.GameRulesChanged.class);
 		play.put(73, sul.protocol.pocket100.play.Camera.class);
 		play.put(74, sul.protocol.pocket100.play.AddItem.class);
 		play.put(75, sul.protocol.pocket100.play.BossEvent.class);

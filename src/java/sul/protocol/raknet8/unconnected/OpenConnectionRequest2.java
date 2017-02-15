@@ -19,6 +19,11 @@ public class OpenConnectionRequest2 extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte[] magic = new byte[16];
 	public sul.protocol.raknet8.types.Address serverAddress;
 	public short mtuLength;

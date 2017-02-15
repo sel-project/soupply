@@ -7,9 +7,12 @@
  */
 package sul.metadata;
 
+import java.nio.charset.StandardCharsets;
+
 import sul.utils.*;
 
-public class Minecraft110 extends Packet {
+@SuppressWarnings("unused")
+public class Minecraft110 extends Stream {
 
 	@Override
 	public int length() {
@@ -18,12 +21,12 @@ public class Minecraft110 extends Packet {
 
 	@Override
 	public byte[] encode() {
-		throw new MetadataException("Metadata is not supported");
+		throw new MetadataException("Metadata for minecraft110 is not supported");
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
-		throw new MetadataException("Metadata is not supported");
+		throw new MetadataException("Metadata for minecraft110 is not supported");
 	}
 
 }

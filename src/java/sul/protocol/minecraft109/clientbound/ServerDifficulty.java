@@ -17,6 +17,11 @@ public class ServerDifficulty extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// difficulty
 	public static final byte PEACEFUL = 0;
 	public static final byte EASY = 1;

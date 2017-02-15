@@ -151,24 +151,37 @@ void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			io ~= "\t}\n\n";
 		}
 	}
+	io ~= "\tpublic boolean eof() {\n";
+	io ~= "\t\treturn this._index >= this._buffer.length;\n";
+	io ~= "\t}\n\n";
 	io ~= "}";
 	write("../src/java/sul/utils/Buffer.java", io);
-	
-	write("../src/java/sul/utils/Packet.java", q{
+
+	write("../src/java/sul/utils/Stream.java", q{
 package sul.utils;
 
-public abstract class Packet extends Buffer {
+public abstract class Stream extends Buffer {
 
 	public final void reset() {
 		this._buffer = new byte[0];
 		this._index = 0;
 	}
-
+	
 	public abstract int length();
-
+	
 	public abstract byte[] encode();
-
+	
 	public abstract void decode(byte[] buffer);
+
+}
+		});
+	
+	write("../src/java/sul/utils/Packet.java", q{
+package sul.utils;
+
+public abstract class Packet extends Stream {
+
+	public abstract int getId();
 
 }
 		});
@@ -471,7 +484,7 @@ public class MetadataException extends RuntimeException {
 				foreach(i ; conv[ts+1..te]) {
 					ret ~= createDecoding(nt, name ~ "." ~ i);
 				}
-				return ret.join(" ");
+				return name ~ "=new " ~ convert(conv) ~ "(); " ~ ret.join(" ");
 			}
 			type = conv;
 			if(type.startsWith("var")) return name ~ "=this.read" ~ capitalize(type) ~ "();";
@@ -628,7 +641,7 @@ public class MetadataException extends RuntimeException {
 		foreach(type ; prs.data.types) {
 			string data = "package sul.protocol." ~ game ~ ".types;\n\n" ~ imports(type.fields) ~ "import sul.utils.*;\n\n";
 			if(type.description.length) data ~= javadoc("", type.description);
-			data ~= "public class " ~ toPascalCase(type.name) ~ " extends Packet {\n\n";
+			data ~= "public class " ~ toPascalCase(type.name) ~ " extends Stream {\n\n";
 			writeFields(data, "\t", toPascalCase(type.name), type.fields, false);
 			createToString(data, "\t", toPascalCase(type.name), type.fields);
 			data ~= "\n}";
@@ -663,6 +676,10 @@ public class MetadataException extends RuntimeException {
 				data ~= "\tpublic static final " ~ id ~ " ID = (" ~ id ~ ")" ~ to!string(packet.id) ~ ";\n\n";
 				data ~= "\tpublic static final boolean CLIENTBOUND = " ~ to!string(packet.clientbound) ~ ";\n";
 				data ~= "\tpublic static final boolean SERVERBOUND = " ~ to!string(packet.serverbound) ~ ";\n\n";
+				data ~= "\t@Override\n";
+				data ~= "\tpublic int getId() {\n";
+				data ~= "\t\treturn ID;\n";
+				data ~= "\t}\n\n";
 				writeFields(data, "\t", toPascalCase(packet.name), packet.fields, true, packet.variants.length != 0, false);
 				data ~= "\tpublic static " ~ toPascalCase(packet.name) ~ " fromBuffer(byte[] buffer) {\n";
 				data ~= "\t\t" ~ toPascalCase(packet.name) ~ " ret = new " ~ toPascalCase(packet.name) ~ "();\n";
@@ -682,6 +699,10 @@ public class MetadataException extends RuntimeException {
 						if(variant.description.length) data ~= javadoc("\t", variant.description);
 						data ~= "\tpublic class " ~ toPascalCase(variant.name) ~ " extends Packet {\n\n";
 						data ~= "\t\tpublic static final " ~ vt ~ " " ~ toUpper(packet.variantField) ~ " = (" ~ vt ~ ")" ~ variant.value ~ ";\n\n";
+						data ~= "\t@Override\n";
+						data ~= "\tpublic int getId() {\n";
+						data ~= "\t\treturn ID;\n";
+						data ~= "\t}\n\n";
 						writeFields(data, "\t\t", toPascalCase(variant.name), variant.fields, false, false, true);
 						createToString(data, "\t\t", toPascalCase(packet.name) ~ "." ~ toPascalCase(variant.name), variant.fields);
 						data ~= "\t}\n\n";
@@ -697,27 +718,49 @@ public class MetadataException extends RuntimeException {
 
 		// metadata
 		auto m = game in metadatas;
-		string data = "package sul.metadata;\n\nimport sul.utils.*;\n\n";
-		data ~= "public class " ~ toPascalCase(game) ~ " extends Packet {\n\n";
+		string data = "package sul.metadata;\n\nimport java.nio.charset.StandardCharsets;\n\nimport sul.utils.*;\n\n";
+		data ~= "@SuppressWarnings(\"unused\")\n";
+		data ~= "public class " ~ toPascalCase(game) ~ " extends Stream {\n\n";
 		if(m) {
 			//TODO variables
 			//TODO length
 			data ~= "\t@Override\n\tpublic int length() {\n";
-			data ~= "\t\treturn 0;\n";
+			data ~= "\t\treturn 1;\n"; // just the length or the suffix
 			data ~= "\t}\n\n";
 			//TODO encode
 			data ~= "\t@Override\n\tpublic byte[] encode() {\n";
-			data ~= "\t\tthrow new MetadataException(\"This action is not supported yet\");\n";
+			// only encoding as empty
+			if(m.data.length.length) data ~= "\t\t" ~ createEncoding(m.data.length, "0") ~ "\n";
+			else if(m.data.suffix.length) data ~= "\t\t" ~ createEncoding("ubyte", "(byte)" ~ m.data.suffix) ~ "\n";
+			data ~= "\t\treturn this.getBuffer();\n";
 			data ~= "\t}\n\n";
 			//TODO decode
 			data ~= "\t@Override\n\tpublic void decode(byte[] buffer) {\n";
-			data ~= "\t\tthrow new MetadataException(\"This action is not supported yet\");\n";
+			// decoding but not saving
+			data ~= "\t\tbyte metadata;\n";
+			if(m.data.length.length) {
+				data ~= "\t\t" ~ createDecoding(m.data.length, "int length") ~ "\n";
+				data ~= "\t\twhile(length-- > 0) {\n";
+				data ~= "\t\t\t" ~ createDecoding("byte", "metadata") ~ "\n";
+			} else if(m.data.suffix.length) {
+				data ~= "\t\twhile(!this.eof() && (" ~ createDecoding("byte", "metadata")[0..$-1] ~ ") != (byte)" ~ m.data.suffix ~ ") {\n";
+			}
+			data ~= "\t\t\tswitch(" ~ createDecoding("byte", "")[1..$-1] ~ ") {\n";
+			foreach(type ; m.data.types) {
+				data ~= "\t\t\t\tcase " ~ type.id.to!string ~ ":\n";
+				data ~= "\t\t\t\t\t" ~ convert(type.type) ~ " _" ~ type.id.to!string ~ ";\n";
+				data ~= "\t\t\t\t\t" ~ createDecoding(type.type, "_" ~ type.id.to!string, type.endianness) ~ "\n";
+				data ~= "\t\t\t\t\tbreak;\n";
+			}
+			data ~= "\t\t\t\tdefault: break;\n";
+			data ~= "\t\t\t}\n";
+			data ~= "\t\t}\n";
 			data ~= "\t}\n\n";
 		} else {
 			// dummy class
 			data ~= "\t@Override\n\tpublic int length() {\n\t\treturn 0;\n\t}\n\n";
-			data ~= "\t@Override\n\tpublic byte[] encode() {\n\t\tthrow new MetadataException(\"Metadata is not supported\");\n\t}\n\n";
-			data ~= "\t@Override\n\tpublic void decode(byte[] buffer) {\n\t\tthrow new MetadataException(\"Metadata is not supported\");\n\t}\n\n";
+			data ~= "\t@Override\n\tpublic byte[] encode() {\n\t\tthrow new MetadataException(\"Metadata for " ~ game ~ " is not supported\");\n\t}\n\n";
+			data ~= "\t@Override\n\tpublic void decode(byte[] buffer) {\n\t\tthrow new MetadataException(\"Metadata for " ~ game ~ " is not supported\");\n\t}\n\n";
 		}
 		data ~= "}";
 		mkdirRecurse("../src/java/sul/metadata");

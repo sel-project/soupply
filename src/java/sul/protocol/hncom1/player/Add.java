@@ -23,6 +23,11 @@ public class Add extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// reason
 	public static final byte FIRST_JOIN = 0;
 	public static final byte TRANSFERRED = 1;
@@ -231,10 +236,19 @@ public class Add extends Packet {
 
 		public static final byte TYPE = (byte)1;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		// device os
 		public static final byte UNKNOWN = 0;
 		public static final byte ANDROID = 1;
 		public static final byte IOS = 2;
+		public static final byte FIRE_OS = 3;
+		public static final byte GEAR_VR = 4;
+		public static final byte APPLE_TV = 5;
+		public static final byte FIRE_TV = 6;
 		public static final byte WINDOWS10 = 7;
 
 		/**
@@ -322,6 +336,11 @@ public class Add extends Packet {
 	public class Minecraft extends Packet {
 
 		public static final byte TYPE = (byte)2;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		@Override
 		public int length() {

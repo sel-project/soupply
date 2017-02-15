@@ -23,6 +23,11 @@ public class UpdateNodes extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// action
 	public static final byte ADD = 0;
 	public static final byte REMOVE = 1;

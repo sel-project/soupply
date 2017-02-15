@@ -17,6 +17,11 @@ public class ConfirmTransaction extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte window;
 	public short action;
 	public boolean accepted;

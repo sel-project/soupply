@@ -19,6 +19,11 @@ public class UpdateAttributes extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public long entityId;
 	public sul.protocol.pocket100.types.Attribute[] attributes;
 

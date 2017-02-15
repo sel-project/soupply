@@ -17,6 +17,11 @@ public class Interact extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// action
 	public static final byte ATTACK = 1;
 	public static final byte INTERACT = 2;

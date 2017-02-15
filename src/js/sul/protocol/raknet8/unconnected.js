@@ -34,7 +34,7 @@ const Unconnected = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -44,6 +44,7 @@ const Unconnected = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Unconnected.Ping().decode(buffer);
 		}
@@ -81,7 +82,7 @@ const Unconnected = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -93,6 +94,7 @@ const Unconnected = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Unconnected.Pong().decode(buffer);
 		}
@@ -128,7 +130,7 @@ const Unconnected = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -139,6 +141,7 @@ const Unconnected = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Unconnected.OpenConnectionRequest1().decode(buffer);
 		}
@@ -176,7 +179,7 @@ const Unconnected = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -188,6 +191,7 @@ const Unconnected = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Unconnected.OpenConnectionReply1().decode(buffer);
 		}
@@ -225,7 +229,7 @@ const Unconnected = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -237,6 +241,7 @@ const Unconnected = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Unconnected.OpenConnectionRequest2().decode(buffer);
 		}
@@ -276,7 +281,7 @@ const Unconnected = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -289,6 +294,7 @@ const Unconnected = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Unconnected.OpenConnectionReply2().decode(buffer);
 		}

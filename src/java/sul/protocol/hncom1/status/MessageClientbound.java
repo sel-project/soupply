@@ -22,6 +22,11 @@ public class MessageClientbound extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * Id of the node that has sent the message.
 	 */

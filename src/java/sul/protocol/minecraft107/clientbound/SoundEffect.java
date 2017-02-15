@@ -17,6 +17,11 @@ public class SoundEffect extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int soundId;
 	public int category;
 	public Tuples.IntXYZ position;
@@ -56,7 +61,7 @@ public class SoundEffect extends Packet {
 		this.readVaruint();
 		soundId=this.readVaruint();
 		category=this.readVaruint();
-		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
+		position=new Tuples.IntXYZ(); position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 		volume=readBigEndianFloat();
 		pitch=readBigEndianByte();
 	}

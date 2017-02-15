@@ -17,6 +17,11 @@ public class ContainerClose extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte window;
 
 	public ContainerClose() {}

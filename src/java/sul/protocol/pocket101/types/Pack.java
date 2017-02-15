@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 import sul.utils.*;
 
-public class Pack extends Packet {
+public class Pack extends Stream {
 
 	public String id;
 	public String version;

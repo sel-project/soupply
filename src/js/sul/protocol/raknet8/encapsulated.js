@@ -34,7 +34,7 @@ const Encapsulated = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -44,6 +44,7 @@ const Encapsulated = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Encapsulated.ClientConnect().decode(buffer);
 		}
@@ -83,7 +84,7 @@ const Encapsulated = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -96,6 +97,7 @@ const Encapsulated = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Encapsulated.ServerHandshake().decode(buffer);
 		}
@@ -133,7 +135,7 @@ const Encapsulated = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -145,6 +147,7 @@ const Encapsulated = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Encapsulated.ClientHandshake().decode(buffer);
 		}
@@ -174,7 +177,7 @@ const Encapsulated = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -182,6 +185,7 @@ const Encapsulated = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Encapsulated.ClientCancelConnection().decode(buffer);
 		}
@@ -213,7 +217,7 @@ const Encapsulated = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -222,6 +226,7 @@ const Encapsulated = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Encapsulated.Ping().decode(buffer);
 		}
@@ -253,7 +258,7 @@ const Encapsulated = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -262,6 +267,7 @@ const Encapsulated = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Encapsulated.Pong().decode(buffer);
 		}
@@ -293,7 +299,7 @@ const Encapsulated = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -302,6 +308,7 @@ const Encapsulated = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Encapsulated.Mcpe().decode(buffer);
 		}

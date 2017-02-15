@@ -63,7 +63,7 @@ alias Metadatas = File!Metadata;
 
 alias Constant = Tuple!(string, "name", string, "description", string, "value");
 
-alias Field = Tuple!(string, "name", string, "type", string, "condition", string, "endianness", string, "description", Constant[], "constants");
+alias Field = Tuple!(string, "name", string, "type", string, "condition", string, "endianness", string, "def", string, "description", Constant[], "constants");
 
 alias Variant = Tuple!(string, "name", string, "value", string, "description", Field[], "fields");
 
@@ -263,6 +263,7 @@ void main(string[] args) {
 												field.description = text(f);
 												if("endianness" in attr) field.endianness = attr["endianness"].replace("-", "_");
 												if("when" in attr) field.condition = attr["when"].replace("-", "_");
+												if("default" in attr) field.def = attr["default"];
 											}
 											foreach(c ; f.elements) {
 												if(c.tag.name == "constant") {
@@ -304,6 +305,7 @@ void main(string[] args) {
 												field.description = text(fv);
 												if("endianness" in fv.tag.attr) field.endianness = fv.tag.attr["endianness"].replace("-", "_");
 												if("when" in fv.tag.attr) field.condition = fv.tag.attr["when"].replace("-", "_");
+												if("default" in fv.tag.attr) field.def = fv.tag.attr["default"];
 												foreach(c ; fv.elements) {
 													if(c.tag.name == "constant") {
 														field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), text(c), c.tag.attr["value"]);
@@ -326,6 +328,7 @@ void main(string[] args) {
 																field.description = text(f);
 																if("endianness" in f.tag.attr) field.endianness = f.tag.attr["endianness"].replace("-", "_");
 																if("when" in f.tag.attr) field.condition = f.tag.attr["when"].replace("-", "_");
+																if("default" in f.tag.attr) field.def = f.tag.attr["default"];
 																foreach(c ; f.elements) {
 																	if(c.tag.name == "constant") {
 																		field.constants ~= Constant(c.tag.attr["name"].replace("-", "_"), text(c), c.tag.attr["value"]);
@@ -417,6 +420,15 @@ void main(string[] args) {
 
 string hash(string name) {
 	return Base64URL.encode(cast(ubyte[])name)[0..min($, 16)].toLower.replace("-", "_").replace("=", "");
+}
+
+string constOf(string value) {
+	try {
+		to!real(value);
+		return value;
+	} catch(Exception) {
+		return JSONValue(value).toString();
+	}
 }
 
 void write(string file, string data, string from="") {

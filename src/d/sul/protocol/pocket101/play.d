@@ -27,7 +27,7 @@ static import sul.protocol.pocket101.types;
 
 import sul.metadata.pocket101;
 
-alias Packets = TypeTuple!(Login, PlayStatus, ServerHandshake, ClientMagic, Disconnect, Batch, ResourcePacksInfo, ResourcePackClientResponse, Text, SetTime, StartGame, AddPlayer, AddEntity, RemoveEntity, AddItemEntity, AddHangingEntity, TakeItemEntity, MoveEntity, MovePlayer, RiderJump, RemoveBlock, UpdateBlock, AddPainting, Explode, LevelSoundEvent, LevelEvent, BlockEvent, EntityEvent, MobEffect, UpdateAttributes, MobEquipment, MobArmorEquipment, Interact, UseItem, PlayerAction, PlayerFall, HurtArmor, SetEntityData, SetEntityMotion, SetEntityLink, SetHealth, SetSpawnPosition, Animate, Respawn, DropItem, InventoryAction, ContainerOpen, ContainerClose, ContainerSetSlot, ContainerSetData, ContainerSetContent, CraftingData, CraftingEvent, AdventureSettings, BlockEntityData, PlayerInput, FullChunkData, SetCheatsEnabled, SetDifficulty, ChangeDimension, SetPlayerGametype, PlayerList, TelemetryEvent, SpawnExperienceOrb, ClientboundMapItemData, MapInfoRequest, RequestChunkRadius, ChunkRadiusUpdated, ItemFrameDropItem, ReplaceSelectedItem, Camera, AddItem, BossEvent, ShowCredits, AvailableCommands, CommandStep, ResourcePackDataInfo, ResourcePackChunkData, ResourcePackChunkRequest, Transfer);
+alias Packets = TypeTuple!(Login, PlayStatus, ServerToClientHandshake, ClientToServerHandshake, Disconnect, Batch, ResourcePacksInfo, ResourcePacksStackPacket, ResourcePackClientResponse, Text, SetTime, StartGame, AddPlayer, AddEntity, RemoveEntity, AddItemEntity, AddHangingEntity, TakeItemEntity, MoveEntity, MovePlayer, RiderJump, RemoveBlock, UpdateBlock, AddPainting, Explode, LevelSoundEvent, LevelEvent, BlockEvent, EntityEvent, MobEffect, UpdateAttributes, MobEquipment, MobArmorEquipment, Interact, UseItem, PlayerAction, PlayerFall, HurtArmor, SetEntityData, SetEntityMotion, SetEntityLink, SetHealth, SetSpawnPosition, Animate, Respawn, DropItem, InventoryAction, ContainerOpen, ContainerClose, ContainerSetSlot, ContainerSetData, ContainerSetContent, CraftingData, CraftingEvent, AdventureSettings, BlockEntityData, PlayerInput, FullChunkData, SetCommandsEnabled, SetDifficulty, ChangeDimension, SetPlayerGameType, PlayerList, TelemetryEvent, SpawnExperienceOrb, ClientboundMapItemData, MapInfoRequest, RequestChunkRadius, ChunkRadiusUpdated, ItemFrameDropItem, ReplaceSelectedItem, GameRulesChanged, Camera, AddItem, BossEvent, ShowCredits, AvailableCommands, CommandStep, ResourcePackDataInfo, ResourcePackChunkData, ResourcePackChunkRequest, Transfer);
 
 /**
  * First MCPE packet sent after the establishment of the connection through raknet.
@@ -156,7 +156,7 @@ class PlayStatus : Buffer {
 
 }
 
-class ServerHandshake : Buffer {
+class ServerToClientHandshake : Buffer {
 
 	public enum ubyte ID = 3;
 
@@ -189,20 +189,20 @@ class ServerHandshake : Buffer {
 		token.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+token.length){ token=_buffer[_index.._index+token.length].dup; _index+=token.length; }
 	}
 
-	public static pure nothrow @safe ServerHandshake fromBuffer(bool readId=true)(ubyte[] buffer) {
-		ServerHandshake ret = new ServerHandshake();
+	public static pure nothrow @safe ServerToClientHandshake fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ServerToClientHandshake ret = new ServerToClientHandshake();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
 	}
 
 	public override string toString() {
-		return "ServerHandshake(serverPublicKey: " ~ std.conv.to!string(this.serverPublicKey) ~ ", token: " ~ std.conv.to!string(this.token) ~ ")";
+		return "ServerToClientHandshake(serverPublicKey: " ~ std.conv.to!string(this.serverPublicKey) ~ ", token: " ~ std.conv.to!string(this.token) ~ ")";
 	}
 
 }
 
-class ClientMagic : Buffer {
+class ClientToServerHandshake : Buffer {
 
 	public enum ubyte ID = 4;
 
@@ -221,15 +221,15 @@ class ClientMagic : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 	}
 
-	public static pure nothrow @safe ClientMagic fromBuffer(bool readId=true)(ubyte[] buffer) {
-		ClientMagic ret = new ClientMagic();
+	public static pure nothrow @safe ClientToServerHandshake fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ClientToServerHandshake ret = new ClientToServerHandshake();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
 	}
 
 	public override string toString() {
-		return "ClientMagic()";
+		return "ClientToServerHandshake()";
 	}
 
 }
@@ -413,6 +413,56 @@ class ResourcePacksInfo : Buffer {
 
 }
 
+class ResourcePacksStackPacket : Buffer {
+
+	public enum ubyte ID = 8;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["mustAccept", "behaviourPacks", "resourcePacks"];
+
+	public bool mustAccept;
+	public sul.protocol.pocket101.types.Pack[] behaviourPacks;
+	public sul.protocol.pocket101.types.Pack[] resourcePacks;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(bool mustAccept, sul.protocol.pocket101.types.Pack[] behaviourPacks=(sul.protocol.pocket101.types.Pack[]).init, sul.protocol.pocket101.types.Pack[] resourcePacks=(sul.protocol.pocket101.types.Pack[]).init) {
+		this.mustAccept = mustAccept;
+		this.behaviourPacks = behaviourPacks;
+		this.resourcePacks = resourcePacks;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianBool(mustAccept);
+		writeBytes(varuint.encode(cast(uint)behaviourPacks.length)); foreach(ymvoyxzpb3vyugfj;behaviourPacks){ ymvoyxzpb3vyugfj.encode(bufferInstance); }
+		writeBytes(varuint.encode(cast(uint)resourcePacks.length)); foreach(cmvzb3vyy2vqywnr;resourcePacks){ cmvzb3vyy2vqywnr.encode(bufferInstance); }
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		mustAccept=readBigEndianBool();
+		behaviourPacks.length=varuint.decode(_buffer, &_index); foreach(ref ymvoyxzpb3vyugfj;behaviourPacks){ ymvoyxzpb3vyugfj.decode(bufferInstance); }
+		resourcePacks.length=varuint.decode(_buffer, &_index); foreach(ref cmvzb3vyy2vqywnr;resourcePacks){ cmvzb3vyy2vqywnr.decode(bufferInstance); }
+	}
+
+	public static pure nothrow @safe ResourcePacksStackPacket fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ResourcePacksStackPacket ret = new ResourcePacksStackPacket();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+	public override string toString() {
+		return "ResourcePacksStackPacket(mustAccept: " ~ std.conv.to!string(this.mustAccept) ~ ", behaviourPacks: " ~ std.conv.to!string(this.behaviourPacks) ~ ", resourcePacks: " ~ std.conv.to!string(this.resourcePacks) ~ ")";
+	}
+
+}
+
 class ResourcePackClientResponse : Buffer {
 
 	public enum ubyte ID = 9;
@@ -462,6 +512,9 @@ class ResourcePackClientResponse : Buffer {
 /**
  * Sends or receives a message from the player. Every variant's field can contain Minecraft's
  * formatting codes.
+ * Every packet sent in the same game tick should be joined together with `\n§r` (line
+ * break and reset formatting), otherwise the messages will be displayed multiple times
+ * on the client's chat (see [MCPE-17631](https://bugs.mojang.com/browse/MCPE-17631)).
  */
 class Text : Buffer {
 
@@ -870,32 +923,93 @@ class StartGame : Buffer {
 	public enum ubyte CLASSIC = 0;
 	public enum ubyte EDUCATION = 1;
 
-	public enum string[] FIELDS = ["entityId", "runtimeId", "position", "yaw", "pitch", "seed", "dimension", "generator", "worldGamemode", "difficulty", "spawnPosition", "loadedInCreative", "time", "edition", "rainLevel", "lightingLevel", "cheatsEnabled", "textureRequired", "levelId", "worldName"];
+	public enum string[] FIELDS = ["entityId", "runtimeId", "position", "yaw", "pitch", "seed", "dimension", "generator", "worldGamemode", "difficulty", "spawnPosition", "loadedInCreative", "time", "edition", "rainLevel", "lightingLevel", "commandsEnabled", "textureRequired", "levelId", "worldName"];
 
+	/**
+	 * Player's entity id that uniquely identifies the entity of the server.
+	 */
 	public long entityId;
 	public long runtimeId;
+
+	/**
+	 * Position where the player will spawn.
+	 */
 	public Tuple!(float, "x", float, "y", float, "z") position;
 	public float yaw;
 	public float pitch;
+
+	/**
+	 * World's seed. It's displayed in the game's wolrd settings and in beta's debug informations
+	 * on top of the screen.
+	 */
 	public int seed;
+
+	/**
+	 * World's dimension. Different dimensions have different sky colours and render distances.
+	 */
 	public int dimension;
+
+	/**
+	 * World's type. It's displayed in the game's world settings.
+	 * In old and infinite world the sky becomes darker at 32 blocks of altitude and in
+	 * flat worlds it only becomes darker under 0.
+	 */
 	public int generator;
+
+	/**
+	 * Default's world gamemode. If the player's gamemode is different from the default's
+	 * one a SetPlayerGameType should be sent after this.
+	 */
 	public int worldGamemode;
+
+	/**
+	 * World's difficulty. The value is visible in the client's world settings.
+	 */
 	public int difficulty;
+
+	/**
+	 * Position where the client's compass will point to.
+	 */
 	public Tuple!(int, "x", int, "y", int, "z") spawnPosition;
 	public bool loadedInCreative;
+
+	/**
+	 * Time of the day that should be in a range from 0 to 24000. If not the absolute value
+	 * is moduled per 24000.
+	 * If the world's time is stopped a SetTime packet should be sent after this.
+	 */
 	public int time;
+
+	/**
+	 * Game's edition. Some behaviours (some entities for example) may only work in a version
+	 * and not in the other.
+	 */
 	public ubyte edition;
+
+	/**
+	 * Intensity of the rain or the snow. Any value lower than or equals to 0 means no
+	 * rain.
+	 */
 	public float rainLevel;
 	public float lightingLevel;
-	public bool cheatsEnabled;
+
+	/**
+	 * Indicates whether the cheats are enabled. If the cheats are disabled the player
+	 * cannot send commands.
+	 */
+	public bool commandsEnabled;
 	public bool textureRequired;
 	public string levelId;
+
+	/**
+	 * World's name that will be displayed in the game's world settings. It can contain
+	 * formatting codes.
+	 */
 	public string worldName;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, float yaw=float.init, float pitch=float.init, int seed=int.init, int dimension=int.init, int generator=int.init, int worldGamemode=int.init, int difficulty=int.init, Tuple!(int, "x", int, "y", int, "z") spawnPosition=Tuple!(int, "x", int, "y", int, "z").init, bool loadedInCreative=bool.init, int time=int.init, ubyte edition=ubyte.init, float rainLevel=float.init, float lightingLevel=float.init, bool cheatsEnabled=bool.init, bool textureRequired=bool.init, string levelId=string.init, string worldName=string.init) {
+	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, float yaw=float.init, float pitch=float.init, int seed=int.init, int dimension=int.init, int generator=int.init, int worldGamemode=int.init, int difficulty=int.init, Tuple!(int, "x", int, "y", int, "z") spawnPosition=Tuple!(int, "x", int, "y", int, "z").init, bool loadedInCreative=bool.init, int time=int.init, ubyte edition=ubyte.init, float rainLevel=float.init, float lightingLevel=float.init, bool commandsEnabled=bool.init, bool textureRequired=bool.init, string levelId=string.init, string worldName=string.init) {
 		this.entityId = entityId;
 		this.runtimeId = runtimeId;
 		this.position = position;
@@ -912,7 +1026,7 @@ class StartGame : Buffer {
 		this.edition = edition;
 		this.rainLevel = rainLevel;
 		this.lightingLevel = lightingLevel;
-		this.cheatsEnabled = cheatsEnabled;
+		this.commandsEnabled = commandsEnabled;
 		this.textureRequired = textureRequired;
 		this.levelId = levelId;
 		this.worldName = worldName;
@@ -937,7 +1051,7 @@ class StartGame : Buffer {
 		writeBigEndianUbyte(edition);
 		writeLittleEndianFloat(rainLevel);
 		writeLittleEndianFloat(lightingLevel);
-		writeBigEndianBool(cheatsEnabled);
+		writeBigEndianBool(commandsEnabled);
 		writeBigEndianBool(textureRequired);
 		writeBytes(varuint.encode(cast(uint)levelId.length)); writeString(levelId);
 		writeBytes(varuint.encode(cast(uint)worldName.length)); writeString(worldName);
@@ -962,7 +1076,7 @@ class StartGame : Buffer {
 		edition=readBigEndianUbyte();
 		rainLevel=readLittleEndianFloat();
 		lightingLevel=readLittleEndianFloat();
-		cheatsEnabled=readBigEndianBool();
+		commandsEnabled=readBigEndianBool();
 		textureRequired=readBigEndianBool();
 		uint bgv2zwxjza=varuint.decode(_buffer, &_index); levelId=readString(bgv2zwxjza);
 		uint d29ybgroyw1l=varuint.decode(_buffer, &_index); worldName=readString(d29ybgroyw1l);
@@ -976,11 +1090,18 @@ class StartGame : Buffer {
 	}
 
 	public override string toString() {
-		return "StartGame(entityId: " ~ std.conv.to!string(this.entityId) ~ ", runtimeId: " ~ std.conv.to!string(this.runtimeId) ~ ", position: " ~ std.conv.to!string(this.position) ~ ", yaw: " ~ std.conv.to!string(this.yaw) ~ ", pitch: " ~ std.conv.to!string(this.pitch) ~ ", seed: " ~ std.conv.to!string(this.seed) ~ ", dimension: " ~ std.conv.to!string(this.dimension) ~ ", generator: " ~ std.conv.to!string(this.generator) ~ ", worldGamemode: " ~ std.conv.to!string(this.worldGamemode) ~ ", difficulty: " ~ std.conv.to!string(this.difficulty) ~ ", spawnPosition: " ~ std.conv.to!string(this.spawnPosition) ~ ", loadedInCreative: " ~ std.conv.to!string(this.loadedInCreative) ~ ", time: " ~ std.conv.to!string(this.time) ~ ", edition: " ~ std.conv.to!string(this.edition) ~ ", rainLevel: " ~ std.conv.to!string(this.rainLevel) ~ ", lightingLevel: " ~ std.conv.to!string(this.lightingLevel) ~ ", cheatsEnabled: " ~ std.conv.to!string(this.cheatsEnabled) ~ ", textureRequired: " ~ std.conv.to!string(this.textureRequired) ~ ", levelId: " ~ std.conv.to!string(this.levelId) ~ ", worldName: " ~ std.conv.to!string(this.worldName) ~ ")";
+		return "StartGame(entityId: " ~ std.conv.to!string(this.entityId) ~ ", runtimeId: " ~ std.conv.to!string(this.runtimeId) ~ ", position: " ~ std.conv.to!string(this.position) ~ ", yaw: " ~ std.conv.to!string(this.yaw) ~ ", pitch: " ~ std.conv.to!string(this.pitch) ~ ", seed: " ~ std.conv.to!string(this.seed) ~ ", dimension: " ~ std.conv.to!string(this.dimension) ~ ", generator: " ~ std.conv.to!string(this.generator) ~ ", worldGamemode: " ~ std.conv.to!string(this.worldGamemode) ~ ", difficulty: " ~ std.conv.to!string(this.difficulty) ~ ", spawnPosition: " ~ std.conv.to!string(this.spawnPosition) ~ ", loadedInCreative: " ~ std.conv.to!string(this.loadedInCreative) ~ ", time: " ~ std.conv.to!string(this.time) ~ ", edition: " ~ std.conv.to!string(this.edition) ~ ", rainLevel: " ~ std.conv.to!string(this.rainLevel) ~ ", lightingLevel: " ~ std.conv.to!string(this.lightingLevel) ~ ", commandsEnabled: " ~ std.conv.to!string(this.commandsEnabled) ~ ", textureRequired: " ~ std.conv.to!string(this.textureRequired) ~ ", levelId: " ~ std.conv.to!string(this.levelId) ~ ", worldName: " ~ std.conv.to!string(this.worldName) ~ ")";
 	}
 
 }
 
+/**
+ * Spawns a player after adding it to the player's list using PlayerList. If PlayerList
+ * is sent after this packet the player will appear to have the same skin as the player
+ * who receives this packet.
+ * Spawning a player to itself (using the same entity id given in the StartGame packet)
+ * will crash the client's game.
+ */
 class AddPlayer : Buffer {
 
 	public enum ubyte ID = 13;
@@ -990,7 +1111,15 @@ class AddPlayer : Buffer {
 
 	public enum string[] FIELDS = ["uuid", "username", "entityId", "runtimeId", "position", "motion", "pitch", "headYaw", "yaw", "heldItem", "metadata"];
 
+	/**
+	 * Player's UUID, should match an UUID of a player in the list added through PlayerList.
+	 */
 	public UUID uuid;
+
+	/**
+	 * Player's username and text displayed on the nametag if something else is not specified
+	 * in the metadata.
+	 */
 	public string username;
 	public long entityId;
 	public long runtimeId;
@@ -1081,11 +1210,11 @@ class AddEntity : Buffer {
 	public float yaw;
 	public sul.protocol.pocket101.types.Attribute[] attributes;
 	public Metadata metadata;
-	public long[] links;
+	public sul.protocol.pocket101.types.Link[] links;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init, uint type=uint.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, Tuple!(float, "x", float, "y", float, "z") motion=Tuple!(float, "x", float, "y", float, "z").init, float pitch=float.init, float yaw=float.init, sul.protocol.pocket101.types.Attribute[] attributes=(sul.protocol.pocket101.types.Attribute[]).init, Metadata metadata=Metadata.init, long[] links=(long[]).init) {
+	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init, uint type=uint.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, Tuple!(float, "x", float, "y", float, "z") motion=Tuple!(float, "x", float, "y", float, "z").init, float pitch=float.init, float yaw=float.init, sul.protocol.pocket101.types.Attribute[] attributes=(sul.protocol.pocket101.types.Attribute[]).init, Metadata metadata=Metadata.init, sul.protocol.pocket101.types.Link[] links=(sul.protocol.pocket101.types.Link[]).init) {
 		this.entityId = entityId;
 		this.runtimeId = runtimeId;
 		this.type = type;
@@ -1110,7 +1239,7 @@ class AddEntity : Buffer {
 		writeLittleEndianFloat(yaw);
 		writeBytes(varuint.encode(cast(uint)attributes.length)); foreach(yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.encode(bufferInstance); }
 		metadata.encode(bufferInstance);
-		writeBytes(varuint.encode(cast(uint)links.length)); foreach(bglua3m;links){ writeBytes(varlong.encode(bglua3m)); }
+		writeBytes(varuint.encode(cast(uint)links.length)); foreach(bglua3m;links){ bglua3m.encode(bufferInstance); }
 		return _buffer;
 	}
 
@@ -1125,7 +1254,7 @@ class AddEntity : Buffer {
 		yaw=readLittleEndianFloat();
 		attributes.length=varuint.decode(_buffer, &_index); foreach(ref yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.decode(bufferInstance); }
 		metadata=Metadata.decode(bufferInstance);
-		links.length=varuint.decode(_buffer, &_index); foreach(ref bglua3m;links){ bglua3m=varlong.decode(_buffer, &_index); }
+		links.length=varuint.decode(_buffer, &_index); foreach(ref bglua3m;links){ bglua3m.decode(bufferInstance); }
 	}
 
 	public static pure nothrow @safe AddEntity fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -1305,29 +1434,29 @@ class TakeItemEntity : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["taken", "collector"];
+	public enum string[] FIELDS = ["collected", "collector"];
 
-	public long taken;
+	public long collected;
 	public long collector;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long taken, long collector=long.init) {
-		this.taken = taken;
+	public pure nothrow @safe @nogc this(long collected, long collector=long.init) {
+		this.collected = collected;
 		this.collector = collector;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varlong.encode(taken));
+		writeBytes(varlong.encode(collected));
 		writeBytes(varlong.encode(collector));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		taken=varlong.decode(_buffer, &_index);
+		collected=varlong.decode(_buffer, &_index);
 		collector=varlong.decode(_buffer, &_index);
 	}
 
@@ -1339,7 +1468,7 @@ class TakeItemEntity : Buffer {
 	}
 
 	public override string toString() {
-		return "TakeItemEntity(taken: " ~ std.conv.to!string(this.taken) ~ ", collector: " ~ std.conv.to!string(this.collector) ~ ")";
+		return "TakeItemEntity(collected: " ~ std.conv.to!string(this.collected) ~ ", collector: " ~ std.conv.to!string(this.collector) ~ ")";
 	}
 
 }
@@ -1721,6 +1850,9 @@ class Explode : Buffer {
 
 }
 
+/**
+ * Plays a sound at a certain position.
+ */
 class LevelSoundEvent : Buffer {
 
 	public enum ubyte ID = 26;
@@ -1825,6 +1957,11 @@ class LevelSoundEvent : Buffer {
 	public enum string[] FIELDS = ["sound", "position", "volume", "pitch", "unknown4"];
 
 	public ubyte sound;
+
+	/**
+	 * Position where the sound was generated. The closer to the player the more intense
+	 * will be on the client.
+	 */
 	public Tuple!(float, "x", float, "y", float, "z") position;
 	public uint volume;
 	public int pitch;
@@ -2501,6 +2638,10 @@ class PlayerAction : Buffer {
 
 }
 
+/**
+ * Sent by the player when it falls from a distance that causes damage, that can be
+ * influenced by its armour and its effects.
+ */
 class PlayerFall : Buffer {
 
 	public enum ubyte ID = 37;
@@ -2510,6 +2651,9 @@ class PlayerFall : Buffer {
 
 	public enum string[] FIELDS = ["distance"];
 
+	/**
+	 * Number of blocks the player has been in free falling before hitting the ground.
+	 */
 	public float distance;
 
 	public pure nothrow @safe @nogc this() {}
@@ -2631,6 +2775,9 @@ class SetEntityData : Buffer {
 
 }
 
+/**
+ * Updates an entity's motion.
+ */
 class SetEntityMotion : Buffer {
 
 	public enum ubyte ID = 40;
@@ -2640,7 +2787,18 @@ class SetEntityMotion : Buffer {
 
 	public enum string[] FIELDS = ["entityId", "motion"];
 
+	/**
+	 * Entity which motion is updated. If the entity id is the player's, its motion is
+	 * updated client-side and the player will send movement packets to the server (meaning
+	 * that the server has no physical calculations to do). If not an animation will be
+	 * done client-side but the server will have to calculate the new position applying
+	 * the item's movement rules.
+	 */
 	public long entityId;
+
+	/**
+	 * New motion for the entity that will influence its movement.
+	 */
 	public Tuple!(float, "x", float, "y", float, "z") motion;
 
 	public pure nothrow @safe @nogc this() {}
@@ -2686,7 +2844,8 @@ class SetEntityLink : Buffer {
 
 	// action
 	public enum ubyte ADD = 0;
-	public enum ubyte REMOVE = 1;
+	public enum ubyte RIDE = 1;
+	public enum ubyte REMOVE = 2;
 
 	public enum string[] FIELDS = ["from", "to", "action"];
 
@@ -3581,7 +3740,7 @@ class FullChunkData : Buffer {
 /**
  * Indicates whether the cheats are enabled. If not the client cannot send commands.
  */
-class SetCheatsEnabled : Buffer {
+class SetCommandsEnabled : Buffer {
 
 	public enum ubyte ID = 59;
 
@@ -3610,15 +3769,15 @@ class SetCheatsEnabled : Buffer {
 		enabled=readBigEndianBool();
 	}
 
-	public static pure nothrow @safe SetCheatsEnabled fromBuffer(bool readId=true)(ubyte[] buffer) {
-		SetCheatsEnabled ret = new SetCheatsEnabled();
+	public static pure nothrow @safe SetCommandsEnabled fromBuffer(bool readId=true)(ubyte[] buffer) {
+		SetCommandsEnabled ret = new SetCommandsEnabled();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
 	}
 
 	public override string toString() {
-		return "SetCheatsEnabled(enabled: " ~ std.conv.to!string(this.enabled) ~ ")";
+		return "SetCommandsEnabled(enabled: " ~ std.conv.to!string(this.enabled) ~ ")";
 	}
 
 }
@@ -3734,48 +3893,48 @@ class ChangeDimension : Buffer {
  * status (set in AdventureSettings.permissions) and it changes the gamemode in the
  * settings screen.
  */
-class SetPlayerGametype : Buffer {
+class SetPlayerGameType : Buffer {
 
 	public enum ubyte ID = 62;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
-	// gametype
+	// gamemode
 	public enum int SURVIVAL = 0;
 	public enum int CREATIVE = 1;
 
-	public enum string[] FIELDS = ["gametype"];
+	public enum string[] FIELDS = ["gamemode"];
 
-	public int gametype;
+	public int gamemode;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(int gametype) {
-		this.gametype = gametype;
+	public pure nothrow @safe @nogc this(int gamemode) {
+		this.gamemode = gamemode;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varint.encode(gametype));
+		writeBytes(varint.encode(gamemode));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		gametype=varint.decode(_buffer, &_index);
+		gamemode=varint.decode(_buffer, &_index);
 	}
 
-	public static pure nothrow @safe SetPlayerGametype fromBuffer(bool readId=true)(ubyte[] buffer) {
-		SetPlayerGametype ret = new SetPlayerGametype();
+	public static pure nothrow @safe SetPlayerGameType fromBuffer(bool readId=true)(ubyte[] buffer) {
+		SetPlayerGameType ret = new SetPlayerGameType();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
 	}
 
 	public override string toString() {
-		return "SetPlayerGametype(gametype: " ~ std.conv.to!string(this.gametype) ~ ")";
+		return "SetPlayerGameType(gamemode: " ~ std.conv.to!string(this.gamemode) ~ ")";
 	}
 
 }
@@ -4307,6 +4466,53 @@ class ReplaceSelectedItem : Buffer {
 
 	public override string toString() {
 		return "ReplaceSelectedItem(item: " ~ std.conv.to!string(this.item) ~ ")";
+	}
+
+}
+
+/**
+ * Updates client's game rules. This packet is ignored if the game is not launched
+ * as Education Edition and should be avoid in favour of AdventureSettings, with which
+ * the same result can be obtained with less data.
+ */
+class GameRulesChanged : Buffer {
+
+	public enum ubyte ID = 72;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["rules"];
+
+	public sul.protocol.pocket101.types.Rule[] rules;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(sul.protocol.pocket101.types.Rule[] rules) {
+		this.rules = rules;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUint(cast(uint)rules.length); foreach(cnvszxm;rules){ cnvszxm.encode(bufferInstance); }
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		rules.length=readBigEndianUint(); foreach(ref cnvszxm;rules){ cnvszxm.decode(bufferInstance); }
+	}
+
+	public static pure nothrow @safe GameRulesChanged fromBuffer(bool readId=true)(ubyte[] buffer) {
+		GameRulesChanged ret = new GameRulesChanged();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+	public override string toString() {
+		return "GameRulesChanged(rules: " ~ std.conv.to!string(this.rules) ~ ")";
 	}
 
 }

@@ -15,7 +15,7 @@ import sul.utils.*;
 /**
  * Resources usage of a node.
  */
-public class NodeStats extends Packet {
+public class NodeStats extends Stream {
 
 	/**
 	 * Name of the node. Should match one of the names given in [Welcome.Accepted.connectedNodes](#login_welcome_accepted_connected-nodes)

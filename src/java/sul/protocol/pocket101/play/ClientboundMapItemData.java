@@ -19,6 +19,11 @@ public class ClientboundMapItemData extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// action
 	public static final byte UPDATE = 4;
 	public static final byte FULL = 6;
@@ -106,12 +111,12 @@ public class ClientboundMapItemData extends Packet {
 		unknown7=readBigEndianByte();
 		unknown8=readBigEndianByte();
 		showIcons=this.readBool();
-		int bgljb25z=this.readVaruint(); icons=new Tuples.IntXZ[bgljb25z]; for(int awnvbnm=0;awnvbnm<icons.length;awnvbnm++){ icons[awnvbnm].x=this.readVarint(); icons[awnvbnm].z=this.readVarint(); }
+		int bgljb25z=this.readVaruint(); icons=new Tuples.IntXZ[bgljb25z]; for(int awnvbnm=0;awnvbnm<icons.length;awnvbnm++){ icons[awnvbnm]=new Tuples.IntXZ(); icons[awnvbnm].x=this.readVarint(); icons[awnvbnm].z=this.readVarint(); }
 		direction=this.readVarint();
-		position.x=this.readVarint(); position.z=this.readVarint();
+		position=new Tuples.IntXZ(); position.x=this.readVarint(); position.z=this.readVarint();
 		columns=this.readVarint();
 		rows=this.readVarint();
-		offset.x=this.readVarint(); offset.z=this.readVarint();
+		offset=new Tuples.IntXZ(); offset.x=this.readVarint(); offset.z=this.readVarint();
 		int bgrhdge=this.readVaruint(); data=this.readBytes(bgrhdge);
 	}
 

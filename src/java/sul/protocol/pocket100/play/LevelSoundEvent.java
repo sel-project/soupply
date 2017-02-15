@@ -17,6 +17,11 @@ public class LevelSoundEvent extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// sound
 	public static final byte ITEM_USE_ON = 0;
 	public static final byte HIT = 1;
@@ -149,7 +154,7 @@ public class LevelSoundEvent extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		sound=readBigEndianByte();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		volume=this.readVaruint();
 		pitch=this.readVarint();
 		unknown4=this.readBool();

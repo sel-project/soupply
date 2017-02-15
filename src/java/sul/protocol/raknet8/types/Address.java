@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 import sul.utils.*;
 
-public class Address extends Packet {
+public class Address extends Stream {
 
 	public byte type;
 	public int ipv4;

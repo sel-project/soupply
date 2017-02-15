@@ -19,6 +19,11 @@ public class ClientSettings extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// chat mode
 	public static final byte ENABLED = 0;
 	public static final byte COMMANDS_ONLY = 1;

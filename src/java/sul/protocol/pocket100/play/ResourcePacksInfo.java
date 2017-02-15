@@ -19,6 +19,11 @@ public class ResourcePacksInfo extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public boolean mustAccept;
 	public sul.protocol.pocket100.types.Pack[] behaviourPacks;
 	public sul.protocol.pocket100.types.Pack[] resourcePacks;

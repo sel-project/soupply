@@ -17,6 +17,11 @@ public class PlayerBlockPlacement extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public long position;
 	public byte face;
 	public sul.protocol.minecraft47.types.Slot heldItem;
@@ -54,7 +59,7 @@ public class PlayerBlockPlacement extends Packet {
 		position=readBigEndianLong();
 		face=readBigEndianByte();
 		heldItem=new sul.protocol.minecraft47.types.Slot(); heldItem._index=this._index; heldItem.decode(this._buffer); this._index=heldItem._index;
-		cursorPosition.x=readBigEndianByte(); cursorPosition.y=readBigEndianByte(); cursorPosition.z=readBigEndianByte();
+		cursorPosition=new Tuples.ByteXYZ(); cursorPosition.x=readBigEndianByte(); cursorPosition.y=readBigEndianByte(); cursorPosition.z=readBigEndianByte();
 	}
 
 	public static PlayerBlockPlacement fromBuffer(byte[] buffer) {

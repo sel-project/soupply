@@ -13,7 +13,7 @@ import java.util.UUID;
 
 import sul.utils.*;
 
-public class ListUpdateDisplayName extends Packet {
+public class ListUpdateDisplayName extends Stream {
 
 	public UUID uuid;
 	public boolean hasDisplayName;

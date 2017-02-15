@@ -19,6 +19,11 @@ public class Respawn extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// dimension
 	public static final int NETHER = -1;
 	public static final int OVERWORLD = 0;

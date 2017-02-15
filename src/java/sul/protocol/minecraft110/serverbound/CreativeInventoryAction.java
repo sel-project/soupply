@@ -17,6 +17,11 @@ public class CreativeInventoryAction extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public short slot;
 	public sul.protocol.minecraft110.types.Slot clickedItem;
 

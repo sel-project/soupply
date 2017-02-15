@@ -24,6 +24,11 @@ public class ConsoleMessage extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * Name of the node that created the log or an empty string if the log was created
 	 * by the hub or by a server that isn't based on the hub-node layout.

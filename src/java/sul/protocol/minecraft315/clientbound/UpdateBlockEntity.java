@@ -19,6 +19,11 @@ public class UpdateBlockEntity extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// action
 	public static final byte MOB_SPAWNER_DATA = 1;
 	public static final byte COMMAND_BLOCK_TEXT = 2;

@@ -17,6 +17,11 @@ public class UpdateHealth extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public float health;
 	public int hunger;
 	public float saturation;

@@ -21,6 +21,11 @@ public class ConnectionResponse extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// status
 	public static final byte OK = 0;
 	public static final byte OUTDATED_HUB = 1;

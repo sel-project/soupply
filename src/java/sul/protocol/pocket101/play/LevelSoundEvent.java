@@ -10,12 +10,20 @@ package sul.protocol.pocket101.play;
 
 import sul.utils.*;
 
+/**
+ * Plays a sound at a certain position.
+ */
 public class LevelSoundEvent extends Packet {
 
 	public static final byte ID = (byte)26;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 	// sound
 	public static final byte ITEM_USE_ON = 0;
@@ -112,6 +120,11 @@ public class LevelSoundEvent extends Packet {
 	public static final byte UNDEFINED = 91;
 
 	public byte sound;
+
+	/**
+	 * Position where the sound was generated. The closer to the player the more intense
+	 * will be on the client.
+	 */
 	public Tuples.FloatXYZ position;
 	public int volume;
 	public int pitch;
@@ -149,7 +162,7 @@ public class LevelSoundEvent extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		sound=readBigEndianByte();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		volume=this.readVaruint();
 		pitch=this.readVarint();
 		unknown4=this.readBool();

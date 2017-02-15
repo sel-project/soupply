@@ -17,7 +17,7 @@ import sul.utils.*;
  * Informations about a player that will be added to the player's list in the pause
  * menu.
  */
-public class PlayerList extends Packet {
+public class PlayerList extends Stream {
 
 	/**
 	 * UUID of the player. If it's associated with an XBOX Live account the player's profile

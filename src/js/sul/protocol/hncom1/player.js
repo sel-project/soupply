@@ -127,10 +127,51 @@ const Player = {
 			var dghpcy5syw5ndwfn=this.encodeString(this.language); this.writeVaruint(dghpcy5syw5ndwfn.length); this.writeBytes(dghpcy5syw5ndwfn);
 			this.writeBigEndianByte(this.inputMode);
 			this.writeVaruint(this.latency);
+	switch(this.type) {
+		case 1:
+			this.writeVaruint(this.hubId);
+			this.writeBigEndianByte(this.reason);
+			this.writeBigEndianByte(this.type);
+			this.writeVaruint(this.protocol);
+			var dghpcy52zxjzaw9u=this.encodeString(this.version); this.writeVaruint(dghpcy52zxjzaw9u.length); this.writeBytes(dghpcy52zxjzaw9u);
+			var dghpcy51c2vybmft=this.encodeString(this.username); this.writeVaruint(dghpcy51c2vybmft.length); this.writeBytes(dghpcy51c2vybmft);
+			var dghpcy5kaxnwbgf5=this.encodeString(this.displayName); this.writeVaruint(dghpcy5kaxnwbgf5.length); this.writeBytes(dghpcy5kaxnwbgf5);
+			if(reason!=0){ this.writeBigEndianByte(this.dimension); }
+			if(reason!=0){ this.writeVaruint(this.viewDistance); }
+			this.writeBytes(this.clientAddress.encode());
+			var dghpcy5zzxj2zxjb=this.encodeString(this.serverAddress); this.writeVaruint(dghpcy5zzxj2zxjb.length); this.writeBytes(dghpcy5zzxj2zxjb);
+			this.writeBigEndianShort(this.serverPort);
+			this.writeBytes(this.uuid);
+			this.writeBytes(this.skin.encode());
+			var dghpcy5syw5ndwfn=this.encodeString(this.language); this.writeVaruint(dghpcy5syw5ndwfn.length); this.writeBytes(dghpcy5syw5ndwfn);
+			this.writeBigEndianByte(this.inputMode);
+			this.writeVaruint(this.latency);
+			break;
+		case 2:
+			this.writeVaruint(this.hubId);
+			this.writeBigEndianByte(this.reason);
+			this.writeBigEndianByte(this.type);
+			this.writeVaruint(this.protocol);
+			var dghpcy52zxjzaw9u=this.encodeString(this.version); this.writeVaruint(dghpcy52zxjzaw9u.length); this.writeBytes(dghpcy52zxjzaw9u);
+			var dghpcy51c2vybmft=this.encodeString(this.username); this.writeVaruint(dghpcy51c2vybmft.length); this.writeBytes(dghpcy51c2vybmft);
+			var dghpcy5kaxnwbgf5=this.encodeString(this.displayName); this.writeVaruint(dghpcy5kaxnwbgf5.length); this.writeBytes(dghpcy5kaxnwbgf5);
+			if(reason!=0){ this.writeBigEndianByte(this.dimension); }
+			if(reason!=0){ this.writeVaruint(this.viewDistance); }
+			this.writeBytes(this.clientAddress.encode());
+			var dghpcy5zzxj2zxjb=this.encodeString(this.serverAddress); this.writeVaruint(dghpcy5zzxj2zxjb.length); this.writeBytes(dghpcy5zzxj2zxjb);
+			this.writeBigEndianShort(this.serverPort);
+			this.writeBytes(this.uuid);
+			this.writeBytes(this.skin.encode());
+			var dghpcy5syw5ndwfn=this.encodeString(this.language); this.writeVaruint(dghpcy5syw5ndwfn.length); this.writeBytes(dghpcy5syw5ndwfn);
+			this.writeBigEndianByte(this.inputMode);
+			this.writeVaruint(this.latency);
+			break;
+		default: break;
+	}
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -167,6 +208,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.Add().decode(buffer);
 		}
@@ -214,7 +256,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -224,6 +266,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.Remove().decode(buffer);
 		}
@@ -273,7 +316,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -285,6 +328,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.Kick().decode(buffer);
 		}
@@ -341,7 +385,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -352,6 +396,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.Transfer().decode(buffer);
 		}
@@ -392,7 +437,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -402,6 +447,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.UpdateDisplayName().decode(buffer);
 		}
@@ -447,7 +493,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -458,6 +504,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.UpdateWorld().decode(buffer);
 		}
@@ -491,7 +538,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -501,6 +548,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.UpdateViewDistance().decode(buffer);
 		}
@@ -541,7 +589,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -551,6 +599,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.UpdateLanguage().decode(buffer);
 		}
@@ -596,7 +645,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -606,6 +655,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.UpdateInputMode().decode(buffer);
 		}
@@ -648,7 +698,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -658,6 +708,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.UpdateLatency().decode(buffer);
 		}
@@ -698,7 +749,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -708,6 +759,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.UpdatePacketLoss().decode(buffer);
 		}
@@ -749,7 +801,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -759,6 +811,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.GamePacket().decode(buffer);
 		}
@@ -805,7 +858,7 @@ const Player = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -816,6 +869,7 @@ const Player = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Player.OrderedGamePacket().decode(buffer);
 		}

@@ -17,6 +17,11 @@ public class MapInfoRequest extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public long mapId;
 
 	public MapInfoRequest() {}

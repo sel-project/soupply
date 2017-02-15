@@ -50,40 +50,6 @@ struct Pack {
 }
 
 /**
- * Position of a block, where x and z are signed and y is always positive (as blocks
- * cannot be placed under 0).
- */
-struct BlockPosition {
-
-	public enum string[] FIELDS = ["x", "y", "z"];
-
-	public int x;
-	public uint y;
-	public int z;
-
-	public pure nothrow @safe void encode(Buffer buffer) {
-		with(buffer) {
-			writeBytes(varint.encode(x));
-			writeBytes(varuint.encode(y));
-			writeBytes(varint.encode(z));
-		}
-	}
-
-	public pure nothrow @safe void decode(Buffer buffer) {
-		with(buffer) {
-			x=varint.decode(_buffer, &_index);
-			y=varuint.decode(_buffer, &_index);
-			z=varint.decode(_buffer, &_index);
-		}
-	}
-
-	public string toString() {
-		return "BlockPosition(x: " ~ std.conv.to!string(this.x) ~ ", y: " ~ std.conv.to!string(this.y) ~ ", z: " ~ std.conv.to!string(this.z) ~ ")";
-	}
-
-}
-
-/**
  * Informations about a slot, that, if not empty, contains an item id and meta, the
  * count (0-255) and, optionally, an nbt tag for enchantments, custom name, colours
  * and more.
@@ -168,6 +134,40 @@ struct Attribute {
 
 	public string toString() {
 		return "Attribute(min: " ~ std.conv.to!string(this.min) ~ ", max: " ~ std.conv.to!string(this.max) ~ ", value: " ~ std.conv.to!string(this.value) ~ ", def: " ~ std.conv.to!string(this.def) ~ ", name: " ~ std.conv.to!string(this.name) ~ ")";
+	}
+
+}
+
+/**
+ * Position of a block, where x and z are signed and y is always positive (as blocks
+ * cannot be placed under 0).
+ */
+struct BlockPosition {
+
+	public enum string[] FIELDS = ["x", "y", "z"];
+
+	public int x;
+	public uint y;
+	public int z;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBytes(varint.encode(x));
+			writeBytes(varuint.encode(y));
+			writeBytes(varint.encode(z));
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			x=varint.decode(_buffer, &_index);
+			y=varuint.decode(_buffer, &_index);
+			z=varint.decode(_buffer, &_index);
+		}
+	}
+
+	public string toString() {
+		return "BlockPosition(x: " ~ std.conv.to!string(this.x) ~ ", y: " ~ std.conv.to!string(this.y) ~ ", z: " ~ std.conv.to!string(this.z) ~ ")";
 	}
 
 }
@@ -263,6 +263,41 @@ struct PlayerList {
 
 }
 
+struct Link {
+
+	// action
+	public enum ubyte ADD = 0;
+	public enum ubyte RIDE = 1;
+	public enum ubyte REMOVE = 2;
+
+	public enum string[] FIELDS = ["from", "to", "action"];
+
+	public long from;
+	public long to;
+	public ubyte action;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBytes(varlong.encode(from));
+			writeBytes(varlong.encode(to));
+			writeBigEndianUbyte(action);
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			from=varlong.decode(_buffer, &_index);
+			to=varlong.decode(_buffer, &_index);
+			action=readBigEndianUbyte();
+		}
+	}
+
+	public string toString() {
+		return "Link(from: " ~ std.conv.to!string(this.from) ~ ", to: " ~ std.conv.to!string(this.to) ~ ", action: " ~ std.conv.to!string(this.action) ~ ")";
+	}
+
+}
+
 struct Recipe {
 
 	// type
@@ -293,6 +328,56 @@ struct Recipe {
 
 	public string toString() {
 		return "Recipe(type: " ~ std.conv.to!string(this.type) ~ ", data: " ~ std.conv.to!string(this.data) ~ ")";
+	}
+
+}
+
+/**
+ * A game rule that prevents the client from doing client-side actions and animations.
+ */
+struct Rule {
+
+	// name
+	public enum string DROWNING_DAMAGE = "drowningdamage";
+	public enum string FALL_DAMAGE = "falldamage";
+	public enum string FIRE_DAMAGE = "firedamage";
+	public enum string IMMUTABLE_WORLD = "immutableworld";
+	public enum string PVP = "pvp";
+
+	public enum string[] FIELDS = ["name", "value", "unknown2"];
+
+	/**
+	 * Name of the rule. Same of the `gamerule` command's field in Minecraft: Education
+	 * Edition.
+	 * The behaviours indicated in the following constants' descriptions is enabled or
+	 * disabled.
+	 */
+	public string name;
+
+	/**
+	 * Indicates whether the game rule is enabled.
+	 */
+	public bool value;
+	public bool unknown2;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBytes(varuint.encode(cast(uint)name.length)); writeString(name);
+			writeBigEndianBool(value);
+			writeBigEndianBool(unknown2);
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			uint bmftzq=varuint.decode(_buffer, &_index); name=readString(bmftzq);
+			value=readBigEndianBool();
+			unknown2=readBigEndianBool();
+		}
+	}
+
+	public string toString() {
+		return "Rule(name: " ~ std.conv.to!string(this.name) ~ ", value: " ~ std.conv.to!string(this.value) ~ ", unknown2: " ~ std.conv.to!string(this.unknown2) ~ ")";
 	}
 
 }

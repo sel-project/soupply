@@ -19,6 +19,11 @@ public class Particle extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// particle id
 	public static final int EXPLODE = 0;
 	public static final int LARGE_EXPLOSION = 1;
@@ -113,8 +118,8 @@ public class Particle extends Packet {
 		this.readVaruint();
 		particleId=readBigEndianInt();
 		longDistance=this.readBool();
-		position.x=readBigEndianFloat(); position.y=readBigEndianFloat(); position.z=readBigEndianFloat();
-		offset.x=readBigEndianFloat(); offset.y=readBigEndianFloat(); offset.z=readBigEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readBigEndianFloat(); position.y=readBigEndianFloat(); position.z=readBigEndianFloat();
+		offset=new Tuples.FloatXYZ(); offset.x=readBigEndianFloat(); offset.y=readBigEndianFloat(); offset.z=readBigEndianFloat();
 		data=readBigEndianFloat();
 		count=readBigEndianInt();
 		final int bgfkzgl0aw9uywxe=2; additionalData=new int[bgfkzgl0aw9uywxe]; for(int ywrkaxrpb25hberh=0;ywrkaxrpb25hberh<additionalData.length;ywrkaxrpb25hberh++){ additionalData[ywrkaxrpb25hberh]=this.readVaruint(); }

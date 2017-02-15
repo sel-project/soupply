@@ -17,6 +17,11 @@ public class SpawnExperienceOrb extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int entityId;
 	public Tuples.DoubleXYZ position;
 	public short count;
@@ -49,7 +54,7 @@ public class SpawnExperienceOrb extends Packet {
 		this._buffer = buffer;
 		this.readVaruint();
 		entityId=this.readVaruint();
-		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
+		position=new Tuples.DoubleXYZ(); position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		count=readBigEndianShort();
 	}
 

@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 import sul.utils.*;
 
-public class Property extends Packet {
+public class Property extends Stream {
 
 	public String name;
 	public String value;

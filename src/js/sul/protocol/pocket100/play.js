@@ -40,7 +40,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -51,6 +51,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.Login().decode(buffer);
 		}
@@ -90,7 +91,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -99,6 +100,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.PlayStatus().decode(buffer);
 		}
@@ -110,7 +112,7 @@ const Play = {
 
 	},
 
-	ServerHandshake: class extends Buffer {
+	ServerToClientHandshake: class extends Buffer {
 
 		static get ID(){ return 3; }
 
@@ -132,7 +134,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -142,18 +144,19 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
-			return new Play.ServerHandshake().decode(buffer);
+			return new Play.ServerToClientHandshake().decode(buffer);
 		}
 
 		/** @return {string} */
 		toString() {
-			return "ServerHandshake(serverPublicKey: " + this.serverPublicKey + ", token: " + this.token + ")";
+			return "ServerToClientHandshake(serverPublicKey: " + this.serverPublicKey + ", token: " + this.token + ")";
 		}
 
 	},
 
-	ClientMagic: class extends Buffer {
+	ClientToServerHandshake: class extends Buffer {
 
 		static get ID(){ return 4; }
 
@@ -171,7 +174,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -179,13 +182,14 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
-			return new Play.ClientMagic().decode(buffer);
+			return new Play.ClientToServerHandshake().decode(buffer);
 		}
 
 		/** @return {string} */
 		toString() {
-			return "ClientMagic()";
+			return "ClientToServerHandshake()";
 		}
 
 	},
@@ -208,20 +212,21 @@ const Play = {
 			this._buffer = [];
 			this.writeBigEndianByte(5);
 			this.writeBigEndianByte(this.hideDisconnectionScreen?1:0);
-			var dghpcy5tzxnzywdl=this.encodeString(this.message); this.writeVaruint(dghpcy5tzxnzywdl.length); this.writeBytes(dghpcy5tzxnzywdl);
+			if(hideDisconnectionScreen==false){ var dghpcy5tzxnzywdl=this.encodeString(this.message); this.writeVaruint(dghpcy5tzxnzywdl.length); this.writeBytes(dghpcy5tzxnzywdl); }
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
 			this.hideDisconnectionScreen=this.readBigEndianByte()!==0;
-			this.message=this.decodeString(this.readBytes(this.readVaruint()));
+			if(hideDisconnectionScreen==false){ this.message=this.decodeString(this.readBytes(this.readVaruint())); }
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.Disconnect().decode(buffer);
 		}
@@ -253,7 +258,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -262,6 +267,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.Batch().decode(buffer);
 		}
@@ -297,7 +303,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -308,6 +314,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ResourcePacksInfo().decode(buffer);
 		}
@@ -315,6 +322,53 @@ const Play = {
 		/** @return {string} */
 		toString() {
 			return "ResourcePacksInfo(mustAccept: " + this.mustAccept + ", behaviourPacks: " + this.behaviourPacks + ", resourcePacks: " + this.resourcePacks + ")";
+		}
+
+	},
+
+	ResourcePacksStackPacket: class extends Buffer {
+
+		static get ID(){ return 8; }
+
+		static get CLIENTBOUND(){ return true; }
+		static get SERVERBOUND(){ return false; }
+
+		constructor(mustAccept=false, behaviourPacks=[], resourcePacks=[]) {
+			super();
+			this.mustAccept = mustAccept;
+			this.behaviourPacks = behaviourPacks;
+			this.resourcePacks = resourcePacks;
+		}
+
+		/** @return {Uint8Array} */
+		encode() {
+			this._buffer = [];
+			this.writeBigEndianByte(8);
+			this.writeBigEndianByte(this.mustAccept?1:0);
+			this.writeVaruint(this.behaviourPacks.length); for(var dghpcy5izwhhdmlv in this.behaviourPacks){ this.writeBytes(this.behaviourPacks[dghpcy5izwhhdmlv].encode()); }
+			this.writeVaruint(this.resourcePacks.length); for(var dghpcy5yzxnvdxjj in this.resourcePacks){ this.writeBytes(this.resourcePacks[dghpcy5yzxnvdxjj].encode()); }
+			return new Uint8Array(this._buffer);
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			this.mustAccept=this.readBigEndianByte()!==0;
+			var bhroaxmuymvoyxzp=this.readVaruint(); this.behaviourPacks=[]; for(var dghpcy5izwhhdmlv in this.behaviourPacks){ this.behaviourPacks[dghpcy5izwhhdmlv]=Types.Pack.fromBuffer(this._buffer); this._buffer=this.behaviourPacks[dghpcy5izwhhdmlv]._buffer; }
+			var bhroaxmucmvzb3vy=this.readVaruint(); this.resourcePacks=[]; for(var dghpcy5yzxnvdxjj in this.resourcePacks){ this.resourcePacks[dghpcy5yzxnvdxjj]=Types.Pack.fromBuffer(this._buffer); this._buffer=this.resourcePacks[dghpcy5yzxnvdxjj]._buffer; }
+			return this;
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		static fromBuffer(buffer) {
+			return new Play.ResourcePacksStackPacket().decode(buffer);
+		}
+
+		/** @return {string} */
+		toString() {
+			return "ResourcePacksStackPacket(mustAccept: " + this.mustAccept + ", behaviourPacks: " + this.behaviourPacks + ", resourcePacks: " + this.resourcePacks + ")";
 		}
 
 	},
@@ -341,7 +395,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -351,6 +405,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ResourcePackClientResponse().decode(buffer);
 		}
@@ -388,10 +443,34 @@ const Play = {
 			this._buffer = [];
 			this.writeBigEndianByte(10);
 			this.writeBigEndianByte(this.type);
+	switch(this.type) {
+		case 0:
+			this.writeBigEndianByte(this.type);
+			break;
+		case 1:
+			this.writeBigEndianByte(this.type);
+			break;
+		case 2:
+			this.writeBigEndianByte(this.type);
+			break;
+		case 3:
+			this.writeBigEndianByte(this.type);
+			break;
+		case 4:
+			this.writeBigEndianByte(this.type);
+			break;
+		case 5:
+			this.writeBigEndianByte(this.type);
+			break;
+		case 6:
+			this.writeBigEndianByte(this.type);
+			break;
+		default: break;
+	}
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -428,6 +507,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.Text().decode(buffer);
 		}
@@ -461,7 +541,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -471,6 +551,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.SetTime().decode(buffer);
 		}
@@ -513,7 +594,7 @@ const Play = {
 		static get CLASSIC(){ return 0; }
 		static get EDUCATION(){ return 1; }
 
-		constructor(entityId=0, runtimeId=0, position={x:0,y:0,z:0}, yaw=.0, pitch=.0, seed=0, dimension=0, generator=0, worldGamemode=0, difficulty=0, spawnPosition=0, loadedInCreative=false, time=0, edition=0, rainLevel=.0, lightingLevel=.0, cheatsEnabled=false, textureRequired=false, levelId="", worldName="") {
+		constructor(entityId=0, runtimeId=0, position={x:0,y:0,z:0}, yaw=.0, pitch=.0, seed=0, dimension=0, generator=0, worldGamemode=0, difficulty=0, spawnPosition=0, loadedInCreative=false, time=0, edition=0, rainLevel=.0, lightingLevel=.0, commandsEnabled=false, textureRequired=false, levelId="", worldName="") {
 			super();
 			this.entityId = entityId;
 			this.runtimeId = runtimeId;
@@ -531,7 +612,7 @@ const Play = {
 			this.edition = edition;
 			this.rainLevel = rainLevel;
 			this.lightingLevel = lightingLevel;
-			this.cheatsEnabled = cheatsEnabled;
+			this.commandsEnabled = commandsEnabled;
 			this.textureRequired = textureRequired;
 			this.levelId = levelId;
 			this.worldName = worldName;
@@ -557,14 +638,14 @@ const Play = {
 			this.writeBigEndianByte(this.edition);
 			this.writeLittleEndianFloat(this.rainLevel);
 			this.writeLittleEndianFloat(this.lightingLevel);
-			this.writeBigEndianByte(this.cheatsEnabled?1:0);
+			this.writeBigEndianByte(this.commandsEnabled?1:0);
 			this.writeBigEndianByte(this.textureRequired?1:0);
 			var dghpcy5szxzlbelk=this.encodeString(this.levelId); this.writeVaruint(dghpcy5szxzlbelk.length); this.writeBytes(dghpcy5szxzlbelk);
 			var dghpcy53b3jsze5h=this.encodeString(this.worldName); this.writeVaruint(dghpcy53b3jsze5h.length); this.writeBytes(dghpcy53b3jsze5h);
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -585,20 +666,21 @@ const Play = {
 			this.edition=this.readBigEndianByte();
 			this.rainLevel=this.readLittleEndianFloat();
 			this.lightingLevel=this.readLittleEndianFloat();
-			this.cheatsEnabled=this.readBigEndianByte()!==0;
+			this.commandsEnabled=this.readBigEndianByte()!==0;
 			this.textureRequired=this.readBigEndianByte()!==0;
 			this.levelId=this.decodeString(this.readBytes(this.readVaruint()));
 			this.worldName=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.StartGame().decode(buffer);
 		}
 
 		/** @return {string} */
 		toString() {
-			return "StartGame(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ", position: " + this.position + ", yaw: " + this.yaw + ", pitch: " + this.pitch + ", seed: " + this.seed + ", dimension: " + this.dimension + ", generator: " + this.generator + ", worldGamemode: " + this.worldGamemode + ", difficulty: " + this.difficulty + ", spawnPosition: " + this.spawnPosition + ", loadedInCreative: " + this.loadedInCreative + ", time: " + this.time + ", edition: " + this.edition + ", rainLevel: " + this.rainLevel + ", lightingLevel: " + this.lightingLevel + ", cheatsEnabled: " + this.cheatsEnabled + ", textureRequired: " + this.textureRequired + ", levelId: " + this.levelId + ", worldName: " + this.worldName + ")";
+			return "StartGame(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ", position: " + this.position + ", yaw: " + this.yaw + ", pitch: " + this.pitch + ", seed: " + this.seed + ", dimension: " + this.dimension + ", generator: " + this.generator + ", worldGamemode: " + this.worldGamemode + ", difficulty: " + this.difficulty + ", spawnPosition: " + this.spawnPosition + ", loadedInCreative: " + this.loadedInCreative + ", time: " + this.time + ", edition: " + this.edition + ", rainLevel: " + this.rainLevel + ", lightingLevel: " + this.lightingLevel + ", commandsEnabled: " + this.commandsEnabled + ", textureRequired: " + this.textureRequired + ", levelId: " + this.levelId + ", worldName: " + this.worldName + ")";
 		}
 
 	},
@@ -643,7 +725,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -662,6 +744,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.AddPlayer().decode(buffer);
 		}
@@ -680,7 +763,7 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityId=0, runtimeId=0, type=0, position={x:0,y:0,z:0}, motion={x:0,y:0,z:0}, pitch=.0, yaw=.0, attributes=[], metadata=null, links=0) {
+		constructor(entityId=0, runtimeId=0, type=0, position={x:0,y:0,z:0}, motion={x:0,y:0,z:0}, pitch=.0, yaw=.0, attributes=[], metadata=null, links=[]) {
 			super();
 			this.entityId = entityId;
 			this.runtimeId = runtimeId;
@@ -707,11 +790,11 @@ const Play = {
 			this.writeLittleEndianFloat(this.yaw);
 			this.writeVaruint(this.attributes.length); for(var dghpcy5hdhryawj1 in this.attributes){ this.writeBytes(this.attributes[dghpcy5hdhryawj1].encode()); }
 			this.writeBytes(this.metadata.encode());
-			this.writeVaruint(this.links.length); for(var dghpcy5saw5rcw in this.links){ this.writeVarlong(this.links[dghpcy5saw5rcw]); }
+			this.writeVaruint(this.links.length); for(var dghpcy5saw5rcw in this.links){ this.writeBytes(this.links[dghpcy5saw5rcw].encode()); }
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -725,10 +808,11 @@ const Play = {
 			this.yaw=this.readLittleEndianFloat();
 			var bhroaxmuyxr0cmli=this.readVaruint(); this.attributes=[]; for(var dghpcy5hdhryawj1 in this.attributes){ this.attributes[dghpcy5hdhryawj1]=Types.Attribute.fromBuffer(this._buffer); this._buffer=this.attributes[dghpcy5hdhryawj1]._buffer; }
 			this.metadata=Metadata.fromBuffer(this._buffer); this._buffer=this.metadata._buffer;
-			var bhroaxmubglua3m=this.readVaruint(); this.links=[]; for(var dghpcy5saw5rcw in this.links){ this.links[dghpcy5saw5rcw]=this.readVarlong(); }
+			var bhroaxmubglua3m=this.readVaruint(); this.links=[]; for(var dghpcy5saw5rcw in this.links){ this.links[dghpcy5saw5rcw]=Types.Link.fromBuffer(this._buffer); this._buffer=this.links[dghpcy5saw5rcw]._buffer; }
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.AddEntity().decode(buffer);
 		}
@@ -760,7 +844,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -769,6 +853,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.RemoveEntity().decode(buffer);
 		}
@@ -808,7 +893,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -821,6 +906,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.AddItemEntity().decode(buffer);
 		}
@@ -858,7 +944,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -870,6 +956,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.AddHangingEntity().decode(buffer);
 		}
@@ -888,9 +975,9 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(taken=0, collector=0) {
+		constructor(collected=0, collector=0) {
 			super();
-			this.taken = taken;
+			this.collected = collected;
 			this.collector = collector;
 		}
 
@@ -898,28 +985,29 @@ const Play = {
 		encode() {
 			this._buffer = [];
 			this.writeBigEndianByte(18);
-			this.writeVarlong(this.taken);
+			this.writeVarlong(this.collected);
 			this.writeVarlong(this.collector);
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.taken=this.readVarlong();
+			this.collected=this.readVarlong();
 			this.collector=this.readVarlong();
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.TakeItemEntity().decode(buffer);
 		}
 
 		/** @return {string} */
 		toString() {
-			return "TakeItemEntity(taken: " + this.taken + ", collector: " + this.collector + ")";
+			return "TakeItemEntity(collected: " + this.collected + ", collector: " + this.collector + ")";
 		}
 
 	},
@@ -952,7 +1040,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -965,6 +1053,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.MoveEntity().decode(buffer);
 		}
@@ -1013,7 +1102,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1028,6 +1117,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.MovePlayer().decode(buffer);
 		}
@@ -1059,7 +1149,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1068,6 +1158,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.RiderJump().decode(buffer);
 		}
@@ -1099,7 +1190,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1108,6 +1199,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.RemoveBlock().decode(buffer);
 		}
@@ -1149,7 +1241,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1160,6 +1252,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.UpdateBlock().decode(buffer);
 		}
@@ -1199,7 +1292,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1212,6 +1305,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.AddPainting().decode(buffer);
 		}
@@ -1247,7 +1341,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1258,6 +1352,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.Explode().decode(buffer);
 		}
@@ -1391,7 +1486,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1404,6 +1499,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.LevelSoundEvent().decode(buffer);
 		}
@@ -1489,7 +1585,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1500,6 +1596,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.LevelEvent().decode(buffer);
 		}
@@ -1533,7 +1630,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1543,6 +1640,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.BlockEvent().decode(buffer);
 		}
@@ -1594,7 +1692,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1605,6 +1703,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.EntityEvent().decode(buffer);
 		}
@@ -1651,7 +1750,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1665,6 +1764,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.MobEffect().decode(buffer);
 		}
@@ -1698,7 +1798,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1708,6 +1808,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.UpdateAttributes().decode(buffer);
 		}
@@ -1757,7 +1858,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1770,6 +1871,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.MobEquipment().decode(buffer);
 		}
@@ -1803,7 +1905,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1813,6 +1915,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.MobArmorEquipment().decode(buffer);
 		}
@@ -1852,7 +1955,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1862,6 +1965,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.Interact().decode(buffer);
 		}
@@ -1905,7 +2009,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1920,6 +2024,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.UseItem().decode(buffer);
 		}
@@ -1972,7 +2077,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1984,6 +2089,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.PlayerAction().decode(buffer);
 		}
@@ -2015,7 +2121,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2024,6 +2130,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.PlayerFall().decode(buffer);
 		}
@@ -2055,7 +2162,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2064,6 +2171,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.HurtArmor().decode(buffer);
 		}
@@ -2097,7 +2205,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2107,6 +2215,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.SetEntityData().decode(buffer);
 		}
@@ -2140,7 +2249,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2150,6 +2259,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.SetEntityMotion().decode(buffer);
 		}
@@ -2170,7 +2280,8 @@ const Play = {
 
 		// action
 		static get ADD(){ return 0; }
-		static get REMOVE(){ return 1; }
+		static get RIDE(){ return 1; }
+		static get REMOVE(){ return 2; }
 
 		constructor(from=0, to=0, action=0) {
 			super();
@@ -2189,7 +2300,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2200,6 +2311,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.SetEntityLink().decode(buffer);
 		}
@@ -2231,7 +2343,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2240,6 +2352,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.SetHealth().decode(buffer);
 		}
@@ -2275,7 +2388,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2286,6 +2399,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.SetSpawnPosition().decode(buffer);
 		}
@@ -2323,7 +2437,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2333,6 +2447,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.Animate().decode(buffer);
 		}
@@ -2364,7 +2479,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2373,6 +2488,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.Respawn().decode(buffer);
 		}
@@ -2409,7 +2525,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2419,6 +2535,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.DropItem().decode(buffer);
 		}
@@ -2452,7 +2569,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2462,6 +2579,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.InventoryAction().decode(buffer);
 		}
@@ -2501,7 +2619,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2514,6 +2632,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ContainerOpen().decode(buffer);
 		}
@@ -2545,7 +2664,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2554,6 +2673,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ContainerClose().decode(buffer);
 		}
@@ -2593,7 +2713,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2606,6 +2726,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ContainerSetSlot().decode(buffer);
 		}
@@ -2641,7 +2762,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2652,6 +2773,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ContainerSetData().decode(buffer);
 		}
@@ -2687,7 +2809,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2698,6 +2820,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ContainerSetContent().decode(buffer);
 		}
@@ -2729,7 +2852,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2738,6 +2861,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.CraftingData().decode(buffer);
 		}
@@ -2777,7 +2901,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2790,6 +2914,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.CraftingEvent().decode(buffer);
 		}
@@ -2841,7 +2966,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2851,6 +2976,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.AdventureSettings().decode(buffer);
 		}
@@ -2884,7 +3010,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2894,6 +3020,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.BlockEntityData().decode(buffer);
 		}
@@ -2929,7 +3056,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2940,6 +3067,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.PlayerInput().decode(buffer);
 		}
@@ -2975,7 +3103,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2986,6 +3114,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.FullChunkData().decode(buffer);
 		}
@@ -2997,7 +3126,7 @@ const Play = {
 
 	},
 
-	SetCheatsEnabled: class extends Buffer {
+	SetCommandsEnabled: class extends Buffer {
 
 		static get ID(){ return 59; }
 
@@ -3017,7 +3146,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3026,13 +3155,14 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
-			return new Play.SetCheatsEnabled().decode(buffer);
+			return new Play.SetCommandsEnabled().decode(buffer);
 		}
 
 		/** @return {string} */
 		toString() {
-			return "SetCheatsEnabled(enabled: " + this.enabled + ")";
+			return "SetCommandsEnabled(enabled: " + this.enabled + ")";
 		}
 
 	},
@@ -3063,7 +3193,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3072,6 +3202,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.SetDifficulty().decode(buffer);
 		}
@@ -3112,7 +3243,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3123,6 +3254,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ChangeDimension().decode(buffer);
 		}
@@ -3134,46 +3266,47 @@ const Play = {
 
 	},
 
-	SetPlayerGametype: class extends Buffer {
+	SetPlayerGameType: class extends Buffer {
 
 		static get ID(){ return 62; }
 
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return true; }
 
-		// gametype
+		// gamemode
 		static get SURVIVAL(){ return 0; }
 		static get CREATIVE(){ return 1; }
 
-		constructor(gametype=0) {
+		constructor(gamemode=0) {
 			super();
-			this.gametype = gametype;
+			this.gamemode = gamemode;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
 			this._buffer = [];
 			this.writeBigEndianByte(62);
-			this.writeVarint(this.gametype);
+			this.writeVarint(this.gamemode);
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
 			var _id=this.readBigEndianByte();
-			this.gametype=this.readVarint();
+			this.gamemode=this.readVarint();
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
-			return new Play.SetPlayerGametype().decode(buffer);
+			return new Play.SetPlayerGameType().decode(buffer);
 		}
 
 		/** @return {string} */
 		toString() {
-			return "SetPlayerGametype(gametype: " + this.gametype + ")";
+			return "SetPlayerGameType(gamemode: " + this.gamemode + ")";
 		}
 
 	},
@@ -3199,10 +3332,19 @@ const Play = {
 			this._buffer = [];
 			this.writeBigEndianByte(63);
 			this.writeBigEndianByte(this.action);
+	switch(this.action) {
+		case 0:
+			this.writeBigEndianByte(this.action);
+			break;
+		case 1:
+			this.writeBigEndianByte(this.action);
+			break;
+		default: break;
+	}
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3220,6 +3362,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.PlayerList().decode(buffer);
 		}
@@ -3253,7 +3396,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3263,6 +3406,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.TelemetryEvent().decode(buffer);
 		}
@@ -3296,7 +3440,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3306,6 +3450,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.SpawnExperienceOrb().decode(buffer);
 		}
@@ -3373,7 +3518,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3398,6 +3543,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ClientboundMapItemData().decode(buffer);
 		}
@@ -3429,7 +3575,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3438,6 +3584,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.MapInfoRequest().decode(buffer);
 		}
@@ -3469,7 +3616,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3478,6 +3625,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.RequestChunkRadius().decode(buffer);
 		}
@@ -3509,7 +3657,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3518,6 +3666,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ChunkRadiusUpdated().decode(buffer);
 		}
@@ -3551,7 +3700,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3561,6 +3710,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ItemFrameDropItem().decode(buffer);
 		}
@@ -3592,7 +3742,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3601,6 +3751,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ReplaceSelectedItem().decode(buffer);
 		}
@@ -3608,6 +3759,47 @@ const Play = {
 		/** @return {string} */
 		toString() {
 			return "ReplaceSelectedItem(item: " + this.item + ")";
+		}
+
+	},
+
+	GameRulesChanged: class extends Buffer {
+
+		static get ID(){ return 72; }
+
+		static get CLIENTBOUND(){ return true; }
+		static get SERVERBOUND(){ return false; }
+
+		constructor(rules=null) {
+			super();
+			this.rules = rules;
+		}
+
+		/** @return {Uint8Array} */
+		encode() {
+			this._buffer = [];
+			this.writeBigEndianByte(72);
+			this.writeBigEndianInt(this.rules.length); for(var dghpcy5ydwxlcw in this.rules){ this.writeBytes(this.rules[dghpcy5ydwxlcw].encode()); }
+			return new Uint8Array(this._buffer);
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			var _id=this.readBigEndianByte();
+			var bhroaxmucnvszxm=this.readBigEndianInt(); this.rules=[]; for(var dghpcy5ydwxlcw in this.rules){ this.rules[dghpcy5ydwxlcw]=Types.Rule.fromBuffer(this._buffer); this._buffer=this.rules[dghpcy5ydwxlcw]._buffer; }
+			return this;
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		static fromBuffer(buffer) {
+			return new Play.GameRulesChanged().decode(buffer);
+		}
+
+		/** @return {string} */
+		toString() {
+			return "GameRulesChanged(rules: " + this.rules + ")";
 		}
 
 	},
@@ -3634,7 +3826,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3644,6 +3836,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.Camera().decode(buffer);
 		}
@@ -3675,7 +3868,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3684,6 +3877,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.AddItem().decode(buffer);
 		}
@@ -3722,7 +3916,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3732,6 +3926,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.BossEvent().decode(buffer);
 		}
@@ -3761,7 +3956,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3769,6 +3964,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ShowCredits().decode(buffer);
 		}
@@ -3802,7 +3998,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3812,6 +4008,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.AvailableCommands().decode(buffer);
 		}
@@ -3857,7 +4054,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3873,6 +4070,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.CommandStep().decode(buffer);
 		}
@@ -3912,7 +4110,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3925,6 +4123,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ResourcePackDataInfo().decode(buffer);
 		}
@@ -3962,7 +4161,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3974,6 +4173,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ResourcePackChunkData().decode(buffer);
 		}
@@ -4007,7 +4207,7 @@ const Play = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -4017,6 +4217,7 @@ const Play = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Play.ResourcePackChunkRequest().decode(buffer);
 		}

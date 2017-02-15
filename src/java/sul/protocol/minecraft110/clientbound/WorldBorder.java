@@ -17,6 +17,11 @@ public class WorldBorder extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int action;
 
 	public WorldBorder() {}
@@ -68,6 +73,11 @@ public class WorldBorder extends Packet {
 
 		public static final int ACTION = (int)0;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public double diameter;
 
 		public SetSize() {}
@@ -110,6 +120,11 @@ public class WorldBorder extends Packet {
 	public class LerpSize extends Packet {
 
 		public static final int ACTION = (int)1;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public double oldDiameter;
 		public double newDiameter;
@@ -162,6 +177,11 @@ public class WorldBorder extends Packet {
 
 		public static final int ACTION = (int)2;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public Tuples.DoubleXYZ center;
 
 		public SetCenter() {}
@@ -187,7 +207,7 @@ public class WorldBorder extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			center.x=readBigEndianDouble(); center.y=readBigEndianDouble(); center.z=readBigEndianDouble();
+			center=new Tuples.DoubleXYZ(); center.x=readBigEndianDouble(); center.y=readBigEndianDouble(); center.z=readBigEndianDouble();
 		}
 
 		public void decode() {
@@ -204,6 +224,11 @@ public class WorldBorder extends Packet {
 	public class Initialize extends Packet {
 
 		public static final int ACTION = (int)3;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public Tuples.DoubleXYZ center;
 		public double oldDiameter;
@@ -248,7 +273,7 @@ public class WorldBorder extends Packet {
 		@Override
 		public void decode(byte[] buffer) {
 			this._buffer = buffer;
-			center.x=readBigEndianDouble(); center.y=readBigEndianDouble(); center.z=readBigEndianDouble();
+			center=new Tuples.DoubleXYZ(); center.x=readBigEndianDouble(); center.y=readBigEndianDouble(); center.z=readBigEndianDouble();
 			oldDiameter=readBigEndianDouble();
 			newDiameter=readBigEndianDouble();
 			speed=this.readVarulong();
@@ -271,6 +296,11 @@ public class WorldBorder extends Packet {
 	public class SetWarningTime extends Packet {
 
 		public static final int ACTION = (int)4;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public int warningTime;
 
@@ -314,6 +344,11 @@ public class WorldBorder extends Packet {
 	public class SetWarningBlocks extends Packet {
 
 		public static final int ACTION = (int)5;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public int warningBlocks;
 

@@ -17,6 +17,11 @@ public class WindowProperty extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// property
 	public static final short FURNANCE_FIRE_ICON = 0;
 	public static final short FURNACE_MAX_FUEL_BURN_TIME = 1;

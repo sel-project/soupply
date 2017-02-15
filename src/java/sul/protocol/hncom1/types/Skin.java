@@ -18,7 +18,7 @@ import sul.utils.*;
  * If the server only allows Minecraft player to connect the following fields should
  * be empty.
  */
-public class Skin extends Packet {
+public class Skin extends Stream {
 
 	/**
 	 * Name of the skin.

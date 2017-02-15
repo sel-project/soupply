@@ -23,6 +23,11 @@ public class KeepAlive extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * An identifier chosen by the external console to uniquely identify the packet.
 	 */

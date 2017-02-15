@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import sul.utils.*;
 
-public class Modifier extends Packet {
+public class Modifier extends Stream {
 
 	// operation
 	public static final byte ADD_SUBSTRACT_AMOUNT = 0;

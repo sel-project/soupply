@@ -19,6 +19,11 @@ public class MobArmorEquipment extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public long entityId;
 	public sul.protocol.pocket100.types.Slot[] armor = new sul.protocol.pocket100.types.Slot[4];
 

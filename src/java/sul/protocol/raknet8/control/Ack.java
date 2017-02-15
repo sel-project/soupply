@@ -19,6 +19,11 @@ public class Ack extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public sul.protocol.raknet8.types.Acknowledge[] packets;
 
 	public Ack() {}

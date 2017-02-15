@@ -13,19 +13,24 @@ import java.util.Arrays;
 
 import sul.utils.*;
 
-public class ServerHandshake extends Packet {
+public class ServerToClientHandshake extends Packet {
 
 	public static final byte ID = (byte)3;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public String serverPublicKey;
 	public byte[] token;
 
-	public ServerHandshake() {}
+	public ServerToClientHandshake() {}
 
-	public ServerHandshake(String serverPublicKey, byte[] token) {
+	public ServerToClientHandshake(String serverPublicKey, byte[] token) {
 		this.serverPublicKey = serverPublicKey;
 		this.token = token;
 	}
@@ -52,15 +57,15 @@ public class ServerHandshake extends Packet {
 		int bhrva2vu=this.readVaruint(); token=this.readBytes(bhrva2vu);
 	}
 
-	public static ServerHandshake fromBuffer(byte[] buffer) {
-		ServerHandshake ret = new ServerHandshake();
+	public static ServerToClientHandshake fromBuffer(byte[] buffer) {
+		ServerToClientHandshake ret = new ServerToClientHandshake();
 		ret.decode(buffer);
 		return ret;
 	}
 
 	@Override
 	public String toString() {
-		return "ServerHandshake(serverPublicKey: " + this.serverPublicKey + ", token: " + Arrays.toString(this.token) + ")";
+		return "ServerToClientHandshake(serverPublicKey: " + this.serverPublicKey + ", token: " + Arrays.toString(this.token) + ")";
 	}
 
 }

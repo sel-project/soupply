@@ -25,6 +25,11 @@ public class PlayerList extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte action;
 
 	public PlayerList() {}
@@ -76,6 +81,11 @@ public class PlayerList extends Packet {
 
 		public static final byte ACTION = (byte)0;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public sul.protocol.pocket101.types.PlayerList[] players;
 
 		public Add() {}
@@ -118,6 +128,11 @@ public class PlayerList extends Packet {
 	public class Remove extends Packet {
 
 		public static final byte ACTION = (byte)1;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public UUID[] players;
 

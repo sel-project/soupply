@@ -19,6 +19,11 @@ public class SpawnPlayer extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int entityId;
 	public UUID uuid;
 	public Tuples.DoubleXYZ position;
@@ -61,7 +66,7 @@ public class SpawnPlayer extends Packet {
 		this.readVaruint();
 		entityId=this.readVaruint();
 		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
-		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
+		position=new Tuples.DoubleXYZ(); position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		yaw=readBigEndianByte();
 		pitch=readBigEndianByte();
 		metadata=new sul.metadata.Minecraft316(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;

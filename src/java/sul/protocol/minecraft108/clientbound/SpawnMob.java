@@ -19,6 +19,11 @@ public class SpawnMob extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int entityId;
 	public UUID uuid;
 	public byte type;
@@ -71,11 +76,11 @@ public class SpawnMob extends Packet {
 		entityId=this.readVaruint();
 		long bxv1awq=readBigEndianLong(); long bhv1awq=readBigEndianLong(); uuid=new UUID(bxv1awq,bhv1awq);
 		type=readBigEndianByte();
-		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
+		position=new Tuples.DoubleXYZ(); position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		yaw=readBigEndianByte();
 		pitch=readBigEndianByte();
 		headPitch=readBigEndianByte();
-		velocity.x=readBigEndianShort(); velocity.y=readBigEndianShort(); velocity.z=readBigEndianShort();
+		velocity=new Tuples.ShortXYZ(); velocity.x=readBigEndianShort(); velocity.y=readBigEndianShort(); velocity.z=readBigEndianShort();
 		metadata=new sul.metadata.Minecraft108(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
 	}
 

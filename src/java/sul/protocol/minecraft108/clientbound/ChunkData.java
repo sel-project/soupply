@@ -19,6 +19,11 @@ public class ChunkData extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public Tuples.IntXZ position;
 	public boolean full;
 	public int sections;
@@ -53,7 +58,7 @@ public class ChunkData extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		this.readVaruint();
-		position.x=readBigEndianInt(); position.z=readBigEndianInt();
+		position=new Tuples.IntXZ(); position.x=readBigEndianInt(); position.z=readBigEndianInt();
 		full=this.readBool();
 		sections=this.readVaruint();
 		int bgrhdge=this.readVaruint(); data=this.readBytes(bgrhdge);

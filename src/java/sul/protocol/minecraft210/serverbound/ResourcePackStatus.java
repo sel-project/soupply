@@ -17,6 +17,11 @@ public class ResourcePackStatus extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// result
 	public static final int LOADED = 0;
 	public static final int DECLINED = 1;

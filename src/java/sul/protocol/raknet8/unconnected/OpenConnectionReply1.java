@@ -19,6 +19,11 @@ public class OpenConnectionReply1 extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte[] magic = new byte[16];
 	public long serverId;
 	public boolean security;

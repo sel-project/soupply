@@ -22,6 +22,11 @@ public class MessageServerbound extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * Addressees of the message. If the array is empty the message is broadcasted to every
 	 * connected node.

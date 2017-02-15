@@ -17,6 +17,11 @@ public class LevelEvent extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// event id
 	public static final int START_RAIN = 3001;
 	public static final int START_THUNDER = 3002;
@@ -99,7 +104,7 @@ public class LevelEvent extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		eventId=this.readVarint();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		data=this.readVarint();
 	}
 

@@ -24,6 +24,11 @@ public class PermissionDenied extends Packet {
 	public static final boolean SERVERBOUND = false;
 
 	@Override
+	public int getId() {
+		return ID;
+	}
+
+	@Override
 	public int length() {
 		return 1;
 	}

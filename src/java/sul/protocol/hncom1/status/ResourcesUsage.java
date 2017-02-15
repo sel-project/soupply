@@ -20,6 +20,11 @@ public class ResourcesUsage extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * Ticks per second of the node, in the range 0 to 20, where a number lower than 20
 	 * indicates lag.

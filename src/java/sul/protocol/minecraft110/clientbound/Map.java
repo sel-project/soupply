@@ -19,6 +19,11 @@ public class Map extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int mapId;
 	public byte scale;
 	public boolean showIcons;
@@ -71,7 +76,7 @@ public class Map extends Packet {
 		int bgljb25z=this.readVaruint(); icons=new sul.protocol.minecraft110.types.Icon[bgljb25z]; for(int awnvbnm=0;awnvbnm<icons.length;awnvbnm++){ icons[awnvbnm]=new sul.protocol.minecraft110.types.Icon(); icons[awnvbnm]._index=this._index; icons[awnvbnm].decode(this._buffer); this._index=icons[awnvbnm]._index; }
 		colums=readBigEndianByte();
 		rows=readBigEndianByte();
-		offset.x=readBigEndianByte(); offset.z=readBigEndianByte();
+		offset=new Tuples.ByteXZ(); offset.x=readBigEndianByte(); offset.z=readBigEndianByte();
 		int bgrhdge=this.readVaruint(); data=this.readBytes(bgrhdge);
 	}
 

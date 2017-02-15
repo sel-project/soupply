@@ -24,6 +24,11 @@ public class Transfer extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * Address of the new server. It can be an dotted ip (for example `127.0.0.1`) or an
 	 * URI (for example `localhost` or `play.example.com`). Only IP of version 4 are currently

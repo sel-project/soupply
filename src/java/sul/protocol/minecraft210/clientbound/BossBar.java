@@ -20,6 +20,11 @@ public class BossBar extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public UUID uuid;
 	public int action;
 
@@ -74,6 +79,11 @@ public class BossBar extends Packet {
 	public class Add extends Packet {
 
 		public static final int ACTION = (int)0;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		// color
 		public static final int PINK = 0;
@@ -154,6 +164,11 @@ public class BossBar extends Packet {
 
 		public static final int ACTION = (int)1;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		@Override
 		public int length() {
 			return 0;
@@ -186,6 +201,11 @@ public class BossBar extends Packet {
 	public class UpdateHealth extends Packet {
 
 		public static final int ACTION = (int)2;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public float health;
 
@@ -230,6 +250,11 @@ public class BossBar extends Packet {
 
 		public static final int ACTION = (int)3;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public String title;
 
 		public UpdateTitle() {}
@@ -272,6 +297,11 @@ public class BossBar extends Packet {
 	public class UpdateStyle extends Packet {
 
 		public static final int ACTION = (int)4;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		// color
 		public static final int PINK = 0;
@@ -335,6 +365,11 @@ public class BossBar extends Packet {
 	public class UpdateFlags extends Packet {
 
 		public static final int ACTION = (int)5;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		// flags
 		public static final byte DARK_SKY = 1;

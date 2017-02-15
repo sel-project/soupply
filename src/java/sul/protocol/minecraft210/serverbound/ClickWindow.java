@@ -17,6 +17,11 @@ public class ClickWindow extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte window;
 	public short slot;
 	public byte button;

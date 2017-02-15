@@ -15,7 +15,7 @@ import sul.utils.*;
 /**
  * Indicates a game and informations about it.
  */
-public class GameInfo extends Packet {
+public class GameInfo extends Stream {
 
 	/**
 	 * Informations about the the game and the protocols used.

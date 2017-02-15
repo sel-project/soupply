@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 import sul.utils.*;
 
-public class Recipe extends Packet {
+public class Recipe extends Stream {
 
 	// type
 	public static final int SHAPELESS = 0;

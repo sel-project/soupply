@@ -8,23 +8,70 @@
  */
 package sul.metadata;
 
+import java.nio.charset.StandardCharsets;
+
 import sul.utils.*;
 
-public class Pocket100 extends Packet {
+@SuppressWarnings("unused")
+public class Pocket100 extends Stream {
 
 	@Override
 	public int length() {
-		return 0;
+		return 1;
 	}
 
 	@Override
 	public byte[] encode() {
-		throw new MetadataException("This action is not supported yet");
+		this.writeVaruint(0);
+		return this.getBuffer();
 	}
 
 	@Override
 	public void decode(byte[] buffer) {
-		throw new MetadataException("This action is not supported yet");
+		byte metadata;
+		int length=this.readVaruint();
+		while(length-- > 0) {
+			metadata=readBigEndianByte();
+			switch(readBigEndianByte()) {
+				case 0:
+					byte _0;
+					_0=readBigEndianByte();
+					break;
+				case 1:
+					short _1;
+					_1=readLittleEndianShort();
+					break;
+				case 2:
+					int _2;
+					_2=this.readVarint();
+					break;
+				case 3:
+					float _3;
+					_3=readLittleEndianFloat();
+					break;
+				case 4:
+					String _4;
+					int bgvuxzq=this.readVaruint(); _4=new String(this.readBytes(bgvuxzq), StandardCharsets.UTF_8);
+					break;
+				case 5:
+					sul.protocol.pocket100.types.Slot _5;
+					_5=new sul.protocol.pocket100.types.Slot(); _5._index=this._index; _5.decode(this._buffer); this._index=_5._index;
+					break;
+				case 6:
+					Tuples.IntXYZ _6;
+					_6=new Tuples.IntXYZ(); _6.x=this.readVarint(); _6.y=this.readVarint(); _6.z=this.readVarint();
+					break;
+				case 7:
+					long _7;
+					_7=this.readVarlong();
+					break;
+				case 8:
+					Tuples.FloatXYZ _8;
+					_8=new Tuples.FloatXYZ(); _8.x=readLittleEndianFloat(); _8.y=readLittleEndianFloat(); _8.z=readLittleEndianFloat();
+					break;
+				default: break;
+			}
+		}
 	}
 
 }

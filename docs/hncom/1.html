@@ -120,22 +120,27 @@
 					<tr>
 						<th>Name</th>
 						<th>Type</th>
+						<th>Default</t>
 					</tr>
 					<tr>
 						<td><a href="#login_connection-request_protocol">protocol</a></td>
 						<td>varuint</td>
+						<td class="center"></td>
 					</tr>
 					<tr>
 						<td><a href="#login_connection-request_password">password</a></td>
 						<td>string</td>
+						<td class="center"></td>
 					</tr>
 					<tr>
 						<td><a href="#login_connection-request_name">name</a></td>
 						<td>string</td>
+						<td class="center"></td>
 					</tr>
 					<tr>
 						<td><a href="#login_connection-request_main">main</a></td>
 						<td>bool</td>
+						<td class="center">true</td>
 					</tr>
 				</table>
 				<ul>
@@ -193,47 +198,47 @@
 						<table>
 							<tr><th>Name</th><th>Value</th><th></th></tr>
 							<tr>
-								<td>ok</td>
+								<td id="login_connection-response_status_ok">ok</td>
 								<td class="center">0</td>
 								<td></td>
 							</tr>
 							<tr>
-								<td>outdated hub</td>
+								<td id="login_connection-response_status_outdated-hub">outdated hub</td>
 								<td class="center">1</td>
 								<td>The hub uses an old version of hncom</td>
 							</tr>
 							<tr>
-								<td>outdated node</td>
+								<td id="login_connection-response_status_outdated-node">outdated node</td>
 								<td class="center">2</td>
 								<td>The node uses an old version of hncom</td>
 							</tr>
 							<tr>
-								<td>password required</td>
+								<td id="login_connection-response_status_password-required">password required</td>
 								<td class="center">3</td>
 								<td>A password is required to connect</td>
 							</tr>
 							<tr>
-								<td>wrong password</td>
+								<td id="login_connection-response_status_wrong-password">wrong password</td>
 								<td class="center">4</td>
 								<td>The password doesn't match the hub's</td>
 							</tr>
 							<tr>
-								<td>invalid name length</td>
+								<td id="login_connection-response_status_invalid-name-length">invalid name length</td>
 								<td class="center">5</td>
 								<td>The name is too short or too long</td>
 							</tr>
 							<tr>
-								<td>invalid name characters</td>
+								<td id="login_connection-response_status_invalid-name-characters">invalid name characters</td>
 								<td class="center">6</td>
 								<td>The name contains invalid characters</td>
 							</tr>
 							<tr>
-								<td>name already used</td>
+								<td id="login_connection-response_status_name-already-used">name already used</td>
 								<td class="center">7</td>
 								<td>There's already a node connected with the same name</td>
 							</tr>
 							<tr>
-								<td>name reserved</td>
+								<td id="login_connection-response_status_name-reserved">name reserved</td>
 								<td class="center">8</td>
 								<td>The name cannot be used because the hub has reserved it for something else</td>
 							</tr>
@@ -341,7 +346,7 @@
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
 							<tr>
-								<td>unlimited</td>
+								<td id="login_hub-info_max_unlimited">unlimited</td>
 								<td class="center">-1</td>
 							</tr>
 						</table>
@@ -443,7 +448,7 @@
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
 							<tr>
-								<td>unlimited</td>
+								<td id="login_node-info_max_unlimited">unlimited</td>
 								<td class="center">0</td>
 							</tr>
 						</table>
@@ -734,7 +739,7 @@
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
 							<tr>
-								<td>unlimited</td>
+								<td id="status_players_max_unlimited">unlimited</td>
 								<td class="center">-1</td>
 							</tr>
 						</table>
@@ -880,15 +885,15 @@
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
 							<tr>
-								<td>hub</td>
+								<td id="status_remote-command_origin_hub">hub</td>
 								<td class="center">0</td>
 							</tr>
 							<tr>
-								<td>external console</td>
+								<td id="status_remote-command_origin_external-console">external console</td>
 								<td class="center">1</td>
 							</tr>
 							<tr>
-								<td>rcon</td>
+								<td id="status_remote-command_origin_rcon">rcon</td>
 								<td class="center">2</td>
 							</tr>
 						</table>
@@ -943,11 +948,11 @@
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
 							<tr>
-								<td>whitelist</td>
+								<td id="status_update-list_list_whitelist">whitelist</td>
 								<td class="center">0</td>
 							</tr>
 							<tr>
-								<td>blacklist</td>
+								<td id="status_update-list_list_blacklist">blacklist</td>
 								<td class="center">1</td>
 							</tr>
 						</table>
@@ -959,11 +964,11 @@
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
 							<tr>
-								<td>add</td>
+								<td id="status_update-list_action_add">add</td>
 								<td class="center">0</td>
 							</tr>
 							<tr>
-								<td>remove</td>
+								<td id="status_update-list_action_remove">remove</td>
 								<td class="center">1</td>
 							</tr>
 						</table>
@@ -1051,11 +1056,11 @@
 								<table>
 									<tr><th>Name</th><th>Value</th></tr>
 									<tr>
-										<td>pocket</td>
+										<td id="status_update-list_by-uuid_game_pocket">pocket</td>
 										<td class="center">1</td>
 									</tr>
 									<tr>
-										<td>minecraft</td>
+										<td id="status_update-list_by-uuid_game_minecraft">minecraft</td>
 										<td class="center">2</td>
 									</tr>
 								</table>
@@ -1274,17 +1279,17 @@
 						<table>
 							<tr><th>Name</th><th>Value</th><th></th></tr>
 							<tr>
-								<td>first join</td>
+								<td id="player_add_reason_first-join">first join</td>
 								<td class="center">0</td>
 								<td>The player has been automatically put on this node because it's a non-full main node</td>
 							</tr>
 							<tr>
-								<td>transferred</td>
+								<td id="player_add_reason_transferred">transferred</td>
 								<td class="center">1</td>
 								<td>The player has been transferred to this node</td>
 							</tr>
 							<tr>
-								<td>forcibly transferred</td>
+								<td id="player_add_reason_forcibly-transferred">forcibly transferred</td>
 								<td class="center">2</td>
 								<td>The player was on a node that has wrongly disconnected (probably crashing) and the player has been transferred to the first non-full main node</td>
 							</tr>
@@ -1350,15 +1355,15 @@
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
 							<tr>
-								<td>keyboard</td>
+								<td id="player_add_input-mode_keyboard">keyboard</td>
 								<td class="center">0</td>
 							</tr>
 							<tr>
-								<td>touch</td>
+								<td id="player_add_input-mode_touch">touch</td>
 								<td class="center">1</td>
 							</tr>
 							<tr>
-								<td>controller</td>
+								<td id="player_add_input-mode_controller">controller</td>
 								<td class="center">2</td>
 							</tr>
 						</table>
@@ -1435,22 +1440,46 @@
 								<p>Client's operative system, if supplied by the client. This field's value may be used to divide players that play from a phone from players that play on a computer.</p>
 								<p><strong>Constants</strong>:</p>
 								<table>
-									<tr><th>Name</th><th>Value</th></tr>
+									<tr><th>Name</th><th>Value</th><th></th></tr>
 									<tr>
-										<td>unknown</td>
+										<td id="player_add_pocket_device-os_unknown">unknown</td>
 										<td class="center">0</td>
+										<td></td>
 									</tr>
 									<tr>
-										<td>android</td>
+										<td id="player_add_pocket_device-os_android">android</td>
 										<td class="center">1</td>
+										<td></td>
 									</tr>
 									<tr>
-										<td>ios</td>
+										<td id="player_add_pocket_device-os_ios">ios</td>
 										<td class="center">2</td>
+										<td></td>
 									</tr>
 									<tr>
-										<td>windows10</td>
+										<td id="player_add_pocket_device-os_fire-os">fire os</td>
+										<td class="center">3</td>
+										<td>untested</td>
+									</tr>
+									<tr>
+										<td id="player_add_pocket_device-os_gear-vr">gear vr</td>
+										<td class="center">4</td>
+										<td>untested</td>
+									</tr>
+									<tr>
+										<td id="player_add_pocket_device-os_apple-tv">apple tv</td>
+										<td class="center">5</td>
+										<td>untested</td>
+									</tr>
+									<tr>
+										<td id="player_add_pocket_device-os_fire-tv">fire tv</td>
+										<td class="center">6</td>
+										<td>untested</td>
+									</tr>
+									<tr>
+										<td id="player_add_pocket_device-os_windows10">windows10</td>
 										<td class="center">7</td>
+										<td></td>
 									</tr>
 								</table>
 							</li>
@@ -1498,22 +1527,22 @@
 						<table>
 							<tr><th>Name</th><th>Value</th><th></th></tr>
 							<tr>
-								<td>left</td>
+								<td id="player_remove_reason_left">left</td>
 								<td class="center">0</td>
 								<td></td>
 							</tr>
 							<tr>
-								<td>timed out</td>
+								<td id="player_remove_reason_timed-out">timed out</td>
 								<td class="center">1</td>
 								<td></td>
 							</tr>
 							<tr>
-								<td>kicked</td>
+								<td id="player_remove_reason_kicked">kicked</td>
 								<td class="center">2</td>
 								<td>Kicked by the hub</td>
 							</tr>
 							<tr>
-								<td>transferred</td>
+								<td id="player_remove_reason_transferred">transferred</td>
 								<td class="center">3</td>
 								<td>Transferred by the hub</td>
 							</tr>
@@ -1613,17 +1642,17 @@
 						<table>
 							<tr><th>Name</th><th>Value</th><th></th></tr>
 							<tr>
-								<td>disconnect</td>
+								<td id="player_transfer_on-fail_disconnect">disconnect</td>
 								<td class="center">0</td>
 								<td>Disconnect with <code>End of Stream</code> message</td>
 							</tr>
 							<tr>
-								<td>auto</td>
+								<td id="player_transfer_on-fail_auto">auto</td>
 								<td class="center">1</td>
 								<td>Connect to the first available node or disconnects if there isn't one</td>
 							</tr>
 							<tr>
-								<td>reconnect</td>
+								<td id="player_transfer_on-fail_reconnect">reconnect</td>
 								<td class="center">2</td>
 								<td>Connect to this node, but as a new player</td>
 							</tr>
@@ -1788,17 +1817,17 @@
 						<table>
 							<tr><th>Name</th><th>Value</th><th></th></tr>
 							<tr>
-								<td>keyboard</td>
+								<td id="player_update-input-mode_input-mode_keyboard">keyboard</td>
 								<td class="center">0</td>
 								<td>Keyboard and mouse</td>
 							</tr>
 							<tr>
-								<td>touch</td>
+								<td id="player_update-input-mode_input-mode_touch">touch</td>
 								<td class="center">1</td>
 								<td>Touchscreen</td>
 							</tr>
 							<tr>
-								<td>controller</td>
+								<td id="player_update-input-mode_input-mode_controller">controller</td>
 								<td class="center">2</td>
 								<td>Generic controller</td>
 							</tr>
@@ -2007,11 +2036,11 @@
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
 							<tr>
-								<td>pocket</td>
+								<td id="types_game_type_pocket">pocket</td>
 								<td class="center">1</td>
 							</tr>
 							<tr>
-								<td>minecraft</td>
+								<td id="types_game_type_minecraft">minecraft</td>
 								<td class="center">2</td>
 							</tr>
 						</table>

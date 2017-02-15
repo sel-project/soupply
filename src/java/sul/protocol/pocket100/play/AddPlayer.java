@@ -20,6 +20,11 @@ public class AddPlayer extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public UUID uuid;
 	public String username;
 	public long entityId;
@@ -79,8 +84,8 @@ public class AddPlayer extends Packet {
 		int bgvudxnlcm5hbwu=this.readVaruint(); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
 		entityId=this.readVarlong();
 		runtimeId=this.readVarlong();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
-		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		motion=new Tuples.FloatXYZ(); motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		headYaw=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();

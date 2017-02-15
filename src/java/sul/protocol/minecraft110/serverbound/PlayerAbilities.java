@@ -17,6 +17,11 @@ public class PlayerAbilities extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// flags
 	public static final byte CREATIVE_MODE = 1;
 	public static final byte FLYING = 2;

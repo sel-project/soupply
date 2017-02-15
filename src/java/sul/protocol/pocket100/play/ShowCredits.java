@@ -18,6 +18,11 @@ public class ShowCredits extends Packet {
 	public static final boolean SERVERBOUND = true;
 
 	@Override
+	public int getId() {
+		return ID;
+	}
+
+	@Override
 	public int length() {
 		return 1;
 	}

@@ -17,6 +17,11 @@ public class EntityEquipment extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int entityId;
 	public int slot;
 	public sul.protocol.minecraft210.types.Slot item;

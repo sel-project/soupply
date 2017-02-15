@@ -4,27 +4,29 @@
  *
  * License: https://github.com/sel-project/sel-utils/blob/master/LICENSE
  * Repository: https://github.com/sel-project/sel-utils
- * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/pocket101.xml
+ * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/pocket100.xml
  */
-package sul.protocol.pocket101.play;
+package sul.protocol.pocket100.play;
 
 import sul.utils.*;
 
-/**
- * Indicates whether the cheats are enabled. If not the client cannot send commands.
- */
-public class SetCheatsEnabled extends Packet {
+public class SetCommandsEnabled extends Packet {
 
 	public static final byte ID = (byte)59;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public boolean enabled;
 
-	public SetCheatsEnabled() {}
+	public SetCommandsEnabled() {}
 
-	public SetCheatsEnabled(boolean enabled) {
+	public SetCommandsEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
@@ -48,15 +50,15 @@ public class SetCheatsEnabled extends Packet {
 		enabled=this.readBool();
 	}
 
-	public static SetCheatsEnabled fromBuffer(byte[] buffer) {
-		SetCheatsEnabled ret = new SetCheatsEnabled();
+	public static SetCommandsEnabled fromBuffer(byte[] buffer) {
+		SetCommandsEnabled ret = new SetCommandsEnabled();
 		ret.decode(buffer);
 		return ret;
 	}
 
 	@Override
 	public String toString() {
-		return "SetCheatsEnabled(enabled: " + this.enabled + ")";
+		return "SetCommandsEnabled(enabled: " + this.enabled + ")";
 	}
 
 }

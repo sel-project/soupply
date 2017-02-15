@@ -20,6 +20,11 @@ public class Text extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte type;
 
 	public Text() {}
@@ -71,6 +76,11 @@ public class Text extends Packet {
 
 		public static final byte TYPE = (byte)0;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public String message;
 
 		public Raw() {}
@@ -113,6 +123,11 @@ public class Text extends Packet {
 	public class Chat extends Packet {
 
 		public static final byte TYPE = (byte)1;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public String sender;
 		public String message;
@@ -161,6 +176,11 @@ public class Text extends Packet {
 
 		public static final byte TYPE = (byte)2;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public String message;
 		public String[] parameters;
 
@@ -207,6 +227,11 @@ public class Text extends Packet {
 	public class Popup extends Packet {
 
 		public static final byte TYPE = (byte)3;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public String title;
 		public String subtitle;
@@ -255,6 +280,11 @@ public class Text extends Packet {
 
 		public static final byte TYPE = (byte)4;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public String message;
 
 		public Tip() {}
@@ -298,6 +328,11 @@ public class Text extends Packet {
 
 		public static final byte TYPE = (byte)5;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public String message;
 
 		public System() {}
@@ -340,6 +375,11 @@ public class Text extends Packet {
 	public class Whisper extends Packet {
 
 		public static final byte TYPE = (byte)6;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public String sender;
 		public String message;

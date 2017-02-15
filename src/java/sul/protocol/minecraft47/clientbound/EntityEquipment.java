@@ -17,6 +17,11 @@ public class EntityEquipment extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// slot
 	public static final int HAND = 0;
 	public static final int BOOTS = 1;

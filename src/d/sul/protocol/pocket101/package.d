@@ -6,6 +6,26 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/pocket101.xml
  */
+/**
+ * Protocol used in Minecraft: Pocket Edition and variants. The network part of the
+ * protocol is managed by RakNet.
+ * 
+ * <h4>Login sequence</h4>
+ * + The client sends a Login packet with the details of its game and its account
+ * + The server always replies with a PlayerStatus
+ * + If status field in the packet sent was different from ok the connection is closed
+ * 
+ * <h3>Spawning sequence</h3>
+ * + The server sends a StartGame packet with the world's informations
+ * + The server sends zero or more FullChunkData with the chunk's blocks and tiles
+ * + The server sends the player's inventory using ContainerSetContent
+ * + The server sends the world's textures through ResourcePacksInfo (the textures
+ * may be empty)
+ * + The client replies with ResourcePackClientResponse telling the server that the
+ * textures have been loaded
+ * + The server sends a PlayStatus packet set to spawned
+ * + The client spawns
+ */
 module sul.protocol.pocket101;
 
 public import sul.protocol.pocket101.types;

@@ -17,6 +17,11 @@ public class EntityEffect extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// flags
 	public static final byte AMBIENT = 1;
 	public static final byte SHOW_PARTICLES = 2;

@@ -17,6 +17,11 @@ public class Animate extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// action
 	public static final int BREAKING = 1;
 	public static final int WAKE_UP = 3;

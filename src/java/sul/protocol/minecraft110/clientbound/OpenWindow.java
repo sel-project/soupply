@@ -19,6 +19,11 @@ public class OpenWindow extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte window;
 	public String type;
 	public String title;

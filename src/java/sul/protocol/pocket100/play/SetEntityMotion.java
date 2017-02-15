@@ -17,6 +17,11 @@ public class SetEntityMotion extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public long entityId;
 	public Tuples.FloatXYZ motion;
 
@@ -46,7 +51,7 @@ public class SetEntityMotion extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		entityId=this.readVarlong();
-		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
+		motion=new Tuples.FloatXYZ(); motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 	}
 
 	public static SetEntityMotion fromBuffer(byte[] buffer) {

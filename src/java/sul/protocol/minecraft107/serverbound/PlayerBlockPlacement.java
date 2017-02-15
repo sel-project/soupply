@@ -17,6 +17,11 @@ public class PlayerBlockPlacement extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// hand
 	public static final int MAIN_HAND = 0;
 	public static final int OFF_HAND = 1;
@@ -58,7 +63,7 @@ public class PlayerBlockPlacement extends Packet {
 		position=readBigEndianLong();
 		face=this.readVaruint();
 		hand=this.readVaruint();
-		cursorPosition.x=readBigEndianByte(); cursorPosition.y=readBigEndianByte(); cursorPosition.z=readBigEndianByte();
+		cursorPosition=new Tuples.ByteXYZ(); cursorPosition.x=readBigEndianByte(); cursorPosition.y=readBigEndianByte(); cursorPosition.z=readBigEndianByte();
 	}
 
 	public static PlayerBlockPlacement fromBuffer(byte[] buffer) {

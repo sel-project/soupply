@@ -115,10 +115,11 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			foreach(i ; 0..spaces) space ~= "\t";
 			if(fields.length) {
 				data ~= space ~ "<p><strong>" ~ fieldDesc ~ "</strong>:</p>\n";
-				bool endianness, condition;
+				bool endianness, condition, def;
 				foreach(field ; fields) {
 					endianness |= field.endianness.length != 0;
 					condition |= field.condition.length != 0;
+					def |= field.def.length != 0;
 				}
 				data ~= space ~ "<table>\n";
 				data ~= space ~ "\t<tr>\n";
@@ -126,6 +127,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 				data ~= space ~ "\t\t<th>Type</th>\n";
 				if(endianness) data ~= space ~ "\t\t<th>Endianness</th>\n";
 				if(condition) data ~= space ~ "\t\t<th>When</th>\n";
+				if(def) data ~= space ~ "\t\t<th>Default</t>\n";
 				data ~= space ~ "\t</tr>\n";
 				bool descripted = false;
 				foreach(field ; fields) {
@@ -139,6 +141,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 					data ~= "</td>\n" ~ space ~ "\t\t<td>" ~ convert(field.type) ~ "</td>\n";
 					if(endianness) data ~= space ~ "\t\t<td class=\"center\">" ~ field.endianness.replace("_", " ") ~ "</td>\n";
 					if(condition) data ~= space ~ "\t\t<td class=\"center\">" ~ (field.condition.length ? cond(field.condition.replace("_", " ")) : "") ~ "</td>\n";
+					if(def) data ~= space ~ "\t\t<td class=\"center\">" ~ field.def ~ "</td>\n";
 					data ~= space ~ "\t</tr>\n";
 				}
 				data ~= space ~ "</table>\n";
@@ -162,7 +165,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 								data ~= space ~ "\t\t\t<tr><th>Name</th><th>Value</th>" ~ (notes ? "<th></th>" : "") ~ "</tr>\n";
 								foreach(constant ; field.constants) {
 									data ~= space ~ "\t\t\t<tr>\n";
-									data ~= space ~ "\t\t\t\t<td>" ~ constant.name.replace("_", " ") ~ "</td>\n";
+									data ~= space ~ "\t\t\t\t<td id=\"" ~ link(namespace ~ field.name ~ constant.name) ~ "\">" ~ constant.name.replace("_", " ") ~ "</td>\n";
 									data ~= space ~ "\t\t\t\t<td class=\"center\">" ~ constant.value ~ "</td>\n";
 									if(notes) data ~= space ~ "\t\t\t\t<td>" ~ constant.description.replaceAll(ctRegex!"`([^`]*)`", "<code>$1</code>") ~ "</td>\n";
 									data ~= space ~ "\t\t\t</tr>\n";
@@ -622,6 +625,7 @@ string desc(string space, string description) {
 			}
 		}
 	}
+	if(list) ret ~= space ~ "</ul>\n";
 	return ret;
 }
 

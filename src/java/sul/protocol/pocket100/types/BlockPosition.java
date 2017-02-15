@@ -10,7 +10,7 @@ package sul.protocol.pocket100.types;
 
 import sul.utils.*;
 
-public class BlockPosition extends Packet {
+public class BlockPosition extends Stream {
 
 	public int x;
 	public int y;

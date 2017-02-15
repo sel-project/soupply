@@ -17,6 +17,11 @@ public class EntityTeleport extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int entityId;
 	public Tuples.IntXYZ position;
 	public byte yaw;
@@ -55,7 +60,7 @@ public class EntityTeleport extends Packet {
 		this._buffer = buffer;
 		this.readVaruint();
 		entityId=this.readVaruint();
-		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
+		position=new Tuples.IntXYZ(); position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 		yaw=readBigEndianByte();
 		pitch=readBigEndianByte();
 		onGround=this.readBool();

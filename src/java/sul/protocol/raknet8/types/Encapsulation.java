@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 import sul.utils.*;
 
-public class Encapsulation extends Packet {
+public class Encapsulation extends Stream {
 
 	public byte info;
 	public short length;

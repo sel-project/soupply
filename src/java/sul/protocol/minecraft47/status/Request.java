@@ -18,6 +18,11 @@ public class Request extends Packet {
 	public static final boolean SERVERBOUND = true;
 
 	@Override
+	public int getId() {
+		return ID;
+	}
+
+	@Override
 	public int length() {
 		return Buffer.varuintLength(ID);
 	}

@@ -17,6 +17,11 @@ public class EntityEvent extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// event id
 	public static final byte HURT_ANIMATION = 2;
 	public static final byte DEATH_ANIMATION = 3;

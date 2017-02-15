@@ -19,6 +19,11 @@ public class ChatMessage extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// position
 	public static final byte CHAT = 0;
 	public static final byte SYSTEM_MESSAGE = 1;

@@ -22,6 +22,11 @@ public class Log extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * Unix time (in milliseconds) that indicates the exact creation time of the log.
 	 */

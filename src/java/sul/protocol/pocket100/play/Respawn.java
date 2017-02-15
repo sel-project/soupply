@@ -17,6 +17,11 @@ public class Respawn extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public Tuples.FloatXYZ position;
 
 	public Respawn() {}
@@ -42,7 +47,7 @@ public class Respawn extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 	}
 
 	public static Respawn fromBuffer(byte[] buffer) {

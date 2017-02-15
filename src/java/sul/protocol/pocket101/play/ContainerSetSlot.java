@@ -17,6 +17,11 @@ public class ContainerSetSlot extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte window;
 	public int slot;
 	public int hotbarSlot;

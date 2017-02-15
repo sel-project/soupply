@@ -23,6 +23,11 @@ public class Auth extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * Pasword encoded as UTF-8 if AuthCredentials.hash is `false` or the hash (specified
 	 * in AuthCredentials.hashAlgorithm) of the password encoded as UTF-8 concatenated

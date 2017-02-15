@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import sul.utils.*;
 
-public class ListAddPlayer extends Packet {
+public class ListAddPlayer extends Stream {
 
 	// gamemode
 	public static final int SURVIVAL = 0;

@@ -17,6 +17,11 @@ public class EntityVelocity extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int entityId;
 	public Tuples.ShortXYZ velocity;
 
@@ -46,7 +51,7 @@ public class EntityVelocity extends Packet {
 		this._buffer = buffer;
 		this.readVaruint();
 		entityId=this.readVaruint();
-		velocity.x=readBigEndianShort(); velocity.y=readBigEndianShort(); velocity.z=readBigEndianShort();
+		velocity=new Tuples.ShortXYZ(); velocity.x=readBigEndianShort(); velocity.y=readBigEndianShort(); velocity.z=readBigEndianShort();
 	}
 
 	public static EntityVelocity fromBuffer(byte[] buffer) {

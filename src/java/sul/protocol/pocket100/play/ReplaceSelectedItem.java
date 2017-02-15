@@ -17,6 +17,11 @@ public class ReplaceSelectedItem extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public sul.protocol.pocket100.types.Slot item;
 
 	public ReplaceSelectedItem() {}

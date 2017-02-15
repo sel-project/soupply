@@ -17,6 +17,11 @@ public class PlayerDigging extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// status
 	public static final byte START_DIGGING = 0;
 	public static final byte CANCEL_DIGGING = 1;

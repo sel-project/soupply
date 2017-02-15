@@ -19,6 +19,11 @@ public class ScoreboardObjective extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// mode
 	public static final byte CREATE = 0;
 	public static final byte REMOVE = 1;

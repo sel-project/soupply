@@ -17,6 +17,11 @@ public class SetSpawnPosition extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int unknown0;
 	public sul.protocol.pocket101.types.BlockPosition position;
 	public boolean unknown2;

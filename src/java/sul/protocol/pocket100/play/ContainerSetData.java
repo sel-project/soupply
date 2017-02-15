@@ -17,6 +17,11 @@ public class ContainerSetData extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte window;
 	public int property;
 	public int value;

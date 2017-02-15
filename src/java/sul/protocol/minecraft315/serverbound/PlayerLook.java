@@ -17,6 +17,11 @@ public class PlayerLook extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public float yaw;
 	public float pitch;
 	public boolean onGround;

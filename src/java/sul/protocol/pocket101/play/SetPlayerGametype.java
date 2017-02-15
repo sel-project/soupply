@@ -15,35 +15,40 @@ import sul.utils.*;
  * status (set in AdventureSettings.permissions) and it changes the gamemode in the
  * settings screen.
  */
-public class SetPlayerGametype extends Packet {
+public class SetPlayerGameType extends Packet {
 
 	public static final byte ID = (byte)62;
 
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
-	// gametype
+	@Override
+	public int getId() {
+		return ID;
+	}
+
+	// gamemode
 	public static final int SURVIVAL = 0;
 	public static final int CREATIVE = 1;
 
-	public int gametype;
+	public int gamemode;
 
-	public SetPlayerGametype() {}
+	public SetPlayerGameType() {}
 
-	public SetPlayerGametype(int gametype) {
-		this.gametype = gametype;
+	public SetPlayerGameType(int gamemode) {
+		this.gamemode = gamemode;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varintLength(gametype) + 1;
+		return Buffer.varintLength(gamemode) + 1;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeVarint(gametype);
+		this.writeVarint(gamemode);
 		return this.getBuffer();
 	}
 
@@ -51,18 +56,18 @@ public class SetPlayerGametype extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		gametype=this.readVarint();
+		gamemode=this.readVarint();
 	}
 
-	public static SetPlayerGametype fromBuffer(byte[] buffer) {
-		SetPlayerGametype ret = new SetPlayerGametype();
+	public static SetPlayerGameType fromBuffer(byte[] buffer) {
+		SetPlayerGameType ret = new SetPlayerGameType();
 		ret.decode(buffer);
 		return ret;
 	}
 
 	@Override
 	public String toString() {
-		return "SetPlayerGametype(gametype: " + this.gametype + ")";
+		return "SetPlayerGameType(gamemode: " + this.gamemode + ")";
 	}
 
 }

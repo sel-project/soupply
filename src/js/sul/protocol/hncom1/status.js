@@ -54,7 +54,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -66,6 +66,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.AddNode().decode(buffer);
 		}
@@ -105,7 +106,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -114,6 +115,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.RemoveNode().decode(buffer);
 		}
@@ -156,7 +158,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -166,6 +168,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.MessageServerbound().decode(buffer);
 		}
@@ -208,7 +211,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -218,6 +221,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.MessageClientbound().decode(buffer);
 		}
@@ -263,7 +267,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -273,6 +277,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.Players().decode(buffer);
 		}
@@ -319,7 +324,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -330,6 +335,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.ResourcesUsage().decode(buffer);
 		}
@@ -380,7 +386,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -392,6 +398,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.Log().decode(buffer);
 		}
@@ -448,7 +455,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -460,6 +467,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.RemoteCommand().decode(buffer);
 		}
@@ -514,10 +522,28 @@ const Status = {
 			this.writeBigEndianByte(this.list);
 			this.writeBigEndianByte(this.action);
 			this.writeBigEndianByte(this.type);
+	switch(this.type) {
+		case 0:
+			this.writeBigEndianByte(this.list);
+			this.writeBigEndianByte(this.action);
+			this.writeBigEndianByte(this.type);
+			break;
+		case 1:
+			this.writeBigEndianByte(this.list);
+			this.writeBigEndianByte(this.action);
+			this.writeBigEndianByte(this.type);
+			break;
+		case 2:
+			this.writeBigEndianByte(this.list);
+			this.writeBigEndianByte(this.action);
+			this.writeBigEndianByte(this.type);
+			break;
+		default: break;
+	}
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -541,6 +567,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.UpdateList().decode(buffer);
 		}
@@ -574,7 +601,7 @@ const Status = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -582,6 +609,7 @@ const Status = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Status.Reload().decode(buffer);
 		}

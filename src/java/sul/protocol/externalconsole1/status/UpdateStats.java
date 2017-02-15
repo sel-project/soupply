@@ -25,6 +25,11 @@ public class UpdateStats extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * Number of players currently online on the server. Players that are performing authentication
 	 * are not included in the count.

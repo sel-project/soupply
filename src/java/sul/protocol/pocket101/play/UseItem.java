@@ -17,6 +17,11 @@ public class UseItem extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public sul.protocol.pocket101.types.BlockPosition blockPosition;
 	public int hotbarSlot;
 	public int face;
@@ -63,8 +68,8 @@ public class UseItem extends Packet {
 		blockPosition=new sul.protocol.pocket101.types.BlockPosition(); blockPosition._index=this._index; blockPosition.decode(this._buffer); this._index=blockPosition._index;
 		hotbarSlot=this.readVaruint();
 		face=this.readVarint();
-		facePosition.x=readLittleEndianFloat(); facePosition.y=readLittleEndianFloat(); facePosition.z=readLittleEndianFloat();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		facePosition=new Tuples.FloatXYZ(); facePosition.x=readLittleEndianFloat(); facePosition.y=readLittleEndianFloat(); facePosition.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		slot=this.readVarint();
 		item=new sul.protocol.pocket101.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
 	}

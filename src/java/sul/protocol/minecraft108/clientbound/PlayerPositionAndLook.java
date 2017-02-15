@@ -17,6 +17,11 @@ public class PlayerPositionAndLook extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// flags
 	public static final byte X = 1;
 	public static final byte Y = 2;
@@ -61,7 +66,7 @@ public class PlayerPositionAndLook extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		this.readVaruint();
-		position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
+		position=new Tuples.DoubleXYZ(); position.x=readBigEndianDouble(); position.y=readBigEndianDouble(); position.z=readBigEndianDouble();
 		yaw=readBigEndianFloat();
 		pitch=readBigEndianFloat();
 		flags=readBigEndianByte();

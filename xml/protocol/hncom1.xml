@@ -109,7 +109,7 @@
 				<field name="name" type="string">
 					Name of the node that will be validated by the hub. It should always be lowercase and only contain letters, numbers and basic punctuation symbols.
 				</field>
-				<field name="main" type="bool">
+				<field name="main" type="bool" default="true">
 					Indicates whether the node accepts clients when they first connect to the hub or exclusively when they are manually transferred.
 				</field>
 			</packet>
@@ -485,6 +485,10 @@
 							<constant name="unknown" value="0" />
 							<constant name="android" value="1" />
 							<constant name="ios" value="2" />
+							<constant name="fire-os" value="3">untested</constant>
+							<constant name="gear-vr" value="4">untested</constant>
+							<constant name="apple-tv" value="5">untested</constant>
+							<constant name="fire-tv" value="6">untested</constant>
 							<constant name="windows10" value="7" />
 						</field>
 						<field name="device-model" type="string">

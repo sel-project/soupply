@@ -17,6 +17,11 @@ public class SpawnGlobalEntity extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// type
 	public static final byte THUNDERBOLT = 1;
 
@@ -53,7 +58,7 @@ public class SpawnGlobalEntity extends Packet {
 		this.readVaruint();
 		entityId=this.readVaruint();
 		type=readBigEndianByte();
-		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
+		position=new Tuples.IntXYZ(); position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 	}
 
 	public static SpawnGlobalEntity fromBuffer(byte[] buffer) {

@@ -17,6 +17,11 @@ public class ChangeGameState extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// reason
 	public static final byte INVALID_BED = 0;
 	public static final byte END_RAINING = 1;

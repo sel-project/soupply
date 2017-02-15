@@ -20,6 +20,11 @@ public class PlayerListItem extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int action;
 
 	public PlayerListItem() {}
@@ -71,6 +76,11 @@ public class PlayerListItem extends Packet {
 
 		public static final int ACTION = (int)0;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public sul.protocol.minecraft210.types.ListAddPlayer[] players;
 
 		public AddPlayer() {}
@@ -113,6 +123,11 @@ public class PlayerListItem extends Packet {
 	public class UpdateGamemode extends Packet {
 
 		public static final int ACTION = (int)1;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public sul.protocol.minecraft210.types.ListUpdateGamemode[] players;
 
@@ -157,6 +172,11 @@ public class PlayerListItem extends Packet {
 
 		public static final int ACTION = (int)2;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public sul.protocol.minecraft210.types.ListUpdateLatency[] players;
 
 		public UpdateLatency() {}
@@ -200,6 +220,11 @@ public class PlayerListItem extends Packet {
 
 		public static final int ACTION = (int)3;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public sul.protocol.minecraft210.types.ListUpdateDisplayName[] players;
 
 		public UpdateDisplayName() {}
@@ -242,6 +267,11 @@ public class PlayerListItem extends Packet {
 	public class RemovePlayer extends Packet {
 
 		public static final int ACTION = (int)4;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public UUID[] players;
 

@@ -19,6 +19,11 @@ public class Ping extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public long pingId;
 	public byte[] magic = new byte[16];
 

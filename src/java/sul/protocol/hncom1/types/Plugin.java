@@ -16,7 +16,7 @@ import sul.utils.*;
  * A plugin loaded on the node. It may be used by the hub to display the plugins loaded
  * on the server in queries.
  */
-public class Plugin extends Packet {
+public class Plugin extends Stream {
 
 	/**
 	 * Name of the plugin.

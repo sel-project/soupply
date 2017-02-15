@@ -61,7 +61,7 @@ const Login = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -73,6 +73,7 @@ const Login = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Login.AuthCredentials().decode(buffer);
 		}
@@ -115,7 +116,7 @@ const Login = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -124,6 +125,7 @@ const Login = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Login.Auth().decode(buffer);
 		}
@@ -160,10 +162,22 @@ const Login = {
 			this._buffer = [];
 			this.writeBigEndianByte(2);
 			this.writeBigEndianByte(this.status);
+	switch(this.status) {
+		case 0:
+			this.writeBigEndianByte(this.status);
+			break;
+		case 1:
+			this.writeBigEndianByte(this.status);
+			break;
+		case 2:
+			this.writeBigEndianByte(this.status);
+			break;
+		default: break;
+	}
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -187,6 +201,7 @@ const Login = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Login.Welcome().decode(buffer);
 		}

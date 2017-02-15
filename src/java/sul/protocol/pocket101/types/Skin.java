@@ -16,7 +16,7 @@ import sul.utils.*;
 /**
  * Player's skin.
  */
-public class Skin extends Packet {
+public class Skin extends Stream {
 
 	/**
 	 * Name of the skin. It's used to render the shape of the skin correctly.

@@ -13,6 +13,13 @@ import java.util.UUID;
 
 import sul.utils.*;
 
+/**
+ * Spawns a player after adding it to the player's list using PlayerList. If PlayerList
+ * is sent after this packet the player will appear to have the same skin as the player
+ * who receives this packet.
+ * Spawning a player to itself (using the same entity id given in the StartGame packet)
+ * will crash the client's game.
+ */
 public class AddPlayer extends Packet {
 
 	public static final byte ID = (byte)13;
@@ -20,7 +27,20 @@ public class AddPlayer extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
+	/**
+	 * Player's UUID, should match an UUID of a player in the list added through PlayerList.
+	 */
 	public UUID uuid;
+
+	/**
+	 * Player's username and text displayed on the nametag if something else is not specified
+	 * in the metadata.
+	 */
 	public String username;
 	public long entityId;
 	public long runtimeId;
@@ -79,8 +99,8 @@ public class AddPlayer extends Packet {
 		int bgvudxnlcm5hbwu=this.readVaruint(); username=new String(this.readBytes(bgvudxnlcm5hbwu), StandardCharsets.UTF_8);
 		entityId=this.readVarlong();
 		runtimeId=this.readVarlong();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
-		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		motion=new Tuples.FloatXYZ(); motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		headYaw=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();

@@ -17,6 +17,11 @@ public class UpdateViewDistance extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int hubId;
 	public int viewDistance;
 

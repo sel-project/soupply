@@ -23,6 +23,11 @@ public class Transfer extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// on fail
 	public static final byte DISCONNECT = 0;
 	public static final byte AUTO = 1;

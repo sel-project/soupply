@@ -17,6 +17,11 @@ public class Effect extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// effect id
 	public static final int DISPENSER_DISPENSE = 1000;
 	public static final int DISPENSER_FAIL_DISPENSE = 1001;

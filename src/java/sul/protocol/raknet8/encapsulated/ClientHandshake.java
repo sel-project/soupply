@@ -19,6 +19,11 @@ public class ClientHandshake extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public sul.protocol.raknet8.types.Address clientAddress;
 	public sul.protocol.raknet8.types.Address[] systemAddresses = new sul.protocol.raknet8.types.Address[10];
 	public long pingId;

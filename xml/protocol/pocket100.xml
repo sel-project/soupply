@@ -32,19 +32,13 @@
 			<field name="size" type="ulong" />
 		</type>
 
-		<type name="block-position">
-			<field name="x" type="varint" />
-			<field name="y" type="varuint" />
-			<field name="z" type="varint" />
-		</type>
-
 		<type name="slot">
 			<field name="id" type="varint" />
 			<field name="meta-and-count" type="varint" when="id>0" />
-			<field name="nbt" type="slot-nbt" when="id>0" />
+			<field name="nbt" type="nbt" when="id>0" />
 		</type>
 
-		<array name="slot-nbt" base="ubyte" length="ushort" endianness="little-endian" />
+		<array name="nbt" base="ubyte" length="ushort" endianness="little-endian" />
 
 		<type name="attribute">
 			<field name="min" type="float" />
@@ -52,6 +46,12 @@
 			<field name="value" type="float" />
 			<field name="default" type="float" />
 			<field name="name" type="string" />
+		</type>
+
+		<type name="block-position">
+			<field name="x" type="varint" />
+			<field name="y" type="varuint" />
+			<field name="z" type="varint" />
 		</type>
 
 		<type name="skin">
@@ -66,6 +66,16 @@
 			<field name="skin" type="skin" />
 		</type>
 
+		<type name="link">
+			<field name="from" type="entity-id" />
+			<field name="to" type="entity-id" />
+			<field name="action" type="ubyte">
+				<constant name="add" value="0" />
+				<constant name="ride" value="1" />
+				<constant name="remove" value="2" />
+			</field>
+		</type>
+
 		<type name="recipe">
 			<field name="type" type="varint">
 				<constant name="shapeless" value="0" />
@@ -76,6 +86,20 @@
 			</field>
 			<field name="data" type="bytes" />
 		</type>
+
+		<type name="rule">
+			<field name="name" type="string">
+				<constant name="drowning-damage" value="drowningdamage" />
+				<constant name="fall-damage" value="falldamage" />
+				<constant name="fire-damage" value="firedamage" />
+				<constant name="immutable-world" value="immutableworld" />
+				<constant name="pvp" value="pvp" />
+			</field>
+			<field name="value" type="bool" />
+			<field name="?" type="bool" />
+		</type>
+
+		<array name="rules" base="rule" length="uint" />
 
 	</encoding>
 
@@ -103,18 +127,16 @@
 				</field>
 			</packet>
 
-			<packet name="server-handshake" id="3" clientbound="true" serverbound="false">
+			<packet name="server-to-client-handshake" id="3" clientbound="true" serverbound="false">
 				<field name="server-public-key" type="string" />
 				<field name="token" type="ubyte[]" />
 			</packet>
 
-			<packet name="client-magic" id="4" clientbound="false" serverbound="true">
-
-			</packet>
+			<packet name="client-to-server-handshake" id="4" clientbound="false" serverbound="true" />
 
 			<packet name="disconnect" id="5" clientbound="true" serverbound="false">
 				<field name="hide-disconnection-screen" type="bool" />
-				<field name="message" type="string" />
+				<field name="message" type="string" when="hide-disconnection-screen==false" />
 			</packet>
 
 			<packet name="batch" id="6" clientbound="true" serverbound="true">
@@ -122,6 +144,12 @@
 			</packet>
 
 			<packet name="resource-packs-info" id="7" clientbound="true" serverbound="false">
+				<field name="must-accept" type="bool" />
+				<field name="behaviour-packs" type="pack[]" />
+				<field name="resource-packs" type="pack[]" />
+			</packet>
+
+			<packet name="resource-packs-stack-packet" id="8" clientbound="true" serverbound="false">
 				<field name="must-accept" type="bool" />
 				<field name="behaviour-packs" type="pack[]" />
 				<field name="resource-packs" type="pack[]" />
@@ -204,7 +232,7 @@
 				</field>
 				<field name="rain-level" type="float" />
 				<field name="lighting-level" type="float" />
-				<field name="cheats-enabled" type="bool" />
+				<field name="commands-enabled" type="bool" />
 				<field name="texture-required" type="bool" />
 				<field name="level-id" type="string" />
 				<field name="world-name" type="string" />
@@ -234,7 +262,7 @@
 				<field name="yaw" type="float" />
 				<field name="attributes" type="attribute[]" />
 				<field name="metadata" type="metadata" />
-				<field name="links" type="entity-id[]" />
+				<field name="links" type="link[]" />
 			</packet>
 
 			<packet name="remove-entity" id="15" clientbound="true" serverbound="false">
@@ -257,7 +285,7 @@
 			</packet>
 
 			<packet name="take-item-entity" id="18" clientbound="true" serverbound="false">
-				<field name="taken" type="entity-id" />
+				<field name="collected" type="entity-id" />
 				<field name="collector" type="entity-id" />
 			</packet>
 
@@ -598,7 +626,8 @@
 				<field name="to" type="entity-id" />
 				<field name="action" type="ubyte">
 					<constant name="add" value="0" />
-					<constant name="remove" value="1" />
+					<constant name="ride" value="1" />
+					<constant name="remove" value="2" />
 				</field>
 			</packet>
 
@@ -718,7 +747,7 @@
 				<field name="tiles" type="ubyte[]" />
 			</packet>
 
-			<packet name="set-cheats-enabled" id="59" clientbound="true" serverbound="false">
+			<packet name="set-commands-enabled" id="59" clientbound="true" serverbound="false">
 				<field name="enabled" type="bool" />
 			</packet>
 
@@ -741,8 +770,8 @@
 				<field name="?" type="bool" />
 			</packet>
 
-			<packet name="set-player-gametype" id="62" clientbound="true" serverbound="true">
-				<field name="gametype" type="varint">
+			<packet name="set-player-game-type" id="62" clientbound="true" serverbound="true">
+				<field name="gamemode" type="varint">
 					<constant name="survival" value="0" />
 					<constant name="creative" value="1" />
 				</field>
@@ -812,6 +841,10 @@
 
 			<packet name="replace-selected-item" id="71" clientbound="false" serverbound="true">
 				<field name="item" type="slot" />
+			</packet>
+
+			<packet name="game-rules-changed" id="72" clientbound="true" serverbound="false">
+				<field name="rules" type="rules" />
 			</packet>
 
 			<packet name="camera" id="73" clientbound="true" serverbound="false">

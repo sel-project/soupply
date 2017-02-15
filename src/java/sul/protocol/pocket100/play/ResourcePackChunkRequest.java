@@ -19,6 +19,11 @@ public class ResourcePackChunkRequest extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public String id;
 	public int index;
 

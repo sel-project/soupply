@@ -17,6 +17,11 @@ public class ItemFrameDropItem extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public sul.protocol.pocket100.types.BlockPosition position;
 	public sul.protocol.pocket100.types.Slot item;
 

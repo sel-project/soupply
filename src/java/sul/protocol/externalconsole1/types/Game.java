@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 import sul.utils.*;
 
-public class Game extends Packet {
+public class Game extends Stream {
 
 	// type
 	public static final byte POCKET = 1;

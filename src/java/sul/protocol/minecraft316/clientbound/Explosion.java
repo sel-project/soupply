@@ -19,6 +19,11 @@ public class Explosion extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public Tuples.FloatXYZ position;
 	public float radius;
 	public Tuples.ByteXYZ[] records;
@@ -53,10 +58,10 @@ public class Explosion extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		this.readVaruint();
-		position.x=readBigEndianFloat(); position.y=readBigEndianFloat(); position.z=readBigEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readBigEndianFloat(); position.y=readBigEndianFloat(); position.z=readBigEndianFloat();
 		radius=readBigEndianFloat();
-		int bhjly29yzhm=readBigEndianInt(); records=new Tuples.ByteXYZ[bhjly29yzhm]; for(int cmvjb3jkcw=0;cmvjb3jkcw<records.length;cmvjb3jkcw++){ records[cmvjb3jkcw].x=readBigEndianByte(); records[cmvjb3jkcw].y=readBigEndianByte(); records[cmvjb3jkcw].z=readBigEndianByte(); }
-		motion.x=readBigEndianFloat(); motion.y=readBigEndianFloat(); motion.z=readBigEndianFloat();
+		int bhjly29yzhm=readBigEndianInt(); records=new Tuples.ByteXYZ[bhjly29yzhm]; for(int cmvjb3jkcw=0;cmvjb3jkcw<records.length;cmvjb3jkcw++){ records[cmvjb3jkcw]=new Tuples.ByteXYZ(); records[cmvjb3jkcw].x=readBigEndianByte(); records[cmvjb3jkcw].y=readBigEndianByte(); records[cmvjb3jkcw].z=readBigEndianByte(); }
+		motion=new Tuples.FloatXYZ(); motion.x=readBigEndianFloat(); motion.y=readBigEndianFloat(); motion.z=readBigEndianFloat();
 	}
 
 	public static Explosion fromBuffer(byte[] buffer) {

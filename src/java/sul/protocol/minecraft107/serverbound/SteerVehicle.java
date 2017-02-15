@@ -17,6 +17,11 @@ public class SteerVehicle extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// flags
 	public static final byte JUMP = 1;
 	public static final byte UNMOUNT = 2;

@@ -19,6 +19,11 @@ public class NamedSoundEffect extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public String name;
 	public int category;
 	public Tuples.IntXYZ position;
@@ -58,7 +63,7 @@ public class NamedSoundEffect extends Packet {
 		this.readVaruint();
 		int bgvubmftzq=this.readVaruint(); name=new String(this.readBytes(bgvubmftzq), StandardCharsets.UTF_8);
 		category=this.readVaruint();
-		position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
+		position=new Tuples.IntXYZ(); position.x=readBigEndianInt(); position.y=readBigEndianInt(); position.z=readBigEndianInt();
 		volume=readBigEndianFloat();
 		pitch=readBigEndianFloat();
 	}

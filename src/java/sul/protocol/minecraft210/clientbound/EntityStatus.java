@@ -17,6 +17,11 @@ public class EntityStatus extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// status
 	public static final byte SPAWN_TIPPED_ARROW_PARTICLE_EFFECTS = 0;
 	public static final byte PLAY_JUMPING_ANIMATION_AND_PARTICLES = 1;

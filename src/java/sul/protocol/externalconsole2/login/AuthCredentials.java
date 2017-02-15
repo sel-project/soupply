@@ -24,6 +24,11 @@ public class AuthCredentials extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * Protocol used by the server. If the client uses a different one it should close
 	 * the connection without trying to perform authentication.

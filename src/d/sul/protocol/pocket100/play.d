@@ -22,7 +22,7 @@ static import sul.protocol.pocket100.types;
 
 import sul.metadata.pocket100;
 
-alias Packets = TypeTuple!(Login, PlayStatus, ServerHandshake, ClientMagic, Disconnect, Batch, ResourcePacksInfo, ResourcePackClientResponse, Text, SetTime, StartGame, AddPlayer, AddEntity, RemoveEntity, AddItemEntity, AddHangingEntity, TakeItemEntity, MoveEntity, MovePlayer, RiderJump, RemoveBlock, UpdateBlock, AddPainting, Explode, LevelSoundEvent, LevelEvent, BlockEvent, EntityEvent, MobEffect, UpdateAttributes, MobEquipment, MobArmorEquipment, Interact, UseItem, PlayerAction, PlayerFall, HurtArmor, SetEntityData, SetEntityMotion, SetEntityLink, SetHealth, SetSpawnPosition, Animate, Respawn, DropItem, InventoryAction, ContainerOpen, ContainerClose, ContainerSetSlot, ContainerSetData, ContainerSetContent, CraftingData, CraftingEvent, AdventureSettings, BlockEntityData, PlayerInput, FullChunkData, SetCheatsEnabled, SetDifficulty, ChangeDimension, SetPlayerGametype, PlayerList, TelemetryEvent, SpawnExperienceOrb, ClientboundMapItemData, MapInfoRequest, RequestChunkRadius, ChunkRadiusUpdated, ItemFrameDropItem, ReplaceSelectedItem, Camera, AddItem, BossEvent, ShowCredits, AvailableCommands, CommandStep, ResourcePackDataInfo, ResourcePackChunkData, ResourcePackChunkRequest);
+alias Packets = TypeTuple!(Login, PlayStatus, ServerToClientHandshake, ClientToServerHandshake, Disconnect, Batch, ResourcePacksInfo, ResourcePacksStackPacket, ResourcePackClientResponse, Text, SetTime, StartGame, AddPlayer, AddEntity, RemoveEntity, AddItemEntity, AddHangingEntity, TakeItemEntity, MoveEntity, MovePlayer, RiderJump, RemoveBlock, UpdateBlock, AddPainting, Explode, LevelSoundEvent, LevelEvent, BlockEvent, EntityEvent, MobEffect, UpdateAttributes, MobEquipment, MobArmorEquipment, Interact, UseItem, PlayerAction, PlayerFall, HurtArmor, SetEntityData, SetEntityMotion, SetEntityLink, SetHealth, SetSpawnPosition, Animate, Respawn, DropItem, InventoryAction, ContainerOpen, ContainerClose, ContainerSetSlot, ContainerSetData, ContainerSetContent, CraftingData, CraftingEvent, AdventureSettings, BlockEntityData, PlayerInput, FullChunkData, SetCommandsEnabled, SetDifficulty, ChangeDimension, SetPlayerGameType, PlayerList, TelemetryEvent, SpawnExperienceOrb, ClientboundMapItemData, MapInfoRequest, RequestChunkRadius, ChunkRadiusUpdated, ItemFrameDropItem, ReplaceSelectedItem, GameRulesChanged, Camera, AddItem, BossEvent, ShowCredits, AvailableCommands, CommandStep, ResourcePackDataInfo, ResourcePackChunkData, ResourcePackChunkRequest);
 
 class Login : Buffer {
 
@@ -128,7 +128,7 @@ class PlayStatus : Buffer {
 
 }
 
-class ServerHandshake : Buffer {
+class ServerToClientHandshake : Buffer {
 
 	public enum ubyte ID = 3;
 
@@ -161,20 +161,20 @@ class ServerHandshake : Buffer {
 		token.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+token.length){ token=_buffer[_index.._index+token.length].dup; _index+=token.length; }
 	}
 
-	public static pure nothrow @safe ServerHandshake fromBuffer(bool readId=true)(ubyte[] buffer) {
-		ServerHandshake ret = new ServerHandshake();
+	public static pure nothrow @safe ServerToClientHandshake fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ServerToClientHandshake ret = new ServerToClientHandshake();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
 	}
 
 	public override string toString() {
-		return "ServerHandshake(serverPublicKey: " ~ std.conv.to!string(this.serverPublicKey) ~ ", token: " ~ std.conv.to!string(this.token) ~ ")";
+		return "ServerToClientHandshake(serverPublicKey: " ~ std.conv.to!string(this.serverPublicKey) ~ ", token: " ~ std.conv.to!string(this.token) ~ ")";
 	}
 
 }
 
-class ClientMagic : Buffer {
+class ClientToServerHandshake : Buffer {
 
 	public enum ubyte ID = 4;
 
@@ -193,15 +193,15 @@ class ClientMagic : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 	}
 
-	public static pure nothrow @safe ClientMagic fromBuffer(bool readId=true)(ubyte[] buffer) {
-		ClientMagic ret = new ClientMagic();
+	public static pure nothrow @safe ClientToServerHandshake fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ClientToServerHandshake ret = new ClientToServerHandshake();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
 	}
 
 	public override string toString() {
-		return "ClientMagic()";
+		return "ClientToServerHandshake()";
 	}
 
 }
@@ -229,14 +229,14 @@ class Disconnect : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBigEndianBool(hideDisconnectionScreen);
-		writeBytes(varuint.encode(cast(uint)message.length)); writeString(message);
+		if(hideDisconnectionScreen==false){ writeBytes(varuint.encode(cast(uint)message.length)); writeString(message); }
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		hideDisconnectionScreen=readBigEndianBool();
-		uint bwvzc2fnzq=varuint.decode(_buffer, &_index); message=readString(bwvzc2fnzq);
+		if(hideDisconnectionScreen==false){ uint bwvzc2fnzq=varuint.decode(_buffer, &_index); message=readString(bwvzc2fnzq); }
 	}
 
 	public static pure nothrow @safe Disconnect fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -340,6 +340,56 @@ class ResourcePacksInfo : Buffer {
 
 	public override string toString() {
 		return "ResourcePacksInfo(mustAccept: " ~ std.conv.to!string(this.mustAccept) ~ ", behaviourPacks: " ~ std.conv.to!string(this.behaviourPacks) ~ ", resourcePacks: " ~ std.conv.to!string(this.resourcePacks) ~ ")";
+	}
+
+}
+
+class ResourcePacksStackPacket : Buffer {
+
+	public enum ubyte ID = 8;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["mustAccept", "behaviourPacks", "resourcePacks"];
+
+	public bool mustAccept;
+	public sul.protocol.pocket100.types.Pack[] behaviourPacks;
+	public sul.protocol.pocket100.types.Pack[] resourcePacks;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(bool mustAccept, sul.protocol.pocket100.types.Pack[] behaviourPacks=(sul.protocol.pocket100.types.Pack[]).init, sul.protocol.pocket100.types.Pack[] resourcePacks=(sul.protocol.pocket100.types.Pack[]).init) {
+		this.mustAccept = mustAccept;
+		this.behaviourPacks = behaviourPacks;
+		this.resourcePacks = resourcePacks;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianBool(mustAccept);
+		writeBytes(varuint.encode(cast(uint)behaviourPacks.length)); foreach(ymvoyxzpb3vyugfj;behaviourPacks){ ymvoyxzpb3vyugfj.encode(bufferInstance); }
+		writeBytes(varuint.encode(cast(uint)resourcePacks.length)); foreach(cmvzb3vyy2vqywnr;resourcePacks){ cmvzb3vyy2vqywnr.encode(bufferInstance); }
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		mustAccept=readBigEndianBool();
+		behaviourPacks.length=varuint.decode(_buffer, &_index); foreach(ref ymvoyxzpb3vyugfj;behaviourPacks){ ymvoyxzpb3vyugfj.decode(bufferInstance); }
+		resourcePacks.length=varuint.decode(_buffer, &_index); foreach(ref cmvzb3vyy2vqywnr;resourcePacks){ cmvzb3vyy2vqywnr.decode(bufferInstance); }
+	}
+
+	public static pure nothrow @safe ResourcePacksStackPacket fromBuffer(bool readId=true)(ubyte[] buffer) {
+		ResourcePacksStackPacket ret = new ResourcePacksStackPacket();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+	public override string toString() {
+		return "ResourcePacksStackPacket(mustAccept: " ~ std.conv.to!string(this.mustAccept) ~ ", behaviourPacks: " ~ std.conv.to!string(this.behaviourPacks) ~ ", resourcePacks: " ~ std.conv.to!string(this.resourcePacks) ~ ")";
 	}
 
 }
@@ -748,7 +798,7 @@ class StartGame : Buffer {
 	public enum ubyte CLASSIC = 0;
 	public enum ubyte EDUCATION = 1;
 
-	public enum string[] FIELDS = ["entityId", "runtimeId", "position", "yaw", "pitch", "seed", "dimension", "generator", "worldGamemode", "difficulty", "spawnPosition", "loadedInCreative", "time", "edition", "rainLevel", "lightingLevel", "cheatsEnabled", "textureRequired", "levelId", "worldName"];
+	public enum string[] FIELDS = ["entityId", "runtimeId", "position", "yaw", "pitch", "seed", "dimension", "generator", "worldGamemode", "difficulty", "spawnPosition", "loadedInCreative", "time", "edition", "rainLevel", "lightingLevel", "commandsEnabled", "textureRequired", "levelId", "worldName"];
 
 	public long entityId;
 	public long runtimeId;
@@ -766,14 +816,14 @@ class StartGame : Buffer {
 	public ubyte edition;
 	public float rainLevel;
 	public float lightingLevel;
-	public bool cheatsEnabled;
+	public bool commandsEnabled;
 	public bool textureRequired;
 	public string levelId;
 	public string worldName;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, float yaw=float.init, float pitch=float.init, int seed=int.init, int dimension=int.init, int generator=int.init, int worldGamemode=int.init, int difficulty=int.init, Tuple!(int, "x", int, "y", int, "z") spawnPosition=Tuple!(int, "x", int, "y", int, "z").init, bool loadedInCreative=bool.init, int time=int.init, ubyte edition=ubyte.init, float rainLevel=float.init, float lightingLevel=float.init, bool cheatsEnabled=bool.init, bool textureRequired=bool.init, string levelId=string.init, string worldName=string.init) {
+	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, float yaw=float.init, float pitch=float.init, int seed=int.init, int dimension=int.init, int generator=int.init, int worldGamemode=int.init, int difficulty=int.init, Tuple!(int, "x", int, "y", int, "z") spawnPosition=Tuple!(int, "x", int, "y", int, "z").init, bool loadedInCreative=bool.init, int time=int.init, ubyte edition=ubyte.init, float rainLevel=float.init, float lightingLevel=float.init, bool commandsEnabled=bool.init, bool textureRequired=bool.init, string levelId=string.init, string worldName=string.init) {
 		this.entityId = entityId;
 		this.runtimeId = runtimeId;
 		this.position = position;
@@ -790,7 +840,7 @@ class StartGame : Buffer {
 		this.edition = edition;
 		this.rainLevel = rainLevel;
 		this.lightingLevel = lightingLevel;
-		this.cheatsEnabled = cheatsEnabled;
+		this.commandsEnabled = commandsEnabled;
 		this.textureRequired = textureRequired;
 		this.levelId = levelId;
 		this.worldName = worldName;
@@ -815,7 +865,7 @@ class StartGame : Buffer {
 		writeBigEndianUbyte(edition);
 		writeLittleEndianFloat(rainLevel);
 		writeLittleEndianFloat(lightingLevel);
-		writeBigEndianBool(cheatsEnabled);
+		writeBigEndianBool(commandsEnabled);
 		writeBigEndianBool(textureRequired);
 		writeBytes(varuint.encode(cast(uint)levelId.length)); writeString(levelId);
 		writeBytes(varuint.encode(cast(uint)worldName.length)); writeString(worldName);
@@ -840,7 +890,7 @@ class StartGame : Buffer {
 		edition=readBigEndianUbyte();
 		rainLevel=readLittleEndianFloat();
 		lightingLevel=readLittleEndianFloat();
-		cheatsEnabled=readBigEndianBool();
+		commandsEnabled=readBigEndianBool();
 		textureRequired=readBigEndianBool();
 		uint bgv2zwxjza=varuint.decode(_buffer, &_index); levelId=readString(bgv2zwxjza);
 		uint d29ybgroyw1l=varuint.decode(_buffer, &_index); worldName=readString(d29ybgroyw1l);
@@ -854,7 +904,7 @@ class StartGame : Buffer {
 	}
 
 	public override string toString() {
-		return "StartGame(entityId: " ~ std.conv.to!string(this.entityId) ~ ", runtimeId: " ~ std.conv.to!string(this.runtimeId) ~ ", position: " ~ std.conv.to!string(this.position) ~ ", yaw: " ~ std.conv.to!string(this.yaw) ~ ", pitch: " ~ std.conv.to!string(this.pitch) ~ ", seed: " ~ std.conv.to!string(this.seed) ~ ", dimension: " ~ std.conv.to!string(this.dimension) ~ ", generator: " ~ std.conv.to!string(this.generator) ~ ", worldGamemode: " ~ std.conv.to!string(this.worldGamemode) ~ ", difficulty: " ~ std.conv.to!string(this.difficulty) ~ ", spawnPosition: " ~ std.conv.to!string(this.spawnPosition) ~ ", loadedInCreative: " ~ std.conv.to!string(this.loadedInCreative) ~ ", time: " ~ std.conv.to!string(this.time) ~ ", edition: " ~ std.conv.to!string(this.edition) ~ ", rainLevel: " ~ std.conv.to!string(this.rainLevel) ~ ", lightingLevel: " ~ std.conv.to!string(this.lightingLevel) ~ ", cheatsEnabled: " ~ std.conv.to!string(this.cheatsEnabled) ~ ", textureRequired: " ~ std.conv.to!string(this.textureRequired) ~ ", levelId: " ~ std.conv.to!string(this.levelId) ~ ", worldName: " ~ std.conv.to!string(this.worldName) ~ ")";
+		return "StartGame(entityId: " ~ std.conv.to!string(this.entityId) ~ ", runtimeId: " ~ std.conv.to!string(this.runtimeId) ~ ", position: " ~ std.conv.to!string(this.position) ~ ", yaw: " ~ std.conv.to!string(this.yaw) ~ ", pitch: " ~ std.conv.to!string(this.pitch) ~ ", seed: " ~ std.conv.to!string(this.seed) ~ ", dimension: " ~ std.conv.to!string(this.dimension) ~ ", generator: " ~ std.conv.to!string(this.generator) ~ ", worldGamemode: " ~ std.conv.to!string(this.worldGamemode) ~ ", difficulty: " ~ std.conv.to!string(this.difficulty) ~ ", spawnPosition: " ~ std.conv.to!string(this.spawnPosition) ~ ", loadedInCreative: " ~ std.conv.to!string(this.loadedInCreative) ~ ", time: " ~ std.conv.to!string(this.time) ~ ", edition: " ~ std.conv.to!string(this.edition) ~ ", rainLevel: " ~ std.conv.to!string(this.rainLevel) ~ ", lightingLevel: " ~ std.conv.to!string(this.lightingLevel) ~ ", commandsEnabled: " ~ std.conv.to!string(this.commandsEnabled) ~ ", textureRequired: " ~ std.conv.to!string(this.textureRequired) ~ ", levelId: " ~ std.conv.to!string(this.levelId) ~ ", worldName: " ~ std.conv.to!string(this.worldName) ~ ")";
 	}
 
 }
@@ -959,11 +1009,11 @@ class AddEntity : Buffer {
 	public float yaw;
 	public sul.protocol.pocket100.types.Attribute[] attributes;
 	public Metadata metadata;
-	public long[] links;
+	public sul.protocol.pocket100.types.Link[] links;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init, uint type=uint.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, Tuple!(float, "x", float, "y", float, "z") motion=Tuple!(float, "x", float, "y", float, "z").init, float pitch=float.init, float yaw=float.init, sul.protocol.pocket100.types.Attribute[] attributes=(sul.protocol.pocket100.types.Attribute[]).init, Metadata metadata=Metadata.init, long[] links=(long[]).init) {
+	public pure nothrow @safe @nogc this(long entityId, long runtimeId=long.init, uint type=uint.init, Tuple!(float, "x", float, "y", float, "z") position=Tuple!(float, "x", float, "y", float, "z").init, Tuple!(float, "x", float, "y", float, "z") motion=Tuple!(float, "x", float, "y", float, "z").init, float pitch=float.init, float yaw=float.init, sul.protocol.pocket100.types.Attribute[] attributes=(sul.protocol.pocket100.types.Attribute[]).init, Metadata metadata=Metadata.init, sul.protocol.pocket100.types.Link[] links=(sul.protocol.pocket100.types.Link[]).init) {
 		this.entityId = entityId;
 		this.runtimeId = runtimeId;
 		this.type = type;
@@ -988,7 +1038,7 @@ class AddEntity : Buffer {
 		writeLittleEndianFloat(yaw);
 		writeBytes(varuint.encode(cast(uint)attributes.length)); foreach(yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.encode(bufferInstance); }
 		metadata.encode(bufferInstance);
-		writeBytes(varuint.encode(cast(uint)links.length)); foreach(bglua3m;links){ writeBytes(varlong.encode(bglua3m)); }
+		writeBytes(varuint.encode(cast(uint)links.length)); foreach(bglua3m;links){ bglua3m.encode(bufferInstance); }
 		return _buffer;
 	}
 
@@ -1003,7 +1053,7 @@ class AddEntity : Buffer {
 		yaw=readLittleEndianFloat();
 		attributes.length=varuint.decode(_buffer, &_index); foreach(ref yxr0cmlidxrlcw;attributes){ yxr0cmlidxrlcw.decode(bufferInstance); }
 		metadata=Metadata.decode(bufferInstance);
-		links.length=varuint.decode(_buffer, &_index); foreach(ref bglua3m;links){ bglua3m=varlong.decode(_buffer, &_index); }
+		links.length=varuint.decode(_buffer, &_index); foreach(ref bglua3m;links){ bglua3m.decode(bufferInstance); }
 	}
 
 	public static pure nothrow @safe AddEntity fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -1180,29 +1230,29 @@ class TakeItemEntity : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["taken", "collector"];
+	public enum string[] FIELDS = ["collected", "collector"];
 
-	public long taken;
+	public long collected;
 	public long collector;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long taken, long collector=long.init) {
-		this.taken = taken;
+	public pure nothrow @safe @nogc this(long collected, long collector=long.init) {
+		this.collected = collected;
 		this.collector = collector;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varlong.encode(taken));
+		writeBytes(varlong.encode(collected));
 		writeBytes(varlong.encode(collector));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		taken=varlong.decode(_buffer, &_index);
+		collected=varlong.decode(_buffer, &_index);
 		collector=varlong.decode(_buffer, &_index);
 	}
 
@@ -1214,7 +1264,7 @@ class TakeItemEntity : Buffer {
 	}
 
 	public override string toString() {
-		return "TakeItemEntity(taken: " ~ std.conv.to!string(this.taken) ~ ", collector: " ~ std.conv.to!string(this.collector) ~ ")";
+		return "TakeItemEntity(collected: " ~ std.conv.to!string(this.collected) ~ ", collector: " ~ std.conv.to!string(this.collector) ~ ")";
 	}
 
 }
@@ -2561,7 +2611,8 @@ class SetEntityLink : Buffer {
 
 	// action
 	public enum ubyte ADD = 0;
-	public enum ubyte REMOVE = 1;
+	public enum ubyte RIDE = 1;
+	public enum ubyte REMOVE = 2;
 
 	public enum string[] FIELDS = ["from", "to", "action"];
 
@@ -3453,7 +3504,7 @@ class FullChunkData : Buffer {
 
 }
 
-class SetCheatsEnabled : Buffer {
+class SetCommandsEnabled : Buffer {
 
 	public enum ubyte ID = 59;
 
@@ -3482,15 +3533,15 @@ class SetCheatsEnabled : Buffer {
 		enabled=readBigEndianBool();
 	}
 
-	public static pure nothrow @safe SetCheatsEnabled fromBuffer(bool readId=true)(ubyte[] buffer) {
-		SetCheatsEnabled ret = new SetCheatsEnabled();
+	public static pure nothrow @safe SetCommandsEnabled fromBuffer(bool readId=true)(ubyte[] buffer) {
+		SetCommandsEnabled ret = new SetCommandsEnabled();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
 	}
 
 	public override string toString() {
-		return "SetCheatsEnabled(enabled: " ~ std.conv.to!string(this.enabled) ~ ")";
+		return "SetCommandsEnabled(enabled: " ~ std.conv.to!string(this.enabled) ~ ")";
 	}
 
 }
@@ -3598,48 +3649,48 @@ class ChangeDimension : Buffer {
 
 }
 
-class SetPlayerGametype : Buffer {
+class SetPlayerGameType : Buffer {
 
 	public enum ubyte ID = 62;
 
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
-	// gametype
+	// gamemode
 	public enum int SURVIVAL = 0;
 	public enum int CREATIVE = 1;
 
-	public enum string[] FIELDS = ["gametype"];
+	public enum string[] FIELDS = ["gamemode"];
 
-	public int gametype;
+	public int gamemode;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(int gametype) {
-		this.gametype = gametype;
+	public pure nothrow @safe @nogc this(int gamemode) {
+		this.gamemode = gamemode;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varint.encode(gametype));
+		writeBytes(varint.encode(gamemode));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		gametype=varint.decode(_buffer, &_index);
+		gamemode=varint.decode(_buffer, &_index);
 	}
 
-	public static pure nothrow @safe SetPlayerGametype fromBuffer(bool readId=true)(ubyte[] buffer) {
-		SetPlayerGametype ret = new SetPlayerGametype();
+	public static pure nothrow @safe SetPlayerGameType fromBuffer(bool readId=true)(ubyte[] buffer) {
+		SetPlayerGameType ret = new SetPlayerGameType();
 		ret._buffer = buffer;
 		ret.decode!readId();
 		return ret;
 	}
 
 	public override string toString() {
-		return "SetPlayerGametype(gametype: " ~ std.conv.to!string(this.gametype) ~ ")";
+		return "SetPlayerGameType(gamemode: " ~ std.conv.to!string(this.gamemode) ~ ")";
 	}
 
 }
@@ -4166,6 +4217,48 @@ class ReplaceSelectedItem : Buffer {
 
 	public override string toString() {
 		return "ReplaceSelectedItem(item: " ~ std.conv.to!string(this.item) ~ ")";
+	}
+
+}
+
+class GameRulesChanged : Buffer {
+
+	public enum ubyte ID = 72;
+
+	public enum bool CLIENTBOUND = true;
+	public enum bool SERVERBOUND = false;
+
+	public enum string[] FIELDS = ["rules"];
+
+	public sul.protocol.pocket100.types.Rule[] rules;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(sul.protocol.pocket100.types.Rule[] rules) {
+		this.rules = rules;
+	}
+
+	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+		_buffer.length = 0;
+		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBigEndianUint(cast(uint)rules.length); foreach(cnvszxm;rules){ cnvszxm.encode(bufferInstance); }
+		return _buffer;
+	}
+
+	public pure nothrow @safe void decode(bool readId=true)() {
+		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		rules.length=readBigEndianUint(); foreach(ref cnvszxm;rules){ cnvszxm.decode(bufferInstance); }
+	}
+
+	public static pure nothrow @safe GameRulesChanged fromBuffer(bool readId=true)(ubyte[] buffer) {
+		GameRulesChanged ret = new GameRulesChanged();
+		ret._buffer = buffer;
+		ret.decode!readId();
+		return ret;
+	}
+
+	public override string toString() {
+		return "GameRulesChanged(rules: " ~ std.conv.to!string(this.rules) ~ ")";
 	}
 
 }

@@ -10,7 +10,25 @@
 
 	<from>1.0.3</from>
 
-	<!--<to>1.0.4</to>-->
+	<to>1.0.3</to>
+
+	<description>
+		Protocol used in Minecraft: Pocket Edition and variants. The network part of the protocol is managed by [RakNet](../raknet/8.html).
+
+		#### Login sequence
+		+ The client sends a [Login](#play_login) packet with the details of its game and its account
+		+ The server always replies with a [PlayerStatus](#play_play-status)
+		+ If [status](#play_play-status_status) field in the packet sent was different from [ok](#play_play-status_status_ok) the connection is closed
+
+		### Spawning sequence
+		+ The server sends a [StartGame](#play_start-game) packet with the world's informations
+		+ The server sends zero or more [FullChunkData](#play_full-chunk-data) with the chunk's blocks and tiles
+		+ The server sends the player's inventory using [ContainerSetContent](#play_container-set-content)
+		+ The server sends the world's textures through [ResourcePacksInfo](#play_resource-packs-info) (the textures may be empty)
+		+ The client replies with [ResourcePackClientResponse](#play_resource-pack-client-response) telling the server that the textures have been loaded
+		+ The server sends a [PlayStatus](#play_play-status) packet set to [spawned](#play_play-status_status_spawned)
+		+ The client spawns
+	</description>
 
 	<encoding id="ubyte" arraylength="varuint">
 
@@ -34,13 +52,6 @@
 			<field name="size" type="ulong" />
 		</type>
 
-		<type name="block-position">
-			Position of a block, where x and z are signed and y is always positive (as blocks cannot be placed under 0).
-			<field name="x" type="varint" />
-			<field name="y" type="varuint" />
-			<field name="z" type="varint" />
-		</type>
-
 		<type name="slot">
 			Informations about a slot, that, if not empty, contains an item id and meta, the count (0-255) and, optionally, an nbt tag for enchantments, custom name, colours and more.
 			<field name="id" type="varint">
@@ -55,12 +66,12 @@
 				var count = count & 255
 				```
 			</field>
-			<field name="nbt" type="slot-nbt" when="id>0">
+			<field name="nbt" type="nbt" when="id>0">
 				Optional nbt data encoded as a nameless little-endian compound tag.
 			</field>
 		</type>
 
-		<array name="slot-nbt" base="ubyte" length="ushort" endianness="little-endian" />
+		<array name="nbt" base="ubyte" length="ushort" endianness="little-endian" />
 
 		<type name="attribute">
 			<field name="min" type="float" />
@@ -68,6 +79,13 @@
 			<field name="value" type="float" />
 			<field name="default" type="float" />
 			<field name="name" type="string" />
+		</type>
+
+		<type name="block-position">
+			Position of a block, where x and z are signed and y is always positive (as blocks cannot be placed under 0).
+			<field name="x" type="varint" />
+			<field name="y" type="varuint" />
+			<field name="z" type="varint" />
 		</type>
 
 		<type name="skin">
@@ -96,6 +114,16 @@
 			</field>
 		</type>
 
+		<type name="link">
+			<field name="from" type="entity-id" />
+			<field name="to" type="entity-id" />
+			<field name="action" type="ubyte">
+				<constant name="add" value="0" />
+				<constant name="ride" value="1" />
+				<constant name="remove" value="2" />
+			</field>
+		</type>
+
 		<type name="recipe">
 			<field name="type" type="varint">
 				<constant name="shapeless" value="0" />
@@ -106,6 +134,35 @@
 			</field>
 			<field name="data" type="bytes" />
 		</type>
+
+		<type name="rule">
+			A game rule that prevents the client from doing client-side actions and animations.
+			<field name="name" type="string">
+				Name of the rule. Same of the `gamerule` command's field in Minecraft: Education Edition.
+				The behaviours indicated in the following constants' descriptions is enabled or disabled.
+				<constant name="drowning-damage" value="drowningdamage">
+					Damage animation when drowning
+				</constant>
+				<constant name="fall-damage" value="falldamage">
+					Damage animation when falling
+				</constant>
+				<constant name="fire-damage" value="firedamage">
+					Damage animation when burning
+				</constant>
+				<constant name="immutable-world" value="immutableworld">
+					Breaking animation and related packets
+				</constant>
+				<constant name="pvp" value="pvp">
+					Damage animation and related packets
+				</constant>
+			</field>
+			<field name="value" type="bool">
+				Indicates whether the game rule is enabled.
+			</field>
+			<field name="?" type="bool" />
+		</type>
+
+		<array name="rules" base="rule" length="uint" />
 
 	</encoding>
 
@@ -150,14 +207,12 @@
 				</field>
 			</packet>
 
-			<packet name="server-handshake" id="3" clientbound="true" serverbound="false">
+			<packet name="server-to-client-handshake" id="3" clientbound="true" serverbound="false">
 				<field name="server-public-key" type="string" />
 				<field name="token" type="ubyte[]" />
 			</packet>
 
-			<packet name="client-magic" id="4" clientbound="false" serverbound="true">
-
-			</packet>
+			<packet name="client-to-server-handshake" id="4" clientbound="false" serverbound="true" />
 
 			<packet name="disconnect" id="5" clientbound="true" serverbound="false">
 				Disconnects the player from the server.
@@ -205,6 +260,12 @@
 				<field name="resource-packs" type="pack[]" />
 			</packet>
 
+			<packet name="resource-packs-stack-packet" id="8" clientbound="true" serverbound="false">
+				<field name="must-accept" type="bool" />
+				<field name="behaviour-packs" type="pack[]" />
+				<field name="resource-packs" type="pack[]" />
+			</packet>
+
 			<packet name="resource-pack-client-response" id="9" clientbound="false" serverbound="true">
 				<field name="status" type="ubyte" />
 				<field name="resource-pack-version" type="ushort" />
@@ -212,6 +273,7 @@
 
 			<packet name="text" id="10" clientbound="true" serverbound="true">
 				Sends or receives a message from the player. Every variant's field can contain Minecraft's formatting codes.
+				Every packet sent in the same game tick should be joined together with `\n§r` (line break and reset formatting), otherwise the messages will be displayed multiple times on the client's chat (see [MCPE-17631](https://bugs.mojang.com/browse/MCPE-17631)).
 				<field name="type" type="ubyte" />
 				<variants field="type">
 					<variant name="raw" value="0">
@@ -267,50 +329,79 @@
 			</packet>
 
 			<packet name="start-game" id="12" clientbound="true" serverbound="false">
-				<field name="entity-id" type="entity-id" />
+				<field name="entity-id" type="entity-id">
+					Player's entity id that uniquely identifies the entity of the server.
+				</field>
 				<field name="runtime-id" type="runtime-id" />
-				<field name="position" type="entity-position" />
+				<field name="position" type="entity-position">
+					Position where the player will spawn.
+				</field>
 				<field name="yaw" type="float" />
 				<field name="pitch" type="float" />
-				<field name="seed" type="varint" />
-				<field name="dimension" type="varint">
+				<field name="seed" type="varint">
+					World's seed. It's displayed in the game's wolrd settings and in beta's debug informations on top of the screen.
+				</field>
+				<field name="dimension" type="varint" default="0">
+					World's dimension. Different dimensions have different sky colours and render distances.
 					<constant name="overworld" value="0" />
 					<constant name="nether" value="1" />
 					<constant name="end" value="2" />
 				</field>
-				<field name="generator" type="varint">
+				<field name="generator" type="varint" default="1">
+					World's type. It's displayed in the game's world settings.
+					In old and infinite world the sky becomes darker at 32 blocks of altitude and in flat worlds it only becomes darker under 0.
 					<constant name="old" value="0" />
 					<constant name="infinite" value="1" />
 					<constant name="flat" value="2" />
 				</field>
 				<field name="world-gamemode" type="varint">
+					Default's world gamemode. If the player's gamemode is different from the default's one a [SetPlayerGameType](#play_set-player-game-type) should be sent after this.
 					<constant name="survival" value="0" />
 					<constant name="creative" value="1" />
 				</field>
 				<field name="difficulty" type="varint">
+					World's difficulty. The value is visible in the client's world settings.
 					<constant name="peaceful" value="0" />
 					<constant name="easy" value="1" />
 					<constant name="normal" value="2" />
 					<constant name="hard" value="3" />
 				</field>
-				<field name="spawn-position" type="varint<xyz>" />
+				<field name="spawn-position" type="varint<xyz>">
+					Position where the client's compass will point to.
+				</field>
 				<field name="loaded-in-creative" type="bool" />
-				<field name="time" type="varint" />
+				<field name="time" type="varint">
+					Time of the day that should be in a range from 0 to 24000. If not the absolute value is moduled per 24000.
+					If the world's time is stopped a [SetTime](#play_set-time) packet should be sent after this.
+				</field>
 				<field name="edition" type="ubyte">
+					Game's edition. Some behaviours (some entities for example) may only work in a version and not in the other.
 					<constant name="classic" value="0" />
 					<constant name="education" value="1" />
 				</field>
-				<field name="rain-level" type="float" />
+				<field name="rain-level" type="float">
+					Intensity of the rain or the snow. Any value lower than or equals to 0 means no rain.
+				</field>
 				<field name="lighting-level" type="float" />
-				<field name="cheats-enabled" type="bool" />
+				<field name="commands-enabled" type="bool">
+					Indicates whether the cheats are enabled. If the cheats are disabled the player cannot send commands.
+				</field>
 				<field name="texture-required" type="bool" />
 				<field name="level-id" type="string" />
-				<field name="world-name" type="string" />
+				<field name="world-name" type="string">
+					World's name that will be displayed in the game's world settings. It can contain formatting codes.
+				</field>
 			</packet>
 
 			<packet name="add-player" id="13" clientbound="true" serverbound="false">
-				<field name="uuid" type="uuid" />
-				<field name="username" type="string" />
+				Spawns a player after adding it to the player's list using [PlayerList](#play_player-list). If [PlayerList](#play_player-list) is sent after this packet the player will appear to have the same skin as the player who receives this packet.
+				Spawning a player to itself (using the same entity id given in the [StartGame](#play_start-game) packet) will crash the client's game.
+				<field name="uuid" type="uuid">
+					Player's UUID, should match an UUID of a player in the list added through [PlayerList](#play_player-list).
+				</field>
+				<field name="username" type="string">
+					Player's username and text displayed on the nametag if something else is not specified in the metadata.
+				</field>
 				<field name="entity-id" type="entity-id" />
 				<field name="runtime-id" type="runtime-id" />
 				<field name="position" type="entity-position" />
@@ -332,7 +423,7 @@
 				<field name="yaw" type="float" />
 				<field name="attributes" type="attribute[]" />
 				<field name="metadata" type="metadata" />
-				<field name="links" type="entity-id[]" />
+				<field name="links" type="link[]" />
 			</packet>
 
 			<packet name="remove-entity" id="15" clientbound="true" serverbound="false">
@@ -356,7 +447,7 @@
 			</packet>
 
 			<packet name="take-item-entity" id="18" clientbound="true" serverbound="false">
-				<field name="taken" type="entity-id" />
+				<field name="collected" type="entity-id" />
 				<field name="collector" type="entity-id" />
 			</packet>
 
@@ -416,6 +507,7 @@
 			</packet>
 
 			<packet name="level-sound-event" id="26" clientbound="true" serverbound="true">
+				Plays a sound at a certain position.
 				<field name="sound" type="ubyte">
 					<constant name="item-use-on" value="0" />
 					<constant name="hit" value="1" />
@@ -510,7 +602,9 @@
 					<constant name="default" value="90" />
 					<constant name="undefined" value="91" />
 				</field>
-				<field name="position" type="entity-position" />
+				<field name="position" type="entity-position">
+					Position where the sound was generated. The closer to the player the more intense will be on the client.
+				</field>
 				<field name="volume" type="varuint" />
 				<field name="pitch" type="varint" />
 				<field name="?" type="bool" />
@@ -675,7 +769,10 @@
 			</packet>
 
 			<packet name="player-fall" id="37" clientbound="false" serverbound="true">
-				<field name="distance" type="float" />
+				Sent by the player when it falls from a distance that causes damage, that can be influenced by its armour and its effects.
+				<field name="distance" type="float">
+					Number of blocks the player has been in free falling before hitting the ground.
+				</field>
 			</packet>
 
 			<packet name="hurt-armor" id="38" clientbound="true" serverbound="false">
@@ -688,8 +785,13 @@
 			</packet>
 
 			<packet name="set-entity-motion" id="40" clientbound="true" serverbound="false">
-				<field name="entity-id" type="entity-id" />
-				<field name="motion" type="entity-position" />
+				Updates an entity's motion.
+				<field name="entity-id" type="entity-id">
+					Entity which motion is updated. If the entity id is the player's, its motion is updated client-side and the player will send movement packets to the server (meaning that the server has no physical calculations to do). If not an animation will be done client-side but the server will have to calculate the new position applying the item's movement rules. 
+				</field>
+				<field name="motion" type="entity-position">
+					New motion for the entity that will influence its movement.
+				</field>
 			</packet>
 
 			<packet name="set-entity-link" id="41" clientbound="true" serverbound="false">
@@ -697,7 +799,8 @@
 				<field name="to" type="entity-id" />
 				<field name="action" type="ubyte">
 					<constant name="add" value="0" />
-					<constant name="remove" value="1" />
+					<constant name="ride" value="1" />
+					<constant name="remove" value="2" />
 				</field>
 			</packet>
 
@@ -817,7 +920,7 @@
 				<field name="tiles" type="ubyte[]" />
 			</packet>
 
-			<packet name="set-cheats-enabled" id="59" clientbound="true" serverbound="false">
+			<packet name="set-commands-enabled" id="59" clientbound="true" serverbound="false">
 				Indicates whether the cheats are enabled. If not the client cannot send commands.
 				<field name="enabled" type="bool" />
 			</packet>
@@ -842,9 +945,9 @@
 				<field name="?" type="bool" />
 			</packet>
 
-			<packet name="set-player-gametype" id="62" clientbound="true" serverbound="true">
+			<packet name="set-player-game-type" id="62" clientbound="true" serverbound="true">
 				Sets the player's gamemode. This packet is sent by the player when it has the operator status (set in [AdventureSettings.permissions](#play_adventure-settings_permissions)) and it changes the gamemode in the settings screen.
-				<field name="gametype" type="varint">
+				<field name="gamemode" type="varint">
 					<constant name="survival" value="0" />
 					<constant name="creative" value="1" />
 				</field>
@@ -917,6 +1020,11 @@
 				<field name="item" type="slot" />
 			</packet>
 
+			<packet name="game-rules-changed" id="72" clientbound="true" serverbound="false">
+				Updates client's game rules. This packet is ignored if the game is not launched as Education Edition and should be avoid in favour of [AdventureSettings](#play_adventure-settings), with which the same result can be obtained with less data.
+				<field name="rules" type="rules" />
+			</packet>
+
 			<packet name="camera" id="73" clientbound="true" serverbound="false">
 				<field name="?" type="entity-id" />
 				<field name="?" type="entity-id" />
@@ -981,7 +1089,7 @@
 				<field name="ip" type="string">
 					Address of the new server. It can be an dotted ip (for example `127.0.0.1`) or an URI (for example `localhost` or `play.example.com`). Only IP of version 4 are currently allowed.
 				</field>
-				<field name="port" type="ushort" endianness="little-endian">
+				<field name="port" type="ushort" endianness="little-endian" default="19132">
 					Port of the new server. If 0 the server will try to connect to the default port.
 				</field>
 			</packet>

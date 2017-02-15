@@ -359,4 +359,8 @@ public class Buffer {
 		return length;
 	}
 
+	public boolean eof() {
+		return this._index >= this._buffer.length;
+	}
+
 }

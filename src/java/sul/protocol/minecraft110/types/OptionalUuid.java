@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import sul.utils.*;
 
-public class OptionalUuid extends Packet {
+public class OptionalUuid extends Stream {
 
 	public boolean hasUuid;
 	public UUID uuid;

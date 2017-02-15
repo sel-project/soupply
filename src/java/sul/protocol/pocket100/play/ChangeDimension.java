@@ -17,6 +17,11 @@ public class ChangeDimension extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// dimension
 	public static final int OVERWORLD = 0;
 	public static final int NETHER = 1;
@@ -54,7 +59,7 @@ public class ChangeDimension extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		dimension=this.readVarint();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		unknown2=this.readBool();
 	}
 

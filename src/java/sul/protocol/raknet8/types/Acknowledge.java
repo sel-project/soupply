@@ -10,7 +10,7 @@ package sul.protocol.raknet8.types;
 
 import sul.utils.*;
 
-public class Acknowledge extends Packet {
+public class Acknowledge extends Stream {
 
 	public boolean unique;
 	public int first;

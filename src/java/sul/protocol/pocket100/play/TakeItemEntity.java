@@ -17,26 +17,31 @@ public class TakeItemEntity extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
-	public long taken;
+	@Override
+	public int getId() {
+		return ID;
+	}
+
+	public long collected;
 	public long collector;
 
 	public TakeItemEntity() {}
 
-	public TakeItemEntity(long taken, long collector) {
-		this.taken = taken;
+	public TakeItemEntity(long collected, long collector) {
+		this.collected = collected;
 		this.collector = collector;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varlongLength(taken) + Buffer.varlongLength(collector) + 1;
+		return Buffer.varlongLength(collected) + Buffer.varlongLength(collector) + 1;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeVarlong(taken);
+		this.writeVarlong(collected);
 		this.writeVarlong(collector);
 		return this.getBuffer();
 	}
@@ -45,7 +50,7 @@ public class TakeItemEntity extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		taken=this.readVarlong();
+		collected=this.readVarlong();
 		collector=this.readVarlong();
 	}
 
@@ -57,7 +62,7 @@ public class TakeItemEntity extends Packet {
 
 	@Override
 	public String toString() {
-		return "TakeItemEntity(taken: " + this.taken + ", collector: " + this.collector + ")";
+		return "TakeItemEntity(collected: " + this.collected + ", collector: " + this.collector + ")";
 	}
 
 }

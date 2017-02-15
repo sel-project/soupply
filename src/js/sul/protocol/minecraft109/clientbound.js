@@ -46,7 +46,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -62,6 +62,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SpawnObject().decode(buffer);
 		}
@@ -97,7 +98,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -108,6 +109,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SpawnExperienceOrb().decode(buffer);
 		}
@@ -146,7 +148,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -157,6 +159,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SpawnGlobalEntity().decode(buffer);
 		}
@@ -204,7 +207,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -221,6 +224,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SpawnMob().decode(buffer);
 		}
@@ -266,7 +270,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -279,6 +283,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SpawnPainting().decode(buffer);
 		}
@@ -320,7 +325,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -334,6 +339,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SpawnPlayer().decode(buffer);
 		}
@@ -375,7 +381,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -385,6 +391,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Animation().decode(buffer);
 		}
@@ -416,7 +423,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -425,6 +432,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Statistics().decode(buffer);
 		}
@@ -460,7 +468,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -471,6 +479,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.BlockBreakAnimation().decode(buffer);
 		}
@@ -516,7 +525,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -527,6 +536,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.UpdateBlockEntity().decode(buffer);
 		}
@@ -586,7 +596,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -598,6 +608,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.BlockAction().decode(buffer);
 		}
@@ -631,7 +642,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -641,6 +652,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.BlockChange().decode(buffer);
 		}
@@ -679,10 +691,37 @@ const Clientbound = {
 			this.writeVaruint(12);
 			this.writeBytes(this.uuid);
 			this.writeVaruint(this.action);
+	switch(this.action) {
+		case 0:
+			this.writeBytes(this.uuid);
+			this.writeVaruint(this.action);
+			break;
+		case 1:
+			this.writeBytes(this.uuid);
+			this.writeVaruint(this.action);
+			break;
+		case 2:
+			this.writeBytes(this.uuid);
+			this.writeVaruint(this.action);
+			break;
+		case 3:
+			this.writeBytes(this.uuid);
+			this.writeVaruint(this.action);
+			break;
+		case 4:
+			this.writeBytes(this.uuid);
+			this.writeVaruint(this.action);
+			break;
+		case 5:
+			this.writeBytes(this.uuid);
+			this.writeVaruint(this.action);
+			break;
+		default: break;
+	}
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -717,6 +756,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.BossBar().decode(buffer);
 		}
@@ -754,7 +794,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -763,6 +803,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.ServerDifficulty().decode(buffer);
 		}
@@ -794,7 +835,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -803,6 +844,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.TabComplete().decode(buffer);
 		}
@@ -841,7 +883,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -851,6 +893,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.ChatMessage().decode(buffer);
 		}
@@ -884,7 +927,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -894,6 +937,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.MultiBlockChange().decode(buffer);
 		}
@@ -929,7 +973,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -940,6 +984,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.ConfirmTransaction().decode(buffer);
 		}
@@ -971,7 +1016,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -980,6 +1025,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.CloseWindow().decode(buffer);
 		}
@@ -1017,7 +1063,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1029,6 +1075,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.OpenWindow().decode(buffer);
 		}
@@ -1062,7 +1109,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1072,6 +1119,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.WindowItems().decode(buffer);
 		}
@@ -1128,7 +1176,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1139,6 +1187,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.WindowProperty().decode(buffer);
 		}
@@ -1174,7 +1223,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1185,6 +1234,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SetSlot().decode(buffer);
 		}
@@ -1218,7 +1268,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1228,6 +1278,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SetCooldown().decode(buffer);
 		}
@@ -1261,7 +1312,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1271,6 +1322,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.PluginMessage().decode(buffer);
 		}
@@ -1310,7 +1362,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1323,6 +1375,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.NamedSoundEffect().decode(buffer);
 		}
@@ -1354,7 +1407,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1363,6 +1416,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Disconnect().decode(buffer);
 		}
@@ -1433,7 +1487,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1443,6 +1497,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.EntityStatus().decode(buffer);
 		}
@@ -1480,7 +1535,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1492,6 +1547,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Explosion().decode(buffer);
 		}
@@ -1523,7 +1579,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1532,6 +1588,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.UnloadChunk().decode(buffer);
 		}
@@ -1591,7 +1648,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1601,6 +1658,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.ChangeGameState().decode(buffer);
 		}
@@ -1632,7 +1690,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1641,6 +1699,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.KeepAlive().decode(buffer);
 		}
@@ -1678,7 +1737,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1690,6 +1749,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.ChunkData().decode(buffer);
 		}
@@ -1776,7 +1836,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1788,6 +1848,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Effect().decode(buffer);
 		}
@@ -1879,7 +1940,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1894,6 +1955,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Particle().decode(buffer);
 		}
@@ -1960,7 +2022,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -1975,6 +2037,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.JoinGame().decode(buffer);
 		}
@@ -2020,7 +2083,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2036,6 +2099,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Map().decode(buffer);
 		}
@@ -2071,7 +2135,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2082,6 +2146,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.EntityRelativeMove().decode(buffer);
 		}
@@ -2121,7 +2186,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2134,6 +2199,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.EntityLookAndRelativeMove().decode(buffer);
 		}
@@ -2171,7 +2237,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2183,6 +2249,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.EntityLook().decode(buffer);
 		}
@@ -2214,7 +2281,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2223,6 +2290,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Entity().decode(buffer);
 		}
@@ -2258,7 +2326,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2269,6 +2337,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.VehicleMove().decode(buffer);
 		}
@@ -2300,7 +2369,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2309,6 +2378,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.OpenSignEditor().decode(buffer);
 		}
@@ -2350,7 +2420,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2361,6 +2431,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.PlayerAbilities().decode(buffer);
 		}
@@ -2394,10 +2465,22 @@ const Clientbound = {
 			this._buffer = [];
 			this.writeVaruint(44);
 			this.writeBigEndianByte(this.eventId);
+	switch(this.eventId) {
+		case 0:
+			this.writeBigEndianByte(this.eventId);
+			break;
+		case 1:
+			this.writeBigEndianByte(this.eventId);
+			break;
+		case 2:
+			this.writeBigEndianByte(this.eventId);
+			break;
+		default: break;
+	}
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2420,6 +2503,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.CombatEvent().decode(buffer);
 		}
@@ -2455,10 +2539,28 @@ const Clientbound = {
 			this._buffer = [];
 			this.writeVaruint(45);
 			this.writeVaruint(this.action);
+	switch(this.action) {
+		case 0:
+			this.writeVaruint(this.action);
+			break;
+		case 1:
+			this.writeVaruint(this.action);
+			break;
+		case 2:
+			this.writeVaruint(this.action);
+			break;
+		case 3:
+			this.writeVaruint(this.action);
+			break;
+		case 4:
+			this.writeVaruint(this.action);
+			break;
+		default: break;
+	}
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2485,6 +2587,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.PlayerListItem().decode(buffer);
 		}
@@ -2531,7 +2634,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2544,6 +2647,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.PlayerPositionAndLook().decode(buffer);
 		}
@@ -2577,7 +2681,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2587,6 +2691,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.UseBed().decode(buffer);
 		}
@@ -2618,7 +2723,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2627,6 +2732,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.DestroyEntities().decode(buffer);
 		}
@@ -2660,7 +2766,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2670,6 +2776,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.RemoveEntityEffect().decode(buffer);
 		}
@@ -2703,7 +2810,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2713,6 +2820,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.ResourcePackSend().decode(buffer);
 		}
@@ -2773,7 +2881,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2785,6 +2893,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Respawn().decode(buffer);
 		}
@@ -2818,7 +2927,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2828,6 +2937,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.EntityHeadLook().decode(buffer);
 		}
@@ -2864,10 +2974,31 @@ const Clientbound = {
 			this._buffer = [];
 			this.writeVaruint(53);
 			this.writeVaruint(this.action);
+	switch(this.action) {
+		case 0:
+			this.writeVaruint(this.action);
+			break;
+		case 1:
+			this.writeVaruint(this.action);
+			break;
+		case 2:
+			this.writeVaruint(this.action);
+			break;
+		case 3:
+			this.writeVaruint(this.action);
+			break;
+		case 4:
+			this.writeVaruint(this.action);
+			break;
+		case 5:
+			this.writeVaruint(this.action);
+			break;
+		default: break;
+	}
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2905,6 +3036,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.WorldBorder().decode(buffer);
 		}
@@ -2936,7 +3068,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2945,6 +3077,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Camera().decode(buffer);
 		}
@@ -2976,7 +3109,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -2985,6 +3118,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.HeldItemChange().decode(buffer);
 		}
@@ -3023,7 +3157,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3033,6 +3167,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.DisplayScoreboard().decode(buffer);
 		}
@@ -3066,7 +3201,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3076,6 +3211,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.EntityMetadata().decode(buffer);
 		}
@@ -3109,7 +3245,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3119,6 +3255,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.AttachEntity().decode(buffer);
 		}
@@ -3152,7 +3289,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3162,6 +3299,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.EntityVelocity().decode(buffer);
 		}
@@ -3197,7 +3335,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3208,6 +3346,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.EntityEquipment().decode(buffer);
 		}
@@ -3243,7 +3382,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3254,6 +3393,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SetExperience().decode(buffer);
 		}
@@ -3289,7 +3429,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3300,6 +3440,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.UpdateHealth().decode(buffer);
 		}
@@ -3346,7 +3487,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3358,6 +3499,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.ScoreboardObjective().decode(buffer);
 		}
@@ -3391,7 +3533,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3401,6 +3543,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SetPassengers().decode(buffer);
 		}
@@ -3438,10 +3581,33 @@ const Clientbound = {
 			this.writeVaruint(65);
 			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
 			this.writeBigEndianByte(this.mode);
+	switch(this.mode) {
+		case 0:
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			this.writeBigEndianByte(this.mode);
+			break;
+		case 1:
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			this.writeBigEndianByte(this.mode);
+			break;
+		case 2:
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			this.writeBigEndianByte(this.mode);
+			break;
+		case 3:
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			this.writeBigEndianByte(this.mode);
+			break;
+		case 4:
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			this.writeBigEndianByte(this.mode);
+			break;
+		default: break;
+	}
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3481,6 +3647,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Teams().decode(buffer);
 		}
@@ -3522,7 +3689,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3534,6 +3701,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.UpdateScore().decode(buffer);
 		}
@@ -3565,7 +3733,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3574,6 +3742,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SpawnPosition().decode(buffer);
 		}
@@ -3607,7 +3776,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3617,6 +3786,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.TimeUpdate().decode(buffer);
 		}
@@ -3652,10 +3822,28 @@ const Clientbound = {
 			this._buffer = [];
 			this.writeVaruint(69);
 			this.writeVaruint(this.action);
+	switch(this.action) {
+		case 0:
+			this.writeVaruint(this.action);
+			break;
+		case 1:
+			this.writeVaruint(this.action);
+			break;
+		case 2:
+			this.writeVaruint(this.action);
+			break;
+		case 3:
+			this.writeVaruint(this.action);
+			break;
+		case 4:
+			this.writeVaruint(this.action);
+			break;
+		default: break;
+	}
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3682,6 +3870,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.Title().decode(buffer);
 		}
@@ -3715,7 +3904,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3725,6 +3914,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.UpdateSign().decode(buffer);
 		}
@@ -3764,7 +3954,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3777,6 +3967,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.SoundEffect().decode(buffer);
 		}
@@ -3810,7 +4001,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3820,6 +4011,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.PlayerListHeaderAndFooter().decode(buffer);
 		}
@@ -3853,7 +4045,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3863,6 +4055,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.CollectItem().decode(buffer);
 		}
@@ -3902,7 +4095,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3915,6 +4108,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.EntityTeleport().decode(buffer);
 		}
@@ -3948,7 +4142,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -3958,6 +4152,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.EntityProperties().decode(buffer);
 		}
@@ -3997,7 +4192,7 @@ const Clientbound = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -4010,6 +4205,7 @@ const Clientbound = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Clientbound.EntityEffect().decode(buffer);
 		}

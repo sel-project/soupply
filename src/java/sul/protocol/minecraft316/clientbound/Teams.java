@@ -20,6 +20,11 @@ public class Teams extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public String name;
 	public byte mode;
 
@@ -74,6 +79,11 @@ public class Teams extends Packet {
 	public class CreateTeam extends Packet {
 
 		public static final byte MODE = (byte)0;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		// friendly flags
 		public static final byte FRIENDLY_FIRE = 1;
@@ -162,6 +172,11 @@ public class Teams extends Packet {
 
 		public static final byte MODE = (byte)1;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		@Override
 		public int length() {
 			return 0;
@@ -194,6 +209,11 @@ public class Teams extends Packet {
 	public class UpdateTeamInfo extends Packet {
 
 		public static final byte MODE = (byte)2;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		// friendly flags
 		public static final byte FRIENDLY_FIRE = 1;
@@ -278,6 +298,11 @@ public class Teams extends Packet {
 
 		public static final byte MODE = (byte)3;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public String[] players;
 
 		public AddPlayers() {}
@@ -320,6 +345,11 @@ public class Teams extends Packet {
 	public class RemovePlayers extends Packet {
 
 		public static final byte MODE = (byte)4;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public String[] players;
 

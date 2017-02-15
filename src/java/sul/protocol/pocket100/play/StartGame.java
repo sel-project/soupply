@@ -19,6 +19,11 @@ public class StartGame extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// dimension
 	public static final int OVERWORLD = 0;
 	public static final int NETHER = 1;
@@ -59,14 +64,14 @@ public class StartGame extends Packet {
 	public byte edition;
 	public float rainLevel;
 	public float lightingLevel;
-	public boolean cheatsEnabled;
+	public boolean commandsEnabled;
 	public boolean textureRequired;
 	public String levelId;
 	public String worldName;
 
 	public StartGame() {}
 
-	public StartGame(long entityId, long runtimeId, Tuples.FloatXYZ position, float yaw, float pitch, int seed, int dimension, int generator, int worldGamemode, int difficulty, Tuples.IntXYZ spawnPosition, boolean loadedInCreative, int time, byte edition, float rainLevel, float lightingLevel, boolean cheatsEnabled, boolean textureRequired, String levelId, String worldName) {
+	public StartGame(long entityId, long runtimeId, Tuples.FloatXYZ position, float yaw, float pitch, int seed, int dimension, int generator, int worldGamemode, int difficulty, Tuples.IntXYZ spawnPosition, boolean loadedInCreative, int time, byte edition, float rainLevel, float lightingLevel, boolean commandsEnabled, boolean textureRequired, String levelId, String worldName) {
 		this.entityId = entityId;
 		this.runtimeId = runtimeId;
 		this.position = position;
@@ -83,7 +88,7 @@ public class StartGame extends Packet {
 		this.edition = edition;
 		this.rainLevel = rainLevel;
 		this.lightingLevel = lightingLevel;
-		this.cheatsEnabled = cheatsEnabled;
+		this.commandsEnabled = commandsEnabled;
 		this.textureRequired = textureRequired;
 		this.levelId = levelId;
 		this.worldName = worldName;
@@ -114,7 +119,7 @@ public class StartGame extends Packet {
 		this.writeBigEndianByte(edition);
 		this.writeLittleEndianFloat(rainLevel);
 		this.writeLittleEndianFloat(lightingLevel);
-		this.writeBool(cheatsEnabled);
+		this.writeBool(commandsEnabled);
 		this.writeBool(textureRequired);
 		byte[] bgv2zwxjza=levelId.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)bgv2zwxjza.length); this.writeBytes(bgv2zwxjza);
 		byte[] d29ybgroyw1l=worldName.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)d29ybgroyw1l.length); this.writeBytes(d29ybgroyw1l);
@@ -127,7 +132,7 @@ public class StartGame extends Packet {
 		readBigEndianByte();
 		entityId=this.readVarlong();
 		runtimeId=this.readVarlong();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		seed=this.readVarint();
@@ -135,13 +140,13 @@ public class StartGame extends Packet {
 		generator=this.readVarint();
 		worldGamemode=this.readVarint();
 		difficulty=this.readVarint();
-		spawnPosition.x=this.readVarint(); spawnPosition.y=this.readVarint(); spawnPosition.z=this.readVarint();
+		spawnPosition=new Tuples.IntXYZ(); spawnPosition.x=this.readVarint(); spawnPosition.y=this.readVarint(); spawnPosition.z=this.readVarint();
 		loadedInCreative=this.readBool();
 		time=this.readVarint();
 		edition=readBigEndianByte();
 		rainLevel=readLittleEndianFloat();
 		lightingLevel=readLittleEndianFloat();
-		cheatsEnabled=this.readBool();
+		commandsEnabled=this.readBool();
 		textureRequired=this.readBool();
 		int bgvubgv2zwxjza=this.readVaruint(); levelId=new String(this.readBytes(bgvubgv2zwxjza), StandardCharsets.UTF_8);
 		int bgvud29ybgroyw1l=this.readVaruint(); worldName=new String(this.readBytes(bgvud29ybgroyw1l), StandardCharsets.UTF_8);
@@ -155,7 +160,7 @@ public class StartGame extends Packet {
 
 	@Override
 	public String toString() {
-		return "StartGame(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ", position: " + this.position.toString() + ", yaw: " + this.yaw + ", pitch: " + this.pitch + ", seed: " + this.seed + ", dimension: " + this.dimension + ", generator: " + this.generator + ", worldGamemode: " + this.worldGamemode + ", difficulty: " + this.difficulty + ", spawnPosition: " + this.spawnPosition.toString() + ", loadedInCreative: " + this.loadedInCreative + ", time: " + this.time + ", edition: " + this.edition + ", rainLevel: " + this.rainLevel + ", lightingLevel: " + this.lightingLevel + ", cheatsEnabled: " + this.cheatsEnabled + ", textureRequired: " + this.textureRequired + ", levelId: " + this.levelId + ", worldName: " + this.worldName + ")";
+		return "StartGame(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ", position: " + this.position.toString() + ", yaw: " + this.yaw + ", pitch: " + this.pitch + ", seed: " + this.seed + ", dimension: " + this.dimension + ", generator: " + this.generator + ", worldGamemode: " + this.worldGamemode + ", difficulty: " + this.difficulty + ", spawnPosition: " + this.spawnPosition.toString() + ", loadedInCreative: " + this.loadedInCreative + ", time: " + this.time + ", edition: " + this.edition + ", rainLevel: " + this.rainLevel + ", lightingLevel: " + this.lightingLevel + ", commandsEnabled: " + this.commandsEnabled + ", textureRequired: " + this.textureRequired + ", levelId: " + this.levelId + ", worldName: " + this.worldName + ")";
 	}
 
 }

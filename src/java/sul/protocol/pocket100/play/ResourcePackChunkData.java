@@ -20,6 +20,11 @@ public class ResourcePackChunkData extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public String id;
 	public int unknown1;
 	public long unknown2;

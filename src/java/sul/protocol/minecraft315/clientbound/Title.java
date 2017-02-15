@@ -19,6 +19,11 @@ public class Title extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int action;
 
 	public Title() {}
@@ -70,6 +75,11 @@ public class Title extends Packet {
 
 		public static final int ACTION = (int)0;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public String text;
 
 		public SetTitle() {}
@@ -112,6 +122,11 @@ public class Title extends Packet {
 	public class SetSubtitle extends Packet {
 
 		public static final int ACTION = (int)1;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public String text;
 
@@ -156,6 +171,11 @@ public class Title extends Packet {
 
 		public static final int ACTION = (int)2;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public String text;
 
 		public SetActionBar() {}
@@ -198,6 +218,11 @@ public class Title extends Packet {
 	public class SetTimings extends Packet {
 
 		public static final int ACTION = (int)3;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public int fadeIn;
 		public int stay;
@@ -250,6 +275,11 @@ public class Title extends Packet {
 
 		public static final int ACTION = (int)4;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		@Override
 		public int length() {
 			return 0;
@@ -282,6 +312,11 @@ public class Title extends Packet {
 	public class Reset extends Packet {
 
 		public static final int ACTION = (int)5;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		@Override
 		public int length() {

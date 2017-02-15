@@ -17,6 +17,11 @@ public class MovePlayer extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// animation
 	public static final byte FULL = 0;
 	public static final byte NONE = 1;
@@ -66,7 +71,7 @@ public class MovePlayer extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		entityId=this.readVarlong();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		headYaw=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();

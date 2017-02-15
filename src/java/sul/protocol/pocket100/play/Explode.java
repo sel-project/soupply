@@ -19,6 +19,11 @@ public class Explode extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public Tuples.FloatXYZ position;
 	public float radius;
 	public sul.protocol.pocket100.types.BlockPosition[] destroyedBlocks;
@@ -50,7 +55,7 @@ public class Explode extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
 		radius=readLittleEndianFloat();
 		int bgrlc3ryb3llzejs=this.readVaruint(); destroyedBlocks=new sul.protocol.pocket100.types.BlockPosition[bgrlc3ryb3llzejs]; for(int zgvzdhjvewvkqmxv=0;zgvzdhjvewvkqmxv<destroyedBlocks.length;zgvzdhjvewvkqmxv++){ destroyedBlocks[zgvzdhjvewvkqmxv]=new sul.protocol.pocket100.types.BlockPosition(); destroyedBlocks[zgvzdhjvewvkqmxv]._index=this._index; destroyedBlocks[zgvzdhjvewvkqmxv].decode(this._buffer); this._index=destroyedBlocks[zgvzdhjvewvkqmxv]._index; }
 	}

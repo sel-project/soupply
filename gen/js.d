@@ -329,6 +329,10 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				data ~= space ~ "\tthis." ~ name ~ " = " ~ name ~ ";\n";
 			}
 			data ~= space ~ "}\n\n";
+			if(variantField.length) {
+				// constructor for variants
+
+			}
 			// encode
 			{
 				data ~= space ~ "/** @return {Uint8Array} */\n";
@@ -340,13 +344,26 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
 					data ~= space ~ "\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createEncoding(field.type, "this." ~ name, field.endianness) ~ (c ? " }" : "") ~ "\n";
 				}
-				//TODO variants
+				if(variantField.length) {
+					data ~= "\tswitch(this." ~ toCamelCase(variantField) ~ ") {\n";
+					foreach(variant ; variants) {
+						data ~= "\t\tcase " ~ variant.value ~ ":\n";
+						foreach(i, field; fields) {
+							bool c = field.condition != "";
+							immutable name = field.name == "?" ? "unknown" ~ to!string(i + fields.length) : toCamelCase(field.name);
+							data ~= space ~ "\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createEncoding(field.type, "this." ~ name, field.endianness) ~ (c ? " }" : "") ~ "\n";
+						}
+						data ~= "\t\t\tbreak;\n";
+					}
+					data ~= "\t\tdefault: break;\n";
+					data ~= "\t}\n";
+				}
 				data ~= space ~ "\treturn new Uint8Array(this._buffer);\n";
 				data ~= space ~ "}\n\n";
 			}
 			// decode
 			{
-				data ~= space ~ "/** @param {Uint8Array}|{Array} buffer */\n";
+				data ~= space ~ "/** @param {(Uint8Array|Array)} buffer */\n";
 				data ~= space ~ "decode(_buffer) {\n";
 				data ~= space ~ "\tthis._buffer = Array.from(_buffer);\n";
 				data ~= space ~ "\tthis._index = 0;\n";
@@ -362,7 +379,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 						data ~= space ~ "\t\tcase " ~ variant.value ~ ":\n";
 						foreach(i, field; variant.fields) {
 							bool c = field.condition != "";
-							immutable name = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
+							immutable name = field.name == "?" ? "unknown" ~ to!string(i + fields.length) : toCamelCase(field.name);
 							data ~= space ~ "\t\t\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createDecoding(field.type, "this." ~ name, field.endianness) ~ (c ? " }" : "") ~ "\n";
 						}
 						data ~= space ~ "\t\t\tbreak;\n";
@@ -373,6 +390,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				data ~= space ~ "\treturn this;\n";
 				data ~= space ~ "}\n\n";
 				// from buffer
+				data ~= space ~ "/** @param {(Uint8Array|Array)} buffer */\n";
 				data ~= space ~ "static fromBuffer(buffer) {\n";
 				data ~= space ~ "\treturn new " ~ cont ~ "." ~ className ~ "().decode(buffer);\n";
 				data ~= space ~ "}\n\n";

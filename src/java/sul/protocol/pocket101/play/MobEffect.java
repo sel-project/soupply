@@ -17,6 +17,11 @@ public class MobEffect extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// event id
 	public static final byte ADD = 1;
 	public static final byte MODIFY = 2;

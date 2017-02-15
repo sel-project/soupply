@@ -19,6 +19,11 @@ public class FullChunkData extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public Tuples.IntXZ position;
 	public byte[] data;
 	public byte[] tiles;
@@ -50,7 +55,7 @@ public class FullChunkData extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		position.x=this.readVarint(); position.z=this.readVarint();
+		position=new Tuples.IntXZ(); position.x=this.readVarint(); position.z=this.readVarint();
 		int bgrhdge=this.readVaruint(); data=this.readBytes(bgrhdge);
 		int bhrpbgvz=this.readVaruint(); tiles=this.readBytes(bhrpbgvz);
 	}

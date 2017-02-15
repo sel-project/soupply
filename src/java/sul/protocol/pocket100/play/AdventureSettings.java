@@ -17,6 +17,11 @@ public class AdventureSettings extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// flags
 	public static final int IMMUTABLE_WORLD = 1;
 	public static final int PVP_DISABLED = 2;

@@ -10,7 +10,7 @@ package sul.protocol.minecraft210.types;
 
 import sul.utils.*;
 
-public class BlockChange extends Packet {
+public class BlockChange extends Stream {
 
 	public byte xz;
 	public byte y;

@@ -10,6 +10,10 @@ package sul.protocol.pocket101.play;
 
 import sul.utils.*;
 
+/**
+ * Sent by the player when it falls from a distance that causes damage, that can be
+ * influenced by its armour and its effects.
+ */
 public class PlayerFall extends Packet {
 
 	public static final byte ID = (byte)37;
@@ -17,6 +21,14 @@ public class PlayerFall extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
+	/**
+	 * Number of blocks the player has been in free falling before hitting the ground.
+	 */
 	public float distance;
 
 	public PlayerFall() {}

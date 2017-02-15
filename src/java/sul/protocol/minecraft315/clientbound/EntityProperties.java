@@ -19,6 +19,11 @@ public class EntityProperties extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int entityId;
 	public sul.protocol.minecraft315.types.Attribute[] attributes;
 

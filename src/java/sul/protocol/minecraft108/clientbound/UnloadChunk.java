@@ -17,6 +17,11 @@ public class UnloadChunk extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public Tuples.IntXZ position;
 
 	public UnloadChunk() {}
@@ -42,7 +47,7 @@ public class UnloadChunk extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		this.readVaruint();
-		position.x=readBigEndianInt(); position.z=readBigEndianInt();
+		position=new Tuples.IntXZ(); position.x=readBigEndianInt(); position.z=readBigEndianInt();
 	}
 
 	public static UnloadChunk fromBuffer(byte[] buffer) {

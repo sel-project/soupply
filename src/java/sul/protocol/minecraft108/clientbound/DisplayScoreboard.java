@@ -19,6 +19,11 @@ public class DisplayScoreboard extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// position
 	public static final byte LIST = 0;
 	public static final byte SIDEBAR = 1;

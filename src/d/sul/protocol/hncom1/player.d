@@ -240,6 +240,10 @@ class Add : Buffer {
 		public enum ubyte UNKNOWN = 0;
 		public enum ubyte ANDROID = 1;
 		public enum ubyte IOS = 2;
+		public enum ubyte FIRE_OS = 3;
+		public enum ubyte GEAR_VR = 4;
+		public enum ubyte APPLE_TV = 5;
+		public enum ubyte FIRE_TV = 6;
 		public enum ubyte WINDOWS10 = 7;
 
 		public enum string[] FIELDS = ["xuid", "edu", "packetLoss", "deviceOs", "deviceModel"];

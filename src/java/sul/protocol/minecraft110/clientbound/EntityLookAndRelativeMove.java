@@ -17,6 +17,11 @@ public class EntityLookAndRelativeMove extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int entityId;
 	public Tuples.ShortXYZ delta;
 	public byte yaw;
@@ -55,7 +60,7 @@ public class EntityLookAndRelativeMove extends Packet {
 		this._buffer = buffer;
 		this.readVaruint();
 		entityId=this.readVaruint();
-		delta.x=readBigEndianShort(); delta.y=readBigEndianShort(); delta.z=readBigEndianShort();
+		delta=new Tuples.ShortXYZ(); delta.x=readBigEndianShort(); delta.y=readBigEndianShort(); delta.z=readBigEndianShort();
 		yaw=readBigEndianByte();
 		pitch=readBigEndianByte();
 		onGround=this.readBool();

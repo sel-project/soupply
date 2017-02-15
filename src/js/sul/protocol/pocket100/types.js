@@ -28,7 +28,7 @@ const Types = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -38,6 +38,7 @@ const Types = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Types.Pack().decode(buffer);
 		}
@@ -45,45 +46,6 @@ const Types = {
 		/** @return {string} */
 		toString() {
 			return "Pack(id: " + this.id + ", version: " + this.version + ", size: " + this.size + ")";
-		}
-
-	},
-
-	BlockPosition: class extends Buffer {
-
-		constructor(x=0, y=0, z=0) {
-			super();
-			this.x = x;
-			this.y = y;
-			this.z = z;
-		}
-
-		/** @return {Uint8Array} */
-		encode() {
-			this._buffer = [];
-			this.writeVarint(this.x);
-			this.writeVaruint(this.y);
-			this.writeVarint(this.z);
-			return new Uint8Array(this._buffer);
-		}
-
-		/** @param {Uint8Array}|{Array} buffer */
-		decode(_buffer) {
-			this._buffer = Array.from(_buffer);
-			this._index = 0;
-			this.x=this.readVarint();
-			this.y=this.readVaruint();
-			this.z=this.readVarint();
-			return this;
-		}
-
-		static fromBuffer(buffer) {
-			return new Types.BlockPosition().decode(buffer);
-		}
-
-		/** @return {string} */
-		toString() {
-			return "BlockPosition(x: " + this.x + ", y: " + this.y + ", z: " + this.z + ")";
 		}
 
 	},
@@ -106,7 +68,7 @@ const Types = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -116,6 +78,7 @@ const Types = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Types.Slot().decode(buffer);
 		}
@@ -149,7 +112,7 @@ const Types = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -161,6 +124,7 @@ const Types = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Types.Attribute().decode(buffer);
 		}
@@ -168,6 +132,46 @@ const Types = {
 		/** @return {string} */
 		toString() {
 			return "Attribute(min: " + this.min + ", max: " + this.max + ", value: " + this.value + ", default: " + this.default + ", name: " + this.name + ")";
+		}
+
+	},
+
+	BlockPosition: class extends Buffer {
+
+		constructor(x=0, y=0, z=0) {
+			super();
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		}
+
+		/** @return {Uint8Array} */
+		encode() {
+			this._buffer = [];
+			this.writeVarint(this.x);
+			this.writeVaruint(this.y);
+			this.writeVarint(this.z);
+			return new Uint8Array(this._buffer);
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.x=this.readVarint();
+			this.y=this.readVaruint();
+			this.z=this.readVarint();
+			return this;
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		static fromBuffer(buffer) {
+			return new Types.BlockPosition().decode(buffer);
+		}
+
+		/** @return {string} */
+		toString() {
+			return "BlockPosition(x: " + this.x + ", y: " + this.y + ", z: " + this.z + ")";
 		}
 
 	},
@@ -188,7 +192,7 @@ const Types = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -197,6 +201,7 @@ const Types = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Types.Skin().decode(buffer);
 		}
@@ -228,7 +233,7 @@ const Types = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -239,6 +244,7 @@ const Types = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Types.PlayerList().decode(buffer);
 		}
@@ -246,6 +252,51 @@ const Types = {
 		/** @return {string} */
 		toString() {
 			return "PlayerList(uuid: " + this.uuid + ", entityId: " + this.entityId + ", displayName: " + this.displayName + ", skin: " + this.skin + ")";
+		}
+
+	},
+
+	Link: class extends Buffer {
+
+		// action
+		static get ADD(){ return 0; }
+		static get RIDE(){ return 1; }
+		static get REMOVE(){ return 2; }
+
+		constructor(from=0, to=0, action=0) {
+			super();
+			this.from = from;
+			this.to = to;
+			this.action = action;
+		}
+
+		/** @return {Uint8Array} */
+		encode() {
+			this._buffer = [];
+			this.writeVarlong(this.from);
+			this.writeVarlong(this.to);
+			this.writeBigEndianByte(this.action);
+			return new Uint8Array(this._buffer);
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.from=this.readVarlong();
+			this.to=this.readVarlong();
+			this.action=this.readBigEndianByte();
+			return this;
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		static fromBuffer(buffer) {
+			return new Types.Link().decode(buffer);
+		}
+
+		/** @return {string} */
+		toString() {
+			return "Link(from: " + this.from + ", to: " + this.to + ", action: " + this.action + ")";
 		}
 
 	},
@@ -273,7 +324,7 @@ const Types = {
 			return new Uint8Array(this._buffer);
 		}
 
-		/** @param {Uint8Array}|{Array} buffer */
+		/** @param {(Uint8Array|Array)} buffer */
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			this._index = 0;
@@ -282,6 +333,7 @@ const Types = {
 			return this;
 		}
 
+		/** @param {(Uint8Array|Array)} buffer */
 		static fromBuffer(buffer) {
 			return new Types.Recipe().decode(buffer);
 		}
@@ -289,6 +341,53 @@ const Types = {
 		/** @return {string} */
 		toString() {
 			return "Recipe(type: " + this.type + ", data: " + this.data + ")";
+		}
+
+	},
+
+	Rule: class extends Buffer {
+
+		// name
+		static get DROWNING_DAMAGE(){ return drowningdamage; }
+		static get FALL_DAMAGE(){ return falldamage; }
+		static get FIRE_DAMAGE(){ return firedamage; }
+		static get IMMUTABLE_WORLD(){ return immutableworld; }
+		static get PVP(){ return pvp; }
+
+		constructor(name="", value=false, unknown2=false) {
+			super();
+			this.name = name;
+			this.value = value;
+			this.unknown2 = unknown2;
+		}
+
+		/** @return {Uint8Array} */
+		encode() {
+			this._buffer = [];
+			var dghpcy5uyw1l=this.encodeString(this.name); this.writeVaruint(dghpcy5uyw1l.length); this.writeBytes(dghpcy5uyw1l);
+			this.writeBigEndianByte(this.value?1:0);
+			this.writeBigEndianByte(this.unknown2?1:0);
+			return new Uint8Array(this._buffer);
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this._index = 0;
+			this.name=this.decodeString(this.readBytes(this.readVaruint()));
+			this.value=this.readBigEndianByte()!==0;
+			this.unknown2=this.readBigEndianByte()!==0;
+			return this;
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		static fromBuffer(buffer) {
+			return new Types.Rule().decode(buffer);
+		}
+
+		/** @return {string} */
+		toString() {
+			return "Rule(name: " + this.name + ", value: " + this.value + ", unknown2: " + this.unknown2 + ")";
 		}
 
 	}

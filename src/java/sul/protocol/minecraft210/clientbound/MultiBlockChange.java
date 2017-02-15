@@ -19,6 +19,11 @@ public class MultiBlockChange extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public Tuples.IntXZ chunk;
 	public sul.protocol.minecraft210.types.BlockChange[] changes;
 
@@ -47,7 +52,7 @@ public class MultiBlockChange extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		this.readVaruint();
-		chunk.x=readBigEndianInt(); chunk.z=readBigEndianInt();
+		chunk=new Tuples.IntXZ(); chunk.x=readBigEndianInt(); chunk.z=readBigEndianInt();
 		int bgnoyw5nzxm=this.readVaruint(); changes=new sul.protocol.minecraft210.types.BlockChange[bgnoyw5nzxm]; for(int y2hhbmdlcw=0;y2hhbmdlcw<changes.length;y2hhbmdlcw++){ changes[y2hhbmdlcw]=new sul.protocol.minecraft210.types.BlockChange(); changes[y2hhbmdlcw]._index=this._index; changes[y2hhbmdlcw].decode(this._buffer); this._index=changes[y2hhbmdlcw]._index; }
 	}
 

@@ -17,6 +17,11 @@ public class AddItemEntity extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public long entityId;
 	public long runtimeId;
 	public sul.protocol.pocket100.types.Slot item;
@@ -57,8 +62,8 @@ public class AddItemEntity extends Packet {
 		entityId=this.readVarlong();
 		runtimeId=this.readVarlong();
 		item=new sul.protocol.pocket100.types.Slot(); item._index=this._index; item.decode(this._buffer); this._index=item._index;
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
-		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		motion=new Tuples.FloatXYZ(); motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 	}
 
 	public static AddItemEntity fromBuffer(byte[] buffer) {

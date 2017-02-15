@@ -19,6 +19,11 @@ public class Handshake extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// next
 	public static final int STATUS = 1;
 	public static final int LOGIN = 2;

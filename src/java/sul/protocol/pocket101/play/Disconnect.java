@@ -22,6 +22,11 @@ public class Disconnect extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * Indicates whether to display the main menu screen or a disconnection message.
 	 */

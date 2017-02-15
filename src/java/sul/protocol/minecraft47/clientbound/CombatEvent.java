@@ -19,6 +19,11 @@ public class CombatEvent extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte eventId;
 
 	public CombatEvent() {}
@@ -70,6 +75,11 @@ public class CombatEvent extends Packet {
 
 		public static final byte EVENT_ID = (byte)0;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		@Override
 		public int length() {
 			return 0;
@@ -102,6 +112,11 @@ public class CombatEvent extends Packet {
 	public class EndCombat extends Packet {
 
 		public static final byte EVENT_ID = (byte)1;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public int duration;
 		public int entityId;
@@ -149,6 +164,11 @@ public class CombatEvent extends Packet {
 	public class EntityDead extends Packet {
 
 		public static final byte EVENT_ID = (byte)2;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		public int playerId;
 		public int entityId;

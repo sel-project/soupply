@@ -19,6 +19,11 @@ public class AddEntity extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public long entityId;
 	public long runtimeId;
 	public int type;
@@ -28,11 +33,11 @@ public class AddEntity extends Packet {
 	public float yaw;
 	public sul.protocol.pocket101.types.Attribute[] attributes;
 	public sul.metadata.Pocket101 metadata;
-	public long[] links;
+	public sul.protocol.pocket101.types.Link[] links;
 
 	public AddEntity() {}
 
-	public AddEntity(long entityId, long runtimeId, int type, Tuples.FloatXYZ position, Tuples.FloatXYZ motion, float pitch, float yaw, sul.protocol.pocket101.types.Attribute[] attributes, sul.metadata.Pocket101 metadata, long[] links) {
+	public AddEntity(long entityId, long runtimeId, int type, Tuples.FloatXYZ position, Tuples.FloatXYZ motion, float pitch, float yaw, sul.protocol.pocket101.types.Attribute[] attributes, sul.metadata.Pocket101 metadata, sul.protocol.pocket101.types.Link[] links) {
 		this.entityId = entityId;
 		this.runtimeId = runtimeId;
 		this.type = type;
@@ -47,7 +52,7 @@ public class AddEntity extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varlongLength(entityId) + Buffer.varlongLength(runtimeId) + Buffer.varuintLength(type) + Buffer.varuintLength(attributes.length) + metadata.length() + Buffer.varuintLength(links.length) + 33; for(sul.protocol.pocket101.types.Attribute yxr0cmlidxrlcw:attributes){ length+=yxr0cmlidxrlcw.length(); };for(long bglua3m:links){ length+=Buffer.varlongLength(bglua3m); } return length;
+		int length=Buffer.varlongLength(entityId) + Buffer.varlongLength(runtimeId) + Buffer.varuintLength(type) + Buffer.varuintLength(attributes.length) + metadata.length() + Buffer.varuintLength(links.length) + 33; for(sul.protocol.pocket101.types.Attribute yxr0cmlidxrlcw:attributes){ length+=yxr0cmlidxrlcw.length(); };for(sul.protocol.pocket101.types.Link bglua3m:links){ length+=bglua3m.length(); } return length;
 	}
 
 	@Override
@@ -63,7 +68,7 @@ public class AddEntity extends Packet {
 		this.writeLittleEndianFloat(yaw);
 		this.writeVaruint((int)attributes.length); for(sul.protocol.pocket101.types.Attribute yxr0cmlidxrlcw:attributes){ this.writeBytes(yxr0cmlidxrlcw.encode()); }
 		this.writeBytes(metadata.encode());
-		this.writeVaruint((int)links.length); for(long bglua3m:links){ this.writeVarlong(bglua3m); }
+		this.writeVaruint((int)links.length); for(sul.protocol.pocket101.types.Link bglua3m:links){ this.writeBytes(bglua3m.encode()); }
 		return this.getBuffer();
 	}
 
@@ -74,13 +79,13 @@ public class AddEntity extends Packet {
 		entityId=this.readVarlong();
 		runtimeId=this.readVarlong();
 		type=this.readVaruint();
-		position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
-		motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
+		position=new Tuples.FloatXYZ(); position.x=readLittleEndianFloat(); position.y=readLittleEndianFloat(); position.z=readLittleEndianFloat();
+		motion=new Tuples.FloatXYZ(); motion.x=readLittleEndianFloat(); motion.y=readLittleEndianFloat(); motion.z=readLittleEndianFloat();
 		pitch=readLittleEndianFloat();
 		yaw=readLittleEndianFloat();
 		int bgf0dhjpynv0zxm=this.readVaruint(); attributes=new sul.protocol.pocket101.types.Attribute[bgf0dhjpynv0zxm]; for(int yxr0cmlidxrlcw=0;yxr0cmlidxrlcw<attributes.length;yxr0cmlidxrlcw++){ attributes[yxr0cmlidxrlcw]=new sul.protocol.pocket101.types.Attribute(); attributes[yxr0cmlidxrlcw]._index=this._index; attributes[yxr0cmlidxrlcw].decode(this._buffer); this._index=attributes[yxr0cmlidxrlcw]._index; }
 		metadata=new sul.metadata.Pocket101(); metadata._index=this._index; metadata.decode(this._buffer); this._index=metadata._index;
-		int bgxpbmtz=this.readVaruint(); links=new long[bgxpbmtz]; for(int bglua3m=0;bglua3m<links.length;bglua3m++){ links[bglua3m]=this.readVarlong(); }
+		int bgxpbmtz=this.readVaruint(); links=new sul.protocol.pocket101.types.Link[bgxpbmtz]; for(int bglua3m=0;bglua3m<links.length;bglua3m++){ links[bglua3m]=new sul.protocol.pocket101.types.Link(); links[bglua3m]._index=this._index; links[bglua3m].decode(this._buffer); this._index=links[bglua3m]._index; }
 	}
 
 	public static AddEntity fromBuffer(byte[] buffer) {
@@ -91,7 +96,7 @@ public class AddEntity extends Packet {
 
 	@Override
 	public String toString() {
-		return "AddEntity(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ", type: " + this.type + ", position: " + this.position.toString() + ", motion: " + this.motion.toString() + ", pitch: " + this.pitch + ", yaw: " + this.yaw + ", attributes: " + Arrays.deepToString(this.attributes) + ", metadata: " + this.metadata.toString() + ", links: " + Arrays.toString(this.links) + ")";
+		return "AddEntity(entityId: " + this.entityId + ", runtimeId: " + this.runtimeId + ", type: " + this.type + ", position: " + this.position.toString() + ", motion: " + this.motion.toString() + ", pitch: " + this.pitch + ", yaw: " + this.yaw + ", attributes: " + Arrays.deepToString(this.attributes) + ", metadata: " + this.metadata.toString() + ", links: " + Arrays.deepToString(this.links) + ")";
 	}
 
 }

@@ -17,6 +17,11 @@ public class BlockAction extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// action
 	public static final byte NOTE_BLOCK_HARP = 0;
 	public static final byte NOTE_BLOCK_BASS_DRUM = 1;

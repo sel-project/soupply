@@ -17,6 +17,11 @@ public class ClientStatus extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// action
 	public static final int RESPAWN = 0;
 	public static final int REQUEST_STATS = 1;

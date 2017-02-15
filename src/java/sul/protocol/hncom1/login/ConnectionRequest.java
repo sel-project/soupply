@@ -22,6 +22,11 @@ public class ConnectionRequest extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	/**
 	 * Version of the protocol used by the client that must match the hub's one
 	 */

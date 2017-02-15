@@ -17,6 +17,11 @@ public class Camera extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public long unknown0;
 	public long unknown1;
 

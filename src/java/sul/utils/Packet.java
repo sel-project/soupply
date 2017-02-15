@@ -7,17 +7,8 @@
  */
 package sul.utils;
 
-public abstract class Packet extends Buffer {
+public abstract class Packet extends Stream {
 
-	public final void reset() {
-		this._buffer = new byte[0];
-		this._index = 0;
-	}
-
-	public abstract int length();
-
-	public abstract byte[] encode();
-
-	public abstract void decode(byte[] buffer);
+	public abstract int getId();
 
 }

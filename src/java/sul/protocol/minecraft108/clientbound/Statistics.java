@@ -19,6 +19,11 @@ public class Statistics extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public sul.protocol.minecraft108.types.Statistic[] statistics;
 
 	public Statistics() {}

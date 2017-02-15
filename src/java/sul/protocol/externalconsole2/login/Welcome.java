@@ -23,6 +23,11 @@ public class Welcome extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public byte status;
 
 	public Welcome() {}
@@ -76,6 +81,11 @@ public class Welcome extends Packet {
 	public class Accepted extends Packet {
 
 		public static final byte STATUS = (byte)0;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		/**
 		 * Indicates whether the external console can execute command remotely through the
@@ -170,6 +180,11 @@ public class Welcome extends Packet {
 
 		public static final byte STATUS = (byte)1;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		@Override
 		public int length() {
 			return 0;
@@ -206,6 +221,11 @@ public class Welcome extends Packet {
 	public class TimedOut extends Packet {
 
 		public static final byte STATUS = (byte)2;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		@Override
 		public int length() {

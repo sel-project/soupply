@@ -10,7 +10,7 @@ package sul.protocol.minecraft47.types;
 
 import sul.utils.*;
 
-public class Icon extends Packet {
+public class Icon extends Stream {
 
 	// direction and type
 	public static final byte WHITE_ARROW = 0;
@@ -48,7 +48,7 @@ public class Icon extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		directionAndType=readBigEndianByte();
-		position.x=readBigEndianByte(); position.z=readBigEndianByte();
+		position=new Tuples.ByteXZ(); position.x=readBigEndianByte(); position.z=readBigEndianByte();
 	}
 
 	@Override

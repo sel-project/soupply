@@ -17,6 +17,11 @@ public class EntityRelativeMove extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int entityId;
 	public Tuples.ByteXYZ delta;
 	public boolean onGround;
@@ -49,7 +54,7 @@ public class EntityRelativeMove extends Packet {
 		this._buffer = buffer;
 		this.readVaruint();
 		entityId=this.readVaruint();
-		delta.x=readBigEndianByte(); delta.y=readBigEndianByte(); delta.z=readBigEndianByte();
+		delta=new Tuples.ByteXYZ(); delta.x=readBigEndianByte(); delta.y=readBigEndianByte(); delta.z=readBigEndianByte();
 		onGround=this.readBool();
 	}
 

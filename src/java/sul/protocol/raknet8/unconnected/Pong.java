@@ -20,6 +20,11 @@ public class Pong extends Packet {
 	public static final boolean CLIENTBOUND = true;
 	public static final boolean SERVERBOUND = false;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public long pingId;
 	public long serverId;
 	public byte[] magic = new byte[16];

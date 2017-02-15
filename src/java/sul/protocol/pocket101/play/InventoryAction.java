@@ -17,6 +17,11 @@ public class InventoryAction extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public int action;
 	public sul.protocol.pocket101.types.Slot item;
 

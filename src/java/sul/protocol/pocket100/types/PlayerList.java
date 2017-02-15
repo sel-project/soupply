@@ -13,7 +13,7 @@ import java.util.UUID;
 
 import sul.utils.*;
 
-public class PlayerList extends Packet {
+public class PlayerList extends Stream {
 
 	public UUID uuid;
 	public long entityId;

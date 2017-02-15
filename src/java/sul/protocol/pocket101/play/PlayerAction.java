@@ -17,6 +17,11 @@ public class PlayerAction extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// action
 	public static final int START_BREAK = 0;
 	public static final int ABORT_BREAK = 1;

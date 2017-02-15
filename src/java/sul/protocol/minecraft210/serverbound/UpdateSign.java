@@ -20,6 +20,11 @@ public class UpdateSign extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	public long position;
 	public String[] lines = new String[4];
 

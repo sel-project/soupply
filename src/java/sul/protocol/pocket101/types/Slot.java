@@ -17,7 +17,7 @@ import sul.utils.*;
  * count (0-255) and, optionally, an nbt tag for enchantments, custom name, colours
  * and more.
  */
-public class Slot extends Packet {
+public class Slot extends Stream {
 
 	/**
 	 * Item's id or 0 if the slot is empty.

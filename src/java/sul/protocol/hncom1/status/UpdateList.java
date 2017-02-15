@@ -23,6 +23,11 @@ public class UpdateList extends Packet {
 	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 	// list
 	public static final byte WHITELIST = 0;
 	public static final byte BLACKLIST = 1;
@@ -97,6 +102,11 @@ public class UpdateList extends Packet {
 
 		public static final byte TYPE = (byte)0;
 
+	@Override
+	public int getId() {
+		return ID;
+	}
+
 		public int hubId;
 
 		public ByHubId() {}
@@ -139,6 +149,11 @@ public class UpdateList extends Packet {
 	public class ByName extends Packet {
 
 		public static final byte TYPE = (byte)1;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		/**
 		 * Case-insensitive player's username. Spaces may be replaced by dashes.
@@ -185,6 +200,11 @@ public class UpdateList extends Packet {
 	public class ByUuid extends Packet {
 
 		public static final byte TYPE = (byte)2;
+
+	@Override
+	public int getId() {
+		return ID;
+	}
 
 		// game
 		public static final byte POCKET = 1;
