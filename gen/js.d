@@ -125,11 +125,11 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 			// write
 			utils ~= "\twriteVar" ~ sign ~ varint[0] ~ "(a) {\n";
 			if(sign.length) {
-				utils ~= "\t\tthis._buffer.push(a & 0x7F);\n";
-				utils ~= "\t\twhile((a & 0x80) != 0) {\n";
+				utils ~= "\t\twhile(a > 127) {\n";
+				utils ~= "\t\t\tthis._buffer.push(a & 127 | 128);\n";
 				utils ~= "\t\t\ta >>>= 7;\n";
-				utils ~= "\t\t\tthis._buffer.push(a & 0x7F);\n";
 				utils ~= "\t\t}\n";
+				utils ~= "\t\tthis._buffer.push(a & 255);\n";
 			} else {
 				utils ~= "\t\tthis.writeVaru" ~ varint[0] ~ "((a >> 1) | (a << " ~ to!string(varint[2]) ~ "));\n";
 			}
@@ -140,8 +140,8 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				utils ~= "\t\tvar limit = 0;\n";
 				utils ~= "\t\tvar ret = 0;\n";
 				utils ~= "\t\tdo {\n";
-				utils ~= "\t\t\tret |= (this._buffer[0] & 0x7F) << (limit * 7);\n";
-				utils ~= "\t\t} while((this._buffer.shift() & 0x80) != 0 && ++limit < " ~ to!string(varint[1]) ~ ");\n";
+				utils ~= "\t\t\tret |= (this._buffer[0] & 127) << (limit * 7);\n";
+				utils ~= "\t\t} while(this._buffer.shift() > 127 && ++limit < " ~ to!string(varint[1]) ~ ");\n";
 				utils ~= "\t\treturn ret;\n";
 			} else {
 				utils ~= "\t\tvar ret = this.readVaru" ~ varint[0] ~ "();\n";;

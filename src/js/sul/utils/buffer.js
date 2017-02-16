@@ -214,19 +214,19 @@ class Buffer {
 	}
 
 	writeVarushort(a) {
-		this._buffer.push(a & 0x7F);
-		while((a & 0x80) != 0) {
+		while(a > 127) {
+			this._buffer.push(a & 127 | 128);
 			a >>>= 7;
-			this._buffer.push(a & 0x7F);
 		}
+		this._buffer.push(a & 255);
 	}
 
 	readVarushort() {
 		var limit = 0;
 		var ret = 0;
 		do {
-			ret |= (this._buffer[0] & 0x7F) << (limit * 7);
-		} while((this._buffer.shift() & 0x80) != 0 && ++limit < 3);
+			ret |= (this._buffer[0] & 127) << (limit * 7);
+		} while(this._buffer.shift() > 127 && ++limit < 3);
 		return ret;
 	}
 
@@ -240,19 +240,19 @@ class Buffer {
 	}
 
 	writeVaruint(a) {
-		this._buffer.push(a & 0x7F);
-		while((a & 0x80) != 0) {
+		while(a > 127) {
+			this._buffer.push(a & 127 | 128);
 			a >>>= 7;
-			this._buffer.push(a & 0x7F);
 		}
+		this._buffer.push(a & 255);
 	}
 
 	readVaruint() {
 		var limit = 0;
 		var ret = 0;
 		do {
-			ret |= (this._buffer[0] & 0x7F) << (limit * 7);
-		} while((this._buffer.shift() & 0x80) != 0 && ++limit < 5);
+			ret |= (this._buffer[0] & 127) << (limit * 7);
+		} while(this._buffer.shift() > 127 && ++limit < 5);
 		return ret;
 	}
 
@@ -266,19 +266,19 @@ class Buffer {
 	}
 
 	writeVarulong(a) {
-		this._buffer.push(a & 0x7F);
-		while((a & 0x80) != 0) {
+		while(a > 127) {
+			this._buffer.push(a & 127 | 128);
 			a >>>= 7;
-			this._buffer.push(a & 0x7F);
 		}
+		this._buffer.push(a & 255);
 	}
 
 	readVarulong() {
 		var limit = 0;
 		var ret = 0;
 		do {
-			ret |= (this._buffer[0] & 0x7F) << (limit * 7);
-		} while((this._buffer.shift() & 0x80) != 0 && ++limit < 10);
+			ret |= (this._buffer[0] & 127) << (limit * 7);
+		} while(this._buffer.shift() > 127 && ++limit < 10);
 		return ret;
 	}
 

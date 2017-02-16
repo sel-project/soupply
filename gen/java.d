@@ -130,11 +130,11 @@ public final class About {
 			// write
 			io ~= "\tpublic void writeVar" ~ sign ~ varint[0] ~ "(" ~ varint[0] ~ " a) {\n";
 			if(sign.length) {
-				io ~= "\t\tthis._buffer[this._index++] = (byte)(a & 0x7F);\n";
-				io ~= "\t\twhile((a & 0x80) != 0) {\n";
+				io ~= "\t\twhile(a > 127) {\n";
+				io ~= "\t\t\tthis._buffer[this._index++] = (byte)(a & 127 | 128);\n";
 				io ~= "\t\t\ta >>>= 7;\n";
-				io ~= "\t\t\tthis._buffer[this._index++] = (byte)(a & 0x7F);\n";
 				io ~= "\t\t}\n";
+				io ~= "\t\tthis._buffer[this._index++] = (byte)(a & 255);\n";
 			} else {
 				io ~= "\t\tthis.writeVaru" ~ varint[0] ~ "((" ~ varint[0] ~ ")((a >> 1) | (a << " ~ to!string(varint[2]) ~ ")));\n";
 			}
@@ -145,8 +145,8 @@ public final class About {
 				io ~= "\t\tint limit = 0;\n";
 				io ~= "\t\t" ~ varint[0] ~ " ret = 0;\n";
 				io ~= "\t\tdo {\n";
-				io ~= "\t\t\tret |= (this._buffer[this._index] & 0x7F) << (limit * 7);\n";
-				io ~= "\t\t} while((this._buffer[this._index++] & 0x80) != 0 && ++limit < " ~ to!string(varint[1]) ~ ");\n";
+				io ~= "\t\t\tret |= (this._buffer[this._index] & 127) << (limit * 7);\n";
+				io ~= "\t\t} while(this._buffer[this._index++] > 127 && ++limit < " ~ to!string(varint[1]) ~ " && this._index < this._buffer.length);\n";
 				io ~= "\t\treturn ret;\n";
 			} else {
 				io ~= "\t\t" ~ varint[0] ~ " ret = this.readVaru" ~ varint[0] ~ "();\n";;
@@ -156,7 +156,7 @@ public final class About {
 			// length
 			io ~= "\tpublic static int var" ~ sign ~ varint[0] ~ "Length(" ~ varint[0] ~ " a) {\n";
 			io ~= "\t\tint length = 1;\n";
-			io ~= "\t\twhile((a & 0x80) != 0 && length < " ~ to!string(varint[1]) ~ ") {\n";
+			io ~= "\t\twhile((a & 128) != 0 && length < " ~ to!string(varint[1]) ~ ") {\n";
 			io ~= "\t\t\tlength++;\n";
 			io ~= "\t\t\ta >>>= 7;\n";
 			io ~= "\t\t}\n";
