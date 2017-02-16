@@ -67,7 +67,6 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 	utils ~= "class Buffer {\n\n";
 	utils ~= "\tconstructor() {\n";
 	utils ~= "\t\tthis._buffer = [];\n";
-	utils ~= "\t\tthis._index = 0;\n";
 	utils ~= "\t}\n\n";
 	utils ~= "\twriteBytes(a) {\n";
 	//utils ~= "\t\tthis._buffer.concat(a);\n"; // doesn't work
@@ -97,7 +96,6 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 			utils ~= "\t}\n\n";
 			// read
 			utils ~= "\tread" ~ e ~ capitalize(type[0]) ~ "(a) {\n";
-			//utils ~= "\t\tif(this._buffer.length < this._index + " ~ to!string(type[1]) ~ ") return 0;\n";
 			if(type[1] == 1) utils ~= "\t\treturn this._buffer.shift();\n";
 			else {
 				utils ~= "\t\tvar _ret = 0;\n";
@@ -256,16 +254,16 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 					auto ca = type in prs.data.arrays;
 					if(ca) {
 						auto c = *ca;
-						ret ~= createDecoding(c.length, "var " ~ hash("l" ~ name), c.endianness);
+						ret ~= createDecoding(c.length, "var " ~ hash("\0" ~ name), c.endianness);
 					} else {
-						ret ~= createDecoding(prs.data.arrayLength, "var " ~ hash("l" ~ name));
+						ret ~= createDecoding(prs.data.arrayLength, "var " ~ hash("\0" ~ name));
 					}
 					ret ~= " ";
 				} else {
-					ret ~= "var " ~ hash("l" ~ name) ~ "=" ~ conv[lo+1..lc] ~ "; ";
+					ret ~= "var " ~ hash("\0" ~ name) ~ "=" ~ conv[lo+1..lc] ~ "; ";
 				}
-				if(cnt == "ubyte") return ret ~ name ~ "=this.readBytes(" ~ hash("l" ~ name) ~ ");";
-				else return ret ~ name ~ "=[]; for(var " ~ hash(name) ~ " in " ~ name ~ "){ " ~ createDecoding(nt, name ~ "[" ~ hash(name) ~ "]") ~ " }";
+				if(cnt == "ubyte") return ret ~ name ~ "=this.readBytes(" ~ hash("\0" ~ name) ~ ");";
+				else return ret ~ name ~ "=[]; for(var " ~ hash(name) ~ "=0;" ~ hash(name) ~ "<" ~ hash("\0" ~ name) ~ ";" ~ hash(name) ~ "++){ " ~ createDecoding(nt, name ~ "[" ~ hash(name) ~ "]") ~ " }";
 			}
 			auto ts = conv.lastIndexOf("<");
 			if(ts > 0) {
@@ -287,7 +285,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 			else return name ~ "=" ~ convert(type) ~ ".fromBuffer(this._buffer); this._buffer=" ~ name ~ "._buffer;";
 		}
 
-		void writeFields(ref string data, string space, string className, Field[] fields, string cont, ptrdiff_t id=-1, string variantField="", Variant[] variants=[]) {
+		void writeFields(ref string data, string space, string className, Field[] fields, string cont, ptrdiff_t id=-1, string variantField="", Variant[] variants=[], string length="") {
 			// constants
 			foreach(field ; fields) {
 				if(field.constants.length) {
@@ -310,7 +308,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 			bool desc = false;
 			foreach(i, field; fields) {
 				immutable name = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
-				f ~= name ~ "=" ~ defaultValue(field.type);
+				f ~= name ~ "=" ~ (field.def.length ? constOf(field.def) : defaultValue(field.type));
 				desc |= field.description.length != 0;
 			}
 			if(desc) {
@@ -361,6 +359,13 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 					data ~= "\t\tdefault: break;\n";
 					data ~= "\t}\n";
 				}
+				if(length.length) {
+					data ~= space ~ "\tvar _length = this._buffer.length;\n";
+					data ~= space ~ "\t" ~ createEncoding(length, "_length") ~ "\n";
+					data ~= space ~ "\tvar _length_array = [];\n";
+					data ~= space ~ "\twhile(this._buffer.length > _length) _length_array.push(this._buffer.pop());\n";
+					data ~= space ~ "\twhile(_length_array.length > 0) this._buffer.unshift(_length_array.shift());\n";
+				}
 				data ~= space ~ "\treturn new Uint8Array(this._buffer);\n";
 				data ~= space ~ "}\n\n";
 			}
@@ -369,7 +374,11 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				data ~= space ~ "/** @param {(Uint8Array|Array)} buffer */\n";
 				data ~= space ~ "decode(_buffer) {\n";
 				data ~= space ~ "\tthis._buffer = Array.from(_buffer);\n";
-				data ~= space ~ "\tthis._index = 0;\n";
+				if(length.length) {
+					data ~= space ~ "\t" ~ createDecoding(length, "var _length") ~ "\n";
+					data ~= space ~ "\t_buffer = this._buffer.slice(_length);\n";
+					data ~= space ~ "\tif(this._buffer.length > _length) this._buffer.length = _length;\n";
+				}
 				if(id >= 0) data ~= space ~ "\t" ~ createDecoding(prs.data.id, "var _id") ~ "\n";
 				foreach(i, field; fields) {
 					bool c = field.condition != "";
@@ -389,6 +398,9 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 					}
 					data ~= space ~ "\t\tdefault: break;\n";
 					data ~= space ~ "\t}\n";
+				}
+				if(length.length) {
+					data ~= space ~ "\tthis._buffer = _buffer;\n";
 				}
 				data ~= space ~ "\treturn this;\n";
 				data ~= space ~ "}\n\n";
@@ -420,7 +432,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 
 				}
 				data ~= "\t" ~ toPascalCase(type.name) ~ ": class extends Buffer {\n\n";
-				writeFields(data, "\t\t", toPascalCase(type.name), type.fields, "Types");
+				writeFields(data, "\t\t", toPascalCase(type.name), type.fields, "Types", -1, "", [], type.length);
 				data ~= "\t}" ~ (i != prs.data.types.length - 1 ? "," : "") ~ "\n\n";
 			}
 			data ~= "}\n\n";

@@ -396,7 +396,7 @@ alias varulong = var!ulong;
 					if(i != 0) data ~= "\n";
 					data ~= ddoc(space, field.description);
 				}
-				data ~= space ~ "public " ~ convertType(field.type) ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ ";\n";
+				data ~= space ~ "public " ~ convertType(field.type) ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ (field.def.length ? " = " ~ constOf(field.def) : "") ~ ";\n";
 				if(i == fields.length - 1) data ~= "\n";
 			}
 			// constructors
@@ -406,7 +406,7 @@ alias varulong = var!ulong;
 				foreach(i, field; fields) {
 					immutable type = convertType(field.type);
 					immutable p = type.canFind('[');
-					args ~= type ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ (i ? ("=" ~ (p ? "(" : "") ~ type ~ (p ? ")" : "") ~ ".init") : "");
+					args ~= type ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ (i ? "=" ~ (field.def.length ? constOf(field.def) : (p ? "(" : "") ~ type ~ (p ? ")" : "") ~ ".init") : "");
 				}
 				data ~= space ~ "public pure nothrow @safe @nogc this(" ~ args.join(", ") ~ ") {\n";
 				foreach(i, field; fields) {
@@ -433,15 +433,31 @@ alias varulong = var!ulong;
 		t ~= "import std.bitmanip : write, peek;\nstatic import std.conv;\nimport std.system : Endian;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\nimport sul.utils.buffer;\nimport sul.utils.var;\n\n";
 		if(game in metadatas) t ~= "import sul.metadata." ~ game ~ ";\n\n";
 		foreach(type ; prts.data.types) {
+			immutable has_length = type.length.length != 0;
 			if(type.description.length) t ~= ddoc("", type.description);
 			t ~= "struct " ~ toPascalCase(type.name) ~ " {\n\n";
 			writeFields(t, "\t", type.fields, false);
 			// encoding
-			t ~= "\tpublic pure nothrow @safe void encode(Buffer buffer) {\n\t\twith(buffer) {\n";
+			t ~= "\tpublic pure nothrow @safe void encode(Buffer " ~ (has_length ? "o_" : "") ~ "buffer) {\n";
+			if(has_length) t ~= "\t\tBuffer buffer = new Buffer();\n";
+			t ~= "\t\twith(buffer) {\n";
 			createEncodings("\t\t\t", t, type.fields);
-			t ~= "\t\t}\n\t}\n\n";
+			t ~= "\t\t}\n";
+			if(type.length.length) {
+				t ~= "\t\twith(o_buffer){ " ~ createEncoding(type.length, "cast(" ~ convertType(type.length) ~ ")buffer._buffer.length") ~ " }\n";
+				t ~= "\t\to_buffer.writeBytes(buffer._buffer);\n";
+			}
+			t ~= "\t}\n\n";
 			// decoding
-			t ~= "\tpublic pure nothrow @safe void decode(Buffer buffer) {\n\t\twith(buffer) {\n";
+			t ~= "\tpublic pure nothrow @safe void decode(Buffer " ~ (has_length ? "o_" : "") ~ "buffer) {\n";
+			if(has_length) {
+				t ~= "\t\tBuffer buffer = new Buffer();\n";
+				t ~= "\t\twith(o_buffer) {\n";
+				t ~= "\t\t\t" ~ createDecoding(type.length, "immutable _length") ~ "\n";
+				t ~= "\t\t\tbuffer._buffer = readBytes(_length);\n";
+				t ~= "\t\t}\n";
+			}
+			t ~= "\t\twith(buffer) {\n";
 			createDecodings("\t\t\t", t, type.fields);
 			t ~= "\t\t}\n\t}\n\n";
 			createToString(t, "\t", toPascalCase(type.name), type.fields, false);

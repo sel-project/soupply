@@ -87,6 +87,27 @@
 			<field name="data" type="bytes" />
 		</type>
 
+		<type name="chunk-data" length="">
+			<field name="sections" type="section[]" />
+			<field name="heights" type="ushort[256]" />
+			<field name="biomes" type="ubyte[256]" />
+			<field name="borders" type="ubyte[]" />
+			<field name="extra-data" type="extra-data[]" />
+		</type>
+
+		<type name="section">
+			<field name="storage-version" type="ubyte" default="0" />
+			<field name="block-ids" type="ubyte[4096]" />
+			<field name="block-metas" type="ubyte[2048]" />
+			<field name="sky-light" type="ubyte[2048]" />
+			<field name="block-light" type="ubyte[2048]" />
+		</type>
+
+		<type name="extra-data">
+			<field name="key" type="varuint" />
+			<field name="value" type="ushort" endianness="little-endian" />
+		</type>
+
 		<type name="rule">
 			<field name="name" type="string">
 				<constant name="drowning-damage" value="drowningdamage" />
@@ -743,8 +764,8 @@
 
 			<packet name="full-chunk-data" id="58" clientbound="true" serverbound="false">
 				<field name="position" type="varint<xz>" />
-				<field name="data" type="ubyte[]" />
-				<field name="tiles" type="ubyte[]" />
+				<field name="data" type="chunk-data" />
+				<field name="tiles" type="bytes" />
 			</packet>
 
 			<packet name="set-commands-enabled" id="59" clientbound="true" serverbound="false">

@@ -135,6 +135,38 @@
 			<field name="data" type="bytes" />
 		</type>
 
+		<type name="chunk-data" length="">
+			Chunk's blocks, lights and other immutable data.
+			<field name="sections" type="section[]">
+				16x16x16 section of the chunk. The array's keys also indicate the section's height (the 3rd element of the array will be the 3rd section from bottom, starting at `y=24`).
+				The amount of sections should be in a range from 0 (empty chunk) to 16.
+			</field>
+			<field name="heights" type="ushort[256]">
+				Coordinates of the highest block in the column that receives sky light (order `xz`).
+			</field>
+			<field name="biomes" type="ubyte[256]">
+				[Biomes](http://minecraft.gamepedia.com/Biome) in order `xz`.
+			</field>
+			<field name="borders" type="ubyte[]">
+				Colums where there are world borders (in format `xz`). This feature hasn't been implemented in the game yet and crashes the client.
+			</field>
+			<field name="extra-data" type="extra-data[]" />
+		</type>
+
+		<type name="section">
+			Section of a chunk with informations about blocks and lights. The array of bytes are always ordered `xzy`.
+			<field name="storage-version" type="ubyte" default="0" />
+			<field name="block-ids" type="ubyte[4096]" />
+			<field name="block-metas" type="ubyte[2048]" />
+			<field name="sky-light" type="ubyte[2048]" />
+			<field name="block-light" type="ubyte[2048]" />
+		</type>
+
+		<type name="extra-data">
+			<field name="key" type="varuint" />
+			<field name="value" type="ushort" endianness="little-endian" />
+		</type>
+
 		<type name="rule">
 			A game rule that prevents the client from doing client-side actions and animations.
 			<field name="name" type="string">
@@ -432,6 +464,7 @@
 			</packet>
 
 			<packet name="add-item-entity" id="16" clientbound="true" serverbound="false">
+				Spawns a dropped item.
 				<field name="entity-id" type="entity-id" />
 				<field name="runtime-id" type="runtime-id" />
 				<field name="item" type="slot" />
@@ -447,8 +480,13 @@
 			</packet>
 
 			<packet name="take-item-entity" id="18" clientbound="true" serverbound="false">
-				<field name="collected" type="entity-id" />
-				<field name="collector" type="entity-id" />
+				Plays the collection animation and despawns the entity that has been collected.
+				<field name="collected" type="entity-id">
+					Collected entity, usually an item entity or an arrow, that will float toward the collector and despawn.
+				</field>
+				<field name="collector" type="entity-id">
+					Entity that collects, usually a player or another entity with an inventory.
+				</field>
 			</packet>
 
 			<packet name="move-entity" id="19" clientbound="true" serverbound="false">
@@ -478,6 +516,7 @@
 			</packet>
 
 			<packet name="remove-block" id="22" clientbound="false" serverbound="true">
+				Instantly removes a block, either because the player is in creative mode or because the target block's hardness is 0 or lower (after all enchantments are applied).
 				<field name="position" type="block-position" />
 			</packet>
 
@@ -883,6 +922,7 @@
 			</packet>
 
 			<packet name="adventure-settings" id="55" clientbound="true" serverbound="true">
+				Updates the world's settings and client's permissions.
 				<field name="flags" type="varuint">
 					<constant name="immutable-world" value="1" />
 					<constant name="pvp-disabled" value="2" />
@@ -915,9 +955,11 @@
 			</packet>
 
 			<packet name="full-chunk-data" id="58" clientbound="true" serverbound="false">
-				<field name="position" type="varint<xz>" />
-				<field name="data" type="ubyte[]" />
-				<field name="tiles" type="ubyte[]" />
+				<field name="position" type="varint<xz>">
+					Coordinates of the chunk.
+				</field>
+				<field name="data" type="chunk-data" />
+				<field name="tiles" type="bytes" />
 			</packet>
 
 			<packet name="set-commands-enabled" id="59" clientbound="true" serverbound="false">

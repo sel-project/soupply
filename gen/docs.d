@@ -23,6 +23,8 @@ import std.typecons : Tuple, tuple;
 
 import all;
 
+alias writeHtml = write!("<!--", " + ", " +-->");
+
 void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas) {
 	
 	std.file.mkdirRecurse("../docs");
@@ -324,6 +326,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			foreach(type ; ptrs.data.types) {
 				data ~= "\t\t\t<li>\n";
 				data ~= "\t\t\t\t<h3 id=\"" ~ link("types", type.name) ~ "\">" ~ pretty(toCamelCase(type.name)) ~ "</h3>\n";
+				if(type.length.length) data ~= "\t\t\t\t<p>⚠️️ This type is prefixed with its length encoded as <strong>" ~ type.length ~ "</strong> ⚠️️</p>\n";
 				if(type.description.length) data ~= desc("\t\t\t\t", type.description);
 				writeFields(["types", type.name], type.fields, 4);
 				data ~= "\t\t\t</li>\n";
@@ -484,7 +487,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		data ~= "\t</body>\n</html>\n";
 		immutable ps = ptrs.protocol.to!string;
 		std.file.mkdirRecurse("../docs/" ~ game[0..$-ps.length]);
-		std.file.write("../docs/" ~ game[0..$-ps.length] ~ "/" ~ ps ~ ".html", data);
+		writeHtml("../docs/" ~ game[0..$-ps.length] ~ "/" ~ ps ~ ".html", data);
 	}
 	
 	// index
@@ -530,7 +533,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		data ~= "\t\t</table>\n";
 	}
 	data ~= "\t</body>\n</html>\n";
-	std.file.write("../docs/index.html", data);
+	writeHtml("../docs/index.html", data);
 
 	// minify style.css
 	std.file.write("../docs/style.min.css", (cast(string)std.file.read("../docs/style.css")).replaceAll(ctRegex!`[\r\n\t]*`, "").replaceAll(ctRegex!`[ ]*([\{\:\,])[ ]*`, "$1"));

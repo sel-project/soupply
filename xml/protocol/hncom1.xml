@@ -80,13 +80,13 @@
 		</type>
 
 		<type name="skin">
-			Player's skin to be sent to Minecraft: Pocket Edition clients.
-			If the server only allows Minecraft player to connect the following fields should be empty.
+			Player's skin that will be sent to Minecraft: Pocket Edition clients.
+			If the server only allows Minecraft players this type's fields should be empty.
 			<field name="name" type="string">
 				Name of the skin.
 			</field>
 			<field name="data" type="ubyte[]">
-				RGBA map of the skin colours. Length should be, if the skin is not empty, 8192 or 16384.
+				RGBA map of the skin colours. Length should be, if the skin is not empty, 8192 (64x32) or 16384 (64x64) bytes.
 			</field>
 		</type>
 
@@ -101,13 +101,13 @@
 			<packet name="connection-request" id="1" clientbound="false" serverbound="true">
 				First real packet sent by the client with its informations.
 				<field name="protocol" type="varuint">
-					Version of the protocol used by the client that must match the hub's one
+					Version of the protocol used by the client that must match the hub's one.
 				</field>
 				<field name="password" type="string">
 					Password, if the hub requires one, or an empty string.
 				</field>
 				<field name="name" type="string">
-					Name of the node that will be validated by the hub. It should always be lowercase and only contain letters, numbers and basic punctuation symbols.
+					Name of the node that will be validated by the hub. It should always be lowercase and only contain letters, numbers, dashes and underscores.
 				</field>
 				<field name="main" type="bool" default="true">
 					Indicates whether the node accepts clients when they first connect to the hub or exclusively when they are manually transferred.
@@ -115,10 +115,7 @@
 			</packet>
 
 			<packet name="connection-response" id="2" clientbound="true" serverbound="false">
-				Reply always sent after the [ConnectionRequest](#login_connection-request) packet. It indicates the status of the connection, which is accepted only when every field of the packet is true.
-				<field name="protocol" type="varuint">
-					Protocol used by the hub. It must match the node's one otherwise the connection cannot be established.
-				</field>
+				Reply sent after the [ConnectionRequest](#login_connection-request) packet if the node's ip has been accepted. It indicates the status of the connection.
 				<field name="status" type="ubyte">
 					Indicates the status of connection. If not 0, it indicates an error.
 					<constant name="ok" value="0" />
@@ -132,7 +129,7 @@
 						A password is required to connect
 					</constant>
 					<constant name="wrong-password" value="4">
-						The password doesn't match the hub's
+						The password doesn't match the hub's one
 					</constant>
 					<constant name="invalid-name-length" value="5">
 						The name is too short or too long
@@ -147,12 +144,15 @@
 						The name cannot be used because the hub has reserved it for something else
 					</constant>
 				</field>
+				<field name="protocol" type="varuint" when="status==1||status==2">
+					Indicates the version of the protocol used by the hub when the status code indicates that the hub or the node is obsolete.
+				</field>
 			</packet>
 
 			<packet name="hub-info" id="3" clientbound="true" serverbound="false">
 				Informations about the hub.
 				<field name="time" type="varulong">
-					Unix time in microseconds precision that indicates the exact moment when this packet was created. It's used by the node to calculate the latency.
+					Unix time with microseconds precision that indicates the exact moment when this packet was created. It's used by the node to calculate the latency.
 				</field>
 				<field name="server-id" type="varulong">
 					Server's id, either given by a snoop system or randomly generated at runtime.
@@ -182,21 +182,8 @@
 				<field name="accepted-languages" type="string[]">
 					Languages accepted by the server in the same format as [language](#login_hub-info_language). The list should always contain at least one element (the default language).
 				</field>
-				<field name="social-json" type="string">
-					Optional informations about the server's website and social accounts in the format indicated below.
-					```json
-					{
-					   "website": "example.com",
-					   "facebook": "example-official",
-					   "twitter": "example_tweets",
-					   "youtube": "examplechannel",
-					   "instagram": "example",
-					   "google_plus": "example-plus"					
-					}
-					```
-				</field>
 				<field name="additional-json" type="string">
-					Optional informations about the server's software, system and options in the format indicated below.
+					Optional informations about the server's software, social accounts, system and options in the format indicated below.
 					```json
 					{
 					   "software": {
@@ -207,6 +194,14 @@
 					   "minecraft": {
 					      "edu": false,
 					      "realm": true
+					   },
+					   "social": {
+					      "website": "example.com",
+					      "facebook": "example-official",
+					      "twitter": "example_tweets",
+					      "youtube": "examplechannel",
+					      "instagram": "example",
+					      "google_plus": "example-plus"					
 					   },
 					   "system": {
 					      "os": "Ubuntu 16.04",
@@ -222,7 +217,7 @@
 			<packet name="node-info" id="4" clientbound="false" serverbound="true">
 				Informations about the node.
 				<field name="time" type="varulong">
-					Unix time in microseconds precision that indicates the exact moment when this packet was created. It's used by the hub to calculate the latency.
+					Unix time with microseconds precision that indicates the exact moment when this packet was created. It's used by the hub to calculate the latency.
 				</field>
 				<field name="max" type="varuint">
 					Maximum number of players accepted by node.
@@ -261,7 +256,7 @@
 			Node-related packets and updates.
 
 			<packet name="add-node" id="5" clientbound="true" serverbound="false">
-				Notifies the node that another node (that is not itelf) has connected to the hub.
+				Notifies the node that another node (that is not itself) has connected to the hub.
 				<field name="hub-id" type="hub-id">
 					Identifier given by the hub to uniquey identify the node.
 				</field>
@@ -317,10 +312,10 @@
 			<packet name="resources-usage" id="10" clientbound="false" serverbound="true">
 				Updates the usage of the system's resources of the node.
 				<field name="tps" type="float">
-					Ticks per second of the node, in the range 0 to 20, where a number lower than 20 indicates lag.
+					Ticks per second of the node, in a range from 0 to 20, where a number lower than 20 indicates lag.
 				</field>
 				<field name="ram" type="varulong">
-					RAM used by the node in bytes.
+					Bytes of RAM used by the node.
 				</field>
 				<field name="cpu" type="float">
 					Percentage of CPU used by the node. It may be higher than 100 if the node has more than 1 CPU.
@@ -330,7 +325,7 @@
 			<packet name="log" id="11" clientbound="false" serverbound="true">
 				Sends a log to the hub.
 				<field name="timestamp" type="varulong">
-					Unix time (in milliseconds) that indicates the exact creation time of the log.
+					Unix time (in milliseconds) that indicates the exact creation time of the log (for ordering purposes).
 				</field>
 				<field name="logger" type="string">
 					Name of the logger (world, plugin or module/packet) thas has generated the log.

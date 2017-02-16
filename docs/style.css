@@ -43,6 +43,7 @@ body.dark {
 	height: 48px;
 	background: url(logo.png) no-repeat center center, #1E2327;
 	background-size: 12px 24px;
+	top: 0;
 	right: 0;
 	left: 0;
 	cursor: pointer;

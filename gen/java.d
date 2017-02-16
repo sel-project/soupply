@@ -295,7 +295,7 @@ public class MetadataException extends RuntimeException {
 		@property string convert(string type) {
 			auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
 			auto t = type[0..end];
-			auto e = type[end..$].replaceAll(ctRegex!`\[[0-9]{1,3}\]`, "[]");
+			auto e = type[end..$].replaceAll(ctRegex!`\[[0-9]{1,}\]`, "[]");
 			auto a = t in defaultAliases;
 			if(a) return convert(*a ~ e);
 			auto b = t in prs.data.arrays;
@@ -324,7 +324,8 @@ public class MetadataException extends RuntimeException {
 				string[] new_exps;
 				fieldsLengthImpl(hash(name), type[0..array], new_fixed, new_exps, seps);
 				if(new_fixed != 0) {
-					exps ~= name ~ ".length" ~ (new_fixed > 1 ? "*" ~ to!string(new_fixed) : "");
+					if(type.indexOf("]") == array + 1) exps ~= name ~ ".length" ~ (new_fixed > 1 ? "*" ~ to!string(new_fixed) : "");
+					else fixed += to!size_t(type[array+1..type.indexOf("]")]) * new_fixed;
 				}
 				if(new_exps.length) {
 					seps ~= "for(" ~ convert(type[0..array]) ~ " " ~ hash(name) ~ ":" ~ name ~ "){ length+=" ~ new_exps.join("+") ~ "; }";
@@ -399,7 +400,7 @@ public class MetadataException extends RuntimeException {
 		string fieldsLength(Field[] fields, string id="") {
 			size_t fixed = 0;
 			string[] exps, seps;
-			if(id.length) fieldsLengthImpl("ID", id, fixed, exps, seps); //TODO calculate at runtime if it's a varint
+			if(id.length) fieldsLengthImpl("ID", id, fixed, exps, seps); //TODO do not calculate at java runtime if it's a varint
 			foreach(i, field; fields) {
 				fieldsLengthImpl(field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.type, fixed, exps, seps);
 			}
@@ -502,7 +503,7 @@ public class MetadataException extends RuntimeException {
 			type = conv;
 			if(type.startsWith("var")) return name ~ "=this.read" ~ capitalize(type) ~ "();";
 			else if(type == "string") return createDecoding(prs.data.arrayLength, arrayLength ~ " " ~ hash("len" ~ name)) ~ " " ~ name ~ "=new String(this.readBytes(" ~ hash("len" ~ name) ~ "), StandardCharsets.UTF_8);";
-			else if(type == "uuid") return createDecoding("long", "long " ~ hash("m" ~ name)) ~ " " ~ createDecoding("long", "long " ~ hash("l" ~ name)) ~ " " ~ name ~ "=new UUID(" ~ hash("m" ~ name) ~ "," ~ hash("l" ~ name) ~ ");";
+			else if(type == "uuid") return createDecoding("long", "long " ~ hash("\x00" ~ name)) ~ " " ~ createDecoding("long", "long " ~ hash("\xF0" ~ name)) ~ " " ~ name ~ "=new UUID(" ~ hash("\x00" ~ name) ~ "," ~ hash("\xF0" ~ name) ~ ");";
 			else if(type == "bytes") return name ~ "=this.readBytes(this._buffer.length-this._index);";
 			else if(type == "bool") return name ~ "=this.readBool();";
 			else if(defaultTypes.canFind(type) || type == "triad") return name ~ "=read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "();";
@@ -510,7 +511,7 @@ public class MetadataException extends RuntimeException {
 		}
 		
 		// write generic fields
-		void writeFields(ref string data, string space, string className, Field[] fields, bool hasId, bool hasVariants=false, bool isVariant=false) { // hasId is true when fields belong to a packet, false when a type
+		void writeFields(ref string data, string space, string className, Field[] fields, bool hasId, bool hasVariants=false, bool isVariant=false, string length="") { // hasId is true when fields belong to a packet, false when a type
 			// constants
 			foreach(field ; fields) {
 				if(field.constants.length) {
@@ -531,7 +532,8 @@ public class MetadataException extends RuntimeException {
 				immutable oa = field.type.indexOf("[");
 				immutable ca = field.type.indexOf("]");
 				data ~= space ~ "public " ~ c ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name));
-				if(oa != -1 && ca != oa + 1) data ~= " = new " ~ c[0..$-2] ~ "[" ~ field.type[oa+1..ca] ~ "]";
+				if(oa != -1) data ~= " = new " ~ c[0..$-2] ~ "[" ~ (ca == oa + 1 ? "0" : field.type[oa+1..ca]) ~ "]";
+				else if(field.def.length) data ~= " = " ~ constOf(field.def);
 				data ~= ";\n";
 				if(i == fields.length - 1) data ~= "\n";
 			}
@@ -576,18 +578,33 @@ public class MetadataException extends RuntimeException {
 				bool c = field.condition.length != 0;
 				data ~= space ~ "\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createEncoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
 			}
+			if(length.length) {
+				data ~= space ~ "\tbyte[] _this = this.getBuffer();\n";
+				data ~= space ~ "\tthis._buffer = new byte[10 + _this.length];\n"; // longest length of a length type
+				data ~= space ~ "\t" ~ createEncoding(length, "_this.length") ~ "\n";
+				data ~= space ~ "\tthis.writeBytes(_this);\n";
+			}
 			data ~= space ~ "\treturn this.getBuffer();\n";
 			data ~= space ~ "}\n\n";
 			// decoding
 			data ~= space ~ "@Override\n";
 			data ~= space ~ "public void decode(byte[] buffer) {\n";
 			data ~= space ~ "\tthis._buffer = buffer;\n";
+			if(length.length) {
+				data ~= space ~ "\t" ~ createDecoding(length, "final int _length") ~ "\n";
+				data ~= space ~ "\tfinal int _length_index = this._index;\n";
+				data ~= space ~ "\tthis._buffer = this.readBytes(_length);\n";
+				data ~= space ~ "\tthis._index = 0;\n";
+			}
 			if(hasId) {
 				data ~= space ~ "\t" ~ createDecoding(prs.data.id, id ~ "").split("=")[1..$].join("=") ~ "\n";
 			}
 			foreach(i, field; fields) {
 				bool c = field.condition.length != 0;
 				data ~= space ~ "\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createDecoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
+			}
+			if(length.length) {
+				data ~= space ~ "\tthis._index += _length_index;\n";
 			}
 			data ~= space ~ "}\n\n";
 			if(isVariant) {
@@ -655,7 +672,7 @@ public class MetadataException extends RuntimeException {
 			string data = "package sul.protocol." ~ game ~ ".types;\n\n" ~ imports(type.fields) ~ "import sul.utils.*;\n\n";
 			if(type.description.length) data ~= javadoc("", type.description);
 			data ~= "public class " ~ toPascalCase(type.name) ~ " extends Stream {\n\n";
-			writeFields(data, "\t", toPascalCase(type.name), type.fields, false);
+			writeFields(data, "\t", toPascalCase(type.name), type.fields, false, false, false, type.length);
 			createToString(data, "\t", toPascalCase(type.name), type.fields);
 			data ~= "\n}";
 			write("../src/java/sul/protocol/" ~ game ~ "/types/" ~ toPascalCase(type.name) ~ ".java", data, "protocol/" ~ game);
@@ -712,10 +729,10 @@ public class MetadataException extends RuntimeException {
 						if(variant.description.length) data ~= javadoc("\t", variant.description);
 						data ~= "\tpublic class " ~ toPascalCase(variant.name) ~ " extends Packet {\n\n";
 						data ~= "\t\tpublic static final " ~ vt ~ " " ~ toUpper(packet.variantField) ~ " = (" ~ vt ~ ")" ~ variant.value ~ ";\n\n";
-						data ~= "\t@Override\n";
-						data ~= "\tpublic int getId() {\n";
-						data ~= "\t\treturn ID;\n";
-						data ~= "\t}\n\n";
+						data ~= "\t\t@Override\n";
+						data ~= "\t\tpublic int getId() {\n";
+						data ~= "\t\t\treturn ID;\n";
+						data ~= "\t\t}\n\n";
 						writeFields(data, "\t\t", toPascalCase(variant.name), variant.fields, false, false, true);
 						createToString(data, "\t\t", toPascalCase(packet.name) ~ "." ~ toPascalCase(variant.name), variant.fields);
 						data ~= "\t}\n\n";
