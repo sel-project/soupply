@@ -117,10 +117,6 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "protocol",
-						"type": "varuint"
-					},
-					{
 						"name": "status",
 						"type": "ubyte",
 						"constants": {
@@ -134,6 +130,11 @@
 							"name_already_used": 7,
 							"name_reserved": 8
 						}
+					},
+					{
+						"name": "protocol",
+						"type": "varuint",
+						"when": "status==1||status==2"
 					}
 				]
 			},
@@ -185,10 +186,6 @@
 					{
 						"name": "accepted_languages",
 						"type": "string[]"
-					},
-					{
-						"name": "social_json",
-						"type": "string"
 					},
 					{
 						"name": "additional_json",
@@ -583,6 +580,10 @@
 										"unknown": 0,
 										"android": 1,
 										"ios": 2,
+										"fire_os": 3,
+										"gear_vr": 4,
+										"apple_tv": 5,
+										"fire_tv": 6,
 										"windows10": 7
 									}
 								},

@@ -32,21 +32,6 @@
 				}
 			],
 
-			"block_position": [
-				{
-					"name": "x",
-					"type": "varint"
-				},
-				{
-					"name": "y",
-					"type": "varuint"
-				},
-				{
-					"name": "z",
-					"type": "varint"
-				}
-			],
-
 			"slot": [
 				{
 					"name": "id",
@@ -59,7 +44,7 @@
 				},
 				{
 					"name": "nbt",
-					"type": "slot_nbt",
+					"type": "nbt",
 					"when": "id>0"
 				}
 			],
@@ -84,6 +69,21 @@
 				{
 					"name": "name",
 					"type": "string"
+				}
+			],
+
+			"block_position": [
+				{
+					"name": "x",
+					"type": "varint"
+				},
+				{
+					"name": "y",
+					"type": "varuint"
+				},
+				{
+					"name": "z",
+					"type": "varint"
 				}
 			],
 
@@ -117,6 +117,26 @@
 				}
 			],
 
+			"link": [
+				{
+					"name": "from",
+					"type": "varlong"
+				},
+				{
+					"name": "to",
+					"type": "varlong"
+				},
+				{
+					"name": "action",
+					"type": "ubyte",
+					"constants": {
+						"add": 0,
+						"ride": 1,
+						"remove": 2
+					}
+				}
+			],
+
 			"recipe": [
 				{
 					"name": "type",
@@ -133,16 +153,101 @@
 					"name": "data",
 					"type": "bytes"
 				}
+			],
+
+			"chunk_data": [
+				{
+					"name": "sections",
+					"type": "section[]"
+				},
+				{
+					"name": "heights",
+					"type": "ushort[256]"
+				},
+				{
+					"name": "biomes",
+					"type": "ubyte[256]"
+				},
+				{
+					"name": "borders",
+					"type": "ubyte[]"
+				},
+				{
+					"name": "extra_data",
+					"type": "extra_data[]"
+				}
+			],
+
+			"section": [
+				{
+					"name": "storage_version",
+					"type": "ubyte"
+				},
+				{
+					"name": "block_ids",
+					"type": "ubyte[4096]"
+				},
+				{
+					"name": "block_metas",
+					"type": "ubyte[2048]"
+				},
+				{
+					"name": "sky_light",
+					"type": "ubyte[2048]"
+				},
+				{
+					"name": "block_light",
+					"type": "ubyte[2048]"
+				}
+			],
+
+			"extra_data": [
+				{
+					"name": "key",
+					"type": "varuint"
+				},
+				{
+					"name": "value",
+					"type": "ushort",
+					"endianness": "little_endian"
+				}
+			],
+
+			"rule": [
+				{
+					"name": "name",
+					"type": "string",
+					"constants": {
+						"drowning_damage": "drowningdamage",
+						"fall_damage": "falldamage",
+						"fire_damage": "firedamage",
+						"immutable_world": "immutableworld",
+						"pvp": "pvp"
+					}
+				},
+				{
+					"name": "value",
+					"type": "bool"
+				},
+				{
+					"name": "?",
+					"type": "bool"
+				}
 			]
 
 		},
 
 		"arrays": {
 
-			"slot_nbt": {
+			"nbt": {
 				"base": "ubyte",
 				"length": "ushort",
 				"endianness": "little_endian"
+			},
+
+			"rules": {
+				"base": "rule",
+				"length": "uint"
 			}
 
 		}
@@ -197,7 +302,7 @@
 				]
 			},
 
-			"server_handshake": {
+			"server_to_client_handshake": {
 				"id": 3,
 				"clientbound": true,
 				"serverbound": false,
@@ -213,7 +318,7 @@
 				]
 			},
 
-			"client_magic": {
+			"client_to_server_handshake": {
 				"id": 4,
 				"clientbound": false,
 				"serverbound": true,
@@ -231,7 +336,8 @@
 					},
 					{
 						"name": "message",
-						"type": "string"
+						"type": "string",
+						"when": "hide_disconnection_screen==false"
 					}
 				]
 			},
@@ -250,6 +356,26 @@
 
 			"resource_packs_info": {
 				"id": 7,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "must_accept",
+						"type": "bool"
+					},
+					{
+						"name": "behaviour_packs",
+						"type": "pack[]"
+					},
+					{
+						"name": "resource_packs",
+						"type": "pack[]"
+					}
+				]
+			},
+
+			"resource_packs_stack_packet": {
+				"id": 8,
 				"clientbound": true,
 				"serverbound": false,
 				"fields": [
@@ -490,7 +616,7 @@
 						"type": "float"
 					},
 					{
-						"name": "cheats_enabled",
+						"name": "commands_enabled",
 						"type": "bool"
 					},
 					{
@@ -603,7 +729,7 @@
 					},
 					{
 						"name": "links",
-						"type": "varlong[]"
+						"type": "link[]"
 					}
 				]
 			},
@@ -678,7 +804,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "taken",
+						"name": "collected",
 						"type": "varlong"
 					},
 					{
@@ -1367,7 +1493,8 @@
 						"type": "ubyte",
 						"constants": {
 							"add": 0,
-							"remove": 1
+							"ride": 1,
+							"remove": 2
 						}
 					}
 				]
@@ -1701,16 +1828,16 @@
 					},
 					{
 						"name": "data",
-						"type": "ubyte[]"
+						"type": "chunk_data"
 					},
 					{
 						"name": "tiles",
-						"type": "ubyte[]"
+						"type": "bytes"
 					}
 				]
 			},
 
-			"set_cheats_enabled": {
+			"set_commands_enabled": {
 				"id": 59,
 				"clientbound": true,
 				"serverbound": false,
@@ -1765,13 +1892,13 @@
 				]
 			},
 
-			"set_player_gametype": {
+			"set_player_game_type": {
 				"id": 62,
 				"clientbound": true,
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "gametype",
+						"name": "gamemode",
 						"type": "varint",
 						"constants": {
 							"survival": 0,
@@ -1988,6 +2115,18 @@
 					{
 						"name": "item",
 						"type": "slot"
+					}
+				]
+			},
+
+			"game_rules_changed": {
+				"id": 72,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "rules",
+						"type": "rules"
 					}
 				]
 			},
