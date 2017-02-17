@@ -175,6 +175,10 @@
 				{
 					"name": "extra_data",
 					"type": "extra_data[]"
+				},
+				{
+					"name": "block_entities",
+					"type": "bytes"
 				}
 			],
 
@@ -1437,7 +1441,7 @@
 				"serverbound": false,
 				"fields": [
 					{
-						"name": "health",
+						"name": "?",
 						"type": "varint"
 					}
 				]
@@ -1829,10 +1833,6 @@
 					{
 						"name": "data",
 						"type": "chunk_data"
-					},
-					{
-						"name": "tiles",
-						"type": "bytes"
 					}
 				]
 			},

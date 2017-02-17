@@ -378,14 +378,17 @@ const Types = {
 		 * @param borders
 		 *        Colums where there are world borders (in format `xz`). This feature hasn't been implemented in
 		 *        the game yet and crashes the client.
+		 * @param blockEntities
+		 *        Additional data for the chunk's block entities (tiles).
 		 */
-		constructor(sections=[], heights=[], biomes=[], borders=[], extraData=[]) {
+		constructor(sections=[], heights=[], biomes=[], borders=[], extraData=[], blockEntities=null) {
 			super();
 			this.sections = sections;
 			this.heights = heights;
 			this.biomes = biomes;
 			this.borders = borders;
 			this.extraData = extraData;
+			this.blockEntities = blockEntities;
 		}
 
 		/** @return {Uint8Array} */
@@ -396,6 +399,7 @@ const Types = {
 			this.writeBytes(this.biomes);
 			this.writeVaruint(this.borders.length); this.writeBytes(this.borders);
 			this.writeVaruint(this.extraData.length); for(var dhc5eryr in this.extraData){ this.writeBytes(this.extraData[dhc5eryr].encode()); }
+			this.writeBytes(this.blockEntities);
 			var _length = this._buffer.length;
 			this.writeVaruint(_length);
 			var _length_array = [];
@@ -415,6 +419,7 @@ const Types = {
 			var aramylbv=256; this.biomes=this.readBytes(aramylbv);
 			var aramy9zv=this.readVaruint(); this.borders=this.readBytes(aramy9zv);
 			var aramzhcf=this.readVaruint(); this.extraData=[]; for(var dhc5eryr=0;dhc5eryr<aramzhcf;dhc5eryr++){ this.extraData[dhc5eryr]=Types.ExtraData.fromBuffer(this._buffer); this._buffer=this.extraData[dhc5eryr]._buffer; }
+			this.blockEntities=Array.from(this._buffer); this._buffer=[];
 			this._buffer = _buffer;
 			return this;
 		}
@@ -426,7 +431,7 @@ const Types = {
 
 		/** @return {string} */
 		toString() {
-			return "ChunkData(sections: " + this.sections + ", heights: " + this.heights + ", biomes: " + this.biomes + ", borders: " + this.borders + ", extraData: " + this.extraData + ")";
+			return "ChunkData(sections: " + this.sections + ", heights: " + this.heights + ", biomes: " + this.biomes + ", borders: " + this.borders + ", extraData: " + this.extraData + ", blockEntities: " + this.blockEntities + ")";
 		}
 
 	},

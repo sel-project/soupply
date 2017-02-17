@@ -2253,16 +2253,16 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(health=0) {
+		constructor(unknown0=0) {
 			super();
-			this.health = health;
+			this.unknown0 = unknown0;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
 			this._buffer = [];
 			this.writeBigEndianByte(38);
-			this.writeVarint(this.health);
+			this.writeVarint(this.unknown0);
 			return new Uint8Array(this._buffer);
 		}
 
@@ -2270,7 +2270,7 @@ const Play = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			var _id=this.readBigEndianByte();
-			this.health=this.readVarint();
+			this.unknown0=this.readVarint();
 			return this;
 		}
 
@@ -2281,11 +2281,14 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "HurtArmor(health: " + this.health + ")";
+			return "HurtArmor(unknown0: " + this.unknown0 + ")";
 		}
 
 	},
 
+	/**
+	 * Updates an entity's metadata.
+	 */
 	SetEntityData: class extends Buffer {
 
 		static get ID(){ return 39; }
@@ -3189,11 +3192,10 @@ const Play = {
 		 * @param position
 		 *        Coordinates of the chunk.
 		 */
-		constructor(position=0, data=null, tiles=null) {
+		constructor(position=0, data=null) {
 			super();
 			this.position = position;
 			this.data = data;
-			this.tiles = tiles;
 		}
 
 		/** @return {Uint8Array} */
@@ -3202,7 +3204,6 @@ const Play = {
 			this.writeBigEndianByte(58);
 			this.writeVarint(this.position.x); this.writeVarint(this.position.z);
 			this.writeBytes(this.data.encode());
-			this.writeBytes(this.tiles);
 			return new Uint8Array(this._buffer);
 		}
 
@@ -3212,7 +3213,6 @@ const Play = {
 			var _id=this.readBigEndianByte();
 			this.position={}; this.position.x=this.readVarint(); this.position.z=this.readVarint();
 			this.data=Types.ChunkData.fromBuffer(this._buffer); this._buffer=this.data._buffer;
-			this.tiles=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 
@@ -3223,7 +3223,7 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "FullChunkData(position: " + this.position + ", data: " + this.data + ", tiles: " + this.tiles + ")";
+			return "FullChunkData(position: " + this.position + ", data: " + this.data + ")";
 		}
 
 	},

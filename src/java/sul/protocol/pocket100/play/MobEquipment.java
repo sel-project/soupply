@@ -10,9 +10,6 @@ package sul.protocol.pocket100.play;
 
 import sul.utils.*;
 
-/**
- * Sent when the client puts an item in its hotbar or selects a new hotbar slot.
- */
 public class MobEquipment extends Packet {
 
 	public static final byte ID = (byte)32;
@@ -27,16 +24,7 @@ public class MobEquipment extends Packet {
 
 	public long entityId;
 	public sul.protocol.pocket100.types.Slot item;
-
-	/**
-	 * Slot of the inventory where the item is. The hotbat slots (0-8) are not counted.
-	 * 255 means that a generic empty slot has been selected.
-	 */
 	public byte inventorySlot;
-
-	/**
-	 * Slot of the hotbar where the item is being moved.
-	 */
 	public byte hotbarSlot;
 	public byte unknown4;
 

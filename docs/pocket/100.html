@@ -1261,7 +1261,7 @@
 					</tr>
 					<tr>
 						<td>metadata</td>
-						<td>metadata</td>
+						<td><a href="#metadata">metadata</a></td>
 					</tr>
 				</table>
 			</li>
@@ -1313,7 +1313,7 @@
 					</tr>
 					<tr>
 						<td>metadata</td>
-						<td>metadata</td>
+						<td><a href="#metadata">metadata</a></td>
 					</tr>
 					<tr>
 						<td>links</td>
@@ -2543,7 +2543,6 @@
 					<p><strong>Bin</strong>: 00100000</p>
 					<p>Sent by the <strong>server</strong> and the <strong>client</strong></p>
 				</div>
-				<p>Sent when the client puts an item in its hotbar or selects a new hotbar slot.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -2559,11 +2558,11 @@
 						<td><a href="#types_slot">slot</a></td>
 					</tr>
 					<tr>
-						<td><a href="#play_mob-equipment_inventory-slot">inventory slot</a></td>
+						<td>inventory slot</td>
 						<td>ubyte</td>
 					</tr>
 					<tr>
-						<td><a href="#play_mob-equipment_hotbar-slot">hotbar slot</a></td>
+						<td>hotbar slot</td>
 						<td>ubyte</td>
 					</tr>
 					<tr>
@@ -2571,16 +2570,6 @@
 						<td>ubyte</td>
 					</tr>
 				</table>
-				<ul>
-					<li>
-						<strong id="play_mob-equipment_inventory-slot">inventory slot</strong>
-						<p>Slot of the inventory where the item is. The hotbat slots (0-8) are not counted. 255 means that a generic empty slot has been selected.</p>
-					</li>
-					<li>
-						<strong id="play_mob-equipment_hotbar-slot">hotbar slot</strong>
-						<p>Slot of the hotbar where the item is being moved.</p>
-					</li>
-				</ul>
 			</li>
 			<li>
 				<h3 id="play_mob-armor-equipment">Mob Armor Equipment</h3>
@@ -2827,7 +2816,7 @@
 						<th>Type</th>
 					</tr>
 					<tr>
-						<td>health</td>
+						<td>?</td>
 						<td>varint</td>
 					</tr>
 				</table>
@@ -2852,7 +2841,7 @@
 					</tr>
 					<tr>
 						<td>metadata</td>
-						<td>metadata</td>
+						<td><a href="#metadata">metadata</a></td>
 					</tr>
 				</table>
 			</li>
@@ -3472,10 +3461,6 @@
 					<tr>
 						<td>data</td>
 						<td><a href="#types_chunk-data">chunkData</a></td>
-					</tr>
-					<tr>
-						<td>tiles</td>
-						<td>bytes</td>
 					</tr>
 				</table>
 			</li>
@@ -4500,6 +4485,10 @@
 					<tr>
 						<td>extra data</td>
 						<td><a href="#types_extra-data">extraData</a>[]</td>
+					</tr>
+					<tr>
+						<td>block entities</td>
+						<td>bytes</td>
 					</tr>
 				</table>
 			</li>

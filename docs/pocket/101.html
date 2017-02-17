@@ -1445,7 +1445,7 @@ Batch batch = new Batch(compress(payload));
 					</tr>
 					<tr>
 						<td>metadata</td>
-						<td>metadata</td>
+						<td><a href="#metadata">metadata</a></td>
 					</tr>
 				</table>
 				<ul>
@@ -1507,7 +1507,7 @@ Batch batch = new Batch(compress(payload));
 					</tr>
 					<tr>
 						<td>metadata</td>
-						<td>metadata</td>
+						<td><a href="#metadata">metadata</a></td>
 					</tr>
 					<tr>
 						<td>links</td>
@@ -3047,7 +3047,7 @@ Batch batch = new Batch(compress(payload));
 						<th>Type</th>
 					</tr>
 					<tr>
-						<td>health</td>
+						<td>?</td>
 						<td>varint</td>
 					</tr>
 				</table>
@@ -3060,6 +3060,7 @@ Batch batch = new Batch(compress(payload));
 					<p><strong>Bin</strong>: 00100111</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Updates an entity's metadata.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -3072,7 +3073,7 @@ Batch batch = new Batch(compress(payload));
 					</tr>
 					<tr>
 						<td>metadata</td>
-						<td>metadata</td>
+						<td><a href="#metadata">metadata</a></td>
 					</tr>
 				</table>
 			</li>
@@ -3704,10 +3705,6 @@ Batch batch = new Batch(compress(payload));
 					<tr>
 						<td>data</td>
 						<td><a href="#types_chunk-data">chunkData</a></td>
-					</tr>
-					<tr>
-						<td>tiles</td>
-						<td>bytes</td>
 					</tr>
 				</table>
 				<ul>
@@ -4841,6 +4838,10 @@ var count = count & 255
 						<td>extra data</td>
 						<td><a href="#types_extra-data">extraData</a>[]</td>
 					</tr>
+					<tr>
+						<td><a href="#types_chunk-data_block-entities">block entities</a></td>
+						<td>bytes</td>
+					</tr>
 				</table>
 				<ul>
 					<li>
@@ -4859,6 +4860,10 @@ var count = count & 255
 					<li>
 						<strong id="types_chunk-data_borders">borders</strong>
 						<p>Colums where there are world borders (in format <code>xz</code>). This feature hasn't been implemented in the game yet and crashes the client.</p>
+					</li>
+					<li>
+						<strong id="types_chunk-data_block-entities">block entities</strong>
+						<p>Additional data for the chunk's block entities (tiles).</p>
 					</li>
 				</ul>
 			</li>

@@ -93,6 +93,7 @@
 			<field name="biomes" type="ubyte[256]" />
 			<field name="borders" type="ubyte[]" />
 			<field name="extra-data" type="extra-data[]" />
+			<field name="block-entities" type="bytes" />
 		</type>
 
 		<type name="section">
@@ -566,15 +567,10 @@
 			</packet>
 
 			<packet name="mob-equipment" id="32" clientbound="true" serverbound="true">
-				Sent when the client puts an item in its hotbar or selects a new hotbar slot.
 				<field name="entity-id" type="entity-id" />
 				<field name="item" type="slot" />
-				<field name="inventory-slot" type="ubyte">
-					Slot of the inventory where the item is. The hotbat slots (0-8) are not counted. 255 means that a generic empty slot has been selected.
-				</field>
-				<field name="hotbar-slot" type="ubyte">
-					Slot of the hotbar where the item is being moved.
-				</field>
+				<field name="inventory-slot" type="ubyte" />
+				<field name="hotbar-slot" type="ubyte" />
 				<field name="?" type="ubyte" />
 			</packet>
 
@@ -629,7 +625,7 @@
 			</packet>
 
 			<packet name="hurt-armor" id="38" clientbound="true" serverbound="false">
-				<field name="health" type="varint" />
+				<field name="?" type="varint" />
 			</packet>
 
 			<packet name="set-entity-data" id="39" clientbound="true" serverbound="false">
@@ -765,7 +761,6 @@
 			<packet name="full-chunk-data" id="58" clientbound="true" serverbound="false">
 				<field name="position" type="varint<xz>" />
 				<field name="data" type="chunk-data" />
-				<field name="tiles" type="bytes" />
 			</packet>
 
 			<packet name="set-commands-enabled" id="59" clientbound="true" serverbound="false">

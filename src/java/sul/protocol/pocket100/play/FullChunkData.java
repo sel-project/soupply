@@ -8,8 +8,6 @@
  */
 package sul.protocol.pocket100.play;
 
-import java.util.Arrays;
-
 import sul.utils.*;
 
 public class FullChunkData extends Packet {
@@ -26,19 +24,17 @@ public class FullChunkData extends Packet {
 
 	public Tuples.IntXZ position;
 	public sul.protocol.pocket100.types.ChunkData data;
-	public byte[] tiles;
 
 	public FullChunkData() {}
 
-	public FullChunkData(Tuples.IntXZ position, sul.protocol.pocket100.types.ChunkData data, byte[] tiles) {
+	public FullChunkData(Tuples.IntXZ position, sul.protocol.pocket100.types.ChunkData data) {
 		this.position = position;
 		this.data = data;
-		this.tiles = tiles;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varintLength(position.x) + Buffer.varintLength(position.z) + data.length() + tiles.length + 1;
+		return Buffer.varintLength(position.x) + Buffer.varintLength(position.z) + data.length() + 1;
 	}
 
 	@Override
@@ -47,7 +43,6 @@ public class FullChunkData extends Packet {
 		this.writeBigEndianByte(ID);
 		this.writeVarint(position.x); this.writeVarint(position.z);
 		this.writeBytes(data.encode());
-		this.writeBytes(tiles);
 		return this.getBuffer();
 	}
 
@@ -57,7 +52,6 @@ public class FullChunkData extends Packet {
 		readBigEndianByte();
 		position=new Tuples.IntXZ(); position.x=this.readVarint(); position.z=this.readVarint();
 		data=new sul.protocol.pocket100.types.ChunkData(); data._index=this._index; data.decode(this._buffer); this._index=data._index;
-		tiles=this.readBytes(this._buffer.length-this._index);
 	}
 
 	public static FullChunkData fromBuffer(byte[] buffer) {
@@ -68,7 +62,7 @@ public class FullChunkData extends Packet {
 
 	@Override
 	public String toString() {
-		return "FullChunkData(position: " + this.position.toString() + ", data: " + this.data.toString() + ", tiles: " + Arrays.toString(this.tiles) + ")";
+		return "FullChunkData(position: " + this.position.toString() + ", data: " + this.data.toString() + ")";
 	}
 
 }

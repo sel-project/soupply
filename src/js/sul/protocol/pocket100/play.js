@@ -1789,9 +1789,6 @@ const Play = {
 
 	},
 
-	/**
-	 * Sent when the client puts an item in its hotbar or selects a new hotbar slot.
-	 */
 	MobEquipment: class extends Buffer {
 
 		static get ID(){ return 32; }
@@ -1799,13 +1796,6 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return true; }
 
-		/**
-		 * @param inventorySlot
-		 *        Slot of the inventory where the item is. The hotbat slots (0-8) are not counted. 255 means that a generic
-		 *        empty slot has been selected.
-		 * @param hotbarSlot
-		 *        Slot of the hotbar where the item is being moved.
-		 */
 		constructor(entityId=0, item=null, inventorySlot=0, hotbarSlot=0, unknown4=0) {
 			super();
 			this.entityId = entityId;
@@ -2112,16 +2102,16 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(health=0) {
+		constructor(unknown0=0) {
 			super();
-			this.health = health;
+			this.unknown0 = unknown0;
 		}
 
 		/** @return {Uint8Array} */
 		encode() {
 			this._buffer = [];
 			this.writeBigEndianByte(38);
-			this.writeVarint(this.health);
+			this.writeVarint(this.unknown0);
 			return new Uint8Array(this._buffer);
 		}
 
@@ -2129,7 +2119,7 @@ const Play = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			var _id=this.readBigEndianByte();
-			this.health=this.readVarint();
+			this.unknown0=this.readVarint();
 			return this;
 		}
 
@@ -2140,7 +2130,7 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "HurtArmor(health: " + this.health + ")";
+			return "HurtArmor(unknown0: " + this.unknown0 + ")";
 		}
 
 	},
@@ -3029,11 +3019,10 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(position=0, data=null, tiles=null) {
+		constructor(position=0, data=null) {
 			super();
 			this.position = position;
 			this.data = data;
-			this.tiles = tiles;
 		}
 
 		/** @return {Uint8Array} */
@@ -3042,7 +3031,6 @@ const Play = {
 			this.writeBigEndianByte(58);
 			this.writeVarint(this.position.x); this.writeVarint(this.position.z);
 			this.writeBytes(this.data.encode());
-			this.writeBytes(this.tiles);
 			return new Uint8Array(this._buffer);
 		}
 
@@ -3052,7 +3040,6 @@ const Play = {
 			var _id=this.readBigEndianByte();
 			this.position={}; this.position.x=this.readVarint(); this.position.z=this.readVarint();
 			this.data=Types.ChunkData.fromBuffer(this._buffer); this._buffer=this.data._buffer;
-			this.tiles=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
 
@@ -3063,7 +3050,7 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "FullChunkData(position: " + this.position + ", data: " + this.data + ", tiles: " + this.tiles + ")";
+			return "FullChunkData(position: " + this.position + ", data: " + this.data + ")";
 		}
 
 	},

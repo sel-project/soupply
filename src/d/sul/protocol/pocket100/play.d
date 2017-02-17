@@ -2123,9 +2123,6 @@ class UpdateAttributes : Buffer {
 
 }
 
-/**
- * Sent when the client puts an item in its hotbar or selects a new hotbar slot.
- */
 class MobEquipment : Buffer {
 
 	public enum ubyte ID = 32;
@@ -2137,16 +2134,7 @@ class MobEquipment : Buffer {
 
 	public long entityId;
 	public sul.protocol.pocket100.types.Slot item;
-
-	/**
-	 * Slot of the inventory where the item is. The hotbat slots (0-8) are not counted.
-	 * 255 means that a generic empty slot has been selected.
-	 */
 	public ubyte inventorySlot;
-
-	/**
-	 * Slot of the hotbar where the item is being moved.
-	 */
 	public ubyte hotbarSlot;
 	public ubyte unknown4;
 
@@ -2475,26 +2463,26 @@ class HurtArmor : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["health"];
+	public enum string[] FIELDS = ["unknown0"];
 
-	public int health;
+	public int unknown0;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(int health) {
-		this.health = health;
+	public pure nothrow @safe @nogc this(int unknown0) {
+		this.unknown0 = unknown0;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBytes(varint.encode(health));
+		writeBytes(varint.encode(unknown0));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		health=varint.decode(_buffer, &_index);
+		unknown0=varint.decode(_buffer, &_index);
 	}
 
 	public static pure nothrow @safe HurtArmor fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -2505,7 +2493,7 @@ class HurtArmor : Buffer {
 	}
 
 	public override string toString() {
-		return "HurtArmor(health: " ~ std.conv.to!string(this.health) ~ ")";
+		return "HurtArmor(unknown0: " ~ std.conv.to!string(this.unknown0) ~ ")";
 	}
 
 }
@@ -3461,18 +3449,16 @@ class FullChunkData : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["position", "data", "tiles"];
+	public enum string[] FIELDS = ["position", "data"];
 
 	public Tuple!(int, "x", int, "z") position;
 	public sul.protocol.pocket100.types.ChunkData data;
-	public ubyte[] tiles;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(Tuple!(int, "x", int, "z") position, sul.protocol.pocket100.types.ChunkData data=sul.protocol.pocket100.types.ChunkData.init, ubyte[] tiles=(ubyte[]).init) {
+	public pure nothrow @safe @nogc this(Tuple!(int, "x", int, "z") position, sul.protocol.pocket100.types.ChunkData data=sul.protocol.pocket100.types.ChunkData.init) {
 		this.position = position;
 		this.data = data;
-		this.tiles = tiles;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
@@ -3480,7 +3466,6 @@ class FullChunkData : Buffer {
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varint.encode(position.x)); writeBytes(varint.encode(position.z));
 		data.encode(bufferInstance);
-		writeBytes(tiles);
 		return _buffer;
 	}
 
@@ -3488,7 +3473,6 @@ class FullChunkData : Buffer {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		position.x=varint.decode(_buffer, &_index); position.z=varint.decode(_buffer, &_index);
 		data.decode(bufferInstance);
-		tiles=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
 	public static pure nothrow @safe FullChunkData fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -3499,7 +3483,7 @@ class FullChunkData : Buffer {
 	}
 
 	public override string toString() {
-		return "FullChunkData(position: " ~ std.conv.to!string(this.position) ~ ", data: " ~ std.conv.to!string(this.data) ~ ", tiles: " ~ std.conv.to!string(this.tiles) ~ ")";
+		return "FullChunkData(position: " ~ std.conv.to!string(this.position) ~ ", data: " ~ std.conv.to!string(this.data) ~ ")";
 	}
 
 }

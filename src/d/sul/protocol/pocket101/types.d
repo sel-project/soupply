@@ -337,7 +337,7 @@ struct Recipe {
  */
 struct ChunkData {
 
-	public enum string[] FIELDS = ["sections", "heights", "biomes", "borders", "extraData"];
+	public enum string[] FIELDS = ["sections", "heights", "biomes", "borders", "extraData", "blockEntities"];
 
 	/**
 	 * 16x16x16 section of the chunk. The array's keys also indicate the section's height
@@ -363,6 +363,11 @@ struct ChunkData {
 	public ubyte[] borders;
 	public sul.protocol.pocket101.types.ExtraData[] extraData;
 
+	/**
+	 * Additional data for the chunk's block entities (tiles).
+	 */
+	public ubyte[] blockEntities;
+
 	public pure nothrow @safe void encode(Buffer o_buffer) {
 		Buffer buffer = new Buffer();
 		with(buffer) {
@@ -371,6 +376,7 @@ struct ChunkData {
 			writeBytes(biomes);
 			writeBytes(varuint.encode(cast(uint)borders.length)); writeBytes(borders);
 			writeBytes(varuint.encode(cast(uint)extraData.length)); foreach(zhcfyr;extraData){ zhcfyr.encode(bufferInstance); }
+			writeBytes(blockEntities);
 		}
 		with(o_buffer){ writeBytes(varuint.encode(cast(uint)buffer._buffer.length)); }
 		o_buffer.writeBytes(buffer._buffer);
@@ -388,11 +394,12 @@ struct ChunkData {
 			if(_buffer.length>=_index+biomes.length){ biomes=_buffer[_index.._index+biomes.length].dup; _index+=biomes.length; }
 			borders.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+borders.length){ borders=_buffer[_index.._index+borders.length].dup; _index+=borders.length; }
 			extraData.length=varuint.decode(_buffer, &_index); foreach(ref zhcfyr;extraData){ zhcfyr.decode(bufferInstance); }
+			blockEntities=_buffer[_index..$].dup; _index=_buffer.length;
 		}
 	}
 
 	public string toString() {
-		return "ChunkData(sections: " ~ std.conv.to!string(this.sections) ~ ", heights: " ~ std.conv.to!string(this.heights) ~ ", biomes: " ~ std.conv.to!string(this.biomes) ~ ", borders: " ~ std.conv.to!string(this.borders) ~ ", extraData: " ~ std.conv.to!string(this.extraData) ~ ")";
+		return "ChunkData(sections: " ~ std.conv.to!string(this.sections) ~ ", heights: " ~ std.conv.to!string(this.heights) ~ ", biomes: " ~ std.conv.to!string(this.biomes) ~ ", borders: " ~ std.conv.to!string(this.borders) ~ ", extraData: " ~ std.conv.to!string(this.extraData) ~ ", blockEntities: " ~ std.conv.to!string(this.blockEntities) ~ ")";
 	}
 
 }

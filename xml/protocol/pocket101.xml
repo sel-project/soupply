@@ -151,6 +151,9 @@
 				Colums where there are world borders (in format `xz`). This feature hasn't been implemented in the game yet and crashes the client.
 			</field>
 			<field name="extra-data" type="extra-data[]" />
+			<field name="block-entities" type="bytes">
+				Additional data for the chunk's block entities (tiles).
+			</field>
 		</type>
 
 		<type name="section">
@@ -815,10 +818,11 @@
 			</packet>
 
 			<packet name="hurt-armor" id="38" clientbound="true" serverbound="false">
-				<field name="health" type="varint" />
+				<field name="?" type="varint" />
 			</packet>
 
 			<packet name="set-entity-data" id="39" clientbound="true" serverbound="false">
+				Updates an entity's metadata.
 				<field name="entity-id" type="entity-id" />
 				<field name="metadata" type="metadata" />
 			</packet>
@@ -959,7 +963,6 @@
 					Coordinates of the chunk.
 				</field>
 				<field name="data" type="chunk-data" />
-				<field name="tiles" type="bytes" />
 			</packet>
 
 			<packet name="set-commands-enabled" id="59" clientbound="true" serverbound="false">
