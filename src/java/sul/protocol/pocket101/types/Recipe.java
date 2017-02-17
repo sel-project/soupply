@@ -22,7 +22,7 @@ public class Recipe extends Stream {
 	public static final int MULTI = 4;
 
 	public int type;
-	public byte[] data;
+	public byte[] data = new byte[0];
 
 	public Recipe() {}
 

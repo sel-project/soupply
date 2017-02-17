@@ -227,13 +227,13 @@ public class Buffer {
 		return Double.longBitsToDouble(this.readLittleEndianLong());
 	}
 
-	public void writeVarshort(short a) {
-		this.writeVarushort((short)((a >> 1) | (a << 15)));
+	public void writeVarshort(long a) {
+		this.writeVarushort(a >= 0 ? a * 2  : a * -2 - 1);
 	}
 
 	public short readVarshort() {
 		short ret = this.readVarushort();
-		return (short)((ret << 1) | (ret >> 15));
+		return (short)((ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2);
 	}
 
 	public static int varshortLength(short a) {
@@ -245,7 +245,7 @@ public class Buffer {
 		return length;
 	}
 
-	public void writeVarushort(short a) {
+	public void writeVarushort(long a) {
 		while(a > 127) {
 			this._buffer[this._index++] = (byte)(a & 127 | 128);
 			a >>>= 7;
@@ -257,8 +257,8 @@ public class Buffer {
 		int limit = 0;
 		short ret = 0;
 		do {
-			ret |= (this._buffer[this._index] & 127) << (limit * 7);
-		} while(this._buffer[this._index++] > 127 && ++limit < 3 && this._index < this._buffer.length);
+			ret |= (short)(this._buffer[this._index] & 127) << (limit * 7);
+		} while(this._buffer[this._index++] < 0 && ++limit < 3 && this._index < this._buffer.length);
 		return ret;
 	}
 
@@ -271,13 +271,13 @@ public class Buffer {
 		return length;
 	}
 
-	public void writeVarint(int a) {
-		this.writeVaruint((int)((a >> 1) | (a << 31)));
+	public void writeVarint(long a) {
+		this.writeVaruint(a >= 0 ? a * 2  : a * -2 - 1);
 	}
 
 	public int readVarint() {
 		int ret = this.readVaruint();
-		return (int)((ret << 1) | (ret >> 31));
+		return (int)((ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2);
 	}
 
 	public static int varintLength(int a) {
@@ -289,7 +289,7 @@ public class Buffer {
 		return length;
 	}
 
-	public void writeVaruint(int a) {
+	public void writeVaruint(long a) {
 		while(a > 127) {
 			this._buffer[this._index++] = (byte)(a & 127 | 128);
 			a >>>= 7;
@@ -301,8 +301,8 @@ public class Buffer {
 		int limit = 0;
 		int ret = 0;
 		do {
-			ret |= (this._buffer[this._index] & 127) << (limit * 7);
-		} while(this._buffer[this._index++] > 127 && ++limit < 5 && this._index < this._buffer.length);
+			ret |= (int)(this._buffer[this._index] & 127) << (limit * 7);
+		} while(this._buffer[this._index++] < 0 && ++limit < 5 && this._index < this._buffer.length);
 		return ret;
 	}
 
@@ -316,12 +316,12 @@ public class Buffer {
 	}
 
 	public void writeVarlong(long a) {
-		this.writeVarulong((long)((a >> 1) | (a << 63)));
+		this.writeVarulong(a >= 0 ? a * 2  : a * -2 - 1);
 	}
 
 	public long readVarlong() {
 		long ret = this.readVarulong();
-		return (long)((ret << 1) | (ret >> 63));
+		return (long)((ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2);
 	}
 
 	public static int varlongLength(long a) {
@@ -345,8 +345,8 @@ public class Buffer {
 		int limit = 0;
 		long ret = 0;
 		do {
-			ret |= (this._buffer[this._index] & 127) << (limit * 7);
-		} while(this._buffer[this._index++] > 127 && ++limit < 10 && this._index < this._buffer.length);
+			ret |= (long)(this._buffer[this._index] & 127) << (limit * 7);
+		} while(this._buffer[this._index++] < 0 && ++limit < 10 && this._index < this._buffer.length);
 		return ret;
 	}
 

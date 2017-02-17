@@ -40,7 +40,7 @@ public class OrderedGamePacket extends Packet {
 	/**
 	 * Serialised packet (see GamePacket.packet).
 	 */
-	public byte[] packet;
+	public byte[] packet = new byte[0];
 
 	public OrderedGamePacket() {}
 

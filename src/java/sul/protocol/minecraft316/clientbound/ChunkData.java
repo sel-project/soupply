@@ -28,7 +28,7 @@ public class ChunkData extends Packet {
 	public boolean full;
 	public int sections;
 	public byte[] data = new byte[0];
-	public byte[] tiles;
+	public byte[] tiles = new byte[0];
 
 	public ChunkData() {}
 

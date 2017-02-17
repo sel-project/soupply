@@ -22,6 +22,11 @@ public final class Tuples {
 			this.z = z;
 		}
 
+		@Override
+		public String toString() {
+			return "ByteXZ(x: " + x + ", z: " + z + ")";
+		}
+
 	}
 
 	public static class DoubleXYZ {
@@ -34,6 +39,11 @@ public final class Tuples {
 			this.x = x;
 			this.y = y;
 			this.z = z;
+		}
+
+		@Override
+		public String toString() {
+			return "DoubleXYZ(x: " + x + ", y: " + y + ", z: " + z + ")";
 		}
 
 	}
@@ -50,6 +60,11 @@ public final class Tuples {
 			this.z = z;
 		}
 
+		@Override
+		public String toString() {
+			return "ShortXYZ(x: " + x + ", y: " + y + ", z: " + z + ")";
+		}
+
 	}
 
 	public static class IntXZ {
@@ -61,6 +76,11 @@ public final class Tuples {
 		public IntXZ(int x, int z) {
 			this.x = x;
 			this.z = z;
+		}
+
+		@Override
+		public String toString() {
+			return "IntXZ(x: " + x + ", z: " + z + ")";
 		}
 
 	}
@@ -77,6 +97,11 @@ public final class Tuples {
 			this.z = z;
 		}
 
+		@Override
+		public String toString() {
+			return "IntXYZ(x: " + x + ", y: " + y + ", z: " + z + ")";
+		}
+
 	}
 
 	public static class FloatXYZ {
@@ -89,6 +114,11 @@ public final class Tuples {
 			this.x = x;
 			this.y = y;
 			this.z = z;
+		}
+
+		@Override
+		public String toString() {
+			return "FloatXYZ(x: " + x + ", y: " + y + ", z: " + z + ")";
 		}
 
 	}
@@ -105,6 +135,11 @@ public final class Tuples {
 			this.z = z;
 		}
 
+		@Override
+		public String toString() {
+			return "ByteXYZ(x: " + x + ", y: " + y + ", z: " + z + ")";
+		}
+
 	}
 
 	public static class DoubleXZ {
@@ -116,6 +151,11 @@ public final class Tuples {
 		public DoubleXZ(double x, double z) {
 			this.x = x;
 			this.z = z;
+		}
+
+		@Override
+		public String toString() {
+			return "DoubleXZ(x: " + x + ", z: " + z + ")";
 		}
 
 	}

@@ -25,7 +25,7 @@ public class BlockEntityData extends Packet {
 	}
 
 	public sul.protocol.pocket101.types.BlockPosition position;
-	public byte[] nbt;
+	public byte[] nbt = new byte[0];
 
 	public BlockEntityData() {}
 

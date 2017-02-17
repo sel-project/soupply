@@ -24,7 +24,7 @@ public class Mcpe extends Packet {
 		return ID;
 	}
 
-	public byte[] packet;
+	public byte[] packet = new byte[0];
 
 	public Mcpe() {}
 

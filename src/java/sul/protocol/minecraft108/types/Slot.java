@@ -17,7 +17,7 @@ public class Slot extends Stream {
 	public short id;
 	public byte count;
 	public short damage;
-	public byte[] nbt;
+	public byte[] nbt = new byte[0];
 
 	public Slot() {}
 

@@ -36,7 +36,7 @@ public class UpdateBlockEntity extends Packet {
 
 	public long position;
 	public byte action;
-	public byte[] nbt;
+	public byte[] nbt = new byte[0];
 
 	public UpdateBlockEntity() {}
 

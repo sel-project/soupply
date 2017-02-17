@@ -29,9 +29,10 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	
 	std.file.mkdirRecurse("../docs");
 	
-	enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "string", "varshort", "varushort", "varint", "varuint", "varlong", "varulong", "triad", "uuid", "bytes", "metadata"];
+	enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "string", "varshort", "varushort", "varint", "varuint", "varlong", "varulong", "triad", "uuid", "bytes"];
 	
 	@property string convert(string type) {
+		if(type == "metadata") return "<a href=\"#metadata\">metadata</a>";
 		auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
 		immutable t = type[0..end];
 		immutable e = type[end..$].replace("<", "&lt;").replace(">", "&gt;");

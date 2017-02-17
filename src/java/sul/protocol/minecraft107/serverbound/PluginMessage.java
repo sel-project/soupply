@@ -26,7 +26,7 @@ public class PluginMessage extends Packet {
 	}
 
 	public String channel;
-	public byte[] data;
+	public byte[] data = new byte[0];
 
 	public PluginMessage() {}
 

@@ -20,7 +20,7 @@ public class Encapsulation extends Stream {
 	public int orderIndex;
 	public byte orderChannel;
 	public sul.protocol.raknet8.types.Split split;
-	public byte[] payload;
+	public byte[] payload = new byte[0];
 
 	public Encapsulation() {}
 

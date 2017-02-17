@@ -26,7 +26,7 @@ public class OpenConnectionRequest1 extends Packet {
 
 	public byte[] magic = new byte[16];
 	public byte protocol;
-	public byte[] mtu;
+	public byte[] mtu = new byte[0];
 
 	public OpenConnectionRequest1() {}
 

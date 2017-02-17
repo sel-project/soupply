@@ -19,7 +19,7 @@ public class ChunkData extends Stream {
 	public byte[] biomes = new byte[256];
 	public byte[] borders = new byte[0];
 	public sul.protocol.pocket100.types.ExtraData[] extraData = new sul.protocol.pocket100.types.ExtraData[0];
-	public byte[] blockEntities;
+	public byte[] blockEntities = new byte[0];
 
 	public ChunkData() {}
 
@@ -34,7 +34,7 @@ public class ChunkData extends Stream {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(sections.length) + Buffer.varuintLength(borders.length) + borders.length + Buffer.varuintLength(extraData.length) + blockEntities.length + 768; for(sul.protocol.pocket100.types.Section cvdlbm:sections){ length+=cvdlbm.length(); };for(sul.protocol.pocket100.types.ExtraData zhcfyr:extraData){ length+=zhcfyr.length(); } return length;
+		int length=Buffer.varuintLength(sections.length) + Buffer.varuintLength(borders.length) + borders.length + Buffer.varuintLength(extraData.length) + blockEntities.length + 773; for(sul.protocol.pocket100.types.Section cvdlbm:sections){ length+=cvdlbm.length(); };for(sul.protocol.pocket100.types.ExtraData zhcfyr:extraData){ length+=zhcfyr.length(); } return length;
 	}
 
 	@Override
@@ -48,6 +48,7 @@ public class ChunkData extends Stream {
 		this.writeBytes(blockEntities);
 		byte[] _this = this.getBuffer();
 		this._buffer = new byte[10 + _this.length];
+		this._index = 0;
 		this.writeVaruint(_this.length);
 		this.writeBytes(_this);
 		return this.getBuffer();

@@ -128,7 +128,7 @@ public final class About {
 	foreach(varint ; [tuple("short", 3, 15), tuple("int", 5, 31), tuple("long", 10, 63)]) {
 		foreach(sign ; ["", "u"]) {
 			// write
-			io ~= "\tpublic void writeVar" ~ sign ~ varint[0] ~ "(" ~ varint[0] ~ " a) {\n";
+			io ~= "\tpublic void writeVar" ~ sign ~ varint[0] ~ "(long a) {\n";
 			if(sign.length) {
 				io ~= "\t\twhile(a > 127) {\n";
 				io ~= "\t\t\tthis._buffer[this._index++] = (byte)(a & 127 | 128);\n";
@@ -136,7 +136,7 @@ public final class About {
 				io ~= "\t\t}\n";
 				io ~= "\t\tthis._buffer[this._index++] = (byte)(a & 255);\n";
 			} else {
-				io ~= "\t\tthis.writeVaru" ~ varint[0] ~ "((" ~ varint[0] ~ ")((a >> 1) | (a << " ~ to!string(varint[2]) ~ ")));\n";
+				io ~= "\t\tthis.writeVaru" ~ varint[0] ~ "(a >= 0 ? a * 2  : a * -2 - 1);\n";
 			}
 			io ~= "\t}\n\n";
 			// read
@@ -145,12 +145,12 @@ public final class About {
 				io ~= "\t\tint limit = 0;\n";
 				io ~= "\t\t" ~ varint[0] ~ " ret = 0;\n";
 				io ~= "\t\tdo {\n";
-				io ~= "\t\t\tret |= (this._buffer[this._index] & 127) << (limit * 7);\n";
-				io ~= "\t\t} while(this._buffer[this._index++] > 127 && ++limit < " ~ to!string(varint[1]) ~ " && this._index < this._buffer.length);\n";
+				io ~= "\t\t\tret |= (" ~ varint[0] ~ ")(this._buffer[this._index] & 127) << (limit * 7);\n";
+				io ~= "\t\t} while(this._buffer[this._index++] < 0 && ++limit < " ~ to!string(varint[1]) ~ " && this._index < this._buffer.length);\n";
 				io ~= "\t\treturn ret;\n";
 			} else {
 				io ~= "\t\t" ~ varint[0] ~ " ret = this.readVaru" ~ varint[0] ~ "();\n";;
-				io ~= "\t\treturn (" ~ varint[0] ~ ")((ret << 1) | (ret >> " ~ to!string(varint[2]) ~ "));\n";
+				io ~= "\t\treturn (" ~ varint[0] ~ ")((ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2);\n";
 			}
 			io ~= "\t}\n\n";
 			// length
@@ -397,10 +397,14 @@ public class MetadataException extends RuntimeException {
 			}
 		}
 		
-		string fieldsLength(Field[] fields, string id="") {
+		string fieldsLength(Field[] fields, string id="", string length="") {
 			size_t fixed = 0;
 			string[] exps, seps;
 			if(id.length) fieldsLengthImpl("ID", id, fixed, exps, seps); //TODO do not calculate at java runtime if it's a varint
+			if(length.length) {
+				if(length.startsWith("var")) fixed += length.endsWith("short") ? 3 : (length.endsWith("int") ? 5 : 10);
+				else fieldsLengthImpl("", length, fixed, exps, seps);
+			}
 			foreach(i, field; fields) {
 				fieldsLengthImpl(field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.type, fixed, exps, seps);
 			}
@@ -534,6 +538,7 @@ public class MetadataException extends RuntimeException {
 				data ~= space ~ "public " ~ c ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name));
 				if(oa != -1) data ~= " = new " ~ c[0..$-2] ~ "[" ~ (ca == oa + 1 ? "0" : field.type[oa+1..ca]) ~ "]";
 				else if(field.def.length) data ~= " = " ~ constOf(field.def);
+				else if(field.type == "bytes") data ~= " = new byte[0]";
 				data ~= ";\n";
 				if(i == fields.length - 1) data ~= "\n";
 			}
@@ -554,7 +559,7 @@ public class MetadataException extends RuntimeException {
 			// length
 			data ~= space ~ "@Override\n";
 			data ~= space ~ "public int length() {\n";
-			data ~= space ~ "\t" ~ fieldsLength(fields, hasId ? prs.data.id : "") ~ ";\n";
+			data ~= space ~ "\t" ~ fieldsLength(fields, hasId ? prs.data.id : "", length) ~ ";\n";
 			data ~= space ~ "}\n\n";
 			// encoding
 			data ~= space ~ "@Override\n";
@@ -581,6 +586,7 @@ public class MetadataException extends RuntimeException {
 			if(length.length) {
 				data ~= space ~ "\tbyte[] _this = this.getBuffer();\n";
 				data ~= space ~ "\tthis._buffer = new byte[10 + _this.length];\n"; // longest length of a length type
+				data ~= space ~ "\tthis._index = 0;\n";
 				data ~= space ~ "\t" ~ createEncoding(length, "_this.length") ~ "\n";
 				data ~= space ~ "\tthis.writeBytes(_this);\n";
 			}
@@ -810,6 +816,14 @@ public class MetadataException extends RuntimeException {
 		foreach(c ; spl[1].split("")) {
 			tp ~= "\t\t\tthis." ~ c ~ " = " ~ c ~ ";\n";
 		}
+		tp ~= "\t\t}\n\n";
+		tp ~= "\t\t@Override\n";
+		tp ~= "\t\tpublic String toString() {\n";
+		tp ~= "\t\t\treturn \"" ~ capitalize(spl[0]) ~ spl[1].toUpper() ~ "(";
+		foreach(i, c; spl[1].split("")) {
+			tp ~= c ~ ": \" + " ~ c ~ " + \"" ~ (i != spl[1].length - 1 ? ", " : "");
+		}
+		tp ~= ")\";\n";
 		tp ~= "\t\t}\n\n";
 		tp ~= "\t}\n\n";
 	}

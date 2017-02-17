@@ -22,24 +22,24 @@ public class HurtArmor extends Packet {
 		return ID;
 	}
 
-	public int health;
+	public int unknown0;
 
 	public HurtArmor() {}
 
-	public HurtArmor(int health) {
-		this.health = health;
+	public HurtArmor(int unknown0) {
+		this.unknown0 = unknown0;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varintLength(health) + 1;
+		return Buffer.varintLength(unknown0) + 1;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
-		this.writeVarint(health);
+		this.writeVarint(unknown0);
 		return this.getBuffer();
 	}
 
@@ -47,7 +47,7 @@ public class HurtArmor extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
-		health=this.readVarint();
+		unknown0=this.readVarint();
 	}
 
 	public static HurtArmor fromBuffer(byte[] buffer) {
@@ -58,7 +58,7 @@ public class HurtArmor extends Packet {
 
 	@Override
 	public String toString() {
-		return "HurtArmor(health: " + this.health + ")";
+		return "HurtArmor(unknown0: " + this.unknown0 + ")";
 	}
 
 }

@@ -25,7 +25,7 @@ public class UpdateEntityNbt extends Packet {
 	}
 
 	public int entityId;
-	public byte[] nbt;
+	public byte[] nbt = new byte[0];
 
 	public UpdateEntityNbt() {}
 

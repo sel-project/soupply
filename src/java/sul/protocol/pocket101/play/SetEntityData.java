@@ -10,6 +10,9 @@ package sul.protocol.pocket101.play;
 
 import sul.utils.*;
 
+/**
+ * Updates an entity's metadata.
+ */
 public class SetEntityData extends Packet {
 
 	public static final byte ID = (byte)39;

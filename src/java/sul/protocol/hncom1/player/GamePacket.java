@@ -52,7 +52,7 @@ public class GamePacket extends Packet {
 	 * The packet is already unencrypted and uncompressed if it was a Batch packet and
 	 * ready to be handled as a serverbound packet.
 	 */
-	public byte[] packet;
+	public byte[] packet = new byte[0];
 
 	public GamePacket() {}
 
