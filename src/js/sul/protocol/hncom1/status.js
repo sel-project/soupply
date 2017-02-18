@@ -141,7 +141,7 @@ const Status = {
 		 * @param payload
 		 *        Bytes to be sent/broadcasted. It may be a serialised packet of a plugin-defined protocol.
 		 */
-		constructor(addressees=0, payload=[]) {
+		constructor(addressees=[], payload=[]) {
 			super();
 			this.addressees = addressees;
 			this.payload = payload;

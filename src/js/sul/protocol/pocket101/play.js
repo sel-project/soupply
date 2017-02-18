@@ -677,7 +677,7 @@ const Play = {
 		 * @param worldName
 		 *        World's name that will be displayed in the game's world settings. It can contain formatting codes.
 		 */
-		constructor(entityId=0, runtimeId=0, position={x:0,y:0,z:0}, yaw=.0, pitch=.0, seed=0, dimension=0, generator=1, worldGamemode=0, difficulty=0, spawnPosition=0, loadedInCreative=false, time=0, edition=0, rainLevel=.0, lightingLevel=.0, commandsEnabled=false, textureRequired=false, levelId="", worldName="") {
+		constructor(entityId=0, runtimeId=0, position={x:0,y:0,z:0}, yaw=.0, pitch=.0, seed=0, dimension=0, generator=1, worldGamemode=0, difficulty=0, spawnPosition={x:0,y:0,z:0}, loadedInCreative=false, time=0, edition=0, rainLevel=.0, lightingLevel=.0, commandsEnabled=false, textureRequired=false, levelId="", worldName="") {
 			super();
 			this.entityId = entityId;
 			this.runtimeId = runtimeId;
@@ -1721,7 +1721,7 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(position=null, data=0) {
+		constructor(position=null, data=new Int32Array(2)) {
 			super();
 			this.position = position;
 			this.data = data;
@@ -2897,7 +2897,7 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(window=0, slots=[], hotbar=0) {
+		constructor(window=0, slots=[], hotbar=[]) {
 			super();
 			this.window = window;
 			this.slots = slots;
@@ -3192,7 +3192,7 @@ const Play = {
 		 * @param position
 		 *        Coordinates of the chunk.
 		 */
-		constructor(position=0, data=null) {
+		constructor(position={x:0,z:0}, data=null) {
 			super();
 			this.position = position;
 			this.data = data;
@@ -3584,7 +3584,7 @@ const Play = {
 		static get UPDATE(){ return 4; }
 		static get FULL(){ return 6; }
 
-		constructor(mapId=0, unknown1=0, unknown2=0, unknown3=0, action=0, unknown5=0, unknown6=0, unknown7=0, unknown8=0, showIcons=false, icons=0, direction=0, position=0, columns=0, rows=0, offset=0, data=[]) {
+		constructor(mapId=0, unknown1=0, unknown2=0, unknown3=0, action=0, unknown5=0, unknown6=0, unknown7=0, unknown8=0, showIcons=false, icons=[], direction=0, position={x:0,z:0}, columns=0, rows=0, offset={x:0,z:0}, data=[]) {
 			super();
 			this.mapId = mapId;
 			this.unknown1 = unknown1;

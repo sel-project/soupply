@@ -19,7 +19,7 @@ const Unconnected = {
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
 
-		constructor(pingId=0, magic=[]) {
+		constructor(pingId=0, magic=new Uint8Array(16)) {
 			super();
 			this.pingId = pingId;
 			this.magic = magic;
@@ -62,7 +62,7 @@ const Unconnected = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(pingId=0, serverId=0, magic=[], status="") {
+		constructor(pingId=0, serverId=0, magic=new Uint8Array(16), status="") {
 			super();
 			this.pingId = pingId;
 			this.serverId = serverId;
@@ -111,7 +111,7 @@ const Unconnected = {
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
 
-		constructor(magic=[], protocol=0, mtu=null) {
+		constructor(magic=new Uint8Array(16), protocol=0, mtu=null) {
 			super();
 			this.magic = magic;
 			this.protocol = protocol;
@@ -157,7 +157,7 @@ const Unconnected = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(magic=[], serverId=0, security=false, mtuLength=0) {
+		constructor(magic=new Uint8Array(16), serverId=0, security=false, mtuLength=0) {
 			super();
 			this.magic = magic;
 			this.serverId = serverId;
@@ -206,7 +206,7 @@ const Unconnected = {
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
 
-		constructor(magic=[], serverAddress=null, mtuLength=0, clientId=0) {
+		constructor(magic=new Uint8Array(16), serverAddress=null, mtuLength=0, clientId=0) {
 			super();
 			this.magic = magic;
 			this.serverAddress = serverAddress;
@@ -255,7 +255,7 @@ const Unconnected = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(magic=[], serverId=0, clientAddress=null, mtuLength=0, security=false) {
+		constructor(magic=new Uint8Array(16), serverId=0, clientAddress=null, mtuLength=0, security=false) {
 			super();
 			this.magic = magic;
 			this.serverId = serverId;

@@ -205,12 +205,12 @@ class Buffer {
 	}
 
 	writeVarshort(a) {
-		this.writeVarushort((a >> 1) | (a << 15));
+		this.writeVarushort(a >= 0 ? a * 2 : a * -2 - 1);
 	}
 
 	readVarshort() {
 		var ret = this.readVarushort();
-		return (ret << 1) | (ret >> 15);
+		return (ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2;
 	}
 
 	writeVarushort(a) {
@@ -231,12 +231,12 @@ class Buffer {
 	}
 
 	writeVarint(a) {
-		this.writeVaruint((a >> 1) | (a << 31));
+		this.writeVaruint(a >= 0 ? a * 2 : a * -2 - 1);
 	}
 
 	readVarint() {
 		var ret = this.readVaruint();
-		return (ret << 1) | (ret >> 31);
+		return (ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2;
 	}
 
 	writeVaruint(a) {
@@ -257,12 +257,12 @@ class Buffer {
 	}
 
 	writeVarlong(a) {
-		this.writeVarulong((a >> 1) | (a << 63));
+		this.writeVarulong(a >= 0 ? a * 2 : a * -2 - 1);
 	}
 
 	readVarlong() {
 		var ret = this.readVarulong();
-		return (ret << 1) | (ret >> 63);
+		return (ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2;
 	}
 
 	writeVarulong(a) {

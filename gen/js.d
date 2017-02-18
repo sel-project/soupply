@@ -131,7 +131,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				utils ~= "\t\t}\n";
 				utils ~= "\t\tthis._buffer.push(a & 255);\n";
 			} else {
-				utils ~= "\t\tthis.writeVaru" ~ varint[0] ~ "((a >> 1) | (a << " ~ to!string(varint[2]) ~ "));\n";
+				utils ~= "\t\tthis.writeVaru" ~ varint[0] ~ "(a >= 0 ? a * 2 : a * -2 - 1);\n";
 			}
 			utils ~= "\t}\n\n";
 			// read
@@ -145,7 +145,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				utils ~= "\t\treturn ret;\n";
 			} else {
 				utils ~= "\t\tvar ret = this.readVaru" ~ varint[0] ~ "();\n";;
-				utils ~= "\t\treturn (ret << 1) | (ret >> " ~ to!string(varint[2]) ~ ");\n";
+				utils ~= "\t\treturn (ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2;\n";
 			}
 			utils ~= "\t}\n\n";
 		}
@@ -182,6 +182,11 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 			else if(defaultTypes.canFind(t)) return t ~ e;
 			else if(t == "metadata") return "Metadata";
 			else return "Types." ~ toPascalCase(t) ~ e;
+		}
+
+		@property string convertName(string name) {
+			if(name == "default") return "def";
+			else return toCamelCase(name);
 		}
 		
 		immutable id = convert(prs.data.id);
@@ -307,7 +312,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 			string[] f;
 			bool desc = false;
 			foreach(i, field; fields) {
-				immutable name = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
+				immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 				f ~= name ~ "=" ~ (field.def.length ? constOf(field.def) : defaultValue(field.type));
 				desc |= field.description.length != 0;
 			}
@@ -315,7 +320,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				data ~= space ~ "/**\n";
 				foreach(field ; fields) {
 					if(field.description.length) {
-						data ~= space ~ " * @param " ~ toCamelCase(field.name) ~ "\n";
+						data ~= space ~ " * @param " ~ convertName(field.name) ~ "\n";
 						foreach(d ; paramDoc(field.description)) {
 							data ~= space ~ " *        " ~ d ~ "\n";
 						}
@@ -326,7 +331,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 			data ~= space ~ "constructor(" ~ f.join(", ") ~ ") {\n";
 			data ~= space ~ "\tsuper();\n";
 			foreach(i, field; fields) {
-				immutable name = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
+				immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 				data ~= space ~ "\tthis." ~ name ~ " = " ~ name ~ ";\n";
 			}
 			data ~= space ~ "}\n\n";
@@ -342,7 +347,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				if(id >= 0) data ~= space ~ "\t" ~ createEncoding(prs.data.id, to!string(id)) ~ "\n";
 				foreach(i, field; fields) {
 					bool c = field.condition != "";
-					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
+					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 					data ~= space ~ "\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createEncoding(field.type, "this." ~ name, field.endianness) ~ (c ? " }" : "") ~ "\n";
 				}
 				if(variantField.length) {
@@ -351,7 +356,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 						data ~= "\t\tcase " ~ variant.value ~ ":\n";
 						foreach(i, field; fields) {
 							bool c = field.condition != "";
-							immutable name = field.name == "?" ? "unknown" ~ to!string(i + fields.length) : toCamelCase(field.name);
+							immutable name = field.name == "?" ? "unknown" ~ to!string(i + fields.length) : convertName(field.name);
 							data ~= space ~ "\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createEncoding(field.type, "this." ~ name, field.endianness) ~ (c ? " }" : "") ~ "\n";
 						}
 						data ~= "\t\t\tbreak;\n";
@@ -382,7 +387,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				if(id >= 0) data ~= space ~ "\t" ~ createDecoding(prs.data.id, "var _id") ~ "\n";
 				foreach(i, field; fields) {
 					bool c = field.condition != "";
-					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
+					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 					data ~= space ~ "\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createDecoding(field.type, "this." ~ name, field.endianness) ~ (c ? " }" : "") ~ "\n";
 				}
 				if(variantField.length) {
@@ -391,7 +396,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 						data ~= space ~ "\t\tcase " ~ variant.value ~ ":\n";
 						foreach(i, field; variant.fields) {
 							bool c = field.condition != "";
-							immutable name = field.name == "?" ? "unknown" ~ to!string(i + fields.length) : toCamelCase(field.name);
+							immutable name = field.name == "?" ? "unknown" ~ to!string(i + fields.length) : convertName(field.name);
 							data ~= space ~ "\t\t\t" ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createDecoding(field.type, "this." ~ name, field.endianness) ~ (c ? " }" : "") ~ "\n";
 						}
 						data ~= space ~ "\t\t\tbreak;\n";
@@ -415,7 +420,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 				data ~= space ~ "toString() {\n";
 				string[] s;
 				foreach(i, field; fields) {
-					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : toCamelCase(field.name);
+					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 					s ~= name ~ ": \" + this." ~ name;
 				}
 				data ~= space ~ "\treturn \"" ~ className ~ "(" ~ (fields.length ? s.join(" + \", ") ~ " + \"" : "") ~ ")\";\n";
@@ -467,13 +472,27 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 }
 
 string defaultValue(string type) {
-	if(["byte", "ubyte", "short", "ushort", "triad", "int", "uint", "long", "ulong"].canFind(type) || type.startsWith("var")) return "0";
-	else if(type == "float" || type == "double") return ".0";
+	if(type == "float" || type == "double") return ".0";
 	else if(type == "bool") return "false";
-	else if(type == "string") return `""`;
+	else if(type == "string") return "\"\"";
 	else if(type == "uuid") return "new Uint8Array(16)";
-	else if(type.endsWith("]")) return "[]";
-	else if(type.indexOf("<") != -1) return "{" ~ type.matchFirst(ctRegex!`<[a-z]+>`).hit[1..$-1].split("").join(":0,") ~ ":0}";
+	else if(type.endsWith("]")) {
+		if(type[$-2] == '[') return "[]";
+		else {
+			immutable size = type[type.lastIndexOf("[")+1..$-1];
+			type = type[0..type.lastIndexOf("[")];
+			if(type == "byte") return "new Int8Array(" ~ size ~ ")";
+			else if(type == "ubyte") return "new Uint8Array(" ~ size ~ ")";
+			else if(type == "short" || type == "varshort") return "new Int16Array(" ~ size ~ ")";
+			else if(type == "ushort" || type == "varushort") return "new Uint16Array(" ~ size ~ ")";
+			else if(type == "int" || type == "varint" || type == "triad") return "new Int32Array(" ~ size ~ ")";
+			else if(type == "uint" || type == "varuint") return "new Uint32Array(" ~ size ~ ")";
+			else if(type == "float") return "new Float32Array(" ~ size ~ ")";
+			else if(type == "double") return "new Float64Array(" ~ size ~ ")";
+			else return "[]";
+		}
+	} else if(type.indexOf("<") != -1) return "{" ~ type.matchFirst(ctRegex!`<[a-z]+>`).hit[1..$-1].split("").join(":0,") ~ ":0}";
+	else if(["byte", "ubyte", "short", "ushort", "triad", "int", "uint", "long", "ulong"].canFind(type) || type.startsWith("var")) return "0";
 	else return "null";
 }
 

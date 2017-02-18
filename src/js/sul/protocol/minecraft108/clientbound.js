@@ -1850,7 +1850,7 @@ const Clientbound = {
 		static get DAMAGE_INDICATOR(){ return 44; }
 		static get SWEEP_ATTACK(){ return 45; }
 
-		constructor(particleId=0, longDistance=false, position={x:0,y:0,z:0}, offset={x:0,y:0,z:0}, data=.0, count=0, additionalData=0) {
+		constructor(particleId=0, longDistance=false, position={x:0,y:0,z:0}, offset={x:0,y:0,z:0}, data=.0, count=0, additionalData=new Uint32Array(2)) {
 			super();
 			this.particleId = particleId;
 			this.longDistance = longDistance;
@@ -2631,7 +2631,7 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityIds=0) {
+		constructor(entityIds=[]) {
 			super();
 			this.entityIds = entityIds;
 		}
@@ -3423,7 +3423,7 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityId=0, passengers=0) {
+		constructor(entityId=0, passengers=[]) {
 			super();
 			this.entityId = entityId;
 			this.passengers = passengers;

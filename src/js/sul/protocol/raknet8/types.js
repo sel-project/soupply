@@ -12,7 +12,7 @@ const Types = {
 
 	Address: class extends Buffer {
 
-		constructor(type=0, ipv4=0, ipv6=[], port=0) {
+		constructor(type=0, ipv4=0, ipv6=new Uint8Array(16), port=0) {
 			super();
 			this.type = type;
 			this.ipv4 = ipv4;

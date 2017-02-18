@@ -65,7 +65,7 @@ const Types = {
 		 * @param protocols
 		 *        Protocols accepted by the server for the game. They should be ordered from oldest to newest.
 		 */
-		constructor(type=0, protocols=0) {
+		constructor(type=0, protocols=[]) {
 			super();
 			this.type = type;
 			this.protocols = protocols;

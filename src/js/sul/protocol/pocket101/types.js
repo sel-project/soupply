@@ -99,12 +99,12 @@ const Types = {
 
 	Attribute: class extends Buffer {
 
-		constructor(min=.0, max=.0, value=.0, default=.0, name="") {
+		constructor(min=.0, max=.0, value=.0, def=.0, name="") {
 			super();
 			this.min = min;
 			this.max = max;
 			this.value = value;
-			this.default = default;
+			this.def = def;
 			this.name = name;
 		}
 
@@ -114,7 +114,7 @@ const Types = {
 			this.writeLittleEndianFloat(this.min);
 			this.writeLittleEndianFloat(this.max);
 			this.writeLittleEndianFloat(this.value);
-			this.writeLittleEndianFloat(this.default);
+			this.writeLittleEndianFloat(this.def);
 			var dhc5y1=this.encodeString(this.name); this.writeVaruint(dhc5y1.length); this.writeBytes(dhc5y1);
 			return new Uint8Array(this._buffer);
 		}
@@ -125,7 +125,7 @@ const Types = {
 			this.min=this.readLittleEndianFloat();
 			this.max=this.readLittleEndianFloat();
 			this.value=this.readLittleEndianFloat();
-			this.default=this.readLittleEndianFloat();
+			this.def=this.readLittleEndianFloat();
 			this.name=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
@@ -137,7 +137,7 @@ const Types = {
 
 		/** @return {string} */
 		toString() {
-			return "Attribute(min: " + this.min + ", max: " + this.max + ", value: " + this.value + ", default: " + this.default + ", name: " + this.name + ")";
+			return "Attribute(min: " + this.min + ", max: " + this.max + ", value: " + this.value + ", def: " + this.def + ", name: " + this.name + ")";
 		}
 
 	},
@@ -381,7 +381,7 @@ const Types = {
 		 * @param blockEntities
 		 *        Additional data for the chunk's block entities (tiles).
 		 */
-		constructor(sections=[], heights=[], biomes=[], borders=[], extraData=[], blockEntities=null) {
+		constructor(sections=[], heights=new Uint16Array(256), biomes=new Uint8Array(256), borders=[], extraData=[], blockEntities=null) {
 			super();
 			this.sections = sections;
 			this.heights = heights;
@@ -438,7 +438,7 @@ const Types = {
 
 	Section: class extends Buffer {
 
-		constructor(storageVersion=0, blockIds=[], blockMetas=[], skyLight=[], blockLight=[]) {
+		constructor(storageVersion=0, blockIds=new Uint8Array(4096), blockMetas=new Uint8Array(2048), skyLight=new Uint8Array(2048), blockLight=new Uint8Array(2048)) {
 			super();
 			this.storageVersion = storageVersion;
 			this.blockIds = blockIds;
