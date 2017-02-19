@@ -7,4 +7,4 @@
  */
 package sul.utils.about;
 
-enum __sul = 74;
+enum __sul = 76;

@@ -1689,12 +1689,13 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(position={x:0,z:0}, full=false, sections=0, data=[], tiles=null) {
+		constructor(position={x:0,z:0}, full=false, sections=0, data=[], tilesCount=0, tiles=null) {
 			super();
 			this.position = position;
 			this.full = full;
 			this.sections = sections;
 			this.data = data;
+			this.tilesCount = tilesCount;
 			this.tiles = tiles;
 		}
 
@@ -1706,6 +1707,7 @@ const Clientbound = {
 			this.writeBigEndianByte(this.full?1:0);
 			this.writeVaruint(this.sections);
 			this.writeVaruint(this.data.length); this.writeBytes(this.data);
+			this.writeVaruint(this.tilesCount);
 			this.writeBytes(this.tiles);
 			return new Uint8Array(this._buffer);
 		}
@@ -1718,6 +1720,7 @@ const Clientbound = {
 			this.full=this.readBigEndianByte()!==0;
 			this.sections=this.readVaruint();
 			var aramzfy=this.readVaruint(); this.data=this.readBytes(aramzfy);
+			this.tilesCount=this.readVaruint();
 			this.tiles=Array.from(this._buffer); this._buffer=[];
 			return this;
 		}
@@ -1729,7 +1732,7 @@ const Clientbound = {
 
 		/** @return {string} */
 		toString() {
-			return "ChunkData(position: " + this.position + ", full: " + this.full + ", sections: " + this.sections + ", data: " + this.data + ", tiles: " + this.tiles + ")";
+			return "ChunkData(position: " + this.position + ", full: " + this.full + ", sections: " + this.sections + ", data: " + this.data + ", tilesCount: " + this.tilesCount + ", tiles: " + this.tiles + ")";
 		}
 
 	},

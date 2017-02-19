@@ -2008,21 +2008,23 @@ class ChunkData : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["position", "full", "sections", "data", "tiles"];
+	public enum string[] FIELDS = ["position", "full", "sections", "data", "tilesCount", "tiles"];
 
 	public Tuple!(int, "x", int, "z") position;
 	public bool full;
 	public uint sections;
 	public ubyte[] data;
+	public uint tilesCount;
 	public ubyte[] tiles;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(Tuple!(int, "x", int, "z") position, bool full=bool.init, uint sections=uint.init, ubyte[] data=(ubyte[]).init, ubyte[] tiles=(ubyte[]).init) {
+	public pure nothrow @safe @nogc this(Tuple!(int, "x", int, "z") position, bool full=bool.init, uint sections=uint.init, ubyte[] data=(ubyte[]).init, uint tilesCount=uint.init, ubyte[] tiles=(ubyte[]).init) {
 		this.position = position;
 		this.full = full;
 		this.sections = sections;
 		this.data = data;
+		this.tilesCount = tilesCount;
 		this.tiles = tiles;
 	}
 
@@ -2033,6 +2035,7 @@ class ChunkData : Buffer {
 		writeBigEndianBool(full);
 		writeBytes(varuint.encode(sections));
 		writeBytes(varuint.encode(cast(uint)data.length)); writeBytes(data);
+		writeBytes(varuint.encode(tilesCount));
 		writeBytes(tiles);
 		return _buffer;
 	}
@@ -2043,6 +2046,7 @@ class ChunkData : Buffer {
 		full=readBigEndianBool();
 		sections=varuint.decode(_buffer, &_index);
 		data.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+data.length){ data=_buffer[_index.._index+data.length].dup; _index+=data.length; }
+		tilesCount=varuint.decode(_buffer, &_index);
 		tiles=_buffer[_index..$].dup; _index=_buffer.length;
 	}
 
@@ -2054,7 +2058,7 @@ class ChunkData : Buffer {
 	}
 
 	public override string toString() {
-		return "ChunkData(position: " ~ std.conv.to!string(this.position) ~ ", full: " ~ std.conv.to!string(this.full) ~ ", sections: " ~ std.conv.to!string(this.sections) ~ ", data: " ~ std.conv.to!string(this.data) ~ ", tiles: " ~ std.conv.to!string(this.tiles) ~ ")";
+		return "ChunkData(position: " ~ std.conv.to!string(this.position) ~ ", full: " ~ std.conv.to!string(this.full) ~ ", sections: " ~ std.conv.to!string(this.sections) ~ ", data: " ~ std.conv.to!string(this.data) ~ ", tilesCount: " ~ std.conv.to!string(this.tilesCount) ~ ", tiles: " ~ std.conv.to!string(this.tiles) ~ ")";
 	}
 
 }

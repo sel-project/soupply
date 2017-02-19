@@ -581,6 +581,7 @@
 				<field name="full" type="bool" />
 				<field name="sections" type="varuint" />
 				<field name="data" type="ubyte[]" />
+				<field name="tiles-count" type="varuint" />
 				<field name="tiles" type="bytes" />
 			</packet>
 

@@ -1336,6 +1336,10 @@
 						"type": "ubyte[]"
 					},
 					{
+						"name": "tiles_count",
+						"type": "varuint"
+					},
+					{
 						"name": "tiles",
 						"type": "bytes"
 					}

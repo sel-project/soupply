@@ -28,21 +28,23 @@ public class ChunkData extends Packet {
 	public boolean full;
 	public int sections;
 	public byte[] data = new byte[0];
+	public int tilesCount;
 	public byte[] tiles = new byte[0];
 
 	public ChunkData() {}
 
-	public ChunkData(Tuples.IntXZ position, boolean full, int sections, byte[] data, byte[] tiles) {
+	public ChunkData(Tuples.IntXZ position, boolean full, int sections, byte[] data, int tilesCount, byte[] tiles) {
 		this.position = position;
 		this.full = full;
 		this.sections = sections;
 		this.data = data;
+		this.tilesCount = tilesCount;
 		this.tiles = tiles;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(sections) + Buffer.varuintLength(data.length) + data.length + tiles.length + 9;
+		return Buffer.varuintLength(ID) + Buffer.varuintLength(sections) + Buffer.varuintLength(data.length) + data.length + Buffer.varuintLength(tilesCount) + tiles.length + 9;
 	}
 
 	@Override
@@ -53,6 +55,7 @@ public class ChunkData extends Packet {
 		this.writeBool(full);
 		this.writeVaruint(sections);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
+		this.writeVaruint(tilesCount);
 		this.writeBytes(tiles);
 		return this.getBuffer();
 	}
@@ -65,6 +68,7 @@ public class ChunkData extends Packet {
 		full=this.readBool();
 		sections=this.readVaruint();
 		int brde=this.readVaruint(); data=this.readBytes(brde);
+		tilesCount=this.readVaruint();
 		tiles=this.readBytes(this._buffer.length-this._index);
 	}
 
@@ -76,7 +80,7 @@ public class ChunkData extends Packet {
 
 	@Override
 	public String toString() {
-		return "ChunkData(position: " + this.position.toString() + ", full: " + this.full + ", sections: " + this.sections + ", data: " + Arrays.toString(this.data) + ", tiles: " + Arrays.toString(this.tiles) + ")";
+		return "ChunkData(position: " + this.position.toString() + ", full: " + this.full + ", sections: " + this.sections + ", data: " + Arrays.toString(this.data) + ", tilesCount: " + this.tilesCount + ", tiles: " + Arrays.toString(this.tiles) + ")";
 	}
 
 }
