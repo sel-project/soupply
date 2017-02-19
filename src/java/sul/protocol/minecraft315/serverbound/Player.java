@@ -32,7 +32,7 @@ public class Player extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 1;
+		return 2;
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class ResourcePackStatus extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(result);
+		return Buffer.varuintLength(result) + 1;
 	}
 
 	@Override

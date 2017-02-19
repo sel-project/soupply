@@ -22,7 +22,7 @@ public class Respawn extends Packet {
 		return ID;
 	}
 
-	public Tuples.FloatXYZ position;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
 
 	public Respawn() {}
 

@@ -48,7 +48,7 @@ public class UpdateBlockEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + nbt.length + 9;
+		return nbt.length + 10;
 	}
 
 	@Override

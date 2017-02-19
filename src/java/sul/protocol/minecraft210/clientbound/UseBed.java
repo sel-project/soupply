@@ -34,7 +34,7 @@ public class UseBed extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 8;
+		return Buffer.varuintLength(entityId) + 9;
 	}
 
 	@Override

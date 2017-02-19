@@ -34,7 +34,7 @@ public class SetCooldown extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(item) + Buffer.varuintLength(cooldown);
+		return Buffer.varuintLength(item) + Buffer.varuintLength(cooldown) + 1;
 	}
 
 	@Override

@@ -27,11 +27,11 @@ public class SpawnObject extends Packet {
 	public int entityId;
 	public UUID uuid;
 	public byte type;
-	public Tuples.DoubleXYZ position;
+	public Tuples.DoubleXYZ position = new Tuples.DoubleXYZ();
 	public byte pitch;
 	public byte yaw;
 	public int data;
-	public Tuples.ShortXYZ velocity;
+	public Tuples.ShortXYZ velocity = new Tuples.ShortXYZ();
 
 	public SpawnObject() {}
 
@@ -48,7 +48,7 @@ public class SpawnObject extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 53;
+		return Buffer.varuintLength(entityId) + 54;
 	}
 
 	@Override

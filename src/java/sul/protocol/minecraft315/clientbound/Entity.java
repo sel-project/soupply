@@ -32,7 +32,7 @@ public class Entity extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId);
+		return Buffer.varuintLength(entityId) + 1;
 	}
 
 	@Override

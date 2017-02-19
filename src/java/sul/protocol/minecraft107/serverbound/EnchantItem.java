@@ -34,7 +34,7 @@ public class EnchantItem extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 2;
+		return 3;
 	}
 
 	@Override

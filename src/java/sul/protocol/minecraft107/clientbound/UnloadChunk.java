@@ -22,7 +22,7 @@ public class UnloadChunk extends Packet {
 		return ID;
 	}
 
-	public Tuples.IntXZ position;
+	public Tuples.IntXZ position = new Tuples.IntXZ();
 
 	public UnloadChunk() {}
 
@@ -32,7 +32,7 @@ public class UnloadChunk extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 8;
+		return 9;
 	}
 
 	@Override

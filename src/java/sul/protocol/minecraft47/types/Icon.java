@@ -22,7 +22,7 @@ public class Icon extends Stream {
 	public static final byte WHITE_CIRCLE = 6;
 
 	public byte directionAndType;
-	public Tuples.ByteXZ position;
+	public Tuples.ByteXZ position = new Tuples.ByteXZ();
 
 	public Icon() {}
 

@@ -26,7 +26,7 @@ public class NamedSoundEffect extends Packet {
 
 	public String name;
 	public int category;
-	public Tuples.IntXYZ position;
+	public Tuples.IntXYZ position = new Tuples.IntXYZ();
 	public float volume;
 	public float pitch;
 
@@ -42,7 +42,7 @@ public class NamedSoundEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(category) + 20;
+		return Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(category) + 21;
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class LoginSuccess extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(uuid.getBytes(StandardCharsets.UTF_8).length) + uuid.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length;
+		return Buffer.varuintLength(uuid.getBytes(StandardCharsets.UTF_8).length) + uuid.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(username.getBytes(StandardCharsets.UTF_8).length) + username.getBytes(StandardCharsets.UTF_8).length + 1;
 	}
 
 	@Override

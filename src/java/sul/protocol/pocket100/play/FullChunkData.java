@@ -22,7 +22,7 @@ public class FullChunkData extends Packet {
 		return ID;
 	}
 
-	public Tuples.IntXZ position;
+	public Tuples.IntXZ position = new Tuples.IntXZ();
 	public sul.protocol.pocket100.types.ChunkData data;
 
 	public FullChunkData() {}

@@ -37,7 +37,7 @@ public class PluginMessage extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(channel.getBytes(StandardCharsets.UTF_8).length) + channel.getBytes(StandardCharsets.UTF_8).length + data.length;
+		return Buffer.varuintLength(channel.getBytes(StandardCharsets.UTF_8).length) + channel.getBytes(StandardCharsets.UTF_8).length + data.length + 1;
 	}
 
 	@Override

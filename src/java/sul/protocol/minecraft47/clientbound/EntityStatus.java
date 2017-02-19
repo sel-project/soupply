@@ -61,7 +61,7 @@ public class EntityStatus extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 5;
+		return 6;
 	}
 
 	@Override

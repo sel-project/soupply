@@ -35,7 +35,7 @@ public class PlayerListItem extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(action);
+		return Buffer.varuintLength(action) + 1;
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class PlayerListItem extends Packet {
 
 		@Override
 		public int length() {
-			int length=Buffer.varuintLength(players.length) + 0; for(sul.protocol.minecraft210.types.ListAddPlayer cxevc:players){ length+=cxevc.length(); } return length;
+			int length=Buffer.varuintLength(players.length); for(sul.protocol.minecraft210.types.ListAddPlayer cxevc:players){ length+=cxevc.length(); } return length;
 		}
 
 		@Override
@@ -139,7 +139,7 @@ public class PlayerListItem extends Packet {
 
 		@Override
 		public int length() {
-			int length=Buffer.varuintLength(players.length) + 0; for(sul.protocol.minecraft210.types.ListUpdateGamemode cxevc:players){ length+=cxevc.length(); } return length;
+			int length=Buffer.varuintLength(players.length); for(sul.protocol.minecraft210.types.ListUpdateGamemode cxevc:players){ length+=cxevc.length(); } return length;
 		}
 
 		@Override
@@ -187,7 +187,7 @@ public class PlayerListItem extends Packet {
 
 		@Override
 		public int length() {
-			int length=Buffer.varuintLength(players.length) + 0; for(sul.protocol.minecraft210.types.ListUpdateLatency cxevc:players){ length+=cxevc.length(); } return length;
+			int length=Buffer.varuintLength(players.length); for(sul.protocol.minecraft210.types.ListUpdateLatency cxevc:players){ length+=cxevc.length(); } return length;
 		}
 
 		@Override
@@ -235,7 +235,7 @@ public class PlayerListItem extends Packet {
 
 		@Override
 		public int length() {
-			int length=Buffer.varuintLength(players.length) + 0; for(sul.protocol.minecraft210.types.ListUpdateDisplayName cxevc:players){ length+=cxevc.length(); } return length;
+			int length=Buffer.varuintLength(players.length); for(sul.protocol.minecraft210.types.ListUpdateDisplayName cxevc:players){ length+=cxevc.length(); } return length;
 		}
 
 		@Override

@@ -57,7 +57,7 @@ public class StartGame extends Packet {
 	/**
 	 * Position where the player will spawn.
 	 */
-	public Tuples.FloatXYZ position;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
 	public float yaw;
 	public float pitch;
 
@@ -93,7 +93,7 @@ public class StartGame extends Packet {
 	/**
 	 * Position where the client's compass will point to.
 	 */
-	public Tuples.IntXYZ spawnPosition;
+	public Tuples.IntXYZ spawnPosition = new Tuples.IntXYZ();
 	public boolean loadedInCreative;
 
 	/**

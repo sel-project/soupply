@@ -44,7 +44,7 @@ public class UpdateScore extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(scoreName.getBytes(StandardCharsets.UTF_8).length) + scoreName.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(objectiveName.getBytes(StandardCharsets.UTF_8).length) + objectiveName.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(value) + 1;
+		return Buffer.varuintLength(scoreName.getBytes(StandardCharsets.UTF_8).length) + scoreName.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(objectiveName.getBytes(StandardCharsets.UTF_8).length) + objectiveName.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(value) + 2;
 	}
 
 	@Override

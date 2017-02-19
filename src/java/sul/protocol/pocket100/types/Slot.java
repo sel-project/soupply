@@ -16,7 +16,7 @@ public class Slot extends Stream {
 
 	public int id;
 	public int metaAndCount;
-	public byte[] nbt;
+	public byte[] nbt = new byte[0];
 
 	public Slot() {}
 
@@ -28,7 +28,7 @@ public class Slot extends Stream {
 
 	@Override
 	public int length() {
-		return Buffer.varintLength(id) + Buffer.varintLength(metaAndCount) + 2;
+		return Buffer.varintLength(id) + Buffer.varintLength(metaAndCount) + nbt.length + 2;
 	}
 
 	@Override

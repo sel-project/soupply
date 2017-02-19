@@ -42,7 +42,7 @@ public class ClickWindow extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(mode) + clickedItem.length() + 6;
+		return Buffer.varuintLength(mode) + clickedItem.length() + 7;
 	}
 
 	@Override

@@ -28,7 +28,7 @@ public class MovePlayer extends Packet {
 	public static final byte ROTATION = 2;
 
 	public long entityId;
-	public Tuples.FloatXYZ position;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
 	public float pitch;
 	public float headYaw;
 	public float yaw;

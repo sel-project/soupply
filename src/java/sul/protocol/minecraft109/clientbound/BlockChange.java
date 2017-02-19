@@ -34,7 +34,7 @@ public class BlockChange extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(block) + 8;
+		return Buffer.varuintLength(block) + 9;
 	}
 
 	@Override

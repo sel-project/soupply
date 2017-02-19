@@ -225,7 +225,7 @@ public class Text extends Packet {
 
 		@Override
 		public int length() {
-			int length=Buffer.varuintLength(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(parameters.length) + 0; for(String cfy1dvc:parameters){ length+=Buffer.varuintLength(cfy1dvc.getBytes(StandardCharsets.UTF_8).length)+cfy1dvc.getBytes(StandardCharsets.UTF_8).length; } return length;
+			int length=Buffer.varuintLength(message.getBytes(StandardCharsets.UTF_8).length) + message.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(parameters.length); for(String cfy1dvc:parameters){ length+=Buffer.varuintLength(cfy1dvc.getBytes(StandardCharsets.UTF_8).length)+cfy1dvc.getBytes(StandardCharsets.UTF_8).length; } return length;
 		}
 
 		@Override

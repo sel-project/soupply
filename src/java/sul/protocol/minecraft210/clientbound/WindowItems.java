@@ -25,7 +25,7 @@ public class WindowItems extends Packet {
 	}
 
 	public byte window;
-	public sul.protocol.minecraft210.types.Slot[] slots;
+	public sul.protocol.minecraft210.types.Slot[] slots = new sul.protocol.minecraft210.types.Slot[0];
 
 	public WindowItems() {}
 
@@ -36,7 +36,7 @@ public class WindowItems extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(ID) + 3; for(sul.protocol.minecraft210.types.Slot cxdm:slots){ length+=cxdm.length(); } return length;
+		int length=4; for(sul.protocol.minecraft210.types.Slot cxdm:slots){ length+=cxdm.length(); } return length;
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class SetSlot extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + item.length() + 3;
+		return item.length() + 4;
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class SetEntityMotion extends Packet {
 	/**
 	 * New motion for the entity that will influence its movement.
 	 */
-	public Tuples.FloatXYZ motion;
+	public Tuples.FloatXYZ motion = new Tuples.FloatXYZ();
 
 	public SetEntityMotion() {}
 

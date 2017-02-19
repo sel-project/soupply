@@ -46,7 +46,7 @@ public class PlayerDigging extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(status) + 9;
+		return Buffer.varuintLength(status) + 10;
 	}
 
 	@Override

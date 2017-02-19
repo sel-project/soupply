@@ -24,7 +24,7 @@ public class GameRulesChanged extends Packet {
 		return ID;
 	}
 
-	public sul.protocol.pocket100.types.Rule[] rules;
+	public sul.protocol.pocket100.types.Rule[] rules = new sul.protocol.pocket100.types.Rule[0];
 
 	public GameRulesChanged() {}
 

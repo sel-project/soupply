@@ -22,7 +22,7 @@ public class PlayerInput extends Packet {
 		return ID;
 	}
 
-	public Tuples.FloatXYZ motion;
+	public Tuples.FloatXYZ motion = new Tuples.FloatXYZ();
 	public byte flags;
 	public boolean unknown2;
 

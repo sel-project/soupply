@@ -26,7 +26,7 @@ public class SpawnPlayer extends Packet {
 
 	public int entityId;
 	public UUID uuid;
-	public Tuples.DoubleXYZ position;
+	public Tuples.DoubleXYZ position = new Tuples.DoubleXYZ();
 	public byte yaw;
 	public byte pitch;
 	public sul.metadata.Minecraft108 metadata;
@@ -44,7 +44,7 @@ public class SpawnPlayer extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + metadata.length() + 42;
+		return Buffer.varuintLength(entityId) + metadata.length() + 43;
 	}
 
 	@Override

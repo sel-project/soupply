@@ -25,8 +25,8 @@ public class AddItemEntity extends Packet {
 	public long entityId;
 	public long runtimeId;
 	public sul.protocol.pocket100.types.Slot item;
-	public Tuples.FloatXYZ position;
-	public Tuples.FloatXYZ motion;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
+	public Tuples.FloatXYZ motion = new Tuples.FloatXYZ();
 
 	public AddItemEntity() {}
 

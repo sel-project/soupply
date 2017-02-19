@@ -22,7 +22,7 @@ public class PlayerPositionAndLook extends Packet {
 		return ID;
 	}
 
-	public Tuples.DoubleXYZ position;
+	public Tuples.DoubleXYZ position = new Tuples.DoubleXYZ();
 	public float yaw;
 	public float pitch;
 	public boolean onGround;
@@ -38,7 +38,7 @@ public class PlayerPositionAndLook extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 33;
+		return 34;
 	}
 
 	@Override

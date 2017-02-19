@@ -37,7 +37,7 @@ public class BossBar extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(action) + 16;
+		return Buffer.varuintLength(action) + 17;
 	}
 
 	@Override

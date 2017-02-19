@@ -24,7 +24,7 @@ public class SoundEffect extends Packet {
 
 	public int soundId;
 	public int category;
-	public Tuples.IntXYZ position;
+	public Tuples.IntXYZ position = new Tuples.IntXYZ();
 	public float volume;
 	public float pitch;
 
@@ -40,7 +40,7 @@ public class SoundEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(soundId) + Buffer.varuintLength(category) + 20;
+		return Buffer.varuintLength(soundId) + Buffer.varuintLength(category) + 22;
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class PlayerPositionAndLook extends Packet {
 	public static final byte Y_ROTATION = 8;
 	public static final byte X_ROTATION = 16;
 
-	public Tuples.DoubleXYZ position;
+	public Tuples.DoubleXYZ position = new Tuples.DoubleXYZ();
 	public float yaw;
 	public float pitch;
 	public byte flags;
@@ -45,7 +45,7 @@ public class PlayerPositionAndLook extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 33;
+		return 34;
 	}
 
 	@Override

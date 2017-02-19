@@ -36,7 +36,7 @@ public class AttachEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 9;
+		return 10;
 	}
 
 	@Override

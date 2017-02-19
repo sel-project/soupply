@@ -25,7 +25,7 @@ public class FullChunkData extends Packet {
 	/**
 	 * Coordinates of the chunk.
 	 */
-	public Tuples.IntXZ position;
+	public Tuples.IntXZ position = new Tuples.IntXZ();
 	public sul.protocol.pocket101.types.ChunkData data;
 
 	public FullChunkData() {}

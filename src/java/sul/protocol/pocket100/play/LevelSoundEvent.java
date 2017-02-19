@@ -117,7 +117,7 @@ public class LevelSoundEvent extends Packet {
 	public static final byte UNDEFINED = 91;
 
 	public byte sound;
-	public Tuples.FloatXYZ position;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
 	public int volume;
 	public int pitch;
 	public boolean unknown4;

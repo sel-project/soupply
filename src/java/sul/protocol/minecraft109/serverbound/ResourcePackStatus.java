@@ -42,7 +42,7 @@ public class ResourcePackStatus extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(hash.getBytes(StandardCharsets.UTF_8).length) + hash.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(result);
+		return Buffer.varuintLength(hash.getBytes(StandardCharsets.UTF_8).length) + hash.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(result) + 1;
 	}
 
 	@Override

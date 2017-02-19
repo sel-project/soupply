@@ -45,7 +45,7 @@ public class EntityAction extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + Buffer.varuintLength(action) + Buffer.varuintLength(jumpBoost);
+		return Buffer.varuintLength(entityId) + Buffer.varuintLength(action) + Buffer.varuintLength(jumpBoost) + 1;
 	}
 
 	@Override

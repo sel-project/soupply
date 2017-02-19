@@ -34,7 +34,7 @@ public class DestroyEntities extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(entityIds.length) + 0; for(int z5arsr:entityIds){ length+=Buffer.varuintLength(z5arsr); } return length;
+		int length=Buffer.varuintLength(entityIds.length) + 1; for(int z5arsr:entityIds){ length+=Buffer.varuintLength(z5arsr); } return length;
 	}
 
 	@Override

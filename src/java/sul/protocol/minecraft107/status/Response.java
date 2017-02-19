@@ -34,7 +34,7 @@ public class Response extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(json.getBytes(StandardCharsets.UTF_8).length) + json.getBytes(StandardCharsets.UTF_8).length;
+		return Buffer.varuintLength(json.getBytes(StandardCharsets.UTF_8).length) + json.getBytes(StandardCharsets.UTF_8).length + 1;
 	}
 
 	@Override

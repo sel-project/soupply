@@ -25,7 +25,7 @@ public class PlayerBlockPlacement extends Packet {
 	public long position;
 	public byte face;
 	public sul.protocol.minecraft47.types.Slot heldItem;
-	public Tuples.ByteXYZ cursorPosition;
+	public Tuples.ByteXYZ cursorPosition = new Tuples.ByteXYZ();
 
 	public PlayerBlockPlacement() {}
 
@@ -38,7 +38,7 @@ public class PlayerBlockPlacement extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + heldItem.length() + 12;
+		return heldItem.length() + 13;
 	}
 
 	@Override

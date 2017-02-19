@@ -36,7 +36,7 @@ public class Animation extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(hand);
+		return Buffer.varuintLength(hand) + 1;
 	}
 
 	@Override

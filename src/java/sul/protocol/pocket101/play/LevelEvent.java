@@ -73,7 +73,7 @@ public class LevelEvent extends Packet {
 	public static final int DESTROY = 2001;
 
 	public int eventId;
-	public Tuples.FloatXYZ position;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
 	public int data;
 
 	public LevelEvent() {}

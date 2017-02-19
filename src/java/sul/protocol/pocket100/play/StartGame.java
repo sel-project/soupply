@@ -50,7 +50,7 @@ public class StartGame extends Packet {
 
 	public long entityId;
 	public long runtimeId;
-	public Tuples.FloatXYZ position;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
 	public float yaw;
 	public float pitch;
 	public int seed;
@@ -58,7 +58,7 @@ public class StartGame extends Packet {
 	public int generator;
 	public int worldGamemode;
 	public int difficulty;
-	public Tuples.IntXYZ spawnPosition;
+	public Tuples.IntXYZ spawnPosition = new Tuples.IntXYZ();
 	public boolean loadedInCreative;
 	public int time;
 	public byte edition;

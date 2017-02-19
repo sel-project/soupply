@@ -36,7 +36,7 @@ public class SetPassengers extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + Buffer.varuintLength(passengers.length) + 0; for(int cfcvzvc:passengers){ length+=Buffer.varuintLength(cfcvzvc); } return length;
+		int length=Buffer.varuintLength(entityId) + Buffer.varuintLength(passengers.length) + 2; for(int cfcvzvc:passengers){ length+=Buffer.varuintLength(cfcvzvc); } return length;
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class PlayerBlockPlacement extends Packet {
 	public long position;
 	public int face;
 	public int hand;
-	public Tuples.FloatXYZ cursorPosition;
+	public Tuples.FloatXYZ cursorPosition = new Tuples.FloatXYZ();
 
 	public PlayerBlockPlacement() {}
 
@@ -42,7 +42,7 @@ public class PlayerBlockPlacement extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(face) + Buffer.varuintLength(hand) + 20;
+		return Buffer.varuintLength(face) + Buffer.varuintLength(hand) + 21;
 	}
 
 	@Override

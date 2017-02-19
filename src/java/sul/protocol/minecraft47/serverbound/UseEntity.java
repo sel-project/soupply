@@ -29,7 +29,7 @@ public class UseEntity extends Packet {
 
 	public int target;
 	public int type;
-	public Tuples.FloatXYZ targetPosition;
+	public Tuples.FloatXYZ targetPosition = new Tuples.FloatXYZ();
 
 	public UseEntity() {}
 
@@ -41,7 +41,7 @@ public class UseEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(target) + Buffer.varuintLength(type) + 12;
+		return Buffer.varuintLength(target) + Buffer.varuintLength(type) + 13;
 	}
 
 	@Override

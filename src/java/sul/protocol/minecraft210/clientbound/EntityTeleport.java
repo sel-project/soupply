@@ -23,7 +23,7 @@ public class EntityTeleport extends Packet {
 	}
 
 	public int entityId;
-	public Tuples.DoubleXYZ position;
+	public Tuples.DoubleXYZ position = new Tuples.DoubleXYZ();
 	public byte yaw;
 	public byte pitch;
 	public boolean onGround;
@@ -40,7 +40,7 @@ public class EntityTeleport extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 27;
+		return Buffer.varuintLength(entityId) + 29;
 	}
 
 	@Override

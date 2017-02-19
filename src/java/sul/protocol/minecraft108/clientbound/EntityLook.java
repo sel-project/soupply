@@ -38,7 +38,7 @@ public class EntityLook extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 3;
+		return Buffer.varuintLength(entityId) + 4;
 	}
 
 	@Override

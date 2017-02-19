@@ -30,7 +30,7 @@ public class Map extends Packet {
 	public sul.protocol.minecraft210.types.Icon[] icons = new sul.protocol.minecraft210.types.Icon[0];
 	public byte colums;
 	public byte rows;
-	public Tuples.ByteXZ offset;
+	public Tuples.ByteXZ offset = new Tuples.ByteXZ();
 	public byte[] data = new byte[0];
 
 	public Map() {}
@@ -48,7 +48,7 @@ public class Map extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(mapId) + Buffer.varuintLength(icons.length) + Buffer.varuintLength(data.length) + data.length + 6; for(sul.protocol.minecraft210.types.Icon anbm:icons){ length+=anbm.length(); } return length;
+		int length=Buffer.varuintLength(mapId) + Buffer.varuintLength(icons.length) + Buffer.varuintLength(data.length) + data.length + 7; for(sul.protocol.minecraft210.types.Icon anbm:icons){ length+=anbm.length(); } return length;
 	}
 
 	@Override

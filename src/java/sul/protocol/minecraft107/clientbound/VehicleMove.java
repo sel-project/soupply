@@ -22,7 +22,7 @@ public class VehicleMove extends Packet {
 		return ID;
 	}
 
-	public Tuples.DoubleXYZ position;
+	public Tuples.DoubleXYZ position = new Tuples.DoubleXYZ();
 	public float yaw;
 	public float pitch;
 
@@ -36,7 +36,7 @@ public class VehicleMove extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 32;
+		return 33;
 	}
 
 	@Override

@@ -39,7 +39,7 @@ public class EncryptionRequest extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(serverId.getBytes(StandardCharsets.UTF_8).length) + serverId.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(publicKey.length) + publicKey.length + Buffer.varuintLength(verifyToken.length) + verifyToken.length;
+		return Buffer.varuintLength(serverId.getBytes(StandardCharsets.UTF_8).length) + serverId.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(publicKey.length) + publicKey.length + Buffer.varuintLength(verifyToken.length) + verifyToken.length + 1;
 	}
 
 	@Override

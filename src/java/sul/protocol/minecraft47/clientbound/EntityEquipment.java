@@ -43,7 +43,7 @@ public class EntityEquipment extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + Buffer.varuintLength(slot) + item.length();
+		return Buffer.varuintLength(entityId) + Buffer.varuintLength(slot) + item.length() + 1;
 	}
 
 	@Override

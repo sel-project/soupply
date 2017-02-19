@@ -40,10 +40,10 @@ public class ClientboundMapItemData extends Packet {
 	public boolean showIcons;
 	public Tuples.IntXZ[] icons = new Tuples.IntXZ[0];
 	public int direction;
-	public Tuples.IntXZ position;
+	public Tuples.IntXZ position = new Tuples.IntXZ();
 	public int columns;
 	public int rows;
-	public Tuples.IntXZ offset;
+	public Tuples.IntXZ offset = new Tuples.IntXZ();
 	public byte[] data = new byte[0];
 
 	public ClientboundMapItemData() {}

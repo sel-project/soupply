@@ -32,7 +32,7 @@ public class WorldBorder extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(action);
+		return Buffer.varuintLength(action) + 1;
 	}
 
 	@Override
@@ -182,7 +182,7 @@ public class WorldBorder extends Packet {
 			return ID;
 		}
 
-		public Tuples.DoubleXYZ center;
+		public Tuples.DoubleXYZ center = new Tuples.DoubleXYZ();
 
 		public SetCenter() {}
 
@@ -230,7 +230,7 @@ public class WorldBorder extends Packet {
 			return ID;
 		}
 
-		public Tuples.DoubleXYZ center;
+		public Tuples.DoubleXYZ center = new Tuples.DoubleXYZ();
 		public double oldDiameter;
 		public double newDiameter;
 		public long speed;

@@ -23,7 +23,7 @@ public class SpawnExperienceOrb extends Packet {
 	}
 
 	public int entityId;
-	public Tuples.DoubleXYZ position;
+	public Tuples.DoubleXYZ position = new Tuples.DoubleXYZ();
 	public short count;
 
 	public SpawnExperienceOrb() {}
@@ -36,7 +36,7 @@ public class SpawnExperienceOrb extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 26;
+		return Buffer.varuintLength(entityId) + 27;
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class SetEntityMotion extends Packet {
 	}
 
 	public long entityId;
-	public Tuples.FloatXYZ motion;
+	public Tuples.FloatXYZ motion = new Tuples.FloatXYZ();
 
 	public SetEntityMotion() {}
 

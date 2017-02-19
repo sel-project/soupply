@@ -34,7 +34,7 @@ public class Title extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(action);
+		return Buffer.varuintLength(action) + 2;
 	}
 
 	@Override

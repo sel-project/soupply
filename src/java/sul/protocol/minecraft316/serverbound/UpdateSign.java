@@ -37,7 +37,7 @@ public class UpdateSign extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(ID) + 8; for(String blzm:lines){ length+=Buffer.varuintLength(blzm.getBytes(StandardCharsets.UTF_8).length)+blzm.getBytes(StandardCharsets.UTF_8).length; } return length;
+		int length=9; for(String blzm:lines){ length+=Buffer.varuintLength(blzm.getBytes(StandardCharsets.UTF_8).length)+blzm.getBytes(StandardCharsets.UTF_8).length; } return length;
 	}
 
 	@Override

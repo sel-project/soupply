@@ -24,11 +24,11 @@ public class SpawnMob extends Packet {
 
 	public int entityId;
 	public byte type;
-	public Tuples.IntXYZ position;
+	public Tuples.IntXYZ position = new Tuples.IntXYZ();
 	public byte yaw;
 	public byte pitch;
 	public byte headPitch;
-	public Tuples.ShortXYZ velocity;
+	public Tuples.ShortXYZ velocity = new Tuples.ShortXYZ();
 	public sul.metadata.Minecraft47 metadata;
 
 	public SpawnMob() {}
@@ -46,7 +46,7 @@ public class SpawnMob extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + metadata.length() + 22;
+		return Buffer.varuintLength(entityId) + metadata.length() + 23;
 	}
 
 	@Override

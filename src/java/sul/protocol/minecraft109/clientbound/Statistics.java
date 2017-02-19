@@ -34,7 +34,7 @@ public class Statistics extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(statistics.length) + 0; for(sul.protocol.minecraft109.types.Statistic crdldlc:statistics){ length+=crdldlc.length(); } return length;
+		int length=Buffer.varuintLength(statistics.length) + 1; for(sul.protocol.minecraft109.types.Statistic crdldlc:statistics){ length+=crdldlc.length(); } return length;
 	}
 
 	@Override

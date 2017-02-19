@@ -25,7 +25,7 @@ public class Icon extends Stream {
 	public static final byte TEMPLE = 9;
 
 	public byte directionAndType;
-	public Tuples.ByteXZ position;
+	public Tuples.ByteXZ position = new Tuples.ByteXZ();
 
 	public Icon() {}
 

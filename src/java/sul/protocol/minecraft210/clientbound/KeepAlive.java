@@ -32,7 +32,7 @@ public class KeepAlive extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(id);
+		return Buffer.varuintLength(id) + 1;
 	}
 
 	@Override

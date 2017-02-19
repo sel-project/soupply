@@ -36,7 +36,7 @@ public class ResourcePackSend extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(url.getBytes(StandardCharsets.UTF_8).length) + url.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(hash.getBytes(StandardCharsets.UTF_8).length) + hash.getBytes(StandardCharsets.UTF_8).length;
+		return Buffer.varuintLength(url.getBytes(StandardCharsets.UTF_8).length) + url.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(hash.getBytes(StandardCharsets.UTF_8).length) + hash.getBytes(StandardCharsets.UTF_8).length + 1;
 	}
 
 	@Override

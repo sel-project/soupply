@@ -32,7 +32,7 @@ public class SetCompression extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(thresold);
+		return Buffer.varuintLength(thresold) + 1;
 	}
 
 	@Override

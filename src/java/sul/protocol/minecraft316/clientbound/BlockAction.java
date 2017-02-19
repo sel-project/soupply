@@ -60,7 +60,7 @@ public class BlockAction extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(blockType) + 10;
+		return Buffer.varuintLength(blockType) + 11;
 	}
 
 	@Override

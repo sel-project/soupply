@@ -32,7 +32,7 @@ public class TeleportConfirm extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(teleportId);
+		return Buffer.varuintLength(teleportId) + 1;
 	}
 
 	@Override

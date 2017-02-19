@@ -24,7 +24,7 @@ public class ChunkData extends Packet {
 		return ID;
 	}
 
-	public Tuples.IntXZ position;
+	public Tuples.IntXZ position = new Tuples.IntXZ();
 	public boolean full;
 	public short sections;
 	public byte[] data = new byte[0];
@@ -40,7 +40,7 @@ public class ChunkData extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(data.length) + data.length + 11;
+		return Buffer.varuintLength(data.length) + data.length + 12;
 	}
 
 	@Override

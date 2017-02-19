@@ -36,7 +36,7 @@ public class UpdateHealth extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(hunger) + 8;
+		return Buffer.varuintLength(hunger) + 9;
 	}
 
 	@Override

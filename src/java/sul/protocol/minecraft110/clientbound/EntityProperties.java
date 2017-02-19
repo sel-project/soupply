@@ -25,7 +25,7 @@ public class EntityProperties extends Packet {
 	}
 
 	public int entityId;
-	public sul.protocol.minecraft110.types.Attribute[] attributes;
+	public sul.protocol.minecraft110.types.Attribute[] attributes = new sul.protocol.minecraft110.types.Attribute[0];
 
 	public EntityProperties() {}
 
@@ -36,7 +36,7 @@ public class EntityProperties extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 4; for(sul.protocol.minecraft110.types.Attribute yrcldrc:attributes){ length+=yrcldrc.length(); } return length;
+		int length=Buffer.varuintLength(entityId) + 6; for(sul.protocol.minecraft110.types.Attribute yrcldrc:attributes){ length+=yrcldrc.length(); } return length;
 	}
 
 	@Override

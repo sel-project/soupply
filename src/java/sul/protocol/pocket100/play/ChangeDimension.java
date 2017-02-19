@@ -28,7 +28,7 @@ public class ChangeDimension extends Packet {
 	public static final int END = 2;
 
 	public int dimension;
-	public Tuples.FloatXYZ position;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
 	public boolean unknown2;
 
 	public ChangeDimension() {}

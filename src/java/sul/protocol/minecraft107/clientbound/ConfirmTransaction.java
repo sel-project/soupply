@@ -36,7 +36,7 @@ public class ConfirmTransaction extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 4;
+		return 5;
 	}
 
 	@Override

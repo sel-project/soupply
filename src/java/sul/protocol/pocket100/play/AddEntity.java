@@ -27,8 +27,8 @@ public class AddEntity extends Packet {
 	public long entityId;
 	public long runtimeId;
 	public int type;
-	public Tuples.FloatXYZ position;
-	public Tuples.FloatXYZ motion;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
+	public Tuples.FloatXYZ motion = new Tuples.FloatXYZ();
 	public float pitch;
 	public float yaw;
 	public sul.protocol.pocket100.types.Attribute[] attributes = new sul.protocol.pocket100.types.Attribute[0];

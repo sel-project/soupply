@@ -27,7 +27,7 @@ public class SpawnGlobalEntity extends Packet {
 
 	public int entityId;
 	public byte type;
-	public Tuples.IntXYZ position;
+	public Tuples.IntXYZ position = new Tuples.IntXYZ();
 
 	public SpawnGlobalEntity() {}
 
@@ -39,7 +39,7 @@ public class SpawnGlobalEntity extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 13;
+		return Buffer.varuintLength(entityId) + 14;
 	}
 
 	@Override

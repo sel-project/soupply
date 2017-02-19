@@ -23,7 +23,7 @@ public class EntityVelocity extends Packet {
 	}
 
 	public int entityId;
-	public Tuples.ShortXYZ velocity;
+	public Tuples.ShortXYZ velocity = new Tuples.ShortXYZ();
 
 	public EntityVelocity() {}
 
@@ -34,7 +34,7 @@ public class EntityVelocity extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 6;
+		return Buffer.varuintLength(entityId) + 7;
 	}
 
 	@Override

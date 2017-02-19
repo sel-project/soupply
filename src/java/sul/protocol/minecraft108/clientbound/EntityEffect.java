@@ -40,7 +40,7 @@ public class EntityEffect extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + Buffer.varuintLength(duration) + 3;
+		return Buffer.varuintLength(entityId) + Buffer.varuintLength(duration) + 5;
 	}
 
 	@Override

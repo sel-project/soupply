@@ -35,7 +35,7 @@ public class TabComplete extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(matches.length) + 0; for(String bfyhc:matches){ length+=Buffer.varuintLength(bfyhc.getBytes(StandardCharsets.UTF_8).length)+bfyhc.getBytes(StandardCharsets.UTF_8).length; } return length;
+		int length=Buffer.varuintLength(matches.length) + 1; for(String bfyhc:matches){ length+=Buffer.varuintLength(bfyhc.getBytes(StandardCharsets.UTF_8).length)+bfyhc.getBytes(StandardCharsets.UTF_8).length; } return length;
 	}
 
 	@Override

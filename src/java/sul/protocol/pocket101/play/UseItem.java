@@ -25,8 +25,8 @@ public class UseItem extends Packet {
 	public sul.protocol.pocket101.types.BlockPosition blockPosition;
 	public int hotbarSlot;
 	public int face;
-	public Tuples.FloatXYZ facePosition;
-	public Tuples.FloatXYZ position;
+	public Tuples.FloatXYZ facePosition = new Tuples.FloatXYZ();
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
 	public int slot;
 	public sul.protocol.pocket101.types.Slot item;
 

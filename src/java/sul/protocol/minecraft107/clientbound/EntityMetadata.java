@@ -34,7 +34,7 @@ public class EntityMetadata extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + metadata.length();
+		return Buffer.varuintLength(entityId) + metadata.length() + 1;
 	}
 
 	@Override

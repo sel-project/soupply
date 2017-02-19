@@ -125,7 +125,7 @@ public class LevelSoundEvent extends Packet {
 	 * Position where the sound was generated. The closer to the player the more intense
 	 * will be on the client.
 	 */
-	public Tuples.FloatXYZ position;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
 	public int volume;
 	public int pitch;
 	public boolean unknown4;

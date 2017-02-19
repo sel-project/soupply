@@ -37,7 +37,7 @@ public class ClientStatus extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(action);
+		return Buffer.varuintLength(action) + 1;
 	}
 
 	@Override

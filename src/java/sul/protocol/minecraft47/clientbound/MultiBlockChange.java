@@ -24,7 +24,7 @@ public class MultiBlockChange extends Packet {
 		return ID;
 	}
 
-	public Tuples.IntXZ chunk;
+	public Tuples.IntXZ chunk = new Tuples.IntXZ();
 	public sul.protocol.minecraft47.types.BlockChange[] changes = new sul.protocol.minecraft47.types.BlockChange[0];
 
 	public MultiBlockChange() {}
@@ -36,7 +36,7 @@ public class MultiBlockChange extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(ID) + Buffer.varuintLength(changes.length) + 8; for(sul.protocol.minecraft47.types.BlockChange yhbdc:changes){ length+=yhbdc.length(); } return length;
+		int length=Buffer.varuintLength(changes.length) + 9; for(sul.protocol.minecraft47.types.BlockChange yhbdc:changes){ length+=yhbdc.length(); } return length;
 	}
 
 	@Override

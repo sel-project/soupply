@@ -87,7 +87,7 @@ public class Effect extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 17;
+		return 18;
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class UpdateEntityNbt extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + nbt.length;
+		return Buffer.varuintLength(entityId) + nbt.length + 2;
 	}
 
 	@Override

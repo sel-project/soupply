@@ -74,8 +74,8 @@ public class Particle extends Packet {
 
 	public int particleId;
 	public boolean longDistance;
-	public Tuples.FloatXYZ position;
-	public Tuples.FloatXYZ offset;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
+	public Tuples.FloatXYZ offset = new Tuples.FloatXYZ();
 	public float data;
 	public int count;
 	public int[] additionalData = new int[2];
@@ -94,7 +94,7 @@ public class Particle extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(ID) + 37; for(int yrarb5br:additionalData){ length+=Buffer.varuintLength(yrarb5br); } return length;
+		int length=38; for(int yrarb5br:additionalData){ length+=Buffer.varuintLength(yrarb5br); } return length;
 	}
 
 	@Override

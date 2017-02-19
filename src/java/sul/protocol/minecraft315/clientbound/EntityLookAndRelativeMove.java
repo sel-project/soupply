@@ -23,7 +23,7 @@ public class EntityLookAndRelativeMove extends Packet {
 	}
 
 	public int entityId;
-	public Tuples.ShortXYZ delta;
+	public Tuples.ShortXYZ delta = new Tuples.ShortXYZ();
 	public byte yaw;
 	public byte pitch;
 	public boolean onGround;
@@ -40,7 +40,7 @@ public class EntityLookAndRelativeMove extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 9;
+		return Buffer.varuintLength(entityId) + 10;
 	}
 
 	@Override

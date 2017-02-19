@@ -91,7 +91,7 @@ public class PlayerList extends Packet {
 
 		@Override
 		public int length() {
-			int length=Buffer.varuintLength(players.length) + 0; for(sul.protocol.pocket100.types.PlayerList cxevc:players){ length+=cxevc.length(); } return length;
+			int length=Buffer.varuintLength(players.length); for(sul.protocol.pocket100.types.PlayerList cxevc:players){ length+=cxevc.length(); } return length;
 		}
 
 		@Override

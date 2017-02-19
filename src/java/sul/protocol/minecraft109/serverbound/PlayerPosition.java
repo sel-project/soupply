@@ -22,7 +22,7 @@ public class PlayerPosition extends Packet {
 		return ID;
 	}
 
-	public Tuples.DoubleXYZ position;
+	public Tuples.DoubleXYZ position = new Tuples.DoubleXYZ();
 	public boolean onGround;
 
 	public PlayerPosition() {}
@@ -34,7 +34,7 @@ public class PlayerPosition extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 25;
+		return 26;
 	}
 
 	@Override

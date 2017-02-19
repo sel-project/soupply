@@ -24,10 +24,10 @@ public class Explosion extends Packet {
 		return ID;
 	}
 
-	public Tuples.FloatXYZ position;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
 	public float radius;
-	public Tuples.ByteXYZ[] records;
-	public Tuples.FloatXYZ motion;
+	public Tuples.ByteXYZ[] records = new Tuples.ByteXYZ[0];
+	public Tuples.FloatXYZ motion = new Tuples.FloatXYZ();
 
 	public Explosion() {}
 
@@ -40,7 +40,7 @@ public class Explosion extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 32;
+		return records.length*3 + 33;
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public class Handshake extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(protocol) + Buffer.varuintLength(serverAddress.getBytes(StandardCharsets.UTF_8).length) + serverAddress.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(next) + 2;
+		return Buffer.varuintLength(protocol) + Buffer.varuintLength(serverAddress.getBytes(StandardCharsets.UTF_8).length) + serverAddress.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(next) + 3;
 	}
 
 	@Override

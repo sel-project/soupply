@@ -26,7 +26,7 @@ public class SpawnPlayer extends Packet {
 
 	public int entityId;
 	public UUID uuid;
-	public Tuples.IntXYZ position;
+	public Tuples.IntXYZ position = new Tuples.IntXYZ();
 	public byte yaw;
 	public byte pitch;
 	public short currentItem;
@@ -46,7 +46,7 @@ public class SpawnPlayer extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + metadata.length() + 32;
+		return Buffer.varuintLength(entityId) + metadata.length() + 33;
 	}
 
 	@Override

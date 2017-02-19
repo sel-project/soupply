@@ -36,7 +36,7 @@ public class CollectItem extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(collected) + Buffer.varuintLength(collector) + Buffer.varuintLength(count);
+		return Buffer.varuintLength(collected) + Buffer.varuintLength(collector) + Buffer.varuintLength(count) + 2;
 	}
 
 	@Override

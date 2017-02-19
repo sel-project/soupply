@@ -23,7 +23,7 @@ public class EntityRelativeMove extends Packet {
 	}
 
 	public int entityId;
-	public Tuples.ByteXYZ delta;
+	public Tuples.ByteXYZ delta = new Tuples.ByteXYZ();
 	public boolean onGround;
 
 	public EntityRelativeMove() {}
@@ -36,7 +36,7 @@ public class EntityRelativeMove extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(entityId) + 4;
+		return Buffer.varuintLength(entityId) + 5;
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class Explode extends Packet {
 		return ID;
 	}
 
-	public Tuples.FloatXYZ position;
+	public Tuples.FloatXYZ position = new Tuples.FloatXYZ();
 	public float radius;
 	public sul.protocol.pocket100.types.BlockPosition[] destroyedBlocks = new sul.protocol.pocket100.types.BlockPosition[0];
 

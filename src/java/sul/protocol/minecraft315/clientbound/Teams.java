@@ -37,7 +37,7 @@ public class Teams extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + 1;
+		return Buffer.varuintLength(name.getBytes(StandardCharsets.UTF_8).length) + name.getBytes(StandardCharsets.UTF_8).length + 3;
 	}
 
 	@Override
@@ -313,7 +313,7 @@ public class Teams extends Packet {
 
 		@Override
 		public int length() {
-			int length=Buffer.varuintLength(players.length) + 0; for(String cxevc:players){ length+=Buffer.varuintLength(cxevc.getBytes(StandardCharsets.UTF_8).length)+cxevc.getBytes(StandardCharsets.UTF_8).length; } return length;
+			int length=Buffer.varuintLength(players.length); for(String cxevc:players){ length+=Buffer.varuintLength(cxevc.getBytes(StandardCharsets.UTF_8).length)+cxevc.getBytes(StandardCharsets.UTF_8).length; } return length;
 		}
 
 		@Override
@@ -361,7 +361,7 @@ public class Teams extends Packet {
 
 		@Override
 		public int length() {
-			int length=Buffer.varuintLength(players.length) + 0; for(String cxevc:players){ length+=Buffer.varuintLength(cxevc.getBytes(StandardCharsets.UTF_8).length)+cxevc.getBytes(StandardCharsets.UTF_8).length; } return length;
+			int length=Buffer.varuintLength(players.length); for(String cxevc:players){ length+=Buffer.varuintLength(cxevc.getBytes(StandardCharsets.UTF_8).length)+cxevc.getBytes(StandardCharsets.UTF_8).length; } return length;
 		}
 
 		@Override

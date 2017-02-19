@@ -36,7 +36,7 @@ public class SetExperience extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(level) + Buffer.varuintLength(totalExperience) + 4;
+		return Buffer.varuintLength(level) + Buffer.varuintLength(totalExperience) + 5;
 	}
 
 	@Override

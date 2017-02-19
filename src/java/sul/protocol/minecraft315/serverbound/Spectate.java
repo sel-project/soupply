@@ -34,7 +34,7 @@ public class Spectate extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + 16;
+		return 17;
 	}
 
 	@Override

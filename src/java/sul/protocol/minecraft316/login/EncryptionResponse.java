@@ -36,7 +36,7 @@ public class EncryptionResponse extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + Buffer.varuintLength(sharedSecret.length) + sharedSecret.length + Buffer.varuintLength(verifyToken.length) + verifyToken.length;
+		return Buffer.varuintLength(sharedSecret.length) + sharedSecret.length + Buffer.varuintLength(verifyToken.length) + verifyToken.length + 1;
 	}
 
 	@Override

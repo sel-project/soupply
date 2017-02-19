@@ -24,7 +24,7 @@ public class Request extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID);
+		return 1;
 	}
 
 	@Override

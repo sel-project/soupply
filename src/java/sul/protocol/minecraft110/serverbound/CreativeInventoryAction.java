@@ -34,7 +34,7 @@ public class CreativeInventoryAction extends Packet {
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(ID) + clickedItem.length() + 2;
+		return clickedItem.length() + 3;
 	}
 
 	@Override
