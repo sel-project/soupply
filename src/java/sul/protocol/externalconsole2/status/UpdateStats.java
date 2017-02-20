@@ -37,8 +37,8 @@ public class UpdateStats extends Packet {
 	public int onlinePlayers;
 
 	/**
-	 * Highest number of players that can join the server simultaneously. If 0, there is
-	 * not maximum number of players.
+	 * Highest number of players that can join the server simultaneously. If -1, there
+	 * is not maximum number of players.
 	 */
 	public int maxPlayers;
 

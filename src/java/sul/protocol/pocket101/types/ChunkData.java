@@ -26,6 +26,7 @@ public class ChunkData extends Stream {
 
 	/**
 	 * Coordinates of the highest block in the column that receives sky light (order `xz`).
+	 * It is used to increase the speed when calculating the block's light level.
 	 */
 	public short[] heights = new short[256];
 
@@ -42,7 +43,10 @@ public class ChunkData extends Stream {
 	public sul.protocol.pocket101.types.ExtraData[] extraData = new sul.protocol.pocket101.types.ExtraData[0];
 
 	/**
-	 * Additional data for the chunk's block entities (tiles).
+	 * Additional data for the chunk's block entities (tiles). The position in given by
+	 * the `Int` tags `x`, `y`, `z` which are added to the block's compound tag together
+	 * with the `String` tag `id` that contains the name of the tile in pascal case.
+	 * Wrong encoding or missing tags may result in the block becoming invisible.
 	 */
 	public byte[] blockEntities = new byte[0];
 

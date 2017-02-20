@@ -12,6 +12,11 @@ import java.util.Arrays;
 
 import sul.utils.*;
 
+/**
+ * Sets a block entity's nbt tag, block's additional data that cannot be indicated
+ * in the block's meta. More informations about block entities and their tag format
+ * can be found on Minecraft Wiki.
+ */
 public class BlockEntityData extends Packet {
 
 	public static final byte ID = (byte)56;
@@ -24,7 +29,22 @@ public class BlockEntityData extends Packet {
 		return ID;
 	}
 
+	/**
+	 * Position of the block that will be associated with tag.
+	 */
 	public sul.protocol.pocket101.types.BlockPosition position;
+
+	/**
+	 * Named binary tag of the block. The format varies from the classic format of Minecraft:
+	 * Pocket Edition (which is like Minecraft's but little endian) introducing the use
+	 * of varints for some types:
+	 * + The tag `Int` is encoded as a signed varint instead of a simple signed 32-bits
+	 * integer
+	 * + The length of the `ByteArray` and the `IntArray` is encoded as an unsigned varint
+	 * instead of a 32-bits integer
+	 * + The length of the `String` tag and the named tag's name length are encoded as
+	 * an unisgned varint instead of a 16-bits integer
+	 */
 	public byte[] nbt = new byte[0];
 
 	public BlockEntityData() {}

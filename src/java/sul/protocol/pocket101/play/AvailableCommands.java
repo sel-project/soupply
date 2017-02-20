@@ -27,6 +27,9 @@ public class AvailableCommands extends Packet {
 		return ID;
 	}
 
+	/**
+	 * JSON object with the commands.
+	 */
 	public String commands;
 	public String unknown1;
 

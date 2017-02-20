@@ -12,6 +12,11 @@ import java.util.Arrays;
 
 import sul.utils.*;
 
+/**
+ * Updates an entity's attributes. This packet should be used when a value must be
+ * modified but it cannot be done using another packet (for example controlling the
+ * player's experience and level).
+ */
 public class UpdateAttributes extends Packet {
 
 	public static final byte ID = (byte)31;

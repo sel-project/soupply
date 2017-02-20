@@ -35,8 +35,8 @@
 		<p>Protocol used for the communication between an hub and multiple nodes with support for Minecraft and Minecraft: Pocket Edition and different versions of their protocols.</p>
 		<h2>Definitions</h2>
 		<h3>Hub</h3>
-		<p>The hub (server) is the network part of the game server and handles pings, login sequences, keep alive packets, queries, external consoles and everything else that is not a gameplay feature.</p>
-		<p>A server can work with only an hub (nodeless) but every player that will try to join the server will be disconnected with an "End of Stream" message after the login process.</p>
+		<p>The hub (server) is the network part of the game server and handles pings, login sequences, keep alive packets, queries, external consoles and everything else that is not related to the gameplay.</p>
+		<p>A server can work with only an hub (nodeless) but every player that will try to join the server will be disconnected because the server is full after the login process.</p>
 		<h3>Node</h3>
 		<p>The node (client) is the gameplay part of the game server. It contains worlds and entities and has only one network connection, with the hub.</p>
 		<h2>Connection</h2>
@@ -347,7 +347,7 @@
 					</li>
 					<li>
 						<strong id="login_hub-info_max">max</strong>
-						<p>Number of maximum players that can connect to the server. The number may change after this node connects.</p>
+						<p>Number of maximum players that can connect to the server (that is the sum of the max players of the nodes already connected). The number may change after this node connects.</p>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>

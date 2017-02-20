@@ -204,7 +204,7 @@
 					},
 					{
 						"name": "max_players",
-						"type": "uint"
+						"type": "int"
 					},
 					{
 						"name": "uptime",

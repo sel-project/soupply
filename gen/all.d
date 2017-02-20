@@ -376,7 +376,7 @@ void main(string[] args) {
 
 	if(wall || wd) d.d(attributes, protocols, metadata, creative);
 	if(wall || wjava) java.java(attributes, protocols, metadata, creative);
-	if(wall || wjs) js.js(attributes, protocols, creative);
+	if(wall || wjs) js.js(attributes, protocols, metadata, creative);
 
 	if(wall || wdiff) diff.diff(attributes, protocols, metadata);
 	if(wall || wdoc) doc.doc(protocols);

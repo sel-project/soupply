@@ -14,8 +14,8 @@
 		## Definitions
 
 		### Hub
-		The hub (server) is the network part of the game server and handles pings, login sequences, keep alive packets, queries, external consoles and everything else that is not a gameplay feature.
-		A server can work with only an hub (nodeless) but every player that will try to join the server will be disconnected with an "End of Stream" message after the login process.
+		The hub (server) is the network part of the game server and handles pings, login sequences, keep alive packets, queries, external consoles and everything else that is not related to the gameplay.
+		A server can work with only an hub (nodeless) but every player that will try to join the server will be disconnected because the server is full after the login process.
 
 		### Node
 		The node (client) is the gameplay part of the game server. It contains worlds and entities and has only one network connection, with the hub.
@@ -173,7 +173,7 @@
 					Number of players currently online and connected to other nodes.
 				</field>
 				<field name="max" type="varint">
-					Number of maximum players that can connect to the server. The number may change after this node connects.
+					Number of maximum players that can connect to the server (that is the sum of the max players of the nodes already connected). The number may change after this node connects.
 					<constant name="unlimited" value="-1" />
 				</field>
 				<field name="language" type="string">

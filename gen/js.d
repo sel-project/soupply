@@ -27,7 +27,7 @@ import std.typecons;
 import all;
 import java : javadoc;
 
-void js(Attributes[string] attributes, Protocols[string] protocols, Creative[string] creative) {
+void js(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative) {
 	
 	mkdirRecurse("../src/js/sul");
 	
@@ -444,6 +444,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 			data ~= "//export { Types }";
 			write("../src/js/sul/protocol/" ~ game ~ "/types.js", data, "protocol/" ~ game);
 		}
+
 		// sections
 		foreach(section ; prs.data.sections) {
 			string data = "/** @module sul/protocol/" ~ game ~ "/" ~ section.name ~ " */\n\n";
@@ -467,6 +468,113 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Creative[str
 			data ~= "//export { " ~ toPascalCase(section.name) ~ " };";
 			write("../src/js/sul/protocol/" ~ game ~ "/" ~ section.name ~ ".js", data, "protocol/" ~ game);
 		}
+
+		// metadata
+		auto m = game in metadatas;
+		if(m) {
+			mkdirRecurse("../src/js/sul/metadata");
+			string data = "/** @module sul/metadata/" ~ game ~ " */\n\n";
+			data ~= "class Metadata extends Buffer {\n\n";
+			data ~= "\tconstructor() {\n\t\tsuper();\n";
+			string[string] ctable, etable;
+			ubyte[string] idtable;
+			foreach(type ; m.data.types) {
+				ctable[type.name] = type.type;
+				etable[type.name] = type.endianness;
+				idtable[type.name] = type.id;
+			}
+			foreach(d ; m.data.data) {
+				data ~= "\t\tthis._" ~ convertName(d.name) ~ " = " ~ (d.required ? (d.def.length ? d.def : defaultValue(ctable[d.type])) : "undefined") ~ ";\n";
+			}
+			data ~= "\t}\n\n";
+			size_t req = 0;
+			foreach(d ; m.data.data) {
+				if(d.required) req++;
+				immutable name = convertName(d.name);
+				// get
+				data ~= "\tget " ~ name ~ "() {\n\t\treturn this._" ~ name ~ ";\n\t}\n\n";
+				// set
+				data ~= "\tset " ~ name ~ "(value) {\n";
+				data ~= "\t\treturn this._" ~ name ~ " = value;\n";
+				data ~= "\t}\n\n";
+				// encode
+				/*data ~= "\tpublic pure nothrow @safe encode" ~ name[0..1].toUpper ~ name[1..$] ~ "(Buffer buffer) {\n";
+				data ~= "\t\twith(buffer) {\n";
+				data ~= "\t\t\t" ~ createEncoding(m.data.id, d.id.to!string) ~ "\n";
+				data ~= "\t\t\t" ~ createEncoding(m.data.type, idtable[d.type].to!string) ~ "\n";
+				data ~= "\t\t\t" ~ createEncoding(ctable[d.type], "this." ~ value, etable[d.type]) ~ "\n";
+				data ~= "\t\t}\n";
+				data ~= "\t}\n\n";*/
+				foreach(flag ; d.flags) {
+					immutable fname = convertName(flag.name);
+					data ~= "\tget " ~ fname ~ "() {\n";
+					data ~= "\t\treturn ((this." ~ name ~ " >>> " ~ to!string(flag.bit) ~ ") & 1) === 1;\n";
+					data ~= "\t}\n\n";
+					data ~= "\tset " ~ fname ~ "(value) {\n";
+					data ~= "\t\tif(value) this._" ~ name ~ " |= true << " ~ to!string(flag.bit) ~ ";\n";
+					data ~= "\t\telse this._" ~ name ~ " &= ~(true << " ~ to!string(flag.bit) ~ ");\n";
+					data ~= "\t\treturn value;\n";
+					data ~= "\t}\n\n";
+				}
+			}
+			// encode function
+			data ~= "\tencode() {\n";
+			data ~= "\t\tthis._buffer = [];\n";
+			if(m.data.prefix.length) data ~= "\t\t" ~ createEncoding("ubyte", m.data.prefix) ~ "\n";
+			if(m.data.length.length) data ~= "\t\tvar length = " ~ to!string(req) ~ ";\n";
+			foreach(d ; m.data.data) {
+				immutable name = convertName(d.name);
+				if(!d.required) data ~= "\t\tif(this._" ~ name ~ " !== undefined) {\n";
+				else data ~= "\t\t{\n";
+				if(!d.required && m.data.length.length) data ~= "\t\t\tlength++;\n";
+				data ~= "\t\t\t" ~ createEncoding(m.data.id, d.id.to!string) ~ "\n";
+				data ~= "\t\t\t" ~ createEncoding(m.data.type, idtable[d.type].to!string) ~ "\n";
+				data ~= "\t\t\t" ~ createEncoding(ctable[d.type], "this._" ~ name, etable[d.type]) ~ "\n";
+				data ~= "\t\t}\n";
+			}
+			if(m.data.suffix.length) data ~= "\t\t" ~ createEncoding("ubyte", m.data.suffix) ~ "\n";
+			if(m.data.length.length) {
+				data ~= "\t\tvar buffer = this._buffer;\n";
+				data ~= "\t\tthis._buffer = [];\n";
+				data ~= "\t\t" ~ createEncoding(m.data.length, "length") ~ "\n";
+				data ~= "\t\tthis.writeBytes(buffer);\n";
+			}
+			data ~= "\t\treturn new Uint8Array(this._buffer);\n";
+			data ~= "\t}\n\n";
+			//TODO decode function
+			data ~= "\tdecode(buffer) {\n";
+			data ~= "\t\tthis._buffer = Array.from(buffer);\n";
+			data ~= "\t\tvar result = [];\n";
+			data ~= "\t\tvar metadata;\n";
+			if(m.data.length.length) {
+				data ~= "\t\t" ~ createDecoding(m.data.length, "var length") ~ "\n";
+				data ~= "\t\twhile(length-- > 0) {\n";
+				data ~= "\t\t\t" ~ createDecoding("ubyte", "metadata") ~ "\n";
+			} else if(m.data.suffix.length) {
+				data ~= "\t\twhile(this._buffer.length > 0 && (" ~ createDecoding("ubyte", "metadata")[0..$-1] ~ ") != " ~ m.data.suffix ~ ") {\n";
+			}
+			data ~= "\t\t\tswitch(" ~ createDecoding("ubyte", "")[1..$-1] ~ ") {\n";
+			foreach(type ; m.data.types) {
+				data ~= "\t\t\t\tcase " ~ type.id.to!string ~ ":\n";
+				data ~= "\t\t\t\t\tvar _" ~ type.id.to!string ~ ";\n";
+				data ~= "\t\t\t\t\t" ~ createDecoding(type.type, "_" ~ type.id.to!string, type.endianness) ~ "\n";
+				data ~= "\t\t\t\t\tresult.push({id:" ~ type.id.to!string ~ ",value:_" ~ type.id.to!string ~ "});\n";
+				data ~= "\t\t\t\t\tbreak;\n";
+			}
+			data ~= "\t\t\t\tdefault: break;\n";
+			data ~= "\t\t\t}\n";
+			data ~= "\t\t}\n";
+			data ~= "\t\tthis.decodeResult = result;\n";
+			data ~= "\t\treturn this;\n";
+			data ~= "\t}\n\n";
+			// from buffer
+			data ~= "\tstatic fromBuffer(buffer) {\n";
+			data ~= "\t\treturn new Metadata().decode(buffer);\n";
+			data ~= "\t}\n";
+			data ~= "}";
+			write("../src/js/sul/metadata/" ~ game ~ ".js", data, "metadata/" ~ game);
+		}
+
 	}
 	
 }
@@ -476,6 +584,7 @@ string defaultValue(string type) {
 	else if(type == "bool") return "false";
 	else if(type == "string") return "\"\"";
 	else if(type == "uuid") return "new Uint8Array(16)";
+	else if(type == "metadata") return "new Metadata()";
 	else if(type.endsWith("]")) {
 		if(type[$-2] == '[') return "[]";
 		else {

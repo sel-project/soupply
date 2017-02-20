@@ -204,8 +204,8 @@
 				<field name="online-players" type="uint">
 					Number of players currently online on the server. Players that are performing authentication are not included in the count.
 				</field>
-				<field name="max-players" type="uint">
-					Highest number of players that can join the server simultaneously. If 0, there is not maximum number of players.
+				<field name="max-players" type="int">
+					Highest number of players that can join the server simultaneously. If -1, there is not maximum number of players.
 				</field>
 				<field name="uptime" type="uint">
 					Milliseconds since the server has started.

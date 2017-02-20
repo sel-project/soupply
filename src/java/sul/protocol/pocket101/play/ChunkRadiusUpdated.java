@@ -10,6 +10,10 @@ package sul.protocol.pocket101.play;
 
 import sul.utils.*;
 
+/**
+ * Packet sent always and only in response to RequestChunkRadius to change the client's
+ * view distance.
+ */
 public class ChunkRadiusUpdated extends Packet {
 
 	public static final byte ID = (byte)69;
@@ -22,6 +26,10 @@ public class ChunkRadiusUpdated extends Packet {
 		return ID;
 	}
 
+	/**
+	 * View distance that may be different from the client's one if the server sets a limit
+	 * on the view distance.
+	 */
 	public int radius;
 
 	public ChunkRadiusUpdated() {}

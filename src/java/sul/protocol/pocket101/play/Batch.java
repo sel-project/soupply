@@ -34,9 +34,9 @@ public class Batch extends Packet {
 	 * Pseudo-code for decompression:
 	 * <code>
 	 * ubyte[] uncompressed = uncompress(batch.payload);
-	 * size_t index = 0;
+	 * int index = 0;
 	 * while(index < uncompressed.length) {
-	 *    size_t length = varuint.decode(uncompressed, &index);
+	 *    int length = varuint.decode(uncompressed, &index);
 	 *    if(length < uncompressed.length - index) {}
 	 *       ubyte[] packet = uncompressed[0..length];
 	 *       index += length;
@@ -48,10 +48,10 @@ public class Batch extends Packet {
 	 * <code>
 	 * ubyte[] payload;
 	 * foreach(ubyte[] packet ; packets) {
-	 *    payload ~= varuint.encode(packet.length);
-	 *    payload ~= packet;
+	 *    payload.concat(varuint.encode(packet.length));
+	 *    payload.concat(packet);
 	 * }
-	 * Batch batch = new Batch(compress(payload));
+	 * Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 	 * </code>
 	 */
 	public byte[] data = new byte[0];

@@ -62,7 +62,7 @@ public class StartGame extends Packet {
 	public float pitch;
 
 	/**
-	 * World's seed. It's displayed in the game's wolrd settings and in beta's debug informations
+	 * World's seed. It's displayed in the game's world settings and in beta's debug informations
 	 * on top of the screen.
 	 */
 	public int seed;

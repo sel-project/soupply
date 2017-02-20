@@ -310,9 +310,9 @@ class Batch : Buffer {
 	 * Pseudo-code for decompression:
 	 * ---
 	 * ubyte[] uncompressed = uncompress(batch.payload);
-	 * size_t index = 0;
+	 * int index = 0;
 	 * while(index < uncompressed.length) {
-	 *    size_t length = varuint.decode(uncompressed, &index);
+	 *    int length = varuint.decode(uncompressed, &index);
 	 *    if(length < uncompressed.length - index) {}
 	 *       ubyte[] packet = uncompressed[0..length];
 	 *       index += length;
@@ -324,10 +324,10 @@ class Batch : Buffer {
 	 * ---
 	 * ubyte[] payload;
 	 * foreach(ubyte[] packet ; packets) {
-	 *    payload ~= varuint.encode(packet.length);
-	 *    payload ~= packet;
+	 *    payload.concat(varuint.encode(packet.length));
+	 *    payload.concat(packet);
 	 * }
-	 * Batch batch = new Batch(compress(payload));
+	 * Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 	 * ---
 	 */
 	public ubyte[] data;
@@ -939,7 +939,7 @@ class StartGame : Buffer {
 	public float pitch;
 
 	/**
-	 * World's seed. It's displayed in the game's wolrd settings and in beta's debug informations
+	 * World's seed. It's displayed in the game's world settings and in beta's debug informations
 	 * on top of the screen.
 	 */
 	public int seed;
@@ -1760,6 +1760,9 @@ class UpdateBlock : Buffer {
 
 }
 
+/**
+ * Spawns a painting entity in the world.
+ */
 class AddPainting : Buffer {
 
 	public enum ubyte ID = 24;
@@ -2307,6 +2310,11 @@ class MobEffect : Buffer {
 
 }
 
+/**
+ * Updates an entity's attributes. This packet should be used when a value must be
+ * modified but it cannot be done using another packet (for example controlling the
+ * player's experience and level).
+ */
 class UpdateAttributes : Buffer {
 
 	public enum ubyte ID = 31;
@@ -3615,6 +3623,11 @@ class AdventureSettings : Buffer {
 
 }
 
+/**
+ * Sets a block entity's nbt tag, block's additional data that cannot be indicated
+ * in the block's meta. More informations about block entities and their tag format
+ * can be found on Minecraft Wiki.
+ */
 class BlockEntityData : Buffer {
 
 	public enum ubyte ID = 56;
@@ -3624,7 +3637,22 @@ class BlockEntityData : Buffer {
 
 	public enum string[] FIELDS = ["position", "nbt"];
 
+	/**
+	 * Position of the block that will be associated with tag.
+	 */
 	public sul.protocol.pocket101.types.BlockPosition position;
+
+	/**
+	 * Named binary tag of the block. The format varies from the classic format of Minecraft:
+	 * Pocket Edition (which is like Minecraft's but little endian) introducing the use
+	 * of varints for some types:
+	 * + The tag `Int` is encoded as a signed varint instead of a simple signed 32-bits
+	 * integer
+	 * + The length of the `ByteArray` and the `IntArray` is encoded as an unsigned varint
+	 * instead of a 32-bits integer
+	 * + The length of the `String` tag and the named tag's name length are encoded as
+	 * an unisgned varint instead of a 16-bits integer
+	 */
 	public ubyte[] nbt;
 
 	public pure nothrow @safe @nogc this() {}
@@ -3711,6 +3739,9 @@ class PlayerInput : Buffer {
 
 }
 
+/**
+ * Sends a 16x16 chunk to the client with its blocks, lights and block entities (tiles).
+ */
 class FullChunkData : Buffer {
 
 	public enum ubyte ID = 58;
@@ -4321,6 +4352,11 @@ class MapInfoRequest : Buffer {
 
 }
 
+/**
+ * Packet sent by the client when its view-distance is updated and when it spawns for
+ * the first time a world. A ChunkRadiusUpdate should always be sent in response, otherwise
+ * the player will not update its view distance.
+ */
 class RequestChunkRadius : Buffer {
 
 	public enum ubyte ID = 68;
@@ -4330,6 +4366,10 @@ class RequestChunkRadius : Buffer {
 
 	public enum string[] FIELDS = ["radius"];
 
+	/**
+	 * Number of chunks before the fog starts to appear in the client's view. The value
+	 * of this field is usually between 8 and 14.
+	 */
 	public int radius;
 
 	public pure nothrow @safe @nogc this() {}
@@ -4363,6 +4403,10 @@ class RequestChunkRadius : Buffer {
 
 }
 
+/**
+ * Packet sent always and only in response to RequestChunkRadius to change the client's
+ * view distance.
+ */
 class ChunkRadiusUpdated : Buffer {
 
 	public enum ubyte ID = 69;
@@ -4372,6 +4416,10 @@ class ChunkRadiusUpdated : Buffer {
 
 	public enum string[] FIELDS = ["radius"];
 
+	/**
+	 * View distance that may be different from the client's one if the server sets a limit
+	 * on the view distance.
+	 */
 	public int radius;
 
 	public pure nothrow @safe @nogc this() {}
@@ -4628,6 +4676,10 @@ class AddItem : Buffer {
 
 }
 
+/**
+ * Adds, removes or modifies an entity's boss bar. The percentage of the bar is calculated
+ * using the entity's attributes for the health and the max health, updated with UpdateAttributes.
+ */
 class BossEvent : Buffer {
 
 	public enum ubyte ID = 75;
@@ -4727,6 +4779,9 @@ class AvailableCommands : Buffer {
 
 	public enum string[] FIELDS = ["commands", "unknown1"];
 
+	/**
+	 * JSON object with the commands.
+	 */
 	public string commands;
 	public string unknown1;
 

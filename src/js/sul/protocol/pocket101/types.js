@@ -372,14 +372,18 @@ const Types = {
 		 *        of the array will be the 3rd section from bottom, starting at `y=24`).
 		 *        The amount of sections should be in a range from 0 (empty chunk) to 16.
 		 * @param heights
-		 *        Coordinates of the highest block in the column that receives sky light (order `xz`).
+		 *        Coordinates of the highest block in the column that receives sky light (order `xz`). It is used to
+		 *        increase the speed when calculating the block's light level.
 		 * @param biomes
 		 *        [Biomes](http://minecraft.gamepedia.com/Biome) in order `xz`.
 		 * @param borders
 		 *        Colums where there are world borders (in format `xz`). This feature hasn't been implemented in
 		 *        the game yet and crashes the client.
 		 * @param blockEntities
-		 *        Additional data for the chunk's block entities (tiles).
+		 *        Additional data for the chunk's block entities (tiles). The position in given by the `Int` tags
+		 *        `x`, `y`, `z` which are added to the block's compound tag together with the `String` tag `id` that
+		 *        contains the name of the tile in pascal case.
+		 *        Wrong encoding or missing tags may result in the block becoming invisible.
 		 */
 		constructor(sections=[], heights=new Uint16Array(256), biomes=new Uint8Array(256), borders=[], extraData=[], blockEntities=null) {
 			super();

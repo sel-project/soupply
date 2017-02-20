@@ -12,6 +12,9 @@ import java.nio.charset.StandardCharsets;
 
 import sul.utils.*;
 
+/**
+ * Spawns a painting entity in the world.
+ */
 public class AddPainting extends Packet {
 
 	public static final byte ID = (byte)24;

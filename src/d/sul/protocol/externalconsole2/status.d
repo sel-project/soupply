@@ -195,10 +195,10 @@ class UpdateStats : Buffer {
 	public uint onlinePlayers;
 
 	/**
-	 * Highest number of players that can join the server simultaneously. If 0, there is
-	 * not maximum number of players.
+	 * Highest number of players that can join the server simultaneously. If -1, there
+	 * is not maximum number of players.
 	 */
-	public uint maxPlayers;
+	public int maxPlayers;
 
 	/**
 	 * Milliseconds since the server has started.
@@ -223,7 +223,7 @@ class UpdateStats : Buffer {
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(uint onlinePlayers, uint maxPlayers=uint.init, uint uptime=uint.init, uint upload=uint.init, uint download=uint.init, sul.protocol.externalconsole2.types.NodeStats[] nodes=(sul.protocol.externalconsole2.types.NodeStats[]).init) {
+	public pure nothrow @safe @nogc this(uint onlinePlayers, int maxPlayers=int.init, uint uptime=uint.init, uint upload=uint.init, uint download=uint.init, sul.protocol.externalconsole2.types.NodeStats[] nodes=(sul.protocol.externalconsole2.types.NodeStats[]).init) {
 		this.onlinePlayers = onlinePlayers;
 		this.maxPlayers = maxPlayers;
 		this.uptime = uptime;
@@ -236,7 +236,7 @@ class UpdateStats : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBigEndianUint(onlinePlayers);
-		writeBigEndianUint(maxPlayers);
+		writeBigEndianInt(maxPlayers);
 		writeBigEndianUint(uptime);
 		writeBigEndianUint(upload);
 		writeBigEndianUint(download);
@@ -247,7 +247,7 @@ class UpdateStats : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		onlinePlayers=readBigEndianUint();
-		maxPlayers=readBigEndianUint();
+		maxPlayers=readBigEndianInt();
 		uptime=readBigEndianUint();
 		upload=readBigEndianUint();
 		download=readBigEndianUint();

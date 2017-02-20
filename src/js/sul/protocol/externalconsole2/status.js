@@ -181,7 +181,7 @@ const Status = {
 		 *        Number of players currently online on the server. Players that are performing authentication
 		 *        are not included in the count.
 		 * @param maxPlayers
-		 *        Highest number of players that can join the server simultaneously. If 0, there is not maximum number
+		 *        Highest number of players that can join the server simultaneously. If -1, there is not maximum number
 		 *        of players.
 		 * @param uptime
 		 *        Milliseconds since the server has started.

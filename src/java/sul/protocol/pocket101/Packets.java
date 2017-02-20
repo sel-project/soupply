@@ -32,6 +32,10 @@ import sul.utils.Packet;
  * textures have been loaded
  * + The server sends a PlayStatus packet set to spawned
  * + The client spawns
+ * 
+ * Everything written in the documentation has been tested on [sel-server](https://github.com/sel-project/sel-server).
+ * The types and the packets without documentation haven't been tested yet or it's
+ * not clear what their real purpose in the game is.
  */
 public final class Packets {
 

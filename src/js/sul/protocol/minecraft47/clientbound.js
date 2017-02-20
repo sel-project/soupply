@@ -632,7 +632,7 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityId=0, uuid=new Uint8Array(16), position={x:0,y:0,z:0}, yaw=0, pitch=0, currentItem=0, metadata=null) {
+		constructor(entityId=0, uuid=new Uint8Array(16), position={x:0,y:0,z:0}, yaw=0, pitch=0, currentItem=0, metadata=new Metadata()) {
 			super();
 			this.entityId = entityId;
 			this.uuid = uuid;
@@ -791,7 +791,7 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityId=0, type=0, position={x:0,y:0,z:0}, yaw=0, pitch=0, headPitch=0, velocity={x:0,y:0,z:0}, metadata=null) {
+		constructor(entityId=0, type=0, position={x:0,y:0,z:0}, yaw=0, pitch=0, headPitch=0, velocity={x:0,y:0,z:0}, metadata=new Metadata()) {
 			super();
 			this.entityId = entityId;
 			this.type = type;
@@ -1434,7 +1434,7 @@ const Clientbound = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityId=0, metadata=null) {
+		constructor(entityId=0, metadata=new Metadata()) {
 			super();
 			this.entityId = entityId;
 			this.metadata = metadata;

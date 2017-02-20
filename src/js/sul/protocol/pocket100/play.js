@@ -680,7 +680,7 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(uuid=new Uint8Array(16), username="", entityId=0, runtimeId=0, position={x:0,y:0,z:0}, motion={x:0,y:0,z:0}, pitch=.0, headYaw=.0, yaw=.0, heldItem=null, metadata=null) {
+		constructor(uuid=new Uint8Array(16), username="", entityId=0, runtimeId=0, position={x:0,y:0,z:0}, motion={x:0,y:0,z:0}, pitch=.0, headYaw=.0, yaw=.0, heldItem=null, metadata=new Metadata()) {
 			super();
 			this.uuid = uuid;
 			this.username = username;
@@ -750,7 +750,7 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityId=0, runtimeId=0, type=0, position={x:0,y:0,z:0}, motion={x:0,y:0,z:0}, pitch=.0, yaw=.0, attributes=[], metadata=null, links=[]) {
+		constructor(entityId=0, runtimeId=0, type=0, position={x:0,y:0,z:0}, motion={x:0,y:0,z:0}, pitch=.0, yaw=.0, attributes=[], metadata=new Metadata(), links=[]) {
 			super();
 			this.entityId = entityId;
 			this.runtimeId = runtimeId;
@@ -2142,7 +2142,7 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityId=0, metadata=null) {
+		constructor(entityId=0, metadata=new Metadata()) {
 			super();
 			this.entityId = entityId;
 			this.metadata = metadata;

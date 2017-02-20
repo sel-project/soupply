@@ -400,7 +400,7 @@ public class MetadataException extends RuntimeException {
 			}
 		}
 		
-		string fieldsLength(Field[] fields, string id_type="", int id=-1, string length="") {
+		string fieldsLength(Field[] fields, string id_type="", ptrdiff_t id=-1, string length="") {
 			size_t fixed = 0;
 			string[] exps, seps;
 			if(id_type.length) {
@@ -530,7 +530,7 @@ public class MetadataException extends RuntimeException {
 		}
 		
 		// write generic fields
-		void writeFields(ref string data, string space, string className, Field[] fields, int id=-1, bool hasVariants=false, bool isVariant=false, string length="") { // hasId is true when fields belong to a packet, false when a type
+		void writeFields(ref string data, string space, string className, Field[] fields, ptrdiff_t id=-1, bool hasVariants=false, bool isVariant=false, string length="") { // hasId is true when fields belong to a packet, false when a type
 			// constants
 			foreach(field ; fields) {
 				if(field.constants.length) {

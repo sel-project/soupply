@@ -224,8 +224,9 @@ class HubInfo : Buffer {
 	public uint online;
 
 	/**
-	 * Number of maximum players that can connect to the server. The number may change
-	 * after this node connects.
+	 * Number of maximum players that can connect to the server (that is the sum of the
+	 * max players of the nodes already connected). The number may change after this node
+	 * connects.
 	 */
 	public int max;
 

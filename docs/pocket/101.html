@@ -50,6 +50,7 @@
 			<li>The server sends a <a href="#play_play-status">PlayStatus</a> packet set to <a href="#play_play-status_status_spawned">spawned</a></li>
 			<li>The client spawns</li>
 		</ul>
+		<p>Everything written in the documentation has been tested on <a href="https://github.com/sel-project/sel-server" target="_blank">sel-server</a>. The types and the packets without documentation haven't been tested yet or it's not clear what their real purpose in the game is.</p>
 		<hr>
 		<h2 id="encoding">Encoding</h2>
 		<p><strong>Endianness</strong>:</p>
@@ -793,9 +794,9 @@
 						<p>Pseudo-code for decompression:</p>
 						<pre>
 							<code class="c">ubyte[] uncompressed = uncompress(batch.payload);
-size_t index = 0;
+int index = 0;
 while(index < uncompressed.length) {
-   size_t length = varuint.decode(uncompressed, &index);
+   int length = varuint.decode(uncompressed, &index);
    if(length < uncompressed.length - index) {}
       ubyte[] packet = uncompressed[0..length];
       index += length;
@@ -807,10 +808,10 @@ while(index < uncompressed.length) {
 						<pre>
 							<code class="c">ubyte[] payload;
 foreach(ubyte[] packet ; packets) {
-   payload ~= varuint.encode(packet.length);
-   payload ~= packet;
+   payload.concat(varuint.encode(packet.length));
+   payload.concat(packet);
 }
-Batch batch = new Batch(compress(payload));
+Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 </code>
 						</pre>
 					</li>
@@ -1265,7 +1266,7 @@ Batch batch = new Batch(compress(payload));
 					</li>
 					<li>
 						<strong id="play_start-game_seed">seed</strong>
-						<p>World's seed. It's displayed in the game's wolrd settings and in beta's debug informations on top of the screen.</p>
+						<p>World's seed. It's displayed in the game's world settings and in beta's debug informations on top of the screen.</p>
 					</li>
 					<li>
 						<strong id="play_start-game_dimension">dimension</strong>
@@ -1843,6 +1844,7 @@ Batch batch = new Batch(compress(payload));
 					<p><strong>Bin</strong>: 00011000</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Spawns a painting entity in the world.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -2732,6 +2734,7 @@ Batch batch = new Batch(compress(payload));
 					<p><strong>Bin</strong>: 00011111</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Updates an entity's attributes. This packet should be used when a value must be modified but it cannot be done using another packet (for example controlling the player's experience and level).</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -3640,6 +3643,7 @@ Batch batch = new Batch(compress(payload));
 					<p><strong>Bin</strong>: 00111000</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Sets a block entity's nbt tag, block's additional data that cannot be indicated in the block's meta. More informations about block entities and their tag format can be found on <a href="http://minecraft.gamepedia.com/Block_entity" target="_blank">Minecraft Wiki</a>.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -3647,14 +3651,29 @@ Batch batch = new Batch(compress(payload));
 						<th>Type</th>
 					</tr>
 					<tr>
-						<td>position</td>
+						<td><a href="#play_block-entity-data_position">position</a></td>
 						<td><a href="#types_block-position">blockPosition</a></td>
 					</tr>
 					<tr>
-						<td>nbt</td>
+						<td><a href="#play_block-entity-data_nbt">nbt</a></td>
 						<td>bytes</td>
 					</tr>
 				</table>
+				<ul>
+					<li>
+						<strong id="play_block-entity-data_position">position</strong>
+						<p>Position of the block that will be associated with tag.</p>
+					</li>
+					<li>
+						<strong id="play_block-entity-data_nbt">nbt</strong>
+						<p><a href="http://minecraft.gamepedia.com/NBT_format" target="_blank">Named binary tag</a> of the block. The format varies from the classic format of Minecraft: Pocket Edition (which is like Minecraft's but little endian) introducing the use of varints for some types:</p>
+						<ul>
+							<li>The tag `Int` is encoded as a signed varint instead of a simple signed 32-bits integer</li>
+							<li>The length of the `ByteArray` and the `IntArray` is encoded as an unsigned varint instead of a 32-bits integer</li>
+							<li>The length of the `String` tag and the named tag's name length are encoded as an unisgned varint instead of a 16-bits integer</li>
+						</ul>
+					</li>
+				</ul>
 			</li>
 			<li>
 				<h3 id="play_player-input">Player Input</h3>
@@ -3692,6 +3711,7 @@ Batch batch = new Batch(compress(payload));
 					<p><strong>Bin</strong>: 00111010</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Sends a 16x16 chunk to the client with its blocks, lights and block entities (tiles).</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -4114,6 +4134,7 @@ Batch batch = new Batch(compress(payload));
 					<p><strong>Bin</strong>: 01000100</p>
 					<p>Sent by the <strong>client</strong></p>
 				</div>
+				<p>Packet sent by the client when its view-distance is updated and when it spawns for the first time a world. A <a href="#play_chunk-radius_update">ChunkRadiusUpdate</a> should always be sent in response, otherwise the player will not update its view distance.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -4121,10 +4142,16 @@ Batch batch = new Batch(compress(payload));
 						<th>Type</th>
 					</tr>
 					<tr>
-						<td>radius</td>
+						<td><a href="#play_request-chunk-radius_radius">radius</a></td>
 						<td>varint</td>
 					</tr>
 				</table>
+				<ul>
+					<li>
+						<strong id="play_request-chunk-radius_radius">radius</strong>
+						<p>Number of chunks before the fog starts to appear in the client's view. The value of this field is usually between 8 and 14.</p>
+					</li>
+				</ul>
 			</li>
 			<li>
 				<h3 id="play_chunk-radius-updated">Chunk Radius Updated</h3>
@@ -4134,6 +4161,7 @@ Batch batch = new Batch(compress(payload));
 					<p><strong>Bin</strong>: 01000101</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Packet sent always and only in response to <a href="#play_request-chunk-radius">RequestChunkRadius</a> to change the client's view distance.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -4141,10 +4169,16 @@ Batch batch = new Batch(compress(payload));
 						<th>Type</th>
 					</tr>
 					<tr>
-						<td>radius</td>
+						<td><a href="#play_chunk-radius-updated_radius">radius</a></td>
 						<td>varint</td>
 					</tr>
 				</table>
+				<ul>
+					<li>
+						<strong id="play_chunk-radius-updated_radius">radius</strong>
+						<p>View distance that may be different from the client's one if the server sets a limit on the view distance.</p>
+					</li>
+				</ul>
 			</li>
 			<li>
 				<h3 id="play_item-frame-drop-item">Item Frame Drop Item</h3>
@@ -4263,6 +4297,7 @@ Batch batch = new Batch(compress(payload));
 					<p><strong>Bin</strong>: 01001011</p>
 					<p>Sent by the <strong>server</strong></p>
 				</div>
+				<p>Adds, removes or modifies an entity's boss bar. The percentage of the bar is calculated using the entity's attributes for the health and the max health, updated with <a href="play_update-attributes" target="_blank">UpdateAttributes</a>.</p>
 				<p><strong>Fields</strong>:</p>
 				<table>
 					<tr>
@@ -4326,7 +4361,7 @@ Batch batch = new Batch(compress(payload));
 						<th>Type</th>
 					</tr>
 					<tr>
-						<td>commands</td>
+						<td><a href="#play_available-commands_commands">commands</a></td>
 						<td>string</td>
 					</tr>
 					<tr>
@@ -4334,6 +4369,12 @@ Batch batch = new Batch(compress(payload));
 						<td>string</td>
 					</tr>
 				</table>
+				<ul>
+					<li>
+						<strong id="play_available-commands_commands">commands</strong>
+						<p>JSON object with the commands.</p>
+					</li>
+				</ul>
 			</li>
 			<li>
 				<h3 id="play_command-step">Command Step</h3>
@@ -4851,7 +4892,7 @@ var count = count & 255
 					</li>
 					<li>
 						<strong id="types_chunk-data_heights">heights</strong>
-						<p>Coordinates of the highest block in the column that receives sky light (order <code>xz</code>).</p>
+						<p>Coordinates of the highest block in the column that receives sky light (order <code>xz</code>). It is used to increase the speed when calculating the block's light level.</p>
 					</li>
 					<li>
 						<strong id="types_chunk-data_biomes">biomes</strong>
@@ -4863,7 +4904,8 @@ var count = count & 255
 					</li>
 					<li>
 						<strong id="types_chunk-data_block-entities">block entities</strong>
-						<p>Additional data for the chunk's block entities (tiles).</p>
+						<p>Additional data for the chunk's block entities (tiles). The position in given by the <code>Int</code> tags <code>x</code>, <code>y</code>, <code>z</code> which are added to the block's compound tag together with the <code>String</code> tag <code>id</code> that contains the name of the tile in pascal case.</p>
+						<p>Wrong encoding or missing tags may result in the block becoming invisible.</p>
 					</li>
 				</ul>
 			</li>

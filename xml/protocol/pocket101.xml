@@ -28,6 +28,8 @@
 		+ The client replies with [ResourcePackClientResponse](#play_resource-pack-client-response) telling the server that the textures have been loaded
 		+ The server sends a [PlayStatus](#play_play-status) packet set to [spawned](#play_play-status_status_spawned)
 		+ The client spawns
+
+		Everything written in the documentation has been tested on [sel-server](https://github.com/sel-project/sel-server). The types and the packets without documentation haven't been tested yet or it's not clear what their real purpose in the game is.
 	</description>
 
 	<encoding id="ubyte" arraylength="varuint">
@@ -63,7 +65,7 @@
 				```javascript
 				var encoded = item.meta &lt;&lt; 8 | item.count
 				var meta = encoded &gt;&gt; 8
-				var count = count & 255
+				var count = count &amp; 255
 				```
 			</field>
 			<field name="nbt" type="nbt" when="id>0">
@@ -142,7 +144,7 @@
 				The amount of sections should be in a range from 0 (empty chunk) to 16.
 			</field>
 			<field name="heights" type="ushort[256]">
-				Coordinates of the highest block in the column that receives sky light (order `xz`).
+				Coordinates of the highest block in the column that receives sky light (order `xz`). It is used to increase the speed when calculating the block's light level.
 			</field>
 			<field name="biomes" type="ubyte[256]">
 				[Biomes](http://minecraft.gamepedia.com/Biome) in order `xz`.
@@ -152,7 +154,8 @@
 			</field>
 			<field name="extra-data" type="extra-data[]" />
 			<field name="block-entities" type="bytes">
-				Additional data for the chunk's block entities (tiles).
+				Additional data for the chunk's block entities (tiles). The position in given by the `Int` tags `x`, `y`, `z` which are added to the block's compound tag together with the `String` tag `id` that contains the name of the tile in pascal case.
+				Wrong encoding or missing tags may result in the block becoming invisible.
 			</field>
 		</type>
 
@@ -267,9 +270,9 @@
 					Pseudo-code for decompression:
 					```c
 					ubyte[] uncompressed = uncompress(batch.payload);
-					size_t index = 0;
+					int index = 0;
 					while(index &lt; uncompressed.length) {
-					   size_t length = varuint.decode(uncompressed, &index);
+					   int length = varuint.decode(uncompressed, &amp;index);
 					   if(length &lt; uncompressed.length - index) {}
 					      ubyte[] packet = uncompressed[0..length];
 					      index += length;
@@ -281,10 +284,10 @@
 					```c
 					ubyte[] payload;
 					foreach(ubyte[] packet ; packets) {
-					   payload ~= varuint.encode(packet.length);
-					   payload ~= packet;
+					   payload.concat(varuint.encode(packet.length));
+					   payload.concat(packet);
 					}
-					Batch batch = new Batch(compress(payload));
+					Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 					```
 				</field>
 			</packet>
@@ -374,7 +377,7 @@
 				<field name="yaw" type="float" />
 				<field name="pitch" type="float" />
 				<field name="seed" type="varint">
-					World's seed. It's displayed in the game's wolrd settings and in beta's debug informations on top of the screen.
+					World's seed. It's displayed in the game's world settings and in beta's debug informations on top of the screen.
 				</field>
 				<field name="dimension" type="varint" default="0">
 					World's dimension. Different dimensions have different sky colours and render distances.
@@ -535,6 +538,7 @@
 			</packet>
 
 			<packet name="add-painting" id="24" clientbound="true" serverbound="false">
+				Spawns a painting entity in the world.
 				<field name="entity-id" type="entity-id" />
 				<field name="runtime-id" type="runtime-id" />
 				<field name="position" type="block-position" />
@@ -747,6 +751,7 @@
 			</packet>
 
 			<packet name="update-attributes" id="31" clientbound="true" serverbound="false">
+				Updates an entity's attributes. This packet should be used when a value must be modified but it cannot be done using another packet (for example controlling the player's experience and level).
 				<field name="entity-id" type="entity-id" />
 				<field name="attributes" type="attribute[]" />
 			</packet>
@@ -948,8 +953,16 @@
 			</packet>
 
 			<packet name="block-entity-data" id="56" clientbound="true" serverbound="false">
-				<field name="position" type="block-position" />
-				<field name="nbt" type="bytes" />
+				Sets a block entity's nbt tag, block's additional data that cannot be indicated in the block's meta. More informations about block entities and their tag format can be found on [Minecraft Wiki](http://minecraft.gamepedia.com/Block_entity).
+				<field name="position" type="block-position">
+					Position of the block that will be associated with tag.
+				</field>
+				<field name="nbt" type="bytes">
+					[Named binary tag](http://minecraft.gamepedia.com/NBT_format) of the block. The format varies from the classic format of Minecraft: Pocket Edition (which is like Minecraft's but little endian) introducing the use of varints for some types:
+					+ The tag `Int` is encoded as a signed varint instead of a simple signed 32-bits integer
+					+ The length of the `ByteArray` and the `IntArray` is encoded as an unsigned varint instead of a 32-bits integer
+					+ The length of the `String` tag and the named tag's name length are encoded as an unisgned varint instead of a 16-bits integer
+				</field>
 			</packet>
 
 			<packet name="player-input" id="57" clientbound="false" serverbound="true">
@@ -959,6 +972,7 @@
 			</packet>
 
 			<packet name="full-chunk-data" id="58" clientbound="true" serverbound="false">
+				Sends a 16x16 chunk to the client with its blocks, lights and block entities (tiles).
 				<field name="position" type="varint<xz>">
 					Coordinates of the chunk.
 				</field>
@@ -1049,11 +1063,17 @@
 			</packet>
 
 			<packet name="request-chunk-radius" id="68" clientbound="false" serverbound="true">
-				<field name="radius" type="varint" />
+				Packet sent by the client when its view-distance is updated and when it spawns for the first time a world. A [ChunkRadiusUpdate](#play_chunk-radius_update) should always be sent in response, otherwise the player will not update its view distance.
+				<field name="radius" type="varint">
+					Number of chunks before the fog starts to appear in the client's view. The value of this field is usually between 8 and 14.
+				</field>
 			</packet>
 
 			<packet name="chunk-radius-updated" id="69" clientbound="true" serverbound="false">
-				<field name="radius" type="varint" />
+				Packet sent always and only in response to [RequestChunkRadius](#play_request-chunk-radius) to change the client's view distance.
+				<field name="radius" type="varint">
+					View distance that may be different from the client's one if the server sets a limit on the view distance.
+				</field>
 			</packet>
 
 			<packet name="item-frame-drop-item" id="70" clientbound="true" serverbound="false">
@@ -1080,6 +1100,7 @@
 			</packet>
 
 			<packet name="boss-event" id="75" clientbound="true" serverbound="false">
+				Adds, removes or modifies an entity's boss bar. The percentage of the bar is calculated using the entity's attributes for the health and the max health, updated with [UpdateAttributes](play_update-attributes).
 				<field name="entity-id" type="entity-id" />
 				<field name="event-id" type="varuint">
 					<constant name="add" value="0" />
@@ -1094,7 +1115,9 @@
 
 			<packet name="available-commands" id="77" clientbound="true" serverbound="false">
 				Sends a list of the commands that the player can use through the [CommandStep](#play_command-step) packet.
-				<field name="commands" type="json" />
+				<field name="commands" type="json">
+					JSON object with the commands.
+				</field>
 				<field name="?" type="json" />
 			</packet>
 

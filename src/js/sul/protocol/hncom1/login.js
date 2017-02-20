@@ -177,7 +177,8 @@ const Login = {
 		 * @param online
 		 *        Number of players currently online and connected to other nodes.
 		 * @param max
-		 *        Number of maximum players that can connect to the server. The number may change after this node connects.
+		 *        Number of maximum players that can connect to the server (that is the sum of the max players of the
+		 *        nodes already connected). The number may change after this node connects.
 		 * @param language
 		 *        Default server's language in format (language_COUNTRY, e.g. en_GB) and also the default language
 		 *        for players that don't specify their language or for the ones which language is not supported by

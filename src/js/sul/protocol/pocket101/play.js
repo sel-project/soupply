@@ -648,7 +648,7 @@ const Play = {
 		 * @param position
 		 *        Position where the player will spawn.
 		 * @param seed
-		 *        World's seed. It's displayed in the game's wolrd settings and in beta's debug informations on top
+		 *        World's seed. It's displayed in the game's world settings and in beta's debug informations on top
 		 *        of the screen.
 		 * @param dimension
 		 *        World's dimension. Different dimensions have different sky colours and render distances.
@@ -787,7 +787,7 @@ const Play = {
 		 * @param username
 		 *        Player's username and text displayed on the nametag if something else is not specified in the metadata.
 		 */
-		constructor(uuid=new Uint8Array(16), username="", entityId=0, runtimeId=0, position={x:0,y:0,z:0}, motion={x:0,y:0,z:0}, pitch=.0, headYaw=.0, yaw=.0, heldItem=null, metadata=null) {
+		constructor(uuid=new Uint8Array(16), username="", entityId=0, runtimeId=0, position={x:0,y:0,z:0}, motion={x:0,y:0,z:0}, pitch=.0, headYaw=.0, yaw=.0, heldItem=null, metadata=new Metadata()) {
 			super();
 			this.uuid = uuid;
 			this.username = username;
@@ -857,7 +857,7 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityId=0, runtimeId=0, type=0, position={x:0,y:0,z:0}, motion={x:0,y:0,z:0}, pitch=.0, yaw=.0, attributes=[], metadata=null, links=[]) {
+		constructor(entityId=0, runtimeId=0, type=0, position={x:0,y:0,z:0}, motion={x:0,y:0,z:0}, pitch=.0, yaw=.0, attributes=[], metadata=new Metadata(), links=[]) {
 			super();
 			this.entityId = entityId;
 			this.runtimeId = runtimeId;
@@ -1367,6 +1367,9 @@ const Play = {
 
 	},
 
+	/**
+	 * Spawns a painting entity in the world.
+	 */
 	AddPainting: class extends Buffer {
 
 		static get ID(){ return 24; }
@@ -1879,6 +1882,11 @@ const Play = {
 
 	},
 
+	/**
+	 * Updates an entity's attributes. This packet should be used when a value must be
+	 * modified but it cannot be done using another packet (for example controlling the
+	 * player's experience and level).
+	 */
 	UpdateAttributes: class extends Buffer {
 
 		static get ID(){ return 31; }
@@ -2296,7 +2304,7 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(entityId=0, metadata=null) {
+		constructor(entityId=0, metadata=new Metadata()) {
 			super();
 			this.entityId = entityId;
 			this.metadata = metadata;
@@ -3092,6 +3100,11 @@ const Play = {
 
 	},
 
+	/**
+	 * Sets a block entity's nbt tag, block's additional data that cannot be indicated
+	 * in the block's meta. More informations about block entities and their tag format
+	 * can be found on Minecraft Wiki.
+	 */
 	BlockEntityData: class extends Buffer {
 
 		static get ID(){ return 56; }
@@ -3099,6 +3112,19 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		/**
+		 * @param position
+		 *        Position of the block that will be associated with tag.
+		 * @param nbt
+		 *        [Named binary tag](http://minecraft.gamepedia.com/NBT_format) of the block. The format varies
+		 *        from the classic format of Minecraft: Pocket Edition (which is like Minecraft's but little endian)
+		 *        introducing the use of varints for some types:
+		 *        + The tag `Int` is encoded as a signed varint instead of a simple signed 32-bits integer
+		 *        + The length of the `ByteArray` and the `IntArray` is encoded as an unsigned varint instead of a 32-bits
+		 *        integer
+		 *        + The length of the `String` tag and the named tag's name length are encoded as an unisgned varint
+		 *        instead of a 16-bits integer
+		 */
 		constructor(position=null, nbt=null) {
 			super();
 			this.position = position;
@@ -3181,6 +3207,9 @@ const Play = {
 
 	},
 
+	/**
+	 * Sends a 16x16 chunk to the client with its blocks, lights and block entities (tiles).
+	 */
 	FullChunkData: class extends Buffer {
 
 		static get ID(){ return 58; }
@@ -3705,6 +3734,11 @@ const Play = {
 
 	},
 
+	/**
+	 * Packet sent by the client when its view-distance is updated and when it spawns for
+	 * the first time a world. A ChunkRadiusUpdate should always be sent in response, otherwise
+	 * the player will not update its view distance.
+	 */
 	RequestChunkRadius: class extends Buffer {
 
 		static get ID(){ return 68; }
@@ -3712,6 +3746,11 @@ const Play = {
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
 
+		/**
+		 * @param radius
+		 *        Number of chunks before the fog starts to appear in the client's view. The value of this field is usually
+		 *        between 8 and 14.
+		 */
 		constructor(radius=0) {
 			super();
 			this.radius = radius;
@@ -3745,6 +3784,10 @@ const Play = {
 
 	},
 
+	/**
+	 * Packet sent always and only in response to RequestChunkRadius to change the client's
+	 * view distance.
+	 */
 	ChunkRadiusUpdated: class extends Buffer {
 
 		static get ID(){ return 69; }
@@ -3752,6 +3795,10 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		/**
+		 * @param radius
+		 *        View distance that may be different from the client's one if the server sets a limit on the view distance.
+		 */
 		constructor(radius=0) {
 			super();
 			this.radius = radius;
@@ -3996,6 +4043,10 @@ const Play = {
 
 	},
 
+	/**
+	 * Adds, removes or modifies an entity's boss bar. The percentage of the bar is calculated
+	 * using the entity's attributes for the health and the max health, updated with UpdateAttributes.
+	 */
 	BossEvent: class extends Buffer {
 
 		static get ID(){ return 75; }
@@ -4095,6 +4146,10 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		/**
+		 * @param commands
+		 *        JSON object with the commands.
+		 */
 		constructor(commands="", unknown1="") {
 			super();
 			this.commands = commands;

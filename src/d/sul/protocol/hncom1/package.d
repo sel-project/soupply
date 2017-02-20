@@ -15,9 +15,9 @@
  * <h3>Hub</h3>
  * The hub (server) is the network part of the game server and handles pings, login
  * sequences, keep alive packets, queries, external consoles and everything else that
- * is not a gameplay feature.
+ * is not related to the gameplay.
  * A server can work with only an hub (nodeless) but every player that will try to
- * join the server will be disconnected with an "End of Stream" message after the login
+ * join the server will be disconnected because the server is full after the login
  * process.
  * 
  * <h3>Node</h3>
