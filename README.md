@@ -5,15 +5,14 @@ __Automatically generated libraries for SEL, Minecraft and Minecraft: Pocket Edi
 The generated documentation can be found at [sel-project.github.io/sel-utils](https://sel-project.github.io/sel-utils).
 
 ### Specification
- | Protocol | Metadata | Attributes | Recipes | Creative Inventory
- ---:|:---:|:---:|:---:|:---:|:---:
- JSON | ✓ | ✓ | ✓ |   | ✓
- XML | ✓ | ✓ | ✓ |   | ✓
+ | Protocol | Metadata | Attributes | Recipes | Creative Inventory | Blocks | Items
+ ---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
+ JSON | ✓ | ✓ | ✓ |   | ✓ |   |   
+ XML | ✓ | ✓ | ✓ |   | ✓ |   |   
  
 ### Generated code
- | Protocol | Metadata | Attributes | Recipes | Creative Inventory
- ---:|:---:|:---:|:---:|:---:|:---:
- D | ✓ | encoding | ✓ |   | ✓ 
- Java | ✓ |   | ✓ |   | ✓
- JavaScript |   |   | ✓ |   | ✓
- PHP |   |   |   |   |  
+ | Protocol | Metadata | Attributes | Recipes | Creative Inventory | Blocks | Items
+ ---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
+ D | ✓ | encoding | ✓ |   | ✓ |   |   
+ Java | ✓ |   | ✓ |   | ✓ |   |   
+ JavaScript | ✓ | ✓ | ✓ |   | ✓ |   |   
