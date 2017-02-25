@@ -1,0 +1,2033 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!---
+
+	Every block (indicated by the tag `block`) inherits the properties of its group
+	or the default values for a block.
+
+	name: required string
+	id: required unsigned short
+	minecraft: required string in format `id:meta` or simply `id`
+	pocket: required string in format `id:meta` or simply `id`
+	solid: whether the block is solid, true by default
+	hardness: material's hardness (0 for instant break, -1 for undestructible)
+	blastresistance: material's blast resistance, only required for solid blocks
+	opacity: opacity of the block in range 0-15, default is 15
+	boundingbox: block's bounding box, default is 0,0,0-16,16,16 for solid blocks
+
+-->
+
+<blocks>
+
+	<block name="air" id="0" minecraft="0" pocket="0" solid="false" opacity="0" boundingbox="none" />
+
+	<!-- stone-line blocks -->
+	<group hardness="1.5" blastresistance="30">
+
+		<block name="stone" id="1" minecraft="1" pocket="1" />
+		<block name="granite" id="2" minecraft="1:1" pocket="1:1" />
+		<block name="polished-granite" id="3" minecraft="1:2" pocket="1:2" />
+		<block name="diorite" id="4" minecraft="1:3" pocket="1:3" />
+		<block name="polished-diorite" id="5" minecraft="1:4" pocket="1:4" />
+		<block name="andesite" id="6" minecraft="1:5" pocket="1:5" />
+		<block name="polished-andesite" id="7" minecraft="1:6" pocket="1:6" />
+
+		<block name="stone-brick" id="8" minecraft="98:0" pocket="98:0" />
+		<block name="mossy-stone-brick" id="9" minecraft="98:1" pocket="98:1" />
+		<block name="cracked-stone-brick" id="10" minecraft="98:2" pocket="98:2" />
+		<block name="chiseled-stone-brick" id="11" minecraft="98:3" pocket="98:3" />
+
+	</group>
+
+	<!-- cobblestone and derivated -->
+	<group hardness="2" blastresistance="30">
+
+		<block name="cobblestone" id="12" minecraft="4" pocket="4" />
+		<block name="mossy-stone" id="13" minecraft="48" pocket="48" />
+
+		<block name="cobblestone-wall" id="14" minecraft="139:0" pocket="139:0" />
+		<block name="mossy-cobblestone-wall" id="15" minecraft="139:1" pocket="139:1" />
+
+		<block name="bricks" id="59" minecraft="45" pocket="45" />
+
+	</group>
+
+	<!--- mineable minerals -->
+	<group hardness="3" blastresistance="15">
+
+		<block name="coal-ore" id="16" minecraft="16" pocket="16" />
+		<block name="iron-ore" id="17" minecraft="15" pocket="15" />
+		<block name="gold-ore" id="18" minecraft="14" pocket="14" />
+		<block name="diamond-ore" id="19" minecraft="56" pocket="56" />
+		<block name="emerald-ore" id="20" minecraft="129" pocket="129" />
+		<block name="lapis-lazuli-ore" id="21" minecraft="21" pocket="21" />
+		<block name="redstone-ore" id="22" minecraft="73" pocket="73" />
+		<block name="lit-redstone-ore" id="23" minecraft="74" pocket="74" luminance="9" />
+		<block name="nether-quartz-ore" id="1144" minecraft="153" pocket="153" />
+
+	</group>
+
+	<!-- blocks crafted using minerals -->
+	<group hardness="5" blastresistance="30">
+
+		<block name="coal-block" id="24" minecraft="173" pocket="173" />
+		<block name="iron-bock" id="25" minecraft="42" pocket="42" />
+		<block name="gold-block" id="26" minecraft="41" pocket="41" hardness="3" />
+		<block name="diamond-block" id="27" minecraft="57" pocket="57" />
+		<block name="emerald-block" id="28" minecraft="133" pocket="133" />
+		<block name="redstone-block" id="29" minecraft="152" pocket="152" />
+		<block name="lapis-lazuli-block" id="30" minecraft="22" pocket="22" hardness="3" blastresistance="15" />
+
+	</group>
+
+	<!-- nether reactor -->
+	<group hardness="3" blastresistance="30">
+
+		<block name="nether-reactor-core" id="1235" pocket="247:0" />
+		<block name="active-nether-reactor-core" id="1236" pocket="247:1" />
+		<block name="used-nether-reactor-core" id="1237" pocket="247:2" />
+
+	</group>
+
+	<!-- dirt and variants -->
+	<group hardness="0.5" blastresistance="2.5">
+
+		<block name="grass" id="31" minecraft="2" pocket="2" hardness="0.6" blastresistance="3" />
+		<block name="dirt" id="32" minecraft="3" pocket="3" />
+		<block name="coarse-dirt" id="33" minecraft="3:1" />
+		<block name="podzol" id="34" minecraft="3:2" pocket="243" />
+		<group name="farmland" hardness="0.6" blastresistance="3" boundingbox="0,0,0-16,15,16">
+			<block name="dry-farmland-0" id="35" minecraft="60:0" pocket="60:0" />
+			<block name="dry-farmland-1" id="36" minecraft="60:1" pocket="60:1" />
+			<block name="dry-farmland-2" id="37" minecraft="60:2" pocket="60:2" />
+			<block name="dry-farmland-3" id="38" minecraft="60:3" pocket="60:3" />
+			<block name="dry-farmland-4" id="39" minecraft="60:4" pocket="60:4" />
+			<block name="dry-farmland-5" id="40" minecraft="60:5" pocket="60:5" />
+			<block name="dry-farmland-6" id="41" minecraft="60:6" pocket="60:6" />
+			<block name="wet-farmland" id="42" minecraft="60:7" pocket="60:7" />
+		</group>
+		<block name="grass-path" id="43" minecraft="208" pocket="198" hardness="0.6" blastresistance="3.25" boundingbox="0,0,0-16,15,16" />
+
+	</group>
+
+	<!-- planks -->
+	<group hardness="2" blastresistance="15">
+
+		<block name="oak-wood-planks" id="44" minecraft="5:0" pocket="5:0" />
+		<block name="spruce-wood-planks" id="45" minecraft="5:1" pocket="5:1" />
+		<block name="birch-wood-planks" id="46" minecraft="5:2" pocket="5:2" />
+		<block name="jungle-wood-planks" id="47" minecraft="5:3" pocket="5:3" />
+		<block name="acacia-wood-planks" id="48" minecraft="5:4" pocket="5:4" />
+		<block name="dark-oak-wood-planks" id="49" minecraft="5:5" pocket="5:5" />
+
+	</group>
+
+	<!-- saplings -->
+	<group hardness="0" opacity="0" boundingbox="none" >
+
+		<block name="oak-sapling" id="50" minecraft="6:0" pocket="6:0" />
+		<block name="spruce-sapling" id="51" minecraft="6:1" pocket="6:1" />
+		<block name="birch-sapling" id="52" minecraft="6:2" pocket="6:2" />
+		<block name="jungle-sapling" id="53" minecraft="6:3" pocket="6:3" />
+		<block name="acacia-sapling" id="54" minecraft="6:4" pocket="6:4" />
+		<block name="dark-oak-sapling" id="55" minecraft="6:5" pocket="6:5" />
+
+	</group>
+
+	<block name="bedrock" id="716" minecraft="7" pocket="7" hardness="-1" blastresistance="18000000" />
+
+	<block name="sand" id="56" minecraft="12" pocket="12" hardness="0.5" blastresistance="2.5" />
+	<block name="red-sand" id="57" minecraft="12:1" pocket="12:1" hardness="0.5" blastresistance="2.5" />
+
+	<block name="gravel" id="58" minecraft="13" pocket="13" hardness="0.6" blastresistance="3" />
+	
+	<!-- wooden logs -->
+	<group hardness="2" blastresistance="10">
+
+		<block name="oak-wood-up-down" id="60" minecraft="17:0" pocket="17:0" />
+		<block name="oak-wood-east-west" id="61" minecraft="17:4" pocket="17:4" />
+		<block name="oak-wood-north-south" id="62" minecraft="17:8" pocket="17:8" />
+		<block name="oak-wood-bark" id="63" minecraft="17:12" pocket="17:12" />
+
+		<block name="spruce-wood-up-down" id="64" minecraft="17:1" pocket="17:1" />
+		<block name="spruce-wood-east-west" id="65" minecraft="17:5" pocket="17:5" />
+		<block name="spruce-wood-north-south" id="66" minecraft="17:9" pocket="17:9" />
+		<block name="spruce-wood-bark" id="67" minecraft="17:13" pocket="17:13" />
+
+		<block name="birch-wood-up-down" id="68" minecraft="17:2" pocket="17:2" />
+		<block name="birch-wood-east-west" id="69" minecraft="17:6" pocket="17:6" />
+		<block name="birch-wood-north-south" id="70" minecraft="17:10" pocket="17:10" />
+		<block name="birch-wood-bark" id="71" minecraft="17:14" pocket="17:14" />
+
+		<block name="jungle-wood-up-down" id="72" minecraft="17:3" pocket="17:3" />
+		<block name="jungle-wood-east-west" id="73" minecraft="17:7" pocket="17:7" />
+		<block name="jungle-wood-north-south" id="74" minecraft="17:11" pocket="17:11" />
+		<block name="jungle-wood-bark" id="75" minecraft="17:15" pocket="17:15" />
+
+		<block name="acacia-wood-up-down" id="76" minecraft="162:0" pocket="162:0" />
+		<block name="acacia-wood-east-west" id="77" minecraft="162:4" pocket="162:4" />
+		<block name="acacia-wood-north-south" id="78" minecraft="162:8" pocket="162:8" />
+		<block name="acacia-wood-bark" id="79" minecraft="162:12" pocket="162:12" />
+
+		<block name="dark-oak-wood-up-down" id="80" minecraft="162:1" pocket="162:1" />
+		<block name="dark-oak-wood-east-west" id="81" minecraft="162:5" pocket="162:5" />
+		<block name="dark-oak-wood-north-south" id="82" minecraft="162:9" pocket="162:9" />
+		<block name="dark-oak-wood-bark" id="83" minecraft="162:13" pocket="162:13" />
+
+	</group>
+
+	<!-- leaves -->
+	<group hardness="0.2" blastresistance="1" opacity="1">
+
+		<block name="oak-leaves-decay" id="84" minecraft="18:0" pocket="18:0" />
+		<block name="oak-leaves-no-decay" id="85" minecraft="18:4" pocket="18:4" />
+		<block name="oak-leaves-check-decay" id="86" minecraft="18:8" pocket="18:8" />
+		<block name="oak-leaves-no-decay-check-decay" id="87" minecraft="18:12" pocket="18:12" />
+
+		<block name="spruce-leaves-decay" id="88" minecraft="18:1" pocket="18:1" />
+		<block name="spruce-leaves-no-decay" id="89" minecraft="18:5" pocket="18:5" />
+		<block name="spruce-leaves-check-decay" id="90" minecraft="18:9" pocket="18:9" />
+		<block name="spruce-leaves-no-decay-check-decay" id="91" minecraft="18:13" pocket="18:13" />
+
+		<block name="birch-leaves-decay" id="92" minecraft="18:2" pocket="18:2" />
+		<block name="birch-leaves-no-decay" id="93" minecraft="18:6" pocket="18:6" />
+		<block name="birch-leaves-check-decay" id="94" minecraft="18:10" pocket="18:10" />
+		<block name="birch-leaves-no-decay-check-decay" id="95" minecraft="18:14" pocket="18:14" />
+
+		<block name="jungle-leaves-decay" id="96" minecraft="18:3" pocket="18:3" />
+		<block name="jungle-leaves-no-decay" id="97" minecraft="18:7" pocket="18:7" />
+		<block name="jungle-leaves-check-decay" id="98" minecraft="18:11" pocket="18:11" />
+		<block name="jungle-leaves-no-decay-check-decay" id="99" minecraft="18:15" pocket="18:15" />
+
+		<block name="acacia-leaves-decay" id="100" minecraft="161:0" pocket="161:0" />
+		<block name="acacia-leaves-no-decay" id="101" minecraft="161:4" pocket="161:4" />
+		<block name="acacia-leaves-check-decay" id="102" minecraft="161:8" pocket="161:8" />
+		<block name="acacia-leaves-no-decay-check-decay" id="103" minecraft="161:12" pocket="161:12" />
+
+		<block name="dark-oak-leaves-decay" id="104" minecraft="161:1" pocket="161:1" />
+		<block name="dark-oak-leaves-no-decay" id="105" minecraft="161:5" pocket="161:5" />
+		<block name="dark-oak-leaves-check-decay" id="106" minecraft="161:9" pocket="161:9" />
+		<block name="dark-oak-leaves-no-decay-check-decay" id="107" minecraft="161:13" pocket="161:13" />
+
+	</group>
+
+	<block name="sponge" id="108" minecraft="19" pocket="19" hardness="0.6" blastresistance="3" />
+	<block name="wet-sponge" id="109" minecraft="19:1" pocket="19:1" hardness="0.6" blastresistance="3" />
+
+	<!-- glass blocks -->
+	<group hardness="0.3" blastresistance="1.5" opacity="0">
+
+		<block name="glass" id="110" minecraft="20" pocket="20" />
+
+		<block name="white-stained-glass" id="111" minecraft="95:0" />
+		<block name="orange-stained-glass" id="112" minecraft="95:1" />
+		<block name="magenta-stained-glass" id="113" minecraft="95:2" />
+		<block name="light-blue-stained-glass" id="114" minecraft="95:3" />
+		<block name="yellow-stained-glass" id="115" minecraft="95:4" />
+		<block name="lime-stained-glass" id="116" minecraft="95:5" />
+		<block name="pink-stained-glass" id="117" minecraft="95:6" />
+		<block name="gray-stained-glass" id="118" minecraft="95:7" />
+		<block name="light-gray-stained-glass" id="119" minecraft="95:8" />
+		<block name="cyan-stained-glass" id="120" minecraft="95:9" />
+		<block name="purple-stained-glass" id="121" minecraft="95:10" />
+		<block name="blue-stained-glass" id="122" minecraft="95:11" />
+		<block name="brown-stained-glass" id="123" minecraft="95:12" />
+		<block name="green-stained-glass" id="124" minecraft="95:13" />
+		<block name="red-stained-glass" id="125" minecraft="95:14" />
+		<block name="black-stained-glass" id="126" minecraft="95:15" />
+
+		<block name="glass-pane" id="127" minecraft="102" pocket="102" />
+
+		<block name="white-stained-glass-pane" id="128" minecraft="160:0" />
+		<block name="orange-stained-glass-pane" id="129" minecraft="160:1" />
+		<block name="magenta-stained-glass-pane" id="130" minecraft="160:2" />
+		<block name="light-blue-stained-glass-pane" id="131" minecraft="160:3" />
+		<block name="yellow-stained-glass-pane" id="132" minecraft="160:4" />
+		<block name="lime-stained-glass-pane" id="133" minecraft="160:5" />
+		<block name="pink-stained-glass-pane" id="134" minecraft="160:6" />
+		<block name="gray-stained-glass-pane" id="135" minecraft="160:7" />
+		<block name="light-gray-stained-glass-pane" id="136" minecraft="160:8" />
+		<block name="cyan-stained-glass-pane" id="137" minecraft="160:9" />
+		<block name="purple-stained-glass-pane" id="138" minecraft="160:10" />
+		<block name="blue-stained-glass-pane" id="139" minecraft="160:11" />
+		<block name="brown-stained-glass-pane" id="140" minecraft="160:12" />
+		<block name="green-stained-glass-pane" id="141" minecraft="160:13" />
+		<block name="red-stained-glass-pane" id="142" minecraft="160:14" />
+		<block name="black-stained-glass-pane" id="143" minecraft="160:15" />
+
+	</group>
+
+	<!-- sandstone and variants -->
+	<group hardness="0.8" blastresistance="4">
+
+		<block name="sandstone" id="144" minecraft="24:0" pocket="24:0" />
+		<block name="chiseled-sandstone" id="145" minecraft="24:1" pocket="24:1" />
+		<block name="smooth-sandstone" id="146" minecraft="24:2" pocket="24:2" />
+
+		<block name="red-sandstone" id="147" minecraft="179:0" pocket="179:0" />
+		<block name="chiseled-red-sandstone" id="148" minecraft="179:1" pocket="179:1" />
+		<block name="smooth-red-sandstone" id="149" minecraft="179:2" pocket="179:2" />
+
+	</group>
+
+	<!-- dispencer and similar -->
+	<group hardness="3.5" blastresistance="17.5">
+
+		<block name="dispenser-facing-down" id="150" minecraft="23:0" pocket="23:0" />
+		<block name="dispenser-facing-up" id="151" minecraft="23:1" pocket="23:1" />
+		<block name="dispenser-facing-north" id="152" minecraft="23:2" pocket="23:2" />
+		<block name="dispenser-facing-south" id="153" minecraft="23:3" pocket="23:3" />
+		<block name="dispenser-facing-west" id="154" minecraft="23:4" pocket="23:4" />
+		<block name="dispenser-facing-east" id="155" minecraft="23:5" pocket="23:5" />
+
+		<block name="active-dispenser-facing-down" id="156" minecraft="23:8" pocket="23:8" />
+		<block name="active-dispenser-facing-up" id="157" minecraft="23:9" pocket="23:9" />
+		<block name="active-dispenser-facing-north" id="158" minecraft="23:10" pocket="23:10" />
+		<block name="active-dispenser-facing-south" id="159" minecraft="23:11" pocket="23:11" />
+		<block name="active-dispenser-facing-west" id="160" minecraft="23:12" pocket="23:12" />
+		<block name="active-dispenser-facing-east" id="161" minecraft="23:13" pocket="23:13" />
+
+		<block name="dropper-facing-down" id="1155" minecraft="158:0" pocket="125:0" />
+		<block name="dropper-facing-up" id="1156" minecraft="158:1" pocket="125:1" />
+		<block name="dropper-facing-north" id="1157" minecraft="158:2" pocket="125:2" />
+		<block name="dropper-facing-south" id="1158" minecraft="158:3" pocket="125:3" />
+		<block name="dropper-facing-west" id="1159" minecraft="158:4" pocket="125:4" />
+		<block name="dropper-facing-east" id="1160" minecraft="158:5" pocket="125:5" />
+
+		<block name="active-dropper-facing-down" id="1161" minecraft="158:8" pocket="125:8" />
+		<block name="active-dropper-facing-up" id="1162" minecraft="158:9" pocket="125:9" />
+		<block name="active-dropper-facing-north" id="1163" minecraft="158:10" pocket="125:10" />
+		<block name="active-dropper-facing-south" id="1164" minecraft="158:11" pocket="125:11" />
+		<block name="active-dropper-facing-west" id="1165" minecraft="158:12" pocket="125:12" />
+		<block name="active-dropper-facing-east" id="1166" minecraft="158:13" pocket="125:13" />
+
+		<block name="observer-facing-down" id="1243" minecraft="218:0" pocket="251:0" />
+		<block name="observer-facing-up" id="1244" minecraft="218:1" pocket="251:1" />
+		<block name="observer-facing-south" id="1245" minecraft="218:2" pocket="251:2" />
+		<block name="observer-facing-north" id="1246" minecraft="218:3" pocket="251:3" />
+		<block name="observer-facing-east" id="1247" minecraft="218:4" pocket="251:4" />
+		<block name="observer-facing-west" id="1248" minecraft="218:5" pocket="251:5" />
+
+	</group>
+
+	<block name="note-block" id="162" minecraft="25" pocket="25" hardness="0.8" blastresistance="4" />
+
+	<!-- bed components -->
+	<group hardness="0.2" blastresistance="1">
+
+		<block name="bed-foot-facing-south" id="163" minecraft="26:0" pocket="26:0" />
+		<block name="bed-foot-facing-west" id="164" minecraft="26:1" pocket="26:1" />
+		<block name="bed-foot-facing-north" id="165" minecraft="26:2" pocket="26:2" />
+		<block name="bed-foot-facing-east" id="166" minecraft="26:3" pocket="26:3" />
+
+		<block name="occupied-bed-foot-facing-south" id="167" minecraft="26:4" pocket="26:4" />
+		<block name="occupied-bed-foot-facing-west" id="168" minecraft="26:5" pocket="26:5" />
+		<block name="occupied-bed-foot-facing-north" id="169" minecraft="26:6" pocket="26:6" />
+		<block name="occupied-bed-foot-facing-east" id="170" minecraft="26:7" pocket="26:7" />
+
+		<block name="bed-head-facing-south" id="171" minecraft="26:8" pocket="26:8" />
+		<block name="bed-head-facing-west" id="172" minecraft="26:9" pocket="26:9" />
+		<block name="bed-head-facing-north" id="173" minecraft="26:10" pocket="26:10" />
+		<block name="bed-head-facing-east" id="174" minecraft="26:11" pocket="26:11" />
+
+		<block name="occupied-bed-head-facing-south" id="175" minecraft="26:12" pocket="26:12" />
+		<block name="occupied-bed-head-facing-west" id="176" minecraft="26:13" pocket="26:13" />
+		<block name="occupied-bed-head-facing-north" id="177" minecraft="26:14" pocket="26:14" />
+		<block name="occupied-bed-head-facing-east" id="178" minecraft="26:15" pocket="26:15" />
+
+	</group>
+
+	<!-- rails -->
+	<group hardness="0.7" blastresistance="3.5">
+
+		<block name="rail-north-south" id="179" minecraft="66:0" pocket="66:0" />
+		<block name="rail-east-west" id="180" minecraft="66:1" pocket="66:1" />
+		<block name="rail-ascending-east" id="181" minecraft="66:2" pocket="66:2" />
+		<block name="rail-ascending-west" id="182" minecraft="66:3" pocket="66:3" />
+		<block name="rail-ascending-north" id="183" minecraft="66:4" pocket="66:4" />
+		<block name="rail-ascending-south" id="184" minecraft="66:5" pocket="66:5" />
+		<block name="rail-curved-south-east" id="185" minecraft="66:6" pocket="66:6" />
+		<block name="rail-curved-south-west" id="186" minecraft="66:7" pocket="66:7" />
+		<block name="rail-curved-north-west" id="187" minecraft="66:8" pocket="66:8" />
+		<block name="rail-curved-north-east" id="188" minecraft="66:9" pocket="66:9" />
+
+		<block name="powered-rail-north-south" id="189" minecraft="27:0" pocket="27:0" />
+		<block name="powered-rail-east-west" id="190" minecraft="27:1" pocket="27:1" />
+		<block name="powered-rail-ascending-east" id="191" minecraft="27:2" pocket="27:2" />
+		<block name="powered-rail-ascending-west" id="192" minecraft="27:3" pocket="27:3" />
+		<block name="powered-rail-ascending-north" id="193" minecraft="27:4" pocket="27:4" />
+		<block name="powered-rail-ascending-south" id="194" minecraft="27:5" pocket="27:5" />
+
+		<block name="active-powered-rail-north-south" id="196" minecraft="27:8" pocket="27:8" />
+		<block name="active-powered-rail-east-west" id="197" minecraft="27:9" pocket="27:9" />
+		<block name="active-powered-rail-ascending-east" id="198" minecraft="27:10" pocket="27:10" />
+		<block name="active-powered-rail-ascending-west" id="199" minecraft="27:11" pocket="27:11" />
+		<block name="active-powered-rail-ascending-north" id="200" minecraft="27:12" pocket="27:12" />
+		<block name="active-powered-rail-ascending-south" id="201" minecraft="27:13" pocket="27:13" />
+
+		<block name="activator-rail-north-south" id="202" minecraft="157:0" pocket="126:0" />
+		<block name="activator-rail-east-west" id="203" minecraft="157:1" pocket="126:1" />
+		<block name="activator-rail-ascending-east" id="204" minecraft="157:2" pocket="126:2" />
+		<block name="activator-rail-ascending-west" id="205" minecraft="157:3" pocket="126:3" />
+		<block name="activator-rail-ascending-north" id="206" minecraft="157:4" pocket="126:4" />
+		<block name="activator-rail-ascending-south" id="207" minecraft="157:5" pocket="126:5" />
+
+		<block name="active-activator-rail-north-south" id="208" minecraft="157:8" pocket="126:8" />
+		<block name="active-activator-rail-east-west" id="209" minecraft="157:9" pocket="126:9" />
+		<block name="active-activator-rail-ascending-east" id="210" minecraft="157:10" pocket="126:10" />
+		<block name="active-activator-rail-ascending-west" id="211" minecraft="157:11" pocket="126:11" />
+		<block name="active-activator-rail-ascending-north" id="212" minecraft="157:12" pocket="126:12" />
+		<block name="active-activator-rail-ascending-south" id="213" minecraft="157:13" pocket="126:13" />
+
+		<block name="detector-rail-north-south" id="214" minecraft="28:0" pocket="28:0" />
+		<block name="detector-rail-east-west" id="215" minecraft="28:1" pocket="28:1" />
+		<block name="detector-rail-ascending-east" id="216" minecraft="28:2" pocket="28:2" />
+		<block name="detector-rail-ascending-west" id="217" minecraft="28:3" pocket="28:3" />
+		<block name="detector-rail-ascending-north" id="218" minecraft="28:4" pocket="28:4" />
+		<block name="detector-rail-ascending-south" id="219" minecraft="28:5" pocket="28:5" />
+
+		<block name="active-detector-rail-north-south" id="220" minecraft="28:8" pocket="28:8" />
+		<block name="active-detector-rail-east-west" id="221" minecraft="28:9" pocket="28:9" />
+		<block name="active-detector-rail-ascending-east" id="222" minecraft="28:10" pocket="28:10" />
+		<block name="active-detector-rail-ascending-west" id="223" minecraft="28:11" pocket="28:11" />
+		<block name="active-detector-rail-ascending-north" id="224" minecraft="28:12" pocket="28:12" />
+		<block name="active-detector-rail-ascending-south" id="225" minecraft="28:13" pocket="28:13" />
+
+	</group>
+
+	<!-- pistons -->
+	<group hardness="0.5" blastresistance="2.5">
+
+		<block name="piston-facing-down" id="226" minecraft="33:0" pocket="33:0" />
+		<block name="piston-facing-up" id="227" minecraft="33:1" pocket="33:1" />
+		<block name="piston-facing-north" id="228" minecraft="33:2" pocket="33:2" />
+		<block name="piston-facing-south" id="229" minecraft="33:3" pocket="33:3" />
+		<block name="piston-facing-west" id="230" minecraft="33:4" pocket="33:4" />
+		<block name="piston-facing-east" id="231" minecraft="33:5" pocket="33:5" />
+		<block name="piston-facing-everywhere" id="232" minecraft="33:6" pocket="33:6" />
+		<block name="piston-facing-everywhere-1" id="233" minecraft="33:7" pocket="33:7" />
+
+		<block name="extended-piston-facing-down" id="234" minecraft="33:8" pocket="33:8" />
+		<block name="extended-piston-facing-up" id="235" minecraft="33:9" pocket="33:9" />
+		<block name="extended-piston-facing-north" id="236" minecraft="33:10" pocket="33:10" />
+		<block name="extended-piston-facing-south" id="237" minecraft="33:11" pocket="33:11" />
+		<block name="extended-piston-facing-west" id="238" minecraft="33:12" pocket="33:12" />
+		<block name="extended-piston-facing-east" id="239" minecraft="33:13" pocket="33:13" />
+		<block name="extended-piston-facing-everywhere" id="240" minecraft="33:14" pocket="33:14" />
+		<block name="extended-piston-facing-everywhere-1" id="241" minecraft="33:15" pocket="33:15" />
+
+		<block name="sticky-piston-facing-down" id="242" minecraft="29:0" pocket="29:0" />
+		<block name="sticky-piston-facing-up" id="243" minecraft="29:1" pocket="29:1" />
+		<block name="sticky-piston-facing-north" id="244" minecraft="29:2" pocket="29:2" />
+		<block name="sticky-piston-facing-south" id="245" minecraft="29:3" pocket="29:3" />
+		<block name="sticky-piston-facing-west" id="246" minecraft="29:4" pocket="29:4" />
+		<block name="sticky-piston-facing-east" id="247" minecraft="29:5" pocket="29:5" />
+		<block name="sticky-piston-facing-everywhere" id="248" minecraft="29:6" pocket="29:6" />
+		<block name="sticky-piston-facing-everywhere-1" id="249" minecraft="29:7" pocket="29:7" />
+
+		<block name="extended-sticky-piston-facing-down" id="250" minecraft="29:8" pocket="29:8" />
+		<block name="extended-sticky-piston-facing-up" id="251" minecraft="29:9" pocket="29:9" />
+		<block name="extended-sticky-piston-facing-north" id="252" minecraft="29:10" pocket="29:10" />
+		<block name="extended-sticky-piston-facing-south" id="253" minecraft="29:11" pocket="29:11" />
+		<block name="extended-sticky-piston-facing-west" id="254" minecraft="29:12" pocket="29:12" />
+		<block name="extended-sticky-piston-facing-east" id="255" minecraft="29:13" pocket="29:13" />
+		<block name="extended-sticky-piston-facing-everywhere" id="256" minecraft="29:14" pocket="29:14" />
+		<block name="extended-sticky-piston-facing-everywhere-1" id="257" minecraft="29:15" pocket="29:15" />
+
+		<block name="piston-head-facing-down" id="258" minecraft="34:0" pocket="34:0" />
+		<block name="piston-head-facing-up" id="259" minecraft="34:1" pocket="34:1" />
+		<block name="piston-head-facing-north" id="260" minecraft="34:2" pocket="34:2" />
+		<block name="piston-head-facing-south" id="261" minecraft="34:3" pocket="34:3" />
+		<block name="piston-head-facing-west" id="262" minecraft="34:4" pocket="34:4" />
+		<block name="piston-head-facing-east" id="263" minecraft="34:5" pocket="34:5" />
+
+		<block name="piston-extension" id="264" minecraft="36" pocket="250" /> <!-- facing is controlled by nbt tag -->
+
+	</group>
+
+	<!-- wools -->
+	<group hardness="0.8" blastresistance="4">
+
+		<block name="white-wool" id="265" minecraft="35:0" pocket="35:0" />
+		<block name="orange-wool" id="266" minecraft="35:1" pocket="35:1" />
+		<block name="magenta-wool" id="267" minecraft="35:2" pocket="35:2" />
+		<block name="light-blue-wool" id="268" minecraft="35:3" pocket="35:3" />
+		<block name="yellow-wool" id="269" minecraft="35:4" pocket="35:4" />
+		<block name="lime-wool" id="270" minecraft="35:5" pocket="35:5" />
+		<block name="pink-wool" id="271" minecraft="35:6" pocket="35:6" />
+		<block name="gray-wool" id="272" minecraft="35:7" pocket="35:7" />
+		<block name="light-wool" id="273" minecraft="35:8" pocket="35:8" />
+		<block name="cyan-wool" id="274" minecraft="35:9" pocket="35:9" />
+		<block name="purple-wool" id="275" minecraft="35:10" pocket="35:10" />
+		<block name="blue-wool" id="276" minecraft="35:11" pocket="35:11" />
+		<block name="brown-wool" id="277" minecraft="35:12" pocket="35:12" />
+		<block name="green-wool" id="278" minecraft="35:13" pocket="35:13" />
+		<block name="red-wool" id="279" minecraft="35:14" pocket="35:14" />
+		<block name="black-wool" id="280" minecraft="35:15" pocket="35:15" />
+
+	</group>
+
+	<!-- carpets -->
+	<group hardness="0.1" blastresistance="0.5" boundingbox="0,0,0-16,1,16">
+
+		<block name="white-carpet" id="1176" minecraft="171:0" pocket="171:0" />
+		<block name="orange-carpet" id="1177" minecraft="171:1" pocket="171:1" />
+		<block name="magenta-carpet" id="1178" minecraft="171:2" pocket="171:2" />
+		<block name="light-blue-carpet" id="1179" minecraft="171:3" pocket="171:3" />
+		<block name="yellow-carpet" id="1180" minecraft="171:4" pocket="171:4" />
+		<block name="lime-carpet" id="1181" minecraft="171:5" pocket="171:5" />
+		<block name="pink-carpet" id="1182" minecraft="171:6" pocket="171:6" />
+		<block name="gray-carpet" id="1183" minecraft="171:7" pocket="171:7" />
+		<block name="light-carpet" id="1184" minecraft="171:8" pocket="171:8" />
+		<block name="cyan-carpet" id="1185" minecraft="171:9" pocket="171:9" />
+		<block name="purple-carpet" id="1186" minecraft="171:10" pocket="171:10" />
+		<block name="blue-carpet" id="1187" minecraft="171:11" pocket="171:11" />
+		<block name="brown-carpet" id="1188" minecraft="171:12" pocket="171:12" />
+		<block name="green-carpet" id="1189" minecraft="171:13" pocket="171:13" />
+		<block name="red-carpet" id="1190" minecraft="171:14" pocket="171:14" />
+		<block name="black-carpet" id="1191" minecraft="171:15" pocket="171:15" />
+
+	</group>
+
+	<!-- flowers and other plants -->
+	<group hardness="0" blastresistance="0" opacity="0" boundingbox="none">
+
+		<block name="dandelion" id="281" minecraft="37" pocket="37" />
+
+		<block name="poppy" id="282" minecraft="38:0" pocket="38:0" />
+		<block name="blue-orchid" id="283" minecraft="38:1" pocket="38:1" />
+		<block name="allium" id="284" minecraft="38:2" pocket="38:2" />
+		<block name="azure-bluet" id="285" minecraft="38:3" pocket="38:3" />
+		<block name="red-tulip" id="286" minecraft="38:4" pocket="38:4" />
+		<block name="orange-tulip" id="287" minecraft="38:5" pocket="38:5" />
+		<block name="white-tulip" id="288" minecraft="38:6" pocket="38:6" />
+		<block name="pink-tulip" id="289" minecraft="38:7" pocket="38:7" />
+		<block name="oxeye-daisy" id="290" minecraft="38:8" pocket="38:8" />
+
+		<block name="sunflower-bottom" id="291" minecraft="175:0" pocket="175:0" />
+		<block name="liliac-bottom" id="292" minecraft="175:1" pocket="175:1" />
+		<block name="double-tallgrass-bottom" id="293" minecraft="175:2" pocket="175:2" />
+		<block name="large-fern-bottom" id="294" minecraft="175:3" pocket="175:3" />
+		<block name="rose-bush-bottom" id="295" minecraft="175:4" pocket="175:4" />
+		<block name="peony-bottom" id="296" minecraft="175:5" pocket="175:5" />
+
+		<block name="sunflower-top" id="297" minecraft="175:8" pocket="175:8" />
+		<block name="liliac-top" id="298" minecraft="175:9" pocket="175:9" />
+		<block name="double-tallgrass-top" id="299" minecraft="175:10" pocket="175:10" />
+		<block name="large-fern-top" id="300" minecraft="175:11" pocket="175:11" />
+		<block name="rose-bush-top" id="301" minecraft="175:12" pocket="175:12" />
+		<block name="peony-top" id="302" minecraft="175:13" pocket="175:13" />
+
+		<block name="brown-mushroom" id="303" minecraft="39" pocket="39" />
+		<block name="red-mushroom" id="304" minecraft="40" pocket="40" />
+
+		<block name="tall-grass" id="362" minecraft="31:1" pocket="31:0" />
+		<block name="fern" id="363" minecraft="31:2" pocket="31:2" />
+		<block name="dead-bush" id="364" minecraft="32" pocket="32" />
+
+	</group>
+
+	<!-- slabs -->
+	<group hardness="2">
+
+		<!-- bottom -->
+		<group boundingbox="0,0,0-8,8,8">
+
+			<group blastresistance="30">
+				<block name="stone-slab" id="305" minecraft="44:0" pocket="44:0" />
+				<block name="sandstone-slab" id="306" minecraft="44:1" pocket="44:1" />
+				<block name="stone-wooden-slab" id="307" minecraft="44:2" pocket="44:2" />
+				<block name="cobblestone-slab" id="308" minecraft="44:3" pocket="44:3" />
+				<block name="bricks-slab" id="309" minecraft="44:4" pocket="44:4" />
+				<block name="stone-brick-slab" id="310" minecraft="44:5" pocket="44:5" />
+				<block name="nether-brick-slab" id="311" minecraft="44:6" pocket="44:6" />
+				<block name="quartz-slab" id="312" minecraft="44:7" pocket="44:7" />
+				<block name="red-sandstone-slab" id="313" minecraft="182" pocket="182" />
+				<block name="purpur-slab" id="314" minecraft="205" pocket="205" />
+			</group>
+
+			<group blastresistance="15">
+				<block name="oak-wood-slab" id="315" minecraft="126:0" pocket="158:0" />
+				<block name="spruce-wood-slab" id="316" minecraft="126:1" pocket="158:1" />
+				<block name="birch-wood-slab" id="317" minecraft="126:2" pocket="158:2" />
+				<block name="jungle-wood-slab" id="318" minecraft="126:3" pocket="158:3" />
+				<block name="acacia-wood-slab" id="319" minecraft="126:4" pocket="158:4" />
+				<block name="dark-oak-wood-slab" id="320" minecraft="126:5" pocket="158:5" />
+			</group>
+
+		</group>
+
+		<!-- top -->
+		<group boundingbox="8,8,8-16,16,16">
+
+			<group blastresistance="30">
+				<block name="upper-stone-slab" id="321" minecraft="44:8" pocket="44:8" />
+				<block name="upper-sandstone-slab" id="322" minecraft="44:9" pocket="44:9" />
+				<block name="upper-stone-wooden-slab" id="323" minecraft="44:10" pocket="44:10" />
+				<block name="upper-cobblestone-slab" id="324" minecraft="44:11" pocket="44:11" />
+				<block name="upper-bricks-slab" id="325" minecraft="44:12" pocket="44:12" />
+				<block name="upper-stone-brick-slab" id="326" minecraft="44:13" pocket="44:13" />
+				<block name="upper-nether-brick-slab" id="327" minecraft="44:14" pocket="44:14" />
+				<block name="upper-quartz-slab" id="328" minecraft="44:15" pocket="44:15" />
+				<block name="upper-red-sandstone-slab" id="329" minecraft="182:8" pocket="182:8" />
+				<block name="upper-purpur-slab" id="330" minecraft="205:8" pocket="205:8" />
+			</group>
+
+			<group blastresistance="15">
+				<block name="upper-oak-wood-slab" id="331" minecraft="126:8" pocket="158:8" />
+				<block name="upper-spruce-wood-slab" id="332" minecraft="126:9" pocket="158:9" />
+				<block name="upper-birch-wood-slab" id="333" minecraft="126:10" pocket="158:10" />
+				<block name="upper-jungle-wood-slab" id="334" minecraft="126:11" pocket="158:11" />
+				<block name="upper-acacia-wood-slab" id="335" minecraft="126:12" pocket="158:12" />
+				<block name="upper-dark-oak-wood-slab" id="336" minecraft="126:13" pocket="158:13" />
+			</group>
+
+		</group>
+
+		<!-- double -->
+		<group>
+
+			<group blastresistance="30">
+				<block name="double-stone-slab" id="337" minecraft="43:0" pocket="43:0" />
+				<block name="double-sandstone-slab" id="338" minecraft="43:1" pocket="43:1" />
+				<block name="double-stone-wooden-slab" id="339" minecraft="43:2" pocket="43:2" />
+				<block name="double-cobblestone-slab" id="340" minecraft="43:3" pocket="43:3" />
+				<block name="double-bricks-slab" id="341" minecraft="43:4" pocket="43:4" />
+				<block name="double-stone-brick-slab" id="342" minecraft="43:5" pocket="43:5" />
+				<block name="double-nether-brick-slab" id="343" minecraft="43:6" pocket="43:6" />
+				<block name="double-quartz-slab" id="344" minecraft="43:7" pocket="43:7" />
+				<block name="double-red-sandstone-slab" id="345" minecraft="181" pocket="181" />
+				<block name="double-purpur-slab" id="346" minecraft="204" pocket="204" />
+			</group>
+
+			<group blastresistance="15">
+				<block name="double-oak-wood-slab" id="347" minecraft="125:0" pocket="157:0" />
+				<block name="double-spruce-wood-slab" id="348" minecraft="125:1" pocket="157:1" />
+				<block name="double-birch-wood-slab" id="349" minecraft="125:2" pocket="157:2" />
+				<block name="double-jungle-wood-slab" id="350" minecraft="125:3" pocket="157:3" />
+				<block name="double-acacia-wood-slab" id="351" minecraft="125:4" pocket="157:4" />
+				<block name="double-dark-oak-wood-slab" id="352" minecraft="125:5" pocket="157:5" />
+			</group>
+
+		</group>
+
+	</group>
+
+	<!-- stairs -->
+	<group>
+
+		<group hardness="2" blastresistance="30">
+
+			<block name="cobblestone-stairs-facing-east" id="415" minecraft="67:0" pocket="67:0" />
+			<block name="cobblestone-stairs-facing-west" id="416" minecraft="67:1" pocket="67:1" />
+			<block name="cobblestone-stairs-facing-south" id="417" minecraft="67:2" pocket="67:2" />
+			<block name="cobblestone-stairs-facing-north" id="418" minecraft="67:3" pocket="67:3" />
+			<block name="upside-down-cobblestone-stairs-facing-east" id="419" minecraft="67:4" pocket="67:4" />
+			<block name="upside-down-cobblestone-stairs-facing-west" id="420" minecraft="67:5" pocket="67:5" />
+			<block name="upside-down-cobblestone-stairs-facing-south" id="421" minecraft="67:6" pocket="67:6" />
+			<block name="upside-down-cobblestone-stairs-facing-north" id="422" minecraft="67:7" pocket="67:7" />
+
+			<block name="brick-stairs-facing-east" id="423" minecraft="108:0" pocket="108:0" />
+			<block name="brick-stairs-facing-west" id="424" minecraft="108:1" pocket="108:1" />
+			<block name="brick-stairs-facing-south" id="425" minecraft="108:2" pocket="108:2" />
+			<block name="brick-stairs-facing-north" id="426" minecraft="108:3" pocket="108:3" />
+			<block name="upside-down-brick-stairs-facing-east" id="427" minecraft="108:4" pocket="108:4" />
+			<block name="upside-down-brick-stairs-facing-west" id="428" minecraft="108:5" pocket="108:5" />
+			<block name="upside-down-brick-stairs-facing-south" id="429" minecraft="108:6" pocket="108:6" />
+			<block name="upside-down-brick-stairs-facing-north" id="430" minecraft="108:7" pocket="108:7" />
+
+			<block name="nether-brick-stairs-facing-east" id="431" minecraft="114:0" pocket="114:0" />
+			<block name="nether-brick-stairs-facing-west" id="432" minecraft="114:1" pocket="114:1" />
+			<block name="nether-brick-stairs-facing-south" id="433" minecraft="114:2" pocket="114:2" />
+			<block name="nether-brick-stairs-facing-north" id="434" minecraft="114:3" pocket="114:3" />
+			<block name="upside-down-nether-brick-stairs-facing-east" id="435" minecraft="114:4" pocket="114:4" />
+			<block name="upside-down-nether-brick-stairs-facing-west" id="436" minecraft="114:5" pocket="114:5" />
+			<block name="upside-down-nether-brick-stairs-facing-south" id="437" minecraft="114:6" pocket="114:6" />
+			<block name="upside-down-nether-brick-stairs-facing-north" id="438" minecraft="114:7" pocket="114:7" />
+
+		</group>
+
+		<group hardness="1.5" blastresistance="30">
+
+			<block name="stone-brick-stairs-facing-east" id="439" minecraft="109:0" pocket="109:0" />
+			<block name="stone-brick-stairs-facing-west" id="440" minecraft="109:1" pocket="109:1" />
+			<block name="stone-brick-stairs-facing-south" id="441" minecraft="109:2" pocket="109:2" />
+			<block name="stone-brick-stairs-facing-north" id="442" minecraft="109:3" pocket="109:3" />
+			<block name="upside-down-stone-brick-stairs-facing-east" id="443" minecraft="109:4" pocket="109:4" />
+			<block name="upside-down-stone-brick-stairs-facing-west" id="444" minecraft="109:5" pocket="109:5" />
+			<block name="upside-down-stone-brick-stairs-facing-south" id="445" minecraft="109:6" pocket="109:6" />
+			<block name="upside-down-stone-brick-stairs-facing-north" id="446" minecraft="109:7" pocket="109:7" />
+
+			<block name="purpur-stairs-facing-east" id="447" minecraft="203:0" pocket="203:0" />
+			<block name="purpur-stairs-facing-west" id="448" minecraft="203:1" pocket="203:1" />
+			<block name="purpur-stairs-facing-south" id="449" minecraft="203:2" pocket="203:2" />
+			<block name="purpur-stairs-facing-north" id="450" minecraft="203:3" pocket="203:3" />
+			<block name="upside-down-purpur-stairs-facing-east" id="451" minecraft="203:4" pocket="203:4" />
+			<block name="upside-down-purpur-stairs-facing-west" id="452" minecraft="203:5" pocket="203:5" />
+			<block name="upside-down-purpur-stairs-facing-south" id="453" minecraft="203:6" pocket="203:6" />
+			<block name="upside-down-purpur-stairs-facing-north" id="454" minecraft="203:7" pocket="203:7" />
+
+		</group>
+
+		<group hardness="0.8" blastresistance="4">
+
+			<block name="quartz-stairs-facing-east" id="455" minecraft="156:0" pocket="156:0" />
+			<block name="quartz-stairs-facing-west" id="456" minecraft="156:1" pocket="156:1" />
+			<block name="quartz-stairs-facing-south" id="457" minecraft="156:2" pocket="156:2" />
+			<block name="quartz-stairs-facing-north" id="458" minecraft="156:3" pocket="156:3" />
+			<block name="upside-down-quartz-stairs-facing-east" id="459" minecraft="156:4" pocket="156:4" />
+			<block name="upside-down-quartz-stairs-facing-west" id="460" minecraft="156:5" pocket="156:5" />
+			<block name="upside-down-quartz-stairs-facing-south" id="461" minecraft="156:6" pocket="156:6" />
+			<block name="upside-down-quartz-stairs-facing-north" id="462" minecraft="156:7" pocket="156:7" />
+
+			<block name="sandstone-stairs-facing-east" id="463" minecraft="128:0" pocket="128:0" />
+			<block name="sandstone-stairs-facing-west" id="464" minecraft="128:1" pocket="128:1" />
+			<block name="sandstone-stairs-facing-south" id="465" minecraft="128:2" pocket="128:2" />
+			<block name="sandstone-stairs-facing-north" id="466" minecraft="128:3" pocket="128:3" />
+			<block name="upside-down-sandstone-stairs-facing-east" id="467" minecraft="128:4" pocket="128:4" />
+			<block name="upside-down-sandstone-stairs-facing-west" id="468" minecraft="128:5" pocket="128:5" />
+			<block name="upside-down-sandstone-stairs-facing-south" id="469" minecraft="128:6" pocket="128:6" />
+			<block name="upside-down-sandstone-stairs-facing-north" id="470" minecraft="128:7" pocket="128:7" />
+
+			<block name="red-sandstone-stairs-facing-east" id="471" minecraft="180:0" pocket="180:0" />
+			<block name="red-sandstone-stairs-facing-west" id="472" minecraft="180:1" pocket="180:1" />
+			<block name="red-sandstone-stairs-facing-south" id="473" minecraft="180:2" pocket="180:2" />
+			<block name="red-sandstone-stairs-facing-north" id="474" minecraft="180:3" pocket="180:3" />
+			<block name="upside-down-red-sandstone-stairs-facing-east" id="475" minecraft="180:4" pocket="180:4" />
+			<block name="upside-down-red-sandstone-stairs-facing-west" id="476" minecraft="180:5" pocket="180:5" />
+			<block name="upside-down-red-sandstone-stairs-facing-south" id="477" minecraft="180:6" pocket="180:6" />
+			<block name="upside-down-red-sandstone-stairs-facing-north" id="478" minecraft="180:7" pocket="180:7" />
+
+		</group>
+
+		<group hardness="2" blastresistance="15">
+
+			<block name="oak-wood-stairs-facing-east" id="367" minecraft="53:0" pocket="53:0" />
+			<block name="oak-wood-stairs-facing-west" id="368" minecraft="53:1" pocket="53:1" />
+			<block name="oak-wood-stairs-facing-south" id="369" minecraft="53:2" pocket="53:2" />
+			<block name="oak-wood-stairs-facing-north" id="370" minecraft="53:3" pocket="53:3" />
+			<block name="upside-down-oak-wood-stairs-facing-east" id="371" minecraft="53:4" pocket="53:4" />
+			<block name="upside-down-oak-wood-stairs-facing-west" id="372" minecraft="53:5" pocket="53:5" />
+			<block name="upside-down-oak-wood-stairs-facing-south" id="373" minecraft="53:6" pocket="53:6" />
+			<block name="upside-down-oak-wood-stairs-facing-north" id="374" minecraft="53:7" pocket="53:7" />
+
+			<block name="spruce-wood-stairs-facing-east" id="375" minecraft="134:0" pocket="134:0" />
+			<block name="spruce-wood-stairs-facing-west" id="376" minecraft="134:1" pocket="134:1" />
+			<block name="spruce-wood-stairs-facing-south" id="377" minecraft="134:2" pocket="134:2" />
+			<block name="spruce-wood-stairs-facing-north" id="378" minecraft="134:3" pocket="134:3" />
+			<block name="upside-down-spruce-wood-stairs-facing-east" id="379" minecraft="134:4" pocket="134:4" />
+			<block name="upside-down-spruce-wood-stairs-facing-west" id="380" minecraft="134:5" pocket="134:5" />
+			<block name="upside-down-spruce-wood-stairs-facing-south" id="381" minecraft="134:6" pocket="134:6" />
+			<block name="upside-down-spruce-wood-stairs-facing-north" id="382" minecraft="134:7" pocket="134:7" />
+
+			<block name="birch-wood-stairs-facing-east" id="383" minecraft="135:0" pocket="135:0" />
+			<block name="birch-wood-stairs-facing-west" id="384" minecraft="135:1" pocket="135:1" />
+			<block name="birch-wood-stairs-facing-south" id="385" minecraft="135:2" pocket="135:2" />
+			<block name="birch-wood-stairs-facing-north" id="386" minecraft="135:3" pocket="135:3" />
+			<block name="upside-down-birch-wood-stairs-facing-east" id="387" minecraft="135:4" pocket="135:4" />
+			<block name="upside-down-birch-wood-stairs-facing-west" id="388" minecraft="135:5" pocket="135:5" />
+			<block name="upside-down-birch-wood-stairs-facing-south" id="389" minecraft="135:6" pocket="135:6" />
+			<block name="upside-down-birch-wood-stairs-facing-north" id="390" minecraft="135:7" pocket="135:7" />
+
+			<block name="jungle-wood-stairs-facing-east" id="391" minecraft="136:0" pocket="136:0" />
+			<block name="jungle-wood-stairs-facing-west" id="392" minecraft="136:1" pocket="136:1" />
+			<block name="jungle-wood-stairs-facing-south" id="393" minecraft="136:2" pocket="136:2" />
+			<block name="jungle-wood-stairs-facing-north" id="394" minecraft="136:3" pocket="136:3" />
+			<block name="upside-down-jungle-wood-stairs-facing-east" id="395" minecraft="136:4" pocket="136:4" />
+			<block name="upside-down-jungle-wood-stairs-facing-west" id="396" minecraft="136:5" pocket="136:5" />
+			<block name="upside-down-jungle-wood-stairs-facing-south" id="397" minecraft="136:6" pocket="136:6" />
+			<block name="upside-down-jungle-wood-stairs-facing-north" id="398" minecraft="136:7" pocket="136:7" />
+
+			<block name="acacia-wood-stairs-facing-east" id="399" minecraft="163:0" pocket="163:0" />
+			<block name="acacia-wood-stairs-facing-west" id="400" minecraft="163:1" pocket="163:1" />
+			<block name="acacia-wood-stairs-facing-south" id="401" minecraft="163:2" pocket="163:2" />
+			<block name="acacia-wood-stairs-facing-north" id="402" minecraft="163:3" pocket="163:3" />
+			<block name="upside-down-acacia-wood-stairs-facing-east" id="403" minecraft="163:4" pocket="163:4" />
+			<block name="upside-down-acacia-wood-stairs-facing-west" id="404" minecraft="163:5" pocket="163:5" />
+			<block name="upside-down-acacia-wood-stairs-facing-south" id="405" minecraft="163:6" pocket="163:6" />
+			<block name="upside-down-acacia-wood-stairs-facing-north" id="406" minecraft="163:7" pocket="163:7" />
+
+			<block name="dark-oak-wood-stairs-facing-east" id="407" minecraft="164:0" pocket="164:0" />
+			<block name="dark-oak-wood-stairs-facing-west" id="408" minecraft="164:1" pocket="164:1" />
+			<block name="dark-oak-wood-stairs-facing-south" id="409" minecraft="164:2" pocket="164:2" />
+			<block name="dark-oak-wood-stairs-facing-north" id="410" minecraft="164:3" pocket="164:3" />
+			<block name="upside-down-dark-oak-wood-stairs-facing-east" id="411" minecraft="164:4" pocket="164:4" />
+			<block name="upside-down-dark-oak-wood-stairs-facing-west" id="412" minecraft="164:5" pocket="164:5" />
+			<block name="upside-down-dark-oak-wood-stairs-facing-south" id="413" minecraft="164:6" pocket="164:6" />
+			<block name="upside-down-dark-oak-wood-stairs-facing-north" id="414" minecraft="164:7" pocket="164:7" />
+
+		</group>
+
+	</group>
+
+	<block name="cobweb" id="361" minecraft="30" pocket="30" hardness="4" blastresistance="20" opacity="1" />
+
+	<block name="tnt" id="353" minecraft="46" pocket="46" hardness="0" />
+
+	<block name="bookshelf" id="354" minecraft="47" pocket="47" hardness="1.5" blastresistance="7.5" />
+
+	<!-- obsidian -->
+	<group hardness="50" blastresistance="6000">
+
+		<block name="obsidian" id="355" minecraft="49" pocket="49" />
+		<block name="glowing-obsidian" id="1234" pocket="246" />
+
+	</group>
+
+	<!-- torches -->
+	<group hardness="0" blastresistance="0" luminance="14" boundingbox="none">
+
+		<group luminance="14">
+
+			<block name="torch-facing-east" id="356" minecraft="50:1" pocket="50:1" />
+			<block name="torch-facing-west" id="357" minecraft="50:2" pocket="50:2" />
+			<block name="torch-facing-south" id="358" minecraft="50:3" pocket="50:3" />
+			<block name="torch-facing-north" id="359" minecraft="50:4" pocket="50:4" />
+			<block name="torch-facing-up" id="360" minecraft="50:5" pocket="50:5" />
+			
+		</group>
+
+		<group luminance="7">
+
+			<block name="redstone-torch-facing-east" id="717" minecraft="76:1" pocket="76:1" />
+			<block name="redstone-torch-facing-west" id="718" minecraft="76:2" pocket="76:2" />
+			<block name="redstone-torch-facing-south" id="719" minecraft="76:3" pocket="76:3" />
+			<block name="redstone-torch-facing-north" id="720" minecraft="76:4" pocket="76:4" />
+			<block name="redstone-torch-facing-up" id="721" minecraft="76:5" pocket="76:5" />
+			
+		</group>
+
+		<group luminance="0">
+
+			<block name="inactive-redstone-torch-facing-east" id="722" minecraft="75:1" pocket="75:1" />
+			<block name="inactive-redstone-torch-facing-west" id="723" minecraft="75:2" pocket="75:2" />
+			<block name="inactive-redstone-torch-facing-south" id="724" minecraft="75:3" pocket="75:3" />
+			<block name="inactive-redstone-torch-facing-north" id="725" minecraft="75:4" pocket="75:4" />
+			<block name="inactive-redstone-torch-facing-up" id="726" minecraft="75:5" pocket="75:5" />
+			
+		</group>
+
+	</group>
+
+	<block name="fire" id="365" minecraft="51" pocket="51" blastresistance="0" opacity="0" luminance="15" solid="false" />
+
+	<block name="monster-spawner" id="366" minecraft="52" pocket="52" hardness="5" blastresistance="25" />
+
+	<!-- chests -->
+	<group hardness="2.5" blastresistance="12.5" opacity="0" boundingbox="1,0,1-15,14,15">
+
+		<block name="chest-facing-north" id="479" minecraft="54:2" pocket="54:2" />
+		<block name="chest-facing-south" id="480" minecraft="54:3" pocket="54:3" />
+		<block name="chest-facing-west" id="481" minecraft="54:4" pocket="54:4" />
+		<block name="chest-facing-east" id="482" minecraft="54:5" pocket="54:5" />
+
+		<block name="trapped-chest-facing-north" id="483" minecraft="146:2" pocket="146:2" />
+		<block name="trapped-chest-facing-south" id="484" minecraft="146:3" pocket="146:3" />
+		<block name="trapped-chest-facing-west" id="485" minecraft="146:4" pocket="146:4" />
+		<block name="trapped-chest-facing-east" id="486" minecraft="146:5" pocket="146:5" />
+
+		<group hardness="22.5" blastresistance="3000" luminance="7">
+
+			<block name="ender-chest-facing-north" id="1013" minecraft="130:2" pocket="130:2" />
+			<block name="ender-chest-facing-south" id="1014" minecraft="130:3" pocket="130:3" />
+			<block name="ender-chest-facing-west" id="1015" minecraft="130:4" pocket="130:4" />
+			<block name="ender-chest-facing-east" id="1016" minecraft="130:5" pocket="130:5" />
+
+		</group>
+
+	</group>
+
+	<!-- redstone wire -->
+	<group hardness="0" blastresistance="0" boundingbox="none">
+
+		<block name="redstone-wire-0" id="487" minecraft="55:0" pocket="55:0" />
+		<block name="redstone-wire-1" id="488" minecraft="55:1" pocket="55:1" />
+		<block name="redstone-wire-2" id="489" minecraft="55:2" pocket="55:2" />
+		<block name="redstone-wire-3" id="490" minecraft="55:3" pocket="55:3" />
+		<block name="redstone-wire-4" id="491" minecraft="55:4" pocket="55:4" />
+		<block name="redstone-wire-5" id="492" minecraft="55:5" pocket="55:5" />
+		<block name="redstone-wire-6" id="493" minecraft="55:6" pocket="55:6" />
+		<block name="redstone-wire-7" id="494" minecraft="55:7" pocket="55:7" />
+		<block name="redstone-wire-8" id="495" minecraft="55:8" pocket="55:8" />
+		<block name="redstone-wire-9" id="496" minecraft="55:9" pocket="55:9" />
+		<block name="redstone-wire-10" id="497" minecraft="55:10" pocket="55:10" />
+		<block name="redstone-wire-11" id="498" minecraft="55:11" pocket="55:11" />
+		<block name="redstone-wire-12" id="499" minecraft="55:12" pocket="55:12" />
+		<block name="redstone-wire-13" id="500" minecraft="55:13" pocket="55:13" />
+		<block name="redstone-wire-14" id="501" minecraft="55:14" pocket="55:14" />
+		<block name="redstone-wire-15" id="502" minecraft="55:15" pocket="55:15" />
+
+	</group>
+
+	<block name="crafting-table" id="503" minecraft="58" pocket="58" hardness="2.5" blastresistance="12.5" />
+
+	<!-- farming -->
+	<group hardness="0" blastresistance="0" boundingbox="none">
+
+		<block name="seeds-0" id="504" minecraft="59:0" pocket="59:0" />
+		<block name="seeds-1" id="505" minecraft="59:1" pocket="59:1" />
+		<block name="seeds-2" id="506" minecraft="59:2" pocket="59:2" />
+		<block name="seeds-3" id="507" minecraft="59:3" pocket="59:3" />
+		<block name="seeds-4" id="508" minecraft="59:4" pocket="59:4" />
+		<block name="seeds-5" id="509" minecraft="59:5" pocket="59:5" />
+		<block name="seeds-6" id="510" minecraft="59:6" pocket="59:6" />
+		<block name="seeds-7" id="511" minecraft="59:7" pocket="59:7" />
+
+		<block name="beetroot-0" id="512" minecraft="207:0" pocket="244:0" />
+		<block name="beetroot-1" id="513" minecraft="207:1" pocket="244:1" />
+		<block name="beetroot-2" id="514" minecraft="207:2" pocket="244:2" />
+		<block name="beetroot-3" id="515" minecraft="207:3" pocket="244:3" />
+
+		<block name="carrot-0" id="516" minecraft="141:0" pocket="141:0" />
+		<block name="carrot-1" id="517" minecraft="141:1" pocket="141:1" />
+		<block name="carrot-2" id="518" minecraft="141:2" pocket="141:2" />
+		<block name="carrot-3" id="519" minecraft="141:3" pocket="141:3" />
+		<block name="carrot-4" id="520" minecraft="141:4" pocket="141:4" />
+		<block name="carrot-5" id="521" minecraft="141:5" pocket="141:5" />
+		<block name="carrot-6" id="522" minecraft="141:6" pocket="141:6" />
+		<block name="carrot-7" id="523" minecraft="141:7" pocket="141:7" />
+
+		<block name="potato-0" id="524" minecraft="142:0" pocket="142:0" />
+		<block name="potato-1" id="525" minecraft="142:1" pocket="142:1" />
+		<block name="potato-2" id="526" minecraft="142:2" pocket="142:2" />
+		<block name="potato-3" id="527" minecraft="142:3" pocket="142:3" />
+		<block name="potato-4" id="528" minecraft="142:4" pocket="142:4" />
+		<block name="potato-5" id="529" minecraft="142:5" pocket="142:5" />
+		<block name="potato-6" id="530" minecraft="142:6" pocket="142:6" />
+		<block name="potato-7" id="531" minecraft="142:7" pocket="142:7" />
+
+		<block name="melon-stem-0" id="532" minecraft="105:0" pocket="105:0" />
+		<block name="melon-stem-1" id="533" minecraft="105:1" pocket="105:1" />
+		<block name="melon-stem-2" id="534" minecraft="105:2" pocket="105:2" />
+		<block name="melon-stem-3" id="535" minecraft="105:3" pocket="105:3" />
+		<block name="melon-stem-4" id="536" minecraft="105:4" pocket="105:4" />
+		<block name="melon-stem-5" id="537" minecraft="105:5" pocket="105:5" />
+		<block name="melon-stem-6" id="538" minecraft="105:6" pocket="105:6" />
+		<block name="melon-stem-7" id="539" minecraft="105:7" pocket="105:7" />
+
+		<block name="pumpkin-stem-0" id="540" minecraft="104:0" pocket="104:0" />
+		<block name="pumpkin-stem-1" id="541" minecraft="104:1" pocket="104:1" />
+		<block name="pumpkin-stem-2" id="542" minecraft="104:2" pocket="104:2" />
+		<block name="pumpkin-stem-3" id="543" minecraft="104:3" pocket="104:3" />
+		<block name="pumpkin-stem-4" id="544" minecraft="104:4" pocket="104:4" />
+		<block name="pumpkin-stem-5" id="545" minecraft="104:5" pocket="104:5" />
+		<block name="pumpkin-stem-6" id="546" minecraft="104:6" pocket="104:6" />
+		<block name="pumpkin-stem-7" id="547" minecraft="104:7" pocket="104:7" />
+
+		<block name="sugar-canes" id="755" minecraft="83" pocket="83" />
+
+		<block name="nether-wart-0" id="968" minecraft="115:0" pocket="115:0" />
+		<block name="nether-wart-1" id="969" minecraft="115:1" pocket="115:1" />
+		<block name="nether-wart-2" id="970" minecraft="115:2" pocket="115:2" />
+		<block name="nether-wart-3" id="971" minecraft="115:3" pocket="115:3" />
+
+	</group>
+
+	<!-- furnace and similar -->
+	<group hardness="3.5" blastresistance="17.5">
+
+		<block name="furnace-facing-north" id="548" minecraft="61:2" pocket="61:2" />
+		<block name="furnace-facing-south" id="549" minecraft="61:3" pocket="61:3" />
+		<block name="furnace-facing-west" id="550" minecraft="61:4" pocket="61:4" />
+		<block name="furnace-facing-east" id="551" minecraft="61:5" pocket="61:5" />
+
+		<!-- 🔥 -->
+		<block name="burning-furnace-facing-north" id="552" minecraft="62:2" pocket="62:2" />
+		<block name="burning-furnace-facing-south" id="553" minecraft="62:3" pocket="62:3" />
+		<block name="burning-furnace-facing-west" id="554" minecraft="62:4" pocket="62:4" />
+		<block name="burning-furnace-facing-east" id="555" minecraft="62:5" pocket="62:5" />
+
+		<block name="stonecutter" id="1233" pocket="245" />
+
+	</group>
+
+	<!-- signs -->
+	<group hardness="1" blastresistance="5" opacity="0" boundingbox="none">
+
+		<block name="sign-facing-south" id="556" minecraft="63:0" pocket="63:0" />
+		<block name="sign-facing-south-southwest" id="557" minecraft="63:1" pocket="63:1" />
+		<block name="sign-facing-southwest" id="558" minecraft="63:2" pocket="63:2" />
+		<block name="sign-facing-west-westsouth" id="559" minecraft="63:3" pocket="63:3" />
+		<block name="sign-facing-west" id="560" minecraft="63:4" pocket="63:4" />
+		<block name="sign-facing-west-northwest" id="561" minecraft="63:5" pocket="63:5" />
+		<block name="sign-facing-northwest" id="562" minecraft="63:6" pocket="63:6" />
+		<block name="sign-facing-north-northwest" id="563" minecraft="63:7" pocket="63:7" />
+		<block name="sign-facing-north" id="564" minecraft="63:8" pocket="63:8" />
+		<block name="sign-facing-north-northeast" id="565" minecraft="63:9" pocket="63:9" />
+		<block name="sign-facing-northeast" id="566" minecraft="63:10" pocket="63:10" />
+		<block name="sign-facing-east-northeast" id="567" minecraft="63:11" pocket="63:11" />
+		<block name="sign-facing-east" id="568" minecraft="63:12" pocket="63:12" />
+		<block name="sign-facing-east-southeast" id="569" minecraft="63:13" pocket="63:13" />
+		<block name="sign-facing-southeast" id="570" minecraft="63:14" pocket="63:14" />
+		<block name="sign-facing-south-southeast" id="571" minecraft="63:15" pocket="63:15" />
+
+		<block name="wall-sign-facing-north" id="572" minecraft="68:2" pocket="68:2" />
+		<block name="wall-sign-facing-south" id="573" minecraft="68:3" pocket="68:3" />
+		<block name="wall-sign-facing-west" id="574" minecraft="68:4" pocket="68:4" />
+		<block name="wall-sign-facing-east" id="575" minecraft="68:5" pocket="68:5" />
+
+	</group>
+
+	<!-- door -->
+	<group hardness="3" blastresistance="15">
+
+		<!-- TODO: bounding box -->
+
+		<block name="lower-oak-wood-door-facing-east" id="576" minecraft="64:0" pocket="64:0" />
+		<block name="lower-oak-wood-door-facing-south" id="577" minecraft="64:1" pocket="64:1" />
+		<block name="lower-oak-wood-door-facing-west" id="578" minecraft="64:2" pocket="64:2" />
+		<block name="lower-oak-wood-door-facing-north" id="579" minecraft="64:3" pocket="64:3" />
+		<block name="lower-opened-oak-wood-door-facing-east" id="580" minecraft="64:4" pocket="64:4" />
+		<block name="lower-opened-oak-wood-door-facing-south" id="581" minecraft="64:5" pocket="64:5" />
+		<block name="lower-opened-oak-wood-door-facing-west" id="582" minecraft="64:6" pocket="64:6" />
+		<block name="lower-opened-oak-wood-door-facing-north" id="583" minecraft="64:7" pocket="64:7" />
+		<block name="upper-oak-wood-door-hinge-left" id="584" minecraft="64:8" pocket="64:8" />
+		<block name="upper-oak-wood-door-hinge-right" id="585" minecraft="64:9" pocket="64:9" />
+		<block name="upper-powered-oak-wood-door-hinge-left" id="586" minecraft="64:10" pocket="64:10" />
+		<block name="upper-powered-oak-wood-door-hinge-right" id="587" minecraft="64:11" pocket="64:11" />
+
+		<block name="lower-spruce-wood-door-facing-east" id="588" minecraft="193:0" pocket="193:0" />
+		<block name="lower-spruce-wood-door-facing-south" id="589" minecraft="193:1" pocket="193:1" />
+		<block name="lower-spruce-wood-door-facing-west" id="590" minecraft="193:2" pocket="193:2" />
+		<block name="lower-spruce-wood-door-facing-north" id="591" minecraft="193:3" pocket="193:3" />
+		<block name="lower-opened-spruce-wood-door-facing-east" id="592" minecraft="193:4" pocket="193:4" />
+		<block name="lower-opened-spruce-wood-door-facing-south" id="593" minecraft="193:5" pocket="193:5" />
+		<block name="lower-opened-spruce-wood-door-facing-west" id="594" minecraft="193:6" pocket="193:6" />
+		<block name="lower-opened-spruce-wood-door-facing-north" id="595" minecraft="193:7" pocket="193:7" />
+		<block name="upper-spruce-wood-door-hinge-left" id="596" minecraft="193:8" pocket="193:8" />
+		<block name="upper-spruce-wood-door-hinge-right" id="597" minecraft="193:9" pocket="193:9" />
+		<block name="upper-powered-spruce-wood-door-hinge-left" id="598" minecraft="193:10" pocket="193:10" />
+		<block name="upper-powered-spruce-wood-door-hinge-right" id="599" minecraft="193:11" pocket="193:11" />
+
+		<block name="lower-birch-wood-door-facing-east" id="600" minecraft="194:0" pocket="194:0" />
+		<block name="lower-birch-wood-door-facing-south" id="601" minecraft="194:1" pocket="194:1" />
+		<block name="lower-birch-wood-door-facing-west" id="602" minecraft="194:2" pocket="194:2" />
+		<block name="lower-birch-wood-door-facing-north" id="603" minecraft="194:3" pocket="194:3" />
+		<block name="lower-opened-birch-wood-door-facing-east" id="604" minecraft="194:4" pocket="194:4" />
+		<block name="lower-opened-birch-wood-door-facing-south" id="605" minecraft="194:5" pocket="194:5" />
+		<block name="lower-opened-birch-wood-door-facing-west" id="606" minecraft="194:6" pocket="194:6" />
+		<block name="lower-opened-birch-wood-door-facing-north" id="607" minecraft="194:7" pocket="194:7" />
+		<block name="upper-birch-wood-door-hinge-left" id="608" minecraft="194:8" pocket="194:8" />
+		<block name="upper-birch-wood-door-hinge-right" id="609" minecraft="194:9" pocket="194:9" />
+		<block name="upper-powered-birch-wood-door-hinge-left" id="610" minecraft="194:10" pocket="194:10" />
+		<block name="upper-powered-birch-wood-door-hinge-right" id="611" minecraft="194:11" pocket="194:11" />
+
+		<block name="lower-jungle-wood-door-facing-east" id="612" minecraft="195:0" pocket="195:0" />
+		<block name="lower-jungle-wood-door-facing-south" id="613" minecraft="195:1" pocket="195:1" />
+		<block name="lower-jungle-wood-door-facing-west" id="614" minecraft="195:2" pocket="195:2" />
+		<block name="lower-jungle-wood-door-facing-north" id="615" minecraft="195:3" pocket="195:3" />
+		<block name="lower-opened-jungle-wood-door-facing-east" id="616" minecraft="195:4" pocket="195:4" />
+		<block name="lower-opened-jungle-wood-door-facing-south" id="617" minecraft="195:5" pocket="195:5" />
+		<block name="lower-opened-jungle-wood-door-facing-west" id="618" minecraft="195:6" pocket="195:6" />
+		<block name="lower-opened-jungle-wood-door-facing-north" id="619" minecraft="195:7" pocket="195:7" />
+		<block name="upper-jungle-wood-door-hinge-left" id="620" minecraft="195:8" pocket="195:8" />
+		<block name="upper-jungle-wood-door-hinge-right" id="621" minecraft="195:9" pocket="195:9" />
+		<block name="upper-powered-jungle-wood-door-hinge-left" id="622" minecraft="195:10" pocket="195:10" />
+		<block name="upper-powered-jungle-wood-door-hinge-right" id="623" minecraft="195:11" pocket="195:11" />
+
+		<block name="lower-acacia-wood-door-facing-east" id="624" minecraft="196:0" pocket="196:0" />
+		<block name="lower-acacia-wood-door-facing-south" id="625" minecraft="196:1" pocket="196:1" />
+		<block name="lower-acacia-wood-door-facing-west" id="626" minecraft="196:2" pocket="196:2" />
+		<block name="lower-acacia-wood-door-facing-north" id="627" minecraft="196:3" pocket="196:3" />
+		<block name="lower-opened-acacia-wood-door-facing-east" id="628" minecraft="196:4" pocket="196:4" />
+		<block name="lower-opened-acacia-wood-door-facing-south" id="629" minecraft="196:5" pocket="196:5" />
+		<block name="lower-opened-acacia-wood-door-facing-west" id="630" minecraft="196:6" pocket="196:6" />
+		<block name="lower-opened-acacia-wood-door-facing-north" id="631" minecraft="196:7" pocket="196:7" />
+		<block name="upper-acacia-wood-door-hinge-left" id="632" minecraft="196:8" pocket="196:8" />
+		<block name="upper-acacia-wood-door-hinge-right" id="633" minecraft="196:9" pocket="196:9" />
+		<block name="upper-powered-acacia-wood-door-hinge-left" id="634" minecraft="196:10" pocket="196:10" />
+		<block name="upper-powered-acacia-wood-door-hinge-right" id="635" minecraft="196:11" pocket="196:11" />
+
+		<block name="lower-dark-oak-wood-door-facing-east" id="636" minecraft="197:0" pocket="197:0" />
+		<block name="lower-dark-oak-wood-door-facing-south" id="637" minecraft="197:1" pocket="197:1" />
+		<block name="lower-dark-oak-wood-door-facing-west" id="638" minecraft="197:2" pocket="197:2" />
+		<block name="lower-dark-oak-wood-door-facing-north" id="639" minecraft="197:3" pocket="197:3" />
+		<block name="lower-dark-opened-oak-wood-door-facing-east" id="640" minecraft="197:4" pocket="197:4" />
+		<block name="lower-dark-opened-oak-wood-door-facing-south" id="641" minecraft="197:5" pocket="197:5" />
+		<block name="lower-dark-opened-oak-wood-door-facing-west" id="642" minecraft="197:6" pocket="197:6" />
+		<block name="lower-dark-opened-oak-wood-door-facing-north" id="643" minecraft="197:7" pocket="197:7" />
+		<block name="upper-dark-oak-wood-door-hinge-left" id="644" minecraft="197:8" pocket="197:8" />
+		<block name="upper-dark-oak-wood-door-hinge-right" id="645" minecraft="197:9" pocket="197:9" />
+		<block name="upper-dark-powered-oak-wood-door-hinge-left" id="646" minecraft="197:10" pocket="197:10" />
+		<block name="upper-dark-powered-oak-wood-door-hinge-right" id="647" minecraft="197:11" pocket="197:11" />
+
+	</group>
+
+	<!-- heavy door -->
+	<group hardness="5" blastresistance="25">
+
+		<block name="lower-iron-door-facing-east" id="648" minecraft="71:0" pocket="71:0" />
+		<block name="lower-iron-door-facing-south" id="649" minecraft="71:1" pocket="71:1" />
+		<block name="lower-iron-door-facing-west" id="650" minecraft="71:2" pocket="71:2" />
+		<block name="lower-iron-door-facing-north" id="651" minecraft="71:3" pocket="71:3" />
+		<block name="lower-opened-iron-door-facing-east" id="652" minecraft="71:4" pocket="71:4" />
+		<block name="lower-opened-iron-door-facing-south" id="653" minecraft="71:5" pocket="71:5" />
+		<block name="lower-opened-iron-door-facing-west" id="654" minecraft="71:6" pocket="71:6" />
+		<block name="lower-opened-iron-door-facing-north" id="655" minecraft="71:7" pocket="71:7" />
+		<block name="upper-iron-door-hinge-left" id="656" minecraft="71:8" pocket="71:8" />
+		<block name="upper-iron-door-hinge-right" id="657" minecraft="71:9" pocket="71:9" />
+		<block name="upper-powered-iron-door-hinge-left" id="658" minecraft="71:10" pocket="71:10" />
+		<block name="upper-powered-iron-door-hinge-right" id="659" minecraft="71:11" pocket="71:11" />
+
+	</group>
+
+	<!-- ladders -->
+	<group hardness="0.4" blastresistance="2">
+
+		<block name="ladder-facing-north" id="660" minecraft="65:2" pocket="65:2" />
+		<block name="ladder-facing-south" id="661" minecraft="65:3" pocket="65:3" />
+		<block name="ladder-facing-west" id="662" minecraft="65:4" pocket="65:4" />
+		<block name="ladder-facing-east" id="663" minecraft="65:5" pocket="65:5" />
+
+	</group>
+
+	<!-- lever -->
+	<group hardness="0.5" blastresistance="2.5" boundingbox="none">
+
+		<block name="lever-bottom-pointing-east" id="664" minecraft="69:0" pocket="69:0" />
+		<block name="lever-facing-east" id="665" minecraft="69:1" pocket="69:1" />
+		<block name="lever-facing-west" id="666" minecraft="69:2" pocket="69:2" />
+		<block name="lever-facing-south" id="667" minecraft="69:3" pocket="69:3" />
+		<block name="lever-facing-north" id="668" minecraft="69:4" pocket="69:4" />
+		<block name="lever-top-pointing-south" id="669" minecraft="69:5" pocket="69:5" />
+		<block name="lever-top-pointing-east" id="670" minecraft="69:6" pocket="69:6" />
+		<block name="lever-bottom-pointing-south" id="671" minecraft="69:7" pocket="69:7" />
+
+		<block name="powered-lever-bottom-pointing-east" id="672" minecraft="69:8" pocket="69:8" />
+		<block name="powered-lever-facing-east" id="673" minecraft="69:9" pocket="69:9" />
+		<block name="powered-lever-facing-west" id="674" minecraft="69:10" pocket="69:10" />
+		<block name="powered-lever-facing-south" id="675" minecraft="69:11" pocket="69:11" />
+		<block name="powered-lever-facing-north" id="676" minecraft="69:12" pocket="69:12" />
+		<block name="powered-lever-top-pointing-south" id="677" minecraft="69:13" pocket="69:13" />
+		<block name="powered-lever-top-pointing-east" id="678" minecraft="69:14" pocket="69:14" />
+		<block name="powered-lever-bottom-pointing-south" id="679" minecraft="69:15" pocket="69:15" />
+
+	</group>
+
+	<!-- pressure plates -->
+	<group hardness="0.5" blastresistance="2.5" solid="false" boundingbox="1,0,1-15,1,15">
+
+		<block name="stone-pressure-plate" id="680" minecraft="70:0" pocket="70:0" />
+		<block name="powered-stone-pressure-plate" id="681" minecraft="70:1" pocket="70:1" />
+
+		<block name="wooden-pressure-plate" id="682" minecraft="72:0" pocket="72:0" />
+		<block name="powered-wooden-pressure-plate" id="683" minecraft="72:1" pocket="72:1" />
+
+		<block name="heavy-weighted-pressure-plate-0" id="684" minecraft="148:0" pocket="148:0" />
+		<block name="heavy-weighted-pressure-plate-1" id="685" minecraft="148:1" pocket="148:1" />
+		<block name="heavy-weighted-pressure-plate-2" id="686" minecraft="148:2" pocket="148:2" />
+		<block name="heavy-weighted-pressure-plate-3" id="687" minecraft="148:3" pocket="148:3" />
+		<block name="heavy-weighted-pressure-plate-4" id="688" minecraft="148:4" pocket="148:4" />
+		<block name="heavy-weighted-pressure-plate-5" id="689" minecraft="148:5" pocket="148:5" />
+		<block name="heavy-weighted-pressure-plate-6" id="690" minecraft="148:6" pocket="148:6" />
+		<block name="heavy-weighted-pressure-plate-7" id="691" minecraft="148:7" pocket="148:7" />
+		<block name="heavy-weighted-pressure-plate-8" id="692" minecraft="148:8" pocket="148:8" />
+		<block name="heavy-weighted-pressure-plate-9" id="693" minecraft="148:9" pocket="148:9" />
+		<block name="heavy-weighted-pressure-plate-10" id="694" minecraft="148:10" pocket="148:10" />
+		<block name="heavy-weighted-pressure-plate-11" id="695" minecraft="148:11" pocket="148:11" />
+		<block name="heavy-weighted-pressure-plate-12" id="696" minecraft="148:12" pocket="148:12" />
+		<block name="heavy-weighted-pressure-plate-13" id="697" minecraft="148:13" pocket="148:13" />
+		<block name="heavy-weighted-pressure-plate-14" id="698" minecraft="148:14" pocket="148:14" />
+		<block name="heavy-weighted-pressure-plate-15" id="699" minecraft="148:15" pocket="148:15" />
+
+		<block name="light-weighted-pressure-plate-0" id="700" minecraft="147:0" pocket="147:0" />
+		<block name="light-weighted-pressure-plate-1" id="701" minecraft="147:1" pocket="147:1" />
+		<block name="light-weighted-pressure-plate-2" id="702" minecraft="147:2" pocket="147:2" />
+		<block name="light-weighted-pressure-plate-3" id="703" minecraft="147:3" pocket="147:3" />
+		<block name="light-weighted-pressure-plate-4" id="704" minecraft="147:4" pocket="147:4" />
+		<block name="light-weighted-pressure-plate-5" id="705" minecraft="147:5" pocket="147:5" />
+		<block name="light-weighted-pressure-plate-6" id="706" minecraft="147:6" pocket="147:6" />
+		<block name="light-weighted-pressure-plate-7" id="707" minecraft="147:7" pocket="147:7" />
+		<block name="light-weighted-pressure-plate-8" id="708" minecraft="147:8" pocket="147:8" />
+		<block name="light-weighted-pressure-plate-9" id="709" minecraft="147:9" pocket="147:9" />
+		<block name="light-weighted-pressure-plate-10" id="710" minecraft="147:10" pocket="147:10" />
+		<block name="light-weighted-pressure-plate-11" id="711" minecraft="147:11" pocket="147:11" />
+		<block name="light-weighted-pressure-plate-12" id="712" minecraft="147:12" pocket="147:12" />
+		<block name="light-weighted-pressure-plate-13" id="713" minecraft="147:13" pocket="147:13" />
+		<block name="light-weighted-pressure-plate-14" id="714" minecraft="147:14" pocket="147:14" />
+		<block name="light-weighted-pressure-plate-15" id="715" minecraft="147:15" pocket="147:15" />
+
+	</group>
+
+	<!-- buttons -->
+	<group hardness="0.5" blastresistance="2.5" solid="false">
+
+		<!-- TODO: bounding boxes -->
+		
+		<block name="stone-button-facing-down" id="727" minecraft="77:0" pocket="77:0" />
+		<block name="stone-button-facing-east" id="728" minecraft="77:1" pocket="77:1" />
+		<block name="stone-button-facing-west" id="729" minecraft="77:2" pocket="77:2" />
+		<block name="stone-button-facing-south" id="730" minecraft="77:3" pocket="77:3" />
+		<block name="stone-button-facing-north" id="731" minecraft="77:4" pocket="77:4" />
+		<block name="stone-button-facing-up" id="732" minecraft="77:5" pocket="77:5" />
+		
+		<block name="wooden-button-facing-down" id="733" minecraft="143:0" pocket="143:0" />
+		<block name="wooden-button-facing-east" id="734" minecraft="143:1" pocket="143:1" />
+		<block name="wooden-button-facing-west" id="735" minecraft="143:2" pocket="143:2" />
+		<block name="wooden-button-facing-south" id="736" minecraft="143:3" pocket="143:3" />
+		<block name="wooden-button-facing-north" id="737" minecraft="143:4" pocket="143:4" />
+		<block name="wooden-button-facing-up" id="738" minecraft="143:5" pocket="143:5" />
+
+	</group>
+
+	<!-- snow layers -->
+	<group hardness="0.1" blastresistance="0.5" opacity="0">
+
+		<block name="snow-layer-0" id="739" minecraft="78:0" pocket="78:0" boundingbox="0,0,0-16,2,16" />
+		<block name="snow-layer-1" id="740" minecraft="78:1" pocket="78:1" boundingbox="0,0,0-16,4,16" />
+		<block name="snow-layer-2" id="741" minecraft="78:2" pocket="78:2" boundingbox="0,0,0-16,6,16" />
+		<block name="snow-layer-3" id="742" minecraft="78:3" pocket="78:3" boundingbox="0,0,0-16,8,16" />
+		<block name="snow-layer-4" id="743" minecraft="78:4" pocket="78:4" boundingbox="0,0,0-16,10,16" />
+		<block name="snow-layer-5" id="744" minecraft="78:5" pocket="78:5" boundingbox="0,0,0-16,12,16" />
+		<block name="snow-layer-6" id="745" minecraft="78:6" pocket="78:6" boundingbox="0,0,0-16,14,16" />
+		<block name="snow-layer-7" id="746" minecraft="78:7" pocket="78:7" boundingbox="0,0,0-16,16,16" opacity="15" />
+
+	</group>
+
+	<block name="snow" id="747" minecraft="80" pocket="80" hardness="0.2" blastresistance="1" />
+
+	<!-- ice blocks -->
+	<group hardness="0.5" blastresistance="2.5">
+
+		<block name="ice" id="748" minecraft="79" pocket="79" opacity="3" />
+		<block name="packed-ice" id="749" minecraft="174" pocket="174" />
+
+		<group opacity="3">
+			<block name="frosted-ice" id="750" minecraft="212:0" />
+			<block name="frosted-ice-cracked-1" id="751" minecraft="212:1" />
+			<block name="frosted-ice-cracked-2" id="752" minecraft="212:2" />
+			<block name="frosted-ice-cracked-3" id="753" minecraft="212:3" />
+		</group>
+
+	</group>
+
+	<block name="cactus" id="754" minecraft="81" pocket="81" hardness="0.4" blastresistance="2" boundingbox="1,0,1-15,16,15" />
+
+	<block name="clay" id="756" minecraft="82" pocket="82" hardness="0.6" blastresistance="3" />
+
+	<block name="jukebox" id="757" minecraft="84" pocket="84" hardness="2" blastresistance="30" />
+
+	<!-- hardened clay -->
+	<group hardness="1.75" blastresistance="21">
+
+		<block name="hardened-clay" id="758" minecraft="172" pocket="172" />
+
+		<block name="white-stained-clay" id="759" minecraft="159:0" pocket="159:0" />
+		<block name="orange-stained-clay" id="760" minecraft="159:1" pocket="159:1" />
+		<block name="magenta-stained-clay" id="761" minecraft="159:2" pocket="159:2" />
+		<block name="light-blue-stained-clay" id="762" minecraft="159:3" pocket="159:3" />
+		<block name="yellow-stained-clay" id="763" minecraft="159:4" pocket="159:4" />
+		<block name="lime-stained-clay" id="764" minecraft="159:5" pocket="159:5" />
+		<block name="pink-stained-clay" id="765" minecraft="159:6" pocket="159:6" />
+		<block name="gray-stained-clay" id="766" minecraft="159:7" pocket="159:7" />
+		<block name="light-gray-stained-clay" id="767" minecraft="159:8" pocket="159:8" />
+		<block name="cyan-stained-clay" id="768" minecraft="159:9" pocket="159:9" />
+		<block name="purple-stained-clay" id="769" minecraft="159:10" pocket="159:10" />
+		<block name="blue-stained-clay" id="770" minecraft="159:11" pocket="159:11" />
+		<block name="brown-stained-clay" id="771" minecraft="159:12" pocket="159:12" />
+		<block name="green-stained-clay" id="772" minecraft="159:13" pocket="159:13" />
+		<block name="red-stained-clay" id="773" minecraft="159:14" pocket="159:14" />
+		<block name="black-stained-clay" id="774" minecraft="159:15" pocket="159:15" />
+
+	</group>
+
+	<!-- pumpkins -->
+	<group hardness="1" blastresistance="5">
+
+		<block name="pumpkin-facing-south" id="775" minecraft="86:0" pocket="86:0" />
+		<block name="pumpkin-facing-west" id="776" minecraft="86:1" pocket="86:1" />
+		<block name="pumpkin-facing-north" id="777" minecraft="86:2" pocket="86:2" />
+		<block name="pumpkin-facing-east" id="778" minecraft="86:3" pocket="86:3" />
+
+		<block name="faceless-pumpkin-facing-south" id="779" minecraft="86:4" pocket="86:4" />
+		<block name="faceless-pumpkin-facing-west" id="780" minecraft="86:5" pocket="86:5" />
+		<block name="faceless-pumpkin-facing-north" id="781" minecraft="86:6" pocket="86:6" />
+		<block name="faceless-pumpkin-facing-east" id="782" minecraft="86:7" pocket="86:7" />
+
+		<group luminance="15">
+
+			<block name="jack-o-lantern-facing-south" id="783" minecraft="91:0" pocket="91:0" />
+			<block name="jack-o-lantern-facing-west" id="784" minecraft="91:1" pocket="91:1" />
+			<block name="jack-o-lantern-facing-north" id="785" minecraft="91:2" pocket="91:2" />
+			<block name="jack-o-lantern-facing-east" id="786" minecraft="91:3" pocket="91:3" />
+
+			<block name="faceless-jack-o-lantern-facing-south" id="787" minecraft="91:4" pocket="91:4" />
+			<block name="faceless-jack-o-lantern-facing-west" id="788" minecraft="91:5" pocket="91:5" />
+			<block name="faceless-jack-o-lantern-facing-north" id="789" minecraft="91:6" pocket="91:6" />
+			<block name="faceless-jack-o-lantern-facing-east" id="790" minecraft="91:7" pocket="91:7" />
+
+		</group>
+
+	</group>
+
+	<!-- fences -->
+	<group hardness="2">
+
+		<!-- wooden -->
+		<group blastresistance="15">
+
+			<block name="oak-wood-fence" id="791" minecraft="85" pocket="85:0" />
+			<block name="spruce-wood-fence" id="792" minecraft="188" pocket="85:1" />
+			<block name="birch-wood-fence" id="793" minecraft="189" pocket="85:2" />
+			<block name="jungle-wood-fence" id="794" minecraft="190" pocket="85:3" />
+			<block name="acacia-wood-fence" id="795" minecraft="191" pocket="85:4" />
+			<block name="dark-oak-wood-fence" id="796" minecraft="192" pocket="85:5" />
+
+		</group>
+
+		<block name="nether-brick-fence" id="797" minecraft="113" pocket="113" blastresistance="30" />
+
+	</group>
+
+	<block name="netherrack" id="798" minecraft="87" pocket="87" hardness="0.4" blastresistance="2" />
+
+	<block name="soul-sand" id="799" minecraft="88" pocket="88" hardness="0.5" blastresistance="2.5" boundingbox="0,0,0-16,14,16" />
+
+	<block name="glowstone" id="800" minecraft="89" pocket="89" hardness="0.3" blastresistance="1.5" luminance="15" />
+
+	<!-- nether bricks -->
+	<group hardness="2" blastresistance="30">
+
+		<block name="nether-brick" id="801" minecraft="112" pocket="112" />
+		<block name="red-nether-brick" id="802" minecraft="215" />
+
+	</group>
+
+	<!-- nether portals -->
+	<group solid="false" blastresistance="0">
+
+		<block name="nether-portal-east-west" id="803" minecraft="90:0" pocket="90:0" boundingbox="0,0,4-16,16,12" />
+		<block name="nether-portal-north-south" id="804" minecraft="90:1" pocket="90:1" boundingbox="4,0,0-12,16,16" />
+
+	</group>
+
+	<!-- cake -->
+	<group hardness="0.5" blastresistance="2.5" opacity="0">
+
+		<block name="cake-0" id="805" minecraft="92:0" pocket="92:0" boundingbox="1,0,1-15,8,15" />
+		<block name="cake-1" id="806" minecraft="92:1" pocket="92:1" boundingbox="3,0,1-15,8,15" />
+		<block name="cake-2" id="807" minecraft="92:2" pocket="92:2" boundingbox="5,0,1-15,8,15" />
+		<block name="cake-3" id="808" minecraft="92:3" pocket="92:3" boundingbox="7,0,1-15,8,15" />
+		<block name="cake-4" id="809" minecraft="92:4" pocket="92:4" boundingbox="9,0,1-15,8,15" />
+		<block name="cake-5" id="810" minecraft="92:5" pocket="92:5" boundingbox="11,0,1-15,8,15" />
+		<block name="cake-6" id="811" minecraft="92:6" pocket="92:6" boundingbox="13,0,1-15,8,15" />
+
+	</group>
+
+	<!-- repeaters -->
+	<group hardness="0" blastresistance="0" boundingbox="0,0,0-16,2,16">
+
+		<group>
+
+			<block name="repeater-facing-north-1-delay" id="812" minecraft="93:0" pocket="93:0" />
+			<block name="repeater-facing-east-1-delay" id="813" minecraft="93:1" pocket="93:1" />
+			<block name="repeater-facing-south-1-delay" id="814" minecraft="93:2" pocket="93:2" />
+			<block name="repeater-facing-west-1-delay" id="815" minecraft="93:3" pocket="93:3" />
+
+			<block name="repeater-facing-north-2-delay" id="816" minecraft="93:4" pocket="93:4" />
+			<block name="repeater-facing-east-2-delay" id="817" minecraft="93:5" pocket="93:5" />
+			<block name="repeater-facing-south-2-delay" id="818" minecraft="93:6" pocket="93:6" />
+			<block name="repeater-facing-west-2-delay" id="819" minecraft="93:7" pocket="93:7" />
+
+			<block name="repeater-facing-north-3-delay" id="820" minecraft="93:8" pocket="93:8" />
+			<block name="repeater-facing-east-3-delay" id="821" minecraft="93:9" pocket="93:9" />
+			<block name="repeater-facing-south-3-delay" id="822" minecraft="93:10" pocket="93:10" />
+			<block name="repeater-facing-west-3-delay" id="823" minecraft="93:11" pocket="93:11" />
+
+			<block name="repeater-facing-north-4-delay" id="824" minecraft="93:12" pocket="93:12" />
+			<block name="repeater-facing-east-4-delay" id="825" minecraft="93:13" pocket="93:13" />
+			<block name="repeater-facing-south-4-delay" id="826" minecraft="93:14" pocket="93:14" />
+			<block name="repeater-facing-west-4-delay" id="827" minecraft="93:15" pocket="93:15" />
+
+		</group>
+
+		<group luminance="7">
+
+			<block name="powered-repeater-facing-north-1-delay" id="828" minecraft="94:0" pocket="94:0" />
+			<block name="powered-repeater-facing-east-1-delay" id="829" minecraft="94:1" pocket="94:1" />
+			<block name="powered-repeater-facing-south-1-delay" id="830" minecraft="94:2" pocket="94:2" />
+			<block name="powered-repeater-facing-west-1-delay" id="831" minecraft="94:3" pocket="94:3" />
+
+			<block name="powered-repeater-facing-north-2-delay" id="832" minecraft="94:4" pocket="94:4" />
+			<block name="powered-repeater-facing-east-2-delay" id="833" minecraft="94:5" pocket="94:5" />
+			<block name="powered-repeater-facing-south-2-delay" id="834" minecraft="94:6" pocket="94:6" />
+			<block name="powered-repeater-facing-west-2-delay" id="835" minecraft="94:7" pocket="94:7" />
+
+			<block name="powered-repeater-facing-north-3-delay" id="836" minecraft="94:8" pocket="94:8" />
+			<block name="powered-repeater-facing-east-3-delay" id="837" minecraft="94:9" pocket="94:9" />
+			<block name="powered-repeater-facing-south-3-delay" id="838" minecraft="94:10" pocket="94:10" />
+			<block name="powered-repeater-facing-west-3-delay" id="839" minecraft="94:11" pocket="94:11" />
+
+			<block name="powered-repeater-facing-north-4-delay" id="840" minecraft="94:12" pocket="94:12" />
+			<block name="powered-repeater-facing-east-4-delay" id="841" minecraft="94:13" pocket="94:13" />
+			<block name="powered-repeater-facing-south-4-delay" id="842" minecraft="94:14" pocket="94:14" />
+			<block name="powered-repeater-facing-west-4-delay" id="843" minecraft="94:15" pocket="94:15" />
+
+		</group>
+
+	</group>
+
+	<!-- wooden trapdoor, TODO: bounding boxes -->
+	<group hardness="3" blastresistance="15">
+
+		<block name="wooden-trapdoor-south-side" id="844" minecraft="96:0" pocket="96:0" />
+		<block name="wooden-trapdoor-north-side" id="845" minecraft="96:1" pocket="96:1" />
+		<block name="wooden-trapdoor-east-side" id="846" minecraft="96:2" pocket="96:2" />
+		<block name="wooden-trapdoor-west-side" id="847" minecraft="96:3" pocket="96:3" />
+
+		<block name="opened-wooden-trapdoor-south-side" id="848" minecraft="96:4" pocket="96:4" />
+		<block name="opened-wooden-trapdoor-north-side" id="849" minecraft="96:5" pocket="96:5" />
+		<block name="opened-wooden-trapdoor-east-side" id="850" minecraft="96:6" pocket="96:6" />
+		<block name="opened-wooden-trapdoor-west-side" id="851" minecraft="96:7" pocket="96:7" />
+
+		<block name="top-wooden-trapdoor-south-side" id="1086" minecraft="96:8" pocket="96:8" />
+		<block name="top-wooden-trapdoor-north-side" id="1087" minecraft="96:9" pocket="96:9" />
+		<block name="top-wooden-trapdoor-east-side" id="1088" minecraft="96:10" pocket="96:10" />
+		<block name="top-wooden-trapdoor-west-side" id="1089" minecraft="96:11" pocket="96:11" />
+
+		<block name="opened-top-wooden-trapdoor-south-side" id="1090" minecraft="96:12" pocket="96:12" />
+		<block name="opened-top-wooden-trapdoor-north-side" id="1091" minecraft="96:13" pocket="96:13" />
+		<block name="opened-top-wooden-trapdoor-east-side" id="1092" minecraft="96:14" pocket="96:14" />
+		<block name="opened-top-wooden-trapdoor-west-side" id="1093" minecraft="96:15" pocket="96:15" />
+
+	</group>
+
+	<!-- iron trapdoor, TODO: bounding boxes -->
+	<group hardness="5" blastresistance="25">
+
+		<block name="iron-trapdoor-south-side" id="852" minecraft="167:0" pocket="167:0" />
+		<block name="iron-trapdoor-north-side" id="853" minecraft="167:1" pocket="167:1" />
+		<block name="iron-trapdoor-east-side" id="854" minecraft="167:2" pocket="167:2" />
+		<block name="iron-trapdoor-west-side" id="855" minecraft="167:3" pocket="167:3" />
+
+		<block name="opened-iron-trapdoor-south-side" id="856" minecraft="167:4" pocket="167:4" />
+		<block name="opened-iron-trapdoor-north-side" id="857" minecraft="167:5" pocket="167:5" />
+		<block name="opened-iron-trapdoor-east-side" id="858" minecraft="167:6" pocket="167:6" />
+		<block name="opened-iron-trapdoor-west-side" id="859" minecraft="167:7" pocket="167:7" />
+
+		<block name="top-iron-trapdoor-south-side" id="860" minecraft="167:8" pocket="167:8" />
+		<block name="top-iron-trapdoor-north-side" id="861" minecraft="167:9" pocket="167:9" />
+		<block name="top-iron-trapdoor-east-side" id="862" minecraft="167:10" pocket="167:10" />
+		<block name="top-iron-trapdoor-west-side" id="863" minecraft="167:11" pocket="167:11" />
+
+		<block name="opened-top-iron-trapdoor-south-side" id="864" minecraft="167:12" pocket="167:12" />
+		<block name="opened-top-iron-trapdoor-north-side" id="865" minecraft="167:13" pocket="167:13" />
+		<block name="opened-top-iron-trapdoor-east-side" id="866" minecraft="167:14" pocket="167:14" />
+		<block name="opened-top-iron-trapdoor-west-side" id="867" minecraft="167:15" pocket="167:15" />
+
+	</group>
+
+	<!-- monster eggs -->
+	<group hardness="0.75" blastresistance="3.75">
+
+		<block name="stone-monster-egg" id="868" minecraft="97:0" pocket="97:0" />
+		<block name="cobblestone-monster-egg" id="869" minecraft="97:1" pocket="97:1" />
+		<block name="stone-brick-monster-egg" id="870" minecraft="97:2" pocket="97:2" />
+		<block name="mossy-stone-brick-monster-egg" id="871" minecraft="97:3" pocket="97:3" />
+		<block name="cracked-stone-brick-monster-egg" id="872" minecraft="97:4" pocket="97:4" />
+		<block name="chiseled-stone-brick-monster-egg" id="873" minecraft="97:5" pocket="97:5" />
+
+	</group>
+
+	<!-- mushrooms blocks -->
+	<group hardness="0.2" blastresistance="1">
+
+		<block name="brown-mushroom-pores-everywhere" id="874" minecraft="99:0" pocket="99:0" />
+		<block name="brown-mushroom-cap-top-west-north" id="875" minecraft="99:1" pocket="99:1" />
+		<block name="brown-mushroom-cap-top-north" id="876" minecraft="99:2" pocket="99:2" />
+		<block name="brown-mushroom-cap-top-north-east" id="877" minecraft="99:3" pocket="99:3" />
+		<block name="brown-mushroom-cap-top-west" id="878" minecraft="99:4" pocket="99:4" />
+		<block name="brown-mushroom-cap-top" id="879" minecraft="99:5" pocket="99:5" />
+		<block name="brown-mushroom-cap-top-east" id="880" minecraft="99:6" pocket="99:6" />
+		<block name="brown-mushroom-cap-top-south-west" id="881" minecraft="99:7" pocket="99:7" />
+		<block name="brown-mushroom-cap-top-south" id="882" minecraft="99:8" pocket="99:8" />
+		<block name="brown-mushroom-cap-top-east-south" id="883" minecraft="99:9" pocket="99:9" />
+		<block name="brown-mushroom-stem-every-side" id="884" minecraft="99:10" pocket="99:10" />
+		<block name="brown-mushroom-caps-everywhere" id="888" minecraft="99:14" pocket="99:14" />
+		<block name="brown-mushroom-stems-everywhere" id="889" minecraft="99:15" pocket="99:15" />
+
+		<block name="red-mushroom-pores-everywhere" id="890" minecraft="100:0" pocket="100:0" />
+		<block name="red-mushroom-cap-top-west-north" id="891" minecraft="100:1" pocket="100:1" />
+		<block name="red-mushroom-cap-top-north" id="892" minecraft="100:2" pocket="100:2" />
+		<block name="red-mushroom-cap-top-north-east" id="893" minecraft="100:3" pocket="100:3" />
+		<block name="red-mushroom-cap-top-west" id="894" minecraft="100:4" pocket="100:4" />
+		<block name="red-mushroom-cap-top" id="895" minecraft="100:5" pocket="100:5" />
+		<block name="red-mushroom-cap-top-east" id="896" minecraft="100:6" pocket="100:6" />
+		<block name="red-mushroom-cap-top-south-west" id="897" minecraft="100:7" pocket="100:7" />
+		<block name="red-mushroom-cap-top-south" id="898" minecraft="100:8" pocket="100:8" />
+		<block name="red-mushroom-cap-top-east-south" id="899" minecraft="100:9" pocket="100:9" />
+		<block name="red-mushroom-stem-every-side" id="900" minecraft="100:10" pocket="100:10" />
+		<block name="red-mushroom-caps-everywhere" id="901" minecraft="100:14" pocket="100:14" />
+		<block name="red-mushroom-stems-everywhere" id="902" minecraft="100:15" pocket="100:15" />
+
+	</group>
+
+	<block name="iron-bars" id="903" minecraft="101" pocket="101" hardness="5" blastresistance="30" />
+
+	<block name="melon" id="904" minecraft="103" pocket="103" hardness="1" blastresistance="5" />
+
+	<!-- vines -->
+	<group hardness="0.2" blastresistance="1" solid="false">
+
+		<block name="vine-south" id="905" minecraft="106:1" pocket="106:1" />
+		<block name="vine-west" id="906" minecraft="106:2" pocket="106:2" />
+		<block name="vine-south-west" id="907" minecraft="106:3" pocket="106:3" />
+		<block name="vine-north" id="908" minecraft="106:4" pocket="106:4" />
+		<block name="vine-north-south" id="909" minecraft="106:5" pocket="106:5" />
+		<block name="vine-north-west" id="910" minecraft="106:6" pocket="106:6" />
+		<block name="vine-north-south-west" id="911" minecraft="106:7" pocket="106:7" />
+		<block name="vine-east" id="912" minecraft="106:8" pocket="106:8" />
+		<block name="vine-south-east" id="913" minecraft="106:9" pocket="106:9" />
+		<block name="vine-west-east" id="914" minecraft="106:10" pocket="106:10" />
+		<block name="vine-south-west-east" id="915" minecraft="106:11" pocket="106:11" />
+		<block name="vine-north-east" id="916" minecraft="106:12" pocket="106:12" />
+		<block name="vine-north-south-east" id="917" minecraft="106:13" pocket="106:13" />
+		<block name="vine-north-west-east" id="918" minecraft="106:14" pocket="106:14" />
+		<block name="vine-every-side" id="919" minecraft="106:15" pocket="106:15" />
+
+	</group>
+
+	<!-- fence gates -->
+	<group hardness="2" blastresistance="15">
+
+		<!-- oak -->
+		<group>
+
+			<block name="oak-wooden-fence-gate-facing-south" id="920" minecraft="107:0" pocket="107:0" />
+			<block name="oak-wooden-fence-gate-facing-west" id="921" minecraft="107:1" pocket="107:1" />
+			<block name="oak-wooden-fence-gate-facing-north" id="922" minecraft="107:2" pocket="107:2" />
+			<block name="oak-wooden-fence-gate-facing-east" id="923" minecraft="107:3" pocket="107:3" />
+
+			<block name="opened-oak-wooden-fence-gate-facing-south" id="924" minecraft="107:4" pocket="107:4" />
+			<block name="opened-oak-wooden-fence-gate-facing-west" id="925" minecraft="107:5" pocket="107:5" />
+			<block name="opened-oak-wooden-fence-gate-facing-north" id="926" minecraft="107:6" pocket="107:6" />
+			<block name="opened-oak-wooden-fence-gate-facing-east" id="927" minecraft="107:7" pocket="107:7" />
+
+		</group>
+
+		<!-- spruce -->
+		<group>
+
+			<block name="spruce-wooden-fence-gate-facing-south" id="928" minecraft="183:0" pocket="183:0" />
+			<block name="spruce-wooden-fence-gate-facing-west" id="929" minecraft="183:1" pocket="183:1" />
+			<block name="spruce-wooden-fence-gate-facing-north" id="930" minecraft="183:2" pocket="183:2" />
+			<block name="spruce-wooden-fence-gate-facing-east" id="931" minecraft="183:3" pocket="183:3" />
+
+			<block name="opened-spruce-wooden-fence-gate-facing-south" id="932" minecraft="183:4" pocket="183:4" />
+			<block name="opened-spruce-wooden-fence-gate-facing-west" id="933" minecraft="183:5" pocket="183:5" />
+			<block name="opened-spruce-wooden-fence-gate-facing-north" id="934" minecraft="183:6" pocket="183:6" />
+			<block name="opened-spruce-wooden-fence-gate-facing-east" id="935" minecraft="183:7" pocket="183:7" />
+
+		</group>
+
+		<!-- birch -->
+		<group>
+
+			<block name="birch-wooden-fence-gate-facing-south" id="936" minecraft="184:0" pocket="184:0" />
+			<block name="birch-wooden-fence-gate-facing-west" id="937" minecraft="184:1" pocket="184:1" />
+			<block name="birch-wooden-fence-gate-facing-north" id="938" minecraft="184:2" pocket="184:2" />
+			<block name="birch-wooden-fence-gate-facing-east" id="939" minecraft="184:3" pocket="184:3" />
+
+			<block name="opened-birch-wooden-fence-gate-facing-south" id="940" minecraft="184:4" pocket="184:4" />
+			<block name="opened-birch-wooden-fence-gate-facing-west" id="941" minecraft="184:5" pocket="184:5" />
+			<block name="opened-birch-wooden-fence-gate-facing-north" id="942" minecraft="184:6" pocket="184:6" />
+			<block name="opened-birch-wooden-fence-gate-facing-east" id="943" minecraft="184:7" pocket="184:7" />
+
+		</group>
+
+		<!-- jungle -->
+		<group>
+
+			<block name="jungle-wooden-fence-gate-facing-south" id="944" minecraft="185:0" pocket="185:0" />
+			<block name="jungle-wooden-fence-gate-facing-west" id="945" minecraft="185:1" pocket="185:1" />
+			<block name="jungle-wooden-fence-gate-facing-north" id="946" minecraft="185:2" pocket="185:2" />
+			<block name="jungle-wooden-fence-gate-facing-east" id="947" minecraft="185:3" pocket="185:3" />
+
+			<block name="opened-jungle-wooden-fence-gate-facing-south" id="948" minecraft="185:4" pocket="185:4" />
+			<block name="opened-jungle-wooden-fence-gate-facing-west" id="949" minecraft="185:5" pocket="185:5" />
+			<block name="opened-jungle-wooden-fence-gate-facing-north" id="950" minecraft="185:6" pocket="185:6" />
+			<block name="opened-jungle-wooden-fence-gate-facing-east" id="951" minecraft="185:7" pocket="185:7" />
+
+		</group>
+
+		<!-- acacia -->
+		<group>
+
+			<block name="acacia-wooden-fence-gate-facing-south" id="952" minecraft="186:0" pocket="186:0" />
+			<block name="acacia-wooden-fence-gate-facing-west" id="953" minecraft="186:1" pocket="186:1" />
+			<block name="acacia-wooden-fence-gate-facing-north" id="954" minecraft="186:2" pocket="186:2" />
+			<block name="acacia-wooden-fence-gate-facing-east" id="955" minecraft="186:3" pocket="186:3" />
+
+			<block name="opened-acacia-wooden-fence-gate-facing-south" id="956" minecraft="186:4" pocket="186:4" />
+			<block name="opened-acacia-wooden-fence-gate-facing-west" id="957" minecraft="186:5" pocket="186:5" />
+			<block name="opened-acacia-wooden-fence-gate-facing-north" id="958" minecraft="186:6" pocket="186:6" />
+			<block name="opened-acacia-wooden-fence-gate-facing-east" id="959" minecraft="186:7" pocket="186:7" />
+
+		</group>
+
+		<!-- dark oak -->
+		<group>
+
+			<block name="dark-oak-wooden-fence-gate-facing-south" id="960" minecraft="187:0" pocket="187:0" />
+			<block name="dark-oak-wooden-fence-gate-facing-west" id="961" minecraft="187:1" pocket="187:1" />
+			<block name="dark-oak-wooden-fence-gate-facing-north" id="962" minecraft="187:2" pocket="187:2" />
+			<block name="dark-oak-wooden-fence-gate-facing-east" id="963" minecraft="187:3" pocket="187:3" />
+
+			<block name="opened-dark-oak-wooden-fence-gate-facing-south" id="964" minecraft="187:4" pocket="187:4" />
+			<block name="opened-dark-oak-wooden-fence-gate-facing-west" id="965" minecraft="187:5" pocket="187:5" />
+			<block name="opened-dark-oak-wooden-fence-gate-facing-north" id="966" minecraft="187:6" pocket="187:6" />
+			<block name="opened-dark-oak-wooden-fence-gate-facing-east" id="967" minecraft="187:7" pocket="187:7" />
+
+		</group>
+
+	</group>
+
+	<block name="enchanting-table" id="972" minecraft="116" pocket="116" hardness="5" blastresistance="6000" boundingbox="0,0,0-16,12,16" />
+
+	<!-- brewing stand -->
+	<group hardness="0.5" blastresistance="2.5" luminance="1">
+
+		<block name="brewing-stand-empty" id="973" minecraft="117:0" pocket="117:0" />
+		<block name="brewing-stand-bottle-1" id="974" minecraft="117:1" pocket="117:1" />
+		<block name="brewing-stand-bottle-2" id="975" minecraft="117:2" pocket="117:2" />
+		<block name="brewing-stand-bottle-1-2" id="976" minecraft="117:3" pocket="117:3" />
+		<block name="brewing-stand-bottle-3" id="977" minecraft="117:4" pocket="117:4" />
+		<block name="brewing-stand-bottle-1-3" id="978" minecraft="117:5" pocket="117:5" />
+		<block name="brewing-stand-bottle-2-3" id="979" minecraft="117:6" pocket="117:6" />
+		<block name="brewing-stand-full" id="980" minecraft="117:7" pocket="117:7" />
+
+	</group>
+
+	<!-- cauldron -->
+	<group hardness="2" blastresistance="10">
+
+		<block name="cauldron-empty" id="981" minecraft="118:0" pocket="118:0" />
+		<block name="cauldron-one-sixth-filled" id="982" pocket="118:1" />
+		<block name="cauldron-one-third-filled" id="983" minecraft="118:1" pocket="118:2" />
+		<block name="cauldron-three-sixth-filled" id="984" pocket="118:3" />
+		<block name="cauldron-two-third-filled" id="985" minecraft="118:2" pocket="118:4" />
+		<block name="cauldron-five-sixth-filled" id="986" pocket="118:5" />
+		<block name="cauldron-filled" id="987" minecraft="118:3" pocket="118:6" />
+
+	</group>
+
+	<!-- end portal frame -->
+	<group hardness="-1" blastresistance="18000000" opacity="0" luminance="1" boundingbox="0,0,0-16,13,16">
+
+		<block name="end-portal-frame-south" id="988" minecraft="120:0" pocket="120:0" />
+		<block name="end-portal-frame-west" id="989" minecraft="120:1" pocket="120:1" />
+		<block name="end-portal-frame-north" id="990" minecraft="120:2" pocket="120:2" />
+		<block name="end-portal-frame-east" id="991" minecraft="120:3" pocket="120:3" />
+
+		<block name="active-end-portal-frame-south" id="992" minecraft="120:4" pocket="120:4" />
+		<block name="active-end-portal-frame-west" id="993" minecraft="120:5" pocket="120:5" />
+		<block name="active-end-portal-frame-north" id="994" minecraft="120:6" pocket="120:6" />
+		<block name="active-end-portal-frame-east" id="995" minecraft="120:7" pocket="120:7" />
+
+	</group>
+
+	<block name="end-stone" id="996" minecraft="121" pocket="121" hardness="3" blastresistance="45" />
+
+	<block name="end-stone-bricks" id="1231" minecraft="206" pocket="206" hardness="0.8" blastresistance="4" />
+
+	<block name="end-portal" id="997" minecraft="119" pocket="119" hardness="-1" blastresistance="18000000" opacity="0" luminance="15" boundingbox="0,0,0-16,12,16" />
+
+	<block name="end-gateway" id="1232" minecraft="209" pocket="209" solid="false" hardness="-1" blastresistance="18000000" luminance="15" />
+
+	<block name="dragon-egg" id="998" minecraft="122" pocket="122" hardness="3" blastresistance="45" opacity="0" luminance="1" />
+
+	<!-- redstone lamps -->
+	<group hardness="0.3" blastresistance="1.5">
+
+		<block name="redstone-lamp" id="999" minecraft="123" pocket="123" />
+		<block name="active-redstone-lamp" id="1000" minecraft="124" pocket="124" luminance="15" />
+
+	</group>
+
+	<!-- cocoa -->
+	<group hardness="0.2" blastresistance="15" opacity="0">
+
+		<block name="cocoa-north-0" id="1001" minecraft="127:0" pocket="127:0" boundingbox="6,7,11-10,12,15" />
+		<block name="cocoa-east-0" id="1002" minecraft="127:1" pocket="127:1" boundingbox="11,7,6-15,12,10" />
+		<block name="cocoa-south-0" id="1003" minecraft="127:2" pocket="127:2" boundingbox="6,7,1-10,12,5" />
+		<block name="cocoa-west-0" id="1004" minecraft="127:3" pocket="127:3" boundingbox="1,7,6-5,12,10" />
+
+		<block name="cocoa-north-1" id="1005" minecraft="127:4" pocket="127:4" boundingbox="5,5,9-11,12,15" />
+		<block name="cocoa-east-1" id="1006" minecraft="127:5" pocket="127:5" boundingbox="9,5,5-15,12,11" />
+		<block name="cocoa-south-1" id="1007" minecraft="127:6" pocket="127:6" boundingbox="5,5,1-11,12,7" />
+		<block name="cocoa-west-1" id="1008" minecraft="127:7" pocket="127:7" boundingbox="1,5,5-7,12,11" />
+
+		<block name="cocoa-north-2" id="1009" minecraft="127:8" pocket="127:8" boundingbox="4,3,7-12,12,15" />
+		<block name="cocoa-east-2" id="1010" minecraft="127:9" pocket="127:9" boundingbox="7,3,4-15,12,12" />
+		<block name="cocoa-south-2" id="1011" minecraft="127:10" pocket="127:10" boundingbox="4,3,1-12,12,9" />
+		<block name="cocoa-west-2" id="1012" minecraft="127:11" pocket="127:11" boundingbox="1,3,4-9,12,12" />
+
+	</group>
+
+	<!-- tripwire hook -->
+	<group hardness="0" blastresistance="0" opacity="0" boundingbox="none">
+
+		<block name="tripwire-hook-facing-south" id="1017" minecraft="131:0" pocket="131:0" />
+		<block name="tripwire-hook-facing-west" id="1018" minecraft="131:1" pocket="131:1" />
+		<block name="tripwire-hook-facing-north" id="1019" minecraft="131:2" pocket="131:2" />
+		<block name="tripwire-hook-facing-east" id="1020" minecraft="131:3" pocket="131:3" />
+
+		<block name="connected-tripwire-hook-facing-south" id="1021" minecraft="131:4" pocket="131:4" />
+		<block name="connected-tripwire-hook-facing-west" id="1022" minecraft="131:5" pocket="131:5" />
+		<block name="connected-tripwire-hook-facing-north" id="1023" minecraft="131:6" pocket="131:6" />
+		<block name="connected-tripwire-hook-facing-east" id="1024" minecraft="131:7" pocket="131:7" />
+
+		<block name="powered-tripwire-hook-facing-south" id="1025" minecraft="131:8" pocket="131:8" />
+		<block name="powered-tripwire-hook-facing-west" id="1026" minecraft="131:9" pocket="131:9" />
+		<block name="powered-tripwire-hook-facing-north" id="1027" minecraft="131:10" pocket="131:10" />
+		<block name="powered-tripwire-hook-facing-east" id="1028" minecraft="131:11" pocket="131:11" />
+
+	</group>
+
+	<!-- tripwire -->
+	<group hardness="0" blastresistance="0" solid="false" opacity="0" boundingbox="0,0,0-16,8,16">
+
+		<block name="powered-tripwire" id="1029" minecraft="132:1" pocket="132:1" />
+		<block name="connected-tripwire" id="1030" minecraft="132:4" pocket="132:4" />
+		<block name="tripwire" id="1031" minecraft="132:8" pocket="132:8" />
+
+	</group>
+
+	<!-- command blocks -->
+	<group hardness="-1" blastresistance="18000000">
+
+		<block name="command-block-facing-down" id="1032" minecraft="137:0" />
+		<block name="command-block-facing-up" id="1033" minecraft="137:1" />
+		<block name="command-block-facing-north" id="1034" minecraft="137:2" />
+		<block name="command-block-facing-south" id="1035" minecraft="137:3" />
+		<block name="command-block-facing-west" id="1036" minecraft="137:4" />
+		<block name="command-block-facing-east" id="1037" minecraft="137:5" />
+
+		<block name="conditional-command-block-facing-down" id="1094" minecraft="137:8" />
+		<block name="conditional-command-block-facing-up" id="1038" minecraft="137:9" />
+		<block name="conditional-command-block-facing-north" id="1039" minecraft="137:10" />
+		<block name="conditional-command-block-facing-south" id="1040" minecraft="137:11" />
+		<block name="conditional-command-block-facing-west" id="1041" minecraft="137:12" />
+		<block name="conditional-command-block-facing-east" id="1042" minecraft="137:13" />
+
+		<block name="repeating-command-block-facing-down" id="1043" minecraft="210:0" />
+		<block name="repeating-command-block-facing-up" id="1044" minecraft="210:1" />
+		<block name="repeating-command-block-facing-north" id="1045" minecraft="210:2" />
+		<block name="repeating-command-block-facing-south" id="1046" minecraft="210:3" />
+		<block name="repeating-command-block-facing-west" id="1047" minecraft="210:4" />
+		<block name="repeating-command-block-facing-east" id="1048" minecraft="210:5" />
+
+		<block name="conditional-repeating-command-block-facing-down" id="1049" minecraft="210:8" />
+		<block name="conditional-repeating-command-block-facing-up" id="1050" minecraft="210:9" />
+		<block name="conditional-repeating-command-block-facing-north" id="1051" minecraft="210:10" />
+		<block name="conditional-repeating-command-block-facing-south" id="1052" minecraft="210:11" />
+		<block name="conditional-repeating-command-block-facing-west" id="1053" minecraft="210:12" />
+		<block name="conditional-repeating-command-block-facing-east" id="1054" minecraft="210:13" />
+
+		<block name="chain-command-block-facing-down" id="1055" minecraft="211:0" />
+		<block name="chain-command-block-facing-up" id="1056" minecraft="211:1" />
+		<block name="chain-command-block-facing-north" id="1057" minecraft="211:2" />
+		<block name="chain-command-block-facing-south" id="1058" minecraft="211:3" />
+		<block name="chain-command-block-facing-west" id="1059" minecraft="211:4" />
+		<block name="chain-command-block-facing-east" id="1060" minecraft="211:5" />
+
+		<block name="conditional-chain-command-block-facing-down" id="1061" minecraft="211:8" />
+		<block name="conditional-chain-command-block-facing-up" id="1062" minecraft="211:9" />
+		<block name="conditional-chain-command-block-facing-north" id="1063" minecraft="211:10" />
+		<block name="conditional-chain-command-block-facing-south" id="1064" minecraft="211:11" />
+		<block name="conditional-chain-command-block-facing-west" id="1065" minecraft="211:12" />
+		<block name="conditional-chain-command-block-facing-east" id="1066" minecraft="211:13" />
+
+	</group>
+
+	<block name="beacon" id="1067" minecraft="138" pocket="138" hardness="3" blastresistance="15" opacity="0" luminance="15" />
+
+	<block name="flower-pot" id="1068" minecraft="140" pocket="140" hardness="0" blastresistance="0" opacity="0" boundingbox="5,0,5-11,6,11" />
+
+	<!-- heads -->
+	<group hardness="1" blastresistance="5" opacity="0">
+
+		<block name="mob-head-floor" id="1069" minecraft="144:1" pocket="144:1" boundingbox="4,0,4-12,8,12" />
+		<block name="mob-head-facing-north" id="1070" minecraft="144:2" pocket="144:2" boundingbox="4,4,8-12,12,16" />
+		<block name="mob-head-facing-south" id="1071" minecraft="144:3" pocket="144:3" boundingbox="4,4,0-12,12,8" />
+		<block name="mob-head-facing-east" id="1072" minecraft="144:4" pocket="144:4" boundingbox="0,4,4-8,12,12" />
+		<block name="mob-head-facing-west" id="1073" minecraft="144:5" pocket="144:5" boundingbox="8,4,4-16,12,12" />
+
+	</group>
+
+	<!-- anvil -->
+	<group hardness="5" blastresistance="6000" opacity="0">
+
+		<group boundingbox="2,0,0-14,16,16">
+
+			<block name="anvil-north-south" id="1074" minecraft="145:0" pocket="145:0" />
+			<block name="anvil-south-north" id="1075" minecraft="145:2" pocket="145:2" />
+
+			<block name="slightly-anvil-north-south" id="1076" minecraft="145:4" pocket="145:4" />
+			<block name="slightly-anvil-south-north" id="1077" minecraft="145:6" pocket="145:6" />
+
+			<block name="very-anvil-north-south" id="1078" minecraft="145:8" pocket="145:8" />
+			<block name="very-anvil-south-north" id="1079" minecraft="145:10" pocket="145:10" />
+
+		</group>
+
+		<group boundingbox="0,0,2-16,16,14">
+
+			<block name="anvil-east-west" id="1080" minecraft="145:1" pocket="145:1" />
+			<block name="anvil-west-east" id="1081" minecraft="145:3" pocket="145:3" />
+
+			<block name="slightly-anvil-east-west" id="1082" minecraft="145:5" pocket="145:5" />
+			<block name="slightly-anvil-west-east" id="1083" minecraft="145:7" pocket="145:7" />
+
+			<block name="very-anvil-east-west" id="1084" minecraft="145:9" pocket="145:9" />
+			<block name="very-anvil-west-east" id="1085" minecraft="145:11" pocket="145:11" />
+
+		</group>
+
+	</group>
+
+	<block name="lily-pad" id="1095" minecraft="111" pocket="111" hardness="0" blastresistance="0" opacity="0" boundingbox="1,0,1-15,2,15" />
+
+	<!-- redstone comparator -->
+	<group hardness="0" blastresistance="0" opacity="0" boundingbox="0,0,0-16,2,16">
+
+		<group>
+
+			<block name="comparator-facing-north" id="1096" minecraft="149:0" pocket="149:0" />
+			<block name="comparator-facing-east" id="1097" minecraft="149:1" pocket="149:1" />
+			<block name="comparator-facing-south" id="1098" minecraft="149:2" pocket="149:2" />
+			<block name="comparator-facing-west" id="1099" minecraft="149:3" pocket="149:3" />
+
+			<block name="comparator-substraction-mode-facing-north" id="1100" minecraft="149:4" pocket="149:4" />
+			<block name="comparator-substraction-mode-facing-east" id="1101" minecraft="149:5" pocket="149:5" />
+			<block name="comparator-substraction-mode-facing-south" id="1102" minecraft="149:6" pocket="149:6" />
+			<block name="comparator-substraction-mode-facing-west" id="1103" minecraft="149:7" pocket="149:7" />
+
+		</group>
+
+		<group luminance="7">
+
+			<block name="powered-comparator-facing-north" id="1104" minecraft="149:8" pocket="149:8" />
+			<block name="powered-comparator-facing-east" id="1105" minecraft="149:9" pocket="149:9" />
+			<block name="powered-comparator-facing-south" id="1106" minecraft="149:10" pocket="149:10" />
+			<block name="powered-comparator-facing-west" id="1107" minecraft="149:11" pocket="149:11" />
+
+			<block name="powered-comparator-substraction-mode-facing-north" id="1108" minecraft="149:12" pocket="149:12" />
+			<block name="powered-comparator-substraction-mode-facing-east" id="1109" minecraft="149:13" pocket="149:13" />
+			<block name="powered-comparator-substraction-mode-facing-south" id="1110" minecraft="149:14" pocket="149:14" />
+			<block name="powered-comparator-substraction-mode-facing-west" id="1111" minecraft="149:15" pocket="149:15" />
+
+		</group>
+
+	</group>
+
+	<!-- daylight sensor -->
+	<group hardness="0.2" blastresistance="1" opacity="0" boundingbox="0,0,0-16,6,16">
+
+		<block name="daylight-sensor-0" id="1112" minecraft="151:0" pocket="151:0" />
+		<block name="daylight-sensor-1" id="1113" minecraft="151:1" pocket="151:1" />
+		<block name="daylight-sensor-2" id="1114" minecraft="151:2" pocket="151:2" />
+		<block name="daylight-sensor-3" id="1115" minecraft="151:3" pocket="151:3" />
+		<block name="daylight-sensor-4" id="1116" minecraft="151:4" pocket="151:4" />
+		<block name="daylight-sensor-5" id="1117" minecraft="151:5" pocket="151:5" />
+		<block name="daylight-sensor-6" id="1118" minecraft="151:6" pocket="151:6" />
+		<block name="daylight-sensor-7" id="1119" minecraft="151:7" pocket="151:7" />
+		<block name="daylight-sensor-8" id="1120" minecraft="151:8" pocket="151:8" />
+		<block name="daylight-sensor-9" id="1121" minecraft="151:9" pocket="151:9" />
+		<block name="daylight-sensor-10" id="1122" minecraft="151:10" pocket="151:10" />
+		<block name="daylight-sensor-11" id="1123" minecraft="151:11" pocket="151:11" />
+		<block name="daylight-sensor-12" id="1124" minecraft="151:12" pocket="151:12" />
+		<block name="daylight-sensor-13" id="1125" minecraft="151:13" pocket="151:13" />
+		<block name="daylight-sensor-14" id="1126" minecraft="151:14" pocket="151:14" />
+		<block name="daylight-sensor-15" id="1127" minecraft="151:15" pocket="151:15" />
+
+		<block name="inverted-daylight-sensor-0" id="1128" minecraft="178:0" pocket="178:0" />
+		<block name="inverted-daylight-sensor-1" id="1129" minecraft="178:1" pocket="178:1" />
+		<block name="inverted-daylight-sensor-2" id="1130" minecraft="178:2" pocket="178:2" />
+		<block name="inverted-daylight-sensor-3" id="1131" minecraft="178:3" pocket="178:3" />
+		<block name="inverted-daylight-sensor-4" id="1132" minecraft="178:4" pocket="178:4" />
+		<block name="inverted-daylight-sensor-5" id="1133" minecraft="178:5" pocket="178:5" />
+		<block name="inverted-daylight-sensor-6" id="1134" minecraft="178:6" pocket="178:6" />
+		<block name="inverted-daylight-sensor-7" id="1135" minecraft="178:7" pocket="178:7" />
+		<block name="inverted-daylight-sensor-8" id="1136" minecraft="178:8" pocket="178:8" />
+		<block name="inverted-daylight-sensor-9" id="1137" minecraft="178:9" pocket="178:9" />
+		<block name="inverted-daylight-sensor-10" id="1138" minecraft="178:10" pocket="178:10" />
+		<block name="inverted-daylight-sensor-11" id="1139" minecraft="178:11" pocket="178:11" />
+		<block name="inverted-daylight-sensor-12" id="1140" minecraft="178:12" pocket="178:12" />
+		<block name="inverted-daylight-sensor-13" id="1141" minecraft="178:13" pocket="178:13" />
+		<block name="inverted-daylight-sensor-14" id="1142" minecraft="178:14" pocket="178:14" />
+		<block name="inverted-daylight-sensor-15" id="1143" minecraft="178:15" pocket="178:15" />
+
+	</group>
+
+	<!-- hopper -->
+	<group hardness="3" blastresistance="24" opacity="0">
+
+		<block name="hopper-output-facing-down" id="1145" minecraft="154:0" pocket="154:0" />
+		<block name="hopper-output-facing-north" id="1146" minecraft="154:2" pocket="154:2" />
+		<block name="hopper-output-facing-south" id="1147" minecraft="154:3" pocket="154:3" />
+		<block name="hopper-output-facing-west" id="1148" minecraft="154:4" pocket="154:4" />
+		<block name="hopper-output-facing-east" id="1149" minecraft="154:5" pocket="154:5" />
+
+	</group>
+
+	<!-- quartz -->
+	<group hardness="0.8" blastresistance="4">
+
+		<block name="quartz-block" id="1150" minecraft="155:0" pocket="155:0" />
+		<block name="chiseled-quartz-block" id="1151" minecraft="155:1" pocket="155:1" />
+		<block name="pillar-quartz-block-vertical" id="1152" minecraft="155:2" pocket="155:2" />
+		<block name="pillar-quartz-block-north-south" id="1153" minecraft="155:3" pocket="155:3" />
+		<block name="pillar-quartz-block-east-west" id="1154" minecraft="155:4" pocket="155:4" />
+
+	</group>
+
+	<block name="slime-block" id="1167" minecraft="165" pocket="165" hardness="0" blastresistance="0" opacity="0" />
+
+	<block name="barrier" id="1168" minecraft="166" pocket="95" hardness="-1" blastresistance="18000000" opacity="0" />
+
+	<!-- prismarine -->
+	<group hardness="1.5" blastresistance="30">
+
+		<block name="prismarine" id="1169" minecraft="168:0" pocket="168:0" />
+		<block name="prismarine-bricks" id="1170" minecraft="168:1" pocket="168:1" />
+		<block name="dark-prismarine" id="1171" minecraft="168:2" pocket="168:2" />
+
+	</group>
+
+	<block name="sea-lantern" id="1172" minecraft="169" pocket="169" hardness="0.3" blastresistance="1.5" opacity="0" luminance="15" />
+
+	<!-- hay bale -->
+	<group hardness="0.5" blastresistance="2.5">
+
+		<block name="hay-bale-vertical" id="1173" minecraft="170:0" pocket="170:0" />
+		<block name="hay-bale-east-west" id="1174" minecraft="170:4" pocket="170:4" />
+		<block name="hay-bale-north-south" id="1175" minecraft="170:8" pocket="170:8" />
+
+	</group>
+
+	<!-- banners -->
+	<group hardness="1" blastresistance="5" opacity="0" boundingbox="none">
+
+		<block name="banner-facing-south" id="1192" minecraft="176:0" />
+		<block name="banner-facing-south-southwest" id="1193" minecraft="176:1" />
+		<block name="banner-facing-southwest" id="1194" minecraft="176:2" />
+		<block name="banner-facing-west-westsouth" id="1195" minecraft="176:3" />
+		<block name="banner-facing-west" id="1196" minecraft="176:4" />
+		<block name="banner-facing-west-northwest" id="1197" minecraft="176:5" />
+		<block name="banner-facing-northwest" id="1198" minecraft="176:6" />
+		<block name="banner-facing-north-northwest" id="1199" minecraft="176:7" />
+		<block name="banner-facing-north" id="1200" minecraft="176:8" />
+		<block name="banner-facing-north-northeast" id="1201" minecraft="176:9" />
+		<block name="banner-facing-northeast" id="1202" minecraft="176:10" />
+		<block name="banner-facing-east-northeast" id="1203" minecraft="176:11" />
+		<block name="banner-facing-east" id="1204" minecraft="176:12" />
+		<block name="banner-facing-east-southeast" id="1205" minecraft="176:13" />
+		<block name="banner-facing-southeast" id="1206" minecraft="176:14" />
+		<block name="banner-facing-south-southeast" id="1207" minecraft="176:15" />
+
+		<block name="wall-banner-facing-north" id="1208" minecraft="177:2" />
+		<block name="wall-banner-facing-south" id="1209" minecraft="177:3" />
+		<block name="wall-banner-facing-west" id="1210" minecraft="177:4" />
+		<block name="wall-banner-facing-east" id="1211" minecraft="177:5" />
+
+	</group>
+
+	<!-- item frame, TODO confirm rotation -->
+	<group hardness="0" blastresistance="0" opacity="0" boundingbox="none">
+
+		<block name="item-frame-facing-north" id="1212" pocket="199:2" />
+		<block name="item-frame-facing-south" id="1213" pocket="199:3" />
+		<block name="item-frame-facing-west" id="1214" pocket="199:4" />
+		<block name="item-frame-facing-east" id="1215" pocket="199:5" />
+
+	</group>
+
+	<!-- end rod -->
+	<group hardness="0" blastresistance="0" luminance="14">
+
+		<block name="end-rod-facing-down" id="1216" minecraft="198:0" pocket="208:0" boundingbox="6,0,6-10,16,10" />
+		<block name="end-rod-facing-up" id="1217" minecraft="198:1" pocket="208:1" boundingbox="6,0,6-10,16,10" />
+		<block name="end-rod-facing-north" id="1218" minecraft="198:2" pocket="208:2" boundingbox="6,6,0-10,10,16" />
+		<block name="end-rod-facing-south" id="1219" minecraft="198:3" pocket="208:3" boundingbox="6,6,0-10,10,16" />
+		<block name="end-rod-facing-west" id="1220" minecraft="198:4" pocket="208:4" boundingbox="0,6,6-16,10,10" />
+		<block name="end-rod-facing-east" id="1221" minecraft="198:5" pocket="208:5" boundingbox="0,6,6-16,10,10" />
+
+	</group>
+
+	<!-- chorus plant -->
+	<group hardness="0.4" blastresistance="2" opacity="0">
+
+		<block name="chorus-plant" id="1222" minecraft="199" pocket="240" />
+
+		<block name="chorus-flower-0" id="1223" minecraft="200:0" pocket="200:0" />
+		<block name="chorus-flower-1" id="1224" minecraft="200:1" pocket="200:1" />
+		<block name="chorus-flower-2" id="1225" minecraft="200:2" pocket="200:2" />
+		<block name="chorus-flower-3" id="1226" minecraft="200:3" pocket="200:3" />
+		<block name="chorus-flower-4" id="1227" minecraft="200:4" pocket="200:4" />
+		<block name="chorus-flower-5" id="1228" minecraft="200:5" pocket="200:5" />
+
+	</group>
+
+	<!-- purpur blocks -->
+	<group hardness="1.5" blastresistance="30">
+
+		<block name="purpur-block" id="1229" minecraft="201" pocket="201:0" />
+		<block name="purpur-pillar" id="1230" minecraft="202" pocket="201:2" />
+
+	</group>
+
+	<block name="magma-block" id="1238" minecraft="213" hardness="0.5" blastresistance="2.5" luminance="3" />
+
+	<block name="nether-wart-block" id="1239" minecraft="214" hardness="1" blastresistance="5" />
+
+	<!-- bone block -->
+	<group hardness="2" blastresistance="10">
+
+		<block name="bone-block-vertical" id="1240" minecraft="216:0" />
+		<block name="bone-block-east-west" id="1241" minecraft="216:4" />
+		<block name="bone-block-north-south" id="1242" minecraft="216:8" />
+
+	</group>
+
+	<!-- shulker box -->
+	<group hardness="6" blastresistance="30" opacity="0">
+
+		<block name="white-shulker-box" id="1249" minecraft="219" />
+		<block name="orange-shulker-box" id="1250" minecraft="220" />
+		<block name="magenta-shulker-box" id="1251" minecraft="221" />
+		<block name="light-blue-shulker-box" id="1252" minecraft="222" />
+		<block name="yellow-shulker-box" id="1253" minecraft="223" />
+		<block name="lime-shulker-box" id="1254" minecraft="224" />
+		<block name="pink-shulker-box" id="1255" minecraft="225" />
+		<block name="gray-shulker-box" id="1256" minecraft="226" />
+		<block name="light-shulker-box" id="1257" minecraft="227" />
+		<block name="cyan-shulker-box" id="1258" minecraft="228" />
+		<block name="purple-shulker-box" id="1259" minecraft="229" />
+		<block name="blue-shulker-box" id="1260" minecraft="230" />
+		<block name="brown-shulker-box" id="1261" minecraft="231" />
+		<block name="green-shulker-box" id="1262" minecraft="232" />
+		<block name="red-shulker-box" id="1263" minecraft="233" />
+		<block name="black-shulker-box" id="1264" minecraft="234" />
+
+	</group>
+
+	<!-- update block -->
+	<group hardness="0" blastresistance="0">
+
+		<block name="update-block" id="1265" pocket="248" />
+		<block name="ateupd-block" id="1266" pocket="249" />
+
+	</group>
+
+	<!-- structure -->
+	<group hardness="-1" blastresistance="18000000">
+
+		<block name="structure-block-save" id="1267" minecraft="255:0" />
+		<block name="structure-block-load" id="1268" minecraft="255:1" />
+		<block name="structure-block-corner" id="1269" minecraft="255:2" />
+		<block name="structure-block-data" id="1270" minecraft="255:3" />
+
+	</group>
+
+</blocks>

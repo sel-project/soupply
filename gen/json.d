@@ -20,7 +20,7 @@ import std.json;
 
 import all;
 
-void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative) {
+void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks) {
 
 	// attributes
 	mkdirRecurse("../json/attributes");
@@ -212,6 +212,42 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		data ~= "\t}\n\n";
 		data ~= "}\n";
 		_write("../json/protocol/" ~ game ~ ".json", data);
+	}
+
+	// blocks
+	{
+		string data = "{\n\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
+		data ~= "\t\"blocks\": {\n\n";
+		void writeBlockData(string type, BlockData blockdata) {
+			if(blockdata.id >= 0) {
+				data ~= "\t\t\t\"" ~ type ~ "\": ";
+				if(blockdata.meta >= 0) {
+					data ~= "{\n";
+					data ~= "\t\t\t\t\"id\": " ~ to!string(blockdata.id) ~ ",\n";
+					data ~= "\t\t\t\t\"meta\": " ~ to!string(blockdata.meta) ~ "\n";
+					data ~= "\t\t\t}";
+				} else {
+					data ~= to!string(blockdata.id);
+				}
+				data ~= ",\n";
+			}
+		}
+		foreach(i, block; blocks) {
+			data ~= "\t\t\"" ~ block.name ~ "\": {\n";
+			data ~= "\t\t\t\"id\": " ~ block.id.to!string ~ ",\n";
+			writeBlockData("minecraft", block.minecraft);
+			writeBlockData("pocket", block.pocket);
+			data ~= "\t\t\t\"solid\": " ~ block.solid.to!string ~ ",\n";
+			if(block.solid) {
+				data ~= "\t\t\t\"hardness\": " ~ block.hardness.to!string ~ ",\n";
+				data ~= "\t\t\t\"blast_resistance\": " ~ block.blastResistance.to!string ~ ",\n";
+			}
+			data = data[0..$-2] ~ "\n";
+			data ~= "\t\t}" ~ (i != blocks.length -1 ? "," : "") ~ "\n\n";
+		}
+		data ~= "\t}\n\n";
+		data ~= "}\n";
+		_write("../json/blocks.json", data);
 	}
 
 }

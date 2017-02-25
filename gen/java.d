@@ -14,7 +14,7 @@
  */
 module java;
 
-import std.algorithm : canFind, min, reverse;
+import std.algorithm : canFind, min, max, reverse;
 import std.ascii : newline;
 import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
@@ -23,10 +23,11 @@ import std.path : dirSeparator;
 import std.regex : ctRegex, replaceAll, matchFirst;
 import std.string;
 import std.typecons : tuple;
+import std.typetuple : TypeTuple;
 
 import all;
 
-void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative) {
+void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks) {
 	
 	mkdirRecurse("../src/java/sul/utils");
 	
@@ -844,6 +845,68 @@ public class MetadataException extends RuntimeException {
 		tp ~= "\t}\n\n";
 	}
 	write("../src/java/sul/utils/Tuples.java", tp ~ "}");
+
+	// blocks
+	{
+		string data = "package sul;\n\npublic enum Blocks {\n\n";
+		foreach(i, block; blocks) {
+			data ~= "\t" ~ block.name.toUpper ~ "(";
+			data ~= "\"" ~ block.name.replace("_" , " ") ~ "\", ";
+			data ~= "(short)" ~ block.id.to!string ~ ", ";
+			data ~= (block.minecraft.id >= 0 ? ("new BlockData(" ~ block.minecraft.id.to!string ~ ", " ~ (block.minecraft.meta < 0 ? "0" : block.minecraft.meta.to!string) ~ ")") : "null") ~ ", ";
+			data ~= (block.pocket.id >= 0 ? ("new BlockData(" ~ block.pocket.id.to!string ~ ", " ~ (block.pocket.meta < 0 ? "0" : block.pocket.meta.to!string) ~ ")") : "null") ~ ", ";
+			data ~= block.solid.to!string ~ ", ";
+			data ~= "(double)" ~ block.hardness.to!string ~ ", ";
+			data ~= "(double)" ~ block.blastResistance.to!string;
+			data ~= ")" ~ (i != blocks.length - 1 ? "," : ";") ~ "\n";
+		}
+		data ~= "\n";
+		data ~= "\tpublic final String name;\n";
+		data ~= "\tpublic final short id;\n";
+		data ~= "\tpublic final BlockData minecraft, pocket;\n";
+		data ~= "\tpublic final boolean solid;\n";
+		data ~= "\tpublic final double hardness, blastResistance;\n";
+		data ~= "\n";
+		data ~= "\tprivate Blocks(String name, short id, BlockData minecraft, BlockData pocket, boolean solid, double hardness, double blastResistance) {\n";
+		data ~= "\t\tthis.name = name;\n";
+		data ~= "\t\tthis.id = id;\n";
+		data ~= "\t\tthis.minecraft = minecraft;\n";
+		data ~= "\t\tthis.pocket = pocket;\n";
+		data ~= "\t\tthis.solid = solid;\n";
+		data ~= "\t\tthis.hardness = hardness;\n";
+		data ~= "\t\tthis.blastResistance = blastResistance;\n";
+		data ~= "\t}\n\n";
+		data ~= "\t@SuppressWarnings(\"unused\")\n";
+		data ~= "\tprivate static class BlockData {\n\n";
+		data ~= "\t\tpublic final int id, meta;\n\n";
+		data ~= "\t\tpublic BlockData(int id, int meta) {\n";
+		data ~= "\t\t\tthis.id = id;\n";
+		data ~= "\t\t\tthis.meta = meta;\n";
+		data ~= "\t\t}\n\n";
+		data ~= "\t}\n\n";
+		// get methods
+		/*data ~= "\tpublic static Blocks getSelBlock(short id) {\n";
+		data ~= "\t\tswitch(id) {\n";
+		foreach(block ; blocks) {
+			data ~= "\t\t\tcase " ~ to!string(block.id) ~ ": return " ~ block.name.toUpper ~ ";\n";
+		}
+		data ~= "\t\t\tdefault: return null;\n";
+		data ~= "\t\t}\n";
+		data ~= "\t}\n\n";
+		foreach(type ; TypeTuple!("minecraft", "pocket")) {
+			data ~= "\tpublic static Blocks get" ~ capitalize(type) ~ "Block(int id, int meta) {\n";
+			data ~= "\t\tswitch(id << 4 | meta) {\n";
+			foreach(block ; blocks) {
+				mixin("auto bd = block." ~ type ~ ";");
+				if(bd.hash >= 0) data ~= "\t\t\tcase " ~ to!string(bd.hash) ~ ": return " ~ block.name.toUpper ~ ";\n";
+			}
+			data ~= "\t\t\tdefault: return null;\n";
+			data ~= "\t\t}\n";
+			data ~= "\t}\n\n";
+		}*/
+		data ~= "}";
+		write("../src/java/sul/Blocks.java", data, "blocks");
+	}
 	
 }
 

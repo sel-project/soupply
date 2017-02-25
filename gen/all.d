@@ -14,7 +14,7 @@
  */
 module all;
 
-import std.algorithm : canFind, min;
+import std.algorithm : canFind, min, sort;
 import std.base64 : Base64URL;
 import std.bitmanip : nativeToLittleEndian, littleEndianToNative;
 import std.conv : to;
@@ -81,6 +81,15 @@ alias Protocol = Tuple!(string, "released", string, "from", string, "to", string
 alias Protocols = File!Protocol;
 
 
+alias BlockData = Tuple!(int, "id", int, "meta", int, "hash");
+
+alias Point = Tuple!(ubyte, "x", ubyte, "y", ubyte, "z");
+
+alias BoundingBox = Tuple!(Point, "min", Point, "max");
+
+alias Block = Tuple!(string, "name", ushort, "id", BlockData, "minecraft", BlockData, "pocket", bool, "solid", double, "hardness", double, "blastResistance", ubyte, "opacity", ubyte, "luminance", BoundingBox, "boundingBox");
+
+
 private uint n_version;
 
 public @property uint sulVersion() {
@@ -102,10 +111,9 @@ void main(string[] args) {
 	bool wjava = args.canFind("java");
 	bool wjs = args.canFind("js");
 	bool wdiff = args.canFind("diff");
-	bool wdoc = args.canFind("doc");
 	bool wdocs = args.canFind("docs");
 	bool wjson = args.canFind("json");
-	bool wall = !wd && !wjava && !wjs && !wdiff && !wdoc && !wdocs && !wjson;
+	bool wall = !wd && !wjava && !wjs && !wdiff && !wdocs && !wjson;
 
 	// attributes
 	Attributes[string] attributes;
@@ -374,14 +382,78 @@ void main(string[] args) {
 		}
 	}
 
-	if(wall || wd) d.d(attributes, protocols, metadata, creative);
-	if(wall || wjava) java.java(attributes, protocols, metadata, creative);
+	// blocks
+	Block[] blocks;
+	{
+		BlockData blockData(string data) {
+			auto ret = BlockData(0, -1, -1);
+			auto spl = data.split(":");
+			ret.id = to!ubyte(spl[0]);
+			ret.hash = ret.id << 4;
+			if(spl.length == 2) {
+				ret.meta = to!ubyte(spl[1]);
+				ret.hash |= ret.meta;
+			}
+			return ret;
+		}
+		BoundingBox boundingBox(string data) {
+			if(data == "none") return BoundingBox.init;
+			Point point(string data) {
+				auto xyz = data.split(",");
+				return Point(to!ubyte(xyz[0]), to!ubyte(xyz[1]), to!ubyte(xyz[2]));
+			}
+			auto spl = data.split("-");
+			return BoundingBox(point(spl[0]), point(spl[1]));
+		}
+		Block createBlock(Block block, Element element) {
+			auto name = "name" in element.tag.attr;
+			auto id = "id" in element.tag.attr;
+			auto minecraft = "minecraft" in element.tag.attr;
+			auto pocket = "pocket" in element.tag.attr;
+			auto solid = "solid" in element.tag.attr;
+			auto hardness = "hardness" in element.tag.attr;
+			auto blastResistance = "blastresistance" in element.tag.attr;
+			auto opacity = "opacity" in element.tag.attr;
+			auto luminance = "luminance" in element.tag.attr;
+			auto bb = "boundingbox" in element.tag.attr;
+			if(name) block.name = replace(*name, "-", "_");
+			if(id) block.id = to!ushort(*id);
+			if(minecraft) block.minecraft = blockData(*minecraft);
+			if(pocket) block.pocket = blockData(*pocket);
+			if(solid) block.solid = to!bool(*solid);
+			if(hardness) block.hardness = to!double(*hardness);
+			if(blastResistance) block.blastResistance = to!double(*blastResistance);
+			if(opacity) block.opacity = to!ubyte(*opacity) & 15;
+			if(luminance) block.luminance = to!ubyte(*luminance) & 15;
+			if(bb) block.boundingBox = boundingBox(*bb);
+			return block;
+		}
+		void group(Block current, Element[] elements) {
+			foreach(element ; elements) {
+				switch(element.tag.name) {
+					case "block":
+						blocks ~= createBlock(current, element);
+						break;
+					case "group":
+						group(createBlock(current, element), element.elements);
+						break;
+					default:
+						break;
+				}
+			}
+		}
+		group(Block("", 0, BlockData(0, 0, -1), BlockData(0, 0, -1), true, 0, 0, 15, 0, BoundingBox(Point(0,0,0), Point(16,16,16))), new Document(cast(string)read("../xml/blocks.xml")).elements);
+	}
+	sort!"a.id < b.id"(blocks);
+
+	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks);
+	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks);
 	if(wall || wjs) js.js(attributes, protocols, metadata, creative);
 
 	if(wall || wdiff) diff.diff(attributes, protocols, metadata);
-	if(wall || wdoc) doc.doc(protocols);
 	if(wall || wdocs) docs.docs(attributes, protocols, metadata);
-	if(wall || wjson) json.json(attributes, protocols, metadata, creative);
+
+	if(wall || wjson) json.json(attributes, protocols, metadata, creative, blocks);
 
 }
 

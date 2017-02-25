@@ -14,7 +14,7 @@
  */
 module d;
 
-import std.algorithm : canFind;
+import std.algorithm : canFind, max;
 import std.ascii : newline;
 import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
@@ -23,10 +23,11 @@ import std.path : dirSeparator;
 import std.regex : ctRegex, replaceAll, matchFirst;
 import std.string;
 import std.typecons;
+import std.typetuple;
 
 import all;
 
-void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative) {
+void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks) {
 
 	mkdirRecurse("../src/d/sul/attributes");
 	mkdirRecurse("../src/d/sul/metadata");
@@ -651,6 +652,61 @@ alias varulong = var!ulong;
 		}
 
 	}
+
+	// blocks
+	string data = "module sul.blocks;\n\n";
+	data ~= "import std.typecons;\nimport std.typetuple;\n\n";
+	data ~= "private alias Point = Tuple!(ubyte, \"x\", ubyte, \"y\", ubyte, \"z\");\n\n";
+	data ~= "private alias BoundingBox = Tuple!(Point, \"min\", Point, \"max\");\n\n";
+	data ~= "public alias Block = Tuple!(string, \"name\", ushort, \"id\", BlockData, \"minecraft\", BlockData, \"pocket\", bool, \"solid\", double, \"hardness\", double, \"blastResistance\", ubyte, \"opacity\", ubyte, \"luminance\", BoundingBox, \"boundingBox\");\n\n";
+	data ~= "private struct BlockData {\n\n";
+	data ~= "\tpublic bool exists;\n";
+	data ~= "\tpublic ubyte id, meta;\n\n";
+	data ~= "\talias exists this;\n\n";
+	data ~= "}\n\n";
+	data ~= "interface Blocks {\n\n";
+	foreach(block ; blocks) {
+		data ~= "\tpublic enum " ~ block.name.toUpper ~ " = Block(";
+		data ~= "\"" ~ block.name.replace("_", " ") ~ "\", ";
+		data ~= block.id.to!string ~ ", ";
+		data ~= "BlockData(" ~ (block.minecraft.hash < 0 ? "false" : ("true, " ~ block.minecraft.id.to!string ~ ", " ~ (block.minecraft.meta < 0 ? "0" : block.minecraft.meta.to!string))) ~ "), ";
+		data ~= "BlockData(" ~ (block.pocket.hash < 0 ? "false" : ("true, " ~ block.pocket.id.to!string ~ ", " ~ (block.pocket.meta < 0 ? "0" : block.pocket.meta.to!string))) ~ "), ";
+		data ~= block.solid.to!string ~ ", ";
+		data ~= block.hardness.to!string ~ ", ";
+		data ~= block.blastResistance.to!string ~ ", ";
+		data ~= block.opacity.to!string ~ ", ";
+		data ~= block.luminance.to!string ~ ", ";
+		data ~= "BoundingBox(Point(" ~ block.boundingBox.min.x.to!string ~ ", " ~ block.boundingBox.min.y.to!string ~ ", " ~ block.boundingBox.min.z.to!string ~ "), Point(" ~ block.boundingBox.max.x.to!string ~ ", " ~ block.boundingBox.max.y.to!string ~ ", " ~ block.boundingBox.max.z.to!string ~ ")), ";
+		data ~= ");\n";
+	}
+	data ~= "\n";
+	data ~= "\tpublic alias typeTuple = TypeTuple!(";
+	foreach(i, block; blocks) {
+		data ~= block.name.toUpper;
+		if(i != blocks.length - 1) data ~= ", ";
+	}
+	data ~= ");\n\n";
+	/*data ~= "\tpublic static Block getSelBlock(ushort id) {\n";
+	data ~= "\t\tswitch(id) {\n";
+	foreach(block ; blocks) {
+		data ~= "\t\t\tcase " ~ block.id.to!string ~ ": return " ~ block.name.toUpper ~ ";\n";
+	}
+	data ~= "\t\t\tdefault: return Block.init;\n";
+	data ~= "\t\t}\n";
+	data ~= "\t}\n\n";
+	foreach(type ; TypeTuple!("minecraft", "pocket")) {
+		data ~= "\tpublic static Block get" ~ capitalize(type) ~ "Block(ubyte id, ubyte meta) {\n";
+		data ~= "\t\tswitch(id << 4 | meta) {\n";
+		foreach(block ; blocks) {
+			mixin("auto bd = block." ~ type ~ ";");
+			if(bd.hash >= 0) data ~= "\t\t\tcase " ~ to!string(bd.hash) ~ ": return " ~ block.name.toUpper ~ ";\n";
+		}
+		data ~= "\t\t\tdefault: return Block.init;\n";
+		data ~= "\t\t}\n";
+		data ~= "\t}\n\n";
+	}*/
+	data ~= "}";
+	write("../src/d/sul/blocks.d", data, "blocks");
 
 }
 
