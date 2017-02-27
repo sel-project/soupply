@@ -50,6 +50,7 @@
 				Identifier of the game.
 				<constant name="pocket" value="1" />
 				<constant name="minecraft" value="2" />
+				<constant name="console" value="3" />
 			</field>
 			<field name="protocols" type="varuint[]">
 				Protocols accepted by the server for the game. They should be ordered from oldest to newest.
@@ -383,6 +384,7 @@
 						<field name="game" type="ubyte">
 							<constant name="pocket" value="1" />
 							<constant name="minecraft" value="2" />
+							<constant name="console" value="3" />
 						</field>
 						<field name="uuid" type="uuid" />
 					</variant>
@@ -493,6 +495,7 @@
 					<variant name="minecraft" value="2">
 						A Minecraft client. Currently there are no additional fields.
 					</variant>
+					<variant name="console" value="3" />
 				</variants>
 			</packet>
 

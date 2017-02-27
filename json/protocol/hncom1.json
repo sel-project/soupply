@@ -33,7 +33,8 @@
 					"type": "ubyte",
 					"constants": {
 						"pocket": 1,
-						"minecraft": 2
+						"minecraft": 2,
+						"console": 3
 					}
 				},
 				{
@@ -445,7 +446,8 @@
 									"type": "ubyte",
 									"constants": {
 										"pocket": 1,
-										"minecraft": 2
+										"minecraft": 2,
+										"console": 3
 									}
 								},
 								{
@@ -595,6 +597,10 @@
 						},
 						"minecraft": {
 							"value": 2,
+							"fields": []
+						},
+						"console": {
+							"value": 3,
 							"fields": []
 						}
 					}

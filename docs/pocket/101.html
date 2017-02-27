@@ -4904,7 +4904,7 @@ var count = count & 255
 					</li>
 					<li>
 						<strong id="types_chunk-data_block-entities">block entities</strong>
-						<p>Additional data for the chunk's block entities (tiles). The position in given by the <code>Int</code> tags <code>x</code>, <code>y</code>, <code>z</code> which are added to the block's compound tag together with the <code>String</code> tag <code>id</code> that contains the name of the tile in pascal case.</p>
+						<p>Additional data for the chunk's block entities (tiles), encoded in the same way as <a href="#play_block-entity-data_nbt">BlockEntityData.nbt</a> is. The position is given by the <code>Int</code> tags <code>x</code>, <code>y</code>, <code>z</code> which are added to the block's compound tag together with the <code>String</code> tag <code>id</code> that contains the name of the tile in pascal case.</p>
 						<p>Wrong encoding or missing tags may result in the block becoming invisible.</p>
 					</li>
 				</ul>

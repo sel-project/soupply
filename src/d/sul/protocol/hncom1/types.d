@@ -63,6 +63,7 @@ struct Game {
 	// type
 	public enum ubyte POCKET = 1;
 	public enum ubyte MINECRAFT = 2;
+	public enum ubyte CONSOLE = 3;
 
 	public enum string[] FIELDS = ["type", "protocols"];
 

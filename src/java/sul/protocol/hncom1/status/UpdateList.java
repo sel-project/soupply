@@ -209,6 +209,7 @@ public class UpdateList extends Packet {
 		// game
 		public static final byte POCKET = 1;
 		public static final byte MINECRAFT = 2;
+		public static final byte CONSOLE = 3;
 
 		public byte game;
 		public UUID uuid;

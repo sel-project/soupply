@@ -365,9 +365,10 @@ struct ChunkData {
 	public sul.protocol.pocket101.types.ExtraData[] extraData;
 
 	/**
-	 * Additional data for the chunk's block entities (tiles). The position in given by
-	 * the `Int` tags `x`, `y`, `z` which are added to the block's compound tag together
-	 * with the `String` tag `id` that contains the name of the tile in pascal case.
+	 * Additional data for the chunk's block entities (tiles), encoded in the same way
+	 * as BlockEntityData.nbt is. The position is given by the `Int` tags `x`, `y`, `z`
+	 * which are added to the block's compound tag together with the `String` tag `id`
+	 * that contains the name of the tile in pascal case.
 	 * Wrong encoding or missing tags may result in the block becoming invisible.
 	 */
 	public ubyte[] blockEntities;

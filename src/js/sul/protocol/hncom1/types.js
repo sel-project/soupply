@@ -58,6 +58,7 @@ const Types = {
 		// type
 		static get POCKET(){ return 1; }
 		static get MINECRAFT(){ return 2; }
+		static get CONSOLE(){ return 3; }
 
 		/**
 		 * @param type

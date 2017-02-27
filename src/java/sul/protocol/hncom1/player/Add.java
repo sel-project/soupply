@@ -371,4 +371,42 @@ public class Add extends Packet {
 
 	}
 
+	public class Console extends Packet {
+
+		public static final byte TYPE = (byte)3;
+
+		@Override
+		public int getId() {
+			return ID;
+		}
+
+		@Override
+		public int length() {
+			return 0;
+		}
+
+		@Override
+		public byte[] encode() {
+			byte[] _encode = encodeImpl();
+			this._buffer = new byte[_encode.length + this.length()];
+			this.writeBytes(_encode);
+			return this.getBuffer();
+		}
+
+		@Override
+		public void decode(byte[] buffer) {
+			this._buffer = buffer;
+		}
+
+		public void decode() {
+			this.decode(remainingBuffer());
+		}
+
+		@Override
+		public String toString() {
+			return "Add.Console()";
+		}
+
+	}
+
 }

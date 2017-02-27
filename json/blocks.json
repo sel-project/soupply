@@ -110,7 +110,7 @@
 			"blast_resistance": 30
 		},
 
-		"stone_brick": {
+		"stone_bricks": {
 			"id": 8,
 			"minecraft": {
 				"id": 98,
@@ -125,7 +125,7 @@
 			"blast_resistance": 30
 		},
 
-		"mossy_stone_brick": {
+		"mossy_stone_bricks": {
 			"id": 9,
 			"minecraft": {
 				"id": 98,
@@ -140,7 +140,7 @@
 			"blast_resistance": 30
 		},
 
-		"cracked_stone_brick": {
+		"cracked_stone_bricks": {
 			"id": 10,
 			"minecraft": {
 				"id": 98,
@@ -155,7 +155,7 @@
 			"blast_resistance": 30
 		},
 
-		"chiseled_stone_brick": {
+		"chiseled_stone_bricks": {
 			"id": 11,
 			"minecraft": {
 				"id": 98,
@@ -2748,6 +2748,19 @@
 			"solid": true,
 			"hardness": 0.7,
 			"blast_resistance": 3.5
+		},
+
+		"still_lava_0": {
+			"id": 195,
+			"minecraft": {
+				"id": 10,
+				"meta": 0
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 0
+			},
+			"solid": false
 		},
 
 		"active_powered_rail_north_south": {
@@ -12782,6 +12795,45 @@
 			"blast_resistance": 1
 		},
 
+		"still_lava_1": {
+			"id": 885,
+			"minecraft": {
+				"id": 10,
+				"meta": 1
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 1
+			},
+			"solid": false
+		},
+
+		"still_lava_2": {
+			"id": 886,
+			"minecraft": {
+				"id": 10,
+				"meta": 2
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 2
+			},
+			"solid": false
+		},
+
+		"still_lava_3": {
+			"id": 887,
+			"minecraft": {
+				"id": 10,
+				"meta": 3
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 3
+			},
+			"solid": false
+		},
+
 		"brown_mushroom_caps_everywhere": {
 			"id": 888,
 			"minecraft": {
@@ -18307,6 +18359,786 @@
 			"solid": true,
 			"hardness": -1,
 			"blast_resistance": 1.8e+07
+		},
+
+		"flowing_water_0": {
+			"id": 1271,
+			"minecraft": {
+				"id": 8,
+				"meta": 0
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 0
+			},
+			"solid": false
+		},
+
+		"flowing_water_1": {
+			"id": 1272,
+			"minecraft": {
+				"id": 8,
+				"meta": 1
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 1
+			},
+			"solid": false
+		},
+
+		"flowing_water_2": {
+			"id": 1273,
+			"minecraft": {
+				"id": 8,
+				"meta": 2
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 2
+			},
+			"solid": false
+		},
+
+		"flowing_water_3": {
+			"id": 1274,
+			"minecraft": {
+				"id": 8,
+				"meta": 3
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 3
+			},
+			"solid": false
+		},
+
+		"flowing_water_4": {
+			"id": 1275,
+			"minecraft": {
+				"id": 8,
+				"meta": 4
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 4
+			},
+			"solid": false
+		},
+
+		"flowing_water_5": {
+			"id": 1276,
+			"minecraft": {
+				"id": 8,
+				"meta": 5
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 5
+			},
+			"solid": false
+		},
+
+		"flowing_water_6": {
+			"id": 1277,
+			"minecraft": {
+				"id": 8,
+				"meta": 6
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 6
+			},
+			"solid": false
+		},
+
+		"flowing_water_7": {
+			"id": 1278,
+			"minecraft": {
+				"id": 8,
+				"meta": 7
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 7
+			},
+			"solid": false
+		},
+
+		"flowing_water_falling_0": {
+			"id": 1279,
+			"minecraft": {
+				"id": 8,
+				"meta": 8
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 8
+			},
+			"solid": false
+		},
+
+		"flowing_water_falling_1": {
+			"id": 1280,
+			"minecraft": {
+				"id": 8,
+				"meta": 9
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 9
+			},
+			"solid": false
+		},
+
+		"flowing_water_falling_2": {
+			"id": 1281,
+			"minecraft": {
+				"id": 8,
+				"meta": 10
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 10
+			},
+			"solid": false
+		},
+
+		"flowing_water_falling_3": {
+			"id": 1282,
+			"minecraft": {
+				"id": 8,
+				"meta": 11
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 11
+			},
+			"solid": false
+		},
+
+		"flowing_water_falling_4": {
+			"id": 1283,
+			"minecraft": {
+				"id": 8,
+				"meta": 12
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 12
+			},
+			"solid": false
+		},
+
+		"flowing_water_falling_5": {
+			"id": 1284,
+			"minecraft": {
+				"id": 8,
+				"meta": 13
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 13
+			},
+			"solid": false
+		},
+
+		"flowing_water_falling_6": {
+			"id": 1285,
+			"minecraft": {
+				"id": 8,
+				"meta": 14
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 14
+			},
+			"solid": false
+		},
+
+		"flowing_water_falling_7": {
+			"id": 1286,
+			"minecraft": {
+				"id": 8,
+				"meta": 15
+			},
+			"pocket": {
+				"id": 8,
+				"meta": 15
+			},
+			"solid": false
+		},
+
+		"flowing_lava_0": {
+			"id": 1287,
+			"minecraft": {
+				"id": 10,
+				"meta": 0
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 0
+			},
+			"solid": false
+		},
+
+		"flowing_lava_1": {
+			"id": 1288,
+			"minecraft": {
+				"id": 10,
+				"meta": 1
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 1
+			},
+			"solid": false
+		},
+
+		"flowing_lava_2": {
+			"id": 1289,
+			"minecraft": {
+				"id": 10,
+				"meta": 2
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 2
+			},
+			"solid": false
+		},
+
+		"flowing_lava_3": {
+			"id": 1290,
+			"minecraft": {
+				"id": 10,
+				"meta": 3
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 3
+			},
+			"solid": false
+		},
+
+		"flowing_lava_4": {
+			"id": 1291,
+			"minecraft": {
+				"id": 10,
+				"meta": 4
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 4
+			},
+			"solid": false
+		},
+
+		"flowing_lava_5": {
+			"id": 1292,
+			"minecraft": {
+				"id": 10,
+				"meta": 5
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 5
+			},
+			"solid": false
+		},
+
+		"flowing_lava_6": {
+			"id": 1293,
+			"minecraft": {
+				"id": 10,
+				"meta": 6
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 6
+			},
+			"solid": false
+		},
+
+		"flowing_lava_7": {
+			"id": 1294,
+			"minecraft": {
+				"id": 10,
+				"meta": 7
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 7
+			},
+			"solid": false
+		},
+
+		"flowing_lava_falling_0": {
+			"id": 1295,
+			"minecraft": {
+				"id": 10,
+				"meta": 8
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 8
+			},
+			"solid": false
+		},
+
+		"flowing_lava_falling_1": {
+			"id": 1296,
+			"minecraft": {
+				"id": 10,
+				"meta": 9
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 9
+			},
+			"solid": false
+		},
+
+		"flowing_lava_falling_2": {
+			"id": 1297,
+			"minecraft": {
+				"id": 10,
+				"meta": 10
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 10
+			},
+			"solid": false
+		},
+
+		"flowing_lava_falling_3": {
+			"id": 1298,
+			"minecraft": {
+				"id": 10,
+				"meta": 11
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 11
+			},
+			"solid": false
+		},
+
+		"flowing_lava_falling_4": {
+			"id": 1299,
+			"minecraft": {
+				"id": 10,
+				"meta": 12
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 12
+			},
+			"solid": false
+		},
+
+		"flowing_lava_falling_5": {
+			"id": 1300,
+			"minecraft": {
+				"id": 10,
+				"meta": 13
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 13
+			},
+			"solid": false
+		},
+
+		"flowing_lava_falling_6": {
+			"id": 1301,
+			"minecraft": {
+				"id": 10,
+				"meta": 14
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 14
+			},
+			"solid": false
+		},
+
+		"flowing_lava_falling_7": {
+			"id": 1302,
+			"minecraft": {
+				"id": 10,
+				"meta": 15
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 15
+			},
+			"solid": false
+		},
+
+		"still_water_0": {
+			"id": 1303,
+			"minecraft": {
+				"id": 9,
+				"meta": 0
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 0
+			},
+			"solid": false
+		},
+
+		"still_water_1": {
+			"id": 1304,
+			"minecraft": {
+				"id": 9,
+				"meta": 1
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 1
+			},
+			"solid": false
+		},
+
+		"still_water_2": {
+			"id": 1305,
+			"minecraft": {
+				"id": 9,
+				"meta": 2
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 2
+			},
+			"solid": false
+		},
+
+		"still_water_3": {
+			"id": 1306,
+			"minecraft": {
+				"id": 9,
+				"meta": 3
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 3
+			},
+			"solid": false
+		},
+
+		"still_water_4": {
+			"id": 1307,
+			"minecraft": {
+				"id": 9,
+				"meta": 4
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 4
+			},
+			"solid": false
+		},
+
+		"still_water_5": {
+			"id": 1308,
+			"minecraft": {
+				"id": 9,
+				"meta": 5
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 5
+			},
+			"solid": false
+		},
+
+		"still_water_6": {
+			"id": 1309,
+			"minecraft": {
+				"id": 9,
+				"meta": 6
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 6
+			},
+			"solid": false
+		},
+
+		"still_water_7": {
+			"id": 1310,
+			"minecraft": {
+				"id": 9,
+				"meta": 7
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 7
+			},
+			"solid": false
+		},
+
+		"still_water_falling_0": {
+			"id": 1311,
+			"minecraft": {
+				"id": 9,
+				"meta": 8
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 8
+			},
+			"solid": false
+		},
+
+		"still_water_falling_1": {
+			"id": 1312,
+			"minecraft": {
+				"id": 9,
+				"meta": 9
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 9
+			},
+			"solid": false
+		},
+
+		"still_water_falling_2": {
+			"id": 1313,
+			"minecraft": {
+				"id": 9,
+				"meta": 10
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 10
+			},
+			"solid": false
+		},
+
+		"still_water_falling_3": {
+			"id": 1314,
+			"minecraft": {
+				"id": 9,
+				"meta": 11
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 11
+			},
+			"solid": false
+		},
+
+		"still_water_falling_4": {
+			"id": 1315,
+			"minecraft": {
+				"id": 9,
+				"meta": 12
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 12
+			},
+			"solid": false
+		},
+
+		"still_water_falling_5": {
+			"id": 1316,
+			"minecraft": {
+				"id": 9,
+				"meta": 13
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 13
+			},
+			"solid": false
+		},
+
+		"still_water_falling_6": {
+			"id": 1317,
+			"minecraft": {
+				"id": 9,
+				"meta": 14
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 14
+			},
+			"solid": false
+		},
+
+		"still_water_falling_7": {
+			"id": 1318,
+			"minecraft": {
+				"id": 9,
+				"meta": 15
+			},
+			"pocket": {
+				"id": 9,
+				"meta": 15
+			},
+			"solid": false
+		},
+
+		"still_lava_4": {
+			"id": 1319,
+			"minecraft": {
+				"id": 10,
+				"meta": 4
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 4
+			},
+			"solid": false
+		},
+
+		"still_lava_5": {
+			"id": 1320,
+			"minecraft": {
+				"id": 10,
+				"meta": 5
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 5
+			},
+			"solid": false
+		},
+
+		"still_lava_6": {
+			"id": 1321,
+			"minecraft": {
+				"id": 10,
+				"meta": 6
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 6
+			},
+			"solid": false
+		},
+
+		"still_lava_7": {
+			"id": 1322,
+			"minecraft": {
+				"id": 10,
+				"meta": 7
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 7
+			},
+			"solid": false
+		},
+
+		"still_lava_falling_0": {
+			"id": 1323,
+			"minecraft": {
+				"id": 10,
+				"meta": 8
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 8
+			},
+			"solid": false
+		},
+
+		"still_lava_falling_1": {
+			"id": 1324,
+			"minecraft": {
+				"id": 10,
+				"meta": 9
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 9
+			},
+			"solid": false
+		},
+
+		"still_lava_falling_2": {
+			"id": 1325,
+			"minecraft": {
+				"id": 10,
+				"meta": 10
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 10
+			},
+			"solid": false
+		},
+
+		"still_lava_falling_3": {
+			"id": 1326,
+			"minecraft": {
+				"id": 10,
+				"meta": 11
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 11
+			},
+			"solid": false
+		},
+
+		"still_lava_falling_4": {
+			"id": 1327,
+			"minecraft": {
+				"id": 10,
+				"meta": 12
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 12
+			},
+			"solid": false
+		},
+
+		"still_lava_falling_5": {
+			"id": 1328,
+			"minecraft": {
+				"id": 10,
+				"meta": 13
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 13
+			},
+			"solid": false
+		},
+
+		"still_lava_falling_6": {
+			"id": 1329,
+			"minecraft": {
+				"id": 10,
+				"meta": 14
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 14
+			},
+			"solid": false
+		},
+
+		"still_lava_falling_7": {
+			"id": 1330,
+			"minecraft": {
+				"id": 10,
+				"meta": 15
+			},
+			"pocket": {
+				"id": 10,
+				"meta": 15
+			},
+			"solid": false
 		}
 
 	}

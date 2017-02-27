@@ -446,6 +446,8 @@ void main(string[] args) {
 	}
 	sort!"a.id < b.id"(blocks);
 
+	foreach(i, block; blocks) assert(i == block.id, to!string(i));
+
 	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks);
 	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks);
 	if(wall || wjs) js.js(attributes, protocols, metadata, creative);

@@ -1,25 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!---
-
-	Every block (indicated by the tag `block`) inherits the properties of its group
-	or the default values for a block.
-
-	name: required string
-	id: required unsigned short
-	minecraft: required string in format `id:meta` or simply `id`
-	pocket: required string in format `id:meta` or simply `id`
-	solid: whether the block is solid, true by default
-	hardness: material's hardness (0 for instant break, -1 for undestructible)
-	blastresistance: material's blast resistance, only required for solid blocks
-	opacity: opacity of the block in range 0-15, default is 15
-	boundingbox: block's bounding box, default is 0,0,0-16,16,16 for solid blocks
-
--->
-
 <blocks>
 
-	<block name="air" id="0" minecraft="0" pocket="0" solid="false" opacity="0" boundingbox="none" />
+	<block name="air" id="0" minecraft="0" pocket="0" hardness="-1" solid="false" opacity="0" boundingbox="none" />
 
 	<!-- stone-line blocks -->
 	<group hardness="1.5" blastresistance="30">
@@ -32,10 +15,10 @@
 		<block name="andesite" id="6" minecraft="1:5" pocket="1:5" />
 		<block name="polished-andesite" id="7" minecraft="1:6" pocket="1:6" />
 
-		<block name="stone-brick" id="8" minecraft="98:0" pocket="98:0" />
-		<block name="mossy-stone-brick" id="9" minecraft="98:1" pocket="98:1" />
-		<block name="cracked-stone-brick" id="10" minecraft="98:2" pocket="98:2" />
-		<block name="chiseled-stone-brick" id="11" minecraft="98:3" pocket="98:3" />
+		<block name="stone-bricks" id="8" minecraft="98:0" pocket="98:0" />
+		<block name="mossy-stone-bricks" id="9" minecraft="98:1" pocket="98:1" />
+		<block name="cracked-stone-bricks" id="10" minecraft="98:2" pocket="98:2" />
+		<block name="chiseled-stone-bricks" id="11" minecraft="98:3" pocket="98:3" />
 
 	</group>
 
@@ -208,6 +191,88 @@
 		<block name="dark-oak-leaves-no-decay" id="105" minecraft="161:5" pocket="161:5" />
 		<block name="dark-oak-leaves-check-decay" id="106" minecraft="161:9" pocket="161:9" />
 		<block name="dark-oak-leaves-no-decay-check-decay" id="107" minecraft="161:13" pocket="161:13" />
+
+	</group>
+
+	<!-- water -->
+	<group solid="false" opacity="3" blastresistance="500">
+
+		<block name="flowing-water-0" id="1271" minecraft="8:0" pocket="8:0" />
+		<block name="flowing-water-1" id="1272" minecraft="8:1" pocket="8:1" />
+		<block name="flowing-water-2" id="1273" minecraft="8:2" pocket="8:2" />
+		<block name="flowing-water-3" id="1274" minecraft="8:3" pocket="8:3" />
+		<block name="flowing-water-4" id="1275" minecraft="8:4" pocket="8:4" />
+		<block name="flowing-water-5" id="1276" minecraft="8:5" pocket="8:5" />
+		<block name="flowing-water-6" id="1277" minecraft="8:6" pocket="8:6" />
+		<block name="flowing-water-7" id="1278" minecraft="8:7" pocket="8:7" />
+
+		<block name="flowing-water-falling-0" id="1279" minecraft="8:8" pocket="8:8" />
+		<block name="flowing-water-falling-1" id="1280" minecraft="8:9" pocket="8:9" />
+		<block name="flowing-water-falling-2" id="1281" minecraft="8:10" pocket="8:10" />
+		<block name="flowing-water-falling-3" id="1282" minecraft="8:11" pocket="8:11" />
+		<block name="flowing-water-falling-4" id="1283" minecraft="8:12" pocket="8:12" />
+		<block name="flowing-water-falling-5" id="1284" minecraft="8:13" pocket="8:13" />
+		<block name="flowing-water-falling-6" id="1285" minecraft="8:14" pocket="8:14" />
+		<block name="flowing-water-falling-7" id="1286" minecraft="8:15" pocket="8:15" />
+
+		<block name="still-water-0" id="1303" minecraft="9:0" pocket="9:0" />
+		<block name="still-water-1" id="1304" minecraft="9:1" pocket="9:1" />
+		<block name="still-water-2" id="1305" minecraft="9:2" pocket="9:2" />
+		<block name="still-water-3" id="1306" minecraft="9:3" pocket="9:3" />
+		<block name="still-water-4" id="1307" minecraft="9:4" pocket="9:4" />
+		<block name="still-water-5" id="1308" minecraft="9:5" pocket="9:5" />
+		<block name="still-water-6" id="1309" minecraft="9:6" pocket="9:6" />
+		<block name="still-water-7" id="1310" minecraft="9:7" pocket="9:7" />
+
+		<block name="still-water-falling-0" id="1311" minecraft="9:8" pocket="9:8" />
+		<block name="still-water-falling-1" id="1312" minecraft="9:9" pocket="9:9" />
+		<block name="still-water-falling-2" id="1313" minecraft="9:10" pocket="9:10" />
+		<block name="still-water-falling-3" id="1314" minecraft="9:11" pocket="9:11" />
+		<block name="still-water-falling-4" id="1315" minecraft="9:12" pocket="9:12" />
+		<block name="still-water-falling-5" id="1316" minecraft="9:13" pocket="9:13" />
+		<block name="still-water-falling-6" id="1317" minecraft="9:14" pocket="9:14" />
+		<block name="still-water-falling-7" id="1318" minecraft="9:15" pocket="9:15" />
+
+	</group>
+
+	<!-- lava -->
+	<group solid="false" opacity="3" blastresistance="500" luminance="15">
+
+		<block name="flowing-lava-0" id="1287" minecraft="10:0" pocket="10:0" />
+		<block name="flowing-lava-1" id="1288" minecraft="10:1" pocket="10:1" />
+		<block name="flowing-lava-2" id="1289" minecraft="10:2" pocket="10:2" />
+		<block name="flowing-lava-3" id="1290" minecraft="10:3" pocket="10:3" />
+		<block name="flowing-lava-4" id="1291" minecraft="10:4" pocket="10:4" />
+		<block name="flowing-lava-5" id="1292" minecraft="10:5" pocket="10:5" />
+		<block name="flowing-lava-6" id="1293" minecraft="10:6" pocket="10:6" />
+		<block name="flowing-lava-7" id="1294" minecraft="10:7" pocket="10:7" />
+
+		<block name="flowing-lava-falling-0" id="1295" minecraft="10:8" pocket="10:8" />
+		<block name="flowing-lava-falling-1" id="1296" minecraft="10:9" pocket="10:9" />
+		<block name="flowing-lava-falling-2" id="1297" minecraft="10:10" pocket="10:10" />
+		<block name="flowing-lava-falling-3" id="1298" minecraft="10:11" pocket="10:11" />
+		<block name="flowing-lava-falling-4" id="1299" minecraft="10:12" pocket="10:12" />
+		<block name="flowing-lava-falling-5" id="1300" minecraft="10:13" pocket="10:13" />
+		<block name="flowing-lava-falling-6" id="1301" minecraft="10:14" pocket="10:14" />
+		<block name="flowing-lava-falling-7" id="1302" minecraft="10:15" pocket="10:15" />
+
+		<block name="still-lava-0" id="195" minecraft="10:0" pocket="10:0" />
+		<block name="still-lava-1" id="885" minecraft="10:1" pocket="10:1" />
+		<block name="still-lava-2" id="886" minecraft="10:2" pocket="10:2" />
+		<block name="still-lava-3" id="887" minecraft="10:3" pocket="10:3" />
+		<block name="still-lava-4" id="1319" minecraft="10:4" pocket="10:4" />
+		<block name="still-lava-5" id="1320" minecraft="10:5" pocket="10:5" />
+		<block name="still-lava-6" id="1321" minecraft="10:6" pocket="10:6" />
+		<block name="still-lava-7" id="1322" minecraft="10:7" pocket="10:7" />
+
+		<block name="still-lava-falling-0" id="1323" minecraft="10:8" pocket="10:8" />
+		<block name="still-lava-falling-1" id="1324" minecraft="10:9" pocket="10:9" />
+		<block name="still-lava-falling-2" id="1325" minecraft="10:10" pocket="10:10" />
+		<block name="still-lava-falling-3" id="1326" minecraft="10:11" pocket="10:11" />
+		<block name="still-lava-falling-4" id="1327" minecraft="10:12" pocket="10:12" />
+		<block name="still-lava-falling-5" id="1328" minecraft="10:13" pocket="10:13" />
+		<block name="still-lava-falling-6" id="1329" minecraft="10:14" pocket="10:14" />
+		<block name="still-lava-falling-7" id="1330" minecraft="10:15" pocket="10:15" />
 
 	</group>
 
@@ -809,7 +874,7 @@
 
 	</group>
 
-	<block name="fire" id="365" minecraft="51" pocket="51" blastresistance="0" opacity="0" luminance="15" solid="false" />
+	<block name="fire" id="365" minecraft="51" pocket="51" hardness="-1" blastresistance="0" opacity="0" luminance="15" solid="false" />
 
 	<block name="monster-spawner" id="366" minecraft="52" pocket="52" hardness="5" blastresistance="25" />
 

@@ -227,7 +227,7 @@ class Add : Buffer {
 
 	enum string variantField = "type";
 
-	alias Variants = TypeTuple!(Pocket, Minecraft);
+	alias Variants = TypeTuple!(Pocket, Minecraft, Console);
 
 	/**
 	 * A Minecraft: Pocket Edition client.
@@ -333,6 +333,27 @@ class Add : Buffer {
 
 		public override string toString() {
 			return "Add.Minecraft()";
+		}
+
+	}
+
+	public class Console {
+
+		public enum typeof(type) TYPE = 3;
+
+		public enum string[] FIELDS = [];
+
+		public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
+			type = 3;
+			_encode!writeId();
+			return _buffer;
+		}
+
+		public pure nothrow @safe void decode() {
+		}
+
+		public override string toString() {
+			return "Add.Console()";
 		}
 
 	}

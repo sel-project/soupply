@@ -39,6 +39,7 @@ const Player = {
 		// type (variant)
 		static get POCKET(){ return 1; }
 		static get MINECRAFT(){ return 2; }
+		static get CONSOLE(){ return 3; }
 
 		/**
 		 * @param reason
@@ -166,6 +167,25 @@ const Player = {
 			this.writeBigEndianByte(this.inputMode);
 			this.writeVaruint(this.latency);
 			break;
+		case 3:
+			this.writeVaruint(this.hubId);
+			this.writeBigEndianByte(this.reason);
+			this.writeBigEndianByte(this.type);
+			this.writeVaruint(this.protocol);
+			var dhc5zja9=this.encodeString(this.version); this.writeVaruint(dhc5zja9.length); this.writeBytes(dhc5zja9);
+			var dhc5cvbf=this.encodeString(this.username); this.writeVaruint(dhc5cvbf.length); this.writeBytes(dhc5cvbf);
+			var dhc5anbf=this.encodeString(this.displayName); this.writeVaruint(dhc5anbf.length); this.writeBytes(dhc5anbf);
+			if(reason!=0){ this.writeBigEndianByte(this.dimension); }
+			if(reason!=0){ this.writeVaruint(this.viewDistance); }
+			this.writeBytes(this.clientAddress.encode());
+			var dhc5zjzj=this.encodeString(this.serverAddress); this.writeVaruint(dhc5zjzj.length); this.writeBytes(dhc5zjzj);
+			this.writeBigEndianShort(this.serverPort);
+			this.writeBytes(this.uuid);
+			this.writeBytes(this.skin.encode());
+			var dhc5y5df=this.encodeString(this.language); this.writeVaruint(dhc5y5df.length); this.writeBytes(dhc5y5df);
+			this.writeBigEndianByte(this.inputMode);
+			this.writeVaruint(this.latency);
+			break;
 		default: break;
 	}
 			return new Uint8Array(this._buffer);
@@ -201,6 +221,8 @@ const Player = {
 					this.deviceModel=this.decodeString(this.readBytes(this.readVaruint()));
 					break;
 				case 2:
+					break;
+				case 3:
 					break;
 				default: break;
 			}
