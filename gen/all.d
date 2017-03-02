@@ -46,9 +46,9 @@ alias Attributes = File!(Attribute[]);
 
 alias Enchantment = Tuple!(ubyte, "id", ubyte, "level");
 
-alias Item = Tuple!(string, "name", ushort, "id", ushort, "meta", Enchantment[], "enchantments");
+alias ItemC = Tuple!(string, "name", ushort, "id", ushort, "meta", Enchantment[], "enchantments");
 
-alias Creative = File!(Item[]);
+alias Creative = File!(ItemC[]);
 
 
 alias MetadataType = Tuple!(string, "name", string, "type", ubyte, "id", string, "endianness");
@@ -88,6 +88,11 @@ alias Point = Tuple!(ubyte, "x", ubyte, "y", ubyte, "z");
 alias BoundingBox = Tuple!(Point, "min", Point, "max");
 
 alias Block = Tuple!(string, "name", ushort, "id", BlockData, "minecraft", BlockData, "pocket", bool, "solid", double, "hardness", double, "blastResistance", ubyte, "opacity", ubyte, "luminance", BoundingBox, "boundingBox");
+
+
+alias ItemData = Tuple!(bool, "exists", ushort, "id", int, "meta");
+
+alias Item = Tuple!(string, "name", ItemData, "minecraft", ItemData, "pocket", ubyte, "stack");
 
 
 private uint n_version;
@@ -155,7 +160,7 @@ void main(string[] args) {
 					case "category":
 						foreach(i ; element.elements) {
 							if(i.tag.name == "item") {
-								Item item;
+								ItemC item;
 								item.name = i.tag.attr["name"];
 								item.id = i.tag.attr["id"].to!ushort;
 								if("meta" in i.tag.attr) item.meta = i.tag.attr["meta"].to!ushort;
@@ -448,14 +453,47 @@ void main(string[] args) {
 
 	foreach(i, block; blocks) assert(i == block.id, to!string(i));
 
-	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks);
-	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks);
-	if(wall || wjs) js.js(attributes, protocols, metadata, creative);
+	// items
+	Item[] items;
+	foreach(element ; new Document(cast(string)read("../xml/items.xml")).elements) {
+		with(element.tag) {
+			if(name == "item") {
+				Item item;
+				item.name = attr["name"].replace("-", "_");
+				void setData(ref ItemData id, string str) {
+					auto s = str.split(":");
+					if(s.length == 1 || s.length == 2) {
+						id.exists = true;
+						id.id = to!ushort(s[0]);
+						if(s.length == 2) id.meta = to!ubyte(s[1]);
+						else id.meta = -1;
+					}
+				}
+				auto data = "data" in attr;
+				auto minecraft = "minecraft" in attr;
+				auto pocket = "pocket" in attr;
+				auto stack = "stack" in attr;
+				if(data) {
+					setData(item.minecraft, *data);
+					setData(item.pocket, *data);
+				} else {
+					if(minecraft) setData(item.minecraft, *minecraft);
+					if(pocket) setData(item.pocket, *pocket);
+				}
+				item.stack = stack ? to!ubyte(*stack) : 64;
+				items ~= item;
+			}
+		}
+	}
 
-	if(wall || wdiff) diff.diff(attributes, protocols, metadata);
+	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks, items);
+	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks, items);
+	if(wall || wjs) js.js(attributes, protocols, metadata, creative, blocks, items);
+
+	//if(wall || wdiff) diff.diff(attributes, protocols, metadata);
 	if(wall || wdocs) docs.docs(attributes, protocols, metadata);
 
-	if(wall || wjson) json.json(attributes, protocols, metadata, creative, blocks);
+	if(wall || wjson) json.json(attributes, protocols, metadata, creative, blocks, items);
 
 }
 

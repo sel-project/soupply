@@ -27,7 +27,7 @@ import std.typetuple : TypeTuple;
 
 import all;
 
-void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks) {
+void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items) {
 	
 	mkdirRecurse("../src/java/sul/utils");
 	
@@ -848,26 +848,16 @@ public class MetadataException extends RuntimeException {
 
 	// blocks
 	{
-		string data = "package sul;\n\npublic enum Blocks {\n\n";
-		foreach(i, block; blocks) {
-			data ~= "\t" ~ block.name.toUpper ~ "(";
-			data ~= "\"" ~ block.name.replace("_" , " ") ~ "\", ";
-			data ~= "(short)" ~ block.id.to!string ~ ", ";
-			data ~= (block.minecraft.id >= 0 ? ("new BlockData(" ~ block.minecraft.id.to!string ~ ", " ~ (block.minecraft.meta < 0 ? "0" : block.minecraft.meta.to!string) ~ ")") : "null") ~ ", ";
-			data ~= (block.pocket.id >= 0 ? ("new BlockData(" ~ block.pocket.id.to!string ~ ", " ~ (block.pocket.meta < 0 ? "0" : block.pocket.meta.to!string) ~ ")") : "null") ~ ", ";
-			data ~= block.solid.to!string ~ ", ";
-			data ~= "(double)" ~ block.hardness.to!string ~ ", ";
-			data ~= "(double)" ~ block.blastResistance.to!string;
-			data ~= ")" ~ (i != blocks.length - 1 ? "," : ";") ~ "\n";
-		}
-		data ~= "\n";
+		string data = "package sul;\n\n";
+		data ~= "import java.util.*;\n\n";
+		data ~= "public class Blocks {\n\n";
 		data ~= "\tpublic final String name;\n";
 		data ~= "\tpublic final short id;\n";
 		data ~= "\tpublic final BlockData minecraft, pocket;\n";
 		data ~= "\tpublic final boolean solid;\n";
 		data ~= "\tpublic final double hardness, blastResistance;\n";
-		data ~= "\n";
-		data ~= "\tprivate Blocks(String name, short id, BlockData minecraft, BlockData pocket, boolean solid, double hardness, double blastResistance) {\n";
+		data ~= "\tpublic final byte opacity, luminance;\n\n";
+		data ~= "\tprivate Blocks(String name, short id, BlockData minecraft, BlockData pocket, boolean solid, double hardness, double blastResistance, byte opacity, byte luminance) {\n";
 		data ~= "\t\tthis.name = name;\n";
 		data ~= "\t\tthis.id = id;\n";
 		data ~= "\t\tthis.minecraft = minecraft;\n";
@@ -875,8 +865,9 @@ public class MetadataException extends RuntimeException {
 		data ~= "\t\tthis.solid = solid;\n";
 		data ~= "\t\tthis.hardness = hardness;\n";
 		data ~= "\t\tthis.blastResistance = blastResistance;\n";
+		data ~= "\t\tthis.opacity = opacity;\n";
+		data ~= "\t\tthis.luminance = luminance;\n";
 		data ~= "\t}\n\n";
-		data ~= "\t@SuppressWarnings(\"unused\")\n";
 		data ~= "\tprivate static class BlockData {\n\n";
 		data ~= "\t\tpublic final int id, meta;\n\n";
 		data ~= "\t\tpublic BlockData(int id, int meta) {\n";
@@ -884,28 +875,109 @@ public class MetadataException extends RuntimeException {
 		data ~= "\t\t\tthis.meta = meta;\n";
 		data ~= "\t\t}\n\n";
 		data ~= "\t}\n\n";
-		// get methods
-		/*data ~= "\tpublic static Blocks getSelBlock(short id) {\n";
-		data ~= "\t\tswitch(id) {\n";
+		data ~= "\tprivate static List<Blocks> selBlocks;\n";
+		data ~= "\tprivate static Map<Integer, Map<Integer, Blocks>> minecraftBlocks, pocketBlocks;\n\n";
+		data ~= "\tstatic {\n\n";
+		data ~= "\t\tselBlocks = new ArrayList<Blocks>();\n\n";
+		data ~= "\t\tminecraftBlocks = new HashMap<Integer, Map<Integer, Blocks>>();\n";
+		data ~= "\t\tpocketBlocks = new HashMap<Integer, Map<Integer, Blocks>>();\n\n";
 		foreach(block ; blocks) {
-			data ~= "\t\t\tcase " ~ to!string(block.id) ~ ": return " ~ block.name.toUpper ~ ";\n";
+			data ~= "\t\tadd(new Blocks(";
+			data ~= "\"" ~ block.name.replace("_" , " ") ~ "\", ";
+			data ~= "(short)" ~ block.id.to!string ~ ", ";
+			data ~= (block.minecraft.id >= 0 ? ("new BlockData(" ~ block.minecraft.id.to!string ~ ", " ~ (block.minecraft.meta < 0 ? "0" : block.minecraft.meta.to!string) ~ ")") : "null") ~ ", ";
+			data ~= (block.pocket.id >= 0 ? ("new BlockData(" ~ block.pocket.id.to!string ~ ", " ~ (block.pocket.meta < 0 ? "0" : block.pocket.meta.to!string) ~ ")") : "null") ~ ", ";
+			data ~= block.solid.to!string ~ ", ";
+			data ~= "(double)" ~ block.hardness.to!string ~ ", ";
+			data ~= "(double)" ~ block.blastResistance.to!string ~ ", ";
+			data ~= "(byte)" ~ block.opacity.to!string ~ ", ";
+			data ~= "(byte)" ~ block.luminance.to!string;
+			data ~= "));\n";
 		}
-		data ~= "\t\t\tdefault: return null;\n";
+		data ~= "\n\t}\n\n";
+		data ~= "\tprivate static void add(Blocks block) {\n";
+		data ~= "\t\tselBlocks.add(block);\n";
+		data ~= "\t\tif(block.minecraft != null) {\n";
+		data ~= "\t\t\tif(!minecraftBlocks.containsKey(block.minecraft.id)) minecraftBlocks.put(block.minecraft.id, new HashMap<Integer, Blocks>());\n";
+		data ~= "\t\t\tminecraftBlocks.get(block.minecraft.id).put(block.minecraft.meta, block);\n";
 		data ~= "\t\t}\n";
+		data ~= "\t\tif(block.pocket != null) {\n";
+		data ~= "\t\t\tif(!pocketBlocks.containsKey(block.pocket.id)) pocketBlocks.put(block.pocket.id, new HashMap<Integer, Blocks>());\n";
+		data ~= "\t\t\tpocketBlocks.get(block.pocket.id).put(block.pocket.meta, block);\n";
+		data ~= "\t\t}\n";
+		data ~= "\t}\n\n";
+		// get methods
+		data ~= "\tpublic static Blocks getSelBlock(short id) {\n";
+		data ~= "\t\treturn selBlocks.size() > id ? selBlocks.get(id) : null;\n";
 		data ~= "\t}\n\n";
 		foreach(type ; TypeTuple!("minecraft", "pocket")) {
 			data ~= "\tpublic static Blocks get" ~ capitalize(type) ~ "Block(int id, int meta) {\n";
-			data ~= "\t\tswitch(id << 4 | meta) {\n";
-			foreach(block ; blocks) {
-				mixin("auto bd = block." ~ type ~ ";");
-				if(bd.hash >= 0) data ~= "\t\t\tcase " ~ to!string(bd.hash) ~ ": return " ~ block.name.toUpper ~ ";\n";
-			}
-			data ~= "\t\t\tdefault: return null;\n";
-			data ~= "\t\t}\n";
+			data ~= "\t\tMap<Integer, Blocks> b = " ~ type ~ "Blocks.get(id);\n";
+			data ~= "\t\treturn b != null ? b.get(meta) : null;\n";
 			data ~= "\t}\n\n";
-		}*/
+		}
 		data ~= "}";
 		write("../src/java/sul/Blocks.java", data, "blocks");
+	}
+
+	// items
+	{
+		string data = "package sul;\n\n";
+		data ~= "import java.util.*;\n\n";
+		data ~= "public class Items {\n\n";
+		data ~= "\tpublic final String name;\n";
+		data ~= "\tpublic final ItemData minecraft, pocket;\n";
+		data ~= "\tpublic final byte stack;\n\n";
+		data ~= "\tprivate Items(String name, ItemData minecraft, ItemData pocket, byte stack) {\n";
+		data ~= "\t\tthis.name = name;\n";
+		data ~= "\t\tthis.minecraft = minecraft;\n";
+		data ~= "\t\tthis.pocket = pocket;\n";
+		data ~= "\t\tthis.stack = stack;\n";
+		data ~= "\t}\n\n";
+		data ~= "\tprivate static class ItemData {\n\n";
+		data ~= "\t\tpublic final int id, meta;\n\n";
+		data ~= "\t\tpublic ItemData(int id, int meta) {\n";
+		data ~= "\t\t\tthis.id = id;\n";
+		data ~= "\t\t\tthis.meta = meta;\n";
+		data ~= "\t\t}\n\n";
+		data ~= "\t}\n\n";
+		data ~= "\tprivate static Map<Integer, Map<Integer, Items>> minecraftItems, pocketItems;\n\n";
+		data ~= "\tstatic {\n\n";
+		data ~= "\t\tminecraftItems = new HashMap<Integer, Map<Integer, Items>>();\n";
+		data ~= "\t\tpocketItems = new HashMap<Integer, Map<Integer, Items>>();\n\n";
+		foreach(item ; items) {
+			data ~= "\t\tadd(new Items(";
+			data ~= "\"" ~ item.name.replace("_" , " ") ~ "\", ";
+			data ~= (item.minecraft.exists ? ("new ItemData(" ~ item.minecraft.id.to!string ~ ", " ~ to!string(max(0, item.minecraft.meta)) ~ ")") : "null") ~ ", ";
+			data ~= (item.pocket.exists ? ("new ItemData(" ~ item.pocket.id.to!string ~ ", " ~ to!string(max(0, item.pocket.meta)) ~ ")") : "null") ~ ", ";
+			data ~= "(byte)" ~ item.stack.to!string;
+			data ~= "));\n";
+		}
+		data ~= "\n\t}\n\n";
+		data ~= "\tprivate static void add(Items item) {\n";
+		data ~= "\t\tif(item.minecraft != null) {\n";
+		data ~= "\t\t\tif(!minecraftItems.containsKey(item.minecraft.id)) minecraftItems.put(item.minecraft.id, new HashMap<Integer, Items>());\n";
+		data ~= "\t\t\tminecraftItems.get(item.minecraft.id).put(item.minecraft.meta, item);\n";
+		data ~= "\t\t}\n";
+		data ~= "\t\tif(item.pocket != null) {\n";
+		data ~= "\t\t\tif(!pocketItems.containsKey(item.pocket.id)) pocketItems.put(item.pocket.id, new HashMap<Integer, Items>());\n";
+		data ~= "\t\t\tpocketItems.get(item.pocket.id).put(item.pocket.meta, item);\n";
+		data ~= "\t\t}\n";
+		data ~= "\t}\n\n";
+		// get methods
+		foreach(type ; TypeTuple!("minecraft", "pocket")) {
+			data ~= "\tpublic static Items get" ~ capitalize(type) ~ "Item(int id, int meta) {\n";
+			data ~= "\t\tMap<Integer, Items> b = " ~ type ~ "Items.get(id);\n";
+			data ~= "\t\tif(b != null) {\n";
+			data ~= "\t\t\tItems ret = b.get(meta);\n";
+			data ~= "\t\t\tif(ret != null) return ret;\n";
+			data ~= "\t\t\telse if(meta != 0) return b.get(0);\n";
+			data ~= "\t\t}\n";
+			data ~= "\t\treturn null;\n";
+			data ~= "\t}\n\n";
+		}
+		data ~= "}";
+		write("../src/java/sul/Items.java", data, "items");
 	}
 	
 }

@@ -27,7 +27,7 @@ import std.typecons;
 import all;
 import java : javadoc;
 
-void js(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative) {
+void js(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items) {
 	
 	mkdirRecurse("../src/js/sul");
 	

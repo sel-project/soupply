@@ -20,7 +20,7 @@ import std.json;
 
 import all;
 
-void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks) {
+void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items) {
 
 	// attributes
 	mkdirRecurse("../json/attributes");
@@ -232,22 +232,63 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 				data ~= ",\n";
 			}
 		}
+		void writePoint(string type, Point point) {
+			data ~= "\t\t\t\t\"" ~ type ~ "\": {\n";
+			data ~= "\t\t\t\t\t\"x\": " ~ point.x.to!string ~ ",\n";
+			data ~= "\t\t\t\t\t\"y\": " ~ point.y.to!string ~ ",\n";
+			data ~= "\t\t\t\t\t\"z\": " ~ point.z.to!string ~ "\n";
+			data ~= "\t\t\t\t}";
+		}
 		foreach(i, block; blocks) {
 			data ~= "\t\t\"" ~ block.name ~ "\": {\n";
 			data ~= "\t\t\t\"id\": " ~ block.id.to!string ~ ",\n";
 			writeBlockData("minecraft", block.minecraft);
 			writeBlockData("pocket", block.pocket);
 			data ~= "\t\t\t\"solid\": " ~ block.solid.to!string ~ ",\n";
-			if(block.solid) {
-				data ~= "\t\t\t\"hardness\": " ~ block.hardness.to!string ~ ",\n";
-				data ~= "\t\t\t\"blast_resistance\": " ~ block.blastResistance.to!string ~ ",\n";
+			data ~= "\t\t\t\"hardness\": " ~ block.hardness.to!string ~ ",\n";
+			data ~= "\t\t\t\"blast_resistance\": " ~ block.blastResistance.to!string ~ ",\n";
+			data ~= "\t\t\t\"opacity\": " ~ block.opacity.to!string ~ ",\n";
+			data ~= "\t\t\t\"luminance\": " ~ block.luminance.to!string ~ ",\n";
+			if(block.boundingBox != BoundingBox.init) {
+				data ~= "\t\t\t\"bounding_box\": {\n";
+				writePoint("min", block.boundingBox.min);
+				data ~= ",\n";
+				writePoint("max", block.boundingBox.max);
+				data ~= "\n\t\t\t},\n";
 			}
 			data = data[0..$-2] ~ "\n";
 			data ~= "\t\t}" ~ (i != blocks.length -1 ? "," : "") ~ "\n\n";
 		}
-		data ~= "\t}\n\n";
-		data ~= "}\n";
+		data ~= "\t}\n\n}\n";
 		_write("../json/blocks.json", data);
+	}
+
+	// items
+	{
+		string data = "{\n\t\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
+		data ~= "\t\"items\": {\n\n";
+		void writeData(string type, ItemData id) {
+			if(id.exists) {
+				data ~= "\t\t\t\"" ~ type ~ "\": ";
+				if(id.meta >= 0) {
+					data ~= "{\n";
+					data ~= "\t\t\t\t\"id\": " ~ id.id.to!string ~ ",\n";
+					data ~= "\t\t\t\t\"meta\": " ~ id.meta.to!string ~ "\n";
+					data ~= "\t\t\t},\n";
+				} else {
+					data ~= id.id.to!string ~ ",\n";
+				}
+			}
+		}
+		foreach(i, item; items) {
+			data ~= "\t\t\"" ~ item.name ~ "\": {\n";
+			writeData("minecraft", item.minecraft);
+			writeData("pocket", item.pocket);
+			data ~= "\t\t\t\"stack\": " ~ item.stack.to!string ~ "\n";
+			data ~= "\t\t}" ~ (i != items.length - 1 ? "," : "") ~ "\n\n";
+		}
+		data ~= "\t}\n\n}\n";
+		_write("../json/items.json", data);
 	}
 
 }

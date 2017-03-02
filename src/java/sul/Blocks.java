@@ -8,1347 +8,18 @@
  */
 package sul;
 
-public enum Blocks {
+import java.util.*;
 
-	AIR("air", (short)0, new BlockData(0, 0), new BlockData(0, 0), false, (double)-1, (double)0),
-	STONE("stone", (short)1, new BlockData(1, 0), new BlockData(1, 0), true, (double)1.5, (double)30),
-	GRANITE("granite", (short)2, new BlockData(1, 1), new BlockData(1, 1), true, (double)1.5, (double)30),
-	POLISHED_GRANITE("polished granite", (short)3, new BlockData(1, 2), new BlockData(1, 2), true, (double)1.5, (double)30),
-	DIORITE("diorite", (short)4, new BlockData(1, 3), new BlockData(1, 3), true, (double)1.5, (double)30),
-	POLISHED_DIORITE("polished diorite", (short)5, new BlockData(1, 4), new BlockData(1, 4), true, (double)1.5, (double)30),
-	ANDESITE("andesite", (short)6, new BlockData(1, 5), new BlockData(1, 5), true, (double)1.5, (double)30),
-	POLISHED_ANDESITE("polished andesite", (short)7, new BlockData(1, 6), new BlockData(1, 6), true, (double)1.5, (double)30),
-	STONE_BRICKS("stone bricks", (short)8, new BlockData(98, 0), new BlockData(98, 0), true, (double)1.5, (double)30),
-	MOSSY_STONE_BRICKS("mossy stone bricks", (short)9, new BlockData(98, 1), new BlockData(98, 1), true, (double)1.5, (double)30),
-	CRACKED_STONE_BRICKS("cracked stone bricks", (short)10, new BlockData(98, 2), new BlockData(98, 2), true, (double)1.5, (double)30),
-	CHISELED_STONE_BRICKS("chiseled stone bricks", (short)11, new BlockData(98, 3), new BlockData(98, 3), true, (double)1.5, (double)30),
-	COBBLESTONE("cobblestone", (short)12, new BlockData(4, 0), new BlockData(4, 0), true, (double)2, (double)30),
-	MOSSY_STONE("mossy stone", (short)13, new BlockData(48, 0), new BlockData(48, 0), true, (double)2, (double)30),
-	COBBLESTONE_WALL("cobblestone wall", (short)14, new BlockData(139, 0), new BlockData(139, 0), true, (double)2, (double)30),
-	MOSSY_COBBLESTONE_WALL("mossy cobblestone wall", (short)15, new BlockData(139, 1), new BlockData(139, 1), true, (double)2, (double)30),
-	COAL_ORE("coal ore", (short)16, new BlockData(16, 0), new BlockData(16, 0), true, (double)3, (double)15),
-	IRON_ORE("iron ore", (short)17, new BlockData(15, 0), new BlockData(15, 0), true, (double)3, (double)15),
-	GOLD_ORE("gold ore", (short)18, new BlockData(14, 0), new BlockData(14, 0), true, (double)3, (double)15),
-	DIAMOND_ORE("diamond ore", (short)19, new BlockData(56, 0), new BlockData(56, 0), true, (double)3, (double)15),
-	EMERALD_ORE("emerald ore", (short)20, new BlockData(129, 0), new BlockData(129, 0), true, (double)3, (double)15),
-	LAPIS_LAZULI_ORE("lapis lazuli ore", (short)21, new BlockData(21, 0), new BlockData(21, 0), true, (double)3, (double)15),
-	REDSTONE_ORE("redstone ore", (short)22, new BlockData(73, 0), new BlockData(73, 0), true, (double)3, (double)15),
-	LIT_REDSTONE_ORE("lit redstone ore", (short)23, new BlockData(74, 0), new BlockData(74, 0), true, (double)3, (double)15),
-	COAL_BLOCK("coal block", (short)24, new BlockData(173, 0), new BlockData(173, 0), true, (double)5, (double)30),
-	IRON_BOCK("iron bock", (short)25, new BlockData(42, 0), new BlockData(42, 0), true, (double)5, (double)30),
-	GOLD_BLOCK("gold block", (short)26, new BlockData(41, 0), new BlockData(41, 0), true, (double)3, (double)30),
-	DIAMOND_BLOCK("diamond block", (short)27, new BlockData(57, 0), new BlockData(57, 0), true, (double)5, (double)30),
-	EMERALD_BLOCK("emerald block", (short)28, new BlockData(133, 0), new BlockData(133, 0), true, (double)5, (double)30),
-	REDSTONE_BLOCK("redstone block", (short)29, new BlockData(152, 0), new BlockData(152, 0), true, (double)5, (double)30),
-	LAPIS_LAZULI_BLOCK("lapis lazuli block", (short)30, new BlockData(22, 0), new BlockData(22, 0), true, (double)3, (double)15),
-	GRASS("grass", (short)31, new BlockData(2, 0), new BlockData(2, 0), true, (double)0.6, (double)3),
-	DIRT("dirt", (short)32, new BlockData(3, 0), new BlockData(3, 0), true, (double)0.5, (double)2.5),
-	COARSE_DIRT("coarse dirt", (short)33, new BlockData(3, 1), new BlockData(0, 0), true, (double)0.5, (double)2.5),
-	PODZOL("podzol", (short)34, new BlockData(3, 2), new BlockData(243, 0), true, (double)0.5, (double)2.5),
-	DRY_FARMLAND_0("dry farmland 0", (short)35, new BlockData(60, 0), new BlockData(60, 0), true, (double)0.6, (double)3),
-	DRY_FARMLAND_1("dry farmland 1", (short)36, new BlockData(60, 1), new BlockData(60, 1), true, (double)0.6, (double)3),
-	DRY_FARMLAND_2("dry farmland 2", (short)37, new BlockData(60, 2), new BlockData(60, 2), true, (double)0.6, (double)3),
-	DRY_FARMLAND_3("dry farmland 3", (short)38, new BlockData(60, 3), new BlockData(60, 3), true, (double)0.6, (double)3),
-	DRY_FARMLAND_4("dry farmland 4", (short)39, new BlockData(60, 4), new BlockData(60, 4), true, (double)0.6, (double)3),
-	DRY_FARMLAND_5("dry farmland 5", (short)40, new BlockData(60, 5), new BlockData(60, 5), true, (double)0.6, (double)3),
-	DRY_FARMLAND_6("dry farmland 6", (short)41, new BlockData(60, 6), new BlockData(60, 6), true, (double)0.6, (double)3),
-	WET_FARMLAND("wet farmland", (short)42, new BlockData(60, 7), new BlockData(60, 7), true, (double)0.6, (double)3),
-	GRASS_PATH("grass path", (short)43, new BlockData(208, 0), new BlockData(198, 0), true, (double)0.6, (double)3.25),
-	OAK_WOOD_PLANKS("oak wood planks", (short)44, new BlockData(5, 0), new BlockData(5, 0), true, (double)2, (double)15),
-	SPRUCE_WOOD_PLANKS("spruce wood planks", (short)45, new BlockData(5, 1), new BlockData(5, 1), true, (double)2, (double)15),
-	BIRCH_WOOD_PLANKS("birch wood planks", (short)46, new BlockData(5, 2), new BlockData(5, 2), true, (double)2, (double)15),
-	JUNGLE_WOOD_PLANKS("jungle wood planks", (short)47, new BlockData(5, 3), new BlockData(5, 3), true, (double)2, (double)15),
-	ACACIA_WOOD_PLANKS("acacia wood planks", (short)48, new BlockData(5, 4), new BlockData(5, 4), true, (double)2, (double)15),
-	DARK_OAK_WOOD_PLANKS("dark oak wood planks", (short)49, new BlockData(5, 5), new BlockData(5, 5), true, (double)2, (double)15),
-	OAK_SAPLING("oak sapling", (short)50, new BlockData(6, 0), new BlockData(6, 0), true, (double)0, (double)0),
-	SPRUCE_SAPLING("spruce sapling", (short)51, new BlockData(6, 1), new BlockData(6, 1), true, (double)0, (double)0),
-	BIRCH_SAPLING("birch sapling", (short)52, new BlockData(6, 2), new BlockData(6, 2), true, (double)0, (double)0),
-	JUNGLE_SAPLING("jungle sapling", (short)53, new BlockData(6, 3), new BlockData(6, 3), true, (double)0, (double)0),
-	ACACIA_SAPLING("acacia sapling", (short)54, new BlockData(6, 4), new BlockData(6, 4), true, (double)0, (double)0),
-	DARK_OAK_SAPLING("dark oak sapling", (short)55, new BlockData(6, 5), new BlockData(6, 5), true, (double)0, (double)0),
-	SAND("sand", (short)56, new BlockData(12, 0), new BlockData(12, 0), true, (double)0.5, (double)2.5),
-	RED_SAND("red sand", (short)57, new BlockData(12, 1), new BlockData(12, 1), true, (double)0.5, (double)2.5),
-	GRAVEL("gravel", (short)58, new BlockData(13, 0), new BlockData(13, 0), true, (double)0.6, (double)3),
-	BRICKS("bricks", (short)59, new BlockData(45, 0), new BlockData(45, 0), true, (double)2, (double)30),
-	OAK_WOOD_UP_DOWN("oak wood up down", (short)60, new BlockData(17, 0), new BlockData(17, 0), true, (double)2, (double)10),
-	OAK_WOOD_EAST_WEST("oak wood east west", (short)61, new BlockData(17, 4), new BlockData(17, 4), true, (double)2, (double)10),
-	OAK_WOOD_NORTH_SOUTH("oak wood north south", (short)62, new BlockData(17, 8), new BlockData(17, 8), true, (double)2, (double)10),
-	OAK_WOOD_BARK("oak wood bark", (short)63, new BlockData(17, 12), new BlockData(17, 12), true, (double)2, (double)10),
-	SPRUCE_WOOD_UP_DOWN("spruce wood up down", (short)64, new BlockData(17, 1), new BlockData(17, 1), true, (double)2, (double)10),
-	SPRUCE_WOOD_EAST_WEST("spruce wood east west", (short)65, new BlockData(17, 5), new BlockData(17, 5), true, (double)2, (double)10),
-	SPRUCE_WOOD_NORTH_SOUTH("spruce wood north south", (short)66, new BlockData(17, 9), new BlockData(17, 9), true, (double)2, (double)10),
-	SPRUCE_WOOD_BARK("spruce wood bark", (short)67, new BlockData(17, 13), new BlockData(17, 13), true, (double)2, (double)10),
-	BIRCH_WOOD_UP_DOWN("birch wood up down", (short)68, new BlockData(17, 2), new BlockData(17, 2), true, (double)2, (double)10),
-	BIRCH_WOOD_EAST_WEST("birch wood east west", (short)69, new BlockData(17, 6), new BlockData(17, 6), true, (double)2, (double)10),
-	BIRCH_WOOD_NORTH_SOUTH("birch wood north south", (short)70, new BlockData(17, 10), new BlockData(17, 10), true, (double)2, (double)10),
-	BIRCH_WOOD_BARK("birch wood bark", (short)71, new BlockData(17, 14), new BlockData(17, 14), true, (double)2, (double)10),
-	JUNGLE_WOOD_UP_DOWN("jungle wood up down", (short)72, new BlockData(17, 3), new BlockData(17, 3), true, (double)2, (double)10),
-	JUNGLE_WOOD_EAST_WEST("jungle wood east west", (short)73, new BlockData(17, 7), new BlockData(17, 7), true, (double)2, (double)10),
-	JUNGLE_WOOD_NORTH_SOUTH("jungle wood north south", (short)74, new BlockData(17, 11), new BlockData(17, 11), true, (double)2, (double)10),
-	JUNGLE_WOOD_BARK("jungle wood bark", (short)75, new BlockData(17, 15), new BlockData(17, 15), true, (double)2, (double)10),
-	ACACIA_WOOD_UP_DOWN("acacia wood up down", (short)76, new BlockData(162, 0), new BlockData(162, 0), true, (double)2, (double)10),
-	ACACIA_WOOD_EAST_WEST("acacia wood east west", (short)77, new BlockData(162, 4), new BlockData(162, 4), true, (double)2, (double)10),
-	ACACIA_WOOD_NORTH_SOUTH("acacia wood north south", (short)78, new BlockData(162, 8), new BlockData(162, 8), true, (double)2, (double)10),
-	ACACIA_WOOD_BARK("acacia wood bark", (short)79, new BlockData(162, 12), new BlockData(162, 12), true, (double)2, (double)10),
-	DARK_OAK_WOOD_UP_DOWN("dark oak wood up down", (short)80, new BlockData(162, 1), new BlockData(162, 1), true, (double)2, (double)10),
-	DARK_OAK_WOOD_EAST_WEST("dark oak wood east west", (short)81, new BlockData(162, 5), new BlockData(162, 5), true, (double)2, (double)10),
-	DARK_OAK_WOOD_NORTH_SOUTH("dark oak wood north south", (short)82, new BlockData(162, 9), new BlockData(162, 9), true, (double)2, (double)10),
-	DARK_OAK_WOOD_BARK("dark oak wood bark", (short)83, new BlockData(162, 13), new BlockData(162, 13), true, (double)2, (double)10),
-	OAK_LEAVES_DECAY("oak leaves decay", (short)84, new BlockData(18, 0), new BlockData(18, 0), true, (double)0.2, (double)1),
-	OAK_LEAVES_NO_DECAY("oak leaves no decay", (short)85, new BlockData(18, 4), new BlockData(18, 4), true, (double)0.2, (double)1),
-	OAK_LEAVES_CHECK_DECAY("oak leaves check decay", (short)86, new BlockData(18, 8), new BlockData(18, 8), true, (double)0.2, (double)1),
-	OAK_LEAVES_NO_DECAY_CHECK_DECAY("oak leaves no decay check decay", (short)87, new BlockData(18, 12), new BlockData(18, 12), true, (double)0.2, (double)1),
-	SPRUCE_LEAVES_DECAY("spruce leaves decay", (short)88, new BlockData(18, 1), new BlockData(18, 1), true, (double)0.2, (double)1),
-	SPRUCE_LEAVES_NO_DECAY("spruce leaves no decay", (short)89, new BlockData(18, 5), new BlockData(18, 5), true, (double)0.2, (double)1),
-	SPRUCE_LEAVES_CHECK_DECAY("spruce leaves check decay", (short)90, new BlockData(18, 9), new BlockData(18, 9), true, (double)0.2, (double)1),
-	SPRUCE_LEAVES_NO_DECAY_CHECK_DECAY("spruce leaves no decay check decay", (short)91, new BlockData(18, 13), new BlockData(18, 13), true, (double)0.2, (double)1),
-	BIRCH_LEAVES_DECAY("birch leaves decay", (short)92, new BlockData(18, 2), new BlockData(18, 2), true, (double)0.2, (double)1),
-	BIRCH_LEAVES_NO_DECAY("birch leaves no decay", (short)93, new BlockData(18, 6), new BlockData(18, 6), true, (double)0.2, (double)1),
-	BIRCH_LEAVES_CHECK_DECAY("birch leaves check decay", (short)94, new BlockData(18, 10), new BlockData(18, 10), true, (double)0.2, (double)1),
-	BIRCH_LEAVES_NO_DECAY_CHECK_DECAY("birch leaves no decay check decay", (short)95, new BlockData(18, 14), new BlockData(18, 14), true, (double)0.2, (double)1),
-	JUNGLE_LEAVES_DECAY("jungle leaves decay", (short)96, new BlockData(18, 3), new BlockData(18, 3), true, (double)0.2, (double)1),
-	JUNGLE_LEAVES_NO_DECAY("jungle leaves no decay", (short)97, new BlockData(18, 7), new BlockData(18, 7), true, (double)0.2, (double)1),
-	JUNGLE_LEAVES_CHECK_DECAY("jungle leaves check decay", (short)98, new BlockData(18, 11), new BlockData(18, 11), true, (double)0.2, (double)1),
-	JUNGLE_LEAVES_NO_DECAY_CHECK_DECAY("jungle leaves no decay check decay", (short)99, new BlockData(18, 15), new BlockData(18, 15), true, (double)0.2, (double)1),
-	ACACIA_LEAVES_DECAY("acacia leaves decay", (short)100, new BlockData(161, 0), new BlockData(161, 0), true, (double)0.2, (double)1),
-	ACACIA_LEAVES_NO_DECAY("acacia leaves no decay", (short)101, new BlockData(161, 4), new BlockData(161, 4), true, (double)0.2, (double)1),
-	ACACIA_LEAVES_CHECK_DECAY("acacia leaves check decay", (short)102, new BlockData(161, 8), new BlockData(161, 8), true, (double)0.2, (double)1),
-	ACACIA_LEAVES_NO_DECAY_CHECK_DECAY("acacia leaves no decay check decay", (short)103, new BlockData(161, 12), new BlockData(161, 12), true, (double)0.2, (double)1),
-	DARK_OAK_LEAVES_DECAY("dark oak leaves decay", (short)104, new BlockData(161, 1), new BlockData(161, 1), true, (double)0.2, (double)1),
-	DARK_OAK_LEAVES_NO_DECAY("dark oak leaves no decay", (short)105, new BlockData(161, 5), new BlockData(161, 5), true, (double)0.2, (double)1),
-	DARK_OAK_LEAVES_CHECK_DECAY("dark oak leaves check decay", (short)106, new BlockData(161, 9), new BlockData(161, 9), true, (double)0.2, (double)1),
-	DARK_OAK_LEAVES_NO_DECAY_CHECK_DECAY("dark oak leaves no decay check decay", (short)107, new BlockData(161, 13), new BlockData(161, 13), true, (double)0.2, (double)1),
-	SPONGE("sponge", (short)108, new BlockData(19, 0), new BlockData(19, 0), true, (double)0.6, (double)3),
-	WET_SPONGE("wet sponge", (short)109, new BlockData(19, 1), new BlockData(19, 1), true, (double)0.6, (double)3),
-	GLASS("glass", (short)110, new BlockData(20, 0), new BlockData(20, 0), true, (double)0.3, (double)1.5),
-	WHITE_STAINED_GLASS("white stained glass", (short)111, new BlockData(95, 0), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	ORANGE_STAINED_GLASS("orange stained glass", (short)112, new BlockData(95, 1), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	MAGENTA_STAINED_GLASS("magenta stained glass", (short)113, new BlockData(95, 2), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	LIGHT_BLUE_STAINED_GLASS("light blue stained glass", (short)114, new BlockData(95, 3), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	YELLOW_STAINED_GLASS("yellow stained glass", (short)115, new BlockData(95, 4), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	LIME_STAINED_GLASS("lime stained glass", (short)116, new BlockData(95, 5), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	PINK_STAINED_GLASS("pink stained glass", (short)117, new BlockData(95, 6), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	GRAY_STAINED_GLASS("gray stained glass", (short)118, new BlockData(95, 7), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	LIGHT_GRAY_STAINED_GLASS("light gray stained glass", (short)119, new BlockData(95, 8), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	CYAN_STAINED_GLASS("cyan stained glass", (short)120, new BlockData(95, 9), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	PURPLE_STAINED_GLASS("purple stained glass", (short)121, new BlockData(95, 10), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	BLUE_STAINED_GLASS("blue stained glass", (short)122, new BlockData(95, 11), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	BROWN_STAINED_GLASS("brown stained glass", (short)123, new BlockData(95, 12), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	GREEN_STAINED_GLASS("green stained glass", (short)124, new BlockData(95, 13), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	RED_STAINED_GLASS("red stained glass", (short)125, new BlockData(95, 14), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	BLACK_STAINED_GLASS("black stained glass", (short)126, new BlockData(95, 15), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	GLASS_PANE("glass pane", (short)127, new BlockData(102, 0), new BlockData(102, 0), true, (double)0.3, (double)1.5),
-	WHITE_STAINED_GLASS_PANE("white stained glass pane", (short)128, new BlockData(160, 0), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	ORANGE_STAINED_GLASS_PANE("orange stained glass pane", (short)129, new BlockData(160, 1), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	MAGENTA_STAINED_GLASS_PANE("magenta stained glass pane", (short)130, new BlockData(160, 2), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	LIGHT_BLUE_STAINED_GLASS_PANE("light blue stained glass pane", (short)131, new BlockData(160, 3), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	YELLOW_STAINED_GLASS_PANE("yellow stained glass pane", (short)132, new BlockData(160, 4), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	LIME_STAINED_GLASS_PANE("lime stained glass pane", (short)133, new BlockData(160, 5), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	PINK_STAINED_GLASS_PANE("pink stained glass pane", (short)134, new BlockData(160, 6), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	GRAY_STAINED_GLASS_PANE("gray stained glass pane", (short)135, new BlockData(160, 7), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	LIGHT_GRAY_STAINED_GLASS_PANE("light gray stained glass pane", (short)136, new BlockData(160, 8), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	CYAN_STAINED_GLASS_PANE("cyan stained glass pane", (short)137, new BlockData(160, 9), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	PURPLE_STAINED_GLASS_PANE("purple stained glass pane", (short)138, new BlockData(160, 10), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	BLUE_STAINED_GLASS_PANE("blue stained glass pane", (short)139, new BlockData(160, 11), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	BROWN_STAINED_GLASS_PANE("brown stained glass pane", (short)140, new BlockData(160, 12), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	GREEN_STAINED_GLASS_PANE("green stained glass pane", (short)141, new BlockData(160, 13), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	RED_STAINED_GLASS_PANE("red stained glass pane", (short)142, new BlockData(160, 14), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	BLACK_STAINED_GLASS_PANE("black stained glass pane", (short)143, new BlockData(160, 15), new BlockData(0, 0), true, (double)0.3, (double)1.5),
-	SANDSTONE("sandstone", (short)144, new BlockData(24, 0), new BlockData(24, 0), true, (double)0.8, (double)4),
-	CHISELED_SANDSTONE("chiseled sandstone", (short)145, new BlockData(24, 1), new BlockData(24, 1), true, (double)0.8, (double)4),
-	SMOOTH_SANDSTONE("smooth sandstone", (short)146, new BlockData(24, 2), new BlockData(24, 2), true, (double)0.8, (double)4),
-	RED_SANDSTONE("red sandstone", (short)147, new BlockData(179, 0), new BlockData(179, 0), true, (double)0.8, (double)4),
-	CHISELED_RED_SANDSTONE("chiseled red sandstone", (short)148, new BlockData(179, 1), new BlockData(179, 1), true, (double)0.8, (double)4),
-	SMOOTH_RED_SANDSTONE("smooth red sandstone", (short)149, new BlockData(179, 2), new BlockData(179, 2), true, (double)0.8, (double)4),
-	DISPENSER_FACING_DOWN("dispenser facing down", (short)150, new BlockData(23, 0), new BlockData(23, 0), true, (double)3.5, (double)17.5),
-	DISPENSER_FACING_UP("dispenser facing up", (short)151, new BlockData(23, 1), new BlockData(23, 1), true, (double)3.5, (double)17.5),
-	DISPENSER_FACING_NORTH("dispenser facing north", (short)152, new BlockData(23, 2), new BlockData(23, 2), true, (double)3.5, (double)17.5),
-	DISPENSER_FACING_SOUTH("dispenser facing south", (short)153, new BlockData(23, 3), new BlockData(23, 3), true, (double)3.5, (double)17.5),
-	DISPENSER_FACING_WEST("dispenser facing west", (short)154, new BlockData(23, 4), new BlockData(23, 4), true, (double)3.5, (double)17.5),
-	DISPENSER_FACING_EAST("dispenser facing east", (short)155, new BlockData(23, 5), new BlockData(23, 5), true, (double)3.5, (double)17.5),
-	ACTIVE_DISPENSER_FACING_DOWN("active dispenser facing down", (short)156, new BlockData(23, 8), new BlockData(23, 8), true, (double)3.5, (double)17.5),
-	ACTIVE_DISPENSER_FACING_UP("active dispenser facing up", (short)157, new BlockData(23, 9), new BlockData(23, 9), true, (double)3.5, (double)17.5),
-	ACTIVE_DISPENSER_FACING_NORTH("active dispenser facing north", (short)158, new BlockData(23, 10), new BlockData(23, 10), true, (double)3.5, (double)17.5),
-	ACTIVE_DISPENSER_FACING_SOUTH("active dispenser facing south", (short)159, new BlockData(23, 11), new BlockData(23, 11), true, (double)3.5, (double)17.5),
-	ACTIVE_DISPENSER_FACING_WEST("active dispenser facing west", (short)160, new BlockData(23, 12), new BlockData(23, 12), true, (double)3.5, (double)17.5),
-	ACTIVE_DISPENSER_FACING_EAST("active dispenser facing east", (short)161, new BlockData(23, 13), new BlockData(23, 13), true, (double)3.5, (double)17.5),
-	NOTE_BLOCK("note block", (short)162, new BlockData(25, 0), new BlockData(25, 0), true, (double)0.8, (double)4),
-	BED_FOOT_FACING_SOUTH("bed foot facing south", (short)163, new BlockData(26, 0), new BlockData(26, 0), true, (double)0.2, (double)1),
-	BED_FOOT_FACING_WEST("bed foot facing west", (short)164, new BlockData(26, 1), new BlockData(26, 1), true, (double)0.2, (double)1),
-	BED_FOOT_FACING_NORTH("bed foot facing north", (short)165, new BlockData(26, 2), new BlockData(26, 2), true, (double)0.2, (double)1),
-	BED_FOOT_FACING_EAST("bed foot facing east", (short)166, new BlockData(26, 3), new BlockData(26, 3), true, (double)0.2, (double)1),
-	OCCUPIED_BED_FOOT_FACING_SOUTH("occupied bed foot facing south", (short)167, new BlockData(26, 4), new BlockData(26, 4), true, (double)0.2, (double)1),
-	OCCUPIED_BED_FOOT_FACING_WEST("occupied bed foot facing west", (short)168, new BlockData(26, 5), new BlockData(26, 5), true, (double)0.2, (double)1),
-	OCCUPIED_BED_FOOT_FACING_NORTH("occupied bed foot facing north", (short)169, new BlockData(26, 6), new BlockData(26, 6), true, (double)0.2, (double)1),
-	OCCUPIED_BED_FOOT_FACING_EAST("occupied bed foot facing east", (short)170, new BlockData(26, 7), new BlockData(26, 7), true, (double)0.2, (double)1),
-	BED_HEAD_FACING_SOUTH("bed head facing south", (short)171, new BlockData(26, 8), new BlockData(26, 8), true, (double)0.2, (double)1),
-	BED_HEAD_FACING_WEST("bed head facing west", (short)172, new BlockData(26, 9), new BlockData(26, 9), true, (double)0.2, (double)1),
-	BED_HEAD_FACING_NORTH("bed head facing north", (short)173, new BlockData(26, 10), new BlockData(26, 10), true, (double)0.2, (double)1),
-	BED_HEAD_FACING_EAST("bed head facing east", (short)174, new BlockData(26, 11), new BlockData(26, 11), true, (double)0.2, (double)1),
-	OCCUPIED_BED_HEAD_FACING_SOUTH("occupied bed head facing south", (short)175, new BlockData(26, 12), new BlockData(26, 12), true, (double)0.2, (double)1),
-	OCCUPIED_BED_HEAD_FACING_WEST("occupied bed head facing west", (short)176, new BlockData(26, 13), new BlockData(26, 13), true, (double)0.2, (double)1),
-	OCCUPIED_BED_HEAD_FACING_NORTH("occupied bed head facing north", (short)177, new BlockData(26, 14), new BlockData(26, 14), true, (double)0.2, (double)1),
-	OCCUPIED_BED_HEAD_FACING_EAST("occupied bed head facing east", (short)178, new BlockData(26, 15), new BlockData(26, 15), true, (double)0.2, (double)1),
-	RAIL_NORTH_SOUTH("rail north south", (short)179, new BlockData(66, 0), new BlockData(66, 0), true, (double)0.7, (double)3.5),
-	RAIL_EAST_WEST("rail east west", (short)180, new BlockData(66, 1), new BlockData(66, 1), true, (double)0.7, (double)3.5),
-	RAIL_ASCENDING_EAST("rail ascending east", (short)181, new BlockData(66, 2), new BlockData(66, 2), true, (double)0.7, (double)3.5),
-	RAIL_ASCENDING_WEST("rail ascending west", (short)182, new BlockData(66, 3), new BlockData(66, 3), true, (double)0.7, (double)3.5),
-	RAIL_ASCENDING_NORTH("rail ascending north", (short)183, new BlockData(66, 4), new BlockData(66, 4), true, (double)0.7, (double)3.5),
-	RAIL_ASCENDING_SOUTH("rail ascending south", (short)184, new BlockData(66, 5), new BlockData(66, 5), true, (double)0.7, (double)3.5),
-	RAIL_CURVED_SOUTH_EAST("rail curved south east", (short)185, new BlockData(66, 6), new BlockData(66, 6), true, (double)0.7, (double)3.5),
-	RAIL_CURVED_SOUTH_WEST("rail curved south west", (short)186, new BlockData(66, 7), new BlockData(66, 7), true, (double)0.7, (double)3.5),
-	RAIL_CURVED_NORTH_WEST("rail curved north west", (short)187, new BlockData(66, 8), new BlockData(66, 8), true, (double)0.7, (double)3.5),
-	RAIL_CURVED_NORTH_EAST("rail curved north east", (short)188, new BlockData(66, 9), new BlockData(66, 9), true, (double)0.7, (double)3.5),
-	POWERED_RAIL_NORTH_SOUTH("powered rail north south", (short)189, new BlockData(27, 0), new BlockData(27, 0), true, (double)0.7, (double)3.5),
-	POWERED_RAIL_EAST_WEST("powered rail east west", (short)190, new BlockData(27, 1), new BlockData(27, 1), true, (double)0.7, (double)3.5),
-	POWERED_RAIL_ASCENDING_EAST("powered rail ascending east", (short)191, new BlockData(27, 2), new BlockData(27, 2), true, (double)0.7, (double)3.5),
-	POWERED_RAIL_ASCENDING_WEST("powered rail ascending west", (short)192, new BlockData(27, 3), new BlockData(27, 3), true, (double)0.7, (double)3.5),
-	POWERED_RAIL_ASCENDING_NORTH("powered rail ascending north", (short)193, new BlockData(27, 4), new BlockData(27, 4), true, (double)0.7, (double)3.5),
-	POWERED_RAIL_ASCENDING_SOUTH("powered rail ascending south", (short)194, new BlockData(27, 5), new BlockData(27, 5), true, (double)0.7, (double)3.5),
-	STILL_LAVA_0("still lava 0", (short)195, new BlockData(10, 0), new BlockData(10, 0), false, (double)0, (double)500),
-	ACTIVE_POWERED_RAIL_NORTH_SOUTH("active powered rail north south", (short)196, new BlockData(27, 8), new BlockData(27, 8), true, (double)0.7, (double)3.5),
-	ACTIVE_POWERED_RAIL_EAST_WEST("active powered rail east west", (short)197, new BlockData(27, 9), new BlockData(27, 9), true, (double)0.7, (double)3.5),
-	ACTIVE_POWERED_RAIL_ASCENDING_EAST("active powered rail ascending east", (short)198, new BlockData(27, 10), new BlockData(27, 10), true, (double)0.7, (double)3.5),
-	ACTIVE_POWERED_RAIL_ASCENDING_WEST("active powered rail ascending west", (short)199, new BlockData(27, 11), new BlockData(27, 11), true, (double)0.7, (double)3.5),
-	ACTIVE_POWERED_RAIL_ASCENDING_NORTH("active powered rail ascending north", (short)200, new BlockData(27, 12), new BlockData(27, 12), true, (double)0.7, (double)3.5),
-	ACTIVE_POWERED_RAIL_ASCENDING_SOUTH("active powered rail ascending south", (short)201, new BlockData(27, 13), new BlockData(27, 13), true, (double)0.7, (double)3.5),
-	ACTIVATOR_RAIL_NORTH_SOUTH("activator rail north south", (short)202, new BlockData(157, 0), new BlockData(126, 0), true, (double)0.7, (double)3.5),
-	ACTIVATOR_RAIL_EAST_WEST("activator rail east west", (short)203, new BlockData(157, 1), new BlockData(126, 1), true, (double)0.7, (double)3.5),
-	ACTIVATOR_RAIL_ASCENDING_EAST("activator rail ascending east", (short)204, new BlockData(157, 2), new BlockData(126, 2), true, (double)0.7, (double)3.5),
-	ACTIVATOR_RAIL_ASCENDING_WEST("activator rail ascending west", (short)205, new BlockData(157, 3), new BlockData(126, 3), true, (double)0.7, (double)3.5),
-	ACTIVATOR_RAIL_ASCENDING_NORTH("activator rail ascending north", (short)206, new BlockData(157, 4), new BlockData(126, 4), true, (double)0.7, (double)3.5),
-	ACTIVATOR_RAIL_ASCENDING_SOUTH("activator rail ascending south", (short)207, new BlockData(157, 5), new BlockData(126, 5), true, (double)0.7, (double)3.5),
-	ACTIVE_ACTIVATOR_RAIL_NORTH_SOUTH("active activator rail north south", (short)208, new BlockData(157, 8), new BlockData(126, 8), true, (double)0.7, (double)3.5),
-	ACTIVE_ACTIVATOR_RAIL_EAST_WEST("active activator rail east west", (short)209, new BlockData(157, 9), new BlockData(126, 9), true, (double)0.7, (double)3.5),
-	ACTIVE_ACTIVATOR_RAIL_ASCENDING_EAST("active activator rail ascending east", (short)210, new BlockData(157, 10), new BlockData(126, 10), true, (double)0.7, (double)3.5),
-	ACTIVE_ACTIVATOR_RAIL_ASCENDING_WEST("active activator rail ascending west", (short)211, new BlockData(157, 11), new BlockData(126, 11), true, (double)0.7, (double)3.5),
-	ACTIVE_ACTIVATOR_RAIL_ASCENDING_NORTH("active activator rail ascending north", (short)212, new BlockData(157, 12), new BlockData(126, 12), true, (double)0.7, (double)3.5),
-	ACTIVE_ACTIVATOR_RAIL_ASCENDING_SOUTH("active activator rail ascending south", (short)213, new BlockData(157, 13), new BlockData(126, 13), true, (double)0.7, (double)3.5),
-	DETECTOR_RAIL_NORTH_SOUTH("detector rail north south", (short)214, new BlockData(28, 0), new BlockData(28, 0), true, (double)0.7, (double)3.5),
-	DETECTOR_RAIL_EAST_WEST("detector rail east west", (short)215, new BlockData(28, 1), new BlockData(28, 1), true, (double)0.7, (double)3.5),
-	DETECTOR_RAIL_ASCENDING_EAST("detector rail ascending east", (short)216, new BlockData(28, 2), new BlockData(28, 2), true, (double)0.7, (double)3.5),
-	DETECTOR_RAIL_ASCENDING_WEST("detector rail ascending west", (short)217, new BlockData(28, 3), new BlockData(28, 3), true, (double)0.7, (double)3.5),
-	DETECTOR_RAIL_ASCENDING_NORTH("detector rail ascending north", (short)218, new BlockData(28, 4), new BlockData(28, 4), true, (double)0.7, (double)3.5),
-	DETECTOR_RAIL_ASCENDING_SOUTH("detector rail ascending south", (short)219, new BlockData(28, 5), new BlockData(28, 5), true, (double)0.7, (double)3.5),
-	ACTIVE_DETECTOR_RAIL_NORTH_SOUTH("active detector rail north south", (short)220, new BlockData(28, 8), new BlockData(28, 8), true, (double)0.7, (double)3.5),
-	ACTIVE_DETECTOR_RAIL_EAST_WEST("active detector rail east west", (short)221, new BlockData(28, 9), new BlockData(28, 9), true, (double)0.7, (double)3.5),
-	ACTIVE_DETECTOR_RAIL_ASCENDING_EAST("active detector rail ascending east", (short)222, new BlockData(28, 10), new BlockData(28, 10), true, (double)0.7, (double)3.5),
-	ACTIVE_DETECTOR_RAIL_ASCENDING_WEST("active detector rail ascending west", (short)223, new BlockData(28, 11), new BlockData(28, 11), true, (double)0.7, (double)3.5),
-	ACTIVE_DETECTOR_RAIL_ASCENDING_NORTH("active detector rail ascending north", (short)224, new BlockData(28, 12), new BlockData(28, 12), true, (double)0.7, (double)3.5),
-	ACTIVE_DETECTOR_RAIL_ASCENDING_SOUTH("active detector rail ascending south", (short)225, new BlockData(28, 13), new BlockData(28, 13), true, (double)0.7, (double)3.5),
-	PISTON_FACING_DOWN("piston facing down", (short)226, new BlockData(33, 0), new BlockData(33, 0), true, (double)0.5, (double)2.5),
-	PISTON_FACING_UP("piston facing up", (short)227, new BlockData(33, 1), new BlockData(33, 1), true, (double)0.5, (double)2.5),
-	PISTON_FACING_NORTH("piston facing north", (short)228, new BlockData(33, 2), new BlockData(33, 2), true, (double)0.5, (double)2.5),
-	PISTON_FACING_SOUTH("piston facing south", (short)229, new BlockData(33, 3), new BlockData(33, 3), true, (double)0.5, (double)2.5),
-	PISTON_FACING_WEST("piston facing west", (short)230, new BlockData(33, 4), new BlockData(33, 4), true, (double)0.5, (double)2.5),
-	PISTON_FACING_EAST("piston facing east", (short)231, new BlockData(33, 5), new BlockData(33, 5), true, (double)0.5, (double)2.5),
-	PISTON_FACING_EVERYWHERE("piston facing everywhere", (short)232, new BlockData(33, 6), new BlockData(33, 6), true, (double)0.5, (double)2.5),
-	PISTON_FACING_EVERYWHERE_1("piston facing everywhere 1", (short)233, new BlockData(33, 7), new BlockData(33, 7), true, (double)0.5, (double)2.5),
-	EXTENDED_PISTON_FACING_DOWN("extended piston facing down", (short)234, new BlockData(33, 8), new BlockData(33, 8), true, (double)0.5, (double)2.5),
-	EXTENDED_PISTON_FACING_UP("extended piston facing up", (short)235, new BlockData(33, 9), new BlockData(33, 9), true, (double)0.5, (double)2.5),
-	EXTENDED_PISTON_FACING_NORTH("extended piston facing north", (short)236, new BlockData(33, 10), new BlockData(33, 10), true, (double)0.5, (double)2.5),
-	EXTENDED_PISTON_FACING_SOUTH("extended piston facing south", (short)237, new BlockData(33, 11), new BlockData(33, 11), true, (double)0.5, (double)2.5),
-	EXTENDED_PISTON_FACING_WEST("extended piston facing west", (short)238, new BlockData(33, 12), new BlockData(33, 12), true, (double)0.5, (double)2.5),
-	EXTENDED_PISTON_FACING_EAST("extended piston facing east", (short)239, new BlockData(33, 13), new BlockData(33, 13), true, (double)0.5, (double)2.5),
-	EXTENDED_PISTON_FACING_EVERYWHERE("extended piston facing everywhere", (short)240, new BlockData(33, 14), new BlockData(33, 14), true, (double)0.5, (double)2.5),
-	EXTENDED_PISTON_FACING_EVERYWHERE_1("extended piston facing everywhere 1", (short)241, new BlockData(33, 15), new BlockData(33, 15), true, (double)0.5, (double)2.5),
-	STICKY_PISTON_FACING_DOWN("sticky piston facing down", (short)242, new BlockData(29, 0), new BlockData(29, 0), true, (double)0.5, (double)2.5),
-	STICKY_PISTON_FACING_UP("sticky piston facing up", (short)243, new BlockData(29, 1), new BlockData(29, 1), true, (double)0.5, (double)2.5),
-	STICKY_PISTON_FACING_NORTH("sticky piston facing north", (short)244, new BlockData(29, 2), new BlockData(29, 2), true, (double)0.5, (double)2.5),
-	STICKY_PISTON_FACING_SOUTH("sticky piston facing south", (short)245, new BlockData(29, 3), new BlockData(29, 3), true, (double)0.5, (double)2.5),
-	STICKY_PISTON_FACING_WEST("sticky piston facing west", (short)246, new BlockData(29, 4), new BlockData(29, 4), true, (double)0.5, (double)2.5),
-	STICKY_PISTON_FACING_EAST("sticky piston facing east", (short)247, new BlockData(29, 5), new BlockData(29, 5), true, (double)0.5, (double)2.5),
-	STICKY_PISTON_FACING_EVERYWHERE("sticky piston facing everywhere", (short)248, new BlockData(29, 6), new BlockData(29, 6), true, (double)0.5, (double)2.5),
-	STICKY_PISTON_FACING_EVERYWHERE_1("sticky piston facing everywhere 1", (short)249, new BlockData(29, 7), new BlockData(29, 7), true, (double)0.5, (double)2.5),
-	EXTENDED_STICKY_PISTON_FACING_DOWN("extended sticky piston facing down", (short)250, new BlockData(29, 8), new BlockData(29, 8), true, (double)0.5, (double)2.5),
-	EXTENDED_STICKY_PISTON_FACING_UP("extended sticky piston facing up", (short)251, new BlockData(29, 9), new BlockData(29, 9), true, (double)0.5, (double)2.5),
-	EXTENDED_STICKY_PISTON_FACING_NORTH("extended sticky piston facing north", (short)252, new BlockData(29, 10), new BlockData(29, 10), true, (double)0.5, (double)2.5),
-	EXTENDED_STICKY_PISTON_FACING_SOUTH("extended sticky piston facing south", (short)253, new BlockData(29, 11), new BlockData(29, 11), true, (double)0.5, (double)2.5),
-	EXTENDED_STICKY_PISTON_FACING_WEST("extended sticky piston facing west", (short)254, new BlockData(29, 12), new BlockData(29, 12), true, (double)0.5, (double)2.5),
-	EXTENDED_STICKY_PISTON_FACING_EAST("extended sticky piston facing east", (short)255, new BlockData(29, 13), new BlockData(29, 13), true, (double)0.5, (double)2.5),
-	EXTENDED_STICKY_PISTON_FACING_EVERYWHERE("extended sticky piston facing everywhere", (short)256, new BlockData(29, 14), new BlockData(29, 14), true, (double)0.5, (double)2.5),
-	EXTENDED_STICKY_PISTON_FACING_EVERYWHERE_1("extended sticky piston facing everywhere 1", (short)257, new BlockData(29, 15), new BlockData(29, 15), true, (double)0.5, (double)2.5),
-	PISTON_HEAD_FACING_DOWN("piston head facing down", (short)258, new BlockData(34, 0), new BlockData(34, 0), true, (double)0.5, (double)2.5),
-	PISTON_HEAD_FACING_UP("piston head facing up", (short)259, new BlockData(34, 1), new BlockData(34, 1), true, (double)0.5, (double)2.5),
-	PISTON_HEAD_FACING_NORTH("piston head facing north", (short)260, new BlockData(34, 2), new BlockData(34, 2), true, (double)0.5, (double)2.5),
-	PISTON_HEAD_FACING_SOUTH("piston head facing south", (short)261, new BlockData(34, 3), new BlockData(34, 3), true, (double)0.5, (double)2.5),
-	PISTON_HEAD_FACING_WEST("piston head facing west", (short)262, new BlockData(34, 4), new BlockData(34, 4), true, (double)0.5, (double)2.5),
-	PISTON_HEAD_FACING_EAST("piston head facing east", (short)263, new BlockData(34, 5), new BlockData(34, 5), true, (double)0.5, (double)2.5),
-	PISTON_EXTENSION("piston extension", (short)264, new BlockData(36, 0), new BlockData(250, 0), true, (double)0.5, (double)2.5),
-	WHITE_WOOL("white wool", (short)265, new BlockData(35, 0), new BlockData(35, 0), true, (double)0.8, (double)4),
-	ORANGE_WOOL("orange wool", (short)266, new BlockData(35, 1), new BlockData(35, 1), true, (double)0.8, (double)4),
-	MAGENTA_WOOL("magenta wool", (short)267, new BlockData(35, 2), new BlockData(35, 2), true, (double)0.8, (double)4),
-	LIGHT_BLUE_WOOL("light blue wool", (short)268, new BlockData(35, 3), new BlockData(35, 3), true, (double)0.8, (double)4),
-	YELLOW_WOOL("yellow wool", (short)269, new BlockData(35, 4), new BlockData(35, 4), true, (double)0.8, (double)4),
-	LIME_WOOL("lime wool", (short)270, new BlockData(35, 5), new BlockData(35, 5), true, (double)0.8, (double)4),
-	PINK_WOOL("pink wool", (short)271, new BlockData(35, 6), new BlockData(35, 6), true, (double)0.8, (double)4),
-	GRAY_WOOL("gray wool", (short)272, new BlockData(35, 7), new BlockData(35, 7), true, (double)0.8, (double)4),
-	LIGHT_WOOL("light wool", (short)273, new BlockData(35, 8), new BlockData(35, 8), true, (double)0.8, (double)4),
-	CYAN_WOOL("cyan wool", (short)274, new BlockData(35, 9), new BlockData(35, 9), true, (double)0.8, (double)4),
-	PURPLE_WOOL("purple wool", (short)275, new BlockData(35, 10), new BlockData(35, 10), true, (double)0.8, (double)4),
-	BLUE_WOOL("blue wool", (short)276, new BlockData(35, 11), new BlockData(35, 11), true, (double)0.8, (double)4),
-	BROWN_WOOL("brown wool", (short)277, new BlockData(35, 12), new BlockData(35, 12), true, (double)0.8, (double)4),
-	GREEN_WOOL("green wool", (short)278, new BlockData(35, 13), new BlockData(35, 13), true, (double)0.8, (double)4),
-	RED_WOOL("red wool", (short)279, new BlockData(35, 14), new BlockData(35, 14), true, (double)0.8, (double)4),
-	BLACK_WOOL("black wool", (short)280, new BlockData(35, 15), new BlockData(35, 15), true, (double)0.8, (double)4),
-	DANDELION("dandelion", (short)281, new BlockData(37, 0), new BlockData(37, 0), true, (double)0, (double)0),
-	POPPY("poppy", (short)282, new BlockData(38, 0), new BlockData(38, 0), true, (double)0, (double)0),
-	BLUE_ORCHID("blue orchid", (short)283, new BlockData(38, 1), new BlockData(38, 1), true, (double)0, (double)0),
-	ALLIUM("allium", (short)284, new BlockData(38, 2), new BlockData(38, 2), true, (double)0, (double)0),
-	AZURE_BLUET("azure bluet", (short)285, new BlockData(38, 3), new BlockData(38, 3), true, (double)0, (double)0),
-	RED_TULIP("red tulip", (short)286, new BlockData(38, 4), new BlockData(38, 4), true, (double)0, (double)0),
-	ORANGE_TULIP("orange tulip", (short)287, new BlockData(38, 5), new BlockData(38, 5), true, (double)0, (double)0),
-	WHITE_TULIP("white tulip", (short)288, new BlockData(38, 6), new BlockData(38, 6), true, (double)0, (double)0),
-	PINK_TULIP("pink tulip", (short)289, new BlockData(38, 7), new BlockData(38, 7), true, (double)0, (double)0),
-	OXEYE_DAISY("oxeye daisy", (short)290, new BlockData(38, 8), new BlockData(38, 8), true, (double)0, (double)0),
-	SUNFLOWER_BOTTOM("sunflower bottom", (short)291, new BlockData(175, 0), new BlockData(175, 0), true, (double)0, (double)0),
-	LILIAC_BOTTOM("liliac bottom", (short)292, new BlockData(175, 1), new BlockData(175, 1), true, (double)0, (double)0),
-	DOUBLE_TALLGRASS_BOTTOM("double tallgrass bottom", (short)293, new BlockData(175, 2), new BlockData(175, 2), true, (double)0, (double)0),
-	LARGE_FERN_BOTTOM("large fern bottom", (short)294, new BlockData(175, 3), new BlockData(175, 3), true, (double)0, (double)0),
-	ROSE_BUSH_BOTTOM("rose bush bottom", (short)295, new BlockData(175, 4), new BlockData(175, 4), true, (double)0, (double)0),
-	PEONY_BOTTOM("peony bottom", (short)296, new BlockData(175, 5), new BlockData(175, 5), true, (double)0, (double)0),
-	SUNFLOWER_TOP("sunflower top", (short)297, new BlockData(175, 8), new BlockData(175, 8), true, (double)0, (double)0),
-	LILIAC_TOP("liliac top", (short)298, new BlockData(175, 9), new BlockData(175, 9), true, (double)0, (double)0),
-	DOUBLE_TALLGRASS_TOP("double tallgrass top", (short)299, new BlockData(175, 10), new BlockData(175, 10), true, (double)0, (double)0),
-	LARGE_FERN_TOP("large fern top", (short)300, new BlockData(175, 11), new BlockData(175, 11), true, (double)0, (double)0),
-	ROSE_BUSH_TOP("rose bush top", (short)301, new BlockData(175, 12), new BlockData(175, 12), true, (double)0, (double)0),
-	PEONY_TOP("peony top", (short)302, new BlockData(175, 13), new BlockData(175, 13), true, (double)0, (double)0),
-	BROWN_MUSHROOM("brown mushroom", (short)303, new BlockData(39, 0), new BlockData(39, 0), true, (double)0, (double)0),
-	RED_MUSHROOM("red mushroom", (short)304, new BlockData(40, 0), new BlockData(40, 0), true, (double)0, (double)0),
-	STONE_SLAB("stone slab", (short)305, new BlockData(44, 0), new BlockData(44, 0), true, (double)2, (double)30),
-	SANDSTONE_SLAB("sandstone slab", (short)306, new BlockData(44, 1), new BlockData(44, 1), true, (double)2, (double)30),
-	STONE_WOODEN_SLAB("stone wooden slab", (short)307, new BlockData(44, 2), new BlockData(44, 2), true, (double)2, (double)30),
-	COBBLESTONE_SLAB("cobblestone slab", (short)308, new BlockData(44, 3), new BlockData(44, 3), true, (double)2, (double)30),
-	BRICKS_SLAB("bricks slab", (short)309, new BlockData(44, 4), new BlockData(44, 4), true, (double)2, (double)30),
-	STONE_BRICK_SLAB("stone brick slab", (short)310, new BlockData(44, 5), new BlockData(44, 5), true, (double)2, (double)30),
-	NETHER_BRICK_SLAB("nether brick slab", (short)311, new BlockData(44, 6), new BlockData(44, 6), true, (double)2, (double)30),
-	QUARTZ_SLAB("quartz slab", (short)312, new BlockData(44, 7), new BlockData(44, 7), true, (double)2, (double)30),
-	RED_SANDSTONE_SLAB("red sandstone slab", (short)313, new BlockData(182, 0), new BlockData(182, 0), true, (double)2, (double)30),
-	PURPUR_SLAB("purpur slab", (short)314, new BlockData(205, 0), new BlockData(205, 0), true, (double)2, (double)30),
-	OAK_WOOD_SLAB("oak wood slab", (short)315, new BlockData(126, 0), new BlockData(158, 0), true, (double)2, (double)15),
-	SPRUCE_WOOD_SLAB("spruce wood slab", (short)316, new BlockData(126, 1), new BlockData(158, 1), true, (double)2, (double)15),
-	BIRCH_WOOD_SLAB("birch wood slab", (short)317, new BlockData(126, 2), new BlockData(158, 2), true, (double)2, (double)15),
-	JUNGLE_WOOD_SLAB("jungle wood slab", (short)318, new BlockData(126, 3), new BlockData(158, 3), true, (double)2, (double)15),
-	ACACIA_WOOD_SLAB("acacia wood slab", (short)319, new BlockData(126, 4), new BlockData(158, 4), true, (double)2, (double)15),
-	DARK_OAK_WOOD_SLAB("dark oak wood slab", (short)320, new BlockData(126, 5), new BlockData(158, 5), true, (double)2, (double)15),
-	UPPER_STONE_SLAB("upper stone slab", (short)321, new BlockData(44, 8), new BlockData(44, 8), true, (double)2, (double)30),
-	UPPER_SANDSTONE_SLAB("upper sandstone slab", (short)322, new BlockData(44, 9), new BlockData(44, 9), true, (double)2, (double)30),
-	UPPER_STONE_WOODEN_SLAB("upper stone wooden slab", (short)323, new BlockData(44, 10), new BlockData(44, 10), true, (double)2, (double)30),
-	UPPER_COBBLESTONE_SLAB("upper cobblestone slab", (short)324, new BlockData(44, 11), new BlockData(44, 11), true, (double)2, (double)30),
-	UPPER_BRICKS_SLAB("upper bricks slab", (short)325, new BlockData(44, 12), new BlockData(44, 12), true, (double)2, (double)30),
-	UPPER_STONE_BRICK_SLAB("upper stone brick slab", (short)326, new BlockData(44, 13), new BlockData(44, 13), true, (double)2, (double)30),
-	UPPER_NETHER_BRICK_SLAB("upper nether brick slab", (short)327, new BlockData(44, 14), new BlockData(44, 14), true, (double)2, (double)30),
-	UPPER_QUARTZ_SLAB("upper quartz slab", (short)328, new BlockData(44, 15), new BlockData(44, 15), true, (double)2, (double)30),
-	UPPER_RED_SANDSTONE_SLAB("upper red sandstone slab", (short)329, new BlockData(182, 8), new BlockData(182, 8), true, (double)2, (double)30),
-	UPPER_PURPUR_SLAB("upper purpur slab", (short)330, new BlockData(205, 8), new BlockData(205, 8), true, (double)2, (double)30),
-	UPPER_OAK_WOOD_SLAB("upper oak wood slab", (short)331, new BlockData(126, 8), new BlockData(158, 8), true, (double)2, (double)15),
-	UPPER_SPRUCE_WOOD_SLAB("upper spruce wood slab", (short)332, new BlockData(126, 9), new BlockData(158, 9), true, (double)2, (double)15),
-	UPPER_BIRCH_WOOD_SLAB("upper birch wood slab", (short)333, new BlockData(126, 10), new BlockData(158, 10), true, (double)2, (double)15),
-	UPPER_JUNGLE_WOOD_SLAB("upper jungle wood slab", (short)334, new BlockData(126, 11), new BlockData(158, 11), true, (double)2, (double)15),
-	UPPER_ACACIA_WOOD_SLAB("upper acacia wood slab", (short)335, new BlockData(126, 12), new BlockData(158, 12), true, (double)2, (double)15),
-	UPPER_DARK_OAK_WOOD_SLAB("upper dark oak wood slab", (short)336, new BlockData(126, 13), new BlockData(158, 13), true, (double)2, (double)15),
-	DOUBLE_STONE_SLAB("double stone slab", (short)337, new BlockData(43, 0), new BlockData(43, 0), true, (double)2, (double)30),
-	DOUBLE_SANDSTONE_SLAB("double sandstone slab", (short)338, new BlockData(43, 1), new BlockData(43, 1), true, (double)2, (double)30),
-	DOUBLE_STONE_WOODEN_SLAB("double stone wooden slab", (short)339, new BlockData(43, 2), new BlockData(43, 2), true, (double)2, (double)30),
-	DOUBLE_COBBLESTONE_SLAB("double cobblestone slab", (short)340, new BlockData(43, 3), new BlockData(43, 3), true, (double)2, (double)30),
-	DOUBLE_BRICKS_SLAB("double bricks slab", (short)341, new BlockData(43, 4), new BlockData(43, 4), true, (double)2, (double)30),
-	DOUBLE_STONE_BRICK_SLAB("double stone brick slab", (short)342, new BlockData(43, 5), new BlockData(43, 5), true, (double)2, (double)30),
-	DOUBLE_NETHER_BRICK_SLAB("double nether brick slab", (short)343, new BlockData(43, 6), new BlockData(43, 6), true, (double)2, (double)30),
-	DOUBLE_QUARTZ_SLAB("double quartz slab", (short)344, new BlockData(43, 7), new BlockData(43, 7), true, (double)2, (double)30),
-	DOUBLE_RED_SANDSTONE_SLAB("double red sandstone slab", (short)345, new BlockData(181, 0), new BlockData(181, 0), true, (double)2, (double)30),
-	DOUBLE_PURPUR_SLAB("double purpur slab", (short)346, new BlockData(204, 0), new BlockData(204, 0), true, (double)2, (double)30),
-	DOUBLE_OAK_WOOD_SLAB("double oak wood slab", (short)347, new BlockData(125, 0), new BlockData(157, 0), true, (double)2, (double)15),
-	DOUBLE_SPRUCE_WOOD_SLAB("double spruce wood slab", (short)348, new BlockData(125, 1), new BlockData(157, 1), true, (double)2, (double)15),
-	DOUBLE_BIRCH_WOOD_SLAB("double birch wood slab", (short)349, new BlockData(125, 2), new BlockData(157, 2), true, (double)2, (double)15),
-	DOUBLE_JUNGLE_WOOD_SLAB("double jungle wood slab", (short)350, new BlockData(125, 3), new BlockData(157, 3), true, (double)2, (double)15),
-	DOUBLE_ACACIA_WOOD_SLAB("double acacia wood slab", (short)351, new BlockData(125, 4), new BlockData(157, 4), true, (double)2, (double)15),
-	DOUBLE_DARK_OAK_WOOD_SLAB("double dark oak wood slab", (short)352, new BlockData(125, 5), new BlockData(157, 5), true, (double)2, (double)15),
-	TNT("tnt", (short)353, new BlockData(46, 0), new BlockData(46, 0), true, (double)0, (double)0),
-	BOOKSHELF("bookshelf", (short)354, new BlockData(47, 0), new BlockData(47, 0), true, (double)1.5, (double)7.5),
-	OBSIDIAN("obsidian", (short)355, new BlockData(49, 0), new BlockData(49, 0), true, (double)50, (double)6000),
-	TORCH_FACING_EAST("torch facing east", (short)356, new BlockData(50, 1), new BlockData(50, 1), true, (double)0, (double)0),
-	TORCH_FACING_WEST("torch facing west", (short)357, new BlockData(50, 2), new BlockData(50, 2), true, (double)0, (double)0),
-	TORCH_FACING_SOUTH("torch facing south", (short)358, new BlockData(50, 3), new BlockData(50, 3), true, (double)0, (double)0),
-	TORCH_FACING_NORTH("torch facing north", (short)359, new BlockData(50, 4), new BlockData(50, 4), true, (double)0, (double)0),
-	TORCH_FACING_UP("torch facing up", (short)360, new BlockData(50, 5), new BlockData(50, 5), true, (double)0, (double)0),
-	COBWEB("cobweb", (short)361, new BlockData(30, 0), new BlockData(30, 0), true, (double)4, (double)20),
-	TALL_GRASS("tall grass", (short)362, new BlockData(31, 1), new BlockData(31, 0), true, (double)0, (double)0),
-	FERN("fern", (short)363, new BlockData(31, 2), new BlockData(31, 2), true, (double)0, (double)0),
-	DEAD_BUSH("dead bush", (short)364, new BlockData(32, 0), new BlockData(32, 0), true, (double)0, (double)0),
-	FIRE("fire", (short)365, new BlockData(51, 0), new BlockData(51, 0), false, (double)-1, (double)0),
-	MONSTER_SPAWNER("monster spawner", (short)366, new BlockData(52, 0), new BlockData(52, 0), true, (double)5, (double)25),
-	OAK_WOOD_STAIRS_FACING_EAST("oak wood stairs facing east", (short)367, new BlockData(53, 0), new BlockData(53, 0), true, (double)2, (double)15),
-	OAK_WOOD_STAIRS_FACING_WEST("oak wood stairs facing west", (short)368, new BlockData(53, 1), new BlockData(53, 1), true, (double)2, (double)15),
-	OAK_WOOD_STAIRS_FACING_SOUTH("oak wood stairs facing south", (short)369, new BlockData(53, 2), new BlockData(53, 2), true, (double)2, (double)15),
-	OAK_WOOD_STAIRS_FACING_NORTH("oak wood stairs facing north", (short)370, new BlockData(53, 3), new BlockData(53, 3), true, (double)2, (double)15),
-	UPSIDE_DOWN_OAK_WOOD_STAIRS_FACING_EAST("upside down oak wood stairs facing east", (short)371, new BlockData(53, 4), new BlockData(53, 4), true, (double)2, (double)15),
-	UPSIDE_DOWN_OAK_WOOD_STAIRS_FACING_WEST("upside down oak wood stairs facing west", (short)372, new BlockData(53, 5), new BlockData(53, 5), true, (double)2, (double)15),
-	UPSIDE_DOWN_OAK_WOOD_STAIRS_FACING_SOUTH("upside down oak wood stairs facing south", (short)373, new BlockData(53, 6), new BlockData(53, 6), true, (double)2, (double)15),
-	UPSIDE_DOWN_OAK_WOOD_STAIRS_FACING_NORTH("upside down oak wood stairs facing north", (short)374, new BlockData(53, 7), new BlockData(53, 7), true, (double)2, (double)15),
-	SPRUCE_WOOD_STAIRS_FACING_EAST("spruce wood stairs facing east", (short)375, new BlockData(134, 0), new BlockData(134, 0), true, (double)2, (double)15),
-	SPRUCE_WOOD_STAIRS_FACING_WEST("spruce wood stairs facing west", (short)376, new BlockData(134, 1), new BlockData(134, 1), true, (double)2, (double)15),
-	SPRUCE_WOOD_STAIRS_FACING_SOUTH("spruce wood stairs facing south", (short)377, new BlockData(134, 2), new BlockData(134, 2), true, (double)2, (double)15),
-	SPRUCE_WOOD_STAIRS_FACING_NORTH("spruce wood stairs facing north", (short)378, new BlockData(134, 3), new BlockData(134, 3), true, (double)2, (double)15),
-	UPSIDE_DOWN_SPRUCE_WOOD_STAIRS_FACING_EAST("upside down spruce wood stairs facing east", (short)379, new BlockData(134, 4), new BlockData(134, 4), true, (double)2, (double)15),
-	UPSIDE_DOWN_SPRUCE_WOOD_STAIRS_FACING_WEST("upside down spruce wood stairs facing west", (short)380, new BlockData(134, 5), new BlockData(134, 5), true, (double)2, (double)15),
-	UPSIDE_DOWN_SPRUCE_WOOD_STAIRS_FACING_SOUTH("upside down spruce wood stairs facing south", (short)381, new BlockData(134, 6), new BlockData(134, 6), true, (double)2, (double)15),
-	UPSIDE_DOWN_SPRUCE_WOOD_STAIRS_FACING_NORTH("upside down spruce wood stairs facing north", (short)382, new BlockData(134, 7), new BlockData(134, 7), true, (double)2, (double)15),
-	BIRCH_WOOD_STAIRS_FACING_EAST("birch wood stairs facing east", (short)383, new BlockData(135, 0), new BlockData(135, 0), true, (double)2, (double)15),
-	BIRCH_WOOD_STAIRS_FACING_WEST("birch wood stairs facing west", (short)384, new BlockData(135, 1), new BlockData(135, 1), true, (double)2, (double)15),
-	BIRCH_WOOD_STAIRS_FACING_SOUTH("birch wood stairs facing south", (short)385, new BlockData(135, 2), new BlockData(135, 2), true, (double)2, (double)15),
-	BIRCH_WOOD_STAIRS_FACING_NORTH("birch wood stairs facing north", (short)386, new BlockData(135, 3), new BlockData(135, 3), true, (double)2, (double)15),
-	UPSIDE_DOWN_BIRCH_WOOD_STAIRS_FACING_EAST("upside down birch wood stairs facing east", (short)387, new BlockData(135, 4), new BlockData(135, 4), true, (double)2, (double)15),
-	UPSIDE_DOWN_BIRCH_WOOD_STAIRS_FACING_WEST("upside down birch wood stairs facing west", (short)388, new BlockData(135, 5), new BlockData(135, 5), true, (double)2, (double)15),
-	UPSIDE_DOWN_BIRCH_WOOD_STAIRS_FACING_SOUTH("upside down birch wood stairs facing south", (short)389, new BlockData(135, 6), new BlockData(135, 6), true, (double)2, (double)15),
-	UPSIDE_DOWN_BIRCH_WOOD_STAIRS_FACING_NORTH("upside down birch wood stairs facing north", (short)390, new BlockData(135, 7), new BlockData(135, 7), true, (double)2, (double)15),
-	JUNGLE_WOOD_STAIRS_FACING_EAST("jungle wood stairs facing east", (short)391, new BlockData(136, 0), new BlockData(136, 0), true, (double)2, (double)15),
-	JUNGLE_WOOD_STAIRS_FACING_WEST("jungle wood stairs facing west", (short)392, new BlockData(136, 1), new BlockData(136, 1), true, (double)2, (double)15),
-	JUNGLE_WOOD_STAIRS_FACING_SOUTH("jungle wood stairs facing south", (short)393, new BlockData(136, 2), new BlockData(136, 2), true, (double)2, (double)15),
-	JUNGLE_WOOD_STAIRS_FACING_NORTH("jungle wood stairs facing north", (short)394, new BlockData(136, 3), new BlockData(136, 3), true, (double)2, (double)15),
-	UPSIDE_DOWN_JUNGLE_WOOD_STAIRS_FACING_EAST("upside down jungle wood stairs facing east", (short)395, new BlockData(136, 4), new BlockData(136, 4), true, (double)2, (double)15),
-	UPSIDE_DOWN_JUNGLE_WOOD_STAIRS_FACING_WEST("upside down jungle wood stairs facing west", (short)396, new BlockData(136, 5), new BlockData(136, 5), true, (double)2, (double)15),
-	UPSIDE_DOWN_JUNGLE_WOOD_STAIRS_FACING_SOUTH("upside down jungle wood stairs facing south", (short)397, new BlockData(136, 6), new BlockData(136, 6), true, (double)2, (double)15),
-	UPSIDE_DOWN_JUNGLE_WOOD_STAIRS_FACING_NORTH("upside down jungle wood stairs facing north", (short)398, new BlockData(136, 7), new BlockData(136, 7), true, (double)2, (double)15),
-	ACACIA_WOOD_STAIRS_FACING_EAST("acacia wood stairs facing east", (short)399, new BlockData(163, 0), new BlockData(163, 0), true, (double)2, (double)15),
-	ACACIA_WOOD_STAIRS_FACING_WEST("acacia wood stairs facing west", (short)400, new BlockData(163, 1), new BlockData(163, 1), true, (double)2, (double)15),
-	ACACIA_WOOD_STAIRS_FACING_SOUTH("acacia wood stairs facing south", (short)401, new BlockData(163, 2), new BlockData(163, 2), true, (double)2, (double)15),
-	ACACIA_WOOD_STAIRS_FACING_NORTH("acacia wood stairs facing north", (short)402, new BlockData(163, 3), new BlockData(163, 3), true, (double)2, (double)15),
-	UPSIDE_DOWN_ACACIA_WOOD_STAIRS_FACING_EAST("upside down acacia wood stairs facing east", (short)403, new BlockData(163, 4), new BlockData(163, 4), true, (double)2, (double)15),
-	UPSIDE_DOWN_ACACIA_WOOD_STAIRS_FACING_WEST("upside down acacia wood stairs facing west", (short)404, new BlockData(163, 5), new BlockData(163, 5), true, (double)2, (double)15),
-	UPSIDE_DOWN_ACACIA_WOOD_STAIRS_FACING_SOUTH("upside down acacia wood stairs facing south", (short)405, new BlockData(163, 6), new BlockData(163, 6), true, (double)2, (double)15),
-	UPSIDE_DOWN_ACACIA_WOOD_STAIRS_FACING_NORTH("upside down acacia wood stairs facing north", (short)406, new BlockData(163, 7), new BlockData(163, 7), true, (double)2, (double)15),
-	DARK_OAK_WOOD_STAIRS_FACING_EAST("dark oak wood stairs facing east", (short)407, new BlockData(164, 0), new BlockData(164, 0), true, (double)2, (double)15),
-	DARK_OAK_WOOD_STAIRS_FACING_WEST("dark oak wood stairs facing west", (short)408, new BlockData(164, 1), new BlockData(164, 1), true, (double)2, (double)15),
-	DARK_OAK_WOOD_STAIRS_FACING_SOUTH("dark oak wood stairs facing south", (short)409, new BlockData(164, 2), new BlockData(164, 2), true, (double)2, (double)15),
-	DARK_OAK_WOOD_STAIRS_FACING_NORTH("dark oak wood stairs facing north", (short)410, new BlockData(164, 3), new BlockData(164, 3), true, (double)2, (double)15),
-	UPSIDE_DOWN_DARK_OAK_WOOD_STAIRS_FACING_EAST("upside down dark oak wood stairs facing east", (short)411, new BlockData(164, 4), new BlockData(164, 4), true, (double)2, (double)15),
-	UPSIDE_DOWN_DARK_OAK_WOOD_STAIRS_FACING_WEST("upside down dark oak wood stairs facing west", (short)412, new BlockData(164, 5), new BlockData(164, 5), true, (double)2, (double)15),
-	UPSIDE_DOWN_DARK_OAK_WOOD_STAIRS_FACING_SOUTH("upside down dark oak wood stairs facing south", (short)413, new BlockData(164, 6), new BlockData(164, 6), true, (double)2, (double)15),
-	UPSIDE_DOWN_DARK_OAK_WOOD_STAIRS_FACING_NORTH("upside down dark oak wood stairs facing north", (short)414, new BlockData(164, 7), new BlockData(164, 7), true, (double)2, (double)15),
-	COBBLESTONE_STAIRS_FACING_EAST("cobblestone stairs facing east", (short)415, new BlockData(67, 0), new BlockData(67, 0), true, (double)2, (double)30),
-	COBBLESTONE_STAIRS_FACING_WEST("cobblestone stairs facing west", (short)416, new BlockData(67, 1), new BlockData(67, 1), true, (double)2, (double)30),
-	COBBLESTONE_STAIRS_FACING_SOUTH("cobblestone stairs facing south", (short)417, new BlockData(67, 2), new BlockData(67, 2), true, (double)2, (double)30),
-	COBBLESTONE_STAIRS_FACING_NORTH("cobblestone stairs facing north", (short)418, new BlockData(67, 3), new BlockData(67, 3), true, (double)2, (double)30),
-	UPSIDE_DOWN_COBBLESTONE_STAIRS_FACING_EAST("upside down cobblestone stairs facing east", (short)419, new BlockData(67, 4), new BlockData(67, 4), true, (double)2, (double)30),
-	UPSIDE_DOWN_COBBLESTONE_STAIRS_FACING_WEST("upside down cobblestone stairs facing west", (short)420, new BlockData(67, 5), new BlockData(67, 5), true, (double)2, (double)30),
-	UPSIDE_DOWN_COBBLESTONE_STAIRS_FACING_SOUTH("upside down cobblestone stairs facing south", (short)421, new BlockData(67, 6), new BlockData(67, 6), true, (double)2, (double)30),
-	UPSIDE_DOWN_COBBLESTONE_STAIRS_FACING_NORTH("upside down cobblestone stairs facing north", (short)422, new BlockData(67, 7), new BlockData(67, 7), true, (double)2, (double)30),
-	BRICK_STAIRS_FACING_EAST("brick stairs facing east", (short)423, new BlockData(108, 0), new BlockData(108, 0), true, (double)2, (double)30),
-	BRICK_STAIRS_FACING_WEST("brick stairs facing west", (short)424, new BlockData(108, 1), new BlockData(108, 1), true, (double)2, (double)30),
-	BRICK_STAIRS_FACING_SOUTH("brick stairs facing south", (short)425, new BlockData(108, 2), new BlockData(108, 2), true, (double)2, (double)30),
-	BRICK_STAIRS_FACING_NORTH("brick stairs facing north", (short)426, new BlockData(108, 3), new BlockData(108, 3), true, (double)2, (double)30),
-	UPSIDE_DOWN_BRICK_STAIRS_FACING_EAST("upside down brick stairs facing east", (short)427, new BlockData(108, 4), new BlockData(108, 4), true, (double)2, (double)30),
-	UPSIDE_DOWN_BRICK_STAIRS_FACING_WEST("upside down brick stairs facing west", (short)428, new BlockData(108, 5), new BlockData(108, 5), true, (double)2, (double)30),
-	UPSIDE_DOWN_BRICK_STAIRS_FACING_SOUTH("upside down brick stairs facing south", (short)429, new BlockData(108, 6), new BlockData(108, 6), true, (double)2, (double)30),
-	UPSIDE_DOWN_BRICK_STAIRS_FACING_NORTH("upside down brick stairs facing north", (short)430, new BlockData(108, 7), new BlockData(108, 7), true, (double)2, (double)30),
-	NETHER_BRICK_STAIRS_FACING_EAST("nether brick stairs facing east", (short)431, new BlockData(114, 0), new BlockData(114, 0), true, (double)2, (double)30),
-	NETHER_BRICK_STAIRS_FACING_WEST("nether brick stairs facing west", (short)432, new BlockData(114, 1), new BlockData(114, 1), true, (double)2, (double)30),
-	NETHER_BRICK_STAIRS_FACING_SOUTH("nether brick stairs facing south", (short)433, new BlockData(114, 2), new BlockData(114, 2), true, (double)2, (double)30),
-	NETHER_BRICK_STAIRS_FACING_NORTH("nether brick stairs facing north", (short)434, new BlockData(114, 3), new BlockData(114, 3), true, (double)2, (double)30),
-	UPSIDE_DOWN_NETHER_BRICK_STAIRS_FACING_EAST("upside down nether brick stairs facing east", (short)435, new BlockData(114, 4), new BlockData(114, 4), true, (double)2, (double)30),
-	UPSIDE_DOWN_NETHER_BRICK_STAIRS_FACING_WEST("upside down nether brick stairs facing west", (short)436, new BlockData(114, 5), new BlockData(114, 5), true, (double)2, (double)30),
-	UPSIDE_DOWN_NETHER_BRICK_STAIRS_FACING_SOUTH("upside down nether brick stairs facing south", (short)437, new BlockData(114, 6), new BlockData(114, 6), true, (double)2, (double)30),
-	UPSIDE_DOWN_NETHER_BRICK_STAIRS_FACING_NORTH("upside down nether brick stairs facing north", (short)438, new BlockData(114, 7), new BlockData(114, 7), true, (double)2, (double)30),
-	STONE_BRICK_STAIRS_FACING_EAST("stone brick stairs facing east", (short)439, new BlockData(109, 0), new BlockData(109, 0), true, (double)1.5, (double)30),
-	STONE_BRICK_STAIRS_FACING_WEST("stone brick stairs facing west", (short)440, new BlockData(109, 1), new BlockData(109, 1), true, (double)1.5, (double)30),
-	STONE_BRICK_STAIRS_FACING_SOUTH("stone brick stairs facing south", (short)441, new BlockData(109, 2), new BlockData(109, 2), true, (double)1.5, (double)30),
-	STONE_BRICK_STAIRS_FACING_NORTH("stone brick stairs facing north", (short)442, new BlockData(109, 3), new BlockData(109, 3), true, (double)1.5, (double)30),
-	UPSIDE_DOWN_STONE_BRICK_STAIRS_FACING_EAST("upside down stone brick stairs facing east", (short)443, new BlockData(109, 4), new BlockData(109, 4), true, (double)1.5, (double)30),
-	UPSIDE_DOWN_STONE_BRICK_STAIRS_FACING_WEST("upside down stone brick stairs facing west", (short)444, new BlockData(109, 5), new BlockData(109, 5), true, (double)1.5, (double)30),
-	UPSIDE_DOWN_STONE_BRICK_STAIRS_FACING_SOUTH("upside down stone brick stairs facing south", (short)445, new BlockData(109, 6), new BlockData(109, 6), true, (double)1.5, (double)30),
-	UPSIDE_DOWN_STONE_BRICK_STAIRS_FACING_NORTH("upside down stone brick stairs facing north", (short)446, new BlockData(109, 7), new BlockData(109, 7), true, (double)1.5, (double)30),
-	PURPUR_STAIRS_FACING_EAST("purpur stairs facing east", (short)447, new BlockData(203, 0), new BlockData(203, 0), true, (double)1.5, (double)30),
-	PURPUR_STAIRS_FACING_WEST("purpur stairs facing west", (short)448, new BlockData(203, 1), new BlockData(203, 1), true, (double)1.5, (double)30),
-	PURPUR_STAIRS_FACING_SOUTH("purpur stairs facing south", (short)449, new BlockData(203, 2), new BlockData(203, 2), true, (double)1.5, (double)30),
-	PURPUR_STAIRS_FACING_NORTH("purpur stairs facing north", (short)450, new BlockData(203, 3), new BlockData(203, 3), true, (double)1.5, (double)30),
-	UPSIDE_DOWN_PURPUR_STAIRS_FACING_EAST("upside down purpur stairs facing east", (short)451, new BlockData(203, 4), new BlockData(203, 4), true, (double)1.5, (double)30),
-	UPSIDE_DOWN_PURPUR_STAIRS_FACING_WEST("upside down purpur stairs facing west", (short)452, new BlockData(203, 5), new BlockData(203, 5), true, (double)1.5, (double)30),
-	UPSIDE_DOWN_PURPUR_STAIRS_FACING_SOUTH("upside down purpur stairs facing south", (short)453, new BlockData(203, 6), new BlockData(203, 6), true, (double)1.5, (double)30),
-	UPSIDE_DOWN_PURPUR_STAIRS_FACING_NORTH("upside down purpur stairs facing north", (short)454, new BlockData(203, 7), new BlockData(203, 7), true, (double)1.5, (double)30),
-	QUARTZ_STAIRS_FACING_EAST("quartz stairs facing east", (short)455, new BlockData(156, 0), new BlockData(156, 0), true, (double)0.8, (double)4),
-	QUARTZ_STAIRS_FACING_WEST("quartz stairs facing west", (short)456, new BlockData(156, 1), new BlockData(156, 1), true, (double)0.8, (double)4),
-	QUARTZ_STAIRS_FACING_SOUTH("quartz stairs facing south", (short)457, new BlockData(156, 2), new BlockData(156, 2), true, (double)0.8, (double)4),
-	QUARTZ_STAIRS_FACING_NORTH("quartz stairs facing north", (short)458, new BlockData(156, 3), new BlockData(156, 3), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_QUARTZ_STAIRS_FACING_EAST("upside down quartz stairs facing east", (short)459, new BlockData(156, 4), new BlockData(156, 4), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_QUARTZ_STAIRS_FACING_WEST("upside down quartz stairs facing west", (short)460, new BlockData(156, 5), new BlockData(156, 5), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_QUARTZ_STAIRS_FACING_SOUTH("upside down quartz stairs facing south", (short)461, new BlockData(156, 6), new BlockData(156, 6), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_QUARTZ_STAIRS_FACING_NORTH("upside down quartz stairs facing north", (short)462, new BlockData(156, 7), new BlockData(156, 7), true, (double)0.8, (double)4),
-	SANDSTONE_STAIRS_FACING_EAST("sandstone stairs facing east", (short)463, new BlockData(128, 0), new BlockData(128, 0), true, (double)0.8, (double)4),
-	SANDSTONE_STAIRS_FACING_WEST("sandstone stairs facing west", (short)464, new BlockData(128, 1), new BlockData(128, 1), true, (double)0.8, (double)4),
-	SANDSTONE_STAIRS_FACING_SOUTH("sandstone stairs facing south", (short)465, new BlockData(128, 2), new BlockData(128, 2), true, (double)0.8, (double)4),
-	SANDSTONE_STAIRS_FACING_NORTH("sandstone stairs facing north", (short)466, new BlockData(128, 3), new BlockData(128, 3), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_SANDSTONE_STAIRS_FACING_EAST("upside down sandstone stairs facing east", (short)467, new BlockData(128, 4), new BlockData(128, 4), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_SANDSTONE_STAIRS_FACING_WEST("upside down sandstone stairs facing west", (short)468, new BlockData(128, 5), new BlockData(128, 5), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_SANDSTONE_STAIRS_FACING_SOUTH("upside down sandstone stairs facing south", (short)469, new BlockData(128, 6), new BlockData(128, 6), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_SANDSTONE_STAIRS_FACING_NORTH("upside down sandstone stairs facing north", (short)470, new BlockData(128, 7), new BlockData(128, 7), true, (double)0.8, (double)4),
-	RED_SANDSTONE_STAIRS_FACING_EAST("red sandstone stairs facing east", (short)471, new BlockData(180, 0), new BlockData(180, 0), true, (double)0.8, (double)4),
-	RED_SANDSTONE_STAIRS_FACING_WEST("red sandstone stairs facing west", (short)472, new BlockData(180, 1), new BlockData(180, 1), true, (double)0.8, (double)4),
-	RED_SANDSTONE_STAIRS_FACING_SOUTH("red sandstone stairs facing south", (short)473, new BlockData(180, 2), new BlockData(180, 2), true, (double)0.8, (double)4),
-	RED_SANDSTONE_STAIRS_FACING_NORTH("red sandstone stairs facing north", (short)474, new BlockData(180, 3), new BlockData(180, 3), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_RED_SANDSTONE_STAIRS_FACING_EAST("upside down red sandstone stairs facing east", (short)475, new BlockData(180, 4), new BlockData(180, 4), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_RED_SANDSTONE_STAIRS_FACING_WEST("upside down red sandstone stairs facing west", (short)476, new BlockData(180, 5), new BlockData(180, 5), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_RED_SANDSTONE_STAIRS_FACING_SOUTH("upside down red sandstone stairs facing south", (short)477, new BlockData(180, 6), new BlockData(180, 6), true, (double)0.8, (double)4),
-	UPSIDE_DOWN_RED_SANDSTONE_STAIRS_FACING_NORTH("upside down red sandstone stairs facing north", (short)478, new BlockData(180, 7), new BlockData(180, 7), true, (double)0.8, (double)4),
-	CHEST_FACING_NORTH("chest facing north", (short)479, new BlockData(54, 2), new BlockData(54, 2), true, (double)2.5, (double)12.5),
-	CHEST_FACING_SOUTH("chest facing south", (short)480, new BlockData(54, 3), new BlockData(54, 3), true, (double)2.5, (double)12.5),
-	CHEST_FACING_WEST("chest facing west", (short)481, new BlockData(54, 4), new BlockData(54, 4), true, (double)2.5, (double)12.5),
-	CHEST_FACING_EAST("chest facing east", (short)482, new BlockData(54, 5), new BlockData(54, 5), true, (double)2.5, (double)12.5),
-	TRAPPED_CHEST_FACING_NORTH("trapped chest facing north", (short)483, new BlockData(146, 2), new BlockData(146, 2), true, (double)2.5, (double)12.5),
-	TRAPPED_CHEST_FACING_SOUTH("trapped chest facing south", (short)484, new BlockData(146, 3), new BlockData(146, 3), true, (double)2.5, (double)12.5),
-	TRAPPED_CHEST_FACING_WEST("trapped chest facing west", (short)485, new BlockData(146, 4), new BlockData(146, 4), true, (double)2.5, (double)12.5),
-	TRAPPED_CHEST_FACING_EAST("trapped chest facing east", (short)486, new BlockData(146, 5), new BlockData(146, 5), true, (double)2.5, (double)12.5),
-	REDSTONE_WIRE_0("redstone wire 0", (short)487, new BlockData(55, 0), new BlockData(55, 0), true, (double)0, (double)0),
-	REDSTONE_WIRE_1("redstone wire 1", (short)488, new BlockData(55, 1), new BlockData(55, 1), true, (double)0, (double)0),
-	REDSTONE_WIRE_2("redstone wire 2", (short)489, new BlockData(55, 2), new BlockData(55, 2), true, (double)0, (double)0),
-	REDSTONE_WIRE_3("redstone wire 3", (short)490, new BlockData(55, 3), new BlockData(55, 3), true, (double)0, (double)0),
-	REDSTONE_WIRE_4("redstone wire 4", (short)491, new BlockData(55, 4), new BlockData(55, 4), true, (double)0, (double)0),
-	REDSTONE_WIRE_5("redstone wire 5", (short)492, new BlockData(55, 5), new BlockData(55, 5), true, (double)0, (double)0),
-	REDSTONE_WIRE_6("redstone wire 6", (short)493, new BlockData(55, 6), new BlockData(55, 6), true, (double)0, (double)0),
-	REDSTONE_WIRE_7("redstone wire 7", (short)494, new BlockData(55, 7), new BlockData(55, 7), true, (double)0, (double)0),
-	REDSTONE_WIRE_8("redstone wire 8", (short)495, new BlockData(55, 8), new BlockData(55, 8), true, (double)0, (double)0),
-	REDSTONE_WIRE_9("redstone wire 9", (short)496, new BlockData(55, 9), new BlockData(55, 9), true, (double)0, (double)0),
-	REDSTONE_WIRE_10("redstone wire 10", (short)497, new BlockData(55, 10), new BlockData(55, 10), true, (double)0, (double)0),
-	REDSTONE_WIRE_11("redstone wire 11", (short)498, new BlockData(55, 11), new BlockData(55, 11), true, (double)0, (double)0),
-	REDSTONE_WIRE_12("redstone wire 12", (short)499, new BlockData(55, 12), new BlockData(55, 12), true, (double)0, (double)0),
-	REDSTONE_WIRE_13("redstone wire 13", (short)500, new BlockData(55, 13), new BlockData(55, 13), true, (double)0, (double)0),
-	REDSTONE_WIRE_14("redstone wire 14", (short)501, new BlockData(55, 14), new BlockData(55, 14), true, (double)0, (double)0),
-	REDSTONE_WIRE_15("redstone wire 15", (short)502, new BlockData(55, 15), new BlockData(55, 15), true, (double)0, (double)0),
-	CRAFTING_TABLE("crafting table", (short)503, new BlockData(58, 0), new BlockData(58, 0), true, (double)2.5, (double)12.5),
-	SEEDS_0("seeds 0", (short)504, new BlockData(59, 0), new BlockData(59, 0), true, (double)0, (double)0),
-	SEEDS_1("seeds 1", (short)505, new BlockData(59, 1), new BlockData(59, 1), true, (double)0, (double)0),
-	SEEDS_2("seeds 2", (short)506, new BlockData(59, 2), new BlockData(59, 2), true, (double)0, (double)0),
-	SEEDS_3("seeds 3", (short)507, new BlockData(59, 3), new BlockData(59, 3), true, (double)0, (double)0),
-	SEEDS_4("seeds 4", (short)508, new BlockData(59, 4), new BlockData(59, 4), true, (double)0, (double)0),
-	SEEDS_5("seeds 5", (short)509, new BlockData(59, 5), new BlockData(59, 5), true, (double)0, (double)0),
-	SEEDS_6("seeds 6", (short)510, new BlockData(59, 6), new BlockData(59, 6), true, (double)0, (double)0),
-	SEEDS_7("seeds 7", (short)511, new BlockData(59, 7), new BlockData(59, 7), true, (double)0, (double)0),
-	BEETROOT_0("beetroot 0", (short)512, new BlockData(207, 0), new BlockData(244, 0), true, (double)0, (double)0),
-	BEETROOT_1("beetroot 1", (short)513, new BlockData(207, 1), new BlockData(244, 1), true, (double)0, (double)0),
-	BEETROOT_2("beetroot 2", (short)514, new BlockData(207, 2), new BlockData(244, 2), true, (double)0, (double)0),
-	BEETROOT_3("beetroot 3", (short)515, new BlockData(207, 3), new BlockData(244, 3), true, (double)0, (double)0),
-	CARROT_0("carrot 0", (short)516, new BlockData(141, 0), new BlockData(141, 0), true, (double)0, (double)0),
-	CARROT_1("carrot 1", (short)517, new BlockData(141, 1), new BlockData(141, 1), true, (double)0, (double)0),
-	CARROT_2("carrot 2", (short)518, new BlockData(141, 2), new BlockData(141, 2), true, (double)0, (double)0),
-	CARROT_3("carrot 3", (short)519, new BlockData(141, 3), new BlockData(141, 3), true, (double)0, (double)0),
-	CARROT_4("carrot 4", (short)520, new BlockData(141, 4), new BlockData(141, 4), true, (double)0, (double)0),
-	CARROT_5("carrot 5", (short)521, new BlockData(141, 5), new BlockData(141, 5), true, (double)0, (double)0),
-	CARROT_6("carrot 6", (short)522, new BlockData(141, 6), new BlockData(141, 6), true, (double)0, (double)0),
-	CARROT_7("carrot 7", (short)523, new BlockData(141, 7), new BlockData(141, 7), true, (double)0, (double)0),
-	POTATO_0("potato 0", (short)524, new BlockData(142, 0), new BlockData(142, 0), true, (double)0, (double)0),
-	POTATO_1("potato 1", (short)525, new BlockData(142, 1), new BlockData(142, 1), true, (double)0, (double)0),
-	POTATO_2("potato 2", (short)526, new BlockData(142, 2), new BlockData(142, 2), true, (double)0, (double)0),
-	POTATO_3("potato 3", (short)527, new BlockData(142, 3), new BlockData(142, 3), true, (double)0, (double)0),
-	POTATO_4("potato 4", (short)528, new BlockData(142, 4), new BlockData(142, 4), true, (double)0, (double)0),
-	POTATO_5("potato 5", (short)529, new BlockData(142, 5), new BlockData(142, 5), true, (double)0, (double)0),
-	POTATO_6("potato 6", (short)530, new BlockData(142, 6), new BlockData(142, 6), true, (double)0, (double)0),
-	POTATO_7("potato 7", (short)531, new BlockData(142, 7), new BlockData(142, 7), true, (double)0, (double)0),
-	MELON_STEM_0("melon stem 0", (short)532, new BlockData(105, 0), new BlockData(105, 0), true, (double)0, (double)0),
-	MELON_STEM_1("melon stem 1", (short)533, new BlockData(105, 1), new BlockData(105, 1), true, (double)0, (double)0),
-	MELON_STEM_2("melon stem 2", (short)534, new BlockData(105, 2), new BlockData(105, 2), true, (double)0, (double)0),
-	MELON_STEM_3("melon stem 3", (short)535, new BlockData(105, 3), new BlockData(105, 3), true, (double)0, (double)0),
-	MELON_STEM_4("melon stem 4", (short)536, new BlockData(105, 4), new BlockData(105, 4), true, (double)0, (double)0),
-	MELON_STEM_5("melon stem 5", (short)537, new BlockData(105, 5), new BlockData(105, 5), true, (double)0, (double)0),
-	MELON_STEM_6("melon stem 6", (short)538, new BlockData(105, 6), new BlockData(105, 6), true, (double)0, (double)0),
-	MELON_STEM_7("melon stem 7", (short)539, new BlockData(105, 7), new BlockData(105, 7), true, (double)0, (double)0),
-	PUMPKIN_STEM_0("pumpkin stem 0", (short)540, new BlockData(104, 0), new BlockData(104, 0), true, (double)0, (double)0),
-	PUMPKIN_STEM_1("pumpkin stem 1", (short)541, new BlockData(104, 1), new BlockData(104, 1), true, (double)0, (double)0),
-	PUMPKIN_STEM_2("pumpkin stem 2", (short)542, new BlockData(104, 2), new BlockData(104, 2), true, (double)0, (double)0),
-	PUMPKIN_STEM_3("pumpkin stem 3", (short)543, new BlockData(104, 3), new BlockData(104, 3), true, (double)0, (double)0),
-	PUMPKIN_STEM_4("pumpkin stem 4", (short)544, new BlockData(104, 4), new BlockData(104, 4), true, (double)0, (double)0),
-	PUMPKIN_STEM_5("pumpkin stem 5", (short)545, new BlockData(104, 5), new BlockData(104, 5), true, (double)0, (double)0),
-	PUMPKIN_STEM_6("pumpkin stem 6", (short)546, new BlockData(104, 6), new BlockData(104, 6), true, (double)0, (double)0),
-	PUMPKIN_STEM_7("pumpkin stem 7", (short)547, new BlockData(104, 7), new BlockData(104, 7), true, (double)0, (double)0),
-	FURNACE_FACING_NORTH("furnace facing north", (short)548, new BlockData(61, 2), new BlockData(61, 2), true, (double)3.5, (double)17.5),
-	FURNACE_FACING_SOUTH("furnace facing south", (short)549, new BlockData(61, 3), new BlockData(61, 3), true, (double)3.5, (double)17.5),
-	FURNACE_FACING_WEST("furnace facing west", (short)550, new BlockData(61, 4), new BlockData(61, 4), true, (double)3.5, (double)17.5),
-	FURNACE_FACING_EAST("furnace facing east", (short)551, new BlockData(61, 5), new BlockData(61, 5), true, (double)3.5, (double)17.5),
-	BURNING_FURNACE_FACING_NORTH("burning furnace facing north", (short)552, new BlockData(62, 2), new BlockData(62, 2), true, (double)3.5, (double)17.5),
-	BURNING_FURNACE_FACING_SOUTH("burning furnace facing south", (short)553, new BlockData(62, 3), new BlockData(62, 3), true, (double)3.5, (double)17.5),
-	BURNING_FURNACE_FACING_WEST("burning furnace facing west", (short)554, new BlockData(62, 4), new BlockData(62, 4), true, (double)3.5, (double)17.5),
-	BURNING_FURNACE_FACING_EAST("burning furnace facing east", (short)555, new BlockData(62, 5), new BlockData(62, 5), true, (double)3.5, (double)17.5),
-	SIGN_FACING_SOUTH("sign facing south", (short)556, new BlockData(63, 0), new BlockData(63, 0), true, (double)1, (double)5),
-	SIGN_FACING_SOUTH_SOUTHWEST("sign facing south southwest", (short)557, new BlockData(63, 1), new BlockData(63, 1), true, (double)1, (double)5),
-	SIGN_FACING_SOUTHWEST("sign facing southwest", (short)558, new BlockData(63, 2), new BlockData(63, 2), true, (double)1, (double)5),
-	SIGN_FACING_WEST_WESTSOUTH("sign facing west westsouth", (short)559, new BlockData(63, 3), new BlockData(63, 3), true, (double)1, (double)5),
-	SIGN_FACING_WEST("sign facing west", (short)560, new BlockData(63, 4), new BlockData(63, 4), true, (double)1, (double)5),
-	SIGN_FACING_WEST_NORTHWEST("sign facing west northwest", (short)561, new BlockData(63, 5), new BlockData(63, 5), true, (double)1, (double)5),
-	SIGN_FACING_NORTHWEST("sign facing northwest", (short)562, new BlockData(63, 6), new BlockData(63, 6), true, (double)1, (double)5),
-	SIGN_FACING_NORTH_NORTHWEST("sign facing north northwest", (short)563, new BlockData(63, 7), new BlockData(63, 7), true, (double)1, (double)5),
-	SIGN_FACING_NORTH("sign facing north", (short)564, new BlockData(63, 8), new BlockData(63, 8), true, (double)1, (double)5),
-	SIGN_FACING_NORTH_NORTHEAST("sign facing north northeast", (short)565, new BlockData(63, 9), new BlockData(63, 9), true, (double)1, (double)5),
-	SIGN_FACING_NORTHEAST("sign facing northeast", (short)566, new BlockData(63, 10), new BlockData(63, 10), true, (double)1, (double)5),
-	SIGN_FACING_EAST_NORTHEAST("sign facing east northeast", (short)567, new BlockData(63, 11), new BlockData(63, 11), true, (double)1, (double)5),
-	SIGN_FACING_EAST("sign facing east", (short)568, new BlockData(63, 12), new BlockData(63, 12), true, (double)1, (double)5),
-	SIGN_FACING_EAST_SOUTHEAST("sign facing east southeast", (short)569, new BlockData(63, 13), new BlockData(63, 13), true, (double)1, (double)5),
-	SIGN_FACING_SOUTHEAST("sign facing southeast", (short)570, new BlockData(63, 14), new BlockData(63, 14), true, (double)1, (double)5),
-	SIGN_FACING_SOUTH_SOUTHEAST("sign facing south southeast", (short)571, new BlockData(63, 15), new BlockData(63, 15), true, (double)1, (double)5),
-	WALL_SIGN_FACING_NORTH("wall sign facing north", (short)572, new BlockData(68, 2), new BlockData(68, 2), true, (double)1, (double)5),
-	WALL_SIGN_FACING_SOUTH("wall sign facing south", (short)573, new BlockData(68, 3), new BlockData(68, 3), true, (double)1, (double)5),
-	WALL_SIGN_FACING_WEST("wall sign facing west", (short)574, new BlockData(68, 4), new BlockData(68, 4), true, (double)1, (double)5),
-	WALL_SIGN_FACING_EAST("wall sign facing east", (short)575, new BlockData(68, 5), new BlockData(68, 5), true, (double)1, (double)5),
-	LOWER_OAK_WOOD_DOOR_FACING_EAST("lower oak wood door facing east", (short)576, new BlockData(64, 0), new BlockData(64, 0), true, (double)3, (double)15),
-	LOWER_OAK_WOOD_DOOR_FACING_SOUTH("lower oak wood door facing south", (short)577, new BlockData(64, 1), new BlockData(64, 1), true, (double)3, (double)15),
-	LOWER_OAK_WOOD_DOOR_FACING_WEST("lower oak wood door facing west", (short)578, new BlockData(64, 2), new BlockData(64, 2), true, (double)3, (double)15),
-	LOWER_OAK_WOOD_DOOR_FACING_NORTH("lower oak wood door facing north", (short)579, new BlockData(64, 3), new BlockData(64, 3), true, (double)3, (double)15),
-	LOWER_OPENED_OAK_WOOD_DOOR_FACING_EAST("lower opened oak wood door facing east", (short)580, new BlockData(64, 4), new BlockData(64, 4), true, (double)3, (double)15),
-	LOWER_OPENED_OAK_WOOD_DOOR_FACING_SOUTH("lower opened oak wood door facing south", (short)581, new BlockData(64, 5), new BlockData(64, 5), true, (double)3, (double)15),
-	LOWER_OPENED_OAK_WOOD_DOOR_FACING_WEST("lower opened oak wood door facing west", (short)582, new BlockData(64, 6), new BlockData(64, 6), true, (double)3, (double)15),
-	LOWER_OPENED_OAK_WOOD_DOOR_FACING_NORTH("lower opened oak wood door facing north", (short)583, new BlockData(64, 7), new BlockData(64, 7), true, (double)3, (double)15),
-	UPPER_OAK_WOOD_DOOR_HINGE_LEFT("upper oak wood door hinge left", (short)584, new BlockData(64, 8), new BlockData(64, 8), true, (double)3, (double)15),
-	UPPER_OAK_WOOD_DOOR_HINGE_RIGHT("upper oak wood door hinge right", (short)585, new BlockData(64, 9), new BlockData(64, 9), true, (double)3, (double)15),
-	UPPER_POWERED_OAK_WOOD_DOOR_HINGE_LEFT("upper powered oak wood door hinge left", (short)586, new BlockData(64, 10), new BlockData(64, 10), true, (double)3, (double)15),
-	UPPER_POWERED_OAK_WOOD_DOOR_HINGE_RIGHT("upper powered oak wood door hinge right", (short)587, new BlockData(64, 11), new BlockData(64, 11), true, (double)3, (double)15),
-	LOWER_SPRUCE_WOOD_DOOR_FACING_EAST("lower spruce wood door facing east", (short)588, new BlockData(193, 0), new BlockData(193, 0), true, (double)3, (double)15),
-	LOWER_SPRUCE_WOOD_DOOR_FACING_SOUTH("lower spruce wood door facing south", (short)589, new BlockData(193, 1), new BlockData(193, 1), true, (double)3, (double)15),
-	LOWER_SPRUCE_WOOD_DOOR_FACING_WEST("lower spruce wood door facing west", (short)590, new BlockData(193, 2), new BlockData(193, 2), true, (double)3, (double)15),
-	LOWER_SPRUCE_WOOD_DOOR_FACING_NORTH("lower spruce wood door facing north", (short)591, new BlockData(193, 3), new BlockData(193, 3), true, (double)3, (double)15),
-	LOWER_OPENED_SPRUCE_WOOD_DOOR_FACING_EAST("lower opened spruce wood door facing east", (short)592, new BlockData(193, 4), new BlockData(193, 4), true, (double)3, (double)15),
-	LOWER_OPENED_SPRUCE_WOOD_DOOR_FACING_SOUTH("lower opened spruce wood door facing south", (short)593, new BlockData(193, 5), new BlockData(193, 5), true, (double)3, (double)15),
-	LOWER_OPENED_SPRUCE_WOOD_DOOR_FACING_WEST("lower opened spruce wood door facing west", (short)594, new BlockData(193, 6), new BlockData(193, 6), true, (double)3, (double)15),
-	LOWER_OPENED_SPRUCE_WOOD_DOOR_FACING_NORTH("lower opened spruce wood door facing north", (short)595, new BlockData(193, 7), new BlockData(193, 7), true, (double)3, (double)15),
-	UPPER_SPRUCE_WOOD_DOOR_HINGE_LEFT("upper spruce wood door hinge left", (short)596, new BlockData(193, 8), new BlockData(193, 8), true, (double)3, (double)15),
-	UPPER_SPRUCE_WOOD_DOOR_HINGE_RIGHT("upper spruce wood door hinge right", (short)597, new BlockData(193, 9), new BlockData(193, 9), true, (double)3, (double)15),
-	UPPER_POWERED_SPRUCE_WOOD_DOOR_HINGE_LEFT("upper powered spruce wood door hinge left", (short)598, new BlockData(193, 10), new BlockData(193, 10), true, (double)3, (double)15),
-	UPPER_POWERED_SPRUCE_WOOD_DOOR_HINGE_RIGHT("upper powered spruce wood door hinge right", (short)599, new BlockData(193, 11), new BlockData(193, 11), true, (double)3, (double)15),
-	LOWER_BIRCH_WOOD_DOOR_FACING_EAST("lower birch wood door facing east", (short)600, new BlockData(194, 0), new BlockData(194, 0), true, (double)3, (double)15),
-	LOWER_BIRCH_WOOD_DOOR_FACING_SOUTH("lower birch wood door facing south", (short)601, new BlockData(194, 1), new BlockData(194, 1), true, (double)3, (double)15),
-	LOWER_BIRCH_WOOD_DOOR_FACING_WEST("lower birch wood door facing west", (short)602, new BlockData(194, 2), new BlockData(194, 2), true, (double)3, (double)15),
-	LOWER_BIRCH_WOOD_DOOR_FACING_NORTH("lower birch wood door facing north", (short)603, new BlockData(194, 3), new BlockData(194, 3), true, (double)3, (double)15),
-	LOWER_OPENED_BIRCH_WOOD_DOOR_FACING_EAST("lower opened birch wood door facing east", (short)604, new BlockData(194, 4), new BlockData(194, 4), true, (double)3, (double)15),
-	LOWER_OPENED_BIRCH_WOOD_DOOR_FACING_SOUTH("lower opened birch wood door facing south", (short)605, new BlockData(194, 5), new BlockData(194, 5), true, (double)3, (double)15),
-	LOWER_OPENED_BIRCH_WOOD_DOOR_FACING_WEST("lower opened birch wood door facing west", (short)606, new BlockData(194, 6), new BlockData(194, 6), true, (double)3, (double)15),
-	LOWER_OPENED_BIRCH_WOOD_DOOR_FACING_NORTH("lower opened birch wood door facing north", (short)607, new BlockData(194, 7), new BlockData(194, 7), true, (double)3, (double)15),
-	UPPER_BIRCH_WOOD_DOOR_HINGE_LEFT("upper birch wood door hinge left", (short)608, new BlockData(194, 8), new BlockData(194, 8), true, (double)3, (double)15),
-	UPPER_BIRCH_WOOD_DOOR_HINGE_RIGHT("upper birch wood door hinge right", (short)609, new BlockData(194, 9), new BlockData(194, 9), true, (double)3, (double)15),
-	UPPER_POWERED_BIRCH_WOOD_DOOR_HINGE_LEFT("upper powered birch wood door hinge left", (short)610, new BlockData(194, 10), new BlockData(194, 10), true, (double)3, (double)15),
-	UPPER_POWERED_BIRCH_WOOD_DOOR_HINGE_RIGHT("upper powered birch wood door hinge right", (short)611, new BlockData(194, 11), new BlockData(194, 11), true, (double)3, (double)15),
-	LOWER_JUNGLE_WOOD_DOOR_FACING_EAST("lower jungle wood door facing east", (short)612, new BlockData(195, 0), new BlockData(195, 0), true, (double)3, (double)15),
-	LOWER_JUNGLE_WOOD_DOOR_FACING_SOUTH("lower jungle wood door facing south", (short)613, new BlockData(195, 1), new BlockData(195, 1), true, (double)3, (double)15),
-	LOWER_JUNGLE_WOOD_DOOR_FACING_WEST("lower jungle wood door facing west", (short)614, new BlockData(195, 2), new BlockData(195, 2), true, (double)3, (double)15),
-	LOWER_JUNGLE_WOOD_DOOR_FACING_NORTH("lower jungle wood door facing north", (short)615, new BlockData(195, 3), new BlockData(195, 3), true, (double)3, (double)15),
-	LOWER_OPENED_JUNGLE_WOOD_DOOR_FACING_EAST("lower opened jungle wood door facing east", (short)616, new BlockData(195, 4), new BlockData(195, 4), true, (double)3, (double)15),
-	LOWER_OPENED_JUNGLE_WOOD_DOOR_FACING_SOUTH("lower opened jungle wood door facing south", (short)617, new BlockData(195, 5), new BlockData(195, 5), true, (double)3, (double)15),
-	LOWER_OPENED_JUNGLE_WOOD_DOOR_FACING_WEST("lower opened jungle wood door facing west", (short)618, new BlockData(195, 6), new BlockData(195, 6), true, (double)3, (double)15),
-	LOWER_OPENED_JUNGLE_WOOD_DOOR_FACING_NORTH("lower opened jungle wood door facing north", (short)619, new BlockData(195, 7), new BlockData(195, 7), true, (double)3, (double)15),
-	UPPER_JUNGLE_WOOD_DOOR_HINGE_LEFT("upper jungle wood door hinge left", (short)620, new BlockData(195, 8), new BlockData(195, 8), true, (double)3, (double)15),
-	UPPER_JUNGLE_WOOD_DOOR_HINGE_RIGHT("upper jungle wood door hinge right", (short)621, new BlockData(195, 9), new BlockData(195, 9), true, (double)3, (double)15),
-	UPPER_POWERED_JUNGLE_WOOD_DOOR_HINGE_LEFT("upper powered jungle wood door hinge left", (short)622, new BlockData(195, 10), new BlockData(195, 10), true, (double)3, (double)15),
-	UPPER_POWERED_JUNGLE_WOOD_DOOR_HINGE_RIGHT("upper powered jungle wood door hinge right", (short)623, new BlockData(195, 11), new BlockData(195, 11), true, (double)3, (double)15),
-	LOWER_ACACIA_WOOD_DOOR_FACING_EAST("lower acacia wood door facing east", (short)624, new BlockData(196, 0), new BlockData(196, 0), true, (double)3, (double)15),
-	LOWER_ACACIA_WOOD_DOOR_FACING_SOUTH("lower acacia wood door facing south", (short)625, new BlockData(196, 1), new BlockData(196, 1), true, (double)3, (double)15),
-	LOWER_ACACIA_WOOD_DOOR_FACING_WEST("lower acacia wood door facing west", (short)626, new BlockData(196, 2), new BlockData(196, 2), true, (double)3, (double)15),
-	LOWER_ACACIA_WOOD_DOOR_FACING_NORTH("lower acacia wood door facing north", (short)627, new BlockData(196, 3), new BlockData(196, 3), true, (double)3, (double)15),
-	LOWER_OPENED_ACACIA_WOOD_DOOR_FACING_EAST("lower opened acacia wood door facing east", (short)628, new BlockData(196, 4), new BlockData(196, 4), true, (double)3, (double)15),
-	LOWER_OPENED_ACACIA_WOOD_DOOR_FACING_SOUTH("lower opened acacia wood door facing south", (short)629, new BlockData(196, 5), new BlockData(196, 5), true, (double)3, (double)15),
-	LOWER_OPENED_ACACIA_WOOD_DOOR_FACING_WEST("lower opened acacia wood door facing west", (short)630, new BlockData(196, 6), new BlockData(196, 6), true, (double)3, (double)15),
-	LOWER_OPENED_ACACIA_WOOD_DOOR_FACING_NORTH("lower opened acacia wood door facing north", (short)631, new BlockData(196, 7), new BlockData(196, 7), true, (double)3, (double)15),
-	UPPER_ACACIA_WOOD_DOOR_HINGE_LEFT("upper acacia wood door hinge left", (short)632, new BlockData(196, 8), new BlockData(196, 8), true, (double)3, (double)15),
-	UPPER_ACACIA_WOOD_DOOR_HINGE_RIGHT("upper acacia wood door hinge right", (short)633, new BlockData(196, 9), new BlockData(196, 9), true, (double)3, (double)15),
-	UPPER_POWERED_ACACIA_WOOD_DOOR_HINGE_LEFT("upper powered acacia wood door hinge left", (short)634, new BlockData(196, 10), new BlockData(196, 10), true, (double)3, (double)15),
-	UPPER_POWERED_ACACIA_WOOD_DOOR_HINGE_RIGHT("upper powered acacia wood door hinge right", (short)635, new BlockData(196, 11), new BlockData(196, 11), true, (double)3, (double)15),
-	LOWER_DARK_OAK_WOOD_DOOR_FACING_EAST("lower dark oak wood door facing east", (short)636, new BlockData(197, 0), new BlockData(197, 0), true, (double)3, (double)15),
-	LOWER_DARK_OAK_WOOD_DOOR_FACING_SOUTH("lower dark oak wood door facing south", (short)637, new BlockData(197, 1), new BlockData(197, 1), true, (double)3, (double)15),
-	LOWER_DARK_OAK_WOOD_DOOR_FACING_WEST("lower dark oak wood door facing west", (short)638, new BlockData(197, 2), new BlockData(197, 2), true, (double)3, (double)15),
-	LOWER_DARK_OAK_WOOD_DOOR_FACING_NORTH("lower dark oak wood door facing north", (short)639, new BlockData(197, 3), new BlockData(197, 3), true, (double)3, (double)15),
-	LOWER_DARK_OPENED_OAK_WOOD_DOOR_FACING_EAST("lower dark opened oak wood door facing east", (short)640, new BlockData(197, 4), new BlockData(197, 4), true, (double)3, (double)15),
-	LOWER_DARK_OPENED_OAK_WOOD_DOOR_FACING_SOUTH("lower dark opened oak wood door facing south", (short)641, new BlockData(197, 5), new BlockData(197, 5), true, (double)3, (double)15),
-	LOWER_DARK_OPENED_OAK_WOOD_DOOR_FACING_WEST("lower dark opened oak wood door facing west", (short)642, new BlockData(197, 6), new BlockData(197, 6), true, (double)3, (double)15),
-	LOWER_DARK_OPENED_OAK_WOOD_DOOR_FACING_NORTH("lower dark opened oak wood door facing north", (short)643, new BlockData(197, 7), new BlockData(197, 7), true, (double)3, (double)15),
-	UPPER_DARK_OAK_WOOD_DOOR_HINGE_LEFT("upper dark oak wood door hinge left", (short)644, new BlockData(197, 8), new BlockData(197, 8), true, (double)3, (double)15),
-	UPPER_DARK_OAK_WOOD_DOOR_HINGE_RIGHT("upper dark oak wood door hinge right", (short)645, new BlockData(197, 9), new BlockData(197, 9), true, (double)3, (double)15),
-	UPPER_DARK_POWERED_OAK_WOOD_DOOR_HINGE_LEFT("upper dark powered oak wood door hinge left", (short)646, new BlockData(197, 10), new BlockData(197, 10), true, (double)3, (double)15),
-	UPPER_DARK_POWERED_OAK_WOOD_DOOR_HINGE_RIGHT("upper dark powered oak wood door hinge right", (short)647, new BlockData(197, 11), new BlockData(197, 11), true, (double)3, (double)15),
-	LOWER_IRON_DOOR_FACING_EAST("lower iron door facing east", (short)648, new BlockData(71, 0), new BlockData(71, 0), true, (double)5, (double)25),
-	LOWER_IRON_DOOR_FACING_SOUTH("lower iron door facing south", (short)649, new BlockData(71, 1), new BlockData(71, 1), true, (double)5, (double)25),
-	LOWER_IRON_DOOR_FACING_WEST("lower iron door facing west", (short)650, new BlockData(71, 2), new BlockData(71, 2), true, (double)5, (double)25),
-	LOWER_IRON_DOOR_FACING_NORTH("lower iron door facing north", (short)651, new BlockData(71, 3), new BlockData(71, 3), true, (double)5, (double)25),
-	LOWER_OPENED_IRON_DOOR_FACING_EAST("lower opened iron door facing east", (short)652, new BlockData(71, 4), new BlockData(71, 4), true, (double)5, (double)25),
-	LOWER_OPENED_IRON_DOOR_FACING_SOUTH("lower opened iron door facing south", (short)653, new BlockData(71, 5), new BlockData(71, 5), true, (double)5, (double)25),
-	LOWER_OPENED_IRON_DOOR_FACING_WEST("lower opened iron door facing west", (short)654, new BlockData(71, 6), new BlockData(71, 6), true, (double)5, (double)25),
-	LOWER_OPENED_IRON_DOOR_FACING_NORTH("lower opened iron door facing north", (short)655, new BlockData(71, 7), new BlockData(71, 7), true, (double)5, (double)25),
-	UPPER_IRON_DOOR_HINGE_LEFT("upper iron door hinge left", (short)656, new BlockData(71, 8), new BlockData(71, 8), true, (double)5, (double)25),
-	UPPER_IRON_DOOR_HINGE_RIGHT("upper iron door hinge right", (short)657, new BlockData(71, 9), new BlockData(71, 9), true, (double)5, (double)25),
-	UPPER_POWERED_IRON_DOOR_HINGE_LEFT("upper powered iron door hinge left", (short)658, new BlockData(71, 10), new BlockData(71, 10), true, (double)5, (double)25),
-	UPPER_POWERED_IRON_DOOR_HINGE_RIGHT("upper powered iron door hinge right", (short)659, new BlockData(71, 11), new BlockData(71, 11), true, (double)5, (double)25),
-	LADDER_FACING_NORTH("ladder facing north", (short)660, new BlockData(65, 2), new BlockData(65, 2), true, (double)0.4, (double)2),
-	LADDER_FACING_SOUTH("ladder facing south", (short)661, new BlockData(65, 3), new BlockData(65, 3), true, (double)0.4, (double)2),
-	LADDER_FACING_WEST("ladder facing west", (short)662, new BlockData(65, 4), new BlockData(65, 4), true, (double)0.4, (double)2),
-	LADDER_FACING_EAST("ladder facing east", (short)663, new BlockData(65, 5), new BlockData(65, 5), true, (double)0.4, (double)2),
-	LEVER_BOTTOM_POINTING_EAST("lever bottom pointing east", (short)664, new BlockData(69, 0), new BlockData(69, 0), true, (double)0.5, (double)2.5),
-	LEVER_FACING_EAST("lever facing east", (short)665, new BlockData(69, 1), new BlockData(69, 1), true, (double)0.5, (double)2.5),
-	LEVER_FACING_WEST("lever facing west", (short)666, new BlockData(69, 2), new BlockData(69, 2), true, (double)0.5, (double)2.5),
-	LEVER_FACING_SOUTH("lever facing south", (short)667, new BlockData(69, 3), new BlockData(69, 3), true, (double)0.5, (double)2.5),
-	LEVER_FACING_NORTH("lever facing north", (short)668, new BlockData(69, 4), new BlockData(69, 4), true, (double)0.5, (double)2.5),
-	LEVER_TOP_POINTING_SOUTH("lever top pointing south", (short)669, new BlockData(69, 5), new BlockData(69, 5), true, (double)0.5, (double)2.5),
-	LEVER_TOP_POINTING_EAST("lever top pointing east", (short)670, new BlockData(69, 6), new BlockData(69, 6), true, (double)0.5, (double)2.5),
-	LEVER_BOTTOM_POINTING_SOUTH("lever bottom pointing south", (short)671, new BlockData(69, 7), new BlockData(69, 7), true, (double)0.5, (double)2.5),
-	POWERED_LEVER_BOTTOM_POINTING_EAST("powered lever bottom pointing east", (short)672, new BlockData(69, 8), new BlockData(69, 8), true, (double)0.5, (double)2.5),
-	POWERED_LEVER_FACING_EAST("powered lever facing east", (short)673, new BlockData(69, 9), new BlockData(69, 9), true, (double)0.5, (double)2.5),
-	POWERED_LEVER_FACING_WEST("powered lever facing west", (short)674, new BlockData(69, 10), new BlockData(69, 10), true, (double)0.5, (double)2.5),
-	POWERED_LEVER_FACING_SOUTH("powered lever facing south", (short)675, new BlockData(69, 11), new BlockData(69, 11), true, (double)0.5, (double)2.5),
-	POWERED_LEVER_FACING_NORTH("powered lever facing north", (short)676, new BlockData(69, 12), new BlockData(69, 12), true, (double)0.5, (double)2.5),
-	POWERED_LEVER_TOP_POINTING_SOUTH("powered lever top pointing south", (short)677, new BlockData(69, 13), new BlockData(69, 13), true, (double)0.5, (double)2.5),
-	POWERED_LEVER_TOP_POINTING_EAST("powered lever top pointing east", (short)678, new BlockData(69, 14), new BlockData(69, 14), true, (double)0.5, (double)2.5),
-	POWERED_LEVER_BOTTOM_POINTING_SOUTH("powered lever bottom pointing south", (short)679, new BlockData(69, 15), new BlockData(69, 15), true, (double)0.5, (double)2.5),
-	STONE_PRESSURE_PLATE("stone pressure plate", (short)680, new BlockData(70, 0), new BlockData(70, 0), false, (double)0.5, (double)2.5),
-	POWERED_STONE_PRESSURE_PLATE("powered stone pressure plate", (short)681, new BlockData(70, 1), new BlockData(70, 1), false, (double)0.5, (double)2.5),
-	WOODEN_PRESSURE_PLATE("wooden pressure plate", (short)682, new BlockData(72, 0), new BlockData(72, 0), false, (double)0.5, (double)2.5),
-	POWERED_WOODEN_PRESSURE_PLATE("powered wooden pressure plate", (short)683, new BlockData(72, 1), new BlockData(72, 1), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_0("heavy weighted pressure plate 0", (short)684, new BlockData(148, 0), new BlockData(148, 0), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_1("heavy weighted pressure plate 1", (short)685, new BlockData(148, 1), new BlockData(148, 1), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_2("heavy weighted pressure plate 2", (short)686, new BlockData(148, 2), new BlockData(148, 2), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_3("heavy weighted pressure plate 3", (short)687, new BlockData(148, 3), new BlockData(148, 3), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_4("heavy weighted pressure plate 4", (short)688, new BlockData(148, 4), new BlockData(148, 4), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_5("heavy weighted pressure plate 5", (short)689, new BlockData(148, 5), new BlockData(148, 5), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_6("heavy weighted pressure plate 6", (short)690, new BlockData(148, 6), new BlockData(148, 6), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_7("heavy weighted pressure plate 7", (short)691, new BlockData(148, 7), new BlockData(148, 7), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_8("heavy weighted pressure plate 8", (short)692, new BlockData(148, 8), new BlockData(148, 8), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_9("heavy weighted pressure plate 9", (short)693, new BlockData(148, 9), new BlockData(148, 9), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_10("heavy weighted pressure plate 10", (short)694, new BlockData(148, 10), new BlockData(148, 10), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_11("heavy weighted pressure plate 11", (short)695, new BlockData(148, 11), new BlockData(148, 11), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_12("heavy weighted pressure plate 12", (short)696, new BlockData(148, 12), new BlockData(148, 12), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_13("heavy weighted pressure plate 13", (short)697, new BlockData(148, 13), new BlockData(148, 13), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_14("heavy weighted pressure plate 14", (short)698, new BlockData(148, 14), new BlockData(148, 14), false, (double)0.5, (double)2.5),
-	HEAVY_WEIGHTED_PRESSURE_PLATE_15("heavy weighted pressure plate 15", (short)699, new BlockData(148, 15), new BlockData(148, 15), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_0("light weighted pressure plate 0", (short)700, new BlockData(147, 0), new BlockData(147, 0), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_1("light weighted pressure plate 1", (short)701, new BlockData(147, 1), new BlockData(147, 1), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_2("light weighted pressure plate 2", (short)702, new BlockData(147, 2), new BlockData(147, 2), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_3("light weighted pressure plate 3", (short)703, new BlockData(147, 3), new BlockData(147, 3), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_4("light weighted pressure plate 4", (short)704, new BlockData(147, 4), new BlockData(147, 4), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_5("light weighted pressure plate 5", (short)705, new BlockData(147, 5), new BlockData(147, 5), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_6("light weighted pressure plate 6", (short)706, new BlockData(147, 6), new BlockData(147, 6), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_7("light weighted pressure plate 7", (short)707, new BlockData(147, 7), new BlockData(147, 7), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_8("light weighted pressure plate 8", (short)708, new BlockData(147, 8), new BlockData(147, 8), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_9("light weighted pressure plate 9", (short)709, new BlockData(147, 9), new BlockData(147, 9), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_10("light weighted pressure plate 10", (short)710, new BlockData(147, 10), new BlockData(147, 10), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_11("light weighted pressure plate 11", (short)711, new BlockData(147, 11), new BlockData(147, 11), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_12("light weighted pressure plate 12", (short)712, new BlockData(147, 12), new BlockData(147, 12), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_13("light weighted pressure plate 13", (short)713, new BlockData(147, 13), new BlockData(147, 13), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_14("light weighted pressure plate 14", (short)714, new BlockData(147, 14), new BlockData(147, 14), false, (double)0.5, (double)2.5),
-	LIGHT_WEIGHTED_PRESSURE_PLATE_15("light weighted pressure plate 15", (short)715, new BlockData(147, 15), new BlockData(147, 15), false, (double)0.5, (double)2.5),
-	BEDROCK("bedrock", (short)716, new BlockData(7, 0), new BlockData(7, 0), true, (double)-1, (double)1.8e+07),
-	REDSTONE_TORCH_FACING_EAST("redstone torch facing east", (short)717, new BlockData(76, 1), new BlockData(76, 1), true, (double)0, (double)0),
-	REDSTONE_TORCH_FACING_WEST("redstone torch facing west", (short)718, new BlockData(76, 2), new BlockData(76, 2), true, (double)0, (double)0),
-	REDSTONE_TORCH_FACING_SOUTH("redstone torch facing south", (short)719, new BlockData(76, 3), new BlockData(76, 3), true, (double)0, (double)0),
-	REDSTONE_TORCH_FACING_NORTH("redstone torch facing north", (short)720, new BlockData(76, 4), new BlockData(76, 4), true, (double)0, (double)0),
-	REDSTONE_TORCH_FACING_UP("redstone torch facing up", (short)721, new BlockData(76, 5), new BlockData(76, 5), true, (double)0, (double)0),
-	INACTIVE_REDSTONE_TORCH_FACING_EAST("inactive redstone torch facing east", (short)722, new BlockData(75, 1), new BlockData(75, 1), true, (double)0, (double)0),
-	INACTIVE_REDSTONE_TORCH_FACING_WEST("inactive redstone torch facing west", (short)723, new BlockData(75, 2), new BlockData(75, 2), true, (double)0, (double)0),
-	INACTIVE_REDSTONE_TORCH_FACING_SOUTH("inactive redstone torch facing south", (short)724, new BlockData(75, 3), new BlockData(75, 3), true, (double)0, (double)0),
-	INACTIVE_REDSTONE_TORCH_FACING_NORTH("inactive redstone torch facing north", (short)725, new BlockData(75, 4), new BlockData(75, 4), true, (double)0, (double)0),
-	INACTIVE_REDSTONE_TORCH_FACING_UP("inactive redstone torch facing up", (short)726, new BlockData(75, 5), new BlockData(75, 5), true, (double)0, (double)0),
-	STONE_BUTTON_FACING_DOWN("stone button facing down", (short)727, new BlockData(77, 0), new BlockData(77, 0), false, (double)0.5, (double)2.5),
-	STONE_BUTTON_FACING_EAST("stone button facing east", (short)728, new BlockData(77, 1), new BlockData(77, 1), false, (double)0.5, (double)2.5),
-	STONE_BUTTON_FACING_WEST("stone button facing west", (short)729, new BlockData(77, 2), new BlockData(77, 2), false, (double)0.5, (double)2.5),
-	STONE_BUTTON_FACING_SOUTH("stone button facing south", (short)730, new BlockData(77, 3), new BlockData(77, 3), false, (double)0.5, (double)2.5),
-	STONE_BUTTON_FACING_NORTH("stone button facing north", (short)731, new BlockData(77, 4), new BlockData(77, 4), false, (double)0.5, (double)2.5),
-	STONE_BUTTON_FACING_UP("stone button facing up", (short)732, new BlockData(77, 5), new BlockData(77, 5), false, (double)0.5, (double)2.5),
-	WOODEN_BUTTON_FACING_DOWN("wooden button facing down", (short)733, new BlockData(143, 0), new BlockData(143, 0), false, (double)0.5, (double)2.5),
-	WOODEN_BUTTON_FACING_EAST("wooden button facing east", (short)734, new BlockData(143, 1), new BlockData(143, 1), false, (double)0.5, (double)2.5),
-	WOODEN_BUTTON_FACING_WEST("wooden button facing west", (short)735, new BlockData(143, 2), new BlockData(143, 2), false, (double)0.5, (double)2.5),
-	WOODEN_BUTTON_FACING_SOUTH("wooden button facing south", (short)736, new BlockData(143, 3), new BlockData(143, 3), false, (double)0.5, (double)2.5),
-	WOODEN_BUTTON_FACING_NORTH("wooden button facing north", (short)737, new BlockData(143, 4), new BlockData(143, 4), false, (double)0.5, (double)2.5),
-	WOODEN_BUTTON_FACING_UP("wooden button facing up", (short)738, new BlockData(143, 5), new BlockData(143, 5), false, (double)0.5, (double)2.5),
-	SNOW_LAYER_0("snow layer 0", (short)739, new BlockData(78, 0), new BlockData(78, 0), true, (double)0.1, (double)0.5),
-	SNOW_LAYER_1("snow layer 1", (short)740, new BlockData(78, 1), new BlockData(78, 1), true, (double)0.1, (double)0.5),
-	SNOW_LAYER_2("snow layer 2", (short)741, new BlockData(78, 2), new BlockData(78, 2), true, (double)0.1, (double)0.5),
-	SNOW_LAYER_3("snow layer 3", (short)742, new BlockData(78, 3), new BlockData(78, 3), true, (double)0.1, (double)0.5),
-	SNOW_LAYER_4("snow layer 4", (short)743, new BlockData(78, 4), new BlockData(78, 4), true, (double)0.1, (double)0.5),
-	SNOW_LAYER_5("snow layer 5", (short)744, new BlockData(78, 5), new BlockData(78, 5), true, (double)0.1, (double)0.5),
-	SNOW_LAYER_6("snow layer 6", (short)745, new BlockData(78, 6), new BlockData(78, 6), true, (double)0.1, (double)0.5),
-	SNOW_LAYER_7("snow layer 7", (short)746, new BlockData(78, 7), new BlockData(78, 7), true, (double)0.1, (double)0.5),
-	SNOW("snow", (short)747, new BlockData(80, 0), new BlockData(80, 0), true, (double)0.2, (double)1),
-	ICE("ice", (short)748, new BlockData(79, 0), new BlockData(79, 0), true, (double)0.5, (double)2.5),
-	PACKED_ICE("packed ice", (short)749, new BlockData(174, 0), new BlockData(174, 0), true, (double)0.5, (double)2.5),
-	FROSTED_ICE("frosted ice", (short)750, new BlockData(212, 0), new BlockData(0, 0), true, (double)0.5, (double)2.5),
-	FROSTED_ICE_CRACKED_1("frosted ice cracked 1", (short)751, new BlockData(212, 1), new BlockData(0, 0), true, (double)0.5, (double)2.5),
-	FROSTED_ICE_CRACKED_2("frosted ice cracked 2", (short)752, new BlockData(212, 2), new BlockData(0, 0), true, (double)0.5, (double)2.5),
-	FROSTED_ICE_CRACKED_3("frosted ice cracked 3", (short)753, new BlockData(212, 3), new BlockData(0, 0), true, (double)0.5, (double)2.5),
-	CACTUS("cactus", (short)754, new BlockData(81, 0), new BlockData(81, 0), true, (double)0.4, (double)2),
-	SUGAR_CANES("sugar canes", (short)755, new BlockData(83, 0), new BlockData(83, 0), true, (double)0, (double)0),
-	CLAY("clay", (short)756, new BlockData(82, 0), new BlockData(82, 0), true, (double)0.6, (double)3),
-	JUKEBOX("jukebox", (short)757, new BlockData(84, 0), new BlockData(84, 0), true, (double)2, (double)30),
-	HARDENED_CLAY("hardened clay", (short)758, new BlockData(172, 0), new BlockData(172, 0), true, (double)1.75, (double)21),
-	WHITE_STAINED_CLAY("white stained clay", (short)759, new BlockData(159, 0), new BlockData(159, 0), true, (double)1.75, (double)21),
-	ORANGE_STAINED_CLAY("orange stained clay", (short)760, new BlockData(159, 1), new BlockData(159, 1), true, (double)1.75, (double)21),
-	MAGENTA_STAINED_CLAY("magenta stained clay", (short)761, new BlockData(159, 2), new BlockData(159, 2), true, (double)1.75, (double)21),
-	LIGHT_BLUE_STAINED_CLAY("light blue stained clay", (short)762, new BlockData(159, 3), new BlockData(159, 3), true, (double)1.75, (double)21),
-	YELLOW_STAINED_CLAY("yellow stained clay", (short)763, new BlockData(159, 4), new BlockData(159, 4), true, (double)1.75, (double)21),
-	LIME_STAINED_CLAY("lime stained clay", (short)764, new BlockData(159, 5), new BlockData(159, 5), true, (double)1.75, (double)21),
-	PINK_STAINED_CLAY("pink stained clay", (short)765, new BlockData(159, 6), new BlockData(159, 6), true, (double)1.75, (double)21),
-	GRAY_STAINED_CLAY("gray stained clay", (short)766, new BlockData(159, 7), new BlockData(159, 7), true, (double)1.75, (double)21),
-	LIGHT_GRAY_STAINED_CLAY("light gray stained clay", (short)767, new BlockData(159, 8), new BlockData(159, 8), true, (double)1.75, (double)21),
-	CYAN_STAINED_CLAY("cyan stained clay", (short)768, new BlockData(159, 9), new BlockData(159, 9), true, (double)1.75, (double)21),
-	PURPLE_STAINED_CLAY("purple stained clay", (short)769, new BlockData(159, 10), new BlockData(159, 10), true, (double)1.75, (double)21),
-	BLUE_STAINED_CLAY("blue stained clay", (short)770, new BlockData(159, 11), new BlockData(159, 11), true, (double)1.75, (double)21),
-	BROWN_STAINED_CLAY("brown stained clay", (short)771, new BlockData(159, 12), new BlockData(159, 12), true, (double)1.75, (double)21),
-	GREEN_STAINED_CLAY("green stained clay", (short)772, new BlockData(159, 13), new BlockData(159, 13), true, (double)1.75, (double)21),
-	RED_STAINED_CLAY("red stained clay", (short)773, new BlockData(159, 14), new BlockData(159, 14), true, (double)1.75, (double)21),
-	BLACK_STAINED_CLAY("black stained clay", (short)774, new BlockData(159, 15), new BlockData(159, 15), true, (double)1.75, (double)21),
-	PUMPKIN_FACING_SOUTH("pumpkin facing south", (short)775, new BlockData(86, 0), new BlockData(86, 0), true, (double)1, (double)5),
-	PUMPKIN_FACING_WEST("pumpkin facing west", (short)776, new BlockData(86, 1), new BlockData(86, 1), true, (double)1, (double)5),
-	PUMPKIN_FACING_NORTH("pumpkin facing north", (short)777, new BlockData(86, 2), new BlockData(86, 2), true, (double)1, (double)5),
-	PUMPKIN_FACING_EAST("pumpkin facing east", (short)778, new BlockData(86, 3), new BlockData(86, 3), true, (double)1, (double)5),
-	FACELESS_PUMPKIN_FACING_SOUTH("faceless pumpkin facing south", (short)779, new BlockData(86, 4), new BlockData(86, 4), true, (double)1, (double)5),
-	FACELESS_PUMPKIN_FACING_WEST("faceless pumpkin facing west", (short)780, new BlockData(86, 5), new BlockData(86, 5), true, (double)1, (double)5),
-	FACELESS_PUMPKIN_FACING_NORTH("faceless pumpkin facing north", (short)781, new BlockData(86, 6), new BlockData(86, 6), true, (double)1, (double)5),
-	FACELESS_PUMPKIN_FACING_EAST("faceless pumpkin facing east", (short)782, new BlockData(86, 7), new BlockData(86, 7), true, (double)1, (double)5),
-	JACK_O_LANTERN_FACING_SOUTH("jack o lantern facing south", (short)783, new BlockData(91, 0), new BlockData(91, 0), true, (double)1, (double)5),
-	JACK_O_LANTERN_FACING_WEST("jack o lantern facing west", (short)784, new BlockData(91, 1), new BlockData(91, 1), true, (double)1, (double)5),
-	JACK_O_LANTERN_FACING_NORTH("jack o lantern facing north", (short)785, new BlockData(91, 2), new BlockData(91, 2), true, (double)1, (double)5),
-	JACK_O_LANTERN_FACING_EAST("jack o lantern facing east", (short)786, new BlockData(91, 3), new BlockData(91, 3), true, (double)1, (double)5),
-	FACELESS_JACK_O_LANTERN_FACING_SOUTH("faceless jack o lantern facing south", (short)787, new BlockData(91, 4), new BlockData(91, 4), true, (double)1, (double)5),
-	FACELESS_JACK_O_LANTERN_FACING_WEST("faceless jack o lantern facing west", (short)788, new BlockData(91, 5), new BlockData(91, 5), true, (double)1, (double)5),
-	FACELESS_JACK_O_LANTERN_FACING_NORTH("faceless jack o lantern facing north", (short)789, new BlockData(91, 6), new BlockData(91, 6), true, (double)1, (double)5),
-	FACELESS_JACK_O_LANTERN_FACING_EAST("faceless jack o lantern facing east", (short)790, new BlockData(91, 7), new BlockData(91, 7), true, (double)1, (double)5),
-	OAK_WOOD_FENCE("oak wood fence", (short)791, new BlockData(85, 0), new BlockData(85, 0), true, (double)2, (double)15),
-	SPRUCE_WOOD_FENCE("spruce wood fence", (short)792, new BlockData(188, 0), new BlockData(85, 1), true, (double)2, (double)15),
-	BIRCH_WOOD_FENCE("birch wood fence", (short)793, new BlockData(189, 0), new BlockData(85, 2), true, (double)2, (double)15),
-	JUNGLE_WOOD_FENCE("jungle wood fence", (short)794, new BlockData(190, 0), new BlockData(85, 3), true, (double)2, (double)15),
-	ACACIA_WOOD_FENCE("acacia wood fence", (short)795, new BlockData(191, 0), new BlockData(85, 4), true, (double)2, (double)15),
-	DARK_OAK_WOOD_FENCE("dark oak wood fence", (short)796, new BlockData(192, 0), new BlockData(85, 5), true, (double)2, (double)15),
-	NETHER_BRICK_FENCE("nether brick fence", (short)797, new BlockData(113, 0), new BlockData(113, 0), true, (double)2, (double)30),
-	NETHERRACK("netherrack", (short)798, new BlockData(87, 0), new BlockData(87, 0), true, (double)0.4, (double)2),
-	SOUL_SAND("soul sand", (short)799, new BlockData(88, 0), new BlockData(88, 0), true, (double)0.5, (double)2.5),
-	GLOWSTONE("glowstone", (short)800, new BlockData(89, 0), new BlockData(89, 0), true, (double)0.3, (double)1.5),
-	NETHER_BRICK("nether brick", (short)801, new BlockData(112, 0), new BlockData(112, 0), true, (double)2, (double)30),
-	RED_NETHER_BRICK("red nether brick", (short)802, new BlockData(215, 0), new BlockData(0, 0), true, (double)2, (double)30),
-	NETHER_PORTAL_EAST_WEST("nether portal east west", (short)803, new BlockData(90, 0), new BlockData(90, 0), false, (double)0, (double)0),
-	NETHER_PORTAL_NORTH_SOUTH("nether portal north south", (short)804, new BlockData(90, 1), new BlockData(90, 1), false, (double)0, (double)0),
-	CAKE_0("cake 0", (short)805, new BlockData(92, 0), new BlockData(92, 0), true, (double)0.5, (double)2.5),
-	CAKE_1("cake 1", (short)806, new BlockData(92, 1), new BlockData(92, 1), true, (double)0.5, (double)2.5),
-	CAKE_2("cake 2", (short)807, new BlockData(92, 2), new BlockData(92, 2), true, (double)0.5, (double)2.5),
-	CAKE_3("cake 3", (short)808, new BlockData(92, 3), new BlockData(92, 3), true, (double)0.5, (double)2.5),
-	CAKE_4("cake 4", (short)809, new BlockData(92, 4), new BlockData(92, 4), true, (double)0.5, (double)2.5),
-	CAKE_5("cake 5", (short)810, new BlockData(92, 5), new BlockData(92, 5), true, (double)0.5, (double)2.5),
-	CAKE_6("cake 6", (short)811, new BlockData(92, 6), new BlockData(92, 6), true, (double)0.5, (double)2.5),
-	REPEATER_FACING_NORTH_1_DELAY("repeater facing north 1 delay", (short)812, new BlockData(93, 0), new BlockData(93, 0), true, (double)0, (double)0),
-	REPEATER_FACING_EAST_1_DELAY("repeater facing east 1 delay", (short)813, new BlockData(93, 1), new BlockData(93, 1), true, (double)0, (double)0),
-	REPEATER_FACING_SOUTH_1_DELAY("repeater facing south 1 delay", (short)814, new BlockData(93, 2), new BlockData(93, 2), true, (double)0, (double)0),
-	REPEATER_FACING_WEST_1_DELAY("repeater facing west 1 delay", (short)815, new BlockData(93, 3), new BlockData(93, 3), true, (double)0, (double)0),
-	REPEATER_FACING_NORTH_2_DELAY("repeater facing north 2 delay", (short)816, new BlockData(93, 4), new BlockData(93, 4), true, (double)0, (double)0),
-	REPEATER_FACING_EAST_2_DELAY("repeater facing east 2 delay", (short)817, new BlockData(93, 5), new BlockData(93, 5), true, (double)0, (double)0),
-	REPEATER_FACING_SOUTH_2_DELAY("repeater facing south 2 delay", (short)818, new BlockData(93, 6), new BlockData(93, 6), true, (double)0, (double)0),
-	REPEATER_FACING_WEST_2_DELAY("repeater facing west 2 delay", (short)819, new BlockData(93, 7), new BlockData(93, 7), true, (double)0, (double)0),
-	REPEATER_FACING_NORTH_3_DELAY("repeater facing north 3 delay", (short)820, new BlockData(93, 8), new BlockData(93, 8), true, (double)0, (double)0),
-	REPEATER_FACING_EAST_3_DELAY("repeater facing east 3 delay", (short)821, new BlockData(93, 9), new BlockData(93, 9), true, (double)0, (double)0),
-	REPEATER_FACING_SOUTH_3_DELAY("repeater facing south 3 delay", (short)822, new BlockData(93, 10), new BlockData(93, 10), true, (double)0, (double)0),
-	REPEATER_FACING_WEST_3_DELAY("repeater facing west 3 delay", (short)823, new BlockData(93, 11), new BlockData(93, 11), true, (double)0, (double)0),
-	REPEATER_FACING_NORTH_4_DELAY("repeater facing north 4 delay", (short)824, new BlockData(93, 12), new BlockData(93, 12), true, (double)0, (double)0),
-	REPEATER_FACING_EAST_4_DELAY("repeater facing east 4 delay", (short)825, new BlockData(93, 13), new BlockData(93, 13), true, (double)0, (double)0),
-	REPEATER_FACING_SOUTH_4_DELAY("repeater facing south 4 delay", (short)826, new BlockData(93, 14), new BlockData(93, 14), true, (double)0, (double)0),
-	REPEATER_FACING_WEST_4_DELAY("repeater facing west 4 delay", (short)827, new BlockData(93, 15), new BlockData(93, 15), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_NORTH_1_DELAY("powered repeater facing north 1 delay", (short)828, new BlockData(94, 0), new BlockData(94, 0), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_EAST_1_DELAY("powered repeater facing east 1 delay", (short)829, new BlockData(94, 1), new BlockData(94, 1), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_SOUTH_1_DELAY("powered repeater facing south 1 delay", (short)830, new BlockData(94, 2), new BlockData(94, 2), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_WEST_1_DELAY("powered repeater facing west 1 delay", (short)831, new BlockData(94, 3), new BlockData(94, 3), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_NORTH_2_DELAY("powered repeater facing north 2 delay", (short)832, new BlockData(94, 4), new BlockData(94, 4), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_EAST_2_DELAY("powered repeater facing east 2 delay", (short)833, new BlockData(94, 5), new BlockData(94, 5), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_SOUTH_2_DELAY("powered repeater facing south 2 delay", (short)834, new BlockData(94, 6), new BlockData(94, 6), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_WEST_2_DELAY("powered repeater facing west 2 delay", (short)835, new BlockData(94, 7), new BlockData(94, 7), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_NORTH_3_DELAY("powered repeater facing north 3 delay", (short)836, new BlockData(94, 8), new BlockData(94, 8), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_EAST_3_DELAY("powered repeater facing east 3 delay", (short)837, new BlockData(94, 9), new BlockData(94, 9), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_SOUTH_3_DELAY("powered repeater facing south 3 delay", (short)838, new BlockData(94, 10), new BlockData(94, 10), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_WEST_3_DELAY("powered repeater facing west 3 delay", (short)839, new BlockData(94, 11), new BlockData(94, 11), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_NORTH_4_DELAY("powered repeater facing north 4 delay", (short)840, new BlockData(94, 12), new BlockData(94, 12), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_EAST_4_DELAY("powered repeater facing east 4 delay", (short)841, new BlockData(94, 13), new BlockData(94, 13), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_SOUTH_4_DELAY("powered repeater facing south 4 delay", (short)842, new BlockData(94, 14), new BlockData(94, 14), true, (double)0, (double)0),
-	POWERED_REPEATER_FACING_WEST_4_DELAY("powered repeater facing west 4 delay", (short)843, new BlockData(94, 15), new BlockData(94, 15), true, (double)0, (double)0),
-	WOODEN_TRAPDOOR_SOUTH_SIDE("wooden trapdoor south side", (short)844, new BlockData(96, 0), new BlockData(96, 0), true, (double)3, (double)15),
-	WOODEN_TRAPDOOR_NORTH_SIDE("wooden trapdoor north side", (short)845, new BlockData(96, 1), new BlockData(96, 1), true, (double)3, (double)15),
-	WOODEN_TRAPDOOR_EAST_SIDE("wooden trapdoor east side", (short)846, new BlockData(96, 2), new BlockData(96, 2), true, (double)3, (double)15),
-	WOODEN_TRAPDOOR_WEST_SIDE("wooden trapdoor west side", (short)847, new BlockData(96, 3), new BlockData(96, 3), true, (double)3, (double)15),
-	OPENED_WOODEN_TRAPDOOR_SOUTH_SIDE("opened wooden trapdoor south side", (short)848, new BlockData(96, 4), new BlockData(96, 4), true, (double)3, (double)15),
-	OPENED_WOODEN_TRAPDOOR_NORTH_SIDE("opened wooden trapdoor north side", (short)849, new BlockData(96, 5), new BlockData(96, 5), true, (double)3, (double)15),
-	OPENED_WOODEN_TRAPDOOR_EAST_SIDE("opened wooden trapdoor east side", (short)850, new BlockData(96, 6), new BlockData(96, 6), true, (double)3, (double)15),
-	OPENED_WOODEN_TRAPDOOR_WEST_SIDE("opened wooden trapdoor west side", (short)851, new BlockData(96, 7), new BlockData(96, 7), true, (double)3, (double)15),
-	IRON_TRAPDOOR_SOUTH_SIDE("iron trapdoor south side", (short)852, new BlockData(167, 0), new BlockData(167, 0), true, (double)5, (double)25),
-	IRON_TRAPDOOR_NORTH_SIDE("iron trapdoor north side", (short)853, new BlockData(167, 1), new BlockData(167, 1), true, (double)5, (double)25),
-	IRON_TRAPDOOR_EAST_SIDE("iron trapdoor east side", (short)854, new BlockData(167, 2), new BlockData(167, 2), true, (double)5, (double)25),
-	IRON_TRAPDOOR_WEST_SIDE("iron trapdoor west side", (short)855, new BlockData(167, 3), new BlockData(167, 3), true, (double)5, (double)25),
-	OPENED_IRON_TRAPDOOR_SOUTH_SIDE("opened iron trapdoor south side", (short)856, new BlockData(167, 4), new BlockData(167, 4), true, (double)5, (double)25),
-	OPENED_IRON_TRAPDOOR_NORTH_SIDE("opened iron trapdoor north side", (short)857, new BlockData(167, 5), new BlockData(167, 5), true, (double)5, (double)25),
-	OPENED_IRON_TRAPDOOR_EAST_SIDE("opened iron trapdoor east side", (short)858, new BlockData(167, 6), new BlockData(167, 6), true, (double)5, (double)25),
-	OPENED_IRON_TRAPDOOR_WEST_SIDE("opened iron trapdoor west side", (short)859, new BlockData(167, 7), new BlockData(167, 7), true, (double)5, (double)25),
-	TOP_IRON_TRAPDOOR_SOUTH_SIDE("top iron trapdoor south side", (short)860, new BlockData(167, 8), new BlockData(167, 8), true, (double)5, (double)25),
-	TOP_IRON_TRAPDOOR_NORTH_SIDE("top iron trapdoor north side", (short)861, new BlockData(167, 9), new BlockData(167, 9), true, (double)5, (double)25),
-	TOP_IRON_TRAPDOOR_EAST_SIDE("top iron trapdoor east side", (short)862, new BlockData(167, 10), new BlockData(167, 10), true, (double)5, (double)25),
-	TOP_IRON_TRAPDOOR_WEST_SIDE("top iron trapdoor west side", (short)863, new BlockData(167, 11), new BlockData(167, 11), true, (double)5, (double)25),
-	OPENED_TOP_IRON_TRAPDOOR_SOUTH_SIDE("opened top iron trapdoor south side", (short)864, new BlockData(167, 12), new BlockData(167, 12), true, (double)5, (double)25),
-	OPENED_TOP_IRON_TRAPDOOR_NORTH_SIDE("opened top iron trapdoor north side", (short)865, new BlockData(167, 13), new BlockData(167, 13), true, (double)5, (double)25),
-	OPENED_TOP_IRON_TRAPDOOR_EAST_SIDE("opened top iron trapdoor east side", (short)866, new BlockData(167, 14), new BlockData(167, 14), true, (double)5, (double)25),
-	OPENED_TOP_IRON_TRAPDOOR_WEST_SIDE("opened top iron trapdoor west side", (short)867, new BlockData(167, 15), new BlockData(167, 15), true, (double)5, (double)25),
-	STONE_MONSTER_EGG("stone monster egg", (short)868, new BlockData(97, 0), new BlockData(97, 0), true, (double)0.75, (double)3.75),
-	COBBLESTONE_MONSTER_EGG("cobblestone monster egg", (short)869, new BlockData(97, 1), new BlockData(97, 1), true, (double)0.75, (double)3.75),
-	STONE_BRICK_MONSTER_EGG("stone brick monster egg", (short)870, new BlockData(97, 2), new BlockData(97, 2), true, (double)0.75, (double)3.75),
-	MOSSY_STONE_BRICK_MONSTER_EGG("mossy stone brick monster egg", (short)871, new BlockData(97, 3), new BlockData(97, 3), true, (double)0.75, (double)3.75),
-	CRACKED_STONE_BRICK_MONSTER_EGG("cracked stone brick monster egg", (short)872, new BlockData(97, 4), new BlockData(97, 4), true, (double)0.75, (double)3.75),
-	CHISELED_STONE_BRICK_MONSTER_EGG("chiseled stone brick monster egg", (short)873, new BlockData(97, 5), new BlockData(97, 5), true, (double)0.75, (double)3.75),
-	BROWN_MUSHROOM_PORES_EVERYWHERE("brown mushroom pores everywhere", (short)874, new BlockData(99, 0), new BlockData(99, 0), true, (double)0.2, (double)1),
-	BROWN_MUSHROOM_CAP_TOP_WEST_NORTH("brown mushroom cap top west north", (short)875, new BlockData(99, 1), new BlockData(99, 1), true, (double)0.2, (double)1),
-	BROWN_MUSHROOM_CAP_TOP_NORTH("brown mushroom cap top north", (short)876, new BlockData(99, 2), new BlockData(99, 2), true, (double)0.2, (double)1),
-	BROWN_MUSHROOM_CAP_TOP_NORTH_EAST("brown mushroom cap top north east", (short)877, new BlockData(99, 3), new BlockData(99, 3), true, (double)0.2, (double)1),
-	BROWN_MUSHROOM_CAP_TOP_WEST("brown mushroom cap top west", (short)878, new BlockData(99, 4), new BlockData(99, 4), true, (double)0.2, (double)1),
-	BROWN_MUSHROOM_CAP_TOP("brown mushroom cap top", (short)879, new BlockData(99, 5), new BlockData(99, 5), true, (double)0.2, (double)1),
-	BROWN_MUSHROOM_CAP_TOP_EAST("brown mushroom cap top east", (short)880, new BlockData(99, 6), new BlockData(99, 6), true, (double)0.2, (double)1),
-	BROWN_MUSHROOM_CAP_TOP_SOUTH_WEST("brown mushroom cap top south west", (short)881, new BlockData(99, 7), new BlockData(99, 7), true, (double)0.2, (double)1),
-	BROWN_MUSHROOM_CAP_TOP_SOUTH("brown mushroom cap top south", (short)882, new BlockData(99, 8), new BlockData(99, 8), true, (double)0.2, (double)1),
-	BROWN_MUSHROOM_CAP_TOP_EAST_SOUTH("brown mushroom cap top east south", (short)883, new BlockData(99, 9), new BlockData(99, 9), true, (double)0.2, (double)1),
-	BROWN_MUSHROOM_STEM_EVERY_SIDE("brown mushroom stem every side", (short)884, new BlockData(99, 10), new BlockData(99, 10), true, (double)0.2, (double)1),
-	STILL_LAVA_1("still lava 1", (short)885, new BlockData(10, 1), new BlockData(10, 1), false, (double)0, (double)500),
-	STILL_LAVA_2("still lava 2", (short)886, new BlockData(10, 2), new BlockData(10, 2), false, (double)0, (double)500),
-	STILL_LAVA_3("still lava 3", (short)887, new BlockData(10, 3), new BlockData(10, 3), false, (double)0, (double)500),
-	BROWN_MUSHROOM_CAPS_EVERYWHERE("brown mushroom caps everywhere", (short)888, new BlockData(99, 14), new BlockData(99, 14), true, (double)0.2, (double)1),
-	BROWN_MUSHROOM_STEMS_EVERYWHERE("brown mushroom stems everywhere", (short)889, new BlockData(99, 15), new BlockData(99, 15), true, (double)0.2, (double)1),
-	RED_MUSHROOM_PORES_EVERYWHERE("red mushroom pores everywhere", (short)890, new BlockData(100, 0), new BlockData(100, 0), true, (double)0.2, (double)1),
-	RED_MUSHROOM_CAP_TOP_WEST_NORTH("red mushroom cap top west north", (short)891, new BlockData(100, 1), new BlockData(100, 1), true, (double)0.2, (double)1),
-	RED_MUSHROOM_CAP_TOP_NORTH("red mushroom cap top north", (short)892, new BlockData(100, 2), new BlockData(100, 2), true, (double)0.2, (double)1),
-	RED_MUSHROOM_CAP_TOP_NORTH_EAST("red mushroom cap top north east", (short)893, new BlockData(100, 3), new BlockData(100, 3), true, (double)0.2, (double)1),
-	RED_MUSHROOM_CAP_TOP_WEST("red mushroom cap top west", (short)894, new BlockData(100, 4), new BlockData(100, 4), true, (double)0.2, (double)1),
-	RED_MUSHROOM_CAP_TOP("red mushroom cap top", (short)895, new BlockData(100, 5), new BlockData(100, 5), true, (double)0.2, (double)1),
-	RED_MUSHROOM_CAP_TOP_EAST("red mushroom cap top east", (short)896, new BlockData(100, 6), new BlockData(100, 6), true, (double)0.2, (double)1),
-	RED_MUSHROOM_CAP_TOP_SOUTH_WEST("red mushroom cap top south west", (short)897, new BlockData(100, 7), new BlockData(100, 7), true, (double)0.2, (double)1),
-	RED_MUSHROOM_CAP_TOP_SOUTH("red mushroom cap top south", (short)898, new BlockData(100, 8), new BlockData(100, 8), true, (double)0.2, (double)1),
-	RED_MUSHROOM_CAP_TOP_EAST_SOUTH("red mushroom cap top east south", (short)899, new BlockData(100, 9), new BlockData(100, 9), true, (double)0.2, (double)1),
-	RED_MUSHROOM_STEM_EVERY_SIDE("red mushroom stem every side", (short)900, new BlockData(100, 10), new BlockData(100, 10), true, (double)0.2, (double)1),
-	RED_MUSHROOM_CAPS_EVERYWHERE("red mushroom caps everywhere", (short)901, new BlockData(100, 14), new BlockData(100, 14), true, (double)0.2, (double)1),
-	RED_MUSHROOM_STEMS_EVERYWHERE("red mushroom stems everywhere", (short)902, new BlockData(100, 15), new BlockData(100, 15), true, (double)0.2, (double)1),
-	IRON_BARS("iron bars", (short)903, new BlockData(101, 0), new BlockData(101, 0), true, (double)5, (double)30),
-	MELON("melon", (short)904, new BlockData(103, 0), new BlockData(103, 0), true, (double)1, (double)5),
-	VINE_SOUTH("vine south", (short)905, new BlockData(106, 1), new BlockData(106, 1), false, (double)0.2, (double)1),
-	VINE_WEST("vine west", (short)906, new BlockData(106, 2), new BlockData(106, 2), false, (double)0.2, (double)1),
-	VINE_SOUTH_WEST("vine south west", (short)907, new BlockData(106, 3), new BlockData(106, 3), false, (double)0.2, (double)1),
-	VINE_NORTH("vine north", (short)908, new BlockData(106, 4), new BlockData(106, 4), false, (double)0.2, (double)1),
-	VINE_NORTH_SOUTH("vine north south", (short)909, new BlockData(106, 5), new BlockData(106, 5), false, (double)0.2, (double)1),
-	VINE_NORTH_WEST("vine north west", (short)910, new BlockData(106, 6), new BlockData(106, 6), false, (double)0.2, (double)1),
-	VINE_NORTH_SOUTH_WEST("vine north south west", (short)911, new BlockData(106, 7), new BlockData(106, 7), false, (double)0.2, (double)1),
-	VINE_EAST("vine east", (short)912, new BlockData(106, 8), new BlockData(106, 8), false, (double)0.2, (double)1),
-	VINE_SOUTH_EAST("vine south east", (short)913, new BlockData(106, 9), new BlockData(106, 9), false, (double)0.2, (double)1),
-	VINE_WEST_EAST("vine west east", (short)914, new BlockData(106, 10), new BlockData(106, 10), false, (double)0.2, (double)1),
-	VINE_SOUTH_WEST_EAST("vine south west east", (short)915, new BlockData(106, 11), new BlockData(106, 11), false, (double)0.2, (double)1),
-	VINE_NORTH_EAST("vine north east", (short)916, new BlockData(106, 12), new BlockData(106, 12), false, (double)0.2, (double)1),
-	VINE_NORTH_SOUTH_EAST("vine north south east", (short)917, new BlockData(106, 13), new BlockData(106, 13), false, (double)0.2, (double)1),
-	VINE_NORTH_WEST_EAST("vine north west east", (short)918, new BlockData(106, 14), new BlockData(106, 14), false, (double)0.2, (double)1),
-	VINE_EVERY_SIDE("vine every side", (short)919, new BlockData(106, 15), new BlockData(106, 15), false, (double)0.2, (double)1),
-	OAK_WOODEN_FENCE_GATE_FACING_SOUTH("oak wooden fence gate facing south", (short)920, new BlockData(107, 0), new BlockData(107, 0), true, (double)2, (double)15),
-	OAK_WOODEN_FENCE_GATE_FACING_WEST("oak wooden fence gate facing west", (short)921, new BlockData(107, 1), new BlockData(107, 1), true, (double)2, (double)15),
-	OAK_WOODEN_FENCE_GATE_FACING_NORTH("oak wooden fence gate facing north", (short)922, new BlockData(107, 2), new BlockData(107, 2), true, (double)2, (double)15),
-	OAK_WOODEN_FENCE_GATE_FACING_EAST("oak wooden fence gate facing east", (short)923, new BlockData(107, 3), new BlockData(107, 3), true, (double)2, (double)15),
-	OPENED_OAK_WOODEN_FENCE_GATE_FACING_SOUTH("opened oak wooden fence gate facing south", (short)924, new BlockData(107, 4), new BlockData(107, 4), true, (double)2, (double)15),
-	OPENED_OAK_WOODEN_FENCE_GATE_FACING_WEST("opened oak wooden fence gate facing west", (short)925, new BlockData(107, 5), new BlockData(107, 5), true, (double)2, (double)15),
-	OPENED_OAK_WOODEN_FENCE_GATE_FACING_NORTH("opened oak wooden fence gate facing north", (short)926, new BlockData(107, 6), new BlockData(107, 6), true, (double)2, (double)15),
-	OPENED_OAK_WOODEN_FENCE_GATE_FACING_EAST("opened oak wooden fence gate facing east", (short)927, new BlockData(107, 7), new BlockData(107, 7), true, (double)2, (double)15),
-	SPRUCE_WOODEN_FENCE_GATE_FACING_SOUTH("spruce wooden fence gate facing south", (short)928, new BlockData(183, 0), new BlockData(183, 0), true, (double)2, (double)15),
-	SPRUCE_WOODEN_FENCE_GATE_FACING_WEST("spruce wooden fence gate facing west", (short)929, new BlockData(183, 1), new BlockData(183, 1), true, (double)2, (double)15),
-	SPRUCE_WOODEN_FENCE_GATE_FACING_NORTH("spruce wooden fence gate facing north", (short)930, new BlockData(183, 2), new BlockData(183, 2), true, (double)2, (double)15),
-	SPRUCE_WOODEN_FENCE_GATE_FACING_EAST("spruce wooden fence gate facing east", (short)931, new BlockData(183, 3), new BlockData(183, 3), true, (double)2, (double)15),
-	OPENED_SPRUCE_WOODEN_FENCE_GATE_FACING_SOUTH("opened spruce wooden fence gate facing south", (short)932, new BlockData(183, 4), new BlockData(183, 4), true, (double)2, (double)15),
-	OPENED_SPRUCE_WOODEN_FENCE_GATE_FACING_WEST("opened spruce wooden fence gate facing west", (short)933, new BlockData(183, 5), new BlockData(183, 5), true, (double)2, (double)15),
-	OPENED_SPRUCE_WOODEN_FENCE_GATE_FACING_NORTH("opened spruce wooden fence gate facing north", (short)934, new BlockData(183, 6), new BlockData(183, 6), true, (double)2, (double)15),
-	OPENED_SPRUCE_WOODEN_FENCE_GATE_FACING_EAST("opened spruce wooden fence gate facing east", (short)935, new BlockData(183, 7), new BlockData(183, 7), true, (double)2, (double)15),
-	BIRCH_WOODEN_FENCE_GATE_FACING_SOUTH("birch wooden fence gate facing south", (short)936, new BlockData(184, 0), new BlockData(184, 0), true, (double)2, (double)15),
-	BIRCH_WOODEN_FENCE_GATE_FACING_WEST("birch wooden fence gate facing west", (short)937, new BlockData(184, 1), new BlockData(184, 1), true, (double)2, (double)15),
-	BIRCH_WOODEN_FENCE_GATE_FACING_NORTH("birch wooden fence gate facing north", (short)938, new BlockData(184, 2), new BlockData(184, 2), true, (double)2, (double)15),
-	BIRCH_WOODEN_FENCE_GATE_FACING_EAST("birch wooden fence gate facing east", (short)939, new BlockData(184, 3), new BlockData(184, 3), true, (double)2, (double)15),
-	OPENED_BIRCH_WOODEN_FENCE_GATE_FACING_SOUTH("opened birch wooden fence gate facing south", (short)940, new BlockData(184, 4), new BlockData(184, 4), true, (double)2, (double)15),
-	OPENED_BIRCH_WOODEN_FENCE_GATE_FACING_WEST("opened birch wooden fence gate facing west", (short)941, new BlockData(184, 5), new BlockData(184, 5), true, (double)2, (double)15),
-	OPENED_BIRCH_WOODEN_FENCE_GATE_FACING_NORTH("opened birch wooden fence gate facing north", (short)942, new BlockData(184, 6), new BlockData(184, 6), true, (double)2, (double)15),
-	OPENED_BIRCH_WOODEN_FENCE_GATE_FACING_EAST("opened birch wooden fence gate facing east", (short)943, new BlockData(184, 7), new BlockData(184, 7), true, (double)2, (double)15),
-	JUNGLE_WOODEN_FENCE_GATE_FACING_SOUTH("jungle wooden fence gate facing south", (short)944, new BlockData(185, 0), new BlockData(185, 0), true, (double)2, (double)15),
-	JUNGLE_WOODEN_FENCE_GATE_FACING_WEST("jungle wooden fence gate facing west", (short)945, new BlockData(185, 1), new BlockData(185, 1), true, (double)2, (double)15),
-	JUNGLE_WOODEN_FENCE_GATE_FACING_NORTH("jungle wooden fence gate facing north", (short)946, new BlockData(185, 2), new BlockData(185, 2), true, (double)2, (double)15),
-	JUNGLE_WOODEN_FENCE_GATE_FACING_EAST("jungle wooden fence gate facing east", (short)947, new BlockData(185, 3), new BlockData(185, 3), true, (double)2, (double)15),
-	OPENED_JUNGLE_WOODEN_FENCE_GATE_FACING_SOUTH("opened jungle wooden fence gate facing south", (short)948, new BlockData(185, 4), new BlockData(185, 4), true, (double)2, (double)15),
-	OPENED_JUNGLE_WOODEN_FENCE_GATE_FACING_WEST("opened jungle wooden fence gate facing west", (short)949, new BlockData(185, 5), new BlockData(185, 5), true, (double)2, (double)15),
-	OPENED_JUNGLE_WOODEN_FENCE_GATE_FACING_NORTH("opened jungle wooden fence gate facing north", (short)950, new BlockData(185, 6), new BlockData(185, 6), true, (double)2, (double)15),
-	OPENED_JUNGLE_WOODEN_FENCE_GATE_FACING_EAST("opened jungle wooden fence gate facing east", (short)951, new BlockData(185, 7), new BlockData(185, 7), true, (double)2, (double)15),
-	ACACIA_WOODEN_FENCE_GATE_FACING_SOUTH("acacia wooden fence gate facing south", (short)952, new BlockData(186, 0), new BlockData(186, 0), true, (double)2, (double)15),
-	ACACIA_WOODEN_FENCE_GATE_FACING_WEST("acacia wooden fence gate facing west", (short)953, new BlockData(186, 1), new BlockData(186, 1), true, (double)2, (double)15),
-	ACACIA_WOODEN_FENCE_GATE_FACING_NORTH("acacia wooden fence gate facing north", (short)954, new BlockData(186, 2), new BlockData(186, 2), true, (double)2, (double)15),
-	ACACIA_WOODEN_FENCE_GATE_FACING_EAST("acacia wooden fence gate facing east", (short)955, new BlockData(186, 3), new BlockData(186, 3), true, (double)2, (double)15),
-	OPENED_ACACIA_WOODEN_FENCE_GATE_FACING_SOUTH("opened acacia wooden fence gate facing south", (short)956, new BlockData(186, 4), new BlockData(186, 4), true, (double)2, (double)15),
-	OPENED_ACACIA_WOODEN_FENCE_GATE_FACING_WEST("opened acacia wooden fence gate facing west", (short)957, new BlockData(186, 5), new BlockData(186, 5), true, (double)2, (double)15),
-	OPENED_ACACIA_WOODEN_FENCE_GATE_FACING_NORTH("opened acacia wooden fence gate facing north", (short)958, new BlockData(186, 6), new BlockData(186, 6), true, (double)2, (double)15),
-	OPENED_ACACIA_WOODEN_FENCE_GATE_FACING_EAST("opened acacia wooden fence gate facing east", (short)959, new BlockData(186, 7), new BlockData(186, 7), true, (double)2, (double)15),
-	DARK_OAK_WOODEN_FENCE_GATE_FACING_SOUTH("dark oak wooden fence gate facing south", (short)960, new BlockData(187, 0), new BlockData(187, 0), true, (double)2, (double)15),
-	DARK_OAK_WOODEN_FENCE_GATE_FACING_WEST("dark oak wooden fence gate facing west", (short)961, new BlockData(187, 1), new BlockData(187, 1), true, (double)2, (double)15),
-	DARK_OAK_WOODEN_FENCE_GATE_FACING_NORTH("dark oak wooden fence gate facing north", (short)962, new BlockData(187, 2), new BlockData(187, 2), true, (double)2, (double)15),
-	DARK_OAK_WOODEN_FENCE_GATE_FACING_EAST("dark oak wooden fence gate facing east", (short)963, new BlockData(187, 3), new BlockData(187, 3), true, (double)2, (double)15),
-	OPENED_DARK_OAK_WOODEN_FENCE_GATE_FACING_SOUTH("opened dark oak wooden fence gate facing south", (short)964, new BlockData(187, 4), new BlockData(187, 4), true, (double)2, (double)15),
-	OPENED_DARK_OAK_WOODEN_FENCE_GATE_FACING_WEST("opened dark oak wooden fence gate facing west", (short)965, new BlockData(187, 5), new BlockData(187, 5), true, (double)2, (double)15),
-	OPENED_DARK_OAK_WOODEN_FENCE_GATE_FACING_NORTH("opened dark oak wooden fence gate facing north", (short)966, new BlockData(187, 6), new BlockData(187, 6), true, (double)2, (double)15),
-	OPENED_DARK_OAK_WOODEN_FENCE_GATE_FACING_EAST("opened dark oak wooden fence gate facing east", (short)967, new BlockData(187, 7), new BlockData(187, 7), true, (double)2, (double)15),
-	NETHER_WART_0("nether wart 0", (short)968, new BlockData(115, 0), new BlockData(115, 0), true, (double)0, (double)0),
-	NETHER_WART_1("nether wart 1", (short)969, new BlockData(115, 1), new BlockData(115, 1), true, (double)0, (double)0),
-	NETHER_WART_2("nether wart 2", (short)970, new BlockData(115, 2), new BlockData(115, 2), true, (double)0, (double)0),
-	NETHER_WART_3("nether wart 3", (short)971, new BlockData(115, 3), new BlockData(115, 3), true, (double)0, (double)0),
-	ENCHANTING_TABLE("enchanting table", (short)972, new BlockData(116, 0), new BlockData(116, 0), true, (double)5, (double)6000),
-	BREWING_STAND_EMPTY("brewing stand empty", (short)973, new BlockData(117, 0), new BlockData(117, 0), true, (double)0.5, (double)2.5),
-	BREWING_STAND_BOTTLE_1("brewing stand bottle 1", (short)974, new BlockData(117, 1), new BlockData(117, 1), true, (double)0.5, (double)2.5),
-	BREWING_STAND_BOTTLE_2("brewing stand bottle 2", (short)975, new BlockData(117, 2), new BlockData(117, 2), true, (double)0.5, (double)2.5),
-	BREWING_STAND_BOTTLE_1_2("brewing stand bottle 1 2", (short)976, new BlockData(117, 3), new BlockData(117, 3), true, (double)0.5, (double)2.5),
-	BREWING_STAND_BOTTLE_3("brewing stand bottle 3", (short)977, new BlockData(117, 4), new BlockData(117, 4), true, (double)0.5, (double)2.5),
-	BREWING_STAND_BOTTLE_1_3("brewing stand bottle 1 3", (short)978, new BlockData(117, 5), new BlockData(117, 5), true, (double)0.5, (double)2.5),
-	BREWING_STAND_BOTTLE_2_3("brewing stand bottle 2 3", (short)979, new BlockData(117, 6), new BlockData(117, 6), true, (double)0.5, (double)2.5),
-	BREWING_STAND_FULL("brewing stand full", (short)980, new BlockData(117, 7), new BlockData(117, 7), true, (double)0.5, (double)2.5),
-	CAULDRON_EMPTY("cauldron empty", (short)981, new BlockData(118, 0), new BlockData(118, 0), true, (double)2, (double)10),
-	CAULDRON_ONE_SIXTH_FILLED("cauldron one sixth filled", (short)982, new BlockData(0, 0), new BlockData(118, 1), true, (double)2, (double)10),
-	CAULDRON_ONE_THIRD_FILLED("cauldron one third filled", (short)983, new BlockData(118, 1), new BlockData(118, 2), true, (double)2, (double)10),
-	CAULDRON_THREE_SIXTH_FILLED("cauldron three sixth filled", (short)984, new BlockData(0, 0), new BlockData(118, 3), true, (double)2, (double)10),
-	CAULDRON_TWO_THIRD_FILLED("cauldron two third filled", (short)985, new BlockData(118, 2), new BlockData(118, 4), true, (double)2, (double)10),
-	CAULDRON_FIVE_SIXTH_FILLED("cauldron five sixth filled", (short)986, new BlockData(0, 0), new BlockData(118, 5), true, (double)2, (double)10),
-	CAULDRON_FILLED("cauldron filled", (short)987, new BlockData(118, 3), new BlockData(118, 6), true, (double)2, (double)10),
-	END_PORTAL_FRAME_SOUTH("end portal frame south", (short)988, new BlockData(120, 0), new BlockData(120, 0), true, (double)-1, (double)1.8e+07),
-	END_PORTAL_FRAME_WEST("end portal frame west", (short)989, new BlockData(120, 1), new BlockData(120, 1), true, (double)-1, (double)1.8e+07),
-	END_PORTAL_FRAME_NORTH("end portal frame north", (short)990, new BlockData(120, 2), new BlockData(120, 2), true, (double)-1, (double)1.8e+07),
-	END_PORTAL_FRAME_EAST("end portal frame east", (short)991, new BlockData(120, 3), new BlockData(120, 3), true, (double)-1, (double)1.8e+07),
-	ACTIVE_END_PORTAL_FRAME_SOUTH("active end portal frame south", (short)992, new BlockData(120, 4), new BlockData(120, 4), true, (double)-1, (double)1.8e+07),
-	ACTIVE_END_PORTAL_FRAME_WEST("active end portal frame west", (short)993, new BlockData(120, 5), new BlockData(120, 5), true, (double)-1, (double)1.8e+07),
-	ACTIVE_END_PORTAL_FRAME_NORTH("active end portal frame north", (short)994, new BlockData(120, 6), new BlockData(120, 6), true, (double)-1, (double)1.8e+07),
-	ACTIVE_END_PORTAL_FRAME_EAST("active end portal frame east", (short)995, new BlockData(120, 7), new BlockData(120, 7), true, (double)-1, (double)1.8e+07),
-	END_STONE("end stone", (short)996, new BlockData(121, 0), new BlockData(121, 0), true, (double)3, (double)45),
-	END_PORTAL("end portal", (short)997, new BlockData(119, 0), new BlockData(119, 0), true, (double)-1, (double)1.8e+07),
-	DRAGON_EGG("dragon egg", (short)998, new BlockData(122, 0), new BlockData(122, 0), true, (double)3, (double)45),
-	REDSTONE_LAMP("redstone lamp", (short)999, new BlockData(123, 0), new BlockData(123, 0), true, (double)0.3, (double)1.5),
-	ACTIVE_REDSTONE_LAMP("active redstone lamp", (short)1000, new BlockData(124, 0), new BlockData(124, 0), true, (double)0.3, (double)1.5),
-	COCOA_NORTH_0("cocoa north 0", (short)1001, new BlockData(127, 0), new BlockData(127, 0), true, (double)0.2, (double)15),
-	COCOA_EAST_0("cocoa east 0", (short)1002, new BlockData(127, 1), new BlockData(127, 1), true, (double)0.2, (double)15),
-	COCOA_SOUTH_0("cocoa south 0", (short)1003, new BlockData(127, 2), new BlockData(127, 2), true, (double)0.2, (double)15),
-	COCOA_WEST_0("cocoa west 0", (short)1004, new BlockData(127, 3), new BlockData(127, 3), true, (double)0.2, (double)15),
-	COCOA_NORTH_1("cocoa north 1", (short)1005, new BlockData(127, 4), new BlockData(127, 4), true, (double)0.2, (double)15),
-	COCOA_EAST_1("cocoa east 1", (short)1006, new BlockData(127, 5), new BlockData(127, 5), true, (double)0.2, (double)15),
-	COCOA_SOUTH_1("cocoa south 1", (short)1007, new BlockData(127, 6), new BlockData(127, 6), true, (double)0.2, (double)15),
-	COCOA_WEST_1("cocoa west 1", (short)1008, new BlockData(127, 7), new BlockData(127, 7), true, (double)0.2, (double)15),
-	COCOA_NORTH_2("cocoa north 2", (short)1009, new BlockData(127, 8), new BlockData(127, 8), true, (double)0.2, (double)15),
-	COCOA_EAST_2("cocoa east 2", (short)1010, new BlockData(127, 9), new BlockData(127, 9), true, (double)0.2, (double)15),
-	COCOA_SOUTH_2("cocoa south 2", (short)1011, new BlockData(127, 10), new BlockData(127, 10), true, (double)0.2, (double)15),
-	COCOA_WEST_2("cocoa west 2", (short)1012, new BlockData(127, 11), new BlockData(127, 11), true, (double)0.2, (double)15),
-	ENDER_CHEST_FACING_NORTH("ender chest facing north", (short)1013, new BlockData(130, 2), new BlockData(130, 2), true, (double)22.5, (double)3000),
-	ENDER_CHEST_FACING_SOUTH("ender chest facing south", (short)1014, new BlockData(130, 3), new BlockData(130, 3), true, (double)22.5, (double)3000),
-	ENDER_CHEST_FACING_WEST("ender chest facing west", (short)1015, new BlockData(130, 4), new BlockData(130, 4), true, (double)22.5, (double)3000),
-	ENDER_CHEST_FACING_EAST("ender chest facing east", (short)1016, new BlockData(130, 5), new BlockData(130, 5), true, (double)22.5, (double)3000),
-	TRIPWIRE_HOOK_FACING_SOUTH("tripwire hook facing south", (short)1017, new BlockData(131, 0), new BlockData(131, 0), true, (double)0, (double)0),
-	TRIPWIRE_HOOK_FACING_WEST("tripwire hook facing west", (short)1018, new BlockData(131, 1), new BlockData(131, 1), true, (double)0, (double)0),
-	TRIPWIRE_HOOK_FACING_NORTH("tripwire hook facing north", (short)1019, new BlockData(131, 2), new BlockData(131, 2), true, (double)0, (double)0),
-	TRIPWIRE_HOOK_FACING_EAST("tripwire hook facing east", (short)1020, new BlockData(131, 3), new BlockData(131, 3), true, (double)0, (double)0),
-	CONNECTED_TRIPWIRE_HOOK_FACING_SOUTH("connected tripwire hook facing south", (short)1021, new BlockData(131, 4), new BlockData(131, 4), true, (double)0, (double)0),
-	CONNECTED_TRIPWIRE_HOOK_FACING_WEST("connected tripwire hook facing west", (short)1022, new BlockData(131, 5), new BlockData(131, 5), true, (double)0, (double)0),
-	CONNECTED_TRIPWIRE_HOOK_FACING_NORTH("connected tripwire hook facing north", (short)1023, new BlockData(131, 6), new BlockData(131, 6), true, (double)0, (double)0),
-	CONNECTED_TRIPWIRE_HOOK_FACING_EAST("connected tripwire hook facing east", (short)1024, new BlockData(131, 7), new BlockData(131, 7), true, (double)0, (double)0),
-	POWERED_TRIPWIRE_HOOK_FACING_SOUTH("powered tripwire hook facing south", (short)1025, new BlockData(131, 8), new BlockData(131, 8), true, (double)0, (double)0),
-	POWERED_TRIPWIRE_HOOK_FACING_WEST("powered tripwire hook facing west", (short)1026, new BlockData(131, 9), new BlockData(131, 9), true, (double)0, (double)0),
-	POWERED_TRIPWIRE_HOOK_FACING_NORTH("powered tripwire hook facing north", (short)1027, new BlockData(131, 10), new BlockData(131, 10), true, (double)0, (double)0),
-	POWERED_TRIPWIRE_HOOK_FACING_EAST("powered tripwire hook facing east", (short)1028, new BlockData(131, 11), new BlockData(131, 11), true, (double)0, (double)0),
-	POWERED_TRIPWIRE("powered tripwire", (short)1029, new BlockData(132, 1), new BlockData(132, 1), false, (double)0, (double)0),
-	CONNECTED_TRIPWIRE("connected tripwire", (short)1030, new BlockData(132, 4), new BlockData(132, 4), false, (double)0, (double)0),
-	TRIPWIRE("tripwire", (short)1031, new BlockData(132, 8), new BlockData(132, 8), false, (double)0, (double)0),
-	COMMAND_BLOCK_FACING_DOWN("command block facing down", (short)1032, new BlockData(137, 0), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	COMMAND_BLOCK_FACING_UP("command block facing up", (short)1033, new BlockData(137, 1), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	COMMAND_BLOCK_FACING_NORTH("command block facing north", (short)1034, new BlockData(137, 2), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	COMMAND_BLOCK_FACING_SOUTH("command block facing south", (short)1035, new BlockData(137, 3), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	COMMAND_BLOCK_FACING_WEST("command block facing west", (short)1036, new BlockData(137, 4), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	COMMAND_BLOCK_FACING_EAST("command block facing east", (short)1037, new BlockData(137, 5), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_COMMAND_BLOCK_FACING_UP("conditional command block facing up", (short)1038, new BlockData(137, 9), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_COMMAND_BLOCK_FACING_NORTH("conditional command block facing north", (short)1039, new BlockData(137, 10), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_COMMAND_BLOCK_FACING_SOUTH("conditional command block facing south", (short)1040, new BlockData(137, 11), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_COMMAND_BLOCK_FACING_WEST("conditional command block facing west", (short)1041, new BlockData(137, 12), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_COMMAND_BLOCK_FACING_EAST("conditional command block facing east", (short)1042, new BlockData(137, 13), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	REPEATING_COMMAND_BLOCK_FACING_DOWN("repeating command block facing down", (short)1043, new BlockData(210, 0), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	REPEATING_COMMAND_BLOCK_FACING_UP("repeating command block facing up", (short)1044, new BlockData(210, 1), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	REPEATING_COMMAND_BLOCK_FACING_NORTH("repeating command block facing north", (short)1045, new BlockData(210, 2), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	REPEATING_COMMAND_BLOCK_FACING_SOUTH("repeating command block facing south", (short)1046, new BlockData(210, 3), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	REPEATING_COMMAND_BLOCK_FACING_WEST("repeating command block facing west", (short)1047, new BlockData(210, 4), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	REPEATING_COMMAND_BLOCK_FACING_EAST("repeating command block facing east", (short)1048, new BlockData(210, 5), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_REPEATING_COMMAND_BLOCK_FACING_DOWN("conditional repeating command block facing down", (short)1049, new BlockData(210, 8), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_REPEATING_COMMAND_BLOCK_FACING_UP("conditional repeating command block facing up", (short)1050, new BlockData(210, 9), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_REPEATING_COMMAND_BLOCK_FACING_NORTH("conditional repeating command block facing north", (short)1051, new BlockData(210, 10), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_REPEATING_COMMAND_BLOCK_FACING_SOUTH("conditional repeating command block facing south", (short)1052, new BlockData(210, 11), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_REPEATING_COMMAND_BLOCK_FACING_WEST("conditional repeating command block facing west", (short)1053, new BlockData(210, 12), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_REPEATING_COMMAND_BLOCK_FACING_EAST("conditional repeating command block facing east", (short)1054, new BlockData(210, 13), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CHAIN_COMMAND_BLOCK_FACING_DOWN("chain command block facing down", (short)1055, new BlockData(211, 0), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CHAIN_COMMAND_BLOCK_FACING_UP("chain command block facing up", (short)1056, new BlockData(211, 1), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CHAIN_COMMAND_BLOCK_FACING_NORTH("chain command block facing north", (short)1057, new BlockData(211, 2), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CHAIN_COMMAND_BLOCK_FACING_SOUTH("chain command block facing south", (short)1058, new BlockData(211, 3), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CHAIN_COMMAND_BLOCK_FACING_WEST("chain command block facing west", (short)1059, new BlockData(211, 4), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CHAIN_COMMAND_BLOCK_FACING_EAST("chain command block facing east", (short)1060, new BlockData(211, 5), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_CHAIN_COMMAND_BLOCK_FACING_DOWN("conditional chain command block facing down", (short)1061, new BlockData(211, 8), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_CHAIN_COMMAND_BLOCK_FACING_UP("conditional chain command block facing up", (short)1062, new BlockData(211, 9), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_CHAIN_COMMAND_BLOCK_FACING_NORTH("conditional chain command block facing north", (short)1063, new BlockData(211, 10), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_CHAIN_COMMAND_BLOCK_FACING_SOUTH("conditional chain command block facing south", (short)1064, new BlockData(211, 11), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_CHAIN_COMMAND_BLOCK_FACING_WEST("conditional chain command block facing west", (short)1065, new BlockData(211, 12), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	CONDITIONAL_CHAIN_COMMAND_BLOCK_FACING_EAST("conditional chain command block facing east", (short)1066, new BlockData(211, 13), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	BEACON("beacon", (short)1067, new BlockData(138, 0), new BlockData(138, 0), true, (double)3, (double)15),
-	FLOWER_POT("flower pot", (short)1068, new BlockData(140, 0), new BlockData(140, 0), true, (double)0, (double)0),
-	MOB_HEAD_FLOOR("mob head floor", (short)1069, new BlockData(144, 1), new BlockData(144, 1), true, (double)1, (double)5),
-	MOB_HEAD_FACING_NORTH("mob head facing north", (short)1070, new BlockData(144, 2), new BlockData(144, 2), true, (double)1, (double)5),
-	MOB_HEAD_FACING_SOUTH("mob head facing south", (short)1071, new BlockData(144, 3), new BlockData(144, 3), true, (double)1, (double)5),
-	MOB_HEAD_FACING_EAST("mob head facing east", (short)1072, new BlockData(144, 4), new BlockData(144, 4), true, (double)1, (double)5),
-	MOB_HEAD_FACING_WEST("mob head facing west", (short)1073, new BlockData(144, 5), new BlockData(144, 5), true, (double)1, (double)5),
-	ANVIL_NORTH_SOUTH("anvil north south", (short)1074, new BlockData(145, 0), new BlockData(145, 0), true, (double)5, (double)6000),
-	ANVIL_SOUTH_NORTH("anvil south north", (short)1075, new BlockData(145, 2), new BlockData(145, 2), true, (double)5, (double)6000),
-	SLIGHTLY_ANVIL_NORTH_SOUTH("slightly anvil north south", (short)1076, new BlockData(145, 4), new BlockData(145, 4), true, (double)5, (double)6000),
-	SLIGHTLY_ANVIL_SOUTH_NORTH("slightly anvil south north", (short)1077, new BlockData(145, 6), new BlockData(145, 6), true, (double)5, (double)6000),
-	VERY_ANVIL_NORTH_SOUTH("very anvil north south", (short)1078, new BlockData(145, 8), new BlockData(145, 8), true, (double)5, (double)6000),
-	VERY_ANVIL_SOUTH_NORTH("very anvil south north", (short)1079, new BlockData(145, 10), new BlockData(145, 10), true, (double)5, (double)6000),
-	ANVIL_EAST_WEST("anvil east west", (short)1080, new BlockData(145, 1), new BlockData(145, 1), true, (double)5, (double)6000),
-	ANVIL_WEST_EAST("anvil west east", (short)1081, new BlockData(145, 3), new BlockData(145, 3), true, (double)5, (double)6000),
-	SLIGHTLY_ANVIL_EAST_WEST("slightly anvil east west", (short)1082, new BlockData(145, 5), new BlockData(145, 5), true, (double)5, (double)6000),
-	SLIGHTLY_ANVIL_WEST_EAST("slightly anvil west east", (short)1083, new BlockData(145, 7), new BlockData(145, 7), true, (double)5, (double)6000),
-	VERY_ANVIL_EAST_WEST("very anvil east west", (short)1084, new BlockData(145, 9), new BlockData(145, 9), true, (double)5, (double)6000),
-	VERY_ANVIL_WEST_EAST("very anvil west east", (short)1085, new BlockData(145, 11), new BlockData(145, 11), true, (double)5, (double)6000),
-	TOP_WOODEN_TRAPDOOR_SOUTH_SIDE("top wooden trapdoor south side", (short)1086, new BlockData(96, 8), new BlockData(96, 8), true, (double)3, (double)15),
-	TOP_WOODEN_TRAPDOOR_NORTH_SIDE("top wooden trapdoor north side", (short)1087, new BlockData(96, 9), new BlockData(96, 9), true, (double)3, (double)15),
-	TOP_WOODEN_TRAPDOOR_EAST_SIDE("top wooden trapdoor east side", (short)1088, new BlockData(96, 10), new BlockData(96, 10), true, (double)3, (double)15),
-	TOP_WOODEN_TRAPDOOR_WEST_SIDE("top wooden trapdoor west side", (short)1089, new BlockData(96, 11), new BlockData(96, 11), true, (double)3, (double)15),
-	OPENED_TOP_WOODEN_TRAPDOOR_SOUTH_SIDE("opened top wooden trapdoor south side", (short)1090, new BlockData(96, 12), new BlockData(96, 12), true, (double)3, (double)15),
-	OPENED_TOP_WOODEN_TRAPDOOR_NORTH_SIDE("opened top wooden trapdoor north side", (short)1091, new BlockData(96, 13), new BlockData(96, 13), true, (double)3, (double)15),
-	OPENED_TOP_WOODEN_TRAPDOOR_EAST_SIDE("opened top wooden trapdoor east side", (short)1092, new BlockData(96, 14), new BlockData(96, 14), true, (double)3, (double)15),
-	OPENED_TOP_WOODEN_TRAPDOOR_WEST_SIDE("opened top wooden trapdoor west side", (short)1093, new BlockData(96, 15), new BlockData(96, 15), true, (double)3, (double)15),
-	CONDITIONAL_COMMAND_BLOCK_FACING_DOWN("conditional command block facing down", (short)1094, new BlockData(137, 8), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	LILY_PAD("lily pad", (short)1095, new BlockData(111, 0), new BlockData(111, 0), true, (double)0, (double)0),
-	COMPARATOR_FACING_NORTH("comparator facing north", (short)1096, new BlockData(149, 0), new BlockData(149, 0), true, (double)0, (double)0),
-	COMPARATOR_FACING_EAST("comparator facing east", (short)1097, new BlockData(149, 1), new BlockData(149, 1), true, (double)0, (double)0),
-	COMPARATOR_FACING_SOUTH("comparator facing south", (short)1098, new BlockData(149, 2), new BlockData(149, 2), true, (double)0, (double)0),
-	COMPARATOR_FACING_WEST("comparator facing west", (short)1099, new BlockData(149, 3), new BlockData(149, 3), true, (double)0, (double)0),
-	COMPARATOR_SUBSTRACTION_MODE_FACING_NORTH("comparator substraction mode facing north", (short)1100, new BlockData(149, 4), new BlockData(149, 4), true, (double)0, (double)0),
-	COMPARATOR_SUBSTRACTION_MODE_FACING_EAST("comparator substraction mode facing east", (short)1101, new BlockData(149, 5), new BlockData(149, 5), true, (double)0, (double)0),
-	COMPARATOR_SUBSTRACTION_MODE_FACING_SOUTH("comparator substraction mode facing south", (short)1102, new BlockData(149, 6), new BlockData(149, 6), true, (double)0, (double)0),
-	COMPARATOR_SUBSTRACTION_MODE_FACING_WEST("comparator substraction mode facing west", (short)1103, new BlockData(149, 7), new BlockData(149, 7), true, (double)0, (double)0),
-	POWERED_COMPARATOR_FACING_NORTH("powered comparator facing north", (short)1104, new BlockData(149, 8), new BlockData(149, 8), true, (double)0, (double)0),
-	POWERED_COMPARATOR_FACING_EAST("powered comparator facing east", (short)1105, new BlockData(149, 9), new BlockData(149, 9), true, (double)0, (double)0),
-	POWERED_COMPARATOR_FACING_SOUTH("powered comparator facing south", (short)1106, new BlockData(149, 10), new BlockData(149, 10), true, (double)0, (double)0),
-	POWERED_COMPARATOR_FACING_WEST("powered comparator facing west", (short)1107, new BlockData(149, 11), new BlockData(149, 11), true, (double)0, (double)0),
-	POWERED_COMPARATOR_SUBSTRACTION_MODE_FACING_NORTH("powered comparator substraction mode facing north", (short)1108, new BlockData(149, 12), new BlockData(149, 12), true, (double)0, (double)0),
-	POWERED_COMPARATOR_SUBSTRACTION_MODE_FACING_EAST("powered comparator substraction mode facing east", (short)1109, new BlockData(149, 13), new BlockData(149, 13), true, (double)0, (double)0),
-	POWERED_COMPARATOR_SUBSTRACTION_MODE_FACING_SOUTH("powered comparator substraction mode facing south", (short)1110, new BlockData(149, 14), new BlockData(149, 14), true, (double)0, (double)0),
-	POWERED_COMPARATOR_SUBSTRACTION_MODE_FACING_WEST("powered comparator substraction mode facing west", (short)1111, new BlockData(149, 15), new BlockData(149, 15), true, (double)0, (double)0),
-	DAYLIGHT_SENSOR_0("daylight sensor 0", (short)1112, new BlockData(151, 0), new BlockData(151, 0), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_1("daylight sensor 1", (short)1113, new BlockData(151, 1), new BlockData(151, 1), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_2("daylight sensor 2", (short)1114, new BlockData(151, 2), new BlockData(151, 2), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_3("daylight sensor 3", (short)1115, new BlockData(151, 3), new BlockData(151, 3), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_4("daylight sensor 4", (short)1116, new BlockData(151, 4), new BlockData(151, 4), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_5("daylight sensor 5", (short)1117, new BlockData(151, 5), new BlockData(151, 5), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_6("daylight sensor 6", (short)1118, new BlockData(151, 6), new BlockData(151, 6), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_7("daylight sensor 7", (short)1119, new BlockData(151, 7), new BlockData(151, 7), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_8("daylight sensor 8", (short)1120, new BlockData(151, 8), new BlockData(151, 8), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_9("daylight sensor 9", (short)1121, new BlockData(151, 9), new BlockData(151, 9), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_10("daylight sensor 10", (short)1122, new BlockData(151, 10), new BlockData(151, 10), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_11("daylight sensor 11", (short)1123, new BlockData(151, 11), new BlockData(151, 11), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_12("daylight sensor 12", (short)1124, new BlockData(151, 12), new BlockData(151, 12), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_13("daylight sensor 13", (short)1125, new BlockData(151, 13), new BlockData(151, 13), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_14("daylight sensor 14", (short)1126, new BlockData(151, 14), new BlockData(151, 14), true, (double)0.2, (double)1),
-	DAYLIGHT_SENSOR_15("daylight sensor 15", (short)1127, new BlockData(151, 15), new BlockData(151, 15), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_0("inverted daylight sensor 0", (short)1128, new BlockData(178, 0), new BlockData(178, 0), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_1("inverted daylight sensor 1", (short)1129, new BlockData(178, 1), new BlockData(178, 1), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_2("inverted daylight sensor 2", (short)1130, new BlockData(178, 2), new BlockData(178, 2), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_3("inverted daylight sensor 3", (short)1131, new BlockData(178, 3), new BlockData(178, 3), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_4("inverted daylight sensor 4", (short)1132, new BlockData(178, 4), new BlockData(178, 4), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_5("inverted daylight sensor 5", (short)1133, new BlockData(178, 5), new BlockData(178, 5), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_6("inverted daylight sensor 6", (short)1134, new BlockData(178, 6), new BlockData(178, 6), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_7("inverted daylight sensor 7", (short)1135, new BlockData(178, 7), new BlockData(178, 7), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_8("inverted daylight sensor 8", (short)1136, new BlockData(178, 8), new BlockData(178, 8), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_9("inverted daylight sensor 9", (short)1137, new BlockData(178, 9), new BlockData(178, 9), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_10("inverted daylight sensor 10", (short)1138, new BlockData(178, 10), new BlockData(178, 10), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_11("inverted daylight sensor 11", (short)1139, new BlockData(178, 11), new BlockData(178, 11), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_12("inverted daylight sensor 12", (short)1140, new BlockData(178, 12), new BlockData(178, 12), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_13("inverted daylight sensor 13", (short)1141, new BlockData(178, 13), new BlockData(178, 13), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_14("inverted daylight sensor 14", (short)1142, new BlockData(178, 14), new BlockData(178, 14), true, (double)0.2, (double)1),
-	INVERTED_DAYLIGHT_SENSOR_15("inverted daylight sensor 15", (short)1143, new BlockData(178, 15), new BlockData(178, 15), true, (double)0.2, (double)1),
-	NETHER_QUARTZ_ORE("nether quartz ore", (short)1144, new BlockData(153, 0), new BlockData(153, 0), true, (double)3, (double)15),
-	HOPPER_OUTPUT_FACING_DOWN("hopper output facing down", (short)1145, new BlockData(154, 0), new BlockData(154, 0), true, (double)3, (double)24),
-	HOPPER_OUTPUT_FACING_NORTH("hopper output facing north", (short)1146, new BlockData(154, 2), new BlockData(154, 2), true, (double)3, (double)24),
-	HOPPER_OUTPUT_FACING_SOUTH("hopper output facing south", (short)1147, new BlockData(154, 3), new BlockData(154, 3), true, (double)3, (double)24),
-	HOPPER_OUTPUT_FACING_WEST("hopper output facing west", (short)1148, new BlockData(154, 4), new BlockData(154, 4), true, (double)3, (double)24),
-	HOPPER_OUTPUT_FACING_EAST("hopper output facing east", (short)1149, new BlockData(154, 5), new BlockData(154, 5), true, (double)3, (double)24),
-	QUARTZ_BLOCK("quartz block", (short)1150, new BlockData(155, 0), new BlockData(155, 0), true, (double)0.8, (double)4),
-	CHISELED_QUARTZ_BLOCK("chiseled quartz block", (short)1151, new BlockData(155, 1), new BlockData(155, 1), true, (double)0.8, (double)4),
-	PILLAR_QUARTZ_BLOCK_VERTICAL("pillar quartz block vertical", (short)1152, new BlockData(155, 2), new BlockData(155, 2), true, (double)0.8, (double)4),
-	PILLAR_QUARTZ_BLOCK_NORTH_SOUTH("pillar quartz block north south", (short)1153, new BlockData(155, 3), new BlockData(155, 3), true, (double)0.8, (double)4),
-	PILLAR_QUARTZ_BLOCK_EAST_WEST("pillar quartz block east west", (short)1154, new BlockData(155, 4), new BlockData(155, 4), true, (double)0.8, (double)4),
-	DROPPER_FACING_DOWN("dropper facing down", (short)1155, new BlockData(158, 0), new BlockData(125, 0), true, (double)3.5, (double)17.5),
-	DROPPER_FACING_UP("dropper facing up", (short)1156, new BlockData(158, 1), new BlockData(125, 1), true, (double)3.5, (double)17.5),
-	DROPPER_FACING_NORTH("dropper facing north", (short)1157, new BlockData(158, 2), new BlockData(125, 2), true, (double)3.5, (double)17.5),
-	DROPPER_FACING_SOUTH("dropper facing south", (short)1158, new BlockData(158, 3), new BlockData(125, 3), true, (double)3.5, (double)17.5),
-	DROPPER_FACING_WEST("dropper facing west", (short)1159, new BlockData(158, 4), new BlockData(125, 4), true, (double)3.5, (double)17.5),
-	DROPPER_FACING_EAST("dropper facing east", (short)1160, new BlockData(158, 5), new BlockData(125, 5), true, (double)3.5, (double)17.5),
-	ACTIVE_DROPPER_FACING_DOWN("active dropper facing down", (short)1161, new BlockData(158, 8), new BlockData(125, 8), true, (double)3.5, (double)17.5),
-	ACTIVE_DROPPER_FACING_UP("active dropper facing up", (short)1162, new BlockData(158, 9), new BlockData(125, 9), true, (double)3.5, (double)17.5),
-	ACTIVE_DROPPER_FACING_NORTH("active dropper facing north", (short)1163, new BlockData(158, 10), new BlockData(125, 10), true, (double)3.5, (double)17.5),
-	ACTIVE_DROPPER_FACING_SOUTH("active dropper facing south", (short)1164, new BlockData(158, 11), new BlockData(125, 11), true, (double)3.5, (double)17.5),
-	ACTIVE_DROPPER_FACING_WEST("active dropper facing west", (short)1165, new BlockData(158, 12), new BlockData(125, 12), true, (double)3.5, (double)17.5),
-	ACTIVE_DROPPER_FACING_EAST("active dropper facing east", (short)1166, new BlockData(158, 13), new BlockData(125, 13), true, (double)3.5, (double)17.5),
-	SLIME_BLOCK("slime block", (short)1167, new BlockData(165, 0), new BlockData(165, 0), true, (double)0, (double)0),
-	BARRIER("barrier", (short)1168, new BlockData(166, 0), new BlockData(95, 0), true, (double)-1, (double)1.8e+07),
-	PRISMARINE("prismarine", (short)1169, new BlockData(168, 0), new BlockData(168, 0), true, (double)1.5, (double)30),
-	PRISMARINE_BRICKS("prismarine bricks", (short)1170, new BlockData(168, 1), new BlockData(168, 1), true, (double)1.5, (double)30),
-	DARK_PRISMARINE("dark prismarine", (short)1171, new BlockData(168, 2), new BlockData(168, 2), true, (double)1.5, (double)30),
-	SEA_LANTERN("sea lantern", (short)1172, new BlockData(169, 0), new BlockData(169, 0), true, (double)0.3, (double)1.5),
-	HAY_BALE_VERTICAL("hay bale vertical", (short)1173, new BlockData(170, 0), new BlockData(170, 0), true, (double)0.5, (double)2.5),
-	HAY_BALE_EAST_WEST("hay bale east west", (short)1174, new BlockData(170, 4), new BlockData(170, 4), true, (double)0.5, (double)2.5),
-	HAY_BALE_NORTH_SOUTH("hay bale north south", (short)1175, new BlockData(170, 8), new BlockData(170, 8), true, (double)0.5, (double)2.5),
-	WHITE_CARPET("white carpet", (short)1176, new BlockData(171, 0), new BlockData(171, 0), true, (double)0.1, (double)0.5),
-	ORANGE_CARPET("orange carpet", (short)1177, new BlockData(171, 1), new BlockData(171, 1), true, (double)0.1, (double)0.5),
-	MAGENTA_CARPET("magenta carpet", (short)1178, new BlockData(171, 2), new BlockData(171, 2), true, (double)0.1, (double)0.5),
-	LIGHT_BLUE_CARPET("light blue carpet", (short)1179, new BlockData(171, 3), new BlockData(171, 3), true, (double)0.1, (double)0.5),
-	YELLOW_CARPET("yellow carpet", (short)1180, new BlockData(171, 4), new BlockData(171, 4), true, (double)0.1, (double)0.5),
-	LIME_CARPET("lime carpet", (short)1181, new BlockData(171, 5), new BlockData(171, 5), true, (double)0.1, (double)0.5),
-	PINK_CARPET("pink carpet", (short)1182, new BlockData(171, 6), new BlockData(171, 6), true, (double)0.1, (double)0.5),
-	GRAY_CARPET("gray carpet", (short)1183, new BlockData(171, 7), new BlockData(171, 7), true, (double)0.1, (double)0.5),
-	LIGHT_CARPET("light carpet", (short)1184, new BlockData(171, 8), new BlockData(171, 8), true, (double)0.1, (double)0.5),
-	CYAN_CARPET("cyan carpet", (short)1185, new BlockData(171, 9), new BlockData(171, 9), true, (double)0.1, (double)0.5),
-	PURPLE_CARPET("purple carpet", (short)1186, new BlockData(171, 10), new BlockData(171, 10), true, (double)0.1, (double)0.5),
-	BLUE_CARPET("blue carpet", (short)1187, new BlockData(171, 11), new BlockData(171, 11), true, (double)0.1, (double)0.5),
-	BROWN_CARPET("brown carpet", (short)1188, new BlockData(171, 12), new BlockData(171, 12), true, (double)0.1, (double)0.5),
-	GREEN_CARPET("green carpet", (short)1189, new BlockData(171, 13), new BlockData(171, 13), true, (double)0.1, (double)0.5),
-	RED_CARPET("red carpet", (short)1190, new BlockData(171, 14), new BlockData(171, 14), true, (double)0.1, (double)0.5),
-	BLACK_CARPET("black carpet", (short)1191, new BlockData(171, 15), new BlockData(171, 15), true, (double)0.1, (double)0.5),
-	BANNER_FACING_SOUTH("banner facing south", (short)1192, new BlockData(176, 0), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_SOUTH_SOUTHWEST("banner facing south southwest", (short)1193, new BlockData(176, 1), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_SOUTHWEST("banner facing southwest", (short)1194, new BlockData(176, 2), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_WEST_WESTSOUTH("banner facing west westsouth", (short)1195, new BlockData(176, 3), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_WEST("banner facing west", (short)1196, new BlockData(176, 4), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_WEST_NORTHWEST("banner facing west northwest", (short)1197, new BlockData(176, 5), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_NORTHWEST("banner facing northwest", (short)1198, new BlockData(176, 6), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_NORTH_NORTHWEST("banner facing north northwest", (short)1199, new BlockData(176, 7), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_NORTH("banner facing north", (short)1200, new BlockData(176, 8), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_NORTH_NORTHEAST("banner facing north northeast", (short)1201, new BlockData(176, 9), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_NORTHEAST("banner facing northeast", (short)1202, new BlockData(176, 10), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_EAST_NORTHEAST("banner facing east northeast", (short)1203, new BlockData(176, 11), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_EAST("banner facing east", (short)1204, new BlockData(176, 12), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_EAST_SOUTHEAST("banner facing east southeast", (short)1205, new BlockData(176, 13), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_SOUTHEAST("banner facing southeast", (short)1206, new BlockData(176, 14), new BlockData(0, 0), true, (double)1, (double)5),
-	BANNER_FACING_SOUTH_SOUTHEAST("banner facing south southeast", (short)1207, new BlockData(176, 15), new BlockData(0, 0), true, (double)1, (double)5),
-	WALL_BANNER_FACING_NORTH("wall banner facing north", (short)1208, new BlockData(177, 2), new BlockData(0, 0), true, (double)1, (double)5),
-	WALL_BANNER_FACING_SOUTH("wall banner facing south", (short)1209, new BlockData(177, 3), new BlockData(0, 0), true, (double)1, (double)5),
-	WALL_BANNER_FACING_WEST("wall banner facing west", (short)1210, new BlockData(177, 4), new BlockData(0, 0), true, (double)1, (double)5),
-	WALL_BANNER_FACING_EAST("wall banner facing east", (short)1211, new BlockData(177, 5), new BlockData(0, 0), true, (double)1, (double)5),
-	ITEM_FRAME_FACING_NORTH("item frame facing north", (short)1212, new BlockData(0, 0), new BlockData(199, 2), true, (double)0, (double)0),
-	ITEM_FRAME_FACING_SOUTH("item frame facing south", (short)1213, new BlockData(0, 0), new BlockData(199, 3), true, (double)0, (double)0),
-	ITEM_FRAME_FACING_WEST("item frame facing west", (short)1214, new BlockData(0, 0), new BlockData(199, 4), true, (double)0, (double)0),
-	ITEM_FRAME_FACING_EAST("item frame facing east", (short)1215, new BlockData(0, 0), new BlockData(199, 5), true, (double)0, (double)0),
-	END_ROD_FACING_DOWN("end rod facing down", (short)1216, new BlockData(198, 0), new BlockData(208, 0), true, (double)0, (double)0),
-	END_ROD_FACING_UP("end rod facing up", (short)1217, new BlockData(198, 1), new BlockData(208, 1), true, (double)0, (double)0),
-	END_ROD_FACING_NORTH("end rod facing north", (short)1218, new BlockData(198, 2), new BlockData(208, 2), true, (double)0, (double)0),
-	END_ROD_FACING_SOUTH("end rod facing south", (short)1219, new BlockData(198, 3), new BlockData(208, 3), true, (double)0, (double)0),
-	END_ROD_FACING_WEST("end rod facing west", (short)1220, new BlockData(198, 4), new BlockData(208, 4), true, (double)0, (double)0),
-	END_ROD_FACING_EAST("end rod facing east", (short)1221, new BlockData(198, 5), new BlockData(208, 5), true, (double)0, (double)0),
-	CHORUS_PLANT("chorus plant", (short)1222, new BlockData(199, 0), new BlockData(240, 0), true, (double)0.4, (double)2),
-	CHORUS_FLOWER_0("chorus flower 0", (short)1223, new BlockData(200, 0), new BlockData(200, 0), true, (double)0.4, (double)2),
-	CHORUS_FLOWER_1("chorus flower 1", (short)1224, new BlockData(200, 1), new BlockData(200, 1), true, (double)0.4, (double)2),
-	CHORUS_FLOWER_2("chorus flower 2", (short)1225, new BlockData(200, 2), new BlockData(200, 2), true, (double)0.4, (double)2),
-	CHORUS_FLOWER_3("chorus flower 3", (short)1226, new BlockData(200, 3), new BlockData(200, 3), true, (double)0.4, (double)2),
-	CHORUS_FLOWER_4("chorus flower 4", (short)1227, new BlockData(200, 4), new BlockData(200, 4), true, (double)0.4, (double)2),
-	CHORUS_FLOWER_5("chorus flower 5", (short)1228, new BlockData(200, 5), new BlockData(200, 5), true, (double)0.4, (double)2),
-	PURPUR_BLOCK("purpur block", (short)1229, new BlockData(201, 0), new BlockData(201, 0), true, (double)1.5, (double)30),
-	PURPUR_PILLAR("purpur pillar", (short)1230, new BlockData(202, 0), new BlockData(201, 2), true, (double)1.5, (double)30),
-	END_STONE_BRICKS("end stone bricks", (short)1231, new BlockData(206, 0), new BlockData(206, 0), true, (double)0.8, (double)4),
-	END_GATEWAY("end gateway", (short)1232, new BlockData(209, 0), new BlockData(209, 0), false, (double)-1, (double)1.8e+07),
-	STONECUTTER("stonecutter", (short)1233, new BlockData(0, 0), new BlockData(245, 0), true, (double)3.5, (double)17.5),
-	GLOWING_OBSIDIAN("glowing obsidian", (short)1234, new BlockData(0, 0), new BlockData(246, 0), true, (double)50, (double)6000),
-	NETHER_REACTOR_CORE("nether reactor core", (short)1235, new BlockData(0, 0), new BlockData(247, 0), true, (double)3, (double)30),
-	ACTIVE_NETHER_REACTOR_CORE("active nether reactor core", (short)1236, new BlockData(0, 0), new BlockData(247, 1), true, (double)3, (double)30),
-	USED_NETHER_REACTOR_CORE("used nether reactor core", (short)1237, new BlockData(0, 0), new BlockData(247, 2), true, (double)3, (double)30),
-	MAGMA_BLOCK("magma block", (short)1238, new BlockData(213, 0), new BlockData(0, 0), true, (double)0.5, (double)2.5),
-	NETHER_WART_BLOCK("nether wart block", (short)1239, new BlockData(214, 0), new BlockData(0, 0), true, (double)1, (double)5),
-	BONE_BLOCK_VERTICAL("bone block vertical", (short)1240, new BlockData(216, 0), new BlockData(0, 0), true, (double)2, (double)10),
-	BONE_BLOCK_EAST_WEST("bone block east west", (short)1241, new BlockData(216, 4), new BlockData(0, 0), true, (double)2, (double)10),
-	BONE_BLOCK_NORTH_SOUTH("bone block north south", (short)1242, new BlockData(216, 8), new BlockData(0, 0), true, (double)2, (double)10),
-	OBSERVER_FACING_DOWN("observer facing down", (short)1243, new BlockData(218, 0), new BlockData(251, 0), true, (double)3.5, (double)17.5),
-	OBSERVER_FACING_UP("observer facing up", (short)1244, new BlockData(218, 1), new BlockData(251, 1), true, (double)3.5, (double)17.5),
-	OBSERVER_FACING_SOUTH("observer facing south", (short)1245, new BlockData(218, 2), new BlockData(251, 2), true, (double)3.5, (double)17.5),
-	OBSERVER_FACING_NORTH("observer facing north", (short)1246, new BlockData(218, 3), new BlockData(251, 3), true, (double)3.5, (double)17.5),
-	OBSERVER_FACING_EAST("observer facing east", (short)1247, new BlockData(218, 4), new BlockData(251, 4), true, (double)3.5, (double)17.5),
-	OBSERVER_FACING_WEST("observer facing west", (short)1248, new BlockData(218, 5), new BlockData(251, 5), true, (double)3.5, (double)17.5),
-	WHITE_SHULKER_BOX("white shulker box", (short)1249, new BlockData(219, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	ORANGE_SHULKER_BOX("orange shulker box", (short)1250, new BlockData(220, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	MAGENTA_SHULKER_BOX("magenta shulker box", (short)1251, new BlockData(221, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	LIGHT_BLUE_SHULKER_BOX("light blue shulker box", (short)1252, new BlockData(222, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	YELLOW_SHULKER_BOX("yellow shulker box", (short)1253, new BlockData(223, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	LIME_SHULKER_BOX("lime shulker box", (short)1254, new BlockData(224, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	PINK_SHULKER_BOX("pink shulker box", (short)1255, new BlockData(225, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	GRAY_SHULKER_BOX("gray shulker box", (short)1256, new BlockData(226, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	LIGHT_SHULKER_BOX("light shulker box", (short)1257, new BlockData(227, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	CYAN_SHULKER_BOX("cyan shulker box", (short)1258, new BlockData(228, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	PURPLE_SHULKER_BOX("purple shulker box", (short)1259, new BlockData(229, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	BLUE_SHULKER_BOX("blue shulker box", (short)1260, new BlockData(230, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	BROWN_SHULKER_BOX("brown shulker box", (short)1261, new BlockData(231, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	GREEN_SHULKER_BOX("green shulker box", (short)1262, new BlockData(232, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	RED_SHULKER_BOX("red shulker box", (short)1263, new BlockData(233, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	BLACK_SHULKER_BOX("black shulker box", (short)1264, new BlockData(234, 0), new BlockData(0, 0), true, (double)6, (double)30),
-	UPDATE_BLOCK("update block", (short)1265, new BlockData(0, 0), new BlockData(248, 0), true, (double)0, (double)0),
-	ATEUPD_BLOCK("ateupd block", (short)1266, new BlockData(0, 0), new BlockData(249, 0), true, (double)0, (double)0),
-	STRUCTURE_BLOCK_SAVE("structure block save", (short)1267, new BlockData(255, 0), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	STRUCTURE_BLOCK_LOAD("structure block load", (short)1268, new BlockData(255, 1), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	STRUCTURE_BLOCK_CORNER("structure block corner", (short)1269, new BlockData(255, 2), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	STRUCTURE_BLOCK_DATA("structure block data", (short)1270, new BlockData(255, 3), new BlockData(0, 0), true, (double)-1, (double)1.8e+07),
-	FLOWING_WATER_0("flowing water 0", (short)1271, new BlockData(8, 0), new BlockData(8, 0), false, (double)0, (double)500),
-	FLOWING_WATER_1("flowing water 1", (short)1272, new BlockData(8, 1), new BlockData(8, 1), false, (double)0, (double)500),
-	FLOWING_WATER_2("flowing water 2", (short)1273, new BlockData(8, 2), new BlockData(8, 2), false, (double)0, (double)500),
-	FLOWING_WATER_3("flowing water 3", (short)1274, new BlockData(8, 3), new BlockData(8, 3), false, (double)0, (double)500),
-	FLOWING_WATER_4("flowing water 4", (short)1275, new BlockData(8, 4), new BlockData(8, 4), false, (double)0, (double)500),
-	FLOWING_WATER_5("flowing water 5", (short)1276, new BlockData(8, 5), new BlockData(8, 5), false, (double)0, (double)500),
-	FLOWING_WATER_6("flowing water 6", (short)1277, new BlockData(8, 6), new BlockData(8, 6), false, (double)0, (double)500),
-	FLOWING_WATER_7("flowing water 7", (short)1278, new BlockData(8, 7), new BlockData(8, 7), false, (double)0, (double)500),
-	FLOWING_WATER_FALLING_0("flowing water falling 0", (short)1279, new BlockData(8, 8), new BlockData(8, 8), false, (double)0, (double)500),
-	FLOWING_WATER_FALLING_1("flowing water falling 1", (short)1280, new BlockData(8, 9), new BlockData(8, 9), false, (double)0, (double)500),
-	FLOWING_WATER_FALLING_2("flowing water falling 2", (short)1281, new BlockData(8, 10), new BlockData(8, 10), false, (double)0, (double)500),
-	FLOWING_WATER_FALLING_3("flowing water falling 3", (short)1282, new BlockData(8, 11), new BlockData(8, 11), false, (double)0, (double)500),
-	FLOWING_WATER_FALLING_4("flowing water falling 4", (short)1283, new BlockData(8, 12), new BlockData(8, 12), false, (double)0, (double)500),
-	FLOWING_WATER_FALLING_5("flowing water falling 5", (short)1284, new BlockData(8, 13), new BlockData(8, 13), false, (double)0, (double)500),
-	FLOWING_WATER_FALLING_6("flowing water falling 6", (short)1285, new BlockData(8, 14), new BlockData(8, 14), false, (double)0, (double)500),
-	FLOWING_WATER_FALLING_7("flowing water falling 7", (short)1286, new BlockData(8, 15), new BlockData(8, 15), false, (double)0, (double)500),
-	FLOWING_LAVA_0("flowing lava 0", (short)1287, new BlockData(10, 0), new BlockData(10, 0), false, (double)0, (double)500),
-	FLOWING_LAVA_1("flowing lava 1", (short)1288, new BlockData(10, 1), new BlockData(10, 1), false, (double)0, (double)500),
-	FLOWING_LAVA_2("flowing lava 2", (short)1289, new BlockData(10, 2), new BlockData(10, 2), false, (double)0, (double)500),
-	FLOWING_LAVA_3("flowing lava 3", (short)1290, new BlockData(10, 3), new BlockData(10, 3), false, (double)0, (double)500),
-	FLOWING_LAVA_4("flowing lava 4", (short)1291, new BlockData(10, 4), new BlockData(10, 4), false, (double)0, (double)500),
-	FLOWING_LAVA_5("flowing lava 5", (short)1292, new BlockData(10, 5), new BlockData(10, 5), false, (double)0, (double)500),
-	FLOWING_LAVA_6("flowing lava 6", (short)1293, new BlockData(10, 6), new BlockData(10, 6), false, (double)0, (double)500),
-	FLOWING_LAVA_7("flowing lava 7", (short)1294, new BlockData(10, 7), new BlockData(10, 7), false, (double)0, (double)500),
-	FLOWING_LAVA_FALLING_0("flowing lava falling 0", (short)1295, new BlockData(10, 8), new BlockData(10, 8), false, (double)0, (double)500),
-	FLOWING_LAVA_FALLING_1("flowing lava falling 1", (short)1296, new BlockData(10, 9), new BlockData(10, 9), false, (double)0, (double)500),
-	FLOWING_LAVA_FALLING_2("flowing lava falling 2", (short)1297, new BlockData(10, 10), new BlockData(10, 10), false, (double)0, (double)500),
-	FLOWING_LAVA_FALLING_3("flowing lava falling 3", (short)1298, new BlockData(10, 11), new BlockData(10, 11), false, (double)0, (double)500),
-	FLOWING_LAVA_FALLING_4("flowing lava falling 4", (short)1299, new BlockData(10, 12), new BlockData(10, 12), false, (double)0, (double)500),
-	FLOWING_LAVA_FALLING_5("flowing lava falling 5", (short)1300, new BlockData(10, 13), new BlockData(10, 13), false, (double)0, (double)500),
-	FLOWING_LAVA_FALLING_6("flowing lava falling 6", (short)1301, new BlockData(10, 14), new BlockData(10, 14), false, (double)0, (double)500),
-	FLOWING_LAVA_FALLING_7("flowing lava falling 7", (short)1302, new BlockData(10, 15), new BlockData(10, 15), false, (double)0, (double)500),
-	STILL_WATER_0("still water 0", (short)1303, new BlockData(9, 0), new BlockData(9, 0), false, (double)0, (double)500),
-	STILL_WATER_1("still water 1", (short)1304, new BlockData(9, 1), new BlockData(9, 1), false, (double)0, (double)500),
-	STILL_WATER_2("still water 2", (short)1305, new BlockData(9, 2), new BlockData(9, 2), false, (double)0, (double)500),
-	STILL_WATER_3("still water 3", (short)1306, new BlockData(9, 3), new BlockData(9, 3), false, (double)0, (double)500),
-	STILL_WATER_4("still water 4", (short)1307, new BlockData(9, 4), new BlockData(9, 4), false, (double)0, (double)500),
-	STILL_WATER_5("still water 5", (short)1308, new BlockData(9, 5), new BlockData(9, 5), false, (double)0, (double)500),
-	STILL_WATER_6("still water 6", (short)1309, new BlockData(9, 6), new BlockData(9, 6), false, (double)0, (double)500),
-	STILL_WATER_7("still water 7", (short)1310, new BlockData(9, 7), new BlockData(9, 7), false, (double)0, (double)500),
-	STILL_WATER_FALLING_0("still water falling 0", (short)1311, new BlockData(9, 8), new BlockData(9, 8), false, (double)0, (double)500),
-	STILL_WATER_FALLING_1("still water falling 1", (short)1312, new BlockData(9, 9), new BlockData(9, 9), false, (double)0, (double)500),
-	STILL_WATER_FALLING_2("still water falling 2", (short)1313, new BlockData(9, 10), new BlockData(9, 10), false, (double)0, (double)500),
-	STILL_WATER_FALLING_3("still water falling 3", (short)1314, new BlockData(9, 11), new BlockData(9, 11), false, (double)0, (double)500),
-	STILL_WATER_FALLING_4("still water falling 4", (short)1315, new BlockData(9, 12), new BlockData(9, 12), false, (double)0, (double)500),
-	STILL_WATER_FALLING_5("still water falling 5", (short)1316, new BlockData(9, 13), new BlockData(9, 13), false, (double)0, (double)500),
-	STILL_WATER_FALLING_6("still water falling 6", (short)1317, new BlockData(9, 14), new BlockData(9, 14), false, (double)0, (double)500),
-	STILL_WATER_FALLING_7("still water falling 7", (short)1318, new BlockData(9, 15), new BlockData(9, 15), false, (double)0, (double)500),
-	STILL_LAVA_4("still lava 4", (short)1319, new BlockData(10, 4), new BlockData(10, 4), false, (double)0, (double)500),
-	STILL_LAVA_5("still lava 5", (short)1320, new BlockData(10, 5), new BlockData(10, 5), false, (double)0, (double)500),
-	STILL_LAVA_6("still lava 6", (short)1321, new BlockData(10, 6), new BlockData(10, 6), false, (double)0, (double)500),
-	STILL_LAVA_7("still lava 7", (short)1322, new BlockData(10, 7), new BlockData(10, 7), false, (double)0, (double)500),
-	STILL_LAVA_FALLING_0("still lava falling 0", (short)1323, new BlockData(10, 8), new BlockData(10, 8), false, (double)0, (double)500),
-	STILL_LAVA_FALLING_1("still lava falling 1", (short)1324, new BlockData(10, 9), new BlockData(10, 9), false, (double)0, (double)500),
-	STILL_LAVA_FALLING_2("still lava falling 2", (short)1325, new BlockData(10, 10), new BlockData(10, 10), false, (double)0, (double)500),
-	STILL_LAVA_FALLING_3("still lava falling 3", (short)1326, new BlockData(10, 11), new BlockData(10, 11), false, (double)0, (double)500),
-	STILL_LAVA_FALLING_4("still lava falling 4", (short)1327, new BlockData(10, 12), new BlockData(10, 12), false, (double)0, (double)500),
-	STILL_LAVA_FALLING_5("still lava falling 5", (short)1328, new BlockData(10, 13), new BlockData(10, 13), false, (double)0, (double)500),
-	STILL_LAVA_FALLING_6("still lava falling 6", (short)1329, new BlockData(10, 14), new BlockData(10, 14), false, (double)0, (double)500),
-	STILL_LAVA_FALLING_7("still lava falling 7", (short)1330, new BlockData(10, 15), new BlockData(10, 15), false, (double)0, (double)500);
+public class Blocks {
 
 	public final String name;
 	public final short id;
 	public final BlockData minecraft, pocket;
 	public final boolean solid;
 	public final double hardness, blastResistance;
+	public final byte opacity, luminance;
 
-	private Blocks(String name, short id, BlockData minecraft, BlockData pocket, boolean solid, double hardness, double blastResistance) {
+	private Blocks(String name, short id, BlockData minecraft, BlockData pocket, boolean solid, double hardness, double blastResistance, byte opacity, byte luminance) {
 		this.name = name;
 		this.id = id;
 		this.minecraft = minecraft;
@@ -1356,9 +27,10 @@ public enum Blocks {
 		this.solid = solid;
 		this.hardness = hardness;
 		this.blastResistance = blastResistance;
+		this.opacity = opacity;
+		this.luminance = luminance;
 	}
 
-	@SuppressWarnings("unused")
 	private static class BlockData {
 
 		public final int id, meta;
@@ -1368,6 +40,1376 @@ public enum Blocks {
 			this.meta = meta;
 		}
 
+	}
+
+	private static List<Blocks> selBlocks;
+	private static Map<Integer, Map<Integer, Blocks>> minecraftBlocks, pocketBlocks;
+
+	static {
+
+		selBlocks = new ArrayList<Blocks>();
+
+		minecraftBlocks = new HashMap<Integer, Map<Integer, Blocks>>();
+		pocketBlocks = new HashMap<Integer, Map<Integer, Blocks>>();
+
+		add(new Blocks("air", (short)0, new BlockData(0, 0), new BlockData(0, 0), false, (double)-1, (double)0, (byte)0, (byte)0));
+		add(new Blocks("stone", (short)1, new BlockData(1, 0), new BlockData(1, 0), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("granite", (short)2, new BlockData(1, 1), new BlockData(1, 1), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("polished granite", (short)3, new BlockData(1, 2), new BlockData(1, 2), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("diorite", (short)4, new BlockData(1, 3), new BlockData(1, 3), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("polished diorite", (short)5, new BlockData(1, 4), new BlockData(1, 4), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("andesite", (short)6, new BlockData(1, 5), new BlockData(1, 5), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("polished andesite", (short)7, new BlockData(1, 6), new BlockData(1, 6), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("stone bricks", (short)8, new BlockData(98, 0), new BlockData(98, 0), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("mossy stone bricks", (short)9, new BlockData(98, 1), new BlockData(98, 1), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("cracked stone bricks", (short)10, new BlockData(98, 2), new BlockData(98, 2), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("chiseled stone bricks", (short)11, new BlockData(98, 3), new BlockData(98, 3), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("cobblestone", (short)12, new BlockData(4, 0), new BlockData(4, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("mossy stone", (short)13, new BlockData(48, 0), new BlockData(48, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("cobblestone wall", (short)14, new BlockData(139, 0), new BlockData(139, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("mossy cobblestone wall", (short)15, new BlockData(139, 1), new BlockData(139, 1), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("coal ore", (short)16, new BlockData(16, 0), new BlockData(16, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("iron ore", (short)17, new BlockData(15, 0), new BlockData(15, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("gold ore", (short)18, new BlockData(14, 0), new BlockData(14, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("diamond ore", (short)19, new BlockData(56, 0), new BlockData(56, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("emerald ore", (short)20, new BlockData(129, 0), new BlockData(129, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lapis lazuli ore", (short)21, new BlockData(21, 0), new BlockData(21, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("redstone ore", (short)22, new BlockData(73, 0), new BlockData(73, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lit redstone ore", (short)23, new BlockData(74, 0), new BlockData(74, 0), true, (double)3, (double)15, (byte)15, (byte)9));
+		add(new Blocks("coal block", (short)24, new BlockData(173, 0), new BlockData(173, 0), true, (double)5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("iron block", (short)25, new BlockData(42, 0), new BlockData(42, 0), true, (double)5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("gold block", (short)26, new BlockData(41, 0), new BlockData(41, 0), true, (double)3, (double)30, (byte)15, (byte)0));
+		add(new Blocks("diamond block", (short)27, new BlockData(57, 0), new BlockData(57, 0), true, (double)5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("emerald block", (short)28, new BlockData(133, 0), new BlockData(133, 0), true, (double)5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("redstone block", (short)29, new BlockData(152, 0), new BlockData(152, 0), true, (double)5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("lapis lazuli block", (short)30, new BlockData(22, 0), new BlockData(22, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("grass", (short)31, new BlockData(2, 0), new BlockData(2, 0), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("dirt", (short)32, new BlockData(3, 0), new BlockData(3, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("coarse dirt", (short)33, new BlockData(3, 1), new BlockData(0, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("podzol", (short)34, new BlockData(3, 2), new BlockData(243, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("farmland 0", (short)35, new BlockData(60, 0), new BlockData(60, 0), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("farmland 1", (short)36, new BlockData(60, 1), new BlockData(60, 1), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("farmland 2", (short)37, new BlockData(60, 2), new BlockData(60, 2), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("farmland 3", (short)38, new BlockData(60, 3), new BlockData(60, 3), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("farmland 4", (short)39, new BlockData(60, 4), new BlockData(60, 4), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("farmland 5", (short)40, new BlockData(60, 5), new BlockData(60, 5), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("farmland 6", (short)41, new BlockData(60, 6), new BlockData(60, 6), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("farmland 7", (short)42, new BlockData(60, 7), new BlockData(60, 7), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("grass path", (short)43, new BlockData(208, 0), new BlockData(198, 0), true, (double)0.6, (double)3.25, (byte)15, (byte)0));
+		add(new Blocks("oak wood planks", (short)44, new BlockData(5, 0), new BlockData(5, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("spruce wood planks", (short)45, new BlockData(5, 1), new BlockData(5, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("birch wood planks", (short)46, new BlockData(5, 2), new BlockData(5, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("jungle wood planks", (short)47, new BlockData(5, 3), new BlockData(5, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("acacia wood planks", (short)48, new BlockData(5, 4), new BlockData(5, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("dark oak wood planks", (short)49, new BlockData(5, 5), new BlockData(5, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("oak sapling", (short)50, new BlockData(6, 0), new BlockData(6, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("spruce sapling", (short)51, new BlockData(6, 1), new BlockData(6, 1), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("birch sapling", (short)52, new BlockData(6, 2), new BlockData(6, 2), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("jungle sapling", (short)53, new BlockData(6, 3), new BlockData(6, 3), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("acacia sapling", (short)54, new BlockData(6, 4), new BlockData(6, 4), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("dark oak sapling", (short)55, new BlockData(6, 5), new BlockData(6, 5), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("sand", (short)56, new BlockData(12, 0), new BlockData(12, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("red sand", (short)57, new BlockData(12, 1), new BlockData(12, 1), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("gravel", (short)58, new BlockData(13, 0), new BlockData(13, 0), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("bricks", (short)59, new BlockData(45, 0), new BlockData(45, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("oak wood up down", (short)60, new BlockData(17, 0), new BlockData(17, 0), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("oak wood east west", (short)61, new BlockData(17, 4), new BlockData(17, 4), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("oak wood north south", (short)62, new BlockData(17, 8), new BlockData(17, 8), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("oak wood bark", (short)63, new BlockData(17, 12), new BlockData(17, 12), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("spruce wood up down", (short)64, new BlockData(17, 1), new BlockData(17, 1), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("spruce wood east west", (short)65, new BlockData(17, 5), new BlockData(17, 5), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("spruce wood north south", (short)66, new BlockData(17, 9), new BlockData(17, 9), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("spruce wood bark", (short)67, new BlockData(17, 13), new BlockData(17, 13), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("birch wood up down", (short)68, new BlockData(17, 2), new BlockData(17, 2), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("birch wood east west", (short)69, new BlockData(17, 6), new BlockData(17, 6), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("birch wood north south", (short)70, new BlockData(17, 10), new BlockData(17, 10), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("birch wood bark", (short)71, new BlockData(17, 14), new BlockData(17, 14), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("jungle wood up down", (short)72, new BlockData(17, 3), new BlockData(17, 3), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("jungle wood east west", (short)73, new BlockData(17, 7), new BlockData(17, 7), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("jungle wood north south", (short)74, new BlockData(17, 11), new BlockData(17, 11), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("jungle wood bark", (short)75, new BlockData(17, 15), new BlockData(17, 15), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("acacia wood up down", (short)76, new BlockData(162, 0), new BlockData(162, 0), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("acacia wood east west", (short)77, new BlockData(162, 4), new BlockData(162, 4), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("acacia wood north south", (short)78, new BlockData(162, 8), new BlockData(162, 8), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("acacia wood bark", (short)79, new BlockData(162, 12), new BlockData(162, 12), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("dark oak wood up down", (short)80, new BlockData(162, 1), new BlockData(162, 1), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("dark oak wood east west", (short)81, new BlockData(162, 5), new BlockData(162, 5), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("dark oak wood north south", (short)82, new BlockData(162, 9), new BlockData(162, 9), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("dark oak wood bark", (short)83, new BlockData(162, 13), new BlockData(162, 13), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("oak leaves decay", (short)84, new BlockData(18, 0), new BlockData(18, 0), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("oak leaves no decay", (short)85, new BlockData(18, 4), new BlockData(18, 4), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("oak leaves check decay", (short)86, new BlockData(18, 8), new BlockData(18, 8), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("oak leaves no decay check decay", (short)87, new BlockData(18, 12), new BlockData(18, 12), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("spruce leaves decay", (short)88, new BlockData(18, 1), new BlockData(18, 1), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("spruce leaves no decay", (short)89, new BlockData(18, 5), new BlockData(18, 5), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("spruce leaves check decay", (short)90, new BlockData(18, 9), new BlockData(18, 9), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("spruce leaves no decay check decay", (short)91, new BlockData(18, 13), new BlockData(18, 13), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("birch leaves decay", (short)92, new BlockData(18, 2), new BlockData(18, 2), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("birch leaves no decay", (short)93, new BlockData(18, 6), new BlockData(18, 6), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("birch leaves check decay", (short)94, new BlockData(18, 10), new BlockData(18, 10), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("birch leaves no decay check decay", (short)95, new BlockData(18, 14), new BlockData(18, 14), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("jungle leaves decay", (short)96, new BlockData(18, 3), new BlockData(18, 3), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("jungle leaves no decay", (short)97, new BlockData(18, 7), new BlockData(18, 7), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("jungle leaves check decay", (short)98, new BlockData(18, 11), new BlockData(18, 11), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("jungle leaves no decay check decay", (short)99, new BlockData(18, 15), new BlockData(18, 15), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("acacia leaves decay", (short)100, new BlockData(161, 0), new BlockData(161, 0), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("acacia leaves no decay", (short)101, new BlockData(161, 4), new BlockData(161, 4), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("acacia leaves check decay", (short)102, new BlockData(161, 8), new BlockData(161, 8), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("acacia leaves no decay check decay", (short)103, new BlockData(161, 12), new BlockData(161, 12), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("dark oak leaves decay", (short)104, new BlockData(161, 1), new BlockData(161, 1), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("dark oak leaves no decay", (short)105, new BlockData(161, 5), new BlockData(161, 5), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("dark oak leaves check decay", (short)106, new BlockData(161, 9), new BlockData(161, 9), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("dark oak leaves no decay check decay", (short)107, new BlockData(161, 13), new BlockData(161, 13), true, (double)0.2, (double)1, (byte)1, (byte)0));
+		add(new Blocks("sponge", (short)108, new BlockData(19, 0), new BlockData(19, 0), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("wet sponge", (short)109, new BlockData(19, 1), new BlockData(19, 1), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("glass", (short)110, new BlockData(20, 0), new BlockData(20, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("white stained glass", (short)111, new BlockData(95, 0), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("orange stained glass", (short)112, new BlockData(95, 1), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("magenta stained glass", (short)113, new BlockData(95, 2), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("light blue stained glass", (short)114, new BlockData(95, 3), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("yellow stained glass", (short)115, new BlockData(95, 4), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("lime stained glass", (short)116, new BlockData(95, 5), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("pink stained glass", (short)117, new BlockData(95, 6), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("gray stained glass", (short)118, new BlockData(95, 7), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("light gray stained glass", (short)119, new BlockData(95, 8), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("cyan stained glass", (short)120, new BlockData(95, 9), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("purple stained glass", (short)121, new BlockData(95, 10), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("blue stained glass", (short)122, new BlockData(95, 11), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("brown stained glass", (short)123, new BlockData(95, 12), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("green stained glass", (short)124, new BlockData(95, 13), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("red stained glass", (short)125, new BlockData(95, 14), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("black stained glass", (short)126, new BlockData(95, 15), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("glass pane", (short)127, new BlockData(102, 0), new BlockData(102, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("white stained glass pane", (short)128, new BlockData(160, 0), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("orange stained glass pane", (short)129, new BlockData(160, 1), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("magenta stained glass pane", (short)130, new BlockData(160, 2), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("light blue stained glass pane", (short)131, new BlockData(160, 3), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("yellow stained glass pane", (short)132, new BlockData(160, 4), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("lime stained glass pane", (short)133, new BlockData(160, 5), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("pink stained glass pane", (short)134, new BlockData(160, 6), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("gray stained glass pane", (short)135, new BlockData(160, 7), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("light gray stained glass pane", (short)136, new BlockData(160, 8), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("cyan stained glass pane", (short)137, new BlockData(160, 9), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("purple stained glass pane", (short)138, new BlockData(160, 10), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("blue stained glass pane", (short)139, new BlockData(160, 11), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("brown stained glass pane", (short)140, new BlockData(160, 12), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("green stained glass pane", (short)141, new BlockData(160, 13), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("red stained glass pane", (short)142, new BlockData(160, 14), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("black stained glass pane", (short)143, new BlockData(160, 15), new BlockData(0, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)0));
+		add(new Blocks("sandstone", (short)144, new BlockData(24, 0), new BlockData(24, 0), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("chiseled sandstone", (short)145, new BlockData(24, 1), new BlockData(24, 1), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("smooth sandstone", (short)146, new BlockData(24, 2), new BlockData(24, 2), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("red sandstone", (short)147, new BlockData(179, 0), new BlockData(179, 0), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("chiseled red sandstone", (short)148, new BlockData(179, 1), new BlockData(179, 1), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("smooth red sandstone", (short)149, new BlockData(179, 2), new BlockData(179, 2), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("dispenser facing down", (short)150, new BlockData(23, 0), new BlockData(23, 0), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("dispenser facing up", (short)151, new BlockData(23, 1), new BlockData(23, 1), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("dispenser facing north", (short)152, new BlockData(23, 2), new BlockData(23, 2), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("dispenser facing south", (short)153, new BlockData(23, 3), new BlockData(23, 3), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("dispenser facing west", (short)154, new BlockData(23, 4), new BlockData(23, 4), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("dispenser facing east", (short)155, new BlockData(23, 5), new BlockData(23, 5), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dispenser facing down", (short)156, new BlockData(23, 8), new BlockData(23, 8), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dispenser facing up", (short)157, new BlockData(23, 9), new BlockData(23, 9), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dispenser facing north", (short)158, new BlockData(23, 10), new BlockData(23, 10), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dispenser facing south", (short)159, new BlockData(23, 11), new BlockData(23, 11), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dispenser facing west", (short)160, new BlockData(23, 12), new BlockData(23, 12), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dispenser facing east", (short)161, new BlockData(23, 13), new BlockData(23, 13), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("note block", (short)162, new BlockData(25, 0), new BlockData(25, 0), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("bed foot facing south", (short)163, new BlockData(26, 0), new BlockData(26, 0), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("bed foot facing west", (short)164, new BlockData(26, 1), new BlockData(26, 1), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("bed foot facing north", (short)165, new BlockData(26, 2), new BlockData(26, 2), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("bed foot facing east", (short)166, new BlockData(26, 3), new BlockData(26, 3), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("occupied bed foot facing south", (short)167, new BlockData(26, 4), new BlockData(26, 4), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("occupied bed foot facing west", (short)168, new BlockData(26, 5), new BlockData(26, 5), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("occupied bed foot facing north", (short)169, new BlockData(26, 6), new BlockData(26, 6), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("occupied bed foot facing east", (short)170, new BlockData(26, 7), new BlockData(26, 7), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("bed head facing south", (short)171, new BlockData(26, 8), new BlockData(26, 8), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("bed head facing west", (short)172, new BlockData(26, 9), new BlockData(26, 9), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("bed head facing north", (short)173, new BlockData(26, 10), new BlockData(26, 10), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("bed head facing east", (short)174, new BlockData(26, 11), new BlockData(26, 11), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("occupied bed head facing south", (short)175, new BlockData(26, 12), new BlockData(26, 12), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("occupied bed head facing west", (short)176, new BlockData(26, 13), new BlockData(26, 13), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("occupied bed head facing north", (short)177, new BlockData(26, 14), new BlockData(26, 14), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("occupied bed head facing east", (short)178, new BlockData(26, 15), new BlockData(26, 15), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("rail north south", (short)179, new BlockData(66, 0), new BlockData(66, 0), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("rail east west", (short)180, new BlockData(66, 1), new BlockData(66, 1), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("rail ascending east", (short)181, new BlockData(66, 2), new BlockData(66, 2), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("rail ascending west", (short)182, new BlockData(66, 3), new BlockData(66, 3), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("rail ascending north", (short)183, new BlockData(66, 4), new BlockData(66, 4), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("rail ascending south", (short)184, new BlockData(66, 5), new BlockData(66, 5), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("rail curved south east", (short)185, new BlockData(66, 6), new BlockData(66, 6), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("rail curved south west", (short)186, new BlockData(66, 7), new BlockData(66, 7), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("rail curved north west", (short)187, new BlockData(66, 8), new BlockData(66, 8), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("rail curved north east", (short)188, new BlockData(66, 9), new BlockData(66, 9), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("powered rail north south", (short)189, new BlockData(27, 0), new BlockData(27, 0), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("powered rail east west", (short)190, new BlockData(27, 1), new BlockData(27, 1), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("powered rail ascending east", (short)191, new BlockData(27, 2), new BlockData(27, 2), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("powered rail ascending west", (short)192, new BlockData(27, 3), new BlockData(27, 3), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("powered rail ascending north", (short)193, new BlockData(27, 4), new BlockData(27, 4), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("powered rail ascending south", (short)194, new BlockData(27, 5), new BlockData(27, 5), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("still lava 0", (short)195, new BlockData(10, 0), new BlockData(10, 0), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("active powered rail north south", (short)196, new BlockData(27, 8), new BlockData(27, 8), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active powered rail east west", (short)197, new BlockData(27, 9), new BlockData(27, 9), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active powered rail ascending east", (short)198, new BlockData(27, 10), new BlockData(27, 10), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active powered rail ascending west", (short)199, new BlockData(27, 11), new BlockData(27, 11), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active powered rail ascending north", (short)200, new BlockData(27, 12), new BlockData(27, 12), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active powered rail ascending south", (short)201, new BlockData(27, 13), new BlockData(27, 13), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("activator rail north south", (short)202, new BlockData(157, 0), new BlockData(126, 0), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("activator rail east west", (short)203, new BlockData(157, 1), new BlockData(126, 1), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("activator rail ascending east", (short)204, new BlockData(157, 2), new BlockData(126, 2), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("activator rail ascending west", (short)205, new BlockData(157, 3), new BlockData(126, 3), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("activator rail ascending north", (short)206, new BlockData(157, 4), new BlockData(126, 4), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("activator rail ascending south", (short)207, new BlockData(157, 5), new BlockData(126, 5), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active activator rail north south", (short)208, new BlockData(157, 8), new BlockData(126, 8), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active activator rail east west", (short)209, new BlockData(157, 9), new BlockData(126, 9), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active activator rail ascending east", (short)210, new BlockData(157, 10), new BlockData(126, 10), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active activator rail ascending west", (short)211, new BlockData(157, 11), new BlockData(126, 11), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active activator rail ascending north", (short)212, new BlockData(157, 12), new BlockData(126, 12), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active activator rail ascending south", (short)213, new BlockData(157, 13), new BlockData(126, 13), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("detector rail north south", (short)214, new BlockData(28, 0), new BlockData(28, 0), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("detector rail east west", (short)215, new BlockData(28, 1), new BlockData(28, 1), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("detector rail ascending east", (short)216, new BlockData(28, 2), new BlockData(28, 2), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("detector rail ascending west", (short)217, new BlockData(28, 3), new BlockData(28, 3), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("detector rail ascending north", (short)218, new BlockData(28, 4), new BlockData(28, 4), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("detector rail ascending south", (short)219, new BlockData(28, 5), new BlockData(28, 5), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active detector rail north south", (short)220, new BlockData(28, 8), new BlockData(28, 8), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active detector rail east west", (short)221, new BlockData(28, 9), new BlockData(28, 9), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active detector rail ascending east", (short)222, new BlockData(28, 10), new BlockData(28, 10), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active detector rail ascending west", (short)223, new BlockData(28, 11), new BlockData(28, 11), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active detector rail ascending north", (short)224, new BlockData(28, 12), new BlockData(28, 12), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("active detector rail ascending south", (short)225, new BlockData(28, 13), new BlockData(28, 13), true, (double)0.7, (double)3.5, (byte)15, (byte)0));
+		add(new Blocks("piston facing down", (short)226, new BlockData(33, 0), new BlockData(33, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston facing up", (short)227, new BlockData(33, 1), new BlockData(33, 1), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston facing north", (short)228, new BlockData(33, 2), new BlockData(33, 2), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston facing south", (short)229, new BlockData(33, 3), new BlockData(33, 3), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston facing west", (short)230, new BlockData(33, 4), new BlockData(33, 4), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston facing east", (short)231, new BlockData(33, 5), new BlockData(33, 5), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston facing everywhere", (short)232, new BlockData(33, 6), new BlockData(33, 6), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston facing everywhere 1", (short)233, new BlockData(33, 7), new BlockData(33, 7), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended piston facing down", (short)234, new BlockData(33, 8), new BlockData(33, 8), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended piston facing up", (short)235, new BlockData(33, 9), new BlockData(33, 9), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended piston facing north", (short)236, new BlockData(33, 10), new BlockData(33, 10), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended piston facing south", (short)237, new BlockData(33, 11), new BlockData(33, 11), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended piston facing west", (short)238, new BlockData(33, 12), new BlockData(33, 12), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended piston facing east", (short)239, new BlockData(33, 13), new BlockData(33, 13), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended piston facing everywhere", (short)240, new BlockData(33, 14), new BlockData(33, 14), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended piston facing everywhere 1", (short)241, new BlockData(33, 15), new BlockData(33, 15), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("sticky piston facing down", (short)242, new BlockData(29, 0), new BlockData(29, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("sticky piston facing up", (short)243, new BlockData(29, 1), new BlockData(29, 1), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("sticky piston facing north", (short)244, new BlockData(29, 2), new BlockData(29, 2), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("sticky piston facing south", (short)245, new BlockData(29, 3), new BlockData(29, 3), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("sticky piston facing west", (short)246, new BlockData(29, 4), new BlockData(29, 4), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("sticky piston facing east", (short)247, new BlockData(29, 5), new BlockData(29, 5), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("sticky piston facing everywhere", (short)248, new BlockData(29, 6), new BlockData(29, 6), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("sticky piston facing everywhere 1", (short)249, new BlockData(29, 7), new BlockData(29, 7), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended sticky piston facing down", (short)250, new BlockData(29, 8), new BlockData(29, 8), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended sticky piston facing up", (short)251, new BlockData(29, 9), new BlockData(29, 9), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended sticky piston facing north", (short)252, new BlockData(29, 10), new BlockData(29, 10), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended sticky piston facing south", (short)253, new BlockData(29, 11), new BlockData(29, 11), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended sticky piston facing west", (short)254, new BlockData(29, 12), new BlockData(29, 12), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended sticky piston facing east", (short)255, new BlockData(29, 13), new BlockData(29, 13), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended sticky piston facing everywhere", (short)256, new BlockData(29, 14), new BlockData(29, 14), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("extended sticky piston facing everywhere 1", (short)257, new BlockData(29, 15), new BlockData(29, 15), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston head facing down", (short)258, new BlockData(34, 0), new BlockData(34, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston head facing up", (short)259, new BlockData(34, 1), new BlockData(34, 1), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston head facing north", (short)260, new BlockData(34, 2), new BlockData(34, 2), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston head facing south", (short)261, new BlockData(34, 3), new BlockData(34, 3), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston head facing west", (short)262, new BlockData(34, 4), new BlockData(34, 4), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston head facing east", (short)263, new BlockData(34, 5), new BlockData(34, 5), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("piston extension", (short)264, new BlockData(36, 0), new BlockData(250, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("white wool", (short)265, new BlockData(35, 0), new BlockData(35, 0), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("orange wool", (short)266, new BlockData(35, 1), new BlockData(35, 1), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("magenta wool", (short)267, new BlockData(35, 2), new BlockData(35, 2), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("light blue wool", (short)268, new BlockData(35, 3), new BlockData(35, 3), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("yellow wool", (short)269, new BlockData(35, 4), new BlockData(35, 4), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("lime wool", (short)270, new BlockData(35, 5), new BlockData(35, 5), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("pink wool", (short)271, new BlockData(35, 6), new BlockData(35, 6), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("gray wool", (short)272, new BlockData(35, 7), new BlockData(35, 7), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("light gray wool", (short)273, new BlockData(35, 8), new BlockData(35, 8), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("cyan wool", (short)274, new BlockData(35, 9), new BlockData(35, 9), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("purple wool", (short)275, new BlockData(35, 10), new BlockData(35, 10), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("blue wool", (short)276, new BlockData(35, 11), new BlockData(35, 11), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("brown wool", (short)277, new BlockData(35, 12), new BlockData(35, 12), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("green wool", (short)278, new BlockData(35, 13), new BlockData(35, 13), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("red wool", (short)279, new BlockData(35, 14), new BlockData(35, 14), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("black wool", (short)280, new BlockData(35, 15), new BlockData(35, 15), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("dandelion", (short)281, new BlockData(37, 0), new BlockData(37, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("poppy", (short)282, new BlockData(38, 0), new BlockData(38, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("blue orchid", (short)283, new BlockData(38, 1), new BlockData(38, 1), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("allium", (short)284, new BlockData(38, 2), new BlockData(38, 2), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("azure bluet", (short)285, new BlockData(38, 3), new BlockData(38, 3), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("red tulip", (short)286, new BlockData(38, 4), new BlockData(38, 4), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("orange tulip", (short)287, new BlockData(38, 5), new BlockData(38, 5), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("white tulip", (short)288, new BlockData(38, 6), new BlockData(38, 6), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("pink tulip", (short)289, new BlockData(38, 7), new BlockData(38, 7), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("oxeye daisy", (short)290, new BlockData(38, 8), new BlockData(38, 8), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("sunflower bottom", (short)291, new BlockData(175, 0), new BlockData(175, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("liliac bottom", (short)292, new BlockData(175, 1), new BlockData(175, 1), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("double tallgrass bottom", (short)293, new BlockData(175, 2), new BlockData(175, 2), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("large fern bottom", (short)294, new BlockData(175, 3), new BlockData(175, 3), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("rose bush bottom", (short)295, new BlockData(175, 4), new BlockData(175, 4), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("peony bottom", (short)296, new BlockData(175, 5), new BlockData(175, 5), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("sunflower top", (short)297, new BlockData(175, 8), new BlockData(175, 8), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("liliac top", (short)298, new BlockData(175, 9), new BlockData(175, 9), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("double tallgrass top", (short)299, new BlockData(175, 10), new BlockData(175, 10), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("large fern top", (short)300, new BlockData(175, 11), new BlockData(175, 11), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("rose bush top", (short)301, new BlockData(175, 12), new BlockData(175, 12), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("peony top", (short)302, new BlockData(175, 13), new BlockData(175, 13), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("brown mushroom", (short)303, new BlockData(39, 0), new BlockData(39, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("red mushroom", (short)304, new BlockData(40, 0), new BlockData(40, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("stone slab", (short)305, new BlockData(44, 0), new BlockData(44, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("sandstone slab", (short)306, new BlockData(44, 1), new BlockData(44, 1), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("stone wooden slab", (short)307, new BlockData(44, 2), new BlockData(44, 2), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("cobblestone slab", (short)308, new BlockData(44, 3), new BlockData(44, 3), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("bricks slab", (short)309, new BlockData(44, 4), new BlockData(44, 4), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("stone brick slab", (short)310, new BlockData(44, 5), new BlockData(44, 5), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("nether brick slab", (short)311, new BlockData(44, 6), new BlockData(44, 6), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("quartz slab", (short)312, new BlockData(44, 7), new BlockData(44, 7), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("red sandstone slab", (short)313, new BlockData(182, 0), new BlockData(182, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("purpur slab", (short)314, new BlockData(205, 0), new BlockData(205, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("oak wood slab", (short)315, new BlockData(126, 0), new BlockData(158, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("spruce wood slab", (short)316, new BlockData(126, 1), new BlockData(158, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("birch wood slab", (short)317, new BlockData(126, 2), new BlockData(158, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("jungle wood slab", (short)318, new BlockData(126, 3), new BlockData(158, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("acacia wood slab", (short)319, new BlockData(126, 4), new BlockData(158, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("dark oak wood slab", (short)320, new BlockData(126, 5), new BlockData(158, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper stone slab", (short)321, new BlockData(44, 8), new BlockData(44, 8), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upper sandstone slab", (short)322, new BlockData(44, 9), new BlockData(44, 9), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upper stone wooden slab", (short)323, new BlockData(44, 10), new BlockData(44, 10), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upper cobblestone slab", (short)324, new BlockData(44, 11), new BlockData(44, 11), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upper bricks slab", (short)325, new BlockData(44, 12), new BlockData(44, 12), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upper stone brick slab", (short)326, new BlockData(44, 13), new BlockData(44, 13), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upper nether brick slab", (short)327, new BlockData(44, 14), new BlockData(44, 14), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upper quartz slab", (short)328, new BlockData(44, 15), new BlockData(44, 15), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upper red sandstone slab", (short)329, new BlockData(182, 8), new BlockData(182, 8), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upper purpur slab", (short)330, new BlockData(205, 8), new BlockData(205, 8), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upper oak wood slab", (short)331, new BlockData(126, 8), new BlockData(158, 8), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper spruce wood slab", (short)332, new BlockData(126, 9), new BlockData(158, 9), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper birch wood slab", (short)333, new BlockData(126, 10), new BlockData(158, 10), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper jungle wood slab", (short)334, new BlockData(126, 11), new BlockData(158, 11), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper acacia wood slab", (short)335, new BlockData(126, 12), new BlockData(158, 12), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper dark oak wood slab", (short)336, new BlockData(126, 13), new BlockData(158, 13), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("double stone slab", (short)337, new BlockData(43, 0), new BlockData(43, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("double sandstone slab", (short)338, new BlockData(43, 1), new BlockData(43, 1), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("double stone wooden slab", (short)339, new BlockData(43, 2), new BlockData(43, 2), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("double cobblestone slab", (short)340, new BlockData(43, 3), new BlockData(43, 3), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("double bricks slab", (short)341, new BlockData(43, 4), new BlockData(43, 4), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("double stone brick slab", (short)342, new BlockData(43, 5), new BlockData(43, 5), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("double nether brick slab", (short)343, new BlockData(43, 6), new BlockData(43, 6), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("double quartz slab", (short)344, new BlockData(43, 7), new BlockData(43, 7), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("double red sandstone slab", (short)345, new BlockData(181, 0), new BlockData(181, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("double purpur slab", (short)346, new BlockData(204, 0), new BlockData(204, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("double oak wood slab", (short)347, new BlockData(125, 0), new BlockData(157, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("double spruce wood slab", (short)348, new BlockData(125, 1), new BlockData(157, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("double birch wood slab", (short)349, new BlockData(125, 2), new BlockData(157, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("double jungle wood slab", (short)350, new BlockData(125, 3), new BlockData(157, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("double acacia wood slab", (short)351, new BlockData(125, 4), new BlockData(157, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("double dark oak wood slab", (short)352, new BlockData(125, 5), new BlockData(157, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("tnt", (short)353, new BlockData(46, 0), new BlockData(46, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("bookshelf", (short)354, new BlockData(47, 0), new BlockData(47, 0), true, (double)1.5, (double)7.5, (byte)15, (byte)0));
+		add(new Blocks("obsidian", (short)355, new BlockData(49, 0), new BlockData(49, 0), true, (double)50, (double)6000, (byte)15, (byte)0));
+		add(new Blocks("torch facing east", (short)356, new BlockData(50, 1), new BlockData(50, 1), true, (double)0, (double)0, (byte)15, (byte)14));
+		add(new Blocks("torch facing west", (short)357, new BlockData(50, 2), new BlockData(50, 2), true, (double)0, (double)0, (byte)15, (byte)14));
+		add(new Blocks("torch facing south", (short)358, new BlockData(50, 3), new BlockData(50, 3), true, (double)0, (double)0, (byte)15, (byte)14));
+		add(new Blocks("torch facing north", (short)359, new BlockData(50, 4), new BlockData(50, 4), true, (double)0, (double)0, (byte)15, (byte)14));
+		add(new Blocks("torch facing up", (short)360, new BlockData(50, 5), new BlockData(50, 5), true, (double)0, (double)0, (byte)15, (byte)14));
+		add(new Blocks("cobweb", (short)361, new BlockData(30, 0), new BlockData(30, 0), true, (double)4, (double)20, (byte)1, (byte)0));
+		add(new Blocks("tall grass", (short)362, new BlockData(31, 1), new BlockData(31, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("fern", (short)363, new BlockData(31, 2), new BlockData(31, 2), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("dead bush", (short)364, new BlockData(32, 0), new BlockData(32, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("fire", (short)365, new BlockData(51, 0), new BlockData(51, 0), false, (double)-1, (double)0, (byte)0, (byte)15));
+		add(new Blocks("monster spawner", (short)366, new BlockData(52, 0), new BlockData(52, 0), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("oak wood stairs facing east", (short)367, new BlockData(53, 0), new BlockData(53, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("oak wood stairs facing west", (short)368, new BlockData(53, 1), new BlockData(53, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("oak wood stairs facing south", (short)369, new BlockData(53, 2), new BlockData(53, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("oak wood stairs facing north", (short)370, new BlockData(53, 3), new BlockData(53, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down oak wood stairs facing east", (short)371, new BlockData(53, 4), new BlockData(53, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down oak wood stairs facing west", (short)372, new BlockData(53, 5), new BlockData(53, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down oak wood stairs facing south", (short)373, new BlockData(53, 6), new BlockData(53, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down oak wood stairs facing north", (short)374, new BlockData(53, 7), new BlockData(53, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("spruce wood stairs facing east", (short)375, new BlockData(134, 0), new BlockData(134, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("spruce wood stairs facing west", (short)376, new BlockData(134, 1), new BlockData(134, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("spruce wood stairs facing south", (short)377, new BlockData(134, 2), new BlockData(134, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("spruce wood stairs facing north", (short)378, new BlockData(134, 3), new BlockData(134, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down spruce wood stairs facing east", (short)379, new BlockData(134, 4), new BlockData(134, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down spruce wood stairs facing west", (short)380, new BlockData(134, 5), new BlockData(134, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down spruce wood stairs facing south", (short)381, new BlockData(134, 6), new BlockData(134, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down spruce wood stairs facing north", (short)382, new BlockData(134, 7), new BlockData(134, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("birch wood stairs facing east", (short)383, new BlockData(135, 0), new BlockData(135, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("birch wood stairs facing west", (short)384, new BlockData(135, 1), new BlockData(135, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("birch wood stairs facing south", (short)385, new BlockData(135, 2), new BlockData(135, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("birch wood stairs facing north", (short)386, new BlockData(135, 3), new BlockData(135, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down birch wood stairs facing east", (short)387, new BlockData(135, 4), new BlockData(135, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down birch wood stairs facing west", (short)388, new BlockData(135, 5), new BlockData(135, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down birch wood stairs facing south", (short)389, new BlockData(135, 6), new BlockData(135, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down birch wood stairs facing north", (short)390, new BlockData(135, 7), new BlockData(135, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("jungle wood stairs facing east", (short)391, new BlockData(136, 0), new BlockData(136, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("jungle wood stairs facing west", (short)392, new BlockData(136, 1), new BlockData(136, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("jungle wood stairs facing south", (short)393, new BlockData(136, 2), new BlockData(136, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("jungle wood stairs facing north", (short)394, new BlockData(136, 3), new BlockData(136, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down jungle wood stairs facing east", (short)395, new BlockData(136, 4), new BlockData(136, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down jungle wood stairs facing west", (short)396, new BlockData(136, 5), new BlockData(136, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down jungle wood stairs facing south", (short)397, new BlockData(136, 6), new BlockData(136, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down jungle wood stairs facing north", (short)398, new BlockData(136, 7), new BlockData(136, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("acacia wood stairs facing east", (short)399, new BlockData(163, 0), new BlockData(163, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("acacia wood stairs facing west", (short)400, new BlockData(163, 1), new BlockData(163, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("acacia wood stairs facing south", (short)401, new BlockData(163, 2), new BlockData(163, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("acacia wood stairs facing north", (short)402, new BlockData(163, 3), new BlockData(163, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down acacia wood stairs facing east", (short)403, new BlockData(163, 4), new BlockData(163, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down acacia wood stairs facing west", (short)404, new BlockData(163, 5), new BlockData(163, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down acacia wood stairs facing south", (short)405, new BlockData(163, 6), new BlockData(163, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down acacia wood stairs facing north", (short)406, new BlockData(163, 7), new BlockData(163, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("dark oak wood stairs facing east", (short)407, new BlockData(164, 0), new BlockData(164, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("dark oak wood stairs facing west", (short)408, new BlockData(164, 1), new BlockData(164, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("dark oak wood stairs facing south", (short)409, new BlockData(164, 2), new BlockData(164, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("dark oak wood stairs facing north", (short)410, new BlockData(164, 3), new BlockData(164, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down dark oak wood stairs facing east", (short)411, new BlockData(164, 4), new BlockData(164, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down dark oak wood stairs facing west", (short)412, new BlockData(164, 5), new BlockData(164, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down dark oak wood stairs facing south", (short)413, new BlockData(164, 6), new BlockData(164, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upside down dark oak wood stairs facing north", (short)414, new BlockData(164, 7), new BlockData(164, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("cobblestone stairs facing east", (short)415, new BlockData(67, 0), new BlockData(67, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("cobblestone stairs facing west", (short)416, new BlockData(67, 1), new BlockData(67, 1), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("cobblestone stairs facing south", (short)417, new BlockData(67, 2), new BlockData(67, 2), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("cobblestone stairs facing north", (short)418, new BlockData(67, 3), new BlockData(67, 3), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down cobblestone stairs facing east", (short)419, new BlockData(67, 4), new BlockData(67, 4), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down cobblestone stairs facing west", (short)420, new BlockData(67, 5), new BlockData(67, 5), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down cobblestone stairs facing south", (short)421, new BlockData(67, 6), new BlockData(67, 6), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down cobblestone stairs facing north", (short)422, new BlockData(67, 7), new BlockData(67, 7), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("brick stairs facing east", (short)423, new BlockData(108, 0), new BlockData(108, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("brick stairs facing west", (short)424, new BlockData(108, 1), new BlockData(108, 1), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("brick stairs facing south", (short)425, new BlockData(108, 2), new BlockData(108, 2), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("brick stairs facing north", (short)426, new BlockData(108, 3), new BlockData(108, 3), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down brick stairs facing east", (short)427, new BlockData(108, 4), new BlockData(108, 4), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down brick stairs facing west", (short)428, new BlockData(108, 5), new BlockData(108, 5), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down brick stairs facing south", (short)429, new BlockData(108, 6), new BlockData(108, 6), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down brick stairs facing north", (short)430, new BlockData(108, 7), new BlockData(108, 7), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("nether brick stairs facing east", (short)431, new BlockData(114, 0), new BlockData(114, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("nether brick stairs facing west", (short)432, new BlockData(114, 1), new BlockData(114, 1), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("nether brick stairs facing south", (short)433, new BlockData(114, 2), new BlockData(114, 2), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("nether brick stairs facing north", (short)434, new BlockData(114, 3), new BlockData(114, 3), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down nether brick stairs facing east", (short)435, new BlockData(114, 4), new BlockData(114, 4), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down nether brick stairs facing west", (short)436, new BlockData(114, 5), new BlockData(114, 5), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down nether brick stairs facing south", (short)437, new BlockData(114, 6), new BlockData(114, 6), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down nether brick stairs facing north", (short)438, new BlockData(114, 7), new BlockData(114, 7), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("stone brick stairs facing east", (short)439, new BlockData(109, 0), new BlockData(109, 0), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("stone brick stairs facing west", (short)440, new BlockData(109, 1), new BlockData(109, 1), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("stone brick stairs facing south", (short)441, new BlockData(109, 2), new BlockData(109, 2), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("stone brick stairs facing north", (short)442, new BlockData(109, 3), new BlockData(109, 3), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down stone brick stairs facing east", (short)443, new BlockData(109, 4), new BlockData(109, 4), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down stone brick stairs facing west", (short)444, new BlockData(109, 5), new BlockData(109, 5), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down stone brick stairs facing south", (short)445, new BlockData(109, 6), new BlockData(109, 6), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down stone brick stairs facing north", (short)446, new BlockData(109, 7), new BlockData(109, 7), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("purpur stairs facing east", (short)447, new BlockData(203, 0), new BlockData(203, 0), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("purpur stairs facing west", (short)448, new BlockData(203, 1), new BlockData(203, 1), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("purpur stairs facing south", (short)449, new BlockData(203, 2), new BlockData(203, 2), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("purpur stairs facing north", (short)450, new BlockData(203, 3), new BlockData(203, 3), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down purpur stairs facing east", (short)451, new BlockData(203, 4), new BlockData(203, 4), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down purpur stairs facing west", (short)452, new BlockData(203, 5), new BlockData(203, 5), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down purpur stairs facing south", (short)453, new BlockData(203, 6), new BlockData(203, 6), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("upside down purpur stairs facing north", (short)454, new BlockData(203, 7), new BlockData(203, 7), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("quartz stairs facing east", (short)455, new BlockData(156, 0), new BlockData(156, 0), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("quartz stairs facing west", (short)456, new BlockData(156, 1), new BlockData(156, 1), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("quartz stairs facing south", (short)457, new BlockData(156, 2), new BlockData(156, 2), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("quartz stairs facing north", (short)458, new BlockData(156, 3), new BlockData(156, 3), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down quartz stairs facing east", (short)459, new BlockData(156, 4), new BlockData(156, 4), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down quartz stairs facing west", (short)460, new BlockData(156, 5), new BlockData(156, 5), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down quartz stairs facing south", (short)461, new BlockData(156, 6), new BlockData(156, 6), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down quartz stairs facing north", (short)462, new BlockData(156, 7), new BlockData(156, 7), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("sandstone stairs facing east", (short)463, new BlockData(128, 0), new BlockData(128, 0), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("sandstone stairs facing west", (short)464, new BlockData(128, 1), new BlockData(128, 1), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("sandstone stairs facing south", (short)465, new BlockData(128, 2), new BlockData(128, 2), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("sandstone stairs facing north", (short)466, new BlockData(128, 3), new BlockData(128, 3), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down sandstone stairs facing east", (short)467, new BlockData(128, 4), new BlockData(128, 4), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down sandstone stairs facing west", (short)468, new BlockData(128, 5), new BlockData(128, 5), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down sandstone stairs facing south", (short)469, new BlockData(128, 6), new BlockData(128, 6), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down sandstone stairs facing north", (short)470, new BlockData(128, 7), new BlockData(128, 7), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("red sandstone stairs facing east", (short)471, new BlockData(180, 0), new BlockData(180, 0), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("red sandstone stairs facing west", (short)472, new BlockData(180, 1), new BlockData(180, 1), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("red sandstone stairs facing south", (short)473, new BlockData(180, 2), new BlockData(180, 2), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("red sandstone stairs facing north", (short)474, new BlockData(180, 3), new BlockData(180, 3), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down red sandstone stairs facing east", (short)475, new BlockData(180, 4), new BlockData(180, 4), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down red sandstone stairs facing west", (short)476, new BlockData(180, 5), new BlockData(180, 5), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down red sandstone stairs facing south", (short)477, new BlockData(180, 6), new BlockData(180, 6), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("upside down red sandstone stairs facing north", (short)478, new BlockData(180, 7), new BlockData(180, 7), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("chest facing north", (short)479, new BlockData(54, 2), new BlockData(54, 2), true, (double)2.5, (double)12.5, (byte)0, (byte)0));
+		add(new Blocks("chest facing south", (short)480, new BlockData(54, 3), new BlockData(54, 3), true, (double)2.5, (double)12.5, (byte)0, (byte)0));
+		add(new Blocks("chest facing west", (short)481, new BlockData(54, 4), new BlockData(54, 4), true, (double)2.5, (double)12.5, (byte)0, (byte)0));
+		add(new Blocks("chest facing east", (short)482, new BlockData(54, 5), new BlockData(54, 5), true, (double)2.5, (double)12.5, (byte)0, (byte)0));
+		add(new Blocks("trapped chest facing north", (short)483, new BlockData(146, 2), new BlockData(146, 2), true, (double)2.5, (double)12.5, (byte)0, (byte)0));
+		add(new Blocks("trapped chest facing south", (short)484, new BlockData(146, 3), new BlockData(146, 3), true, (double)2.5, (double)12.5, (byte)0, (byte)0));
+		add(new Blocks("trapped chest facing west", (short)485, new BlockData(146, 4), new BlockData(146, 4), true, (double)2.5, (double)12.5, (byte)0, (byte)0));
+		add(new Blocks("trapped chest facing east", (short)486, new BlockData(146, 5), new BlockData(146, 5), true, (double)2.5, (double)12.5, (byte)0, (byte)0));
+		add(new Blocks("redstone wire 0", (short)487, new BlockData(55, 0), new BlockData(55, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 1", (short)488, new BlockData(55, 1), new BlockData(55, 1), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 2", (short)489, new BlockData(55, 2), new BlockData(55, 2), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 3", (short)490, new BlockData(55, 3), new BlockData(55, 3), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 4", (short)491, new BlockData(55, 4), new BlockData(55, 4), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 5", (short)492, new BlockData(55, 5), new BlockData(55, 5), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 6", (short)493, new BlockData(55, 6), new BlockData(55, 6), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 7", (short)494, new BlockData(55, 7), new BlockData(55, 7), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 8", (short)495, new BlockData(55, 8), new BlockData(55, 8), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 9", (short)496, new BlockData(55, 9), new BlockData(55, 9), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 10", (short)497, new BlockData(55, 10), new BlockData(55, 10), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 11", (short)498, new BlockData(55, 11), new BlockData(55, 11), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 12", (short)499, new BlockData(55, 12), new BlockData(55, 12), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 13", (short)500, new BlockData(55, 13), new BlockData(55, 13), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 14", (short)501, new BlockData(55, 14), new BlockData(55, 14), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("redstone wire 15", (short)502, new BlockData(55, 15), new BlockData(55, 15), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("crafting table", (short)503, new BlockData(58, 0), new BlockData(58, 0), true, (double)2.5, (double)12.5, (byte)15, (byte)0));
+		add(new Blocks("seeds 0", (short)504, new BlockData(59, 0), new BlockData(59, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("seeds 1", (short)505, new BlockData(59, 1), new BlockData(59, 1), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("seeds 2", (short)506, new BlockData(59, 2), new BlockData(59, 2), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("seeds 3", (short)507, new BlockData(59, 3), new BlockData(59, 3), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("seeds 4", (short)508, new BlockData(59, 4), new BlockData(59, 4), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("seeds 5", (short)509, new BlockData(59, 5), new BlockData(59, 5), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("seeds 6", (short)510, new BlockData(59, 6), new BlockData(59, 6), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("seeds 7", (short)511, new BlockData(59, 7), new BlockData(59, 7), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("beetroot 0", (short)512, new BlockData(207, 0), new BlockData(244, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("beetroot 1", (short)513, new BlockData(207, 1), new BlockData(244, 1), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("beetroot 2", (short)514, new BlockData(207, 2), new BlockData(244, 2), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("beetroot 3", (short)515, new BlockData(207, 3), new BlockData(244, 3), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("carrot 0", (short)516, new BlockData(141, 0), new BlockData(141, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("carrot 1", (short)517, new BlockData(141, 1), new BlockData(141, 1), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("carrot 2", (short)518, new BlockData(141, 2), new BlockData(141, 2), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("carrot 3", (short)519, new BlockData(141, 3), new BlockData(141, 3), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("carrot 4", (short)520, new BlockData(141, 4), new BlockData(141, 4), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("carrot 5", (short)521, new BlockData(141, 5), new BlockData(141, 5), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("carrot 6", (short)522, new BlockData(141, 6), new BlockData(141, 6), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("carrot 7", (short)523, new BlockData(141, 7), new BlockData(141, 7), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("potato 0", (short)524, new BlockData(142, 0), new BlockData(142, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("potato 1", (short)525, new BlockData(142, 1), new BlockData(142, 1), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("potato 2", (short)526, new BlockData(142, 2), new BlockData(142, 2), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("potato 3", (short)527, new BlockData(142, 3), new BlockData(142, 3), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("potato 4", (short)528, new BlockData(142, 4), new BlockData(142, 4), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("potato 5", (short)529, new BlockData(142, 5), new BlockData(142, 5), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("potato 6", (short)530, new BlockData(142, 6), new BlockData(142, 6), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("potato 7", (short)531, new BlockData(142, 7), new BlockData(142, 7), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("melon stem 0", (short)532, new BlockData(105, 0), new BlockData(105, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("melon stem 1", (short)533, new BlockData(105, 1), new BlockData(105, 1), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("melon stem 2", (short)534, new BlockData(105, 2), new BlockData(105, 2), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("melon stem 3", (short)535, new BlockData(105, 3), new BlockData(105, 3), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("melon stem 4", (short)536, new BlockData(105, 4), new BlockData(105, 4), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("melon stem 5", (short)537, new BlockData(105, 5), new BlockData(105, 5), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("melon stem 6", (short)538, new BlockData(105, 6), new BlockData(105, 6), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("melon stem 7", (short)539, new BlockData(105, 7), new BlockData(105, 7), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("pumpkin stem 0", (short)540, new BlockData(104, 0), new BlockData(104, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("pumpkin stem 1", (short)541, new BlockData(104, 1), new BlockData(104, 1), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("pumpkin stem 2", (short)542, new BlockData(104, 2), new BlockData(104, 2), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("pumpkin stem 3", (short)543, new BlockData(104, 3), new BlockData(104, 3), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("pumpkin stem 4", (short)544, new BlockData(104, 4), new BlockData(104, 4), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("pumpkin stem 5", (short)545, new BlockData(104, 5), new BlockData(104, 5), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("pumpkin stem 6", (short)546, new BlockData(104, 6), new BlockData(104, 6), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("pumpkin stem 7", (short)547, new BlockData(104, 7), new BlockData(104, 7), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("furnace facing north", (short)548, new BlockData(61, 2), new BlockData(61, 2), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("furnace facing south", (short)549, new BlockData(61, 3), new BlockData(61, 3), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("furnace facing west", (short)550, new BlockData(61, 4), new BlockData(61, 4), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("furnace facing east", (short)551, new BlockData(61, 5), new BlockData(61, 5), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("burning furnace facing north", (short)552, new BlockData(62, 2), new BlockData(62, 2), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("burning furnace facing south", (short)553, new BlockData(62, 3), new BlockData(62, 3), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("burning furnace facing west", (short)554, new BlockData(62, 4), new BlockData(62, 4), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("burning furnace facing east", (short)555, new BlockData(62, 5), new BlockData(62, 5), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("sign facing south", (short)556, new BlockData(63, 0), new BlockData(63, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing south southwest", (short)557, new BlockData(63, 1), new BlockData(63, 1), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing southwest", (short)558, new BlockData(63, 2), new BlockData(63, 2), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing west westsouth", (short)559, new BlockData(63, 3), new BlockData(63, 3), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing west", (short)560, new BlockData(63, 4), new BlockData(63, 4), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing west northwest", (short)561, new BlockData(63, 5), new BlockData(63, 5), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing northwest", (short)562, new BlockData(63, 6), new BlockData(63, 6), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing north northwest", (short)563, new BlockData(63, 7), new BlockData(63, 7), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing north", (short)564, new BlockData(63, 8), new BlockData(63, 8), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing north northeast", (short)565, new BlockData(63, 9), new BlockData(63, 9), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing northeast", (short)566, new BlockData(63, 10), new BlockData(63, 10), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing east northeast", (short)567, new BlockData(63, 11), new BlockData(63, 11), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing east", (short)568, new BlockData(63, 12), new BlockData(63, 12), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing east southeast", (short)569, new BlockData(63, 13), new BlockData(63, 13), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing southeast", (short)570, new BlockData(63, 14), new BlockData(63, 14), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("sign facing south southeast", (short)571, new BlockData(63, 15), new BlockData(63, 15), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("wall sign facing north", (short)572, new BlockData(68, 2), new BlockData(68, 2), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("wall sign facing south", (short)573, new BlockData(68, 3), new BlockData(68, 3), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("wall sign facing west", (short)574, new BlockData(68, 4), new BlockData(68, 4), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("wall sign facing east", (short)575, new BlockData(68, 5), new BlockData(68, 5), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("lower oak wood door facing east", (short)576, new BlockData(64, 0), new BlockData(64, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower oak wood door facing south", (short)577, new BlockData(64, 1), new BlockData(64, 1), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower oak wood door facing west", (short)578, new BlockData(64, 2), new BlockData(64, 2), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower oak wood door facing north", (short)579, new BlockData(64, 3), new BlockData(64, 3), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened oak wood door facing east", (short)580, new BlockData(64, 4), new BlockData(64, 4), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened oak wood door facing south", (short)581, new BlockData(64, 5), new BlockData(64, 5), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened oak wood door facing west", (short)582, new BlockData(64, 6), new BlockData(64, 6), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened oak wood door facing north", (short)583, new BlockData(64, 7), new BlockData(64, 7), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper oak wood door hinge left", (short)584, new BlockData(64, 8), new BlockData(64, 8), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper oak wood door hinge right", (short)585, new BlockData(64, 9), new BlockData(64, 9), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper powered oak wood door hinge left", (short)586, new BlockData(64, 10), new BlockData(64, 10), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper powered oak wood door hinge right", (short)587, new BlockData(64, 11), new BlockData(64, 11), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower spruce wood door facing east", (short)588, new BlockData(193, 0), new BlockData(193, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower spruce wood door facing south", (short)589, new BlockData(193, 1), new BlockData(193, 1), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower spruce wood door facing west", (short)590, new BlockData(193, 2), new BlockData(193, 2), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower spruce wood door facing north", (short)591, new BlockData(193, 3), new BlockData(193, 3), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened spruce wood door facing east", (short)592, new BlockData(193, 4), new BlockData(193, 4), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened spruce wood door facing south", (short)593, new BlockData(193, 5), new BlockData(193, 5), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened spruce wood door facing west", (short)594, new BlockData(193, 6), new BlockData(193, 6), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened spruce wood door facing north", (short)595, new BlockData(193, 7), new BlockData(193, 7), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper spruce wood door hinge left", (short)596, new BlockData(193, 8), new BlockData(193, 8), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper spruce wood door hinge right", (short)597, new BlockData(193, 9), new BlockData(193, 9), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper powered spruce wood door hinge left", (short)598, new BlockData(193, 10), new BlockData(193, 10), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper powered spruce wood door hinge right", (short)599, new BlockData(193, 11), new BlockData(193, 11), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower birch wood door facing east", (short)600, new BlockData(194, 0), new BlockData(194, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower birch wood door facing south", (short)601, new BlockData(194, 1), new BlockData(194, 1), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower birch wood door facing west", (short)602, new BlockData(194, 2), new BlockData(194, 2), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower birch wood door facing north", (short)603, new BlockData(194, 3), new BlockData(194, 3), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened birch wood door facing east", (short)604, new BlockData(194, 4), new BlockData(194, 4), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened birch wood door facing south", (short)605, new BlockData(194, 5), new BlockData(194, 5), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened birch wood door facing west", (short)606, new BlockData(194, 6), new BlockData(194, 6), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened birch wood door facing north", (short)607, new BlockData(194, 7), new BlockData(194, 7), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper birch wood door hinge left", (short)608, new BlockData(194, 8), new BlockData(194, 8), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper birch wood door hinge right", (short)609, new BlockData(194, 9), new BlockData(194, 9), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper powered birch wood door hinge left", (short)610, new BlockData(194, 10), new BlockData(194, 10), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper powered birch wood door hinge right", (short)611, new BlockData(194, 11), new BlockData(194, 11), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower jungle wood door facing east", (short)612, new BlockData(195, 0), new BlockData(195, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower jungle wood door facing south", (short)613, new BlockData(195, 1), new BlockData(195, 1), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower jungle wood door facing west", (short)614, new BlockData(195, 2), new BlockData(195, 2), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower jungle wood door facing north", (short)615, new BlockData(195, 3), new BlockData(195, 3), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened jungle wood door facing east", (short)616, new BlockData(195, 4), new BlockData(195, 4), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened jungle wood door facing south", (short)617, new BlockData(195, 5), new BlockData(195, 5), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened jungle wood door facing west", (short)618, new BlockData(195, 6), new BlockData(195, 6), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened jungle wood door facing north", (short)619, new BlockData(195, 7), new BlockData(195, 7), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper jungle wood door hinge left", (short)620, new BlockData(195, 8), new BlockData(195, 8), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper jungle wood door hinge right", (short)621, new BlockData(195, 9), new BlockData(195, 9), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper powered jungle wood door hinge left", (short)622, new BlockData(195, 10), new BlockData(195, 10), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper powered jungle wood door hinge right", (short)623, new BlockData(195, 11), new BlockData(195, 11), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower acacia wood door facing east", (short)624, new BlockData(196, 0), new BlockData(196, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower acacia wood door facing south", (short)625, new BlockData(196, 1), new BlockData(196, 1), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower acacia wood door facing west", (short)626, new BlockData(196, 2), new BlockData(196, 2), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower acacia wood door facing north", (short)627, new BlockData(196, 3), new BlockData(196, 3), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened acacia wood door facing east", (short)628, new BlockData(196, 4), new BlockData(196, 4), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened acacia wood door facing south", (short)629, new BlockData(196, 5), new BlockData(196, 5), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened acacia wood door facing west", (short)630, new BlockData(196, 6), new BlockData(196, 6), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower opened acacia wood door facing north", (short)631, new BlockData(196, 7), new BlockData(196, 7), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper acacia wood door hinge left", (short)632, new BlockData(196, 8), new BlockData(196, 8), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper acacia wood door hinge right", (short)633, new BlockData(196, 9), new BlockData(196, 9), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper powered acacia wood door hinge left", (short)634, new BlockData(196, 10), new BlockData(196, 10), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper powered acacia wood door hinge right", (short)635, new BlockData(196, 11), new BlockData(196, 11), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower dark oak wood door facing east", (short)636, new BlockData(197, 0), new BlockData(197, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower dark oak wood door facing south", (short)637, new BlockData(197, 1), new BlockData(197, 1), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower dark oak wood door facing west", (short)638, new BlockData(197, 2), new BlockData(197, 2), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower dark oak wood door facing north", (short)639, new BlockData(197, 3), new BlockData(197, 3), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower dark opened oak wood door facing east", (short)640, new BlockData(197, 4), new BlockData(197, 4), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower dark opened oak wood door facing south", (short)641, new BlockData(197, 5), new BlockData(197, 5), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower dark opened oak wood door facing west", (short)642, new BlockData(197, 6), new BlockData(197, 6), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower dark opened oak wood door facing north", (short)643, new BlockData(197, 7), new BlockData(197, 7), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper dark oak wood door hinge left", (short)644, new BlockData(197, 8), new BlockData(197, 8), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper dark oak wood door hinge right", (short)645, new BlockData(197, 9), new BlockData(197, 9), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper dark powered oak wood door hinge left", (short)646, new BlockData(197, 10), new BlockData(197, 10), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("upper dark powered oak wood door hinge right", (short)647, new BlockData(197, 11), new BlockData(197, 11), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("lower iron door facing east", (short)648, new BlockData(71, 0), new BlockData(71, 0), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("lower iron door facing south", (short)649, new BlockData(71, 1), new BlockData(71, 1), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("lower iron door facing west", (short)650, new BlockData(71, 2), new BlockData(71, 2), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("lower iron door facing north", (short)651, new BlockData(71, 3), new BlockData(71, 3), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("lower opened iron door facing east", (short)652, new BlockData(71, 4), new BlockData(71, 4), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("lower opened iron door facing south", (short)653, new BlockData(71, 5), new BlockData(71, 5), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("lower opened iron door facing west", (short)654, new BlockData(71, 6), new BlockData(71, 6), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("lower opened iron door facing north", (short)655, new BlockData(71, 7), new BlockData(71, 7), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("upper iron door hinge left", (short)656, new BlockData(71, 8), new BlockData(71, 8), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("upper iron door hinge right", (short)657, new BlockData(71, 9), new BlockData(71, 9), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("upper powered iron door hinge left", (short)658, new BlockData(71, 10), new BlockData(71, 10), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("upper powered iron door hinge right", (short)659, new BlockData(71, 11), new BlockData(71, 11), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("ladder facing north", (short)660, new BlockData(65, 2), new BlockData(65, 2), true, (double)0.4, (double)2, (byte)15, (byte)0));
+		add(new Blocks("ladder facing south", (short)661, new BlockData(65, 3), new BlockData(65, 3), true, (double)0.4, (double)2, (byte)15, (byte)0));
+		add(new Blocks("ladder facing west", (short)662, new BlockData(65, 4), new BlockData(65, 4), true, (double)0.4, (double)2, (byte)15, (byte)0));
+		add(new Blocks("ladder facing east", (short)663, new BlockData(65, 5), new BlockData(65, 5), true, (double)0.4, (double)2, (byte)15, (byte)0));
+		add(new Blocks("lever bottom pointing east", (short)664, new BlockData(69, 0), new BlockData(69, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("lever facing east", (short)665, new BlockData(69, 1), new BlockData(69, 1), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("lever facing west", (short)666, new BlockData(69, 2), new BlockData(69, 2), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("lever facing south", (short)667, new BlockData(69, 3), new BlockData(69, 3), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("lever facing north", (short)668, new BlockData(69, 4), new BlockData(69, 4), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("lever top pointing south", (short)669, new BlockData(69, 5), new BlockData(69, 5), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("lever top pointing east", (short)670, new BlockData(69, 6), new BlockData(69, 6), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("lever bottom pointing south", (short)671, new BlockData(69, 7), new BlockData(69, 7), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("powered lever bottom pointing east", (short)672, new BlockData(69, 8), new BlockData(69, 8), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("powered lever facing east", (short)673, new BlockData(69, 9), new BlockData(69, 9), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("powered lever facing west", (short)674, new BlockData(69, 10), new BlockData(69, 10), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("powered lever facing south", (short)675, new BlockData(69, 11), new BlockData(69, 11), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("powered lever facing north", (short)676, new BlockData(69, 12), new BlockData(69, 12), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("powered lever top pointing south", (short)677, new BlockData(69, 13), new BlockData(69, 13), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("powered lever top pointing east", (short)678, new BlockData(69, 14), new BlockData(69, 14), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("powered lever bottom pointing south", (short)679, new BlockData(69, 15), new BlockData(69, 15), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("stone pressure plate", (short)680, new BlockData(70, 0), new BlockData(70, 0), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("powered stone pressure plate", (short)681, new BlockData(70, 1), new BlockData(70, 1), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("wooden pressure plate", (short)682, new BlockData(72, 0), new BlockData(72, 0), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("powered wooden pressure plate", (short)683, new BlockData(72, 1), new BlockData(72, 1), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 0", (short)684, new BlockData(148, 0), new BlockData(148, 0), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 1", (short)685, new BlockData(148, 1), new BlockData(148, 1), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 2", (short)686, new BlockData(148, 2), new BlockData(148, 2), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 3", (short)687, new BlockData(148, 3), new BlockData(148, 3), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 4", (short)688, new BlockData(148, 4), new BlockData(148, 4), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 5", (short)689, new BlockData(148, 5), new BlockData(148, 5), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 6", (short)690, new BlockData(148, 6), new BlockData(148, 6), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 7", (short)691, new BlockData(148, 7), new BlockData(148, 7), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 8", (short)692, new BlockData(148, 8), new BlockData(148, 8), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 9", (short)693, new BlockData(148, 9), new BlockData(148, 9), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 10", (short)694, new BlockData(148, 10), new BlockData(148, 10), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 11", (short)695, new BlockData(148, 11), new BlockData(148, 11), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 12", (short)696, new BlockData(148, 12), new BlockData(148, 12), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 13", (short)697, new BlockData(148, 13), new BlockData(148, 13), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 14", (short)698, new BlockData(148, 14), new BlockData(148, 14), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("heavy weighted pressure plate 15", (short)699, new BlockData(148, 15), new BlockData(148, 15), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 0", (short)700, new BlockData(147, 0), new BlockData(147, 0), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 1", (short)701, new BlockData(147, 1), new BlockData(147, 1), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 2", (short)702, new BlockData(147, 2), new BlockData(147, 2), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 3", (short)703, new BlockData(147, 3), new BlockData(147, 3), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 4", (short)704, new BlockData(147, 4), new BlockData(147, 4), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 5", (short)705, new BlockData(147, 5), new BlockData(147, 5), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 6", (short)706, new BlockData(147, 6), new BlockData(147, 6), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 7", (short)707, new BlockData(147, 7), new BlockData(147, 7), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 8", (short)708, new BlockData(147, 8), new BlockData(147, 8), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 9", (short)709, new BlockData(147, 9), new BlockData(147, 9), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 10", (short)710, new BlockData(147, 10), new BlockData(147, 10), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 11", (short)711, new BlockData(147, 11), new BlockData(147, 11), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 12", (short)712, new BlockData(147, 12), new BlockData(147, 12), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 13", (short)713, new BlockData(147, 13), new BlockData(147, 13), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 14", (short)714, new BlockData(147, 14), new BlockData(147, 14), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("light weighted pressure plate 15", (short)715, new BlockData(147, 15), new BlockData(147, 15), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("bedrock", (short)716, new BlockData(7, 0), new BlockData(7, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("redstone torch facing east", (short)717, new BlockData(76, 1), new BlockData(76, 1), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("redstone torch facing west", (short)718, new BlockData(76, 2), new BlockData(76, 2), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("redstone torch facing south", (short)719, new BlockData(76, 3), new BlockData(76, 3), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("redstone torch facing north", (short)720, new BlockData(76, 4), new BlockData(76, 4), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("redstone torch facing up", (short)721, new BlockData(76, 5), new BlockData(76, 5), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("inactive redstone torch facing east", (short)722, new BlockData(75, 1), new BlockData(75, 1), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("inactive redstone torch facing west", (short)723, new BlockData(75, 2), new BlockData(75, 2), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("inactive redstone torch facing south", (short)724, new BlockData(75, 3), new BlockData(75, 3), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("inactive redstone torch facing north", (short)725, new BlockData(75, 4), new BlockData(75, 4), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("inactive redstone torch facing up", (short)726, new BlockData(75, 5), new BlockData(75, 5), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("stone button facing down", (short)727, new BlockData(77, 0), new BlockData(77, 0), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("stone button facing east", (short)728, new BlockData(77, 1), new BlockData(77, 1), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("stone button facing west", (short)729, new BlockData(77, 2), new BlockData(77, 2), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("stone button facing south", (short)730, new BlockData(77, 3), new BlockData(77, 3), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("stone button facing north", (short)731, new BlockData(77, 4), new BlockData(77, 4), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("stone button facing up", (short)732, new BlockData(77, 5), new BlockData(77, 5), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("wooden button facing down", (short)733, new BlockData(143, 0), new BlockData(143, 0), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("wooden button facing east", (short)734, new BlockData(143, 1), new BlockData(143, 1), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("wooden button facing west", (short)735, new BlockData(143, 2), new BlockData(143, 2), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("wooden button facing south", (short)736, new BlockData(143, 3), new BlockData(143, 3), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("wooden button facing north", (short)737, new BlockData(143, 4), new BlockData(143, 4), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("wooden button facing up", (short)738, new BlockData(143, 5), new BlockData(143, 5), false, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("snow layer 0", (short)739, new BlockData(78, 0), new BlockData(78, 0), true, (double)0.1, (double)0.5, (byte)0, (byte)0));
+		add(new Blocks("snow layer 1", (short)740, new BlockData(78, 1), new BlockData(78, 1), true, (double)0.1, (double)0.5, (byte)0, (byte)0));
+		add(new Blocks("snow layer 2", (short)741, new BlockData(78, 2), new BlockData(78, 2), true, (double)0.1, (double)0.5, (byte)0, (byte)0));
+		add(new Blocks("snow layer 3", (short)742, new BlockData(78, 3), new BlockData(78, 3), true, (double)0.1, (double)0.5, (byte)0, (byte)0));
+		add(new Blocks("snow layer 4", (short)743, new BlockData(78, 4), new BlockData(78, 4), true, (double)0.1, (double)0.5, (byte)0, (byte)0));
+		add(new Blocks("snow layer 5", (short)744, new BlockData(78, 5), new BlockData(78, 5), true, (double)0.1, (double)0.5, (byte)0, (byte)0));
+		add(new Blocks("snow layer 6", (short)745, new BlockData(78, 6), new BlockData(78, 6), true, (double)0.1, (double)0.5, (byte)0, (byte)0));
+		add(new Blocks("snow layer 7", (short)746, new BlockData(78, 7), new BlockData(78, 7), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("snow", (short)747, new BlockData(80, 0), new BlockData(80, 0), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("ice", (short)748, new BlockData(79, 0), new BlockData(79, 0), true, (double)0.5, (double)2.5, (byte)3, (byte)0));
+		add(new Blocks("packed ice", (short)749, new BlockData(174, 0), new BlockData(174, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("frosted ice", (short)750, new BlockData(212, 0), new BlockData(0, 0), true, (double)0.5, (double)2.5, (byte)3, (byte)0));
+		add(new Blocks("frosted ice cracked 1", (short)751, new BlockData(212, 1), new BlockData(0, 0), true, (double)0.5, (double)2.5, (byte)3, (byte)0));
+		add(new Blocks("frosted ice cracked 2", (short)752, new BlockData(212, 2), new BlockData(0, 0), true, (double)0.5, (double)2.5, (byte)3, (byte)0));
+		add(new Blocks("frosted ice cracked 3", (short)753, new BlockData(212, 3), new BlockData(0, 0), true, (double)0.5, (double)2.5, (byte)3, (byte)0));
+		add(new Blocks("cactus", (short)754, new BlockData(81, 0), new BlockData(81, 0), true, (double)0.4, (double)2, (byte)15, (byte)0));
+		add(new Blocks("sugar canes", (short)755, new BlockData(83, 0), new BlockData(83, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("clay", (short)756, new BlockData(82, 0), new BlockData(82, 0), true, (double)0.6, (double)3, (byte)15, (byte)0));
+		add(new Blocks("jukebox", (short)757, new BlockData(84, 0), new BlockData(84, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("hardened clay", (short)758, new BlockData(172, 0), new BlockData(172, 0), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("white stained clay", (short)759, new BlockData(159, 0), new BlockData(159, 0), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("orange stained clay", (short)760, new BlockData(159, 1), new BlockData(159, 1), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("magenta stained clay", (short)761, new BlockData(159, 2), new BlockData(159, 2), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("light blue stained clay", (short)762, new BlockData(159, 3), new BlockData(159, 3), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("yellow stained clay", (short)763, new BlockData(159, 4), new BlockData(159, 4), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("lime stained clay", (short)764, new BlockData(159, 5), new BlockData(159, 5), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("pink stained clay", (short)765, new BlockData(159, 6), new BlockData(159, 6), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("gray stained clay", (short)766, new BlockData(159, 7), new BlockData(159, 7), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("light gray stained clay", (short)767, new BlockData(159, 8), new BlockData(159, 8), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("cyan stained clay", (short)768, new BlockData(159, 9), new BlockData(159, 9), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("purple stained clay", (short)769, new BlockData(159, 10), new BlockData(159, 10), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("blue stained clay", (short)770, new BlockData(159, 11), new BlockData(159, 11), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("brown stained clay", (short)771, new BlockData(159, 12), new BlockData(159, 12), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("green stained clay", (short)772, new BlockData(159, 13), new BlockData(159, 13), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("red stained clay", (short)773, new BlockData(159, 14), new BlockData(159, 14), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("black stained clay", (short)774, new BlockData(159, 15), new BlockData(159, 15), true, (double)1.75, (double)21, (byte)15, (byte)0));
+		add(new Blocks("pumpkin facing south", (short)775, new BlockData(86, 0), new BlockData(86, 0), true, (double)1, (double)5, (byte)15, (byte)0));
+		add(new Blocks("pumpkin facing west", (short)776, new BlockData(86, 1), new BlockData(86, 1), true, (double)1, (double)5, (byte)15, (byte)0));
+		add(new Blocks("pumpkin facing north", (short)777, new BlockData(86, 2), new BlockData(86, 2), true, (double)1, (double)5, (byte)15, (byte)0));
+		add(new Blocks("pumpkin facing east", (short)778, new BlockData(86, 3), new BlockData(86, 3), true, (double)1, (double)5, (byte)15, (byte)0));
+		add(new Blocks("faceless pumpkin facing south", (short)779, new BlockData(86, 4), new BlockData(86, 4), true, (double)1, (double)5, (byte)15, (byte)0));
+		add(new Blocks("faceless pumpkin facing west", (short)780, new BlockData(86, 5), new BlockData(86, 5), true, (double)1, (double)5, (byte)15, (byte)0));
+		add(new Blocks("faceless pumpkin facing north", (short)781, new BlockData(86, 6), new BlockData(86, 6), true, (double)1, (double)5, (byte)15, (byte)0));
+		add(new Blocks("faceless pumpkin facing east", (short)782, new BlockData(86, 7), new BlockData(86, 7), true, (double)1, (double)5, (byte)15, (byte)0));
+		add(new Blocks("jack o lantern facing south", (short)783, new BlockData(91, 0), new BlockData(91, 0), true, (double)1, (double)5, (byte)15, (byte)15));
+		add(new Blocks("jack o lantern facing west", (short)784, new BlockData(91, 1), new BlockData(91, 1), true, (double)1, (double)5, (byte)15, (byte)15));
+		add(new Blocks("jack o lantern facing north", (short)785, new BlockData(91, 2), new BlockData(91, 2), true, (double)1, (double)5, (byte)15, (byte)15));
+		add(new Blocks("jack o lantern facing east", (short)786, new BlockData(91, 3), new BlockData(91, 3), true, (double)1, (double)5, (byte)15, (byte)15));
+		add(new Blocks("faceless jack o lantern facing south", (short)787, new BlockData(91, 4), new BlockData(91, 4), true, (double)1, (double)5, (byte)15, (byte)15));
+		add(new Blocks("faceless jack o lantern facing west", (short)788, new BlockData(91, 5), new BlockData(91, 5), true, (double)1, (double)5, (byte)15, (byte)15));
+		add(new Blocks("faceless jack o lantern facing north", (short)789, new BlockData(91, 6), new BlockData(91, 6), true, (double)1, (double)5, (byte)15, (byte)15));
+		add(new Blocks("faceless jack o lantern facing east", (short)790, new BlockData(91, 7), new BlockData(91, 7), true, (double)1, (double)5, (byte)15, (byte)15));
+		add(new Blocks("oak wood fence", (short)791, new BlockData(85, 0), new BlockData(85, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("spruce wood fence", (short)792, new BlockData(188, 0), new BlockData(85, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("birch wood fence", (short)793, new BlockData(189, 0), new BlockData(85, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("jungle wood fence", (short)794, new BlockData(190, 0), new BlockData(85, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("acacia wood fence", (short)795, new BlockData(192, 0), new BlockData(85, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("dark oak wood fence", (short)796, new BlockData(191, 0), new BlockData(85, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("nether brick fence", (short)797, new BlockData(113, 0), new BlockData(113, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("netherrack", (short)798, new BlockData(87, 0), new BlockData(87, 0), true, (double)0.4, (double)2, (byte)15, (byte)0));
+		add(new Blocks("soul sand", (short)799, new BlockData(88, 0), new BlockData(88, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("glowstone", (short)800, new BlockData(89, 0), new BlockData(89, 0), true, (double)0.3, (double)1.5, (byte)15, (byte)15));
+		add(new Blocks("nether brick", (short)801, new BlockData(112, 0), new BlockData(112, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("red nether brick", (short)802, new BlockData(215, 0), new BlockData(0, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("nether portal east west", (short)803, new BlockData(90, 0), new BlockData(90, 0), false, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("nether portal north south", (short)804, new BlockData(90, 1), new BlockData(90, 1), false, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("cake 0", (short)805, new BlockData(92, 0), new BlockData(92, 0), true, (double)0.5, (double)2.5, (byte)0, (byte)0));
+		add(new Blocks("cake 1", (short)806, new BlockData(92, 1), new BlockData(92, 1), true, (double)0.5, (double)2.5, (byte)0, (byte)0));
+		add(new Blocks("cake 2", (short)807, new BlockData(92, 2), new BlockData(92, 2), true, (double)0.5, (double)2.5, (byte)0, (byte)0));
+		add(new Blocks("cake 3", (short)808, new BlockData(92, 3), new BlockData(92, 3), true, (double)0.5, (double)2.5, (byte)0, (byte)0));
+		add(new Blocks("cake 4", (short)809, new BlockData(92, 4), new BlockData(92, 4), true, (double)0.5, (double)2.5, (byte)0, (byte)0));
+		add(new Blocks("cake 5", (short)810, new BlockData(92, 5), new BlockData(92, 5), true, (double)0.5, (double)2.5, (byte)0, (byte)0));
+		add(new Blocks("cake 6", (short)811, new BlockData(92, 6), new BlockData(92, 6), true, (double)0.5, (double)2.5, (byte)0, (byte)0));
+		add(new Blocks("repeater facing north 1 delay", (short)812, new BlockData(93, 0), new BlockData(93, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing east 1 delay", (short)813, new BlockData(93, 1), new BlockData(93, 1), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing south 1 delay", (short)814, new BlockData(93, 2), new BlockData(93, 2), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing west 1 delay", (short)815, new BlockData(93, 3), new BlockData(93, 3), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing north 2 delay", (short)816, new BlockData(93, 4), new BlockData(93, 4), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing east 2 delay", (short)817, new BlockData(93, 5), new BlockData(93, 5), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing south 2 delay", (short)818, new BlockData(93, 6), new BlockData(93, 6), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing west 2 delay", (short)819, new BlockData(93, 7), new BlockData(93, 7), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing north 3 delay", (short)820, new BlockData(93, 8), new BlockData(93, 8), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing east 3 delay", (short)821, new BlockData(93, 9), new BlockData(93, 9), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing south 3 delay", (short)822, new BlockData(93, 10), new BlockData(93, 10), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing west 3 delay", (short)823, new BlockData(93, 11), new BlockData(93, 11), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing north 4 delay", (short)824, new BlockData(93, 12), new BlockData(93, 12), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing east 4 delay", (short)825, new BlockData(93, 13), new BlockData(93, 13), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing south 4 delay", (short)826, new BlockData(93, 14), new BlockData(93, 14), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("repeater facing west 4 delay", (short)827, new BlockData(93, 15), new BlockData(93, 15), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("powered repeater facing north 1 delay", (short)828, new BlockData(94, 0), new BlockData(94, 0), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing east 1 delay", (short)829, new BlockData(94, 1), new BlockData(94, 1), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing south 1 delay", (short)830, new BlockData(94, 2), new BlockData(94, 2), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing west 1 delay", (short)831, new BlockData(94, 3), new BlockData(94, 3), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing north 2 delay", (short)832, new BlockData(94, 4), new BlockData(94, 4), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing east 2 delay", (short)833, new BlockData(94, 5), new BlockData(94, 5), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing south 2 delay", (short)834, new BlockData(94, 6), new BlockData(94, 6), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing west 2 delay", (short)835, new BlockData(94, 7), new BlockData(94, 7), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing north 3 delay", (short)836, new BlockData(94, 8), new BlockData(94, 8), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing east 3 delay", (short)837, new BlockData(94, 9), new BlockData(94, 9), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing south 3 delay", (short)838, new BlockData(94, 10), new BlockData(94, 10), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing west 3 delay", (short)839, new BlockData(94, 11), new BlockData(94, 11), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing north 4 delay", (short)840, new BlockData(94, 12), new BlockData(94, 12), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing east 4 delay", (short)841, new BlockData(94, 13), new BlockData(94, 13), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing south 4 delay", (short)842, new BlockData(94, 14), new BlockData(94, 14), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("powered repeater facing west 4 delay", (short)843, new BlockData(94, 15), new BlockData(94, 15), true, (double)0, (double)0, (byte)15, (byte)7));
+		add(new Blocks("wooden trapdoor south side", (short)844, new BlockData(96, 0), new BlockData(96, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("wooden trapdoor north side", (short)845, new BlockData(96, 1), new BlockData(96, 1), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("wooden trapdoor east side", (short)846, new BlockData(96, 2), new BlockData(96, 2), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("wooden trapdoor west side", (short)847, new BlockData(96, 3), new BlockData(96, 3), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened wooden trapdoor south side", (short)848, new BlockData(96, 4), new BlockData(96, 4), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened wooden trapdoor north side", (short)849, new BlockData(96, 5), new BlockData(96, 5), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened wooden trapdoor east side", (short)850, new BlockData(96, 6), new BlockData(96, 6), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened wooden trapdoor west side", (short)851, new BlockData(96, 7), new BlockData(96, 7), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("iron trapdoor south side", (short)852, new BlockData(167, 0), new BlockData(167, 0), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("iron trapdoor north side", (short)853, new BlockData(167, 1), new BlockData(167, 1), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("iron trapdoor east side", (short)854, new BlockData(167, 2), new BlockData(167, 2), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("iron trapdoor west side", (short)855, new BlockData(167, 3), new BlockData(167, 3), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("opened iron trapdoor south side", (short)856, new BlockData(167, 4), new BlockData(167, 4), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("opened iron trapdoor north side", (short)857, new BlockData(167, 5), new BlockData(167, 5), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("opened iron trapdoor east side", (short)858, new BlockData(167, 6), new BlockData(167, 6), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("opened iron trapdoor west side", (short)859, new BlockData(167, 7), new BlockData(167, 7), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("top iron trapdoor south side", (short)860, new BlockData(167, 8), new BlockData(167, 8), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("top iron trapdoor north side", (short)861, new BlockData(167, 9), new BlockData(167, 9), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("top iron trapdoor east side", (short)862, new BlockData(167, 10), new BlockData(167, 10), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("top iron trapdoor west side", (short)863, new BlockData(167, 11), new BlockData(167, 11), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("opened top iron trapdoor south side", (short)864, new BlockData(167, 12), new BlockData(167, 12), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("opened top iron trapdoor north side", (short)865, new BlockData(167, 13), new BlockData(167, 13), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("opened top iron trapdoor east side", (short)866, new BlockData(167, 14), new BlockData(167, 14), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("opened top iron trapdoor west side", (short)867, new BlockData(167, 15), new BlockData(167, 15), true, (double)5, (double)25, (byte)15, (byte)0));
+		add(new Blocks("stone monster egg", (short)868, new BlockData(97, 0), new BlockData(97, 0), true, (double)0.75, (double)3.75, (byte)15, (byte)0));
+		add(new Blocks("cobblestone monster egg", (short)869, new BlockData(97, 1), new BlockData(97, 1), true, (double)0.75, (double)3.75, (byte)15, (byte)0));
+		add(new Blocks("stone brick monster egg", (short)870, new BlockData(97, 2), new BlockData(97, 2), true, (double)0.75, (double)3.75, (byte)15, (byte)0));
+		add(new Blocks("mossy stone brick monster egg", (short)871, new BlockData(97, 3), new BlockData(97, 3), true, (double)0.75, (double)3.75, (byte)15, (byte)0));
+		add(new Blocks("cracked stone brick monster egg", (short)872, new BlockData(97, 4), new BlockData(97, 4), true, (double)0.75, (double)3.75, (byte)15, (byte)0));
+		add(new Blocks("chiseled stone brick monster egg", (short)873, new BlockData(97, 5), new BlockData(97, 5), true, (double)0.75, (double)3.75, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom pores everywhere", (short)874, new BlockData(99, 0), new BlockData(99, 0), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom cap top west north", (short)875, new BlockData(99, 1), new BlockData(99, 1), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom cap top north", (short)876, new BlockData(99, 2), new BlockData(99, 2), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom cap top north east", (short)877, new BlockData(99, 3), new BlockData(99, 3), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom cap top west", (short)878, new BlockData(99, 4), new BlockData(99, 4), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom cap top", (short)879, new BlockData(99, 5), new BlockData(99, 5), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom cap top east", (short)880, new BlockData(99, 6), new BlockData(99, 6), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom cap top south west", (short)881, new BlockData(99, 7), new BlockData(99, 7), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom cap top south", (short)882, new BlockData(99, 8), new BlockData(99, 8), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom cap top east south", (short)883, new BlockData(99, 9), new BlockData(99, 9), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom stem every side", (short)884, new BlockData(99, 10), new BlockData(99, 10), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("still lava 1", (short)885, new BlockData(10, 1), new BlockData(10, 1), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava 2", (short)886, new BlockData(10, 2), new BlockData(10, 2), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava 3", (short)887, new BlockData(10, 3), new BlockData(10, 3), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("brown mushroom caps everywhere", (short)888, new BlockData(99, 14), new BlockData(99, 14), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("brown mushroom stems everywhere", (short)889, new BlockData(99, 15), new BlockData(99, 15), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom pores everywhere", (short)890, new BlockData(100, 0), new BlockData(100, 0), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom cap top west north", (short)891, new BlockData(100, 1), new BlockData(100, 1), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom cap top north", (short)892, new BlockData(100, 2), new BlockData(100, 2), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom cap top north east", (short)893, new BlockData(100, 3), new BlockData(100, 3), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom cap top west", (short)894, new BlockData(100, 4), new BlockData(100, 4), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom cap top", (short)895, new BlockData(100, 5), new BlockData(100, 5), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom cap top east", (short)896, new BlockData(100, 6), new BlockData(100, 6), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom cap top south west", (short)897, new BlockData(100, 7), new BlockData(100, 7), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom cap top south", (short)898, new BlockData(100, 8), new BlockData(100, 8), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom cap top east south", (short)899, new BlockData(100, 9), new BlockData(100, 9), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom stem every side", (short)900, new BlockData(100, 10), new BlockData(100, 10), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom caps everywhere", (short)901, new BlockData(100, 14), new BlockData(100, 14), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("red mushroom stems everywhere", (short)902, new BlockData(100, 15), new BlockData(100, 15), true, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("iron bars", (short)903, new BlockData(101, 0), new BlockData(101, 0), true, (double)5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("melon", (short)904, new BlockData(103, 0), new BlockData(103, 0), true, (double)1, (double)5, (byte)15, (byte)0));
+		add(new Blocks("vine south", (short)905, new BlockData(106, 1), new BlockData(106, 1), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine west", (short)906, new BlockData(106, 2), new BlockData(106, 2), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine south west", (short)907, new BlockData(106, 3), new BlockData(106, 3), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine north", (short)908, new BlockData(106, 4), new BlockData(106, 4), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine north south", (short)909, new BlockData(106, 5), new BlockData(106, 5), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine north west", (short)910, new BlockData(106, 6), new BlockData(106, 6), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine north south west", (short)911, new BlockData(106, 7), new BlockData(106, 7), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine east", (short)912, new BlockData(106, 8), new BlockData(106, 8), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine south east", (short)913, new BlockData(106, 9), new BlockData(106, 9), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine west east", (short)914, new BlockData(106, 10), new BlockData(106, 10), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine south west east", (short)915, new BlockData(106, 11), new BlockData(106, 11), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine north east", (short)916, new BlockData(106, 12), new BlockData(106, 12), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine north south east", (short)917, new BlockData(106, 13), new BlockData(106, 13), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine north west east", (short)918, new BlockData(106, 14), new BlockData(106, 14), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("vine every side", (short)919, new BlockData(106, 15), new BlockData(106, 15), false, (double)0.2, (double)1, (byte)15, (byte)0));
+		add(new Blocks("oak wooden fence gate facing south", (short)920, new BlockData(107, 0), new BlockData(107, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("oak wooden fence gate facing west", (short)921, new BlockData(107, 1), new BlockData(107, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("oak wooden fence gate facing north", (short)922, new BlockData(107, 2), new BlockData(107, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("oak wooden fence gate facing east", (short)923, new BlockData(107, 3), new BlockData(107, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened oak wooden fence gate facing south", (short)924, new BlockData(107, 4), new BlockData(107, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened oak wooden fence gate facing west", (short)925, new BlockData(107, 5), new BlockData(107, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened oak wooden fence gate facing north", (short)926, new BlockData(107, 6), new BlockData(107, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened oak wooden fence gate facing east", (short)927, new BlockData(107, 7), new BlockData(107, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("spruce wooden fence gate facing south", (short)928, new BlockData(183, 0), new BlockData(183, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("spruce wooden fence gate facing west", (short)929, new BlockData(183, 1), new BlockData(183, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("spruce wooden fence gate facing north", (short)930, new BlockData(183, 2), new BlockData(183, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("spruce wooden fence gate facing east", (short)931, new BlockData(183, 3), new BlockData(183, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened spruce wooden fence gate facing south", (short)932, new BlockData(183, 4), new BlockData(183, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened spruce wooden fence gate facing west", (short)933, new BlockData(183, 5), new BlockData(183, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened spruce wooden fence gate facing north", (short)934, new BlockData(183, 6), new BlockData(183, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened spruce wooden fence gate facing east", (short)935, new BlockData(183, 7), new BlockData(183, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("birch wooden fence gate facing south", (short)936, new BlockData(184, 0), new BlockData(184, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("birch wooden fence gate facing west", (short)937, new BlockData(184, 1), new BlockData(184, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("birch wooden fence gate facing north", (short)938, new BlockData(184, 2), new BlockData(184, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("birch wooden fence gate facing east", (short)939, new BlockData(184, 3), new BlockData(184, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened birch wooden fence gate facing south", (short)940, new BlockData(184, 4), new BlockData(184, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened birch wooden fence gate facing west", (short)941, new BlockData(184, 5), new BlockData(184, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened birch wooden fence gate facing north", (short)942, new BlockData(184, 6), new BlockData(184, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened birch wooden fence gate facing east", (short)943, new BlockData(184, 7), new BlockData(184, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("jungle wooden fence gate facing south", (short)944, new BlockData(185, 0), new BlockData(185, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("jungle wooden fence gate facing west", (short)945, new BlockData(185, 1), new BlockData(185, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("jungle wooden fence gate facing north", (short)946, new BlockData(185, 2), new BlockData(185, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("jungle wooden fence gate facing east", (short)947, new BlockData(185, 3), new BlockData(185, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened jungle wooden fence gate facing south", (short)948, new BlockData(185, 4), new BlockData(185, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened jungle wooden fence gate facing west", (short)949, new BlockData(185, 5), new BlockData(185, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened jungle wooden fence gate facing north", (short)950, new BlockData(185, 6), new BlockData(185, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened jungle wooden fence gate facing east", (short)951, new BlockData(185, 7), new BlockData(185, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("acacia wooden fence gate facing south", (short)952, new BlockData(187, 0), new BlockData(187, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("acacia wooden fence gate facing west", (short)953, new BlockData(187, 1), new BlockData(187, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("acacia wooden fence gate facing north", (short)954, new BlockData(187, 2), new BlockData(187, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("acacia wooden fence gate facing east", (short)955, new BlockData(187, 3), new BlockData(187, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened acacia wooden fence gate facing south", (short)956, new BlockData(187, 4), new BlockData(187, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened acacia wooden fence gate facing west", (short)957, new BlockData(187, 5), new BlockData(187, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened acacia wooden fence gate facing north", (short)958, new BlockData(187, 6), new BlockData(187, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened acacia wooden fence gate facing east", (short)959, new BlockData(187, 7), new BlockData(187, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("dark oak wooden fence gate facing south", (short)960, new BlockData(186, 0), new BlockData(186, 0), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("dark oak wooden fence gate facing west", (short)961, new BlockData(186, 1), new BlockData(186, 1), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("dark oak wooden fence gate facing north", (short)962, new BlockData(186, 2), new BlockData(186, 2), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("dark oak wooden fence gate facing east", (short)963, new BlockData(186, 3), new BlockData(186, 3), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened dark oak wooden fence gate facing south", (short)964, new BlockData(186, 4), new BlockData(186, 4), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened dark oak wooden fence gate facing west", (short)965, new BlockData(186, 5), new BlockData(186, 5), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened dark oak wooden fence gate facing north", (short)966, new BlockData(186, 6), new BlockData(186, 6), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened dark oak wooden fence gate facing east", (short)967, new BlockData(186, 7), new BlockData(186, 7), true, (double)2, (double)15, (byte)15, (byte)0));
+		add(new Blocks("nether wart 0", (short)968, new BlockData(115, 0), new BlockData(115, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("nether wart 1", (short)969, new BlockData(115, 1), new BlockData(115, 1), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("nether wart 2", (short)970, new BlockData(115, 2), new BlockData(115, 2), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("nether wart 3", (short)971, new BlockData(115, 3), new BlockData(115, 3), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("enchanting table", (short)972, new BlockData(116, 0), new BlockData(116, 0), true, (double)5, (double)6000, (byte)15, (byte)0));
+		add(new Blocks("brewing stand empty", (short)973, new BlockData(117, 0), new BlockData(117, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)1));
+		add(new Blocks("brewing stand bottle 1", (short)974, new BlockData(117, 1), new BlockData(117, 1), true, (double)0.5, (double)2.5, (byte)15, (byte)1));
+		add(new Blocks("brewing stand bottle 2", (short)975, new BlockData(117, 2), new BlockData(117, 2), true, (double)0.5, (double)2.5, (byte)15, (byte)1));
+		add(new Blocks("brewing stand bottle 1 2", (short)976, new BlockData(117, 3), new BlockData(117, 3), true, (double)0.5, (double)2.5, (byte)15, (byte)1));
+		add(new Blocks("brewing stand bottle 3", (short)977, new BlockData(117, 4), new BlockData(117, 4), true, (double)0.5, (double)2.5, (byte)15, (byte)1));
+		add(new Blocks("brewing stand bottle 1 3", (short)978, new BlockData(117, 5), new BlockData(117, 5), true, (double)0.5, (double)2.5, (byte)15, (byte)1));
+		add(new Blocks("brewing stand bottle 2 3", (short)979, new BlockData(117, 6), new BlockData(117, 6), true, (double)0.5, (double)2.5, (byte)15, (byte)1));
+		add(new Blocks("brewing stand full", (short)980, new BlockData(117, 7), new BlockData(117, 7), true, (double)0.5, (double)2.5, (byte)15, (byte)1));
+		add(new Blocks("cauldron empty", (short)981, new BlockData(118, 0), new BlockData(118, 0), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("cauldron one sixth filled", (short)982, new BlockData(0, 0), new BlockData(118, 1), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("cauldron one third filled", (short)983, new BlockData(118, 1), new BlockData(118, 2), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("cauldron three sixth filled", (short)984, new BlockData(0, 0), new BlockData(118, 3), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("cauldron two third filled", (short)985, new BlockData(118, 2), new BlockData(118, 4), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("cauldron five sixth filled", (short)986, new BlockData(0, 0), new BlockData(118, 5), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("cauldron filled", (short)987, new BlockData(118, 3), new BlockData(118, 6), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("end portal frame south", (short)988, new BlockData(120, 0), new BlockData(120, 0), true, (double)-1, (double)1.8e+07, (byte)0, (byte)1));
+		add(new Blocks("end portal frame west", (short)989, new BlockData(120, 1), new BlockData(120, 1), true, (double)-1, (double)1.8e+07, (byte)0, (byte)1));
+		add(new Blocks("end portal frame north", (short)990, new BlockData(120, 2), new BlockData(120, 2), true, (double)-1, (double)1.8e+07, (byte)0, (byte)1));
+		add(new Blocks("end portal frame east", (short)991, new BlockData(120, 3), new BlockData(120, 3), true, (double)-1, (double)1.8e+07, (byte)0, (byte)1));
+		add(new Blocks("active end portal frame south", (short)992, new BlockData(120, 4), new BlockData(120, 4), true, (double)-1, (double)1.8e+07, (byte)0, (byte)1));
+		add(new Blocks("active end portal frame west", (short)993, new BlockData(120, 5), new BlockData(120, 5), true, (double)-1, (double)1.8e+07, (byte)0, (byte)1));
+		add(new Blocks("active end portal frame north", (short)994, new BlockData(120, 6), new BlockData(120, 6), true, (double)-1, (double)1.8e+07, (byte)0, (byte)1));
+		add(new Blocks("active end portal frame east", (short)995, new BlockData(120, 7), new BlockData(120, 7), true, (double)-1, (double)1.8e+07, (byte)0, (byte)1));
+		add(new Blocks("end stone", (short)996, new BlockData(121, 0), new BlockData(121, 0), true, (double)3, (double)45, (byte)15, (byte)0));
+		add(new Blocks("end portal", (short)997, new BlockData(119, 0), new BlockData(119, 0), true, (double)-1, (double)1.8e+07, (byte)0, (byte)15));
+		add(new Blocks("dragon egg", (short)998, new BlockData(122, 0), new BlockData(122, 0), true, (double)3, (double)45, (byte)0, (byte)1));
+		add(new Blocks("redstone lamp", (short)999, new BlockData(123, 0), new BlockData(123, 0), true, (double)0.3, (double)1.5, (byte)15, (byte)0));
+		add(new Blocks("active redstone lamp", (short)1000, new BlockData(124, 0), new BlockData(124, 0), true, (double)0.3, (double)1.5, (byte)15, (byte)15));
+		add(new Blocks("cocoa north 0", (short)1001, new BlockData(127, 0), new BlockData(127, 0), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("cocoa east 0", (short)1002, new BlockData(127, 1), new BlockData(127, 1), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("cocoa south 0", (short)1003, new BlockData(127, 2), new BlockData(127, 2), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("cocoa west 0", (short)1004, new BlockData(127, 3), new BlockData(127, 3), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("cocoa north 1", (short)1005, new BlockData(127, 4), new BlockData(127, 4), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("cocoa east 1", (short)1006, new BlockData(127, 5), new BlockData(127, 5), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("cocoa south 1", (short)1007, new BlockData(127, 6), new BlockData(127, 6), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("cocoa west 1", (short)1008, new BlockData(127, 7), new BlockData(127, 7), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("cocoa north 2", (short)1009, new BlockData(127, 8), new BlockData(127, 8), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("cocoa east 2", (short)1010, new BlockData(127, 9), new BlockData(127, 9), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("cocoa south 2", (short)1011, new BlockData(127, 10), new BlockData(127, 10), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("cocoa west 2", (short)1012, new BlockData(127, 11), new BlockData(127, 11), true, (double)0.2, (double)15, (byte)0, (byte)0));
+		add(new Blocks("ender chest facing north", (short)1013, new BlockData(130, 2), new BlockData(130, 2), true, (double)22.5, (double)3000, (byte)0, (byte)7));
+		add(new Blocks("ender chest facing south", (short)1014, new BlockData(130, 3), new BlockData(130, 3), true, (double)22.5, (double)3000, (byte)0, (byte)7));
+		add(new Blocks("ender chest facing west", (short)1015, new BlockData(130, 4), new BlockData(130, 4), true, (double)22.5, (double)3000, (byte)0, (byte)7));
+		add(new Blocks("ender chest facing east", (short)1016, new BlockData(130, 5), new BlockData(130, 5), true, (double)22.5, (double)3000, (byte)0, (byte)7));
+		add(new Blocks("tripwire hook facing south", (short)1017, new BlockData(131, 0), new BlockData(131, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("tripwire hook facing west", (short)1018, new BlockData(131, 1), new BlockData(131, 1), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("tripwire hook facing north", (short)1019, new BlockData(131, 2), new BlockData(131, 2), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("tripwire hook facing east", (short)1020, new BlockData(131, 3), new BlockData(131, 3), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("connected tripwire hook facing south", (short)1021, new BlockData(131, 4), new BlockData(131, 4), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("connected tripwire hook facing west", (short)1022, new BlockData(131, 5), new BlockData(131, 5), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("connected tripwire hook facing north", (short)1023, new BlockData(131, 6), new BlockData(131, 6), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("connected tripwire hook facing east", (short)1024, new BlockData(131, 7), new BlockData(131, 7), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("powered tripwire hook facing south", (short)1025, new BlockData(131, 8), new BlockData(131, 8), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("powered tripwire hook facing west", (short)1026, new BlockData(131, 9), new BlockData(131, 9), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("powered tripwire hook facing north", (short)1027, new BlockData(131, 10), new BlockData(131, 10), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("powered tripwire hook facing east", (short)1028, new BlockData(131, 11), new BlockData(131, 11), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("powered tripwire", (short)1029, new BlockData(132, 1), new BlockData(132, 1), false, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("connected tripwire", (short)1030, new BlockData(132, 4), new BlockData(132, 4), false, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("tripwire", (short)1031, new BlockData(132, 8), new BlockData(132, 8), false, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("command block facing down", (short)1032, new BlockData(137, 0), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("command block facing up", (short)1033, new BlockData(137, 1), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("command block facing north", (short)1034, new BlockData(137, 2), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("command block facing south", (short)1035, new BlockData(137, 3), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("command block facing west", (short)1036, new BlockData(137, 4), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("command block facing east", (short)1037, new BlockData(137, 5), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional command block facing up", (short)1038, new BlockData(137, 9), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional command block facing north", (short)1039, new BlockData(137, 10), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional command block facing south", (short)1040, new BlockData(137, 11), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional command block facing west", (short)1041, new BlockData(137, 12), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional command block facing east", (short)1042, new BlockData(137, 13), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("repeating command block facing down", (short)1043, new BlockData(210, 0), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("repeating command block facing up", (short)1044, new BlockData(210, 1), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("repeating command block facing north", (short)1045, new BlockData(210, 2), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("repeating command block facing south", (short)1046, new BlockData(210, 3), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("repeating command block facing west", (short)1047, new BlockData(210, 4), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("repeating command block facing east", (short)1048, new BlockData(210, 5), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional repeating command block facing down", (short)1049, new BlockData(210, 8), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional repeating command block facing up", (short)1050, new BlockData(210, 9), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional repeating command block facing north", (short)1051, new BlockData(210, 10), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional repeating command block facing south", (short)1052, new BlockData(210, 11), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional repeating command block facing west", (short)1053, new BlockData(210, 12), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional repeating command block facing east", (short)1054, new BlockData(210, 13), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("chain command block facing down", (short)1055, new BlockData(211, 0), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("chain command block facing up", (short)1056, new BlockData(211, 1), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("chain command block facing north", (short)1057, new BlockData(211, 2), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("chain command block facing south", (short)1058, new BlockData(211, 3), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("chain command block facing west", (short)1059, new BlockData(211, 4), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("chain command block facing east", (short)1060, new BlockData(211, 5), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional chain command block facing down", (short)1061, new BlockData(211, 8), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional chain command block facing up", (short)1062, new BlockData(211, 9), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional chain command block facing north", (short)1063, new BlockData(211, 10), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional chain command block facing south", (short)1064, new BlockData(211, 11), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional chain command block facing west", (short)1065, new BlockData(211, 12), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("conditional chain command block facing east", (short)1066, new BlockData(211, 13), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("beacon", (short)1067, new BlockData(138, 0), new BlockData(138, 0), true, (double)3, (double)15, (byte)0, (byte)15));
+		add(new Blocks("flower pot", (short)1068, new BlockData(140, 0), new BlockData(140, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("mob head floor", (short)1069, new BlockData(144, 1), new BlockData(144, 1), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("mob head facing north", (short)1070, new BlockData(144, 2), new BlockData(144, 2), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("mob head facing south", (short)1071, new BlockData(144, 3), new BlockData(144, 3), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("mob head facing east", (short)1072, new BlockData(144, 4), new BlockData(144, 4), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("mob head facing west", (short)1073, new BlockData(144, 5), new BlockData(144, 5), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("anvil north south", (short)1074, new BlockData(145, 0), new BlockData(145, 0), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("anvil south north", (short)1075, new BlockData(145, 2), new BlockData(145, 2), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("slightly anvil north south", (short)1076, new BlockData(145, 4), new BlockData(145, 4), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("slightly anvil south north", (short)1077, new BlockData(145, 6), new BlockData(145, 6), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("very anvil north south", (short)1078, new BlockData(145, 8), new BlockData(145, 8), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("very anvil south north", (short)1079, new BlockData(145, 10), new BlockData(145, 10), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("anvil east west", (short)1080, new BlockData(145, 1), new BlockData(145, 1), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("anvil west east", (short)1081, new BlockData(145, 3), new BlockData(145, 3), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("slightly anvil east west", (short)1082, new BlockData(145, 5), new BlockData(145, 5), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("slightly anvil west east", (short)1083, new BlockData(145, 7), new BlockData(145, 7), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("very anvil east west", (short)1084, new BlockData(145, 9), new BlockData(145, 9), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("very anvil west east", (short)1085, new BlockData(145, 11), new BlockData(145, 11), true, (double)5, (double)6000, (byte)0, (byte)0));
+		add(new Blocks("top wooden trapdoor south side", (short)1086, new BlockData(96, 8), new BlockData(96, 8), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("top wooden trapdoor north side", (short)1087, new BlockData(96, 9), new BlockData(96, 9), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("top wooden trapdoor east side", (short)1088, new BlockData(96, 10), new BlockData(96, 10), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("top wooden trapdoor west side", (short)1089, new BlockData(96, 11), new BlockData(96, 11), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened top wooden trapdoor south side", (short)1090, new BlockData(96, 12), new BlockData(96, 12), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened top wooden trapdoor north side", (short)1091, new BlockData(96, 13), new BlockData(96, 13), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened top wooden trapdoor east side", (short)1092, new BlockData(96, 14), new BlockData(96, 14), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("opened top wooden trapdoor west side", (short)1093, new BlockData(96, 15), new BlockData(96, 15), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("conditional command block facing down", (short)1094, new BlockData(137, 8), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("lily pad", (short)1095, new BlockData(111, 0), new BlockData(111, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("comparator facing north", (short)1096, new BlockData(149, 0), new BlockData(149, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("comparator facing east", (short)1097, new BlockData(149, 1), new BlockData(149, 1), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("comparator facing south", (short)1098, new BlockData(149, 2), new BlockData(149, 2), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("comparator facing west", (short)1099, new BlockData(149, 3), new BlockData(149, 3), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("comparator substraction mode facing north", (short)1100, new BlockData(149, 4), new BlockData(149, 4), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("comparator substraction mode facing east", (short)1101, new BlockData(149, 5), new BlockData(149, 5), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("comparator substraction mode facing south", (short)1102, new BlockData(149, 6), new BlockData(149, 6), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("comparator substraction mode facing west", (short)1103, new BlockData(149, 7), new BlockData(149, 7), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("powered comparator facing north", (short)1104, new BlockData(149, 8), new BlockData(149, 8), true, (double)0, (double)0, (byte)0, (byte)7));
+		add(new Blocks("powered comparator facing east", (short)1105, new BlockData(149, 9), new BlockData(149, 9), true, (double)0, (double)0, (byte)0, (byte)7));
+		add(new Blocks("powered comparator facing south", (short)1106, new BlockData(149, 10), new BlockData(149, 10), true, (double)0, (double)0, (byte)0, (byte)7));
+		add(new Blocks("powered comparator facing west", (short)1107, new BlockData(149, 11), new BlockData(149, 11), true, (double)0, (double)0, (byte)0, (byte)7));
+		add(new Blocks("powered comparator substraction mode facing north", (short)1108, new BlockData(149, 12), new BlockData(149, 12), true, (double)0, (double)0, (byte)0, (byte)7));
+		add(new Blocks("powered comparator substraction mode facing east", (short)1109, new BlockData(149, 13), new BlockData(149, 13), true, (double)0, (double)0, (byte)0, (byte)7));
+		add(new Blocks("powered comparator substraction mode facing south", (short)1110, new BlockData(149, 14), new BlockData(149, 14), true, (double)0, (double)0, (byte)0, (byte)7));
+		add(new Blocks("powered comparator substraction mode facing west", (short)1111, new BlockData(149, 15), new BlockData(149, 15), true, (double)0, (double)0, (byte)0, (byte)7));
+		add(new Blocks("daylight sensor 0", (short)1112, new BlockData(151, 0), new BlockData(151, 0), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 1", (short)1113, new BlockData(151, 1), new BlockData(151, 1), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 2", (short)1114, new BlockData(151, 2), new BlockData(151, 2), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 3", (short)1115, new BlockData(151, 3), new BlockData(151, 3), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 4", (short)1116, new BlockData(151, 4), new BlockData(151, 4), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 5", (short)1117, new BlockData(151, 5), new BlockData(151, 5), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 6", (short)1118, new BlockData(151, 6), new BlockData(151, 6), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 7", (short)1119, new BlockData(151, 7), new BlockData(151, 7), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 8", (short)1120, new BlockData(151, 8), new BlockData(151, 8), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 9", (short)1121, new BlockData(151, 9), new BlockData(151, 9), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 10", (short)1122, new BlockData(151, 10), new BlockData(151, 10), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 11", (short)1123, new BlockData(151, 11), new BlockData(151, 11), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 12", (short)1124, new BlockData(151, 12), new BlockData(151, 12), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 13", (short)1125, new BlockData(151, 13), new BlockData(151, 13), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 14", (short)1126, new BlockData(151, 14), new BlockData(151, 14), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("daylight sensor 15", (short)1127, new BlockData(151, 15), new BlockData(151, 15), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 0", (short)1128, new BlockData(178, 0), new BlockData(178, 0), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 1", (short)1129, new BlockData(178, 1), new BlockData(178, 1), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 2", (short)1130, new BlockData(178, 2), new BlockData(178, 2), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 3", (short)1131, new BlockData(178, 3), new BlockData(178, 3), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 4", (short)1132, new BlockData(178, 4), new BlockData(178, 4), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 5", (short)1133, new BlockData(178, 5), new BlockData(178, 5), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 6", (short)1134, new BlockData(178, 6), new BlockData(178, 6), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 7", (short)1135, new BlockData(178, 7), new BlockData(178, 7), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 8", (short)1136, new BlockData(178, 8), new BlockData(178, 8), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 9", (short)1137, new BlockData(178, 9), new BlockData(178, 9), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 10", (short)1138, new BlockData(178, 10), new BlockData(178, 10), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 11", (short)1139, new BlockData(178, 11), new BlockData(178, 11), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 12", (short)1140, new BlockData(178, 12), new BlockData(178, 12), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 13", (short)1141, new BlockData(178, 13), new BlockData(178, 13), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 14", (short)1142, new BlockData(178, 14), new BlockData(178, 14), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("inverted daylight sensor 15", (short)1143, new BlockData(178, 15), new BlockData(178, 15), true, (double)0.2, (double)1, (byte)0, (byte)0));
+		add(new Blocks("nether quartz ore", (short)1144, new BlockData(153, 0), new BlockData(153, 0), true, (double)3, (double)15, (byte)15, (byte)0));
+		add(new Blocks("hopper output facing down", (short)1145, new BlockData(154, 0), new BlockData(154, 0), true, (double)3, (double)24, (byte)0, (byte)0));
+		add(new Blocks("hopper output facing north", (short)1146, new BlockData(154, 2), new BlockData(154, 2), true, (double)3, (double)24, (byte)0, (byte)0));
+		add(new Blocks("hopper output facing south", (short)1147, new BlockData(154, 3), new BlockData(154, 3), true, (double)3, (double)24, (byte)0, (byte)0));
+		add(new Blocks("hopper output facing west", (short)1148, new BlockData(154, 4), new BlockData(154, 4), true, (double)3, (double)24, (byte)0, (byte)0));
+		add(new Blocks("hopper output facing east", (short)1149, new BlockData(154, 5), new BlockData(154, 5), true, (double)3, (double)24, (byte)0, (byte)0));
+		add(new Blocks("quartz block", (short)1150, new BlockData(155, 0), new BlockData(155, 0), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("chiseled quartz block", (short)1151, new BlockData(155, 1), new BlockData(155, 1), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("pillar quartz block vertical", (short)1152, new BlockData(155, 2), new BlockData(155, 2), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("pillar quartz block north south", (short)1153, new BlockData(155, 3), new BlockData(155, 3), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("pillar quartz block east west", (short)1154, new BlockData(155, 4), new BlockData(155, 4), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("dropper facing down", (short)1155, new BlockData(158, 0), new BlockData(125, 0), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("dropper facing up", (short)1156, new BlockData(158, 1), new BlockData(125, 1), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("dropper facing north", (short)1157, new BlockData(158, 2), new BlockData(125, 2), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("dropper facing south", (short)1158, new BlockData(158, 3), new BlockData(125, 3), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("dropper facing west", (short)1159, new BlockData(158, 4), new BlockData(125, 4), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("dropper facing east", (short)1160, new BlockData(158, 5), new BlockData(125, 5), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dropper facing down", (short)1161, new BlockData(158, 8), new BlockData(125, 8), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dropper facing up", (short)1162, new BlockData(158, 9), new BlockData(125, 9), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dropper facing north", (short)1163, new BlockData(158, 10), new BlockData(125, 10), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dropper facing south", (short)1164, new BlockData(158, 11), new BlockData(125, 11), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dropper facing west", (short)1165, new BlockData(158, 12), new BlockData(125, 12), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("active dropper facing east", (short)1166, new BlockData(158, 13), new BlockData(125, 13), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("slime block", (short)1167, new BlockData(165, 0), new BlockData(165, 0), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("barrier", (short)1168, new BlockData(166, 0), new BlockData(95, 0), true, (double)-1, (double)1.8e+07, (byte)0, (byte)0));
+		add(new Blocks("prismarine", (short)1169, new BlockData(168, 0), new BlockData(168, 0), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("prismarine bricks", (short)1170, new BlockData(168, 1), new BlockData(168, 1), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("dark prismarine", (short)1171, new BlockData(168, 2), new BlockData(168, 2), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("sea lantern", (short)1172, new BlockData(169, 0), new BlockData(169, 0), true, (double)0.3, (double)1.5, (byte)0, (byte)15));
+		add(new Blocks("hay bale vertical", (short)1173, new BlockData(170, 0), new BlockData(170, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("hay bale east west", (short)1174, new BlockData(170, 4), new BlockData(170, 4), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("hay bale north south", (short)1175, new BlockData(170, 8), new BlockData(170, 8), true, (double)0.5, (double)2.5, (byte)15, (byte)0));
+		add(new Blocks("white carpet", (short)1176, new BlockData(171, 0), new BlockData(171, 0), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("orange carpet", (short)1177, new BlockData(171, 1), new BlockData(171, 1), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("magenta carpet", (short)1178, new BlockData(171, 2), new BlockData(171, 2), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("light blue carpet", (short)1179, new BlockData(171, 3), new BlockData(171, 3), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("yellow carpet", (short)1180, new BlockData(171, 4), new BlockData(171, 4), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("lime carpet", (short)1181, new BlockData(171, 5), new BlockData(171, 5), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("pink carpet", (short)1182, new BlockData(171, 6), new BlockData(171, 6), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("gray carpet", (short)1183, new BlockData(171, 7), new BlockData(171, 7), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("light gray carpet", (short)1184, new BlockData(171, 8), new BlockData(171, 8), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("cyan carpet", (short)1185, new BlockData(171, 9), new BlockData(171, 9), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("purple carpet", (short)1186, new BlockData(171, 10), new BlockData(171, 10), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("blue carpet", (short)1187, new BlockData(171, 11), new BlockData(171, 11), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("brown carpet", (short)1188, new BlockData(171, 12), new BlockData(171, 12), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("green carpet", (short)1189, new BlockData(171, 13), new BlockData(171, 13), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("red carpet", (short)1190, new BlockData(171, 14), new BlockData(171, 14), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("black carpet", (short)1191, new BlockData(171, 15), new BlockData(171, 15), true, (double)0.1, (double)0.5, (byte)15, (byte)0));
+		add(new Blocks("banner facing south", (short)1192, new BlockData(176, 0), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing south southwest", (short)1193, new BlockData(176, 1), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing southwest", (short)1194, new BlockData(176, 2), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing west westsouth", (short)1195, new BlockData(176, 3), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing west", (short)1196, new BlockData(176, 4), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing west northwest", (short)1197, new BlockData(176, 5), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing northwest", (short)1198, new BlockData(176, 6), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing north northwest", (short)1199, new BlockData(176, 7), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing north", (short)1200, new BlockData(176, 8), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing north northeast", (short)1201, new BlockData(176, 9), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing northeast", (short)1202, new BlockData(176, 10), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing east northeast", (short)1203, new BlockData(176, 11), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing east", (short)1204, new BlockData(176, 12), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing east southeast", (short)1205, new BlockData(176, 13), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing southeast", (short)1206, new BlockData(176, 14), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("banner facing south southeast", (short)1207, new BlockData(176, 15), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("wall banner facing north", (short)1208, new BlockData(177, 2), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("wall banner facing south", (short)1209, new BlockData(177, 3), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("wall banner facing west", (short)1210, new BlockData(177, 4), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("wall banner facing east", (short)1211, new BlockData(177, 5), new BlockData(0, 0), true, (double)1, (double)5, (byte)0, (byte)0));
+		add(new Blocks("item frame facing north", (short)1212, new BlockData(0, 0), new BlockData(199, 2), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("item frame facing south", (short)1213, new BlockData(0, 0), new BlockData(199, 3), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("item frame facing west", (short)1214, new BlockData(0, 0), new BlockData(199, 4), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("item frame facing east", (short)1215, new BlockData(0, 0), new BlockData(199, 5), true, (double)0, (double)0, (byte)0, (byte)0));
+		add(new Blocks("end rod facing down", (short)1216, new BlockData(198, 0), new BlockData(208, 0), true, (double)0, (double)0, (byte)15, (byte)14));
+		add(new Blocks("end rod facing up", (short)1217, new BlockData(198, 1), new BlockData(208, 1), true, (double)0, (double)0, (byte)15, (byte)14));
+		add(new Blocks("end rod facing north", (short)1218, new BlockData(198, 2), new BlockData(208, 2), true, (double)0, (double)0, (byte)15, (byte)14));
+		add(new Blocks("end rod facing south", (short)1219, new BlockData(198, 3), new BlockData(208, 3), true, (double)0, (double)0, (byte)15, (byte)14));
+		add(new Blocks("end rod facing west", (short)1220, new BlockData(198, 4), new BlockData(208, 4), true, (double)0, (double)0, (byte)15, (byte)14));
+		add(new Blocks("end rod facing east", (short)1221, new BlockData(198, 5), new BlockData(208, 5), true, (double)0, (double)0, (byte)15, (byte)14));
+		add(new Blocks("chorus plant", (short)1222, new BlockData(199, 0), new BlockData(240, 0), true, (double)0.4, (double)2, (byte)0, (byte)0));
+		add(new Blocks("chorus flower 0", (short)1223, new BlockData(200, 0), new BlockData(200, 0), true, (double)0.4, (double)2, (byte)0, (byte)0));
+		add(new Blocks("chorus flower 1", (short)1224, new BlockData(200, 1), new BlockData(200, 1), true, (double)0.4, (double)2, (byte)0, (byte)0));
+		add(new Blocks("chorus flower 2", (short)1225, new BlockData(200, 2), new BlockData(200, 2), true, (double)0.4, (double)2, (byte)0, (byte)0));
+		add(new Blocks("chorus flower 3", (short)1226, new BlockData(200, 3), new BlockData(200, 3), true, (double)0.4, (double)2, (byte)0, (byte)0));
+		add(new Blocks("chorus flower 4", (short)1227, new BlockData(200, 4), new BlockData(200, 4), true, (double)0.4, (double)2, (byte)0, (byte)0));
+		add(new Blocks("chorus flower 5", (short)1228, new BlockData(200, 5), new BlockData(200, 5), true, (double)0.4, (double)2, (byte)0, (byte)0));
+		add(new Blocks("purpur block", (short)1229, new BlockData(201, 0), new BlockData(201, 0), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("purpur pillar", (short)1230, new BlockData(202, 0), new BlockData(201, 2), true, (double)1.5, (double)30, (byte)15, (byte)0));
+		add(new Blocks("end stone bricks", (short)1231, new BlockData(206, 0), new BlockData(206, 0), true, (double)0.8, (double)4, (byte)15, (byte)0));
+		add(new Blocks("end gateway", (short)1232, new BlockData(209, 0), new BlockData(209, 0), false, (double)-1, (double)1.8e+07, (byte)15, (byte)15));
+		add(new Blocks("stonecutter", (short)1233, new BlockData(0, 0), new BlockData(245, 0), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("glowing obsidian", (short)1234, new BlockData(0, 0), new BlockData(246, 0), true, (double)50, (double)6000, (byte)15, (byte)0));
+		add(new Blocks("nether reactor core", (short)1235, new BlockData(0, 0), new BlockData(247, 0), true, (double)3, (double)30, (byte)15, (byte)0));
+		add(new Blocks("active nether reactor core", (short)1236, new BlockData(0, 0), new BlockData(247, 1), true, (double)3, (double)30, (byte)15, (byte)0));
+		add(new Blocks("used nether reactor core", (short)1237, new BlockData(0, 0), new BlockData(247, 2), true, (double)3, (double)30, (byte)15, (byte)0));
+		add(new Blocks("magma block", (short)1238, new BlockData(213, 0), new BlockData(0, 0), true, (double)0.5, (double)2.5, (byte)15, (byte)3));
+		add(new Blocks("nether wart block", (short)1239, new BlockData(214, 0), new BlockData(0, 0), true, (double)1, (double)5, (byte)15, (byte)0));
+		add(new Blocks("bone block vertical", (short)1240, new BlockData(216, 0), new BlockData(0, 0), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("bone block east west", (short)1241, new BlockData(216, 4), new BlockData(0, 0), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("bone block north south", (short)1242, new BlockData(216, 8), new BlockData(0, 0), true, (double)2, (double)10, (byte)15, (byte)0));
+		add(new Blocks("observer facing down", (short)1243, new BlockData(218, 0), new BlockData(251, 0), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("observer facing up", (short)1244, new BlockData(218, 1), new BlockData(251, 1), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("observer facing south", (short)1245, new BlockData(218, 2), new BlockData(251, 2), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("observer facing north", (short)1246, new BlockData(218, 3), new BlockData(251, 3), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("observer facing east", (short)1247, new BlockData(218, 4), new BlockData(251, 4), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("observer facing west", (short)1248, new BlockData(218, 5), new BlockData(251, 5), true, (double)3.5, (double)17.5, (byte)15, (byte)0));
+		add(new Blocks("white shulker box", (short)1249, new BlockData(219, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("orange shulker box", (short)1250, new BlockData(220, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("magenta shulker box", (short)1251, new BlockData(221, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("light blue shulker box", (short)1252, new BlockData(222, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("yellow shulker box", (short)1253, new BlockData(223, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("lime shulker box", (short)1254, new BlockData(224, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("pink shulker box", (short)1255, new BlockData(225, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("gray shulker box", (short)1256, new BlockData(226, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("light shulker box", (short)1257, new BlockData(227, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("cyan shulker box", (short)1258, new BlockData(228, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("purple shulker box", (short)1259, new BlockData(229, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("blue shulker box", (short)1260, new BlockData(230, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("brown shulker box", (short)1261, new BlockData(231, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("green shulker box", (short)1262, new BlockData(232, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("red shulker box", (short)1263, new BlockData(233, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("black shulker box", (short)1264, new BlockData(234, 0), new BlockData(0, 0), true, (double)6, (double)30, (byte)0, (byte)0));
+		add(new Blocks("update block", (short)1265, new BlockData(0, 0), new BlockData(248, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("ateupd block", (short)1266, new BlockData(0, 0), new BlockData(249, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("structure block save", (short)1267, new BlockData(255, 0), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("structure block load", (short)1268, new BlockData(255, 1), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("structure block corner", (short)1269, new BlockData(255, 2), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("structure block data", (short)1270, new BlockData(255, 3), new BlockData(0, 0), true, (double)-1, (double)1.8e+07, (byte)15, (byte)0));
+		add(new Blocks("flowing water 0", (short)1271, new BlockData(8, 0), new BlockData(8, 0), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water 1", (short)1272, new BlockData(8, 1), new BlockData(8, 1), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water 2", (short)1273, new BlockData(8, 2), new BlockData(8, 2), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water 3", (short)1274, new BlockData(8, 3), new BlockData(8, 3), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water 4", (short)1275, new BlockData(8, 4), new BlockData(8, 4), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water 5", (short)1276, new BlockData(8, 5), new BlockData(8, 5), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water 6", (short)1277, new BlockData(8, 6), new BlockData(8, 6), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water 7", (short)1278, new BlockData(8, 7), new BlockData(8, 7), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water falling 0", (short)1279, new BlockData(8, 8), new BlockData(8, 8), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water falling 1", (short)1280, new BlockData(8, 9), new BlockData(8, 9), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water falling 2", (short)1281, new BlockData(8, 10), new BlockData(8, 10), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water falling 3", (short)1282, new BlockData(8, 11), new BlockData(8, 11), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water falling 4", (short)1283, new BlockData(8, 12), new BlockData(8, 12), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water falling 5", (short)1284, new BlockData(8, 13), new BlockData(8, 13), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water falling 6", (short)1285, new BlockData(8, 14), new BlockData(8, 14), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing water falling 7", (short)1286, new BlockData(8, 15), new BlockData(8, 15), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("flowing lava 0", (short)1287, new BlockData(10, 0), new BlockData(10, 0), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava 1", (short)1288, new BlockData(10, 1), new BlockData(10, 1), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava 2", (short)1289, new BlockData(10, 2), new BlockData(10, 2), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava 3", (short)1290, new BlockData(10, 3), new BlockData(10, 3), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava 4", (short)1291, new BlockData(10, 4), new BlockData(10, 4), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava 5", (short)1292, new BlockData(10, 5), new BlockData(10, 5), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava 6", (short)1293, new BlockData(10, 6), new BlockData(10, 6), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava 7", (short)1294, new BlockData(10, 7), new BlockData(10, 7), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava falling 0", (short)1295, new BlockData(10, 8), new BlockData(10, 8), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava falling 1", (short)1296, new BlockData(10, 9), new BlockData(10, 9), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava falling 2", (short)1297, new BlockData(10, 10), new BlockData(10, 10), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava falling 3", (short)1298, new BlockData(10, 11), new BlockData(10, 11), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava falling 4", (short)1299, new BlockData(10, 12), new BlockData(10, 12), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava falling 5", (short)1300, new BlockData(10, 13), new BlockData(10, 13), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava falling 6", (short)1301, new BlockData(10, 14), new BlockData(10, 14), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("flowing lava falling 7", (short)1302, new BlockData(10, 15), new BlockData(10, 15), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still water 0", (short)1303, new BlockData(9, 0), new BlockData(9, 0), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water 1", (short)1304, new BlockData(9, 1), new BlockData(9, 1), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water 2", (short)1305, new BlockData(9, 2), new BlockData(9, 2), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water 3", (short)1306, new BlockData(9, 3), new BlockData(9, 3), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water 4", (short)1307, new BlockData(9, 4), new BlockData(9, 4), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water 5", (short)1308, new BlockData(9, 5), new BlockData(9, 5), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water 6", (short)1309, new BlockData(9, 6), new BlockData(9, 6), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water 7", (short)1310, new BlockData(9, 7), new BlockData(9, 7), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water falling 0", (short)1311, new BlockData(9, 8), new BlockData(9, 8), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water falling 1", (short)1312, new BlockData(9, 9), new BlockData(9, 9), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water falling 2", (short)1313, new BlockData(9, 10), new BlockData(9, 10), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water falling 3", (short)1314, new BlockData(9, 11), new BlockData(9, 11), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water falling 4", (short)1315, new BlockData(9, 12), new BlockData(9, 12), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water falling 5", (short)1316, new BlockData(9, 13), new BlockData(9, 13), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water falling 6", (short)1317, new BlockData(9, 14), new BlockData(9, 14), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still water falling 7", (short)1318, new BlockData(9, 15), new BlockData(9, 15), false, (double)-1, (double)500, (byte)3, (byte)0));
+		add(new Blocks("still lava 4", (short)1319, new BlockData(10, 4), new BlockData(10, 4), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava 5", (short)1320, new BlockData(10, 5), new BlockData(10, 5), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava 6", (short)1321, new BlockData(10, 6), new BlockData(10, 6), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava 7", (short)1322, new BlockData(10, 7), new BlockData(10, 7), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava falling 0", (short)1323, new BlockData(10, 8), new BlockData(10, 8), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava falling 1", (short)1324, new BlockData(10, 9), new BlockData(10, 9), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava falling 2", (short)1325, new BlockData(10, 10), new BlockData(10, 10), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava falling 3", (short)1326, new BlockData(10, 11), new BlockData(10, 11), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava falling 4", (short)1327, new BlockData(10, 12), new BlockData(10, 12), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava falling 5", (short)1328, new BlockData(10, 13), new BlockData(10, 13), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava falling 6", (short)1329, new BlockData(10, 14), new BlockData(10, 14), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("still lava falling 7", (short)1330, new BlockData(10, 15), new BlockData(10, 15), false, (double)-1, (double)500, (byte)3, (byte)15));
+
+	}
+
+	private static void add(Blocks block) {
+		selBlocks.add(block);
+		if(block.minecraft != null) {
+			if(!minecraftBlocks.containsKey(block.minecraft.id)) minecraftBlocks.put(block.minecraft.id, new HashMap<Integer, Blocks>());
+			minecraftBlocks.get(block.minecraft.id).put(block.minecraft.meta, block);
+		}
+		if(block.pocket != null) {
+			if(!pocketBlocks.containsKey(block.pocket.id)) pocketBlocks.put(block.pocket.id, new HashMap<Integer, Blocks>());
+			pocketBlocks.get(block.pocket.id).put(block.pocket.meta, block);
+		}
+	}
+
+	public static Blocks getSelBlock(short id) {
+		return selBlocks.size() > id ? selBlocks.get(id) : null;
+	}
+
+	public static Blocks getMinecraftBlock(int id, int meta) {
+		Map<Integer, Blocks> b = minecraftBlocks.get(id);
+		return b != null ? b.get(meta) : null;
+	}
+
+	public static Blocks getPocketBlock(int id, int meta) {
+		Map<Integer, Blocks> b = pocketBlocks.get(id);
+		return b != null ? b.get(meta) : null;
 	}
 
 }

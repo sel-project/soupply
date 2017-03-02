@@ -54,7 +54,7 @@
 	<group hardness="5" blastresistance="30">
 
 		<block name="coal-block" id="24" minecraft="173" pocket="173" />
-		<block name="iron-bock" id="25" minecraft="42" pocket="42" />
+		<block name="iron-block" id="25" minecraft="42" pocket="42" />
 		<block name="gold-block" id="26" minecraft="41" pocket="41" hardness="3" />
 		<block name="diamond-block" id="27" minecraft="57" pocket="57" />
 		<block name="emerald-block" id="28" minecraft="133" pocket="133" />
@@ -79,15 +79,15 @@
 		<block name="dirt" id="32" minecraft="3" pocket="3" />
 		<block name="coarse-dirt" id="33" minecraft="3:1" />
 		<block name="podzol" id="34" minecraft="3:2" pocket="243" />
-		<group name="farmland" hardness="0.6" blastresistance="3" boundingbox="0,0,0-16,15,16">
-			<block name="dry-farmland-0" id="35" minecraft="60:0" pocket="60:0" />
-			<block name="dry-farmland-1" id="36" minecraft="60:1" pocket="60:1" />
-			<block name="dry-farmland-2" id="37" minecraft="60:2" pocket="60:2" />
-			<block name="dry-farmland-3" id="38" minecraft="60:3" pocket="60:3" />
-			<block name="dry-farmland-4" id="39" minecraft="60:4" pocket="60:4" />
-			<block name="dry-farmland-5" id="40" minecraft="60:5" pocket="60:5" />
-			<block name="dry-farmland-6" id="41" minecraft="60:6" pocket="60:6" />
-			<block name="wet-farmland" id="42" minecraft="60:7" pocket="60:7" />
+		<group hardness="0.6" blastresistance="3" boundingbox="0,0,0-16,15,16">
+			<block name="farmland-0" id="35" minecraft="60:0" pocket="60:0" />
+			<block name="farmland-1" id="36" minecraft="60:1" pocket="60:1" />
+			<block name="farmland-2" id="37" minecraft="60:2" pocket="60:2" />
+			<block name="farmland-3" id="38" minecraft="60:3" pocket="60:3" />
+			<block name="farmland-4" id="39" minecraft="60:4" pocket="60:4" />
+			<block name="farmland-5" id="40" minecraft="60:5" pocket="60:5" />
+			<block name="farmland-6" id="41" minecraft="60:6" pocket="60:6" />
+			<block name="farmland-7" id="42" minecraft="60:7" pocket="60:7" />
 		</group>
 		<block name="grass-path" id="43" minecraft="208" pocket="198" hardness="0.6" blastresistance="3.25" boundingbox="0,0,0-16,15,16" />
 
@@ -195,7 +195,7 @@
 	</group>
 
 	<!-- water -->
-	<group solid="false" opacity="3" blastresistance="500">
+	<group solid="false" hardness="-1" blastresistance="500" opacity="3">
 
 		<block name="flowing-water-0" id="1271" minecraft="8:0" pocket="8:0" />
 		<block name="flowing-water-1" id="1272" minecraft="8:1" pocket="8:1" />
@@ -236,7 +236,7 @@
 	</group>
 
 	<!-- lava -->
-	<group solid="false" opacity="3" blastresistance="500" luminance="15">
+	<group solid="false" hardness="-1" blastresistance="500" opacity="3" luminance="15">
 
 		<block name="flowing-lava-0" id="1287" minecraft="10:0" pocket="10:0" />
 		<block name="flowing-lava-1" id="1288" minecraft="10:1" pocket="10:1" />
@@ -521,7 +521,7 @@
 		<block name="lime-wool" id="270" minecraft="35:5" pocket="35:5" />
 		<block name="pink-wool" id="271" minecraft="35:6" pocket="35:6" />
 		<block name="gray-wool" id="272" minecraft="35:7" pocket="35:7" />
-		<block name="light-wool" id="273" minecraft="35:8" pocket="35:8" />
+		<block name="light-gray-wool" id="273" minecraft="35:8" pocket="35:8" />
 		<block name="cyan-wool" id="274" minecraft="35:9" pocket="35:9" />
 		<block name="purple-wool" id="275" minecraft="35:10" pocket="35:10" />
 		<block name="blue-wool" id="276" minecraft="35:11" pocket="35:11" />
@@ -543,7 +543,7 @@
 		<block name="lime-carpet" id="1181" minecraft="171:5" pocket="171:5" />
 		<block name="pink-carpet" id="1182" minecraft="171:6" pocket="171:6" />
 		<block name="gray-carpet" id="1183" minecraft="171:7" pocket="171:7" />
-		<block name="light-carpet" id="1184" minecraft="171:8" pocket="171:8" />
+		<block name="light-gray-carpet" id="1184" minecraft="171:8" pocket="171:8" />
 		<block name="cyan-carpet" id="1185" minecraft="171:9" pocket="171:9" />
 		<block name="purple-carpet" id="1186" minecraft="171:10" pocket="171:10" />
 		<block name="blue-carpet" id="1187" minecraft="171:11" pocket="171:11" />
@@ -1335,8 +1335,8 @@
 			<block name="spruce-wood-fence" id="792" minecraft="188" pocket="85:1" />
 			<block name="birch-wood-fence" id="793" minecraft="189" pocket="85:2" />
 			<block name="jungle-wood-fence" id="794" minecraft="190" pocket="85:3" />
-			<block name="acacia-wood-fence" id="795" minecraft="191" pocket="85:4" />
-			<block name="dark-oak-wood-fence" id="796" minecraft="192" pocket="85:5" />
+			<block name="acacia-wood-fence" id="795" minecraft="192" pocket="85:4" />
+			<block name="dark-oak-wood-fence" id="796" minecraft="191" pocket="85:5" />
 
 		</group>
 
@@ -1618,31 +1618,31 @@
 		<!-- acacia -->
 		<group>
 
-			<block name="acacia-wooden-fence-gate-facing-south" id="952" minecraft="186:0" pocket="186:0" />
-			<block name="acacia-wooden-fence-gate-facing-west" id="953" minecraft="186:1" pocket="186:1" />
-			<block name="acacia-wooden-fence-gate-facing-north" id="954" minecraft="186:2" pocket="186:2" />
-			<block name="acacia-wooden-fence-gate-facing-east" id="955" minecraft="186:3" pocket="186:3" />
+			<block name="acacia-wooden-fence-gate-facing-south" id="952" minecraft="187:0" pocket="187:0" />
+			<block name="acacia-wooden-fence-gate-facing-west" id="953" minecraft="187:1" pocket="187:1" />
+			<block name="acacia-wooden-fence-gate-facing-north" id="954" minecraft="187:2" pocket="187:2" />
+			<block name="acacia-wooden-fence-gate-facing-east" id="955" minecraft="187:3" pocket="187:3" />
 
-			<block name="opened-acacia-wooden-fence-gate-facing-south" id="956" minecraft="186:4" pocket="186:4" />
-			<block name="opened-acacia-wooden-fence-gate-facing-west" id="957" minecraft="186:5" pocket="186:5" />
-			<block name="opened-acacia-wooden-fence-gate-facing-north" id="958" minecraft="186:6" pocket="186:6" />
-			<block name="opened-acacia-wooden-fence-gate-facing-east" id="959" minecraft="186:7" pocket="186:7" />
+			<block name="opened-acacia-wooden-fence-gate-facing-south" id="956" minecraft="187:4" pocket="187:4" />
+			<block name="opened-acacia-wooden-fence-gate-facing-west" id="957" minecraft="187:5" pocket="187:5" />
+			<block name="opened-acacia-wooden-fence-gate-facing-north" id="958" minecraft="187:6" pocket="187:6" />
+			<block name="opened-acacia-wooden-fence-gate-facing-east" id="959" minecraft="187:7" pocket="187:7" />
 
 		</group>
 
 		<!-- dark oak -->
 		<group>
 
-			<block name="dark-oak-wooden-fence-gate-facing-south" id="960" minecraft="187:0" pocket="187:0" />
-			<block name="dark-oak-wooden-fence-gate-facing-west" id="961" minecraft="187:1" pocket="187:1" />
-			<block name="dark-oak-wooden-fence-gate-facing-north" id="962" minecraft="187:2" pocket="187:2" />
-			<block name="dark-oak-wooden-fence-gate-facing-east" id="963" minecraft="187:3" pocket="187:3" />
+			<block name="dark-oak-wooden-fence-gate-facing-south" id="960" minecraft="186:0" pocket="186:0" />
+			<block name="dark-oak-wooden-fence-gate-facing-west" id="961" minecraft="186:1" pocket="186:1" />
+			<block name="dark-oak-wooden-fence-gate-facing-north" id="962" minecraft="186:2" pocket="186:2" />
+			<block name="dark-oak-wooden-fence-gate-facing-east" id="963" minecraft="186:3" pocket="186:3" />
 
-			<block name="opened-dark-oak-wooden-fence-gate-facing-south" id="964" minecraft="187:4" pocket="187:4" />
-			<block name="opened-dark-oak-wooden-fence-gate-facing-west" id="965" minecraft="187:5" pocket="187:5" />
-			<block name="opened-dark-oak-wooden-fence-gate-facing-north" id="966" minecraft="187:6" pocket="187:6" />
-			<block name="opened-dark-oak-wooden-fence-gate-facing-east" id="967" minecraft="187:7" pocket="187:7" />
-
+			<block name="opened-dark-oak-wooden-fence-gate-facing-south" id="964" minecraft="186:4" pocket="186:4" />
+			<block name="opened-dark-oak-wooden-fence-gate-facing-west" id="965" minecraft="186:5" pocket="186:5" />
+			<block name="opened-dark-oak-wooden-fence-gate-facing-north" id="966" minecraft="186:6" pocket="186:6" />
+			<block name="opened-dark-oak-wooden-fence-gate-facing-east" id="967" minecraft="186:7" pocket="186:7" />
+			
 		</group>
 
 	</group>

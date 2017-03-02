@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<items>
+
+	<item name="air" data="0" />
+	<item name="stone" data="1" />
+	<item name="granite" data="1:1" />
+	<item name="polished-granite" data="1:2" />
+	<item name="diorite" data="1:3" />
+	<item name="polished-diorite" data="1:4" />
+	<item name="andesite" data="1:5" />
+	<item name="polished-andesite" data="1:6" />
+	<item name="grass" data="2" />
+	<item name="dirt" data="3" />
+	<item name="coarse-dirt" minecraft="3:1" />
+	<item name="podzol" minecraft="3:2" pocket="243" />
+	<item name="cobblestone" data="4" />
+	<item name="oak-wood-plank" data="5:0" />
+	<item name="spruce-wood-plank" data="5:1" />
+	<item name="birch-wood-plank" data="5:2" />
+	<item name="jungle-wood-plank" data="5:3" />
+	<item name="acacia-wood-plank" data="5:4" />
+	<item name="dark-oak-wood-plank" data="5:5" />
+	<item name="oak-sapling" data="6:0" />
+	<item name="spruce-sapling" data="6:1" />
+	<item name="birch-sapling" data="6:2" />
+	<item name="jungle-sapling" data="6:3" />
+	<item name="acacia-sapling" data="6:4" />
+	<item name="dark-oak-sapling" data="6:5" />
+	<item name="bedrock" data="7" />
+	<item name="flowing-water" data="8" />
+	<item name="still-water" data="9" />
+	<item name="flowing-lava" data="10" />
+	<item name="still-lava" data="11" />
+	<item name="sand" data="12" />
+	<item name="red-sand" data="12:1" />
+	<item name="gravel" data="13" />
+	<item name="gold-ore" data="14" />
+	<item name="iron-ore" data="15" />
+	<item name="coal-ore" data="16" />
+	<item name="oak-wood" data="17:0" />
+	<item name="spruce-wood" data="17:1" />
+	<item name="birch-wood" data="17:2" />
+	<item name="jungle-wood" data="17:3" />
+	<item name="oak-leaves" data="18:0" />
+	<item name="spruce-leaves" data="18:1" />
+	<item name="birch-leaves" data="18:2" />
+	<item name="jungle-leaves" data="18:3" />
+	<item name="sponge" data="19" />
+	<item name="wet-sponge" data="19:1" />
+	<item name="glass" data="20" />
+	<item name="lapis-lazuli-ore" data="21" />
+	<item name="lapis-lazuli-block" data="22" />
+	<item name="dispenser" data="23" />
+	<item name="sandstone" data="24" />
+	<item name="chiseled-sandstone" data="24:1" />
+	<item name="smooth-sandstone" data="24:2" />
+	<item name="note-block" data="25" />
+	<item name="bed-block" data="26" />
+	<item name="powered-rail" data="27" />
+	<item name="detector-rail" data="28" />
+	<item name="sticky-piston" data="29" />
+	<item name="cobweb" data="30" />
+	<item name="dead-shrub" minecraft="31:0" />
+	<item name="tall-grass" minecraft="31:1" pocket="31:0" />
+	<item name="fern" data="31:2" />
+	<item name="dead-bush" data="32" />
+	<item name="piston" data="33" />
+	<item name="piston-head" data="34" />
+	<item name="white-wool" data="35:0" />
+	<item name="orange-wool" data="35:1" />
+	<item name="magenta-wool" data="35:2" />
+	<item name="light-blue-wool" data="35:3" />
+	<item name="yellow-wool" data="35:4" />
+	<item name="lime-wool" data="35:5" />
+	<item name="pink-wool" data="35:6" />
+	<item name="gray-wool" data="35:7" />
+	<item name="light-gray-wool" data="35:8" />
+	<item name="cyan-wool" data="35:9" />
+	<item name="purple-wool" data="35:10" />
+	<item name="blue-wool" data="35:11" />
+	<item name="brown-wool" data="35:12" />
+	<item name="green-wool" data="35:13" />
+	<item name="red-wool" data="35:14" />
+	<item name="black-wool" data="35:15" />
+	<item name="piston-extension" minecraft="36" pocket="250" />
+	<item name="dandelion" data="37" />
+	<item name="poppy" data="38:0" />
+	<item name="blue-orchid" data="38:1" />
+	<item name="allium" data="38:2" />
+	<item name="azure-bluet" data="38:3" />
+	<item name="red-tulip" data="38:4" />
+	<item name="orange-tulip" data="38:5" />
+	<item name="white-tulip" data="38:6" />
+	<item name="pink-tulip" data="38:7" />
+	<item name="oxeye-daisy" data="38:8" />
+	<item name="brown-mushroom" data="39" />
+	<item name="red-mushroom" data="40" />
+	<item name="gold-block" data="41" />
+	<item name="iron-block" data="42" />
+	<item name="double-stone-slab" data="43:0" />
+	<item name="double-sandstone-slab" data="43:1" />
+	<item name="double-woodstone-slab" data="43:2" />
+	<item name="double-cobblestone-slab" data="43:3" />
+	<item name="double-brick-slab" data="43:4" />
+	<item name="double-stone-brick-slab" data="43:5" />
+	<item name="double-nether-brick-slab" data="43:6" />
+	<item name="double-quartz-slab" data="43:7" />
+	<item name="stone-slab" data="44:0" />
+	<item name="sandstone-slab" data="44:1" />
+	<item name="woodstone-slab" data="44:2" />
+	<item name="cobblestone-slab" data="44:3" />
+	<item name="brick-slab" data="44:4" />
+	<item name="stone-brick-slab" data="44:5" />
+	<item name="nether-brick-slab" data="44:6" />
+	<item name="quartz-slab" data="44:7" />
+	<item name="bricks" data="45" />
+	<item name="tnt" data="46" />
+	<item name="bookshelf" data="47" />
+	<item name="moss-stone" data="48" />
+	<item name="obsidian" data="49" />
+	<item name="torch" data="50" />
+	<item name="fire" data="51" />
+	<item name="monster-spawner" data="52" />
+	<item name="oak-wood-stairs" data="53" />
+	<item name="chest" data="54" />
+	<item name="redstone-wire" data="55" />
+	<item name="diamond-ore" data="56" />
+	<item name="diamond-block" data="57" />
+	<item name="crafting-table" data="58" />
+	<item name="wheat-crops" data="59" />
+	<item name="farmland" data="60" />
+	<item name="furnace" data="61" />
+	<item name="burning-furnace" data="62" />
+	<item name="sign-block" data="63" />
+	<item name="oak-door-block" data="64" />
+	<item name="ladder" data="65" />
+	<item name="rail" data="66" />
+	<item name="cobblestone-stairs" data="67" />
+	<item name="wall-sign" data="68" />
+	<item name="lever" data="69" />
+	<item name="stone-pressure-plate" data="70" />
+	<item name="iron-door-block" data="71" />
+	<item name="wooden-pressure-plate" data="72" />
+	<item name="redstone-ore" data="73" />
+	<item name="lit-redstone-ore" data="74" />
+	<item name="redstone-torch" data="75" />
+	<item name="active-redstone-torch" data="76" />
+	<item name="stone-button" data="77" />
+	<item name="snow-layer" data="78" />
+	<item name="ice" data="79" />
+	<item name="snow-block" data="80" />
+	<item name="cactus" data="81" />
+	<item name="clay-block" data="82" />
+	<item name="sugar-canes-block" data="83" />
+	<item name="jukebox" data="84" />
+	<item name="oak-fence" data="85" />
+	<item name="pumpkin" data="86" />
+	<item name="netherrack" data="87" />
+	<item name="soul-sand" data="88" />
+	<item name="glowstone" data="89" />
+	<item name="nether-portal" data="90" />
+	<item name="jack-o-lantern" data="91" />
+	<item name="cake-block" data="92" />
+	<item name="redstone-repeater" data="93" />
+	<item name="active-redstone-repeater" data="94" />
+	<item name="white-stained-glass" minecraft="95:0" />
+	<item name="orange-stained-glass" minecraft="95:1" />
+	<item name="magenta-stained-glass" minecraft="95:2" />
+	<item name="light-blue-stained-glass" minecraft="95:3" />
+	<item name="yellow-stained-glass" minecraft="95:4" />
+	<item name="lime-stained-glass" minecraft="95:5" />
+	<item name="pink-stained-glass" minecraft="95:6" />
+	<item name="gray-stained-glass" minecraft="95:7" />
+	<item name="light-gray-stained-glass" minecraft="95:8" />
+	<item name="cyan-stained-glass" minecraft="95:9" />
+	<item name="purple-stained-glass" minecraft="95:10" />
+	<item name="blue-stained-glass" minecraft="95:11" />
+	<item name="brown-stained-glass" minecraft="95:12" />
+	<item name="green-stained-glass" minecraft="95:13" />
+	<item name="red-stained-glass" minecraft="95:14" />
+	<item name="black-stained-glass" minecraft="95:15" />
+	<item name="wooden-trapdoor" data="96" />
+	<item name="stone-monster-egg" data="97:0" />
+	<item name="cobblestone-monster-egg" data="97:1" />
+	<item name="stone-brick-monster-egg" data="97:2" />
+	<item name="mossy-stone-brick-monster-egg" data="97:3" />
+	<item name="cracked-stone-brick-monster-egg" data="97:4" />
+	<item name="chiseled-stone-brick-monster-egg" data="97:5" />
+	<item name="stone-bricks" data="98:0" />
+	<item name="mossy-stone-bricks" data="98:1" />
+	<item name="cracked-stone-bricks" data="98:2" />
+	<item name="chiseled-stone-bricks" data="98:3" />
+	<item name="brown-mushroom-block" data="99" />
+	<item name="red-mushroom-block" data="100" />
+	<item name="iron-bars" data="101" />
+	<item name="glass-pane" data="102" />
+	<item name="melon-block" data="103" />
+	<item name="pumpkin-stem" data="104" />
+	<item name="melon-stem" data="105" />
+	<item name="vines" data="106" />
+	<item name="oak-fence-gate" data="107" />
+	<item name="brick-stairs" data="108" />
+	<item name="stone-brick-stairs" data="109" />
+	<item name="mycelium" data="110" />
+	<item name="lily-pad" data="111" />
+	<item name="nether-brick" data="112" />
+	<item name="nether-brick-fence" data="113" />
+	<item name="nether-brick-stairs" data="114" />
+	<item name="nether-wart" data="115" />
+	<item name="enchantment-table" data="116" />
+	<item name="brewing-stand" data="117" />
+	<item name="cauldron" data="118" />
+	<item name="end-portal" data="119" />
+	<item name="end-portal-frame" data="120" />
+	<item name="end-stone" data="121" />
+	<item name="dragon-egg" data="122" />
+	<item name="redstone-lamp" data="123" />
+	<item name="active-redstone-lamp" data="124" />
+	<item name="double-oak-wood-slab" minecraft="125:0" pocket="157:0" />
+	<item name="double-spruce-wood-slab" minecraft="125:1" pocket="157:1" />
+	<item name="double-birch-wood-slab" minecraft="125:2" pocket="157:2" />
+	<item name="double-jungle-wood-slab" minecraft="125:3" pocket="157:3" />
+	<item name="double-acacia-wood-slab" minecraft="125:4" pocket="157:4" />
+	<item name="double-dark-oak-wood-slab" minecraft="125:5" pocket="157:5" />
+	<item name="oak-wood-slab" minecraft="126:0" pocket="158:0" />
+	<item name="spruce-wood-slab" minecraft="126:1" pocket="158:1" />
+	<item name="birch-wood-slab" minecraft="126:2" pocket="158:2" />
+	<item name="jungle-wood-slab" minecraft="126:3" pocket="158:3" />
+	<item name="acacia-wood-slab" minecraft="126:4" pocket="158:4" />
+	<item name="dark-oak-wood-slab" minecraft="126:5" pocket="158:5" />
+	<item name="cocoa-block" data="127" />
+	<item name="sandstone-stairs" data="128" />
+	<item name="emerald-ore" data="129" />
+	<item name="ender-chest" data="130" />
+	<item name="tripwire-hook" data="131" />
+	<item name="tripwire" data="132" />
+	<item name="emerald-block" data="133" />
+	<item name="spruce-wood-stairs" data="134" />
+	<item name="birch-wood-stairs" data="135" />
+	<item name="jungle-wood-stairs" data="136" />
+	<item name="command-block" minecraft="137" />
+	<item name="beacon" data="138" />
+	<item name="cobblestone-wall" data="139" />
+	<item name="mossy-cobblestone-wall" data="139:1" />
+	<item name="flower-pot-block" data="140" />
+	<item name="carrots-block" data="141" />
+	<item name="potatoes-block" data="142" />
+	<item name="wooden-button" data="143" />
+	<item name="mob-head" data="144" />
+	<item name="anvil" data="145" />
+	<item name="trapped-chest" data="146" />
+	<item name="light-weighted-pressure-plate" data="147" />
+	<item name="heavy-weighted-pressure-plate" data="148" />
+	<item name="redstone-comparator" data="149" />
+	<item name="active-redstone-comparator" data="150" />
+	<item name="daylight-sensor" data="151" />
+	<item name="redstone-block" data="152" />
+	<item name="nether-quartz-ore" data="153" />
+	<item name="hopper" data="154" />
+	<item name="quartz-block" data="155" />
+	<item name="chiseled-quartz-block" data="155:1" />
+	<item name="pillar-quartz-block" data="155:2" />
+	<item name="quartz-stairs" data="156" />
+	<item name="activator-rail" minecraft="157" pocket="126" />
+	<item name="dropper" minecraft="158" pocket="125" />
+	<item name="white-stained-clay" data="159:0" />
+	<item name="orange-stained-clay" data="159:1" />
+	<item name="magenta-stained-clay" data="159:2" />
+	<item name="light-blue-stained-clay" data="159:3" />
+	<item name="yellow-stained-clay" data="159:4" />
+	<item name="lime-stained-clay" data="159:5" />
+	<item name="pink-stained-clay" data="159:6" />
+	<item name="gray-stained-clay" data="159:7" />
+	<item name="light-gray-stained-clay" data="159:8" />
+	<item name="cyan-stained-clay" data="159:9" />
+	<item name="purple-stained-clay" data="159:10" />
+	<item name="blue-stained-clay" data="159:11" />
+	<item name="brown-stained-clay" data="159:12" />
+	<item name="green-stained-clay" data="159:13" />
+	<item name="red-stained-clay" data="159:14" />
+	<item name="black-stained-clay" data="159:15" />
+	<item name="white-stained-glass-pane" minecraft="160:0" />
+	<item name="orange-stained-glass-pane" minecraft="160:1" />
+	<item name="magenta-stained-glass-pane" minecraft="160:2" />
+	<item name="light-blue-stained-glass-pane" minecraft="160:3" />
+	<item name="yellow-stained-glass-pane" minecraft="160:4" />
+	<item name="lime-stained-glass-pane" minecraft="160:5" />
+	<item name="pink-stained-glass-pane" minecraft="160:6" />
+	<item name="gray-stained-glass-pane" minecraft="160:7" />
+	<item name="light-gray-stained-glass-pane" minecraft="160:8" />
+	<item name="cyan-stained-glass-pane" minecraft="160:9" />
+	<item name="purple-stained-glass-pane" minecraft="160:10" />
+	<item name="blue-stained-glass-pane" minecraft="160:11" />
+	<item name="brown-stained-glass-pane" minecraft="160:12" />
+	<item name="green-stained-glass-pane" minecraft="160:13" />
+	<item name="red-stained-glass-pane" minecraft="160:14" />
+	<item name="black-stained-glass-pane" minecraft="160:15" />
+	<item name="acacia-leaves" data="161:0" />
+	<item name="dark-oak-leaves" data="161:1" />
+	<item name="acaica-wood" data="162:0" />
+	<item name="dark-oak-wood" data="162:1" />
+	<item name="acacia-wood-stairs" data="163" />
+	<item name="dark-oak-wood-stairs" data="164" />
+	<item name="slime-block" data="165" />
+	<item name="barrier" minecraft="166" pocket="95" />
+	<item name="iron-trapdoor" data="167" />
+	<item name="prismarine" data="168" />
+	<item name="prismarine-bricks" data="168:1" />
+	<item name="dark-prismarine" data="168:2" />
+	<item name="sea-lantern" data="169" />
+	<item name="hay-bale" data="170" />
+	<item name="white-carpet" data="171:0" />
+	<item name="orange-carpet" data="171:1" />
+	<item name="magenta-carpet" data="171:2" />
+	<item name="light-blue-carpet" data="171:3" />
+	<item name="yellow-carpet" data="171:4" />
+	<item name="lime-carpet" data="171:5" />
+	<item name="pink-carpet" data="171:6" />
+	<item name="gray-carpet" data="171:7" />
+	<item name="light-gray-carpet" data="171:8" />
+	<item name="cyan-carpet" data="171:9" />
+	<item name="purple-carpet" data="171:10" />
+	<item name="blue-carpet" data="171:11" />
+	<item name="brown-carpet" data="171:12" />
+	<item name="green-carpet" data="171:13" />
+	<item name="red-carpet" data="171:14" />
+	<item name="black-carpet" data="171:15" />
+	<item name="hardened-clay" data="172" />
+	<item name="coal-block" data="173" />
+	<item name="packed-ice" data="174" />
+	<item name="sunflower" data="175:0" />
+	<item name="liliac" data="175:1" />
+	<item name="double-tallgrass" data="175:2" />
+	<item name="large-fern" data="175:3" />
+	<item name="rose-bush" data="175:4" />
+	<item name="poeny" data="175:5" />
+	<item name="planted-banner" data="176" />
+	<item name="wall-banner" data="177" />
+	<item name="inverted-daylight-sensor" data="178" />
+	<item name="red-sandstone" data="179:0" />
+	<item name="chiseled-red-sandstone" data="179:1" />
+	<item name="smooth-red-sandstone" data="179:2" />
+	<item name="red-sandstone-stairs" data="180" />
+	<item name="double-red-sandstone-slab" data="181" />
+	<item name="red-sandstone-slab" data="182" />
+	<item name="spruce-fence-gate" data="183" />
+	<item name="birch-fence-gate" data="184" />
+	<item name="jungle-fence-gate" data="185" />
+	<item name="dark-oak-fence-gate" data="186" />
+	<item name="acacia-fence-gate" data="187" />
+	<item name="spruce-fence" data="188" />
+	<item name="birch-fence" data="189" />
+	<item name="jungle-fence" data="190" />
+	<item name="dark-oak-fence" data="191" />
+	<item name="acacia-fence" data="192" />
+	<item name="spruce-door-block" data="193" />
+	<item name="birch-door-block" data="194" />
+	<item name="jungle-door-block" data="195" />
+	<item name="acacia-door-block" data="196" />
+	<item name="dark-oak-door-block" data="197" />
+	<item name="end-rod" minecraft="198" pocket="208" />
+	<item name="item-frame-block" pocket="199" />
+	<item name="chorus-plant" minecraft="199" pocket="240" />
+	<item name="chorus-flower" data="200" />
+	<item name="purpur-block" data="201" />
+	<item name="purpur-pillar" data="202" />
+	<item name="purpur-stairs" data="203" />
+	<item name="purpur-double-slab" data="204" />
+	<item name="purpur-slab" data="205" />
+	<item name="end-stone-bricks" data="206" />
+	<item name="beetroot-block" minecraft="207" pocket="244" />
+	<item name="grass-path" minecraft="208" pocket="198" />
+	<item name="end-gateway" data="209" />
+	<item name="repeating-command-block" minecraft="210" />
+	<item name="chain-command-block" minecraft="211" />
+	<item name="frosted-ice" minecraft="212" />
+	<item name="magma-block" minecraft="213" />
+	<item name="nether-wart-block" minecraft="214" />
+	<item name="red-nether-brick" minecraft="215" />
+	<item name="bone-block" minecraft="216" />
+	<item name="structure-void" minecraft="217" />
+	<item name="observer" minecraft="218" pocket="251" />
+	<item name="white-shulker-box" minecraft="219" />
+	<item name="orange-shulker-box" minecraft="220" />
+	<item name="magenta-shulker-box" minecraft="221" />
+	<item name="light-blue-shulker-box" minecraft="222" />
+	<item name="yellow-shulker-box" minecraft="223" />
+	<item name="lime-shulker-box" minecraft="224" />
+	<item name="pink-shulker-box" minecraft="225" />
+	<item name="gray-shulker-box" minecraft="226" />
+	<item name="light-gray-shulker-box" minecraft="227" />
+	<item name="cyan-shulker-box" minecraft="228" />
+	<item name="purple-shulker-box" minecraft="229" />
+	<item name="blue-shulker-box" minecraft="230" />
+	<item name="brown-shulker-box" minecraft="231" />
+	<item name="green-shulker-box" minecraft="232" />
+	<item name="red-shulker-box" minecraft="233" />
+	<item name="black-shulker-box" minecraft="234" />
+	<item name="stonecutter" pocket="245" />
+	<item name="glowing-obsidian" pocket="246" />
+	<item name="nether-reactor-core" pocket="247" />
+	<item name="update-block" pocket="248" />
+	<item name="ateupd-block" pocket="249" />
+	<item name="structure-save" minecraft="255:0" />
+	<item name="structure-load" minecraft="255:1" />
+	<item name="structure-corner" minecraft="255:2" />
+	<item name="structure-data" minecraft="255:3" />
+
+	<item name="iron-shovel" data="256" stack="1" />
+	<item name="iron-pickaxe" data="257" stack="1" />
+	<item name="iron-axe" data="258" stack="1" />
+	<item name="flint-and-steel" data="259" stack="1" />
+	<item name="apple" data="260" />
+	<item name="bow" data="261" stack="1" />
+	<item name="arrow" data="262" />
+	<item name="coal" data="263" />
+	<item name="charcoal" data="263:1" />
+	<item name="diamond" data="264" />
+	<item name="iron-ingot" data="265" />
+	<item name="gold-ingot" data="266" />
+	<item name="iron-sword" data="267" stack="1" />
+	<item name="wooden-sword" data="268" stack="1" />
+	<item name="wooden-shovel" data="269" stack="1" />
+	<item name="wooden-pickaxe" data="270" stack="1" />
+	<item name="wooden-axe" data="271" stack="1" />
+	<item name="stone-sword" data="272" stack="1" />
+	<item name="stone-shovel" data="273" stack="1" />
+	<item name="stone-pickaxe" data="274" stack="1" />
+	<item name="stone-axe" data="275" stack="1" />
+	<item name="diamond-sword" data="276" stack="1" />
+	<item name="diamond-shovel" data="277" stack="1" />
+	<item name="diamond-pickaxe" data="278" stack="1" />
+	<item name="diamond-axe" data="279" stack="1" />
+	<item name="stick" data="280" />
+	<item name="bowl" data="281" />
+	<item name="mushroom-stew" data="282" stack="1" />
+	<item name="golden-sword" data="283" stack="1" />
+	<item name="golden-shovel" data="284" stack="1" />
+	<item name="golden-pickaxe" data="285" stack="1" />
+	<item name="golden-axe" data="286" stack="1" />
+	<item name="string" data="287" />
+	<item name="feather" data="288" />
+	<item name="gunpowder" data="289" />
+	<item name="wooden-hoe" data="290" stack="1" />
+	<item name="stone-hoe" data="291" stack="1" />
+	<item name="iron-hoe" data="292" stack="1" />
+	<item name="diamond-hoe" data="293" stack="1" />
+	<item name="golden-hoe" data="294" stack="1" />
+	<item name="seeds" data="295" />
+	<item name="wheat" data="296" />
+	<item name="bread" data="297" />
+	<item name="leather-armor" data="298" stack="1" />
+	<item name="leather-tunic" data="299" stack="1" />
+	<item name="leather-pants" data="300" stack="1" />
+	<item name="leather-boots" data="301" stack="1" />
+	<item name="chainmail-helmet" data="302" stack="1" />
+	<item name="chainmail-chestplate" data="303" stack="1" />
+	<item name="chainmail-leggings" data="304" stack="1" />
+	<item name="chainmail-boots" data="305" stack="1" />
+	<item name="iron-helmet" data="306" stack="1" />
+	<item name="iron-chestplate" data="307" stack="1" />
+	<item name="iron-leggings" data="308" stack="1" />
+	<item name="iron-boots" data="309" stack="1" />
+	<item name="diamond-helmet" data="310" stack="1" />
+	<item name="diamond-chestplate" data="311" stack="1" />
+	<item name="diamond-leggings" data="312" stack="1" />
+	<item name="diamond-boots" data="313" stack="1" />
+	<item name="golden-helmet" data="314" stack="1" />
+	<item name="golden-chestplate" data="315" stack="1" />
+	<item name="golden-leggings" data="316" stack="1" />
+	<item name="golden-boots" data="317" stack="1" />
+	<item name="flint" data="318" />
+	<item name="raw-porkchop" data="319" />
+	<item name="cooked-porkchop" data="320" />
+	<item name="painting" data="321" />
+	<item name="golden-apple" data="322" />
+	<item name="enchanted-golden-apple" minecraft="322:1" pocket="466" />
+	<item name="sign" data="323" />
+	<item name="oak-door" data="324" />
+	<item name="bucket" data="325" stack="16" />
+	<item name="water-bucket" minecraft="326" pocket="325:8" stack="1" />
+	<item name="lava-bucket" minecraft="327" pocket="325:10" stack="1" />
+	<item name="minecart" data="328" stack="1" />
+	<item name="saddle" data="329" stack="1" />
+	<item name="iron-door" data="330" />
+	<item name="redstone" data="331" />
+	<item name="snowball" data="332" stack="16" />
+	<item name="oak-boat" data="333" stack="1" />
+	<item name="leather" data="334" />
+	<item name="milk-bucket" minecraft="335" pocket="325:1" stack="1" />
+	<item name="brick" data="336" />
+	<item name="clay" data="337" />
+	<item name="sugar-canes" data="338" />
+	<item name="paper" data="339" />
+	<item name="book" data="340" />
+	<item name="slimeball" data="341" />
+	<item name="minecart-with-chest" data="342" stack="1" />
+	<item name="minecart-with-furnace" minecraft="343" stack="1" />
+	<item name="egg" data="344" stack="16" />
+	<item name="compass" data="345" />
+	<item name="fishing-rod" data="346" stack="1" />
+	<item name="clock" data="347" />
+	<item name="glowstone-dust" data="348" />
+	<item name="raw-fish" minecraft="349:0" pocket="349" />
+	<item name="raw-salmon" minecraft="349:1" pocket="460" />
+	<item name="clownfish" minecraft="349:2" pocket="461" />
+	<item name="pufferfish" minecraft="349:3" pocket="462" />
+	<item name="cooked-fish" minecraft="350:0" pocket="350" />
+	<item name="cooked-salmon" minecraft="350:1" pocket="463" />
+	<item name="ink-sac" data="351:0" />
+	<item name="rose-red" data="351:1" />
+	<item name="cactus-green" data="351:2" />
+	<item name="cocoa-beans" data="351:3" />
+	<item name="lapis-lazuli" data="351:4" />
+	<item name="purple-dye" data="351:5" />
+	<item name="cyan-dye" data="351:6" />
+	<item name="light-gray-dye" data="351:7" />
+	<item name="gray-dye" data="351:8" />
+	<item name="pink-dye" data="351:9" />
+	<item name="lime-dye" data="351:10" />
+	<item name="dandelion-yellow" data="351:11" />
+	<item name="light-blue-dye" data="351:12" />
+	<item name="magenta-dye" data="351:13" />
+	<item name="orange-dye" data="351:14" />
+	<item name="bone-meal" data="351:15" />
+	<item name="bone" data="352" />
+	<item name="sugar" data="353" />
+	<item name="cake" data="354" stack="1" />
+	<item name="bed" data="355" stack="1" />
+	<item name="redstone-repeater" data="356" />
+	<item name="cookie" data="357" />
+	<item name="map" data="358" />
+	<item name="shears" data="359" stack="1" />
+	<item name="melon" data="360" />
+	<item name="pumpkin-seeds" data="361" />
+	<item name="melon-seeds" data="362" />
+	<item name="raw-beef" data="363" />
+	<item name="steak" data="364" />
+	<item name="raw-chicken" data="365" />
+	<item name="cooked-chicken" data="366" />
+	<item name="rotten-flesh" data="367" />
+	<item name="ender-pearl" data="368" stack="16" />
+	<item name="blaze-rod" data="369" />
+	<item name="ghast-tear" data="370" />
+	<item name="gold-nugget" data="371" />
+	<item name="nether-wart" data="372" />
+	<item name="potion" data="373" stack="1" />
+	<!-- TODO: potions -->
+	<item name="glass-bottle" data="374" />
+	<item name="spider-eye" data="375" />
+	<item name="fermented-spider-eye" data="376" />
+	<item name="blaze-powder" data="377" />
+	<item name="magma-cream" data="378" />
+	<item name="brewing-stand" data="379" />
+	<item name="cauldron" data="380" />
+	<item name="eye-of-ender" data="381" stack="16" />
+	<item name="glistering-melon" data="382" />
+	<!-- TODO: spawn eggs -->
+	<item name="bottle-o-enchanting" data="384" />
+	<item name="fire-charge" data="385" />
+	<item name="book-and-quill" minecraft="386" stack="1" />
+	<item name="written-book" minecraft="387" stack="1" />
+	<item name="emerald" data="388" />
+	<item name="item-frame" data="389" />
+	<item name="flower-pot" data="390" />
+	<item name="carrot" data="391" />
+	<item name="potato" data="392" />
+	<item name="baked-potato" data="393" />
+	<item name="poisonous-potato" data="394" />
+	<item name="empty-map" data="395" />
+	<item name="golden-carrot" data="396" />
+	<item name="skeleton-skull" data="397:0" />
+	<item name="wither-skull" data="397:1" />
+	<item name="zombie-head" data="397:2" />
+	<item name="human-head" data="397:3" />
+	<item name="creeper-head" data="397:4" />
+	<item name="dragon-head" data="397:5" />
+	<item name="carrot-on-a-stick" data="398" stack="1" />
+	<item name="nether-star" data="399" />
+	<item name="pumpkin-pie" data="400" />
+	<item name="firework-rocket" minecraft="401" />
+	<item name="firework-star" minecraft="402" />
+	<item name="enchanted-book" data="403" stack="1" />
+	<item name="redstone-comparator" data="404" />
+	<item name="nether-brick" data="405" />
+	<item name="nether-quartz" data="406" />
+	<item name="minecart-with-tnt" data="407" stack="1" />
+	<item name="minecart-with-hopper" data="408" stack="1" />
+	<item name="prismarine-shard" data="409" />
+	<item name="prismarine-crystals" minecraft="410" pocket="422" />
+	<item name="raw-rabbit" data="411" />
+	<item name="cooked-rabbit" data="412" />
+	<item name="rabbit-stew" data="413" />
+	<item name="rabbit-foot" data="414" />
+	<item name="rabbit-hide" data="415" />
+	<item name="armor-stand" minecraft="416" stack="16" />
+	<item name="leather-horse-armor" pocket="416" stack="1" />
+	<item name="iron-horse-armor" data="417" stack="1" />
+	<item name="golden-horse-armor" data="418" stack="1" />
+	<item name="diamond-horse-armor" data="419" stack="1" />
+	<item name="lead" data="420" />
+	<item name="name-tag" data="421" />
+	<item name="minecart-with-command-block" minecraft="422" stack="1" />
+	<item name="raw-mutton" data="423" />
+	<item name="cooked-mutton" data="424" />
+	<item name="banner" minecraft="425" />
+	<item name="end-crystal" data="426" />
+	<item name="spruce-door" data="427" />
+	<item name="birch-door" data="428" />
+	<item name="jungle-door" data="429" />
+	<item name="acacia-door" data="430" />
+	<item name="dark-oak-door" data="431" />
+	<item name="chorus-fruit" data="432" />
+	<item name="popped-chorus-fruit" data="433" />
+	<item name="beetroot" minecraft="434" pocket="457" />
+	<item name="beetroot-seeds" minecraft="435" pocket="458" />
+	<item name="beetroot-soup" minecraft="436" pocket="459" stack="1" />
+	<item name="dragons-breath" data="437" />
+	<item name="splash-potion" data="438" stack="1" />
+	<!-- TODO: potions -->
+	<item name="spectral-arrow" minecraft="439" />
+	<item name="tipped-arrow" minecraft="440" />
+	<!-- TODO: tipped arrows -->
+	<item name="lingering-potion" data="441" stack="1" />
+	<!-- TODO: potions -->
+	<item name="shield" minecraft="442" stack="1" />
+	<item name="elytra" minecraft="443" pocket="444" />
+	<item name="spruce-boat" minecraft="444" pocket="333:1" stack="1" />
+	<item name="birch-boat" minecraft="445" pocket="333:2" stack="1" />
+	<item name="jungle-boat" minecraft="446" pocket="333:3" stack="1" />
+	<item name="acacia-boat" minecraft="447" pocket="333:4" stack="1" />
+	<item name="dark-oak-boat" minecraft="448" pocket="333:5" stack="1" />
+	<item name="undying-totem" minecraft="449" stack="1" />
+	<item name="shulker-shell" minecraft="450" pocket="445" />
+	<item name="iron-nugget" minecraft="452" />
+	<item name="disc-13" minecraft="2256" stack="1" />
+	<item name="disc-cat" minecraft="2257" stack="1" />
+	<item name="disc-blocks" minecraft="2258" stack="1" />
+	<item name="disc-chirp" minecraft="2259" stack="1" />
+	<item name="disc-far" minecraft="2260" stack="1" />
+	<item name="disc-mall" minecraft="2261" stack="1" />
+	<item name="disc-mellohi" minecraft="2262" stack="1" />
+	<item name="disc-stal" minecraft="2263" stack="1" />
+	<item name="disc-strad" minecraft="2264" stack="1" />
+	<item name="disc-ward" minecraft="2265" stack="1" />
+	<item name="disc-11" minecraft="2266" stack="1" />
+	<item name="disc-wait" minecraft="2267" stack="1" />
+
+</items>

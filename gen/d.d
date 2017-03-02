@@ -27,7 +27,7 @@ import std.typetuple;
 
 import all;
 
-void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks) {
+void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items) {
 
 	mkdirRecurse("../src/d/sul/attributes");
 	mkdirRecurse("../src/d/sul/metadata");
@@ -654,66 +654,78 @@ alias varulong = var!ulong;
 	}
 
 	// blocks
-	string data = "module sul.blocks;\n\n";
-	data ~= "import std.typecons;\nimport std.typetuple;\n\n";
-	data ~= "private alias Point = Tuple!(ubyte, \"x\", ubyte, \"y\", ubyte, \"z\");\n\n";
-	data ~= "private class BoundingBox {\n\n";
-	data ~= "\tpublic Point min, max;\n\n";
-	data ~= "\tpublic this(Point min, Point max) {\n";
-	data ~= "\t\tthis.min = min;\n";
-	data ~= "\t\tthis.max = max;\n";
-	data ~= "\t}\n\n";
-	data ~= "}\n\n";
-	data ~= "public alias Block = Tuple!(string, \"name\", ushort, \"id\", BlockData, \"minecraft\", BlockData, \"pocket\", bool, \"solid\", double, \"hardness\", double, \"blastResistance\", ubyte, \"opacity\", ubyte, \"luminance\", BoundingBox, \"boundingBox\");\n\n";
-	data ~= "private struct BlockData {\n\n";
-	data ~= "\tpublic bool exists;\n";
-	data ~= "\tpublic ubyte id, meta;\n\n";
-	data ~= "\talias exists this;\n\n";
-	data ~= "}\n\n";
-	data ~= "interface Blocks {\n\n";
-	foreach(block ; blocks) {
-		data ~= "\tpublic enum " ~ block.name.toUpper ~ " = Block(";
-		data ~= "\"" ~ block.name.replace("_", " ") ~ "\", ";
-		data ~= block.id.to!string ~ ", ";
-		data ~= "BlockData(" ~ (block.minecraft.hash < 0 ? "false" : ("true, " ~ block.minecraft.id.to!string ~ ", " ~ (block.minecraft.meta < 0 ? "0" : block.minecraft.meta.to!string))) ~ "), ";
-		data ~= "BlockData(" ~ (block.pocket.hash < 0 ? "false" : ("true, " ~ block.pocket.id.to!string ~ ", " ~ (block.pocket.meta < 0 ? "0" : block.pocket.meta.to!string))) ~ "), ";
-		data ~= block.solid.to!string ~ ", ";
-		data ~= block.hardness.to!string ~ ", ";
-		data ~= block.blastResistance.to!string ~ ", ";
-		data ~= block.opacity.to!string ~ ", ";
-		data ~= block.luminance.to!string ~ ", ";
-		if(block.boundingBox == BoundingBox.init) data ~= "null, ";
-		else data ~= "new BoundingBox(Point(" ~ block.boundingBox.min.x.to!string ~ ", " ~ block.boundingBox.min.y.to!string ~ ", " ~ block.boundingBox.min.z.to!string ~ "), Point(" ~ block.boundingBox.max.x.to!string ~ ", " ~ block.boundingBox.max.y.to!string ~ ", " ~ block.boundingBox.max.z.to!string ~ ")), ";
-		data ~= ");\n";
-	}
-	data ~= "\n";
-	data ~= "\tpublic alias typeTuple = TypeTuple!(";
-	foreach(i, block; blocks) {
-		data ~= block.name.toUpper;
-		if(i != blocks.length - 1) data ~= ", ";
-	}
-	data ~= ");\n\n";
-	/*data ~= "\tpublic static Block getSelBlock(ushort id) {\n";
-	data ~= "\t\tswitch(id) {\n";
-	foreach(block ; blocks) {
-		data ~= "\t\t\tcase " ~ block.id.to!string ~ ": return " ~ block.name.toUpper ~ ";\n";
-	}
-	data ~= "\t\t\tdefault: return Block.init;\n";
-	data ~= "\t\t}\n";
-	data ~= "\t}\n\n";
-	foreach(type ; TypeTuple!("minecraft", "pocket")) {
-		data ~= "\tpublic static Block get" ~ capitalize(type) ~ "Block(ubyte id, ubyte meta) {\n";
-		data ~= "\t\tswitch(id << 4 | meta) {\n";
-		foreach(block ; blocks) {
-			mixin("auto bd = block." ~ type ~ ";");
-			if(bd.hash >= 0) data ~= "\t\t\tcase " ~ to!string(bd.hash) ~ ": return " ~ block.name.toUpper ~ ";\n";
-		}
-		data ~= "\t\t\tdefault: return Block.init;\n";
-		data ~= "\t\t}\n";
+	{
+		string data = "module sul.blocks;\n\n";
+		data ~= "import std.typecons;\nimport std.typetuple;\n\n";
+		data ~= "private alias Point = Tuple!(ubyte, \"x\", ubyte, \"y\", ubyte, \"z\");\n\n";
+		data ~= "private struct BoundingBox {\n\n";
+		data ~= "\tpublic bool exists;\n\n";
+		data ~= "\tpublic Point min, max;\n\n";
+		data ~= "\tpublic this(Point min, Point max) {\n";
+		data ~= "\t\tthis.min = min;\n";
+		data ~= "\t\tthis.max = max;\n";
 		data ~= "\t}\n\n";
-	}*/
-	data ~= "}";
-	write("../src/d/sul/blocks.d", data, "blocks");
+		data ~= "\talias exists this;\n\n";
+		data ~= "}\n\n";
+		data ~= "public alias Block = Tuple!(string, \"name\", ushort, \"id\", BlockData, \"minecraft\", BlockData, \"pocket\", bool, \"solid\", double, \"hardness\", double, \"blastResistance\", ubyte, \"opacity\", ubyte, \"luminance\", BoundingBox, \"boundingBox\");\n\n";
+		data ~= "private struct BlockData {\n\n";
+		data ~= "\tbool exists;\n";
+		data ~= "\tubyte id, meta;\n\n";
+		data ~= "\talias exists this;\n\n";
+		data ~= "}\n\n";
+		//data ~= "interface Blocks {\n\n";
+		data ~= "enum Blocks : Block {\n\n";
+		foreach(block ; blocks) {
+			//data ~= "\tpublic enum " ~ block.name.toUpper ~ " = Block(";
+			data ~= "\t" ~ block.name.toUpper ~ " = Block(";
+			data ~= "\"" ~ block.name.replace("_", " ") ~ "\", ";
+			data ~= block.id.to!string ~ ", ";
+			data ~= "BlockData(" ~ (block.minecraft.hash < 0 ? "false" : ("true, " ~ block.minecraft.id.to!string ~ ", " ~ (block.minecraft.meta < 0 ? "0" : block.minecraft.meta.to!string))) ~ "), ";
+			data ~= "BlockData(" ~ (block.pocket.hash < 0 ? "false" : ("true, " ~ block.pocket.id.to!string ~ ", " ~ (block.pocket.meta < 0 ? "0" : block.pocket.meta.to!string))) ~ "), ";
+			data ~= block.solid.to!string ~ ", ";
+			data ~= block.hardness.to!string ~ ", ";
+			data ~= block.blastResistance.to!string ~ ", ";
+			data ~= block.opacity.to!string ~ ", ";
+			data ~= block.luminance.to!string ~ ", ";
+			if(block.boundingBox == BoundingBox.init) data ~= "BoundingBox.init";
+			else data ~= "BoundingBox(Point(" ~ block.boundingBox.min.x.to!string ~ ", " ~ block.boundingBox.min.y.to!string ~ ", " ~ block.boundingBox.min.z.to!string ~ "), Point(" ~ block.boundingBox.max.x.to!string ~ ", " ~ block.boundingBox.max.y.to!string ~ ", " ~ block.boundingBox.max.z.to!string ~ "))";
+			data ~= "),\n";
+		}
+		data ~= "\n";
+		/*data ~= "\tpublic alias typeTuple = TypeTuple!(";
+		foreach(i, block; blocks) {
+			data ~= block.name.toUpper;
+			if(i != blocks.length - 1) data ~= ", ";
+		}
+		data ~= ");\n\n";*/
+		data ~= "}";
+		write("../src/d/sul/blocks.d", data, "blocks");
+	}
+
+	// items
+	{
+		string data = "module sul.items;\n\n";
+		data ~= "import std.typecons;\n\n";
+		data ~= "public alias Item = Tuple!(string, \"name\", size_t, \"index\", ItemData, \"minecraft\", ItemData, \"pocket\", ubyte, \"stack\");\n\n";
+		data ~= "private struct ItemData {\n\n";
+		data ~= "\tbool exists;\n";
+		data ~= "\tushort id;\n";
+		data ~= "\tushort meta;\n\n";
+		data ~= "\talias exists this;\n\n";
+		data ~= "}\n\n";
+		data ~= "enum Items : Item {\n\n";
+		foreach(i, item; items) {
+			data ~= "\t" ~ item.name.toUpper ~ " = Item(";
+			data ~= "\"" ~ item.name.replace("_", " ") ~ "\", ";
+			data ~= i.to!string ~ ", ";
+			data ~= "ItemData(" ~ (item.minecraft.exists ? "true, " ~ item.minecraft.id.to!string ~ ", " ~ max(0, item.minecraft.meta).to!string : "false") ~ "), ";
+			data ~= "ItemData(" ~ (item.pocket.exists ? "true, " ~ item.pocket.id.to!string ~ ", " ~ max(0, item.pocket.meta).to!string : "false") ~ "), ";
+			data ~= item.stack.to!string;
+			data ~= "),\n";
+		}
+		data ~= "\n}";
+		write("../src/d/sul/items.d", data, "items");
+	}
 
 }
 
