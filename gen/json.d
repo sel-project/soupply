@@ -17,10 +17,11 @@ module json;
 import std.conv : to;
 import std.file : mkdirRecurse, _write = write;
 import std.json;
+import std.math : isNaN;
 
 import all;
 
-void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items) {
+void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities) {
 
 	// attributes
 	mkdirRecurse("../json/attributes");
@@ -289,6 +290,27 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		}
 		data ~= "\t}\n\n}\n";
 		_write("../json/items.json", data);
+	}
+
+	// entities
+	{
+		string data = "{\n\t\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
+		data ~= "\t\"entities\": {\n\n";
+		foreach(i, entity; entities) {
+			data ~= "\t\t\"" ~ entity.name ~ "\": {\n";
+			if(entity.minecraft) data ~= "\t\t\t\"minecraft\": " ~ entity.minecraft.to!string ~ ",\n";
+			if(entity.pocket) data ~= "\t\t\t\"pocket\": " ~ entity.pocket.to!string ~ ",\n";
+			if(!entity.width.isNaN && !entity.height.isNaN) {
+				data ~= "\t\t\t\"size\": {\n";
+				data ~= "\t\t\t\t\"width\": " ~ entity.width.to!string ~ ",\n";
+				data ~= "\t\t\t\t\"height\": " ~ entity.height.to!string ~ "\n";
+				data ~= "\t\t\t},\n";
+			}
+			data.length -= 2;
+			data ~= "\n\t\t}" ~ (i != entities.length - 1 ? "," : "") ~ "\n\n";
+		}
+		data ~= "\t}\n\n}\n";
+		_write("../json/entities.json", data);
 	}
 
 }

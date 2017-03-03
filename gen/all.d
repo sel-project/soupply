@@ -95,6 +95,9 @@ alias ItemData = Tuple!(bool, "exists", ushort, "id", int, "meta");
 alias Item = Tuple!(string, "name", ItemData, "minecraft", ItemData, "pocket", ubyte, "stack");
 
 
+alias Entity = Tuple!(string, "name", ubyte, "minecraft", ubyte, "pocket", bool, "object", double, "width", double, "height");
+
+
 private uint n_version;
 
 public @property uint sulVersion() {
@@ -465,7 +468,7 @@ void main(string[] args) {
 					if(s.length == 1 || s.length == 2) {
 						id.exists = true;
 						id.id = to!ushort(s[0]);
-						if(s.length == 2) id.meta = to!ubyte(s[1]);
+						if(s.length == 2) id.meta = to!ushort(s[1]);
 						else id.meta = -1;
 					}
 				}
@@ -486,14 +489,35 @@ void main(string[] args) {
 		}
 	}
 
-	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks, items);
-	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks, items);
-	if(wall || wjs) js.js(attributes, protocols, metadata, creative, blocks, items);
+	// entities
+	Entity[] entities;
+	foreach(element ; new Document(cast(string)read("../xml/entities.xml")).elements) {
+		with(element.tag) {
+			if(name == "object" || name == "entity") {
+				Entity entity;
+				entity.name = attr["name"].replace("-", "_");
+				entity.object = name == "object";
+				auto minecraft = "minecraft" in attr;
+				auto pocket = "pocket" in attr;
+				auto width = "width" in attr;
+				auto height = "height" in attr;
+				if(minecraft) entity.minecraft = to!ubyte(*minecraft);
+				if(pocket) entity.pocket = to!ubyte(*pocket);
+				if(width) entity.width = to!double(*width);
+				if(height) entity.height = to!double(*height);
+				entities ~= entity;
+			}
+		}
+	}
+
+	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks, items, entities);
+	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks, items, entities);
+	if(wall || wjs) js.js(attributes, protocols, metadata, creative, blocks, items, entities);
 
 	//if(wall || wdiff) diff.diff(attributes, protocols, metadata);
 	if(wall || wdocs) docs.docs(attributes, protocols, metadata);
 
-	if(wall || wjson) json.json(attributes, protocols, metadata, creative, blocks, items);
+	if(wall || wjson) json.json(attributes, protocols, metadata, creative, blocks, items, entities);
 
 }
 

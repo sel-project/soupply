@@ -19,6 +19,7 @@ import std.ascii : newline;
 import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
 import std.json;
+import std.math : isNaN;
 import std.path : dirSeparator;
 import std.regex : ctRegex, replaceAll, matchFirst;
 import std.string;
@@ -27,7 +28,7 @@ import std.typetuple;
 
 import all;
 
-void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items) {
+void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities) {
 
 	mkdirRecurse("../src/d/sul/attributes");
 	mkdirRecurse("../src/d/sul/metadata");
@@ -725,6 +726,26 @@ alias varulong = var!ulong;
 		}
 		data ~= "\n}";
 		write("../src/d/sul/items.d", data, "items");
+	}
+
+	// entities
+	{
+		string data = "module sul.entities;\n\n";
+		data ~= "import std.typecons;\n\n";
+		data ~= "public alias Entity = Tuple!(string, \"name\", bool, \"object\", ubyte, \"minecraft\", ubyte, \"pocket\", double, \"width\", double, \"height\");\n\n";
+		data ~= "public enum Entities : Entity {\n\n";
+		foreach(i, entity; entities) {
+			data ~= "\t" ~ entity.name.toUpper ~ " = Entity(";
+			data ~= "\"" ~ entity.name.replace("_", " ") ~ "\", ";
+			data ~= entity.object.to!string ~ ", ";
+			data ~= entity.minecraft.to!string ~ ", ";
+			data ~= entity.pocket.to!string ~ ", ";
+			data ~= (entity.width.isNaN ? "double.nan" : entity.width.to!string) ~ ", ";
+			data ~= (entity.height.isNaN ? "double.nan" : entity.height.to!string);
+			data ~= "),\n";
+		}
+		data ~= "\n}";
+		write("../src/d/sul/entities.d", data, "entities");
 	}
 
 }

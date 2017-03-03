@@ -19,6 +19,7 @@ import std.ascii : newline;
 import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
 import std.json;
+import std.math : isNaN;
 import std.path : dirSeparator;
 import std.regex : ctRegex, replaceAll, matchFirst;
 import std.string;
@@ -27,7 +28,7 @@ import std.typetuple : TypeTuple;
 
 import all;
 
-void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items) {
+void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities) {
 	
 	mkdirRecurse("../src/java/sul/utils");
 	
@@ -850,7 +851,7 @@ public class MetadataException extends RuntimeException {
 	{
 		string data = "package sul;\n\n";
 		data ~= "import java.util.*;\n\n";
-		data ~= "public class Blocks {\n\n";
+		data ~= "public final class Blocks {\n\n";
 		data ~= "\tpublic final String name;\n";
 		data ~= "\tpublic final short id;\n";
 		data ~= "\tpublic final BlockData minecraft, pocket;\n";
@@ -875,10 +876,10 @@ public class MetadataException extends RuntimeException {
 		data ~= "\t\t\tthis.meta = meta;\n";
 		data ~= "\t\t}\n\n";
 		data ~= "\t}\n\n";
-		data ~= "\tprivate static List<Blocks> selBlocks;\n";
+		data ~= "\tprivate static Map<Short, Blocks> selBlocks;\n";
 		data ~= "\tprivate static Map<Integer, Map<Integer, Blocks>> minecraftBlocks, pocketBlocks;\n\n";
 		data ~= "\tstatic {\n\n";
-		data ~= "\t\tselBlocks = new ArrayList<Blocks>();\n\n";
+		data ~= "\t\tselBlocks = new HashMap<Short, Blocks>();\n\n";
 		data ~= "\t\tminecraftBlocks = new HashMap<Integer, Map<Integer, Blocks>>();\n";
 		data ~= "\t\tpocketBlocks = new HashMap<Integer, Map<Integer, Blocks>>();\n\n";
 		foreach(block ; blocks) {
@@ -896,7 +897,7 @@ public class MetadataException extends RuntimeException {
 		}
 		data ~= "\n\t}\n\n";
 		data ~= "\tprivate static void add(Blocks block) {\n";
-		data ~= "\t\tselBlocks.add(block);\n";
+		data ~= "\t\tselBlocks.put(block.id, block);\n";
 		data ~= "\t\tif(block.minecraft != null) {\n";
 		data ~= "\t\t\tif(!minecraftBlocks.containsKey(block.minecraft.id)) minecraftBlocks.put(block.minecraft.id, new HashMap<Integer, Blocks>());\n";
 		data ~= "\t\t\tminecraftBlocks.get(block.minecraft.id).put(block.minecraft.meta, block);\n";
@@ -908,7 +909,7 @@ public class MetadataException extends RuntimeException {
 		data ~= "\t}\n\n";
 		// get methods
 		data ~= "\tpublic static Blocks getSelBlock(short id) {\n";
-		data ~= "\t\treturn selBlocks.size() > id ? selBlocks.get(id) : null;\n";
+		data ~= "\t\treturn selBlocks.get(id);\n";
 		data ~= "\t}\n\n";
 		foreach(type ; TypeTuple!("minecraft", "pocket")) {
 			data ~= "\tpublic static Blocks get" ~ capitalize(type) ~ "Block(int id, int meta) {\n";
@@ -924,7 +925,7 @@ public class MetadataException extends RuntimeException {
 	{
 		string data = "package sul;\n\n";
 		data ~= "import java.util.*;\n\n";
-		data ~= "public class Items {\n\n";
+		data ~= "public final class Items {\n\n";
 		data ~= "\tpublic final String name;\n";
 		data ~= "\tpublic final ItemData minecraft, pocket;\n";
 		data ~= "\tpublic final byte stack;\n\n";
@@ -978,6 +979,68 @@ public class MetadataException extends RuntimeException {
 		}
 		data ~= "}";
 		write("../src/java/sul/Items.java", data, "items");
+	}
+
+	// entities
+	{
+		string data = "package sul;\n\n";
+		data ~= "import java.util.*;\n\n";
+		data ~= "public final class Entities {\n\n";
+		data ~= "\tpublic final String name;\n";
+		data ~= "\tpublic final boolean object;\n";
+		data ~= "\tpublic final int minecraft, pocket;\n";
+		data ~= "\tpublic final double width, height;\n\n";
+		data ~= "\tprivate Entities(String name, boolean object, int minecraft, int pocket, double width, double height) {\n";
+		data ~= "\t\tthis.name = name;\n";
+		data ~= "\t\tthis.object = object;\n";
+		data ~= "\t\tthis.minecraft = minecraft;\n";
+		data ~= "\t\tthis.pocket = pocket;\n";
+		data ~= "\t\tthis.width = width;\n";
+		data ~= "\t\tthis.height = height;\n";
+		data ~= "\t}\n\n";
+		foreach(entity ; entities) {
+			data ~= "\tpublic static final Entities " ~ entity.name.toUpper ~ " = new Entities(";
+			data ~= "\"" ~ entity.name.replace("_", " ") ~ "\", ";
+			data ~= entity.object.to!string ~ ", ";
+			data ~= (entity.minecraft ? entity.minecraft.to!string : "-1") ~ ", ";
+			data ~= (entity.pocket ? entity.pocket.to!string : "-1") ~ ", ";
+			data ~= (entity.width.isNaN ? "Double.NaN" : entity.width.to!string) ~ ", ";
+			data ~= (entity.height.isNaN ? "Double.NaN" : entity.height.to!string);
+			data ~= ");\n";
+		}
+		data ~= "\n";
+		data ~= "\tprivate static Map<Integer, Entities> minecraftEntities, minecraftObjects, pocketEntities, pocketObjects;\n\n";
+		data ~= "\tstatic {\n\n";
+		data ~= "\t\tminecraftEntities = new HashMap<Integer, Entities>();\n";
+		data ~= "\t\tminecraftObjects = new HashMap<Integer, Entities>();\n";
+		data ~= "\t\tpocketEntities = new HashMap<Integer, Entities>();\n";
+		data ~= "\t\tpocketObjects = new HashMap<Integer, Entities>();\n\n";
+		foreach(entity ; entities) {
+			data ~= "\t\tadd(" ~ entity.name.toUpper ~ ");\n";
+		}
+		data ~= "\n\t}\n\n";
+		data ~= "\tprivate static void add(Entities entity) {\n";
+		foreach(type ; TypeTuple!("minecraft", "pocket")) {
+			data ~= "\t\tif(entity." ~ type ~ " != -1) {\n";
+			data ~= "\t\t\tif(entity.object) " ~ type ~ "Objects.put(entity." ~ type ~ ", entity);\n";
+			data ~= "\t\t\tif(!entity.object || !" ~ type ~ "Entities.containsKey(entity." ~ type ~ ")) " ~ type ~ "Entities.put(entity." ~ type ~ ", entity);\n";
+			data ~= "\t\t}\n";
+		}
+		data ~= "\t}\n\n";
+		foreach(type ; TypeTuple!("minecraft", "pocket")) {
+			data ~= "\tpublic static Entities get" ~ capitalize(type) ~ "Entity(int id, boolean object) {\n";
+			data ~= "\t\tif(object && " ~ type ~ "Objects.containsKey(id)) return " ~ type ~ "Objects.get(id);\n";
+			data ~= "\t\telse return " ~ type ~ "Entities.get(id);\n";
+			data ~= "\t}\n\n";
+			data ~= "\tpublic static Entities get" ~ capitalize(type) ~ "Entity(int id) {\n";
+			data ~= "\t\treturn get" ~ capitalize(type) ~ "Entity(id, false);\n";
+			data ~= "\t}\n\n";
+			data ~= "\tpublic static Entities get" ~ capitalize(type) ~ "Object(int id) {\n";
+			data ~= "\t\treturn get" ~ capitalize(type) ~ "Entity(id, true);\n";
+			data ~= "\t}\n\n";
+		}
+		data ~= "}";
+		write("../src/java/sul/Entities.java", data, "entities");
 	}
 	
 }

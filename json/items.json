@@ -1408,7 +1408,7 @@
 			"stack": 64
 		},
 
-		"redstone_repeater": {
+		"inactive_redstone_repeater": {
 			"minecraft": 93,
 			"pocket": 93,
 			"stack": 64
@@ -1752,7 +1752,7 @@
 			"stack": 64
 		},
 
-		"nether_brick": {
+		"nether_brick_block": {
 			"minecraft": 112,
 			"pocket": 112,
 			"stack": 64
@@ -1770,7 +1770,7 @@
 			"stack": 64
 		},
 
-		"nether_wart": {
+		"nether_wart_plant": {
 			"minecraft": 115,
 			"pocket": 115,
 			"stack": 64
@@ -1782,13 +1782,13 @@
 			"stack": 64
 		},
 
-		"brewing_stand": {
+		"brewing_stand_block": {
 			"minecraft": 117,
 			"pocket": 117,
 			"stack": 64
 		},
 
-		"cauldron": {
+		"cauldron_block": {
 			"minecraft": 118,
 			"pocket": 118,
 			"stack": 64
@@ -2117,7 +2117,7 @@
 			"stack": 64
 		},
 
-		"redstone_comparator": {
+		"inactive_redstone_comparator": {
 			"minecraft": 149,
 			"pocket": 149,
 			"stack": 64
@@ -4310,6 +4310,138 @@
 			"stack": 1
 		},
 
+		"awkward_potion": {
+			"minecraft": {
+				"id": 373,
+				"meta": 16
+			},
+			"pocket": {
+				"id": 373,
+				"meta": 4
+			},
+			"stack": 64
+		},
+
+		"thick_potion": {
+			"minecraft": {
+				"id": 373,
+				"meta": 32
+			},
+			"pocket": {
+				"id": 373,
+				"meta": 3
+			},
+			"stack": 64
+		},
+
+		"mundane_potion": {
+			"minecraft": {
+				"id": 373,
+				"meta": 64
+			},
+			"pocket": {
+				"id": 373,
+				"meta": 1
+			},
+			"stack": 64
+		},
+
+		"mundane_potion_extended": {
+			"minecraft": {
+				"id": 373,
+				"meta": 8192
+			},
+			"pocket": {
+				"id": 373,
+				"meta": 2
+			},
+			"stack": 64
+		},
+
+		"night_vision_potion": {
+			"minecraft": {
+				"id": 373,
+				"meta": 8198
+			},
+			"pocket": {
+				"id": 373,
+				"meta": 5
+			},
+			"stack": 64
+		},
+
+		"night_vision_potion_extended": {
+			"minecraft": {
+				"id": 373,
+				"meta": 8262
+			},
+			"pocket": {
+				"id": 373,
+				"meta": 6
+			},
+			"stack": 64
+		},
+
+		"invisibility_potion": {
+			"minecraft": {
+				"id": 373,
+				"meta": 8206
+			},
+			"pocket": {
+				"id": 373,
+				"meta": 7
+			},
+			"stack": 64
+		},
+
+		"invisibility_potion_extended": {
+			"minecraft": {
+				"id": 373,
+				"meta": 8270
+			},
+			"pocket": {
+				"id": 373,
+				"meta": 8
+			},
+			"stack": 64
+		},
+
+		"leaping_potion": {
+			"minecraft": {
+				"id": 373,
+				"meta": 8203
+			},
+			"pocket": {
+				"id": 373,
+				"meta": 9
+			},
+			"stack": 64
+		},
+
+		"leaping_potion_extended": {
+			"minecraft": {
+				"id": 373,
+				"meta": 8267
+			},
+			"pocket": {
+				"id": 373,
+				"meta": 10
+			},
+			"stack": 64
+		},
+
+		"leaping_potion_plus": {
+			"minecraft": {
+				"id": 373,
+				"meta": 8235
+			},
+			"pocket": {
+				"id": 373,
+				"meta": 11
+			},
+			"stack": 64
+		},
+
 		"glass_bottle": {
 			"minecraft": 374,
 			"pocket": 374,
@@ -4361,6 +4493,502 @@
 		"glistering_melon": {
 			"minecraft": 382,
 			"pocket": 382,
+			"stack": 64
+		},
+
+		"spawn_elder_guardian": {
+			"minecraft": {
+				"id": 383,
+				"meta": 4
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 50
+			},
+			"stack": 64
+		},
+
+		"spawn_wither_skeleton": {
+			"minecraft": {
+				"id": 383,
+				"meta": 5
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 48
+			},
+			"stack": 64
+		},
+
+		"spawn_stray": {
+			"minecraft": {
+				"id": 383,
+				"meta": 6
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 46
+			},
+			"stack": 64
+		},
+
+		"spawn_husk": {
+			"minecraft": {
+				"id": 383,
+				"meta": 23
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 47
+			},
+			"stack": 64
+		},
+
+		"spawn_zombie_villager": {
+			"minecraft": {
+				"id": 383,
+				"meta": 27
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 44
+			},
+			"stack": 64
+		},
+
+		"spawn_skeleton_horse": {
+			"minecraft": {
+				"id": 383,
+				"meta": 28
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 26
+			},
+			"stack": 64
+		},
+
+		"spawn_zombie_horse": {
+			"minecraft": {
+				"id": 383,
+				"meta": 29
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 27
+			},
+			"stack": 64
+		},
+
+		"spawn_donkey": {
+			"minecraft": {
+				"id": 383,
+				"meta": 31
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 24
+			},
+			"stack": 64
+		},
+
+		"spawn_mule": {
+			"minecraft": {
+				"id": 383,
+				"meta": 32
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 25
+			},
+			"stack": 64
+		},
+
+		"spawn_evoker": {
+			"minecraft": {
+				"id": 383,
+				"meta": 34
+			},
+			"stack": 64
+		},
+
+		"spawn_vex": {
+			"minecraft": {
+				"id": 383,
+				"meta": 35
+			},
+			"stack": 64
+		},
+
+		"spawn_vindicator": {
+			"minecraft": {
+				"id": 383,
+				"meta": 36
+			},
+			"stack": 64
+		},
+
+		"spawn_creeper": {
+			"minecraft": {
+				"id": 383,
+				"meta": 50
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 33
+			},
+			"stack": 64
+		},
+
+		"spawn_skeleton": {
+			"minecraft": {
+				"id": 383,
+				"meta": 51
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 34
+			},
+			"stack": 64
+		},
+
+		"spawn_spider": {
+			"minecraft": {
+				"id": 383,
+				"meta": 52
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 35
+			},
+			"stack": 64
+		},
+
+		"spawn_zombie": {
+			"minecraft": {
+				"id": 383,
+				"meta": 54
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 32
+			},
+			"stack": 64
+		},
+
+		"spawn_slime": {
+			"minecraft": {
+				"id": 383,
+				"meta": 55
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 37
+			},
+			"stack": 64
+		},
+
+		"spawn_ghast": {
+			"minecraft": {
+				"id": 383,
+				"meta": 56
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 41
+			},
+			"stack": 64
+		},
+
+		"spawn_zombie_pigman": {
+			"minecraft": {
+				"id": 383,
+				"meta": 57
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 36
+			},
+			"stack": 64
+		},
+
+		"spawn_enderman": {
+			"minecraft": {
+				"id": 383,
+				"meta": 58
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 38
+			},
+			"stack": 64
+		},
+
+		"spawn_cave_spider": {
+			"minecraft": {
+				"id": 383,
+				"meta": 59
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 40
+			},
+			"stack": 64
+		},
+
+		"spawn_silverfish": {
+			"minecraft": {
+				"id": 383,
+				"meta": 60
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 39
+			},
+			"stack": 64
+		},
+
+		"spawn_blaze": {
+			"minecraft": {
+				"id": 383,
+				"meta": 61
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 43
+			},
+			"stack": 64
+		},
+
+		"spawn_magma_cube": {
+			"minecraft": {
+				"id": 383,
+				"meta": 62
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 42
+			},
+			"stack": 64
+		},
+
+		"spawn_bat": {
+			"minecraft": {
+				"id": 383,
+				"meta": 65
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 19
+			},
+			"stack": 64
+		},
+
+		"spawn_witch": {
+			"minecraft": {
+				"id": 383,
+				"meta": 66
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 45
+			},
+			"stack": 64
+		},
+
+		"spawn_endermite": {
+			"minecraft": {
+				"id": 383,
+				"meta": 67
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 55
+			},
+			"stack": 64
+		},
+
+		"spawn_guardian": {
+			"minecraft": {
+				"id": 383,
+				"meta": 68
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 49
+			},
+			"stack": 64
+		},
+
+		"spawn_shulker": {
+			"minecraft": {
+				"id": 383,
+				"meta": 69
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 54
+			},
+			"stack": 64
+		},
+
+		"spawn_pig": {
+			"minecraft": {
+				"id": 383,
+				"meta": 90
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 12
+			},
+			"stack": 64
+		},
+
+		"spawn_sheep": {
+			"minecraft": {
+				"id": 383,
+				"meta": 91
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 13
+			},
+			"stack": 64
+		},
+
+		"spawn_cow": {
+			"minecraft": {
+				"id": 383,
+				"meta": 92
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 11
+			},
+			"stack": 64
+		},
+
+		"spawn_chicken": {
+			"minecraft": {
+				"id": 383,
+				"meta": 93
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 10
+			},
+			"stack": 64
+		},
+
+		"spawn_squid": {
+			"minecraft": {
+				"id": 383,
+				"meta": 94
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 17
+			},
+			"stack": 64
+		},
+
+		"spawn_wolf": {
+			"minecraft": {
+				"id": 383,
+				"meta": 95
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 14
+			},
+			"stack": 64
+		},
+
+		"spawn_mooshroom": {
+			"minecraft": {
+				"id": 383,
+				"meta": 96
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 16
+			},
+			"stack": 64
+		},
+
+		"spawn_ocelot": {
+			"minecraft": {
+				"id": 383,
+				"meta": 98
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 22
+			},
+			"stack": 64
+		},
+
+		"spawn_horse": {
+			"minecraft": {
+				"id": 383,
+				"meta": 100
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 23
+			},
+			"stack": 64
+		},
+
+		"spawn_rabbit": {
+			"minecraft": {
+				"id": 383,
+				"meta": 101
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 18
+			},
+			"stack": 64
+		},
+
+		"spawn_polar_bear": {
+			"minecraft": {
+				"id": 383,
+				"meta": 102
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 28
+			},
+			"stack": 64
+		},
+
+		"spawn_llama": {
+			"minecraft": {
+				"id": 383,
+				"meta": 103
+			},
+			"stack": 64
+		},
+
+		"spawn_villager": {
+			"minecraft": {
+				"id": 383,
+				"meta": 120
+			},
+			"pocket": {
+				"id": 383,
+				"meta": 15
+			},
+			"stack": 64
+		},
+
+		"spawn_npc": {
+			"pocket": {
+				"id": 383,
+				"meta": 51
+			},
 			"stack": 64
 		},
 
@@ -4452,7 +5080,7 @@
 			"stack": 64
 		},
 
-		"wither_skull": {
+		"wither_skeleton_skull": {
 			"minecraft": {
 				"id": 397,
 				"meta": 1

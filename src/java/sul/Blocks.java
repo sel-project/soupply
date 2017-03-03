@@ -10,7 +10,7 @@ package sul;
 
 import java.util.*;
 
-public class Blocks {
+public final class Blocks {
 
 	public final String name;
 	public final short id;
@@ -42,12 +42,12 @@ public class Blocks {
 
 	}
 
-	private static List<Blocks> selBlocks;
+	private static Map<Short, Blocks> selBlocks;
 	private static Map<Integer, Map<Integer, Blocks>> minecraftBlocks, pocketBlocks;
 
 	static {
 
-		selBlocks = new ArrayList<Blocks>();
+		selBlocks = new HashMap<Short, Blocks>();
 
 		minecraftBlocks = new HashMap<Integer, Map<Integer, Blocks>>();
 		pocketBlocks = new HashMap<Integer, Map<Integer, Blocks>>();
@@ -1387,7 +1387,7 @@ public class Blocks {
 	}
 
 	private static void add(Blocks block) {
-		selBlocks.add(block);
+		selBlocks.put(block.id, block);
 		if(block.minecraft != null) {
 			if(!minecraftBlocks.containsKey(block.minecraft.id)) minecraftBlocks.put(block.minecraft.id, new HashMap<Integer, Blocks>());
 			minecraftBlocks.get(block.minecraft.id).put(block.minecraft.meta, block);
@@ -1399,7 +1399,7 @@ public class Blocks {
 	}
 
 	public static Blocks getSelBlock(short id) {
-		return selBlocks.size() > id ? selBlocks.get(id) : null;
+		return selBlocks.get(id);
 	}
 
 	public static Blocks getMinecraftBlock(int id, int meta) {

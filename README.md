@@ -7,12 +7,12 @@ The generated documentation can be found at [sel-project.github.io/sel-utils](ht
 ### Specification
  | Protocol | Metadata | Attributes | Recipes | Creative Inventory | Blocks | Items | Entities
  ---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
- JSON | ✓ | ✓ | ✓ |   | ✓ | ✓ | ✓ |   
- XML | ✓ | ✓ | ✓ |   | ✓ | ✓ | ✓ |   
+ JSON | ✓ | ✓ | ✓ |   | ✓ | ✓ | ✓ | ✓ 
+ XML | ✓ | ✓ | ✓ |   | ✓ | ✓ | ✓ | ✓ 
  
 ### Generated code
  | Protocol | Metadata | Attributes | Recipes | Creative Inventory | Blocks | Items | Entities
  ---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
- D | ✓ | encoding | ✓ |   | ✓ | ✓ | ✓ |   
- Java | ✓ |   | ✓ |   | ✓ | ✓ | ✓ |   
+ D | ✓ | encoding | ✓ |   | ✓ | ✓ | ✓ | ✓ 
+ Java | ✓ |   | ✓ |   | ✓ | ✓ | ✓ | ✓ 
  JavaScript | ✓ | ✓ | ✓ |   | ✓ |   |   |     

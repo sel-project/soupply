@@ -162,7 +162,7 @@
 	<item name="nether-portal" data="90" />
 	<item name="jack-o-lantern" data="91" />
 	<item name="cake-block" data="92" />
-	<item name="redstone-repeater" data="93" />
+	<item name="inactive-redstone-repeater" data="93" />
 	<item name="active-redstone-repeater" data="94" />
 	<item name="white-stained-glass" minecraft="95:0" />
 	<item name="orange-stained-glass" minecraft="95:1" />
@@ -204,13 +204,13 @@
 	<item name="stone-brick-stairs" data="109" />
 	<item name="mycelium" data="110" />
 	<item name="lily-pad" data="111" />
-	<item name="nether-brick" data="112" />
+	<item name="nether-brick-block" data="112" />
 	<item name="nether-brick-fence" data="113" />
 	<item name="nether-brick-stairs" data="114" />
-	<item name="nether-wart" data="115" />
+	<item name="nether-wart-plant" data="115" />
 	<item name="enchantment-table" data="116" />
-	<item name="brewing-stand" data="117" />
-	<item name="cauldron" data="118" />
+	<item name="brewing-stand-block" data="117" />
+	<item name="cauldron-block" data="118" />
 	<item name="end-portal" data="119" />
 	<item name="end-portal-frame" data="120" />
 	<item name="end-stone" data="121" />
@@ -252,7 +252,7 @@
 	<item name="trapped-chest" data="146" />
 	<item name="light-weighted-pressure-plate" data="147" />
 	<item name="heavy-weighted-pressure-plate" data="148" />
-	<item name="redstone-comparator" data="149" />
+	<item name="inactive-redstone-comparator" data="149" />
 	<item name="active-redstone-comparator" data="150" />
 	<item name="daylight-sensor" data="151" />
 	<item name="redstone-block" data="152" />
@@ -546,6 +546,17 @@
 	<item name="gold-nugget" data="371" />
 	<item name="nether-wart" data="372" />
 	<item name="potion" data="373" stack="1" />
+	<item name="awkward-potion" minecraft="373:16" pocket="373:4" />
+	<item name="thick-potion" minecraft="373:32" pocket="373:3" />
+	<item name="mundane-potion" minecraft="373:64" pocket="373:1" />
+	<item name="mundane-potion-extended" minecraft="373:8192" pocket="373:2" />
+	<item name="night-vision-potion" minecraft="373:8198" pocket="373:5" />
+	<item name="night-vision-potion-extended" minecraft="373:8262" pocket="373:6" />
+	<item name="invisibility-potion" minecraft="373:8206" pocket="373:7" />
+	<item name="invisibility-potion-extended" minecraft="373:8270" pocket="373:8" />
+	<item name="leaping-potion" minecraft="373:8203" pocket="373:9" />
+	<item name="leaping-potion-extended" minecraft="373:8267" pocket="373:10" />
+	<item name="leaping-potion-plus" minecraft="373:8235" pocket="373:11" />
 	<!-- TODO: potions -->
 	<item name="glass-bottle" data="374" />
 	<item name="spider-eye" data="375" />
@@ -556,7 +567,49 @@
 	<item name="cauldron" data="380" />
 	<item name="eye-of-ender" data="381" stack="16" />
 	<item name="glistering-melon" data="382" />
-	<!-- TODO: spawn eggs -->
+	<item name="spawn-elder-guardian" minecraft="383:4" pocket="383:50" />
+	<item name="spawn-wither-skeleton" minecraft="383:5" pocket="383:48" />
+	<item name="spawn-stray" minecraft="383:6" pocket="383:46" />
+	<item name="spawn-husk" minecraft="383:23" pocket="383:47" />
+	<item name="spawn-zombie-villager" minecraft="383:27" pocket="383:44" />
+	<item name="spawn-skeleton-horse" minecraft="383:28" pocket="383:26" />
+	<item name="spawn-zombie-horse" minecraft="383:29" pocket="383:27" />
+	<item name="spawn-donkey" minecraft="383:31" pocket="383:24" />
+	<item name="spawn-mule" minecraft="383:32" pocket="383:25" />
+	<item name="spawn-evoker" minecraft="383:34" />
+	<item name="spawn-vex" minecraft="383:35" />
+	<item name="spawn-vindicator" minecraft="383:36" />
+	<item name="spawn-creeper" minecraft="383:50" pocket="383:33" />
+	<item name="spawn-skeleton" minecraft="383:51" pocket="383:34" />
+	<item name="spawn-spider" minecraft="383:52" pocket="383:35" />
+	<item name="spawn-zombie" minecraft="383:54" pocket="383:32" />
+	<item name="spawn-slime" minecraft="383:55" pocket="383:37" />
+	<item name="spawn-ghast" minecraft="383:56" pocket="383:41" />
+	<item name="spawn-zombie-pigman" minecraft="383:57" pocket="383:36" />
+	<item name="spawn-enderman" minecraft="383:58" pocket="383:38" />
+	<item name="spawn-cave-spider" minecraft="383:59" pocket="383:40" />
+	<item name="spawn-silverfish" minecraft="383:60" pocket="383:39" />
+	<item name="spawn-blaze" minecraft="383:61" pocket="383:43" />
+	<item name="spawn-magma-cube" minecraft="383:62" pocket="383:42" />
+	<item name="spawn-bat" minecraft="383:65" pocket="383:19" />
+	<item name="spawn-witch" minecraft="383:66" pocket="383:45" />
+	<item name="spawn-endermite" minecraft="383:67" pocket="383:55" />
+	<item name="spawn-guardian" minecraft="383:68" pocket="383:49" />
+	<item name="spawn-shulker" minecraft="383:69" pocket="383:54" />
+	<item name="spawn-pig" minecraft="383:90" pocket="383:12" />
+	<item name="spawn-sheep" minecraft="383:91" pocket="383:13" />
+	<item name="spawn-cow" minecraft="383:92" pocket="383:11" />
+	<item name="spawn-chicken" minecraft="383:93" pocket="383:10" />
+	<item name="spawn-squid" minecraft="383:94" pocket="383:17" />
+	<item name="spawn-wolf" minecraft="383:95" pocket="383:14" />
+	<item name="spawn-mooshroom" minecraft="383:96" pocket="383:16" />
+	<item name="spawn-ocelot" minecraft="383:98" pocket="383:22" />
+	<item name="spawn-horse" minecraft="383:100" pocket="383:23" />
+	<item name="spawn-rabbit" minecraft="383:101" pocket="383:18" />
+	<item name="spawn-polar-bear" minecraft="383:102" pocket="383:28" />
+	<item name="spawn-llama" minecraft="383:103" />
+	<item name="spawn-villager" minecraft="383:120" pocket="383:15" />
+	<item name="spawn-npc" pocket="383:51" />
 	<item name="bottle-o-enchanting" data="384" />
 	<item name="fire-charge" data="385" />
 	<item name="book-and-quill" minecraft="386" stack="1" />
@@ -571,7 +624,7 @@
 	<item name="empty-map" data="395" />
 	<item name="golden-carrot" data="396" />
 	<item name="skeleton-skull" data="397:0" />
-	<item name="wither-skull" data="397:1" />
+	<item name="wither-skeleton-skull" data="397:1" />
 	<item name="zombie-head" data="397:2" />
 	<item name="human-head" data="397:3" />
 	<item name="creeper-head" data="397:4" />
