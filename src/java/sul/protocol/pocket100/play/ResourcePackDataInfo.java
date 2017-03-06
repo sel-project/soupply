@@ -50,9 +50,9 @@ public class ResourcePackDataInfo extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		byte[] aq=id.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)aq.length); this.writeBytes(aq);
-		this.writeBigEndianInt(unknown1);
-		this.writeBigEndianInt(unknown2);
-		this.writeBigEndianLong(unknown3);
+		this.writeLittleEndianInt(unknown1);
+		this.writeLittleEndianInt(unknown2);
+		this.writeLittleEndianLong(unknown3);
 		byte[] d5b9bq=unknown4.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)d5b9bq.length); this.writeBytes(d5b9bq);
 		return this.getBuffer();
 	}
@@ -62,9 +62,9 @@ public class ResourcePackDataInfo extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		int bvaq=this.readVaruint(); id=new String(this.readBytes(bvaq), StandardCharsets.UTF_8);
-		unknown1=readBigEndianInt();
-		unknown2=readBigEndianInt();
-		unknown3=readBigEndianLong();
+		unknown1=readLittleEndianInt();
+		unknown2=readLittleEndianInt();
+		unknown3=readLittleEndianLong();
 		int bvd5b9bq=this.readVaruint(); unknown4=new String(this.readBytes(bvd5b9bq), StandardCharsets.UTF_8);
 	}
 

@@ -10,10 +10,6 @@ package sul.protocol.pocket101.play;
 
 import sul.utils.*;
 
-/**
- * Shows the end credits to the player. They are always skippable client-side and a
- * packet of this type is sent back by the client when the credits are skipped or finished.
- */
 public class ShowCredits extends Packet {
 
 	public static final byte ID = (byte)76;
@@ -26,15 +22,31 @@ public class ShowCredits extends Packet {
 		return ID;
 	}
 
+	// status
+	public static final int START = 0;
+	public static final int END = 1;
+
+	public long entityId;
+	public int status;
+
+	public ShowCredits() {}
+
+	public ShowCredits(long entityId, int status) {
+		this.entityId = entityId;
+		this.status = status;
+	}
+
 	@Override
 	public int length() {
-		return 1;
+		return Buffer.varlongLength(entityId) + Buffer.varintLength(status) + 1;
 	}
 
 	@Override
 	public byte[] encode() {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
+		this.writeVarlong(entityId);
+		this.writeVarint(status);
 		return this.getBuffer();
 	}
 
@@ -42,6 +54,8 @@ public class ShowCredits extends Packet {
 	public void decode(byte[] buffer) {
 		this._buffer = buffer;
 		readBigEndianByte();
+		entityId=this.readVarlong();
+		status=this.readVarint();
 	}
 
 	public static ShowCredits fromBuffer(byte[] buffer) {
@@ -52,7 +66,7 @@ public class ShowCredits extends Packet {
 
 	@Override
 	public String toString() {
-		return "ShowCredits()";
+		return "ShowCredits(entityId: " + this.entityId + ", status: " + this.status + ")";
 	}
 
 }

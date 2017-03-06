@@ -26,11 +26,22 @@
 
 		<alias name="angle" type="ubyte" />
 
+		<type name="pack-with-size">
+			<field name="id" type="string" />
+			<field name="version" type="string" />
+			<field name="size" type="ulong" endianness="little-endian" />
+		</type>
+
+		<array name="pack-with-size-array" base="pack-with-size" length="ushort" endianness="little-endian" />
+
 		<type name="pack">
 			<field name="id" type="string" />
 			<field name="version" type="string" />
-			<field name="size" type="ulong" />
 		</type>
+
+		<array name="pack-array" base="pack" length="ushort" endianness="little-endian" />
+
+		<array name="pack-ids" base="string" length="ushort" endianness="little-endian" />
 
 		<type name="slot">
 			<field name="id" type="varint" />
@@ -109,6 +120,13 @@
 			<field name="value" type="ushort" endianness="little-endian" />
 		</type>
 
+		<type name="decoration">
+			<field name="rotation-and-icon" type="varint" />
+			<field name="position" type="ubyte<xz>" />
+			<field name="label" type="string" />
+			<field name="color" type="uint" endianness="little-endian" />
+		</type>
+
 		<type name="rule">
 			<field name="name" type="string">
 				<constant name="drowning-damage" value="drowningdamage" />
@@ -167,19 +185,24 @@
 
 			<packet name="resource-packs-info" id="7" clientbound="true" serverbound="false">
 				<field name="must-accept" type="bool" />
-				<field name="behaviour-packs" type="pack[]" />
-				<field name="resource-packs" type="pack[]" />
+				<field name="behaviour-packs" type="pack-with-size-array" />
+				<field name="resource-packs" type="pack-with-size-array" />
 			</packet>
 
 			<packet name="resource-packs-stack-packet" id="8" clientbound="true" serverbound="false">
 				<field name="must-accept" type="bool" />
-				<field name="behaviour-packs" type="pack[]" />
-				<field name="resource-packs" type="pack[]" />
+				<field name="behaviour-packs" type="pack-array" />
+				<field name="resource-packs" type="pack-array" />
 			</packet>
 
 			<packet name="resource-pack-client-response" id="9" clientbound="false" serverbound="true">
-				<field name="status" type="ubyte" />
-				<field name="resource-pack-version" type="ushort" />
+				<field name="status" type="ubyte">
+					<constant name="refused" value="1" />
+					<constant name="send-packs" value="2" />
+					<constant name="have-all-packs" value="3" />
+					<constant name="completed" value="4" />
+				</field>
+				<field name="pack-ids" type="packs" />
 			</packet>
 
 			<packet name="text" id="10" clientbound="true" serverbound="true">
@@ -736,7 +759,7 @@
 					<constant name="auto-jump" value="32" />
 					<constant name="allow-flight" value="64" />
 					<constant name="no-clip" value="128" />
-					<constant name="flying" value="256" />
+					<constant name="flying" value="512" />
 				</field>
 				<field name="permissions" type="varuint">
 					<constant name="user" value="0" />
@@ -817,25 +840,16 @@
 
 			<packet name="clientbound-map-item-data" id="66" clientbound="true" serverbound="false">
 				<field name="map-id" type="entity-id" />
-				<field name="?" type="varuint" />
-				<field name="?" type="varuint" />
-				<field name="?" type="entity-id" />
-				<field name="action" type="ubyte">
-					<constant name="update" value="4" />
-					<constant name="full" value="6" />
+				<field name="update" type="varuint">
+					<constant name="texture" value="2" />
+					<constant name="decorations" value="4" />
+					<constant name="entities" value="8" />
 				</field>
-				<field name="?" type="varuint" />
-				<field name="?" type="varint" />
-				<field name="?" type="byte" />
-				<field name="?" type="byte" />
-				<field name="show-icons" type="bool" />
-				<field name="icons" type="varint<xz>[]" />
-				<field name="direction" type="varint" />
-				<field name="position" type="varint<xz>" />
-				<field name="columns" type="varint" />
-				<field name="rows" type="varint" />
-				<field name="offset" type="varint<xz>" />
-				<field name="data" type="ubyte[]" />
+				<field name="scale" type="ubyte" when="update==2||update==4" />
+				<field name="size" type="varint<xz>" when="update==2" />
+				<field name="offset" type="varint<xz>" when="update==2" />
+				<field name="data" type="bytes" when="update==2" />
+				<field name="decorations" type="decoration[]" when="update==4" />
 			</packet>
 
 			<packet name="map-info-request" id="67" clientbound="false" serverbound="true">
@@ -881,7 +895,13 @@
 				</field>
 			</packet>
 
-			<packet name="show-credits" id="76" clientbound="true" serverbound="true"></packet>
+			<packet name="show-credits" id="76" clientbound="true" serverbound="true">
+				<field name="entity-id" type="entity-id" />
+				<field name="status" type="varint">
+					<constant name="start" value="0" />
+					<constant name="end" value="1" />
+				</field>
+			</packet>
 
 			<packet name="available-commands" id="77" clientbound="true" serverbound="false">
 				<field name="commands" type="string" />
@@ -901,22 +921,22 @@
 
 			<packet name="resource-pack-data-info" id="79" clientbound="true" serverbound="false">
 				<field name="id" type="string" />
-				<field name="?" type="uint" />
-				<field name="?" type="uint" />
-				<field name="?" type="ulong" />
+				<field name="?" type="uint" endianness="little-endian" />
+				<field name="?" type="uint" endianness="little-endian" />
+				<field name="?" type="ulong" endianness="little-endian" />
 				<field name="?" type="string" />
 			</packet>
 
 			<packet name="resource-pack-chunk-data" id="80" clientbound="true" serverbound="false">
 				<field name="id" type="string" />
-				<field name="?" type="uint" />
-				<field name="?" type="ulong" />
+				<field name="?" type="uint" endianness="little-endian" />
+				<field name="?" type="ulong" endianness="little-endian" />
 				<field name="data" type="ubyte[]" />
 			</packet>
 
 			<packet name="resource-pack-chunk-request" id="81" clientbound="false" serverbound="true">
 				<field name="id" type="string" />
-				<field name="index" type="uint" />
+				<field name="index" type="uint" endianness="little-endian" />
 			</packet>
 
 		</section>

@@ -10,7 +10,7 @@
 
 const Types = {
 
-	Pack: class extends Buffer {
+	PackWithSize: class extends Buffer {
 
 		constructor(id="", version="", size=0) {
 			super();
@@ -24,7 +24,7 @@ const Types = {
 			this._buffer = [];
 			var dhc5z=this.encodeString(this.id); this.writeVaruint(dhc5z.length); this.writeBytes(dhc5z);
 			var dhc5zja9=this.encodeString(this.version); this.writeVaruint(dhc5zja9.length); this.writeBytes(dhc5zja9);
-			this.writeBigEndianLong(this.size);
+			this.writeLittleEndianLong(this.size);
 			return new Uint8Array(this._buffer);
 		}
 
@@ -33,7 +33,43 @@ const Types = {
 			this._buffer = Array.from(_buffer);
 			this.id=this.decodeString(this.readBytes(this.readVaruint()));
 			this.version=this.decodeString(this.readBytes(this.readVaruint()));
-			this.size=this.readBigEndianLong();
+			this.size=this.readLittleEndianLong();
+			return this;
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		static fromBuffer(buffer) {
+			return new Types.PackWithSize().decode(buffer);
+		}
+
+		/** @return {string} */
+		toString() {
+			return "PackWithSize(id: " + this.id + ", version: " + this.version + ", size: " + this.size + ")";
+		}
+
+	},
+
+	Pack: class extends Buffer {
+
+		constructor(id="", version="") {
+			super();
+			this.id = id;
+			this.version = version;
+		}
+
+		/** @return {Uint8Array} */
+		encode() {
+			this._buffer = [];
+			var dhc5z=this.encodeString(this.id); this.writeVaruint(dhc5z.length); this.writeBytes(dhc5z);
+			var dhc5zja9=this.encodeString(this.version); this.writeVaruint(dhc5zja9.length); this.writeBytes(dhc5zja9);
+			return new Uint8Array(this._buffer);
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this.id=this.decodeString(this.readBytes(this.readVaruint()));
+			this.version=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -44,7 +80,7 @@ const Types = {
 
 		/** @return {string} */
 		toString() {
-			return "Pack(id: " + this.id + ", version: " + this.version + ", size: " + this.size + ")";
+			return "Pack(id: " + this.id + ", version: " + this.version + ")";
 		}
 
 	},
@@ -517,6 +553,52 @@ const Types = {
 		/** @return {string} */
 		toString() {
 			return "ExtraData(key: " + this.key + ", value: " + this.value + ")";
+		}
+
+	},
+
+	Decoration: class extends Buffer {
+
+		/**
+		 * @param color
+		 *        ARGB colour.
+		 */
+		constructor(rotationAndIcon=0, position={x:0,z:0}, label="", color=0) {
+			super();
+			this.rotationAndIcon = rotationAndIcon;
+			this.position = position;
+			this.label = label;
+			this.color = color;
+		}
+
+		/** @return {Uint8Array} */
+		encode() {
+			this._buffer = [];
+			this.writeVarint(this.rotationAndIcon);
+			this.writeBigEndianByte(this.position.x); this.writeBigEndianByte(this.position.z);
+			var dhc5yjb=this.encodeString(this.label); this.writeVaruint(dhc5yjb.length); this.writeBytes(dhc5yjb);
+			this.writeLittleEndianInt(this.color);
+			return new Uint8Array(this._buffer);
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		decode(_buffer) {
+			this._buffer = Array.from(_buffer);
+			this.rotationAndIcon=this.readVarint();
+			this.position={}; this.position.x=this.readBigEndianByte(); this.position.z=this.readBigEndianByte();
+			this.label=this.decodeString(this.readBytes(this.readVaruint()));
+			this.color=this.readLittleEndianInt();
+			return this;
+		}
+
+		/** @param {(Uint8Array|Array)} buffer */
+		static fromBuffer(buffer) {
+			return new Types.Decoration().decode(buffer);
+		}
+
+		/** @return {string} */
+		toString() {
+			return "Decoration(rotationAndIcon: " + this.rotationAndIcon + ", position: " + this.position + ", label: " + this.label + ", color: " + this.color + ")";
 		}
 
 	},

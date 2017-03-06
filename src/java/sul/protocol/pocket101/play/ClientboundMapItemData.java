@@ -24,53 +24,42 @@ public class ClientboundMapItemData extends Packet {
 		return ID;
 	}
 
-	// action
-	public static final byte UPDATE = 4;
-	public static final byte FULL = 6;
+	// update
+	public static final int TEXTURE = 2;
+	public static final int DECORATIONS = 4;
+	public static final int ENTITIES = 8;
 
 	public long mapId;
-	public int unknown1;
-	public int unknown2;
-	public long unknown3;
-	public byte action;
-	public int unknown5;
-	public int unknown6;
-	public byte unknown7;
-	public byte unknown8;
-	public boolean showIcons;
-	public Tuples.IntXZ[] icons = new Tuples.IntXZ[0];
-	public int direction;
-	public Tuples.IntXZ position = new Tuples.IntXZ();
-	public int columns;
-	public int rows;
+	public int update;
+	public byte scale;
+
+	/**
+	 * Colums and rows.
+	 */
+	public Tuples.IntXZ size = new Tuples.IntXZ();
 	public Tuples.IntXZ offset = new Tuples.IntXZ();
+
+	/**
+	 * ARGB colours encoded as unsigned varints.
+	 */
 	public byte[] data = new byte[0];
+	public sul.protocol.pocket101.types.Decoration[] decorations = new sul.protocol.pocket101.types.Decoration[0];
 
 	public ClientboundMapItemData() {}
 
-	public ClientboundMapItemData(long mapId, int unknown1, int unknown2, long unknown3, byte action, int unknown5, int unknown6, byte unknown7, byte unknown8, boolean showIcons, Tuples.IntXZ[] icons, int direction, Tuples.IntXZ position, int columns, int rows, Tuples.IntXZ offset, byte[] data) {
+	public ClientboundMapItemData(long mapId, int update, byte scale, Tuples.IntXZ size, Tuples.IntXZ offset, byte[] data, sul.protocol.pocket101.types.Decoration[] decorations) {
 		this.mapId = mapId;
-		this.unknown1 = unknown1;
-		this.unknown2 = unknown2;
-		this.unknown3 = unknown3;
-		this.action = action;
-		this.unknown5 = unknown5;
-		this.unknown6 = unknown6;
-		this.unknown7 = unknown7;
-		this.unknown8 = unknown8;
-		this.showIcons = showIcons;
-		this.icons = icons;
-		this.direction = direction;
-		this.position = position;
-		this.columns = columns;
-		this.rows = rows;
+		this.update = update;
+		this.scale = scale;
+		this.size = size;
 		this.offset = offset;
 		this.data = data;
+		this.decorations = decorations;
 	}
 
 	@Override
 	public int length() {
-		int length=Buffer.varlongLength(mapId) + Buffer.varuintLength(unknown1) + Buffer.varuintLength(unknown2) + Buffer.varlongLength(unknown3) + Buffer.varuintLength(unknown5) + Buffer.varintLength(unknown6) + Buffer.varuintLength(icons.length) + Buffer.varintLength(direction) + Buffer.varintLength(position.x) + Buffer.varintLength(position.z) + Buffer.varintLength(columns) + Buffer.varintLength(rows) + Buffer.varintLength(offset.x) + Buffer.varintLength(offset.z) + Buffer.varuintLength(data.length) + data.length + 5; for(Tuples.IntXZ anbm:icons){ length+=Buffer.varintLength(anbm.x)+Buffer.varintLength(anbm.z); } return length;
+		int length=Buffer.varlongLength(mapId) + Buffer.varuintLength(update) + Buffer.varintLength(size.x) + Buffer.varintLength(size.z) + Buffer.varintLength(offset.x) + Buffer.varintLength(offset.z) + data.length + Buffer.varuintLength(decorations.length) + 2; for(sul.protocol.pocket101.types.Decoration zvbjdlbm:decorations){ length+=zvbjdlbm.length(); } return length;
 	}
 
 	@Override
@@ -78,22 +67,12 @@ public class ClientboundMapItemData extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeVarlong(mapId);
-		this.writeVaruint(unknown1);
-		this.writeVaruint(unknown2);
-		this.writeVarlong(unknown3);
-		this.writeBigEndianByte(action);
-		this.writeVaruint(unknown5);
-		this.writeVarint(unknown6);
-		this.writeBigEndianByte(unknown7);
-		this.writeBigEndianByte(unknown8);
-		this.writeBool(showIcons);
-		this.writeVaruint((int)icons.length); for(Tuples.IntXZ anbm:icons){ this.writeVarint(anbm.x); this.writeVarint(anbm.z); }
-		this.writeVarint(direction);
-		this.writeVarint(position.x); this.writeVarint(position.z);
-		this.writeVarint(columns);
-		this.writeVarint(rows);
-		this.writeVarint(offset.x); this.writeVarint(offset.z);
-		this.writeVaruint((int)data.length); this.writeBytes(data);
+		this.writeVaruint(update);
+		if(update==2||update==4){ this.writeBigEndianByte(scale); }
+		if(update==2){ this.writeVarint(size.x); this.writeVarint(size.z); }
+		if(update==2){ this.writeVarint(offset.x); this.writeVarint(offset.z); }
+		if(update==2){ this.writeBytes(data); }
+		if(update==4){ this.writeVaruint((int)decorations.length); for(sul.protocol.pocket101.types.Decoration zvbjdlbm:decorations){ this.writeBytes(zvbjdlbm.encode()); } }
 		return this.getBuffer();
 	}
 
@@ -102,22 +81,12 @@ public class ClientboundMapItemData extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		mapId=this.readVarlong();
-		unknown1=this.readVaruint();
-		unknown2=this.readVaruint();
-		unknown3=this.readVarlong();
-		action=readBigEndianByte();
-		unknown5=this.readVaruint();
-		unknown6=this.readVarint();
-		unknown7=readBigEndianByte();
-		unknown8=readBigEndianByte();
-		showIcons=this.readBool();
-		int blb5=this.readVaruint(); icons=new Tuples.IntXZ[blb5]; for(int anbm=0;anbm<icons.length;anbm++){ icons[anbm]=new Tuples.IntXZ(); icons[anbm].x=this.readVarint(); icons[anbm].z=this.readVarint(); }
-		direction=this.readVarint();
-		position=new Tuples.IntXZ(); position.x=this.readVarint(); position.z=this.readVarint();
-		columns=this.readVarint();
-		rows=this.readVarint();
-		offset=new Tuples.IntXZ(); offset.x=this.readVarint(); offset.z=this.readVarint();
-		int brde=this.readVaruint(); data=this.readBytes(brde);
+		update=this.readVaruint();
+		if(update==2||update==4){ scale=readBigEndianByte(); }
+		if(update==2){ size=new Tuples.IntXZ(); size.x=this.readVarint(); size.z=this.readVarint(); }
+		if(update==2){ offset=new Tuples.IntXZ(); offset.x=this.readVarint(); offset.z=this.readVarint(); }
+		if(update==2){ data=this.readBytes(this._buffer.length-this._index); }
+		if(update==4){ int bry9yrb5=this.readVaruint(); decorations=new sul.protocol.pocket101.types.Decoration[bry9yrb5]; for(int zvbjdlbm=0;zvbjdlbm<decorations.length;zvbjdlbm++){ decorations[zvbjdlbm]=new sul.protocol.pocket101.types.Decoration(); decorations[zvbjdlbm]._index=this._index; decorations[zvbjdlbm].decode(this._buffer); this._index=decorations[zvbjdlbm]._index; } }
 	}
 
 	public static ClientboundMapItemData fromBuffer(byte[] buffer) {
@@ -128,7 +97,7 @@ public class ClientboundMapItemData extends Packet {
 
 	@Override
 	public String toString() {
-		return "ClientboundMapItemData(mapId: " + this.mapId + ", unknown1: " + this.unknown1 + ", unknown2: " + this.unknown2 + ", unknown3: " + this.unknown3 + ", action: " + this.action + ", unknown5: " + this.unknown5 + ", unknown6: " + this.unknown6 + ", unknown7: " + this.unknown7 + ", unknown8: " + this.unknown8 + ", showIcons: " + this.showIcons + ", icons: " + Arrays.deepToString(this.icons) + ", direction: " + this.direction + ", position: " + this.position.toString() + ", columns: " + this.columns + ", rows: " + this.rows + ", offset: " + this.offset.toString() + ", data: " + Arrays.toString(this.data) + ")";
+		return "ClientboundMapItemData(mapId: " + this.mapId + ", update: " + this.update + ", scale: " + this.scale + ", size: " + this.size.toString() + ", offset: " + this.offset.toString() + ", data: " + Arrays.toString(this.data) + ", decorations: " + Arrays.deepToString(this.decorations) + ")";
 	}
 
 }

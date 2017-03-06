@@ -25,12 +25,12 @@ public class ResourcePacksInfo extends Packet {
 	}
 
 	public boolean mustAccept;
-	public sul.protocol.pocket101.types.Pack[] behaviourPacks = new sul.protocol.pocket101.types.Pack[0];
-	public sul.protocol.pocket101.types.Pack[] resourcePacks = new sul.protocol.pocket101.types.Pack[0];
+	public sul.protocol.pocket101.types.PackWithSize[] behaviourPacks = new sul.protocol.pocket101.types.PackWithSize[0];
+	public sul.protocol.pocket101.types.PackWithSize[] resourcePacks = new sul.protocol.pocket101.types.PackWithSize[0];
 
 	public ResourcePacksInfo() {}
 
-	public ResourcePacksInfo(boolean mustAccept, sul.protocol.pocket101.types.Pack[] behaviourPacks, sul.protocol.pocket101.types.Pack[] resourcePacks) {
+	public ResourcePacksInfo(boolean mustAccept, sul.protocol.pocket101.types.PackWithSize[] behaviourPacks, sul.protocol.pocket101.types.PackWithSize[] resourcePacks) {
 		this.mustAccept = mustAccept;
 		this.behaviourPacks = behaviourPacks;
 		this.resourcePacks = resourcePacks;
@@ -38,7 +38,7 @@ public class ResourcePacksInfo extends Packet {
 
 	@Override
 	public int length() {
-		int length=Buffer.varuintLength(behaviourPacks.length) + Buffer.varuintLength(resourcePacks.length) + 2; for(sul.protocol.pocket101.types.Pack yvyzbvuf:behaviourPacks){ length+=yvyzbvuf.length(); };for(sul.protocol.pocket101.types.Pack cvbvyvyn:resourcePacks){ length+=cvbvyvyn.length(); } return length;
+		int length=6; for(sul.protocol.pocket101.types.PackWithSize yvyzbvuf:behaviourPacks){ length+=yvyzbvuf.length(); };for(sul.protocol.pocket101.types.PackWithSize cvbvyvyn:resourcePacks){ length+=cvbvyvyn.length(); } return length;
 	}
 
 	@Override
@@ -46,8 +46,8 @@ public class ResourcePacksInfo extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBool(mustAccept);
-		this.writeVaruint((int)behaviourPacks.length); for(sul.protocol.pocket101.types.Pack yvyzbvuf:behaviourPacks){ this.writeBytes(yvyzbvuf.encode()); }
-		this.writeVaruint((int)resourcePacks.length); for(sul.protocol.pocket101.types.Pack cvbvyvyn:resourcePacks){ this.writeBytes(cvbvyvyn.encode()); }
+		this.writeLittleEndianShort((short)behaviourPacks.length); for(sul.protocol.pocket101.types.PackWithSize yvyzbvuf:behaviourPacks){ this.writeBytes(yvyzbvuf.encode()); }
+		this.writeLittleEndianShort((short)resourcePacks.length); for(sul.protocol.pocket101.types.PackWithSize cvbvyvyn:resourcePacks){ this.writeBytes(cvbvyvyn.encode()); }
 		return this.getBuffer();
 	}
 
@@ -56,8 +56,8 @@ public class ResourcePacksInfo extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		mustAccept=this.readBool();
-		int bjafa9cb=this.readVaruint(); behaviourPacks=new sul.protocol.pocket101.types.Pack[bjafa9cb]; for(int yvyzbvuf=0;yvyzbvuf<behaviourPacks.length;yvyzbvuf++){ behaviourPacks[yvyzbvuf]=new sul.protocol.pocket101.types.Pack(); behaviourPacks[yvyzbvuf]._index=this._index; behaviourPacks[yvyzbvuf].decode(this._buffer); this._index=behaviourPacks[yvyzbvuf]._index; }
-		int bjc9cnuf=this.readVaruint(); resourcePacks=new sul.protocol.pocket101.types.Pack[bjc9cnuf]; for(int cvbvyvyn=0;cvbvyvyn<resourcePacks.length;cvbvyvyn++){ resourcePacks[cvbvyvyn]=new sul.protocol.pocket101.types.Pack(); resourcePacks[cvbvyvyn]._index=this._index; resourcePacks[cvbvyvyn].decode(this._buffer); this._index=resourcePacks[cvbvyvyn]._index; }
+		int bjafa9cb=readLittleEndianShort(); behaviourPacks=new sul.protocol.pocket101.types.PackWithSize[bjafa9cb]; for(int yvyzbvuf=0;yvyzbvuf<behaviourPacks.length;yvyzbvuf++){ behaviourPacks[yvyzbvuf]=new sul.protocol.pocket101.types.PackWithSize(); behaviourPacks[yvyzbvuf]._index=this._index; behaviourPacks[yvyzbvuf].decode(this._buffer); this._index=behaviourPacks[yvyzbvuf]._index; }
+		int bjc9cnuf=readLittleEndianShort(); resourcePacks=new sul.protocol.pocket101.types.PackWithSize[bjc9cnuf]; for(int cvbvyvyn=0;cvbvyvyn<resourcePacks.length;cvbvyvyn++){ resourcePacks[cvbvyvyn]=new sul.protocol.pocket101.types.PackWithSize(); resourcePacks[cvbvyvyn]._index=this._index; resourcePacks[cvbvyvyn].decode(this._buffer); this._index=resourcePacks[cvbvyvyn]._index; }
 	}
 
 	public static ResourcePacksInfo fromBuffer(byte[] buffer) {

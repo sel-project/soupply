@@ -22,19 +22,25 @@ public class ResourcePackClientResponse extends Packet {
 		return ID;
 	}
 
+	// status
+	public static final byte REFUSED = 1;
+	public static final byte SEND_PACKS = 2;
+	public static final byte HAVE_ALL_PACKS = 3;
+	public static final byte COMPLETED = 4;
+
 	public byte status;
-	public short resourcePackVersion;
+	public sul.protocol.pocket101.types.Packs packIds;
 
 	public ResourcePackClientResponse() {}
 
-	public ResourcePackClientResponse(byte status, short resourcePackVersion) {
+	public ResourcePackClientResponse(byte status, sul.protocol.pocket101.types.Packs packIds) {
 		this.status = status;
-		this.resourcePackVersion = resourcePackVersion;
+		this.packIds = packIds;
 	}
 
 	@Override
 	public int length() {
-		return 4;
+		return packIds.length() + 2;
 	}
 
 	@Override
@@ -42,7 +48,7 @@ public class ResourcePackClientResponse extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(status);
-		this.writeBigEndianShort(resourcePackVersion);
+		this.writeBytes(packIds.encode());
 		return this.getBuffer();
 	}
 
@@ -51,7 +57,7 @@ public class ResourcePackClientResponse extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		status=readBigEndianByte();
-		resourcePackVersion=readBigEndianShort();
+		packIds=new sul.protocol.pocket101.types.Packs(); packIds._index=this._index; packIds.decode(this._buffer); this._index=packIds._index;
 	}
 
 	public static ResourcePackClientResponse fromBuffer(byte[] buffer) {
@@ -62,7 +68,7 @@ public class ResourcePackClientResponse extends Packet {
 
 	@Override
 	public String toString() {
-		return "ResourcePackClientResponse(status: " + this.status + ", resourcePackVersion: " + this.resourcePackVersion + ")";
+		return "ResourcePackClientResponse(status: " + this.status + ", packIds: " + this.packIds.toString() + ")";
 	}
 
 }

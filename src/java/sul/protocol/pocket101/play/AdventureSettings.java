@@ -34,7 +34,7 @@ public class AdventureSettings extends Packet {
 	public static final int AUTO_JUMP = 32;
 	public static final int ALLOW_FLIGHT = 64;
 	public static final int NO_CLIP = 128;
-	public static final int FLYING = 256;
+	public static final int FLYING = 512;
 
 	// permissions
 	public static final int USER = 0;

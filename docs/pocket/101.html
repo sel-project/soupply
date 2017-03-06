@@ -57,7 +57,7 @@
 		<table>
 			<tr>
 				<td>big endian</td>
-				<td>ushort, uint, ulong</td>
+				<td>ushort, uint</td>
 			</tr>
 			<tr>
 				<td>little endian</td>
@@ -837,11 +837,11 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 					</tr>
 					<tr>
 						<td>behaviour packs</td>
-						<td><a href="#types_pack">pack</a>[]</td>
+						<td><a href="#types_pack-with-size-array">packWithSizeArray</a></td>
 					</tr>
 					<tr>
 						<td>resource packs</td>
-						<td><a href="#types_pack">pack</a>[]</td>
+						<td><a href="#types_pack-with-size-array">packWithSizeArray</a></td>
 					</tr>
 				</table>
 			</li>
@@ -865,11 +865,11 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 					</tr>
 					<tr>
 						<td>behaviour packs</td>
-						<td><a href="#types_pack">pack</a>[]</td>
+						<td><a href="#types_pack-array">packArray</a></td>
 					</tr>
 					<tr>
 						<td>resource packs</td>
-						<td><a href="#types_pack">pack</a>[]</td>
+						<td><a href="#types_pack-array">packArray</a></td>
 					</tr>
 				</table>
 			</li>
@@ -888,14 +888,39 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 						<th>Type</th>
 					</tr>
 					<tr>
-						<td>status</td>
+						<td><a href="#play_resource-pack-client-response_status">status</a></td>
 						<td>ubyte</td>
 					</tr>
 					<tr>
-						<td>resource pack version</td>
-						<td>ushort</td>
+						<td>pack ids</td>
+						<td><a href="#types_packs">packs</a></td>
 					</tr>
 				</table>
+				<ul>
+					<li>
+						<strong id="play_resource-pack-client-response_status">status</strong>
+						<p><strong>Constants</strong>:</p>
+						<table>
+							<tr><th>Name</th><th>Value</th></tr>
+							<tr>
+								<td id="play_resource-pack-client-response_status_refused">refused</td>
+								<td class="center">1</td>
+							</tr>
+							<tr>
+								<td id="play_resource-pack-client-response_status_send-packs">send packs</td>
+								<td class="center">2</td>
+							</tr>
+							<tr>
+								<td id="play_resource-pack-client-response_status_have-all-packs">have all packs</td>
+								<td class="center">3</td>
+							</tr>
+							<tr>
+								<td id="play_resource-pack-client-response_status_completed">completed</td>
+								<td class="center">4</td>
+							</tr>
+						</table>
+					</li>
+				</ul>
 			</li>
 			<li>
 				<h3 id="play_text">Text</h3>
@@ -3602,7 +3627,7 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 							</tr>
 							<tr>
 								<td id="play_adventure-settings_flags_flying">flying</td>
-								<td class="center">256</td>
+								<td class="center">512</td>
 							</tr>
 						</table>
 					</li>
@@ -4018,91 +4043,71 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 					<tr>
 						<th>Name</th>
 						<th>Type</th>
+						<th>When</th>
 					</tr>
 					<tr>
 						<td>map id</td>
 						<td>varlong</td>
+						<td class="center"></td>
 					</tr>
 					<tr>
-						<td>?</td>
+						<td><a href="#play_clientbound-map-item-data_update">update</a></td>
 						<td>varuint</td>
+						<td class="center"></td>
 					</tr>
 					<tr>
-						<td>?</td>
-						<td>varuint</td>
-					</tr>
-					<tr>
-						<td>?</td>
-						<td>varlong</td>
-					</tr>
-					<tr>
-						<td><a href="#play_clientbound-map-item-data_action">action</a></td>
+						<td>scale</td>
 						<td>ubyte</td>
+						<td class="center"><code>update</code> is equal to <code>2 |  | update</code> is equal to <code>4</code></td>
 					</tr>
 					<tr>
-						<td>?</td>
-						<td>varuint</td>
-					</tr>
-					<tr>
-						<td>?</td>
-						<td>varint</td>
-					</tr>
-					<tr>
-						<td>?</td>
-						<td>byte</td>
-					</tr>
-					<tr>
-						<td>?</td>
-						<td>byte</td>
-					</tr>
-					<tr>
-						<td>show icons</td>
-						<td>bool</td>
-					</tr>
-					<tr>
-						<td>icons</td>
-						<td>varint&lt;xz&gt;[]</td>
-					</tr>
-					<tr>
-						<td>direction</td>
-						<td>varint</td>
-					</tr>
-					<tr>
-						<td>position</td>
+						<td><a href="#play_clientbound-map-item-data_size">size</a></td>
 						<td>varint&lt;xz&gt;</td>
-					</tr>
-					<tr>
-						<td>columns</td>
-						<td>varint</td>
-					</tr>
-					<tr>
-						<td>rows</td>
-						<td>varint</td>
+						<td class="center"><code>update</code> is equal to <code>2</code></td>
 					</tr>
 					<tr>
 						<td>offset</td>
 						<td>varint&lt;xz&gt;</td>
+						<td class="center"><code>update</code> is equal to <code>2</code></td>
 					</tr>
 					<tr>
-						<td>data</td>
-						<td>ubyte[]</td>
+						<td><a href="#play_clientbound-map-item-data_data">data</a></td>
+						<td>bytes</td>
+						<td class="center"><code>update</code> is equal to <code>2</code></td>
+					</tr>
+					<tr>
+						<td>decorations</td>
+						<td><a href="#types_decoration">decoration</a>[]</td>
+						<td class="center"><code>update</code> is equal to <code>4</code></td>
 					</tr>
 				</table>
 				<ul>
 					<li>
-						<strong id="play_clientbound-map-item-data_action">action</strong>
+						<strong id="play_clientbound-map-item-data_update">update</strong>
 						<p><strong>Constants</strong>:</p>
 						<table>
 							<tr><th>Name</th><th>Value</th></tr>
 							<tr>
-								<td id="play_clientbound-map-item-data_action_update">update</td>
+								<td id="play_clientbound-map-item-data_update_texture">texture</td>
+								<td class="center">2</td>
+							</tr>
+							<tr>
+								<td id="play_clientbound-map-item-data_update_decorations">decorations</td>
 								<td class="center">4</td>
 							</tr>
 							<tr>
-								<td id="play_clientbound-map-item-data_action_full">full</td>
-								<td class="center">6</td>
+								<td id="play_clientbound-map-item-data_update_entities">entities</td>
+								<td class="center">8</td>
 							</tr>
 						</table>
+					</li>
+					<li>
+						<strong id="play_clientbound-map-item-data_size">size</strong>
+						<p>Colums and rows.</p>
+					</li>
+					<li>
+						<strong id="play_clientbound-map-item-data_data">data</strong>
+						<p>ARGB colours encoded as unsigned varints.</p>
 					</li>
 				</ul>
 			</li>
@@ -4343,7 +4348,38 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 					<p><strong>Bin</strong>: 01001100</p>
 					<p>Sent by the <strong>server</strong> and the <strong>client</strong></p>
 				</div>
-				<p>Shows the end credits to the player. They are always skippable client-side and a packet of this type is sent back by the client when the credits are skipped or finished.</p>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+					</tr>
+					<tr>
+						<td>entity id</td>
+						<td>varlong</td>
+					</tr>
+					<tr>
+						<td><a href="#play_show-credits_status">status</a></td>
+						<td>varint</td>
+					</tr>
+				</table>
+				<ul>
+					<li>
+						<strong id="play_show-credits_status">status</strong>
+						<p><strong>Constants</strong>:</p>
+						<table>
+							<tr><th>Name</th><th>Value</th></tr>
+							<tr>
+								<td id="play_show-credits_status_start">start</td>
+								<td class="center">0</td>
+							</tr>
+							<tr>
+								<td id="play_show-credits_status_end">end</td>
+								<td class="center">1</td>
+							</tr>
+						</table>
+					</li>
+				</ul>
 			</li>
 			<li>
 				<h3 id="play_available-commands">Available Commands</h3>
@@ -4437,26 +4473,32 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 					<tr>
 						<th>Name</th>
 						<th>Type</th>
+						<th>Endianness</th>
 					</tr>
 					<tr>
 						<td>id</td>
 						<td>string</td>
+						<td class="center"></td>
 					</tr>
 					<tr>
 						<td>?</td>
 						<td>uint</td>
+						<td class="center">little endian</td>
 					</tr>
 					<tr>
 						<td>?</td>
 						<td>uint</td>
+						<td class="center">little endian</td>
 					</tr>
 					<tr>
 						<td>?</td>
 						<td>ulong</td>
+						<td class="center">little endian</td>
 					</tr>
 					<tr>
 						<td>?</td>
 						<td>string</td>
+						<td class="center"></td>
 					</tr>
 				</table>
 			</li>
@@ -4473,22 +4515,27 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 					<tr>
 						<th>Name</th>
 						<th>Type</th>
+						<th>Endianness</th>
 					</tr>
 					<tr>
 						<td>id</td>
 						<td>string</td>
+						<td class="center"></td>
 					</tr>
 					<tr>
 						<td>?</td>
 						<td>uint</td>
+						<td class="center">little endian</td>
 					</tr>
 					<tr>
 						<td>?</td>
 						<td>ulong</td>
+						<td class="center">little endian</td>
 					</tr>
 					<tr>
 						<td>data</td>
 						<td>ubyte[]</td>
+						<td class="center"></td>
 					</tr>
 				</table>
 			</li>
@@ -4505,14 +4552,17 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 					<tr>
 						<th>Name</th>
 						<th>Type</th>
+						<th>Endianness</th>
 					</tr>
 					<tr>
 						<td>id</td>
 						<td>string</td>
+						<td class="center"></td>
 					</tr>
 					<tr>
 						<td>index</td>
 						<td>uint</td>
+						<td class="center">little endian</td>
 					</tr>
 				</table>
 			</li>
@@ -4560,8 +4610,34 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 		</ul>
 		<hr>
 		<h2 id="types">Types</h2>
-		<p><strong>Jump to</strong>: <a href="#types_pack">Pack</a>, <a href="#types_slot">Slot</a>, <a href="#types_attribute">Attribute</a>, <a href="#types_block-position">Block Position</a>, <a href="#types_skin">Skin</a>, <a href="#types_player-list">Player List</a>, <a href="#types_link">Link</a>, <a href="#types_recipe">Recipe</a>, <a href="#types_chunk-data">Chunk Data</a>, <a href="#types_section">Section</a>, <a href="#types_extra-data">Extra Data</a>, <a href="#types_rule">Rule</a></p>
+		<p><strong>Jump to</strong>: <a href="#types_pack-with-size">Pack With Size</a>, <a href="#types_pack">Pack</a>, <a href="#types_slot">Slot</a>, <a href="#types_attribute">Attribute</a>, <a href="#types_block-position">Block Position</a>, <a href="#types_skin">Skin</a>, <a href="#types_player-list">Player List</a>, <a href="#types_link">Link</a>, <a href="#types_recipe">Recipe</a>, <a href="#types_chunk-data">Chunk Data</a>, <a href="#types_section">Section</a>, <a href="#types_extra-data">Extra Data</a>, <a href="#types_decoration">Decoration</a>, <a href="#types_rule">Rule</a></p>
 		<ul>
+			<li>
+				<h3 id="types_pack-with-size">Pack With Size</h3>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+						<th>Endianness</th>
+					</tr>
+					<tr>
+						<td>id</td>
+						<td>string</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td>version</td>
+						<td>string</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td>size</td>
+						<td>ulong</td>
+						<td class="center">little endian</td>
+					</tr>
+				</table>
+			</li>
 			<li>
 				<h3 id="types_pack">Pack</h3>
 				<p><strong>Fields</strong>:</p>
@@ -4577,10 +4653,6 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 					<tr>
 						<td>version</td>
 						<td>string</td>
-					</tr>
-					<tr>
-						<td>size</td>
-						<td>ulong</td>
 					</tr>
 				</table>
 			</li>
@@ -4968,6 +5040,43 @@ var count = count & 255
 				</table>
 			</li>
 			<li>
+				<h3 id="types_decoration">Decoration</h3>
+				<p><strong>Fields</strong>:</p>
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+						<th>Endianness</th>
+					</tr>
+					<tr>
+						<td>rotation and icon</td>
+						<td>varint</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td>position</td>
+						<td>ubyte&lt;xz&gt;</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td>label</td>
+						<td>string</td>
+						<td class="center"></td>
+					</tr>
+					<tr>
+						<td><a href="#types_decoration_color">color</a></td>
+						<td>uint</td>
+						<td class="center">little endian</td>
+					</tr>
+				</table>
+				<ul>
+					<li>
+						<strong id="types_decoration_color">color</strong>
+						<p>ARGB colour.</p>
+					</li>
+				</ul>
+			</li>
+			<li>
 				<h3 id="types_rule">Rule</h3>
 				<p>A game rule that prevents the client from doing client-side actions and animations.</p>
 				<p><strong>Fields</strong>:</p>
@@ -5040,9 +5149,21 @@ var count = count & 255
 				<th>Length</th>
 				<th>Length's Endianness</th>
 			</tr>
+			<tr id="types_pack-array">
+				<td>packArray</td>
+				<td><a href="#types_pack">pack</a></td>
+				<td>ushort</td>
+				<td>little endian</td>
+			</tr>
 			<tr id="types_nbt">
 				<td>nbt</td>
 				<td>ubyte</td>
+				<td>ushort</td>
+				<td>little endian</td>
+			</tr>
+			<tr id="types_pack-with-size-array">
+				<td>packWithSizeArray</td>
+				<td><a href="#types_pack-with-size">packWithSize</a></td>
 				<td>ushort</td>
 				<td>little endian</td>
 			</tr>
@@ -5051,6 +5172,12 @@ var count = count & 255
 				<td><a href="#types_rule">rule</a></td>
 				<td>uint</td>
 				<td></td>
+			</tr>
+			<tr id="types_pack-ids">
+				<td>packIds</td>
+				<td>string</td>
+				<td>ushort</td>
+				<td>little endian</td>
 			</tr>
 		</table>
 		<hr>

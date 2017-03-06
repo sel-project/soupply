@@ -12,21 +12,23 @@ import java.nio.charset.StandardCharsets;
 
 import sul.utils.*;
 
-public class Pack extends Stream {
+public class PackWithSize extends Stream {
 
 	public String id;
 	public String version;
+	public long size;
 
-	public Pack() {}
+	public PackWithSize() {}
 
-	public Pack(String id, String version) {
+	public PackWithSize(String id, String version, long size) {
 		this.id = id;
 		this.version = version;
+		this.size = size;
 	}
 
 	@Override
 	public int length() {
-		return Buffer.varuintLength(id.getBytes(StandardCharsets.UTF_8).length) + id.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(version.getBytes(StandardCharsets.UTF_8).length) + version.getBytes(StandardCharsets.UTF_8).length;
+		return Buffer.varuintLength(id.getBytes(StandardCharsets.UTF_8).length) + id.getBytes(StandardCharsets.UTF_8).length + Buffer.varuintLength(version.getBytes(StandardCharsets.UTF_8).length) + version.getBytes(StandardCharsets.UTF_8).length + 8;
 	}
 
 	@Override
@@ -34,6 +36,7 @@ public class Pack extends Stream {
 		this._buffer = new byte[this.length()];
 		byte[] aq=id.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)aq.length); this.writeBytes(aq);
 		byte[] dvclb=version.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)dvclb.length); this.writeBytes(dvclb);
+		this.writeLittleEndianLong(size);
 		return this.getBuffer();
 	}
 
@@ -42,11 +45,12 @@ public class Pack extends Stream {
 		this._buffer = buffer;
 		int bvaq=this.readVaruint(); id=new String(this.readBytes(bvaq), StandardCharsets.UTF_8);
 		int bvdvclb=this.readVaruint(); version=new String(this.readBytes(bvdvclb), StandardCharsets.UTF_8);
+		size=readLittleEndianLong();
 	}
 
 	@Override
 	public String toString() {
-		return "Pack(id: " + this.id + ", version: " + this.version + ")";
+		return "PackWithSize(id: " + this.id + ", version: " + this.version + ", size: " + this.size + ")";
 	}
 
 

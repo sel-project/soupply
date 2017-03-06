@@ -44,7 +44,7 @@ public class ResourcePackChunkRequest extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		byte[] aq=id.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)aq.length); this.writeBytes(aq);
-		this.writeBigEndianInt(index);
+		this.writeLittleEndianInt(index);
 		return this.getBuffer();
 	}
 
@@ -53,7 +53,7 @@ public class ResourcePackChunkRequest extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		int bvaq=this.readVaruint(); id=new String(this.readBytes(bvaq), StandardCharsets.UTF_8);
-		index=readBigEndianInt();
+		index=readLittleEndianInt();
 	}
 
 	public static ResourcePackChunkRequest fromBuffer(byte[] buffer) {

@@ -17,7 +17,7 @@
 
 		"types": {
 
-			"pack": [
+			"pack_with_size": [
 				{
 					"name": "id",
 					"type": "string"
@@ -28,7 +28,19 @@
 				},
 				{
 					"name": "size",
-					"type": "ulong"
+					"type": "ulong",
+					"endianness": "little_endian"
+				}
+			],
+
+			"pack": [
+				{
+					"name": "id",
+					"type": "string"
+				},
+				{
+					"name": "version",
+					"type": "string"
 				}
 			],
 
@@ -217,6 +229,26 @@
 				}
 			],
 
+			"decoration": [
+				{
+					"name": "rotation_and_icon",
+					"type": "varint"
+				},
+				{
+					"name": "position",
+					"type": "ubyte<xz>"
+				},
+				{
+					"name": "label",
+					"type": "string"
+				},
+				{
+					"name": "color",
+					"type": "uint",
+					"endianness": "little_endian"
+				}
+			],
+
 			"rule": [
 				{
 					"name": "name",
@@ -243,8 +275,20 @@
 
 		"arrays": {
 
+			"pack_array": {
+				"base": "pack",
+				"length": "ushort",
+				"endianness": "little_endian"
+			},
+
 			"nbt": {
 				"base": "ubyte",
+				"length": "ushort",
+				"endianness": "little_endian"
+			},
+
+			"pack_with_size_array": {
+				"base": "pack_with_size",
 				"length": "ushort",
 				"endianness": "little_endian"
 			},
@@ -252,6 +296,12 @@
 			"rules": {
 				"base": "rule",
 				"length": "uint"
+			},
+
+			"pack_ids": {
+				"base": "string",
+				"length": "ushort",
+				"endianness": "little_endian"
 			}
 
 		}
@@ -369,11 +419,11 @@
 					},
 					{
 						"name": "behaviour_packs",
-						"type": "pack[]"
+						"type": "pack_with_size_array"
 					},
 					{
 						"name": "resource_packs",
-						"type": "pack[]"
+						"type": "pack_with_size_array"
 					}
 				]
 			},
@@ -389,11 +439,11 @@
 					},
 					{
 						"name": "behaviour_packs",
-						"type": "pack[]"
+						"type": "pack_array"
 					},
 					{
 						"name": "resource_packs",
-						"type": "pack[]"
+						"type": "pack_array"
 					}
 				]
 			},
@@ -405,11 +455,17 @@
 				"fields": [
 					{
 						"name": "status",
-						"type": "ubyte"
+						"type": "ubyte",
+						"constants": {
+							"refused": 1,
+							"send_packs": 2,
+							"have_all_packs": 3,
+							"completed": 4
+						}
 					},
 					{
-						"name": "resource_pack_version",
-						"type": "ushort"
+						"name": "pack_ids",
+						"type": "packs"
 					}
 				]
 			},
@@ -1768,7 +1824,7 @@
 							"auto_jump": 32,
 							"allow_flight": 64,
 							"no_clip": 128,
-							"flying": 256
+							"flying": 512
 						}
 					},
 					{
@@ -1985,72 +2041,38 @@
 						"type": "varlong"
 					},
 					{
-						"name": "?",
-						"type": "varuint"
-					},
-					{
-						"name": "?",
-						"type": "varuint"
-					},
-					{
-						"name": "?",
-						"type": "varlong"
-					},
-					{
-						"name": "action",
-						"type": "ubyte",
+						"name": "update",
+						"type": "varuint",
 						"constants": {
-							"update": 4,
-							"full": 6
+							"texture": 2,
+							"decorations": 4,
+							"entities": 8
 						}
 					},
 					{
-						"name": "?",
-						"type": "varuint"
+						"name": "scale",
+						"type": "ubyte",
+						"when": "update==2||update==4"
 					},
 					{
-						"name": "?",
-						"type": "varint"
-					},
-					{
-						"name": "?",
-						"type": "byte"
-					},
-					{
-						"name": "?",
-						"type": "byte"
-					},
-					{
-						"name": "show_icons",
-						"type": "bool"
-					},
-					{
-						"name": "icons",
-						"type": "varint<xz>[]"
-					},
-					{
-						"name": "direction",
-						"type": "varint"
-					},
-					{
-						"name": "position",
-						"type": "varint<xz>"
-					},
-					{
-						"name": "columns",
-						"type": "varint"
-					},
-					{
-						"name": "rows",
-						"type": "varint"
+						"name": "size",
+						"type": "varint<xz>",
+						"when": "update==2"
 					},
 					{
 						"name": "offset",
-						"type": "varint<xz>"
+						"type": "varint<xz>",
+						"when": "update==2"
 					},
 					{
 						"name": "data",
-						"type": "ubyte[]"
+						"type": "bytes",
+						"when": "update==2"
+					},
+					{
+						"name": "decorations",
+						"type": "decoration[]",
+						"when": "update==4"
 					}
 				]
 			},
@@ -2184,7 +2206,20 @@
 				"id": 76,
 				"clientbound": true,
 				"serverbound": true,
-				"fields": []
+				"fields": [
+					{
+						"name": "entity_id",
+						"type": "varlong"
+					},
+					{
+						"name": "status",
+						"type": "varint",
+						"constants": {
+							"start": 0,
+							"end": 1
+						}
+					}
+				]
 			},
 
 			"available_commands": {
@@ -2254,15 +2289,18 @@
 					},
 					{
 						"name": "?",
-						"type": "uint"
+						"type": "uint",
+						"endianness": "little_endian"
 					},
 					{
 						"name": "?",
-						"type": "uint"
+						"type": "uint",
+						"endianness": "little_endian"
 					},
 					{
 						"name": "?",
-						"type": "ulong"
+						"type": "ulong",
+						"endianness": "little_endian"
 					},
 					{
 						"name": "?",
@@ -2282,11 +2320,13 @@
 					},
 					{
 						"name": "?",
-						"type": "uint"
+						"type": "uint",
+						"endianness": "little_endian"
 					},
 					{
 						"name": "?",
-						"type": "ulong"
+						"type": "ulong",
+						"endianness": "little_endian"
 					},
 					{
 						"name": "data",
@@ -2306,7 +2346,8 @@
 					},
 					{
 						"name": "index",
-						"type": "uint"
+						"type": "uint",
+						"endianness": "little_endian"
 					}
 				]
 			}
