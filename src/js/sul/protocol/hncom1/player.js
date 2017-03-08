@@ -532,6 +532,10 @@ const Player = {
 
 	},
 
+	/**
+	 * Update's the player's view distance (or chunk radius). This packet is sent when
+	 * the client updates its view distance and the server accepts it.
+	 */
 	UpdateViewDistance: class extends Buffer {
 
 		static get ID(){ return 21; }

@@ -1,0 +1,184 @@
+{
+
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"enchantments": {
+
+		"protection": {
+			"minecraft": 0,
+			"pocket": 0,
+			"max": 4
+		},
+
+		"fire_protection": {
+			"minecraft": 1,
+			"pocket": 1,
+			"max": 4
+		},
+
+		"feather_falling": {
+			"minecraft": 2,
+			"pocket": 2,
+			"max": 4
+		},
+
+		"blast_protection": {
+			"minecraft": 3,
+			"pocket": 3,
+			"max": 4
+		},
+
+		"projectile_protection": {
+			"minecraft": 4,
+			"pocket": 4,
+			"max": 4
+		},
+
+		"respiration": {
+			"minecraft": 5,
+			"pocket": 6,
+			"max": 3
+		},
+
+		"aqua_affinity": {
+			"minecraft": 6,
+			"pocket": 8,
+			"max": 1
+		},
+
+		"thorns": {
+			"minecraft": 7,
+			"pocket": 5,
+			"max": 3
+		},
+
+		"depth_strider": {
+			"minecraft": 8,
+			"pocket": 7,
+			"max": 3
+		},
+
+		"frost_walker": {
+			"minecraft": 9,
+			"max": 2
+		},
+
+		"curse_of_binding": {
+			"minecraft": 10,
+			"max": 1
+		},
+
+		"sharpness": {
+			"minecraft": 16,
+			"pocket": 9,
+			"max": 5
+		},
+
+		"smite": {
+			"minecraft": 17,
+			"pocket": 10,
+			"max": 5
+		},
+
+		"bane_of_arthropods": {
+			"minecraft": 18,
+			"pocket": 11,
+			"max": 5
+		},
+
+		"knockback": {
+			"minecraft": 19,
+			"pocket": 12,
+			"max": 2
+		},
+
+		"fire_aspect": {
+			"minecraft": 20,
+			"pocket": 13,
+			"max": 2
+		},
+
+		"looting": {
+			"minecraft": 21,
+			"pocket": 14,
+			"max": 3
+		},
+
+		"sweeping_edge": {
+			"minecraft": 22,
+			"max": 3
+		},
+
+		"efficiency": {
+			"minecraft": 32,
+			"pocket": 15,
+			"max": 5
+		},
+
+		"silk_touch": {
+			"minecraft": 33,
+			"pocket": 16,
+			"max": 1
+		},
+
+		"unbreaking": {
+			"minecraft": 34,
+			"pocket": 17,
+			"max": 3
+		},
+
+		"fortune": {
+			"minecraft": 35,
+			"pocket": 18,
+			"max": 3
+		},
+
+		"power": {
+			"minecraft": 48,
+			"pocket": 19,
+			"max": 5
+		},
+
+		"punch": {
+			"minecraft": 49,
+			"pocket": 20,
+			"max": 2
+		},
+
+		"flame": {
+			"minecraft": 50,
+			"pocket": 21,
+			"max": 1
+		},
+
+		"infinity": {
+			"minecraft": 51,
+			"pocket": 22,
+			"max": 1
+		},
+
+		"luck_of_the_sea": {
+			"minecraft": 61,
+			"pocket": 23,
+			"max": 3
+		},
+
+		"lure": {
+			"minecraft": 62,
+			"pocket": 24,
+			"max": 3
+		},
+
+		"mending": {
+			"minecraft": 70,
+			"max": 1
+		},
+
+		"curse_of_vanishing": {
+			"minecraft": 71,
+			"max": 1
+		}
+
+	}
+
+}

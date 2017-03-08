@@ -28,7 +28,7 @@ import std.typetuple;
 
 import all;
 
-void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities) {
+void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments) {
 
 	mkdirRecurse("../src/d/sul/attributes");
 	mkdirRecurse("../src/d/sul/metadata");
@@ -734,7 +734,7 @@ alias varulong = var!ulong;
 		data ~= "import std.typecons;\n\n";
 		data ~= "public alias Entity = Tuple!(string, \"name\", bool, \"object\", ubyte, \"minecraft\", ubyte, \"pocket\", double, \"width\", double, \"height\");\n\n";
 		data ~= "public enum Entities : Entity {\n\n";
-		foreach(i, entity; entities) {
+		foreach(entity ; entities) {
 			data ~= "\t" ~ entity.name.toUpper ~ " = Entity(";
 			data ~= "\"" ~ entity.name.replace("_", " ") ~ "\", ";
 			data ~= entity.object.to!string ~ ", ";
@@ -746,6 +746,28 @@ alias varulong = var!ulong;
 		}
 		data ~= "\n}";
 		write("../src/d/sul/entities.d", data, "entities");
+	}
+
+	// enchantments
+	{
+		string data = "module sul.enchantments;\n\n";
+		data ~= "import std.typecons : Tuple;\n\n";
+		data ~= "struct Data {\n\n";
+		data ~= "\tbool exists;\n";
+		data ~= "\tubyte id;\n\n";
+		data ~= "\talias exists this;\n\n";
+		data ~= "}\n\n";
+		data ~= "public alias Enchantment = Tuple!(string, \"name\", Data, \"minecraft\", Data, \"pocket\", ubyte, \"max\");\n\n";
+		data ~= "public enum Enchantments : Enchantment {\n\n";
+		foreach(e ; enchantments) {
+			data ~= "\t" ~ e.name.toUpper ~ " = Enchantment(";
+			data ~= "\"" ~ e.name.replace("_", " ") ~ "\", ";
+			data ~= "Data(" ~ (e.minecraft >= 0 ? "true, " ~ to!string(e.minecraft) : "false") ~ "), ";
+			data ~= "Data(" ~ (e.pocket >= 0 ? "true, " ~ to!string(e.pocket) : "false") ~ "), ";
+			data ~= to!string(e.max) ~ "),\n";
+		}
+		data ~= "\n}";
+		write("../src/d/sul/enchantments.d", data, "enchantments");
 	}
 
 }

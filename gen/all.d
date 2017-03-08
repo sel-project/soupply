@@ -44,9 +44,9 @@ alias Attribute = Tuple!(string, "id", string, "name", float, "min", float, "max
 alias Attributes = File!(Attribute[]);
 
 
-alias Enchantment = Tuple!(ubyte, "id", ubyte, "level");
+alias EnchantmentC = Tuple!(ubyte, "id", ubyte, "level");
 
-alias ItemC = Tuple!(string, "name", ushort, "id", ushort, "meta", Enchantment[], "enchantments");
+alias ItemC = Tuple!(string, "name", ushort, "id", ushort, "meta", EnchantmentC[], "enchantments");
 
 alias Creative = File!(ItemC[]);
 
@@ -96,6 +96,9 @@ alias Item = Tuple!(string, "name", ItemData, "minecraft", ItemData, "pocket", u
 
 
 alias Entity = Tuple!(string, "name", ubyte, "minecraft", ubyte, "pocket", bool, "object", double, "width", double, "height");
+
+
+alias Enchantment = Tuple!(string, "name", byte, "minecraft", byte, "pocket", ubyte, "max");
 
 
 private uint n_version;
@@ -169,7 +172,7 @@ void main(string[] args) {
 								if("meta" in i.tag.attr) item.meta = i.tag.attr["meta"].to!ushort;
 								foreach(e ; i.elements) {
 									if(e.tag.name == "enchantment") {
-										with(e.tag) item.enchantments ~= Enchantment(attr["id"].to!ubyte, attr["level"].to!ubyte);
+										with(e.tag) item.enchantments ~= EnchantmentC(attr["id"].to!ubyte, attr["level"].to!ubyte);
 									}
 								}
 								c.data ~= item;
@@ -510,14 +513,26 @@ void main(string[] args) {
 		}
 	}
 
-	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks, items, entities);
-	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks, items, entities);
+	// enchantments
+	Enchantment[] enchantments;
+	foreach(element ; new Document(cast(string)read("../xml/enchantments.xml")).elements) {
+		with(element.tag) {
+			if(name == "enchantment") {
+				auto minecraft = "minecraft" in attr;
+				auto pocket = "pocket" in attr;
+				enchantments ~= Enchantment(attr["name"].replace("-", "_"), minecraft ? to!ubyte(*minecraft) : -1, pocket ? to!ubyte(*pocket) : -1, to!ubyte(attr["max"]));
+			}
+		}
+	}
+
+	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks, items, entities, enchantments);
+	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks, items, entities, enchantments);
 	if(wall || wjs) js.js(attributes, protocols, metadata, creative, blocks, items, entities);
 
 	//if(wall || wdiff) diff.diff(attributes, protocols, metadata);
 	if(wall || wdocs) docs.docs(attributes, protocols, metadata);
 
-	if(wall || wjson) json.json(attributes, protocols, metadata, creative, blocks, items, entities);
+	if(wall || wjson) json.json(attributes, protocols, metadata, creative, blocks, items, entities, enchantments);
 
 }
 

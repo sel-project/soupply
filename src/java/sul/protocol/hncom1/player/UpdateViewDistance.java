@@ -10,6 +10,10 @@ package sul.protocol.hncom1.player;
 
 import sul.utils.*;
 
+/**
+ * Update's the player's view distance (or chunk radius). This packet is sent when
+ * the client updates its view distance and the server accepts it.
+ */
 public class UpdateViewDistance extends Packet {
 
 	public static final byte ID = (byte)21;

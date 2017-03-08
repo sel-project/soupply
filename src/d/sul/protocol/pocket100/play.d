@@ -304,12 +304,12 @@ class ResourcePacksInfo : Buffer {
 	public enum string[] FIELDS = ["mustAccept", "behaviourPacks", "resourcePacks"];
 
 	public bool mustAccept;
-	public sul.protocol.pocket100.types.Pack[] behaviourPacks;
-	public sul.protocol.pocket100.types.Pack[] resourcePacks;
+	public sul.protocol.pocket100.types.PackWithSize[] behaviourPacks;
+	public sul.protocol.pocket100.types.PackWithSize[] resourcePacks;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(bool mustAccept, sul.protocol.pocket100.types.Pack[] behaviourPacks=(sul.protocol.pocket100.types.Pack[]).init, sul.protocol.pocket100.types.Pack[] resourcePacks=(sul.protocol.pocket100.types.Pack[]).init) {
+	public pure nothrow @safe @nogc this(bool mustAccept, sul.protocol.pocket100.types.PackWithSize[] behaviourPacks=(sul.protocol.pocket100.types.PackWithSize[]).init, sul.protocol.pocket100.types.PackWithSize[] resourcePacks=(sul.protocol.pocket100.types.PackWithSize[]).init) {
 		this.mustAccept = mustAccept;
 		this.behaviourPacks = behaviourPacks;
 		this.resourcePacks = resourcePacks;
@@ -319,16 +319,16 @@ class ResourcePacksInfo : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBigEndianBool(mustAccept);
-		writeBytes(varuint.encode(cast(uint)behaviourPacks.length)); foreach(yvyzbvuf;behaviourPacks){ yvyzbvuf.encode(bufferInstance); }
-		writeBytes(varuint.encode(cast(uint)resourcePacks.length)); foreach(cvbvyvyn;resourcePacks){ cvbvyvyn.encode(bufferInstance); }
+		writeLittleEndianUshort(cast(ushort)behaviourPacks.length); foreach(yvyzbvuf;behaviourPacks){ yvyzbvuf.encode(bufferInstance); }
+		writeLittleEndianUshort(cast(ushort)resourcePacks.length); foreach(cvbvyvyn;resourcePacks){ cvbvyvyn.encode(bufferInstance); }
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		mustAccept=readBigEndianBool();
-		behaviourPacks.length=varuint.decode(_buffer, &_index); foreach(ref yvyzbvuf;behaviourPacks){ yvyzbvuf.decode(bufferInstance); }
-		resourcePacks.length=varuint.decode(_buffer, &_index); foreach(ref cvbvyvyn;resourcePacks){ cvbvyvyn.decode(bufferInstance); }
+		behaviourPacks.length=readLittleEndianUshort(); foreach(ref yvyzbvuf;behaviourPacks){ yvyzbvuf.decode(bufferInstance); }
+		resourcePacks.length=readLittleEndianUshort(); foreach(ref cvbvyvyn;resourcePacks){ cvbvyvyn.decode(bufferInstance); }
 	}
 
 	public static pure nothrow @safe ResourcePacksInfo fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -369,16 +369,16 @@ class ResourcePacksStackPacket : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBigEndianBool(mustAccept);
-		writeBytes(varuint.encode(cast(uint)behaviourPacks.length)); foreach(yvyzbvuf;behaviourPacks){ yvyzbvuf.encode(bufferInstance); }
-		writeBytes(varuint.encode(cast(uint)resourcePacks.length)); foreach(cvbvyvyn;resourcePacks){ cvbvyvyn.encode(bufferInstance); }
+		writeLittleEndianUshort(cast(ushort)behaviourPacks.length); foreach(yvyzbvuf;behaviourPacks){ yvyzbvuf.encode(bufferInstance); }
+		writeLittleEndianUshort(cast(ushort)resourcePacks.length); foreach(cvbvyvyn;resourcePacks){ cvbvyvyn.encode(bufferInstance); }
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		mustAccept=readBigEndianBool();
-		behaviourPacks.length=varuint.decode(_buffer, &_index); foreach(ref yvyzbvuf;behaviourPacks){ yvyzbvuf.decode(bufferInstance); }
-		resourcePacks.length=varuint.decode(_buffer, &_index); foreach(ref cvbvyvyn;resourcePacks){ cvbvyvyn.decode(bufferInstance); }
+		behaviourPacks.length=readLittleEndianUshort(); foreach(ref yvyzbvuf;behaviourPacks){ yvyzbvuf.decode(bufferInstance); }
+		resourcePacks.length=readLittleEndianUshort(); foreach(ref cvbvyvyn;resourcePacks){ cvbvyvyn.decode(bufferInstance); }
 	}
 
 	public static pure nothrow @safe ResourcePacksStackPacket fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -401,30 +401,36 @@ class ResourcePackClientResponse : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["status", "resourcePackVersion"];
+	// status
+	public enum ubyte REFUSED = 1;
+	public enum ubyte SEND_PACKS = 2;
+	public enum ubyte HAVE_ALL_PACKS = 3;
+	public enum ubyte COMPLETED = 4;
+
+	public enum string[] FIELDS = ["status", "packIds"];
 
 	public ubyte status;
-	public ushort resourcePackVersion;
+	public sul.protocol.pocket100.types.Packs packIds;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(ubyte status, ushort resourcePackVersion=ushort.init) {
+	public pure nothrow @safe @nogc this(ubyte status, sul.protocol.pocket100.types.Packs packIds=sul.protocol.pocket100.types.Packs.init) {
 		this.status = status;
-		this.resourcePackVersion = resourcePackVersion;
+		this.packIds = packIds;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBigEndianUbyte(status);
-		writeBigEndianUshort(resourcePackVersion);
+		packIds.encode(bufferInstance);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		status=readBigEndianUbyte();
-		resourcePackVersion=readBigEndianUshort();
+		packIds.decode(bufferInstance);
 	}
 
 	public static pure nothrow @safe ResourcePackClientResponse fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -435,7 +441,7 @@ class ResourcePackClientResponse : Buffer {
 	}
 
 	public override string toString() {
-		return "ResourcePackClientResponse(status: " ~ std.conv.to!string(this.status) ~ ", resourcePackVersion: " ~ std.conv.to!string(this.resourcePackVersion) ~ ")";
+		return "ResourcePackClientResponse(status: " ~ std.conv.to!string(this.status) ~ ", packIds: " ~ std.conv.to!string(this.packIds) ~ ")";
 	}
 
 }
@@ -3298,7 +3304,7 @@ class AdventureSettings : Buffer {
 	public enum uint AUTO_JUMP = 32;
 	public enum uint ALLOW_FLIGHT = 64;
 	public enum uint NO_CLIP = 128;
-	public enum uint FLYING = 256;
+	public enum uint FLYING = 512;
 
 	// permissions
 	public enum uint USER = 0;
@@ -3888,94 +3894,55 @@ class ClientboundMapItemData : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	// action
-	public enum ubyte UPDATE = 4;
-	public enum ubyte FULL = 6;
+	// update
+	public enum uint TEXTURE = 2;
+	public enum uint DECORATIONS = 4;
+	public enum uint ENTITIES = 8;
 
-	public enum string[] FIELDS = ["mapId", "unknown1", "unknown2", "unknown3", "action", "unknown5", "unknown6", "unknown7", "unknown8", "showIcons", "icons", "direction", "position", "columns", "rows", "offset", "data"];
+	public enum string[] FIELDS = ["mapId", "update", "scale", "size", "offset", "data", "decorations"];
 
 	public long mapId;
-	public uint unknown1;
-	public uint unknown2;
-	public long unknown3;
-	public ubyte action;
-	public uint unknown5;
-	public int unknown6;
-	public byte unknown7;
-	public byte unknown8;
-	public bool showIcons;
-	public Tuple!(int, "x", int, "z")[] icons;
-	public int direction;
-	public Tuple!(int, "x", int, "z") position;
-	public int columns;
-	public int rows;
+	public uint update;
+	public ubyte scale;
+	public Tuple!(int, "x", int, "z") size;
 	public Tuple!(int, "x", int, "z") offset;
 	public ubyte[] data;
+	public sul.protocol.pocket100.types.Decoration[] decorations;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(long mapId, uint unknown1=uint.init, uint unknown2=uint.init, long unknown3=long.init, ubyte action=ubyte.init, uint unknown5=uint.init, int unknown6=int.init, byte unknown7=byte.init, byte unknown8=byte.init, bool showIcons=bool.init, Tuple!(int, "x", int, "z")[] icons=(Tuple!(int, "x", int, "z")[]).init, int direction=int.init, Tuple!(int, "x", int, "z") position=Tuple!(int, "x", int, "z").init, int columns=int.init, int rows=int.init, Tuple!(int, "x", int, "z") offset=Tuple!(int, "x", int, "z").init, ubyte[] data=(ubyte[]).init) {
+	public pure nothrow @safe @nogc this(long mapId, uint update=uint.init, ubyte scale=ubyte.init, Tuple!(int, "x", int, "z") size=Tuple!(int, "x", int, "z").init, Tuple!(int, "x", int, "z") offset=Tuple!(int, "x", int, "z").init, ubyte[] data=(ubyte[]).init, sul.protocol.pocket100.types.Decoration[] decorations=(sul.protocol.pocket100.types.Decoration[]).init) {
 		this.mapId = mapId;
-		this.unknown1 = unknown1;
-		this.unknown2 = unknown2;
-		this.unknown3 = unknown3;
-		this.action = action;
-		this.unknown5 = unknown5;
-		this.unknown6 = unknown6;
-		this.unknown7 = unknown7;
-		this.unknown8 = unknown8;
-		this.showIcons = showIcons;
-		this.icons = icons;
-		this.direction = direction;
-		this.position = position;
-		this.columns = columns;
-		this.rows = rows;
+		this.update = update;
+		this.scale = scale;
+		this.size = size;
 		this.offset = offset;
 		this.data = data;
+		this.decorations = decorations;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varlong.encode(mapId));
-		writeBytes(varuint.encode(unknown1));
-		writeBytes(varuint.encode(unknown2));
-		writeBytes(varlong.encode(unknown3));
-		writeBigEndianUbyte(action);
-		writeBytes(varuint.encode(unknown5));
-		writeBytes(varint.encode(unknown6));
-		writeBigEndianByte(unknown7);
-		writeBigEndianByte(unknown8);
-		writeBigEndianBool(showIcons);
-		writeBytes(varuint.encode(cast(uint)icons.length)); foreach(anbm;icons){ writeBytes(varint.encode(anbm.x)); writeBytes(varint.encode(anbm.z)); }
-		writeBytes(varint.encode(direction));
-		writeBytes(varint.encode(position.x)); writeBytes(varint.encode(position.z));
-		writeBytes(varint.encode(columns));
-		writeBytes(varint.encode(rows));
-		writeBytes(varint.encode(offset.x)); writeBytes(varint.encode(offset.z));
-		writeBytes(varuint.encode(cast(uint)data.length)); writeBytes(data);
+		writeBytes(varuint.encode(update));
+		if(update==2||update==4){ writeBigEndianUbyte(scale); }
+		if(update==2){ writeBytes(varint.encode(size.x)); writeBytes(varint.encode(size.z)); }
+		if(update==2){ writeBytes(varint.encode(offset.x)); writeBytes(varint.encode(offset.z)); }
+		if(update==2){ writeBytes(data); }
+		if(update==4){ writeBytes(varuint.encode(cast(uint)decorations.length)); foreach(zvbjdlbm;decorations){ zvbjdlbm.encode(bufferInstance); } }
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		mapId=varlong.decode(_buffer, &_index);
-		unknown1=varuint.decode(_buffer, &_index);
-		unknown2=varuint.decode(_buffer, &_index);
-		unknown3=varlong.decode(_buffer, &_index);
-		action=readBigEndianUbyte();
-		unknown5=varuint.decode(_buffer, &_index);
-		unknown6=varint.decode(_buffer, &_index);
-		unknown7=readBigEndianByte();
-		unknown8=readBigEndianByte();
-		showIcons=readBigEndianBool();
-		icons.length=varuint.decode(_buffer, &_index); foreach(ref anbm;icons){ anbm.x=varint.decode(_buffer, &_index); anbm.z=varint.decode(_buffer, &_index); }
-		direction=varint.decode(_buffer, &_index);
-		position.x=varint.decode(_buffer, &_index); position.z=varint.decode(_buffer, &_index);
-		columns=varint.decode(_buffer, &_index);
-		rows=varint.decode(_buffer, &_index);
-		offset.x=varint.decode(_buffer, &_index); offset.z=varint.decode(_buffer, &_index);
-		data.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+data.length){ data=_buffer[_index.._index+data.length].dup; _index+=data.length; }
+		update=varuint.decode(_buffer, &_index);
+		if(update==2||update==4){ scale=readBigEndianUbyte(); }
+		if(update==2){ size.x=varint.decode(_buffer, &_index); size.z=varint.decode(_buffer, &_index); }
+		if(update==2){ offset.x=varint.decode(_buffer, &_index); offset.z=varint.decode(_buffer, &_index); }
+		if(update==2){ data=_buffer[_index..$].dup; _index=_buffer.length; }
+		if(update==4){ decorations.length=varuint.decode(_buffer, &_index); foreach(ref zvbjdlbm;decorations){ zvbjdlbm.decode(bufferInstance); } }
 	}
 
 	public static pure nothrow @safe ClientboundMapItemData fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -3986,7 +3953,7 @@ class ClientboundMapItemData : Buffer {
 	}
 
 	public override string toString() {
-		return "ClientboundMapItemData(mapId: " ~ std.conv.to!string(this.mapId) ~ ", unknown1: " ~ std.conv.to!string(this.unknown1) ~ ", unknown2: " ~ std.conv.to!string(this.unknown2) ~ ", unknown3: " ~ std.conv.to!string(this.unknown3) ~ ", action: " ~ std.conv.to!string(this.action) ~ ", unknown5: " ~ std.conv.to!string(this.unknown5) ~ ", unknown6: " ~ std.conv.to!string(this.unknown6) ~ ", unknown7: " ~ std.conv.to!string(this.unknown7) ~ ", unknown8: " ~ std.conv.to!string(this.unknown8) ~ ", showIcons: " ~ std.conv.to!string(this.showIcons) ~ ", icons: " ~ std.conv.to!string(this.icons) ~ ", direction: " ~ std.conv.to!string(this.direction) ~ ", position: " ~ std.conv.to!string(this.position) ~ ", columns: " ~ std.conv.to!string(this.columns) ~ ", rows: " ~ std.conv.to!string(this.rows) ~ ", offset: " ~ std.conv.to!string(this.offset) ~ ", data: " ~ std.conv.to!string(this.data) ~ ")";
+		return "ClientboundMapItemData(mapId: " ~ std.conv.to!string(this.mapId) ~ ", update: " ~ std.conv.to!string(this.update) ~ ", scale: " ~ std.conv.to!string(this.scale) ~ ", size: " ~ std.conv.to!string(this.size) ~ ", offset: " ~ std.conv.to!string(this.offset) ~ ", data: " ~ std.conv.to!string(this.data) ~ ", decorations: " ~ std.conv.to!string(this.decorations) ~ ")";
 	}
 
 }
@@ -4393,16 +4360,34 @@ class ShowCredits : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = [];
+	// status
+	public enum int START = 0;
+	public enum int END = 1;
+
+	public enum string[] FIELDS = ["entityId", "status"];
+
+	public long entityId;
+	public int status;
+
+	public pure nothrow @safe @nogc this() {}
+
+	public pure nothrow @safe @nogc this(long entityId, int status=int.init) {
+		this.entityId = entityId;
+		this.status = status;
+	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
+		writeBytes(varlong.encode(entityId));
+		writeBytes(varint.encode(status));
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
+		entityId=varlong.decode(_buffer, &_index);
+		status=varint.decode(_buffer, &_index);
 	}
 
 	public static pure nothrow @safe ShowCredits fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -4413,7 +4398,7 @@ class ShowCredits : Buffer {
 	}
 
 	public override string toString() {
-		return "ShowCredits()";
+		return "ShowCredits(entityId: " ~ std.conv.to!string(this.entityId) ~ ", status: " ~ std.conv.to!string(this.status) ~ ")";
 	}
 
 }
@@ -4563,9 +4548,9 @@ class ResourcePackDataInfo : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(cast(uint)id.length)); writeString(id);
-		writeBigEndianUint(unknown1);
-		writeBigEndianUint(unknown2);
-		writeBigEndianUlong(unknown3);
+		writeLittleEndianUint(unknown1);
+		writeLittleEndianUint(unknown2);
+		writeLittleEndianUlong(unknown3);
 		writeBytes(varuint.encode(cast(uint)unknown4.length)); writeString(unknown4);
 		return _buffer;
 	}
@@ -4573,9 +4558,9 @@ class ResourcePackDataInfo : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		uint aq=varuint.decode(_buffer, &_index); id=readString(aq);
-		unknown1=readBigEndianUint();
-		unknown2=readBigEndianUint();
-		unknown3=readBigEndianUlong();
+		unknown1=readLittleEndianUint();
+		unknown2=readLittleEndianUint();
+		unknown3=readLittleEndianUlong();
 		uint d5b9bq=varuint.decode(_buffer, &_index); unknown4=readString(d5b9bq);
 	}
 
@@ -4619,8 +4604,8 @@ class ResourcePackChunkData : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(cast(uint)id.length)); writeString(id);
-		writeBigEndianUint(unknown1);
-		writeBigEndianUlong(unknown2);
+		writeLittleEndianUint(unknown1);
+		writeLittleEndianUlong(unknown2);
 		writeBytes(varuint.encode(cast(uint)data.length)); writeBytes(data);
 		return _buffer;
 	}
@@ -4628,8 +4613,8 @@ class ResourcePackChunkData : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		uint aq=varuint.decode(_buffer, &_index); id=readString(aq);
-		unknown1=readBigEndianUint();
-		unknown2=readBigEndianUlong();
+		unknown1=readLittleEndianUint();
+		unknown2=readLittleEndianUlong();
 		data.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+data.length){ data=_buffer[_index.._index+data.length].dup; _index+=data.length; }
 	}
 
@@ -4669,14 +4654,14 @@ class ResourcePackChunkRequest : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(cast(uint)id.length)); writeString(id);
-		writeBigEndianUint(index);
+		writeLittleEndianUint(index);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		uint aq=varuint.decode(_buffer, &_index); id=readString(aq);
-		index=readBigEndianUint();
+		index=readLittleEndianUint();
 	}
 
 	public static pure nothrow @safe ResourcePackChunkRequest fromBuffer(bool readId=true)(ubyte[] buffer) {

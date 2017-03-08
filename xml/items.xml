@@ -15,12 +15,12 @@
 	<item name="coarse-dirt" minecraft="3:1" />
 	<item name="podzol" minecraft="3:2" pocket="243" />
 	<item name="cobblestone" data="4" />
-	<item name="oak-wood-plank" data="5:0" />
-	<item name="spruce-wood-plank" data="5:1" />
-	<item name="birch-wood-plank" data="5:2" />
-	<item name="jungle-wood-plank" data="5:3" />
-	<item name="acacia-wood-plank" data="5:4" />
-	<item name="dark-oak-wood-plank" data="5:5" />
+	<item name="oak-wood-planks" data="5:0" />
+	<item name="spruce-wood-planks" data="5:1" />
+	<item name="birch-wood-planks" data="5:2" />
+	<item name="jungle-wood-planks" data="5:3" />
+	<item name="acacia-wood-planks" data="5:4" />
+	<item name="dark-oak-wood-planks" data="5:5" />
 	<item name="oak-sapling" data="6:0" />
 	<item name="spruce-sapling" data="6:1" />
 	<item name="birch-sapling" data="6:2" />

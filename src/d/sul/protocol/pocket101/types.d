@@ -19,7 +19,7 @@ import sul.utils.var;
 
 import sul.metadata.pocket101;
 
-struct Pack {
+struct PackWithSize {
 
 	public enum string[] FIELDS = ["id", "vers", "size"];
 
@@ -31,7 +31,7 @@ struct Pack {
 		with(buffer) {
 			writeBytes(varuint.encode(cast(uint)id.length)); writeString(id);
 			writeBytes(varuint.encode(cast(uint)vers.length)); writeString(vers);
-			writeBigEndianUlong(size);
+			writeLittleEndianUlong(size);
 		}
 	}
 
@@ -39,12 +39,39 @@ struct Pack {
 		with(buffer) {
 			uint aq=varuint.decode(_buffer, &_index); id=readString(aq);
 			uint dvc=varuint.decode(_buffer, &_index); vers=readString(dvc);
-			size=readBigEndianUlong();
+			size=readLittleEndianUlong();
 		}
 	}
 
 	public string toString() {
-		return "Pack(id: " ~ std.conv.to!string(this.id) ~ ", vers: " ~ std.conv.to!string(this.vers) ~ ", size: " ~ std.conv.to!string(this.size) ~ ")";
+		return "PackWithSize(id: " ~ std.conv.to!string(this.id) ~ ", vers: " ~ std.conv.to!string(this.vers) ~ ", size: " ~ std.conv.to!string(this.size) ~ ")";
+	}
+
+}
+
+struct Pack {
+
+	public enum string[] FIELDS = ["id", "vers"];
+
+	public string id;
+	public string vers;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBytes(varuint.encode(cast(uint)id.length)); writeString(id);
+			writeBytes(varuint.encode(cast(uint)vers.length)); writeString(vers);
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			uint aq=varuint.decode(_buffer, &_index); id=readString(aq);
+			uint dvc=varuint.decode(_buffer, &_index); vers=readString(dvc);
+		}
+	}
+
+	public string toString() {
+		return "Pack(id: " ~ std.conv.to!string(this.id) ~ ", vers: " ~ std.conv.to!string(this.vers) ~ ")";
 	}
 
 }
@@ -472,6 +499,43 @@ struct ExtraData {
 
 	public string toString() {
 		return "ExtraData(key: " ~ std.conv.to!string(this.key) ~ ", value: " ~ std.conv.to!string(this.value) ~ ")";
+	}
+
+}
+
+struct Decoration {
+
+	public enum string[] FIELDS = ["rotationAndIcon", "position", "label", "color"];
+
+	public int rotationAndIcon;
+	public Tuple!(ubyte, "x", ubyte, "z") position;
+	public string label;
+
+	/**
+	 * ARGB colour.
+	 */
+	public uint color;
+
+	public pure nothrow @safe void encode(Buffer buffer) {
+		with(buffer) {
+			writeBytes(varint.encode(rotationAndIcon));
+			writeBigEndianUbyte(position.x); writeBigEndianUbyte(position.z);
+			writeBytes(varuint.encode(cast(uint)label.length)); writeString(label);
+			writeLittleEndianUint(color);
+		}
+	}
+
+	public pure nothrow @safe void decode(Buffer buffer) {
+		with(buffer) {
+			rotationAndIcon=varint.decode(_buffer, &_index);
+			position.x=readBigEndianUbyte(); position.z=readBigEndianUbyte();
+			uint bfzw=varuint.decode(_buffer, &_index); label=readString(bfzw);
+			color=readLittleEndianUint();
+		}
+	}
+
+	public string toString() {
+		return "Decoration(rotationAndIcon: " ~ std.conv.to!string(this.rotationAndIcon) ~ ", position: " ~ std.conv.to!string(this.position) ~ ", label: " ~ std.conv.to!string(this.label) ~ ", color: " ~ std.conv.to!string(this.color) ~ ")";
 	}
 
 }

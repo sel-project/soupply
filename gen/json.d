@@ -21,7 +21,7 @@ import std.math : isNaN;
 
 import all;
 
-void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities) {
+void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments) {
 
 	// attributes
 	mkdirRecurse("../json/attributes");
@@ -266,7 +266,7 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 
 	// items
 	{
-		string data = "{\n\t\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
+		string data = "{\n\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
 		data ~= "\t\"items\": {\n\n";
 		void writeData(string type, ItemData id) {
 			if(id.exists) {
@@ -294,7 +294,7 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 
 	// entities
 	{
-		string data = "{\n\t\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
+		string data = "{\n\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
 		data ~= "\t\"entities\": {\n\n";
 		foreach(i, entity; entities) {
 			data ~= "\t\t\"" ~ entity.name ~ "\": {\n";
@@ -311,6 +311,21 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		}
 		data ~= "\t}\n\n}\n";
 		_write("../json/entities.json", data);
+	}
+
+	// enchantments
+	{
+		string data = "{\n\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
+		data ~= "\t\"enchantments\": {\n\n";
+		foreach(i, e; enchantments) {
+			data ~= "\t\t\"" ~ e.name ~ "\": {\n";
+			if(e.minecraft >= 0) data ~= "\t\t\t\"minecraft\": " ~ to!string(e.minecraft) ~ ",\n";
+			if(e.pocket >= 0) data ~= "\t\t\t\"pocket\": " ~ to!string(e.pocket) ~ ",\n";
+			data ~= "\t\t\t\"max\": " ~ to!string(e.max) ~ "\n";
+			data ~= "\t\t}" ~ (i != enchantments.length - 1 ? "," : "") ~ "\n\n";
+		}
+		data ~= "\t}\n\n}\n";
+		_write("../json/enchantments.json", data);
 	}
 
 }

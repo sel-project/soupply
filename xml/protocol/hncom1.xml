@@ -569,6 +569,7 @@
 			</packet>
 
 			<packet name="update-view-distance" id="21" clientbound="false" serverbound="true">
+				Update's the player's view distance (or chunk radius). This packet is sent when the client updates its view distance and the server accepts it.
 				<field name="hub-id" type="hub-id" />
 				<field name="view-distance" type="varuint" />
 			</packet>

@@ -28,7 +28,7 @@ import std.typetuple : TypeTuple;
 
 import all;
 
-void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities) {
+void java(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments) {
 	
 	mkdirRecurse("../src/java/sul/utils");
 	
@@ -980,7 +980,7 @@ public class MetadataException extends RuntimeException {
 		data ~= "}";
 		write("../src/java/sul/Items.java", data, "items");
 	}
-
+	
 	// entities
 	{
 		string data = "package sul;\n\n";
@@ -1041,6 +1041,51 @@ public class MetadataException extends RuntimeException {
 		}
 		data ~= "}";
 		write("../src/java/sul/Entities.java", data, "entities");
+	}
+	
+	// enchantments
+	{
+		string data = "package sul;\n\n";
+		data ~= "import java.util.*;\n\n";
+		data ~= "public final class Enchantments {\n\n";
+		data ~= "\tpublic final String name;\n";
+		data ~= "\tpublic final byte minecraft, pocket;\n";
+		data ~= "\tpublic final byte max;\n\n";
+		data ~= "\tprivate Enchantments(String name, byte minecraft, byte pocket, byte max) {\n";
+		data ~= "\t\tthis.name = name;\n";
+		data ~= "\t\tthis.minecraft = minecraft;\n";
+		data ~= "\t\tthis.pocket = pocket;\n";
+		data ~= "\t\tthis.max = max;\n";
+		data ~= "\t}\n\n";
+		foreach(e ; enchantments) {
+			data ~= "\tpublic static final Enchantments " ~ e.name.toUpper ~ " = new Enchantments(";
+			data ~= "\"" ~ e.name.replace("_", " ") ~ "\", ";
+			data ~= "(byte)" ~ (e.minecraft >= 0 ? e.minecraft.to!string : "-1") ~ ", ";
+			data ~= "(byte)" ~ (e.pocket >= 0 ? e.pocket.to!string : "-1") ~ ", ";
+			data ~= "(byte)" ~ e.max.to!string;
+			data ~= ");\n";
+		}
+		data ~= "\n";
+		data ~= "\tprivate static Map<Integer, Enchantments> minecraftEnchantments, pocketEnchantments;\n\n";
+		data ~= "\tstatic {\n\n";
+		data ~= "\t\tminecraftEnchantments = new HashMap<Integer, Enchantments>();\n";
+		data ~= "\t\tpocketEnchantments = new HashMap<Integer, Enchantments>();\n\n";
+		foreach(e ; enchantments) {
+			data ~= "\t\tadd(" ~ e.name.toUpper ~ ");\n";
+		}
+		data ~= "\n\t}\n\n";
+		data ~= "\tprivate static void add(Enchantments e) {\n";
+		foreach(type ; TypeTuple!("minecraft", "pocket")) {
+			data ~= "\t\tif(e." ~ type ~ " != -1) " ~ type ~ "Enchantments.put((int)e." ~ type ~ ", e);\n";
+		}
+		data ~= "\t}\n\n";
+		foreach(type ; TypeTuple!("minecraft", "pocket")) {
+			data ~= "\tpublic static Enchantments get" ~ capitalize(type) ~ "Enchantment(int id) {\n";
+			data ~= "\t\treturn " ~ type ~ "Enchantments.get(id);\n";
+			data ~= "\t}\n\n";
+		}
+		data ~= "}";
+		write("../src/java/sul/Enchantments.java", data, "enchantments");
 	}
 	
 }

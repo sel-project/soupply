@@ -681,6 +681,10 @@ class UpdateWorld : Buffer {
 
 }
 
+/**
+ * Update's the player's view distance (or chunk radius). This packet is sent when
+ * the client updates its view distance and the server accepts it.
+ */
 class UpdateViewDistance : Buffer {
 
 	public enum ubyte ID = 21;

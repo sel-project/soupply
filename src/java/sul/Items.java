@@ -54,12 +54,12 @@ public final class Items {
 		add(new Items("coarse dirt", new ItemData(3, 1), null, (byte)64));
 		add(new Items("podzol", new ItemData(3, 2), new ItemData(243, 0), (byte)64));
 		add(new Items("cobblestone", new ItemData(4, 0), new ItemData(4, 0), (byte)64));
-		add(new Items("oak wood plank", new ItemData(5, 0), new ItemData(5, 0), (byte)64));
-		add(new Items("spruce wood plank", new ItemData(5, 1), new ItemData(5, 1), (byte)64));
-		add(new Items("birch wood plank", new ItemData(5, 2), new ItemData(5, 2), (byte)64));
-		add(new Items("jungle wood plank", new ItemData(5, 3), new ItemData(5, 3), (byte)64));
-		add(new Items("acacia wood plank", new ItemData(5, 4), new ItemData(5, 4), (byte)64));
-		add(new Items("dark oak wood plank", new ItemData(5, 5), new ItemData(5, 5), (byte)64));
+		add(new Items("oak wood planks", new ItemData(5, 0), new ItemData(5, 0), (byte)64));
+		add(new Items("spruce wood planks", new ItemData(5, 1), new ItemData(5, 1), (byte)64));
+		add(new Items("birch wood planks", new ItemData(5, 2), new ItemData(5, 2), (byte)64));
+		add(new Items("jungle wood planks", new ItemData(5, 3), new ItemData(5, 3), (byte)64));
+		add(new Items("acacia wood planks", new ItemData(5, 4), new ItemData(5, 4), (byte)64));
+		add(new Items("dark oak wood planks", new ItemData(5, 5), new ItemData(5, 5), (byte)64));
 		add(new Items("oak sapling", new ItemData(6, 0), new ItemData(6, 0), (byte)64));
 		add(new Items("spruce sapling", new ItemData(6, 1), new ItemData(6, 1), (byte)64));
 		add(new Items("birch sapling", new ItemData(6, 2), new ItemData(6, 2), (byte)64));
