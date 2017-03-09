@@ -465,7 +465,7 @@
 					},
 					{
 						"name": "pack_ids",
-						"type": "packs"
+						"type": "pack_ids"
 					}
 				]
 			},

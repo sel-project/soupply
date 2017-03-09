@@ -389,7 +389,7 @@ const Play = {
 			this._buffer = [];
 			this.writeBigEndianByte(9);
 			this.writeBigEndianByte(this.status);
-			this.writeBytes(this.packIds.encode());
+			this.writeLittleEndianShort(this.packIds.length); for(var dhc5ynsr in this.packIds){ var dhc5ynsr=this.encodeString(this.packIds[dhc5ynsr]); this.writeVaruint(dhc5ynsr.length); this.writeBytes(dhc5ynsr); }
 			return new Uint8Array(this._buffer);
 		}
 
@@ -398,7 +398,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			var _id=this.readBigEndianByte();
 			this.status=this.readBigEndianByte();
-			this.packIds=Types.Packs.fromBuffer(this._buffer); this._buffer=this.packIds._buffer;
+			var aramcfal=this.readLittleEndianShort(); this.packIds=[]; for(var dhc5ynsr=0;dhc5ynsr<aramcfal;dhc5ynsr++){ this.packIds[dhc5ynsr]=this.decodeString(this.readBytes(this.readVaruint())); }
 			return this;
 		}
 

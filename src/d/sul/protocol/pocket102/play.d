@@ -479,11 +479,11 @@ class ResourcePackClientResponse : Buffer {
 	public enum string[] FIELDS = ["status", "packIds"];
 
 	public ubyte status;
-	public sul.protocol.pocket102.types.Packs packIds;
+	public string[] packIds;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(ubyte status, sul.protocol.pocket102.types.Packs packIds=sul.protocol.pocket102.types.Packs.init) {
+	public pure nothrow @safe @nogc this(ubyte status, string[] packIds=(string[]).init) {
 		this.status = status;
 		this.packIds = packIds;
 	}
@@ -492,14 +492,14 @@ class ResourcePackClientResponse : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBigEndianUbyte(status);
-		packIds.encode(bufferInstance);
+		writeLittleEndianUshort(cast(ushort)packIds.length); foreach(cfalc;packIds){ writeBytes(varuint.encode(cast(uint)cfalc.length)); writeString(cfalc); }
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		status=readBigEndianUbyte();
-		packIds.decode(bufferInstance);
+		packIds.length=readLittleEndianUshort(); foreach(ref cfalc;packIds){ uint yzbm=varuint.decode(_buffer, &_index); cfalc=readString(yzbm); }
 	}
 
 	public static pure nothrow @safe ResourcePackClientResponse fromBuffer(bool readId=true)(ubyte[] buffer) {

@@ -2,6 +2,32 @@
 
 <effects>
 
-	<effect name="speed" minecraft="1" />
+	<effect name="speed" id="1" particles="7cafc6" />
+	<effect name="slowness" id="2" particles="5a6c81" />
+	<effect name="haste" id="3" particles="d9c043" />
+	<effect name="mining-fatigue" id="4" particles="4a4217" />
+	<effect name="strength" id="5" particles="932423" />
+	<effect name="instant-health" id="6" particles="f82423" />
+	<effect name="instant-damage" id="7" particles="430a09" />
+	<effect name="jump-boost" id="8" particles="786297" />
+	<effect name="nausea" id="9" particles="551d4a" />
+	<effect name="regeneration" id="10" particles="cd5cab" />
+	<effect name="resistance" id="11" particles="99453a" />
+	<effect name="fire-resistance" id="12" particles="e49a3a" />
+	<effect name="water-breathing" id="13" particles="2e5299" />
+	<effect name="invisibility" id="14" particles="7f8392" />
+	<effect name="blindness" id="15" particles="1f1f23" />
+	<effect name="night-vision" id="16" particles="1f1fa1" />
+	<effect name="hunger" id="17" particles="587653" />
+	<effect name="weakness" id="18" particles="484d48" />
+	<effect name="poison" id="19" particles="4e9331" />
+	<effect name="wither" id="20" particles="352a27" />
+	<effect name="health-boost" id="21" particles="f87d23" />
+	<effect name="absorption" id="22" particles="2552a5" />
+	<effect name="saturation" id="23" particles="f82423" />
+	<effect name="glowing" id="24" particles="94a061" />
+	<effect name="levitation" id="25" particles="ceffff" />
+	<effect name="luck" id="26" particles="339900" />
+	<effect name="bad-luck" id="27" particles="c0a44d" />
 
 </effects>

@@ -28,7 +28,7 @@ import std.typetuple;
 
 import all;
 
-void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments) {
+void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments, Effect[] effects) {
 
 	mkdirRecurse("../src/d/sul/attributes");
 	mkdirRecurse("../src/d/sul/metadata");
@@ -768,6 +768,23 @@ alias varulong = var!ulong;
 		}
 		data ~= "\n}";
 		write("../src/d/sul/enchantments.d", data, "enchantments");
+	}
+
+	// effects
+	{
+		string data = "module sul.effects;\n\n";
+		data ~= "import std.typecons : Tuple;\n\n";
+		data ~= "public alias Effect = Tuple!(string, \"name\", ubyte, \"id\", uint, \"particles\");\n\n";
+		data ~= "public enum Effects : Effect {\n\n";
+		foreach(effect ; effects) {
+			data ~= "\t" ~ effect.name.toUpper ~ " = Effect(";
+			data ~= "\"" ~ effect.name.replace("_", " ") ~ "\", ";
+			data ~= to!string(effect.id) ~ ", ";
+			data ~= to!string(effect.particles);
+			data ~= "),\n";
+		}
+		data ~= "\n}";
+		write("../src/d/sul/effects.d", data, "effects");
 	}
 
 }

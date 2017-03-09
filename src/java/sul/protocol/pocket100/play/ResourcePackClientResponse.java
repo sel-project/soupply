@@ -8,6 +8,9 @@
  */
 package sul.protocol.pocket100.play;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 import sul.utils.*;
 
 public class ResourcePackClientResponse extends Packet {
@@ -29,18 +32,18 @@ public class ResourcePackClientResponse extends Packet {
 	public static final byte COMPLETED = 4;
 
 	public byte status;
-	public sul.protocol.pocket100.types.Packs packIds;
+	public String[] packIds = new String[0];
 
 	public ResourcePackClientResponse() {}
 
-	public ResourcePackClientResponse(byte status, sul.protocol.pocket100.types.Packs packIds) {
+	public ResourcePackClientResponse(byte status, String[] packIds) {
 		this.status = status;
 		this.packIds = packIds;
 	}
 
 	@Override
 	public int length() {
-		return packIds.length() + 2;
+		int length=4; for(String cfalc:packIds){ length+=Buffer.varuintLength(cfalc.getBytes(StandardCharsets.UTF_8).length)+cfalc.getBytes(StandardCharsets.UTF_8).length; } return length;
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public class ResourcePackClientResponse extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		this.writeBigEndianByte(status);
-		this.writeBytes(packIds.encode());
+		this.writeLittleEndianShort((short)packIds.length); for(String cfalc:packIds){ byte[] yzbm=cfalc.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)yzbm.length); this.writeBytes(yzbm); }
 		return this.getBuffer();
 	}
 
@@ -57,7 +60,7 @@ public class ResourcePackClientResponse extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		status=readBigEndianByte();
-		packIds=new sul.protocol.pocket100.types.Packs(); packIds._index=this._index; packIds.decode(this._buffer); this._index=packIds._index;
+		int bbytzm=readLittleEndianShort(); packIds=new String[bbytzm]; for(int cfalc=0;cfalc<packIds.length;cfalc++){ int bvcfalct=this.readVaruint(); packIds[cfalc]=new String(this.readBytes(bvcfalct), StandardCharsets.UTF_8); }
 	}
 
 	public static ResourcePackClientResponse fromBuffer(byte[] buffer) {
@@ -68,7 +71,7 @@ public class ResourcePackClientResponse extends Packet {
 
 	@Override
 	public String toString() {
-		return "ResourcePackClientResponse(status: " + this.status + ", packIds: " + this.packIds.toString() + ")";
+		return "ResourcePackClientResponse(status: " + this.status + ", packIds: " + Arrays.deepToString(this.packIds) + ")";
 	}
 
 }

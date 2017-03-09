@@ -1,0 +1,144 @@
+{
+
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"effects": {
+
+		"speed": {
+			"id": 1,
+			"particles": "#7CAFC6"
+		},
+
+		"slowness": {
+			"id": 2,
+			"particles": "#5A6C81"
+		},
+
+		"haste": {
+			"id": 3,
+			"particles": "#D9C043"
+		},
+
+		"mining_fatigue": {
+			"id": 4,
+			"particles": "#4A4217"
+		},
+
+		"strength": {
+			"id": 5,
+			"particles": "#932423"
+		},
+
+		"instant_health": {
+			"id": 6,
+			"particles": "#F82423"
+		},
+
+		"instant_damage": {
+			"id": 7,
+			"particles": "#430A09"
+		},
+
+		"jump_boost": {
+			"id": 8,
+			"particles": "#786297"
+		},
+
+		"nausea": {
+			"id": 9,
+			"particles": "#551D4A"
+		},
+
+		"regeneration": {
+			"id": 10,
+			"particles": "#CD5CAB"
+		},
+
+		"resistance": {
+			"id": 11,
+			"particles": "#99453A"
+		},
+
+		"fire_resistance": {
+			"id": 12,
+			"particles": "#E49A3A"
+		},
+
+		"water_breathing": {
+			"id": 13,
+			"particles": "#2E5299"
+		},
+
+		"invisibility": {
+			"id": 14,
+			"particles": "#7F8392"
+		},
+
+		"blindness": {
+			"id": 15,
+			"particles": "#1F1F23"
+		},
+
+		"night_vision": {
+			"id": 16,
+			"particles": "#1F1FA1"
+		},
+
+		"hunger": {
+			"id": 17,
+			"particles": "#587653"
+		},
+
+		"weakness": {
+			"id": 18,
+			"particles": "#484D48"
+		},
+
+		"poison": {
+			"id": 19,
+			"particles": "#4E9331"
+		},
+
+		"wither": {
+			"id": 20,
+			"particles": "#352A27"
+		},
+
+		"health_boost": {
+			"id": 21,
+			"particles": "#F87D23"
+		},
+
+		"absorption": {
+			"id": 22,
+			"particles": "#2552A5"
+		},
+
+		"saturation": {
+			"id": 23,
+			"particles": "#F82423"
+		},
+
+		"glowing": {
+			"id": 24,
+			"particles": "#94A061"
+		},
+
+		"levitation": {
+			"id": 25,
+			"particles": "#CEFFFF"
+		},
+
+		"luck": {
+			"id": 26,
+			"particles": "#339900"
+		},
+
+		"bad_luck": {
+			"id": 27,
+			"particles": "#C0A44D"
+		}
+
+	}
+
+}

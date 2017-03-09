@@ -329,7 +329,7 @@
 					<constant name="have-all-packs" value="3" />
 					<constant name="completed" value="4" />
 				</field>
-				<field name="pack-ids" type="packs" />
+				<field name="pack-ids" type="pack-ids" />
 			</packet>
 
 			<packet name="text" id="10" clientbound="true" serverbound="true">

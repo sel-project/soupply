@@ -101,6 +101,9 @@ alias Entity = Tuple!(string, "name", ubyte, "minecraft", ubyte, "pocket", bool,
 alias Enchantment = Tuple!(string, "name", byte, "minecraft", byte, "pocket", ubyte, "max");
 
 
+alias Effect = Tuple!(string, "name", ubyte, "id", uint, "particles");
+
+
 private uint n_version;
 
 public @property uint sulVersion() {
@@ -525,14 +528,24 @@ void main(string[] args) {
 		}
 	}
 
-	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks, items, entities, enchantments);
-	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks, items, entities, enchantments);
+	// effects
+	Effect[] effects;
+	foreach(element ; new Document(cast(string)read("../xml/effects.xml")).elements) {
+		with(element.tag) {
+			if(name == "effect") {
+				effects ~= Effect(attr["name"].replace("-", "_"), to!ubyte(attr["id"]), to!uint(attr["particles"], 16));
+			}
+		}
+	}
+
+	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
+	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
 	if(wall || wjs) js.js(attributes, protocols, metadata, creative, blocks, items, entities);
 
 	//if(wall || wdiff) diff.diff(attributes, protocols, metadata);
 	if(wall || wdocs) docs.docs(attributes, protocols, metadata);
 
-	if(wall || wjson) json.json(attributes, protocols, metadata, creative, blocks, items, entities, enchantments);
+	if(wall || wjson) json.json(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
 
 }
 

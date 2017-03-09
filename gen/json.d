@@ -18,10 +18,11 @@ import std.conv : to;
 import std.file : mkdirRecurse, _write = write;
 import std.json;
 import std.math : isNaN;
+import std.string : toUpper;
 
 import all;
 
-void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments) {
+void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments, Effect[] effects) {
 
 	// attributes
 	mkdirRecurse("../json/attributes");
@@ -326,6 +327,20 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		}
 		data ~= "\t}\n\n}\n";
 		_write("../json/enchantments.json", data);
+	}
+
+	// effects
+	{
+		string data = "{\n\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
+		data ~= "\t\"effects\": {\n\n";
+		foreach(i, effect; effects) {
+			data ~= "\t\t\"" ~ effect.name ~ "\": {\n";
+			data ~= "\t\t\t\"id\": " ~ to!string(effect.id) ~ ",\n";
+			data ~= "\t\t\t\"particles\": \"#" ~ (to!string(effect.particles, 16).toUpper ~ "000000")[0..6] ~ "\"\n";
+			data ~= "\t\t}" ~ (i != effects.length - 1 ? "," : "") ~ "\n\n";
+		}
+		data ~= "\t}\n\n}\n";
+		_write("../json/effects.json", data);
 	}
 
 }
