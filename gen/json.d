@@ -221,7 +221,7 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		string data = "{\n\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
 		data ~= "\t\"blocks\": {\n\n";
 		void writeBlockData(string type, BlockData blockdata) {
-			if(blockdata.id >= 0) {
+			if(blockdata.hash >= 0) {
 				data ~= "\t\t\t\"" ~ type ~ "\": ";
 				if(blockdata.meta >= 0) {
 					data ~= "{\n";

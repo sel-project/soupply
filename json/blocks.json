@@ -829,10 +829,6 @@
 				"id": 3,
 				"meta": 1
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.5,
 			"blast_resistance": 2.5,
@@ -2980,10 +2976,6 @@
 				"id": 95,
 				"meta": 0
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3008,10 +3000,6 @@
 			"minecraft": {
 				"id": 95,
 				"meta": 1
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3038,10 +3026,6 @@
 				"id": 95,
 				"meta": 2
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3066,10 +3050,6 @@
 			"minecraft": {
 				"id": 95,
 				"meta": 3
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3096,10 +3076,6 @@
 				"id": 95,
 				"meta": 4
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3124,10 +3100,6 @@
 			"minecraft": {
 				"id": 95,
 				"meta": 5
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3154,10 +3126,6 @@
 				"id": 95,
 				"meta": 6
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3182,10 +3150,6 @@
 			"minecraft": {
 				"id": 95,
 				"meta": 7
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3212,10 +3176,6 @@
 				"id": 95,
 				"meta": 8
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3240,10 +3200,6 @@
 			"minecraft": {
 				"id": 95,
 				"meta": 9
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3270,10 +3226,6 @@
 				"id": 95,
 				"meta": 10
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3298,10 +3250,6 @@
 			"minecraft": {
 				"id": 95,
 				"meta": 11
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3328,10 +3276,6 @@
 				"id": 95,
 				"meta": 12
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3356,10 +3300,6 @@
 			"minecraft": {
 				"id": 95,
 				"meta": 13
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3386,10 +3326,6 @@
 				"id": 95,
 				"meta": 14
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3414,10 +3350,6 @@
 			"minecraft": {
 				"id": 95,
 				"meta": 15
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3467,10 +3399,6 @@
 				"id": 160,
 				"meta": 0
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3495,10 +3423,6 @@
 			"minecraft": {
 				"id": 160,
 				"meta": 1
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3525,10 +3449,6 @@
 				"id": 160,
 				"meta": 2
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3553,10 +3473,6 @@
 			"minecraft": {
 				"id": 160,
 				"meta": 3
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3583,10 +3499,6 @@
 				"id": 160,
 				"meta": 4
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3611,10 +3523,6 @@
 			"minecraft": {
 				"id": 160,
 				"meta": 5
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3641,10 +3549,6 @@
 				"id": 160,
 				"meta": 6
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3669,10 +3573,6 @@
 			"minecraft": {
 				"id": 160,
 				"meta": 7
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3699,10 +3599,6 @@
 				"id": 160,
 				"meta": 8
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3727,10 +3623,6 @@
 			"minecraft": {
 				"id": 160,
 				"meta": 9
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3757,10 +3649,6 @@
 				"id": 160,
 				"meta": 10
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3785,10 +3673,6 @@
 			"minecraft": {
 				"id": 160,
 				"meta": 11
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3815,10 +3699,6 @@
 				"id": 160,
 				"meta": 12
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3843,10 +3723,6 @@
 			"minecraft": {
 				"id": 160,
 				"meta": 13
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -3873,10 +3749,6 @@
 				"id": 160,
 				"meta": 14
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.3,
 			"blast_resistance": 1.5,
@@ -3901,10 +3773,6 @@
 			"minecraft": {
 				"id": 160,
 				"meta": 15
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.3,
@@ -19723,10 +19591,6 @@
 				"id": 212,
 				"meta": 0
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.5,
 			"blast_resistance": 2.5,
@@ -19751,10 +19615,6 @@
 			"minecraft": {
 				"id": 212,
 				"meta": 1
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.5,
@@ -19781,10 +19641,6 @@
 				"id": 212,
 				"meta": 2
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.5,
 			"blast_resistance": 2.5,
@@ -19809,10 +19665,6 @@
 			"minecraft": {
 				"id": 212,
 				"meta": 3
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 0.5,
@@ -21138,10 +20990,6 @@
 		"red_nether_brick": {
 			"id": 802,
 			"minecraft": 215,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 30,
@@ -26288,10 +26136,6 @@
 
 		"cauldron_one_sixth_filled": {
 			"id": 982,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": {
 				"id": 118,
 				"meta": 1
@@ -26346,10 +26190,6 @@
 
 		"cauldron_three_sixth_filled": {
 			"id": 984,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": {
 				"id": 118,
 				"meta": 3
@@ -26404,10 +26244,6 @@
 
 		"cauldron_five_sixth_filled": {
 			"id": 986,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": {
 				"id": 118,
 				"meta": 5
@@ -32166,10 +32002,6 @@
 				"id": 176,
 				"meta": 0
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -32182,10 +32014,6 @@
 			"minecraft": {
 				"id": 176,
 				"meta": 1
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 1,
@@ -32200,10 +32028,6 @@
 				"id": 176,
 				"meta": 2
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -32216,10 +32040,6 @@
 			"minecraft": {
 				"id": 176,
 				"meta": 3
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 1,
@@ -32234,10 +32054,6 @@
 				"id": 176,
 				"meta": 4
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -32250,10 +32066,6 @@
 			"minecraft": {
 				"id": 176,
 				"meta": 5
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 1,
@@ -32268,10 +32080,6 @@
 				"id": 176,
 				"meta": 6
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -32284,10 +32092,6 @@
 			"minecraft": {
 				"id": 176,
 				"meta": 7
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 1,
@@ -32302,10 +32106,6 @@
 				"id": 176,
 				"meta": 8
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -32318,10 +32118,6 @@
 			"minecraft": {
 				"id": 176,
 				"meta": 9
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 1,
@@ -32336,10 +32132,6 @@
 				"id": 176,
 				"meta": 10
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -32352,10 +32144,6 @@
 			"minecraft": {
 				"id": 176,
 				"meta": 11
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 1,
@@ -32370,10 +32158,6 @@
 				"id": 176,
 				"meta": 12
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -32386,10 +32170,6 @@
 			"minecraft": {
 				"id": 176,
 				"meta": 13
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 1,
@@ -32404,10 +32184,6 @@
 				"id": 176,
 				"meta": 14
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -32420,10 +32196,6 @@
 			"minecraft": {
 				"id": 176,
 				"meta": 15
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 1,
@@ -32438,10 +32210,6 @@
 				"id": 177,
 				"meta": 2
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -32454,10 +32222,6 @@
 			"minecraft": {
 				"id": 177,
 				"meta": 3
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 1,
@@ -32472,10 +32236,6 @@
 				"id": 177,
 				"meta": 4
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -32489,10 +32249,6 @@
 				"id": 177,
 				"meta": 5
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -32502,10 +32258,6 @@
 
 		"item_frame_facing_north": {
 			"id": 1212,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": {
 				"id": 199,
 				"meta": 2
@@ -32519,10 +32271,6 @@
 
 		"item_frame_facing_south": {
 			"id": 1213,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": {
 				"id": 199,
 				"meta": 3
@@ -32536,10 +32284,6 @@
 
 		"item_frame_facing_west": {
 			"id": 1214,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": {
 				"id": 199,
 				"meta": 4
@@ -32553,10 +32297,6 @@
 
 		"item_frame_facing_east": {
 			"id": 1215,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": {
 				"id": 199,
 				"meta": 5
@@ -33039,10 +32779,6 @@
 
 		"stonecutter": {
 			"id": 1233,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": 245,
 			"solid": true,
 			"hardness": 3.5,
@@ -33065,10 +32801,6 @@
 
 		"glowing_obsidian": {
 			"id": 1234,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": 246,
 			"solid": true,
 			"hardness": 50,
@@ -33091,10 +32823,6 @@
 
 		"nether_reactor_core": {
 			"id": 1235,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": {
 				"id": 247,
 				"meta": 0
@@ -33120,10 +32848,6 @@
 
 		"active_nether_reactor_core": {
 			"id": 1236,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": {
 				"id": 247,
 				"meta": 1
@@ -33149,10 +32873,6 @@
 
 		"used_nether_reactor_core": {
 			"id": 1237,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": {
 				"id": 247,
 				"meta": 2
@@ -33179,10 +32899,6 @@
 		"magma_block": {
 			"id": 1238,
 			"minecraft": 213,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 0.5,
 			"blast_resistance": 2.5,
@@ -33205,10 +32921,6 @@
 		"nether_wart_block": {
 			"id": 1239,
 			"minecraft": 214,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 1,
 			"blast_resistance": 5,
@@ -33232,10 +32944,6 @@
 			"id": 1240,
 			"minecraft": {
 				"id": 216,
-				"meta": 0
-			},
-			"pocket": {
-				"id": 0,
 				"meta": 0
 			},
 			"solid": true,
@@ -33263,10 +32971,6 @@
 				"id": 216,
 				"meta": 4
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 10,
@@ -33291,10 +32995,6 @@
 			"minecraft": {
 				"id": 216,
 				"meta": 8
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": 2,
@@ -33492,10 +33192,6 @@
 		"white_shulker_box": {
 			"id": 1249,
 			"minecraft": 219,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33518,10 +33214,6 @@
 		"orange_shulker_box": {
 			"id": 1250,
 			"minecraft": 220,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33544,10 +33236,6 @@
 		"magenta_shulker_box": {
 			"id": 1251,
 			"minecraft": 221,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33570,10 +33258,6 @@
 		"light_blue_shulker_box": {
 			"id": 1252,
 			"minecraft": 222,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33596,10 +33280,6 @@
 		"yellow_shulker_box": {
 			"id": 1253,
 			"minecraft": 223,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33622,10 +33302,6 @@
 		"lime_shulker_box": {
 			"id": 1254,
 			"minecraft": 224,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33648,10 +33324,6 @@
 		"pink_shulker_box": {
 			"id": 1255,
 			"minecraft": 225,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33674,10 +33346,6 @@
 		"gray_shulker_box": {
 			"id": 1256,
 			"minecraft": 226,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33700,10 +33368,6 @@
 		"light_shulker_box": {
 			"id": 1257,
 			"minecraft": 227,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33726,10 +33390,6 @@
 		"cyan_shulker_box": {
 			"id": 1258,
 			"minecraft": 228,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33752,10 +33412,6 @@
 		"purple_shulker_box": {
 			"id": 1259,
 			"minecraft": 229,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33778,10 +33434,6 @@
 		"blue_shulker_box": {
 			"id": 1260,
 			"minecraft": 230,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33804,10 +33456,6 @@
 		"brown_shulker_box": {
 			"id": 1261,
 			"minecraft": 231,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33830,10 +33478,6 @@
 		"green_shulker_box": {
 			"id": 1262,
 			"minecraft": 232,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33856,10 +33500,6 @@
 		"red_shulker_box": {
 			"id": 1263,
 			"minecraft": 233,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33882,10 +33522,6 @@
 		"black_shulker_box": {
 			"id": 1264,
 			"minecraft": 234,
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": 6,
 			"blast_resistance": 30,
@@ -33907,10 +33543,6 @@
 
 		"update_block": {
 			"id": 1265,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": 248,
 			"solid": true,
 			"hardness": 0,
@@ -33933,10 +33565,6 @@
 
 		"ateupd_block": {
 			"id": 1266,
-			"minecraft": {
-				"id": 0,
-				"meta": 0
-			},
 			"pocket": 249,
 			"solid": true,
 			"hardness": 0,
@@ -33961,10 +33589,6 @@
 			"id": 1267,
 			"minecraft": {
 				"id": 255,
-				"meta": 0
-			},
-			"pocket": {
-				"id": 0,
 				"meta": 0
 			},
 			"solid": true,
@@ -33992,10 +33616,6 @@
 				"id": 255,
 				"meta": 1
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": -1,
 			"blast_resistance": 1.8e+07,
@@ -34021,10 +33641,6 @@
 				"id": 255,
 				"meta": 2
 			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
-			},
 			"solid": true,
 			"hardness": -1,
 			"blast_resistance": 1.8e+07,
@@ -34049,10 +33665,6 @@
 			"minecraft": {
 				"id": 255,
 				"meta": 3
-			},
-			"pocket": {
-				"id": 0,
-				"meta": 0
 			},
 			"solid": true,
 			"hardness": -1,
