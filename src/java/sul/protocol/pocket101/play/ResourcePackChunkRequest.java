@@ -25,13 +25,13 @@ public class ResourcePackChunkRequest extends Packet {
 	}
 
 	public String id;
-	public int index;
+	public int chunkIndex;
 
 	public ResourcePackChunkRequest() {}
 
-	public ResourcePackChunkRequest(String id, int index) {
+	public ResourcePackChunkRequest(String id, int chunkIndex) {
 		this.id = id;
-		this.index = index;
+		this.chunkIndex = chunkIndex;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class ResourcePackChunkRequest extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		byte[] aq=id.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)aq.length); this.writeBytes(aq);
-		this.writeLittleEndianInt(index);
+		this.writeLittleEndianInt(chunkIndex);
 		return this.getBuffer();
 	}
 
@@ -53,7 +53,7 @@ public class ResourcePackChunkRequest extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		int bvaq=this.readVaruint(); id=new String(this.readBytes(bvaq), StandardCharsets.UTF_8);
-		index=readLittleEndianInt();
+		chunkIndex=readLittleEndianInt();
 	}
 
 	public static ResourcePackChunkRequest fromBuffer(byte[] buffer) {
@@ -64,7 +64,7 @@ public class ResourcePackChunkRequest extends Packet {
 
 	@Override
 	public String toString() {
-		return "ResourcePackChunkRequest(id: " + this.id + ", index: " + this.index + ")";
+		return "ResourcePackChunkRequest(id: " + this.id + ", chunkIndex: " + this.chunkIndex + ")";
 	}
 
 }

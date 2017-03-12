@@ -31,8 +31,8 @@
 		<div style="height:4px"></div>
 		<div class="g-plusone" data-size="medium"></div>
 		<p><strong>Jump to</strong>: <a href="#encoding">Encoding</a>, <a href="#packets">Packets</a>, <a href="#types">Types</a>, <a href="#arrays">Arrays</a>, <a href="#metadata">Metadata</a>, <a href="#attributes">Attributes</a></p>
-		<p><strong>Released</strong>: February 25th, 2017</p>
-		<p>In use since version <strong>1.0.4</strong></p>
+		<p><strong>Released</strong>: March 9th, 2017</p>
+		<p>Used in version <strong>1.0.4</strong></p>
 		<p>Protocol used in Minecraft: Pocket Edition and variants. The network part of the protocol is managed by <a href="../raknet/8.html" target="_blank">RakNet</a>.</p>
 		<h4>Login sequence</h4>
 		<ul>
@@ -4555,22 +4555,22 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 						<td class="center"></td>
 					</tr>
 					<tr>
-						<td>?</td>
+						<td>max chunk size</td>
 						<td>uint</td>
 						<td class="center">little endian</td>
 					</tr>
 					<tr>
-						<td>?</td>
+						<td>chunk count</td>
 						<td>uint</td>
 						<td class="center">little endian</td>
 					</tr>
 					<tr>
-						<td>?</td>
+						<td>compressed pack size</td>
 						<td>ulong</td>
 						<td class="center">little endian</td>
 					</tr>
 					<tr>
-						<td>?</td>
+						<td>sha256</td>
 						<td>string</td>
 						<td class="center"></td>
 					</tr>
@@ -4597,12 +4597,12 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 						<td class="center"></td>
 					</tr>
 					<tr>
-						<td>?</td>
+						<td>chunk index</td>
 						<td>uint</td>
 						<td class="center">little endian</td>
 					</tr>
 					<tr>
-						<td>?</td>
+						<td>progress</td>
 						<td>ulong</td>
 						<td class="center">little endian</td>
 					</tr>
@@ -4634,7 +4634,7 @@ Batch batch = new Batch(compress(payload, Zlib.DEFLATE));
 						<td class="center"></td>
 					</tr>
 					<tr>
-						<td>index</td>
+						<td>chunk index</td>
 						<td>uint</td>
 						<td class="center">little endian</td>
 					</tr>

@@ -320,7 +320,7 @@ enum Items : Item {
 	BLACK_STAINED_GLASS_PANE = Item("black stained glass pane", 293, ItemData(true, 160, 15), ItemData(false), 64),
 	ACACIA_LEAVES = Item("acacia leaves", 294, ItemData(true, 161, 0), ItemData(true, 161, 0), 64),
 	DARK_OAK_LEAVES = Item("dark oak leaves", 295, ItemData(true, 161, 1), ItemData(true, 161, 1), 64),
-	ACAICA_WOOD = Item("acaica wood", 296, ItemData(true, 162, 0), ItemData(true, 162, 0), 64),
+	ACACIA_WOOD = Item("acacia wood", 296, ItemData(true, 162, 0), ItemData(true, 162, 0), 64),
 	DARK_OAK_WOOD = Item("dark oak wood", 297, ItemData(true, 162, 1), ItemData(true, 162, 1), 64),
 	ACACIA_WOOD_STAIRS = Item("acacia wood stairs", 298, ItemData(true, 163, 0), ItemData(true, 163, 0), 64),
 	DARK_OAK_WOOD_STAIRS = Item("dark oak wood stairs", 299, ItemData(true, 164, 0), ItemData(true, 164, 0), 64),

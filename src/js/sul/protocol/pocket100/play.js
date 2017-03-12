@@ -3985,13 +3985,13 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(id="", unknown1=0, unknown2=0, unknown3=0, unknown4="") {
+		constructor(id="", maxChunkSize=0, chunkCount=0, compressedPackSize=0, sha256="") {
 			super();
 			this.id = id;
-			this.unknown1 = unknown1;
-			this.unknown2 = unknown2;
-			this.unknown3 = unknown3;
-			this.unknown4 = unknown4;
+			this.maxChunkSize = maxChunkSize;
+			this.chunkCount = chunkCount;
+			this.compressedPackSize = compressedPackSize;
+			this.sha256 = sha256;
 		}
 
 		/** @return {Uint8Array} */
@@ -3999,10 +3999,10 @@ const Play = {
 			this._buffer = [];
 			this.writeBigEndianByte(79);
 			var dhc5z=this.encodeString(this.id); this.writeVaruint(dhc5z.length); this.writeBytes(dhc5z);
-			this.writeLittleEndianInt(this.unknown1);
-			this.writeLittleEndianInt(this.unknown2);
-			this.writeLittleEndianLong(this.unknown3);
-			var dhc5btbd=this.encodeString(this.unknown4); this.writeVaruint(dhc5btbd.length); this.writeBytes(dhc5btbd);
+			this.writeLittleEndianInt(this.maxChunkSize);
+			this.writeLittleEndianInt(this.chunkCount);
+			this.writeLittleEndianLong(this.compressedPackSize);
+			var dhc5aeny=this.encodeString(this.sha256); this.writeVaruint(dhc5aeny.length); this.writeBytes(dhc5aeny);
 			return new Uint8Array(this._buffer);
 		}
 
@@ -4011,10 +4011,10 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			var _id=this.readBigEndianByte();
 			this.id=this.decodeString(this.readBytes(this.readVaruint()));
-			this.unknown1=this.readLittleEndianInt();
-			this.unknown2=this.readLittleEndianInt();
-			this.unknown3=this.readLittleEndianLong();
-			this.unknown4=this.decodeString(this.readBytes(this.readVaruint()));
+			this.maxChunkSize=this.readLittleEndianInt();
+			this.chunkCount=this.readLittleEndianInt();
+			this.compressedPackSize=this.readLittleEndianLong();
+			this.sha256=this.decodeString(this.readBytes(this.readVaruint()));
 			return this;
 		}
 
@@ -4025,7 +4025,7 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "ResourcePackDataInfo(id: " + this.id + ", unknown1: " + this.unknown1 + ", unknown2: " + this.unknown2 + ", unknown3: " + this.unknown3 + ", unknown4: " + this.unknown4 + ")";
+			return "ResourcePackDataInfo(id: " + this.id + ", maxChunkSize: " + this.maxChunkSize + ", chunkCount: " + this.chunkCount + ", compressedPackSize: " + this.compressedPackSize + ", sha256: " + this.sha256 + ")";
 		}
 
 	},
@@ -4037,11 +4037,11 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
-		constructor(id="", unknown1=0, unknown2=0, data=[]) {
+		constructor(id="", chunkIndex=0, progress=0, data=[]) {
 			super();
 			this.id = id;
-			this.unknown1 = unknown1;
-			this.unknown2 = unknown2;
+			this.chunkIndex = chunkIndex;
+			this.progress = progress;
 			this.data = data;
 		}
 
@@ -4050,8 +4050,8 @@ const Play = {
 			this._buffer = [];
 			this.writeBigEndianByte(80);
 			var dhc5z=this.encodeString(this.id); this.writeVaruint(dhc5z.length); this.writeBytes(dhc5z);
-			this.writeLittleEndianInt(this.unknown1);
-			this.writeLittleEndianLong(this.unknown2);
+			this.writeLittleEndianInt(this.chunkIndex);
+			this.writeLittleEndianLong(this.progress);
 			this.writeVaruint(this.data.length); this.writeBytes(this.data);
 			return new Uint8Array(this._buffer);
 		}
@@ -4061,8 +4061,8 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			var _id=this.readBigEndianByte();
 			this.id=this.decodeString(this.readBytes(this.readVaruint()));
-			this.unknown1=this.readLittleEndianInt();
-			this.unknown2=this.readLittleEndianLong();
+			this.chunkIndex=this.readLittleEndianInt();
+			this.progress=this.readLittleEndianLong();
 			var aramzfy=this.readVaruint(); this.data=this.readBytes(aramzfy);
 			return this;
 		}
@@ -4074,7 +4074,7 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "ResourcePackChunkData(id: " + this.id + ", unknown1: " + this.unknown1 + ", unknown2: " + this.unknown2 + ", data: " + this.data + ")";
+			return "ResourcePackChunkData(id: " + this.id + ", chunkIndex: " + this.chunkIndex + ", progress: " + this.progress + ", data: " + this.data + ")";
 		}
 
 	},
@@ -4086,10 +4086,10 @@ const Play = {
 		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
 
-		constructor(id="", index=0) {
+		constructor(id="", chunkIndex=0) {
 			super();
 			this.id = id;
-			this.index = index;
+			this.chunkIndex = chunkIndex;
 		}
 
 		/** @return {Uint8Array} */
@@ -4097,7 +4097,7 @@ const Play = {
 			this._buffer = [];
 			this.writeBigEndianByte(81);
 			var dhc5z=this.encodeString(this.id); this.writeVaruint(dhc5z.length); this.writeBytes(dhc5z);
-			this.writeLittleEndianInt(this.index);
+			this.writeLittleEndianInt(this.chunkIndex);
 			return new Uint8Array(this._buffer);
 		}
 
@@ -4106,7 +4106,7 @@ const Play = {
 			this._buffer = Array.from(_buffer);
 			var _id=this.readBigEndianByte();
 			this.id=this.decodeString(this.readBytes(this.readVaruint()));
-			this.index=this.readLittleEndianInt();
+			this.chunkIndex=this.readLittleEndianInt();
 			return this;
 		}
 
@@ -4117,7 +4117,7 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "ResourcePackChunkRequest(id: " + this.id + ", index: " + this.index + ")";
+			return "ResourcePackChunkRequest(id: " + this.id + ", chunkIndex: " + this.chunkIndex + ")";
 		}
 
 	},

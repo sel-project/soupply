@@ -298,7 +298,7 @@
 	<item name="black-stained-glass-pane" minecraft="160:15" />
 	<item name="acacia-leaves" data="161:0" />
 	<item name="dark-oak-leaves" data="161:1" />
-	<item name="acaica-wood" data="162:0" />
+	<item name="acacia-wood" data="162:0" />
 	<item name="dark-oak-wood" data="162:1" />
 	<item name="acacia-wood-stairs" data="163" />
 	<item name="dark-oak-wood-stairs" data="164" />

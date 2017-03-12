@@ -2336,22 +2336,22 @@
 						"type": "string"
 					},
 					{
-						"name": "?",
+						"name": "max_chunk_size",
 						"type": "uint",
 						"endianness": "little_endian"
 					},
 					{
-						"name": "?",
+						"name": "chunk_count",
 						"type": "uint",
 						"endianness": "little_endian"
 					},
 					{
-						"name": "?",
+						"name": "compressed_pack_size",
 						"type": "ulong",
 						"endianness": "little_endian"
 					},
 					{
-						"name": "?",
+						"name": "sha256",
 						"type": "string"
 					}
 				]
@@ -2367,12 +2367,12 @@
 						"type": "string"
 					},
 					{
-						"name": "?",
+						"name": "chunk_index",
 						"type": "uint",
 						"endianness": "little_endian"
 					},
 					{
-						"name": "?",
+						"name": "progress",
 						"type": "ulong",
 						"endianness": "little_endian"
 					},
@@ -2393,7 +2393,7 @@
 						"type": "string"
 					},
 					{
-						"name": "index",
+						"name": "chunk_index",
 						"type": "uint",
 						"endianness": "little_endian"
 					}

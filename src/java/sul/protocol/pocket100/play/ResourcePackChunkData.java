@@ -26,16 +26,16 @@ public class ResourcePackChunkData extends Packet {
 	}
 
 	public String id;
-	public int unknown1;
-	public long unknown2;
+	public int chunkIndex;
+	public long progress;
 	public byte[] data = new byte[0];
 
 	public ResourcePackChunkData() {}
 
-	public ResourcePackChunkData(String id, int unknown1, long unknown2, byte[] data) {
+	public ResourcePackChunkData(String id, int chunkIndex, long progress, byte[] data) {
 		this.id = id;
-		this.unknown1 = unknown1;
-		this.unknown2 = unknown2;
+		this.chunkIndex = chunkIndex;
+		this.progress = progress;
 		this.data = data;
 	}
 
@@ -49,8 +49,8 @@ public class ResourcePackChunkData extends Packet {
 		this._buffer = new byte[this.length()];
 		this.writeBigEndianByte(ID);
 		byte[] aq=id.getBytes(StandardCharsets.UTF_8); this.writeVaruint((int)aq.length); this.writeBytes(aq);
-		this.writeLittleEndianInt(unknown1);
-		this.writeLittleEndianLong(unknown2);
+		this.writeLittleEndianInt(chunkIndex);
+		this.writeLittleEndianLong(progress);
 		this.writeVaruint((int)data.length); this.writeBytes(data);
 		return this.getBuffer();
 	}
@@ -60,8 +60,8 @@ public class ResourcePackChunkData extends Packet {
 		this._buffer = buffer;
 		readBigEndianByte();
 		int bvaq=this.readVaruint(); id=new String(this.readBytes(bvaq), StandardCharsets.UTF_8);
-		unknown1=readLittleEndianInt();
-		unknown2=readLittleEndianLong();
+		chunkIndex=readLittleEndianInt();
+		progress=readLittleEndianLong();
 		int brde=this.readVaruint(); data=this.readBytes(brde);
 	}
 
@@ -73,7 +73,7 @@ public class ResourcePackChunkData extends Packet {
 
 	@Override
 	public String toString() {
-		return "ResourcePackChunkData(id: " + this.id + ", unknown1: " + this.unknown1 + ", unknown2: " + this.unknown2 + ", data: " + Arrays.toString(this.data) + ")";
+		return "ResourcePackChunkData(id: " + this.id + ", chunkIndex: " + this.chunkIndex + ", progress: " + this.progress + ", data: " + Arrays.toString(this.data) + ")";
 	}
 
 }

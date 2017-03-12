@@ -337,7 +337,7 @@ public final class Items {
 		add(new Items("black stained glass pane", new ItemData(160, 15), null, (byte)64));
 		add(new Items("acacia leaves", new ItemData(161, 0), new ItemData(161, 0), (byte)64));
 		add(new Items("dark oak leaves", new ItemData(161, 1), new ItemData(161, 1), (byte)64));
-		add(new Items("acaica wood", new ItemData(162, 0), new ItemData(162, 0), (byte)64));
+		add(new Items("acacia wood", new ItemData(162, 0), new ItemData(162, 0), (byte)64));
 		add(new Items("dark oak wood", new ItemData(162, 1), new ItemData(162, 1), (byte)64));
 		add(new Items("acacia wood stairs", new ItemData(163, 0), new ItemData(163, 0), (byte)64));
 		add(new Items("dark oak wood stairs", new ItemData(164, 0), new ItemData(164, 0), (byte)64));

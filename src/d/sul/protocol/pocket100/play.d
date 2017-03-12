@@ -4526,42 +4526,42 @@ class ResourcePackDataInfo : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["id", "unknown1", "unknown2", "unknown3", "unknown4"];
+	public enum string[] FIELDS = ["id", "maxChunkSize", "chunkCount", "compressedPackSize", "sha256"];
 
 	public string id;
-	public uint unknown1;
-	public uint unknown2;
-	public ulong unknown3;
-	public string unknown4;
+	public uint maxChunkSize;
+	public uint chunkCount;
+	public ulong compressedPackSize;
+	public string sha256;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(string id, uint unknown1=uint.init, uint unknown2=uint.init, ulong unknown3=ulong.init, string unknown4=string.init) {
+	public pure nothrow @safe @nogc this(string id, uint maxChunkSize=uint.init, uint chunkCount=uint.init, ulong compressedPackSize=ulong.init, string sha256=string.init) {
 		this.id = id;
-		this.unknown1 = unknown1;
-		this.unknown2 = unknown2;
-		this.unknown3 = unknown3;
-		this.unknown4 = unknown4;
+		this.maxChunkSize = maxChunkSize;
+		this.chunkCount = chunkCount;
+		this.compressedPackSize = compressedPackSize;
+		this.sha256 = sha256;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(cast(uint)id.length)); writeString(id);
-		writeLittleEndianUint(unknown1);
-		writeLittleEndianUint(unknown2);
-		writeLittleEndianUlong(unknown3);
-		writeBytes(varuint.encode(cast(uint)unknown4.length)); writeString(unknown4);
+		writeLittleEndianUint(maxChunkSize);
+		writeLittleEndianUint(chunkCount);
+		writeLittleEndianUlong(compressedPackSize);
+		writeBytes(varuint.encode(cast(uint)sha256.length)); writeString(sha256);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		uint aq=varuint.decode(_buffer, &_index); id=readString(aq);
-		unknown1=readLittleEndianUint();
-		unknown2=readLittleEndianUint();
-		unknown3=readLittleEndianUlong();
-		uint d5b9bq=varuint.decode(_buffer, &_index); unknown4=readString(d5b9bq);
+		maxChunkSize=readLittleEndianUint();
+		chunkCount=readLittleEndianUint();
+		compressedPackSize=readLittleEndianUlong();
+		uint chmu=varuint.decode(_buffer, &_index); sha256=readString(chmu);
 	}
 
 	public static pure nothrow @safe ResourcePackDataInfo fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -4572,7 +4572,7 @@ class ResourcePackDataInfo : Buffer {
 	}
 
 	public override string toString() {
-		return "ResourcePackDataInfo(id: " ~ std.conv.to!string(this.id) ~ ", unknown1: " ~ std.conv.to!string(this.unknown1) ~ ", unknown2: " ~ std.conv.to!string(this.unknown2) ~ ", unknown3: " ~ std.conv.to!string(this.unknown3) ~ ", unknown4: " ~ std.conv.to!string(this.unknown4) ~ ")";
+		return "ResourcePackDataInfo(id: " ~ std.conv.to!string(this.id) ~ ", maxChunkSize: " ~ std.conv.to!string(this.maxChunkSize) ~ ", chunkCount: " ~ std.conv.to!string(this.chunkCount) ~ ", compressedPackSize: " ~ std.conv.to!string(this.compressedPackSize) ~ ", sha256: " ~ std.conv.to!string(this.sha256) ~ ")";
 	}
 
 }
@@ -4584,19 +4584,19 @@ class ResourcePackChunkData : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = false;
 
-	public enum string[] FIELDS = ["id", "unknown1", "unknown2", "data"];
+	public enum string[] FIELDS = ["id", "chunkIndex", "progress", "data"];
 
 	public string id;
-	public uint unknown1;
-	public ulong unknown2;
+	public uint chunkIndex;
+	public ulong progress;
 	public ubyte[] data;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(string id, uint unknown1=uint.init, ulong unknown2=ulong.init, ubyte[] data=(ubyte[]).init) {
+	public pure nothrow @safe @nogc this(string id, uint chunkIndex=uint.init, ulong progress=ulong.init, ubyte[] data=(ubyte[]).init) {
 		this.id = id;
-		this.unknown1 = unknown1;
-		this.unknown2 = unknown2;
+		this.chunkIndex = chunkIndex;
+		this.progress = progress;
 		this.data = data;
 	}
 
@@ -4604,8 +4604,8 @@ class ResourcePackChunkData : Buffer {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(cast(uint)id.length)); writeString(id);
-		writeLittleEndianUint(unknown1);
-		writeLittleEndianUlong(unknown2);
+		writeLittleEndianUint(chunkIndex);
+		writeLittleEndianUlong(progress);
 		writeBytes(varuint.encode(cast(uint)data.length)); writeBytes(data);
 		return _buffer;
 	}
@@ -4613,8 +4613,8 @@ class ResourcePackChunkData : Buffer {
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		uint aq=varuint.decode(_buffer, &_index); id=readString(aq);
-		unknown1=readLittleEndianUint();
-		unknown2=readLittleEndianUlong();
+		chunkIndex=readLittleEndianUint();
+		progress=readLittleEndianUlong();
 		data.length=varuint.decode(_buffer, &_index); if(_buffer.length>=_index+data.length){ data=_buffer[_index.._index+data.length].dup; _index+=data.length; }
 	}
 
@@ -4626,7 +4626,7 @@ class ResourcePackChunkData : Buffer {
 	}
 
 	public override string toString() {
-		return "ResourcePackChunkData(id: " ~ std.conv.to!string(this.id) ~ ", unknown1: " ~ std.conv.to!string(this.unknown1) ~ ", unknown2: " ~ std.conv.to!string(this.unknown2) ~ ", data: " ~ std.conv.to!string(this.data) ~ ")";
+		return "ResourcePackChunkData(id: " ~ std.conv.to!string(this.id) ~ ", chunkIndex: " ~ std.conv.to!string(this.chunkIndex) ~ ", progress: " ~ std.conv.to!string(this.progress) ~ ", data: " ~ std.conv.to!string(this.data) ~ ")";
 	}
 
 }
@@ -4638,30 +4638,30 @@ class ResourcePackChunkRequest : Buffer {
 	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["id", "index"];
+	public enum string[] FIELDS = ["id", "chunkIndex"];
 
 	public string id;
-	public uint index;
+	public uint chunkIndex;
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(string id, uint index=uint.init) {
+	public pure nothrow @safe @nogc this(string id, uint chunkIndex=uint.init) {
 		this.id = id;
-		this.index = index;
+		this.chunkIndex = chunkIndex;
 	}
 
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
 		writeBytes(varuint.encode(cast(uint)id.length)); writeString(id);
-		writeLittleEndianUint(index);
+		writeLittleEndianUint(chunkIndex);
 		return _buffer;
 	}
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
 		uint aq=varuint.decode(_buffer, &_index); id=readString(aq);
-		index=readLittleEndianUint();
+		chunkIndex=readLittleEndianUint();
 	}
 
 	public static pure nothrow @safe ResourcePackChunkRequest fromBuffer(bool readId=true)(ubyte[] buffer) {
@@ -4672,7 +4672,7 @@ class ResourcePackChunkRequest : Buffer {
 	}
 
 	public override string toString() {
-		return "ResourcePackChunkRequest(id: " ~ std.conv.to!string(this.id) ~ ", index: " ~ std.conv.to!string(this.index) ~ ")";
+		return "ResourcePackChunkRequest(id: " ~ std.conv.to!string(this.id) ~ ", chunkIndex: " ~ std.conv.to!string(this.chunkIndex) ~ ")";
 	}
 
 }

@@ -1761,47 +1761,47 @@
 	<!-- command blocks -->
 	<group hardness="-1" blastresistance="18000000">
 
-		<block name="command-block-facing-down" id="1032" minecraft="137:0" />
-		<block name="command-block-facing-up" id="1033" minecraft="137:1" />
-		<block name="command-block-facing-north" id="1034" minecraft="137:2" />
-		<block name="command-block-facing-south" id="1035" minecraft="137:3" />
-		<block name="command-block-facing-west" id="1036" minecraft="137:4" />
-		<block name="command-block-facing-east" id="1037" minecraft="137:5" />
+		<block name="command-block-facing-down" id="1032" minecraft="137:0" pocket="137:0" />
+		<block name="command-block-facing-up" id="1033" minecraft="137:1" pocket="137:1" />
+		<block name="command-block-facing-north" id="1034" minecraft="137:2" pocket="137:2" />
+		<block name="command-block-facing-south" id="1035" minecraft="137:3" pocket="137:3" />
+		<block name="command-block-facing-west" id="1036" minecraft="137:4" pocket="137:4" />
+		<block name="command-block-facing-east" id="1037" minecraft="137:5" pocket="137:5" />
 
-		<block name="conditional-command-block-facing-down" id="1094" minecraft="137:8" />
-		<block name="conditional-command-block-facing-up" id="1038" minecraft="137:9" />
-		<block name="conditional-command-block-facing-north" id="1039" minecraft="137:10" />
-		<block name="conditional-command-block-facing-south" id="1040" minecraft="137:11" />
-		<block name="conditional-command-block-facing-west" id="1041" minecraft="137:12" />
-		<block name="conditional-command-block-facing-east" id="1042" minecraft="137:13" />
+		<block name="conditional-command-block-facing-down" id="1094" minecraft="137:8" pocket="137:8" />
+		<block name="conditional-command-block-facing-up" id="1038" minecraft="137:9" pocket="137:9" />
+		<block name="conditional-command-block-facing-north" id="1039" minecraft="137:10" pocket="137:10" />
+		<block name="conditional-command-block-facing-south" id="1040" minecraft="137:11" pocket="137:11" />
+		<block name="conditional-command-block-facing-west" id="1041" minecraft="137:12" pocket="137:12" />
+		<block name="conditional-command-block-facing-east" id="1042" minecraft="137:13" pocket="137:13" />
 
-		<block name="repeating-command-block-facing-down" id="1043" minecraft="210:0" />
-		<block name="repeating-command-block-facing-up" id="1044" minecraft="210:1" />
-		<block name="repeating-command-block-facing-north" id="1045" minecraft="210:2" />
-		<block name="repeating-command-block-facing-south" id="1046" minecraft="210:3" />
-		<block name="repeating-command-block-facing-west" id="1047" minecraft="210:4" />
-		<block name="repeating-command-block-facing-east" id="1048" minecraft="210:5" />
+		<block name="repeating-command-block-facing-down" id="1043" minecraft="210:0" pocket="188:0" />
+		<block name="repeating-command-block-facing-up" id="1044" minecraft="210:1" pocket="188:1" />
+		<block name="repeating-command-block-facing-north" id="1045" minecraft="210:2" pocket="188:2" />
+		<block name="repeating-command-block-facing-south" id="1046" minecraft="210:3" pocket="188:3" />
+		<block name="repeating-command-block-facing-west" id="1047" minecraft="210:4" pocket="188:4" />
+		<block name="repeating-command-block-facing-east" id="1048" minecraft="210:5" pocket="188:5" />
 
-		<block name="conditional-repeating-command-block-facing-down" id="1049" minecraft="210:8" />
-		<block name="conditional-repeating-command-block-facing-up" id="1050" minecraft="210:9" />
-		<block name="conditional-repeating-command-block-facing-north" id="1051" minecraft="210:10" />
-		<block name="conditional-repeating-command-block-facing-south" id="1052" minecraft="210:11" />
-		<block name="conditional-repeating-command-block-facing-west" id="1053" minecraft="210:12" />
-		<block name="conditional-repeating-command-block-facing-east" id="1054" minecraft="210:13" />
+		<block name="conditional-repeating-command-block-facing-down" id="1049" minecraft="210:8" pocket="188:8" />
+		<block name="conditional-repeating-command-block-facing-up" id="1050" minecraft="210:9" pocket="188:9" />
+		<block name="conditional-repeating-command-block-facing-north" id="1051" minecraft="210:10" pocket="188:10" />
+		<block name="conditional-repeating-command-block-facing-south" id="1052" minecraft="210:11" pocket="188:11" />
+		<block name="conditional-repeating-command-block-facing-west" id="1053" minecraft="210:12" pocket="188:12" />
+		<block name="conditional-repeating-command-block-facing-east" id="1054" minecraft="210:13" pocket="188:13" />
 
-		<block name="chain-command-block-facing-down" id="1055" minecraft="211:0" />
-		<block name="chain-command-block-facing-up" id="1056" minecraft="211:1" />
-		<block name="chain-command-block-facing-north" id="1057" minecraft="211:2" />
-		<block name="chain-command-block-facing-south" id="1058" minecraft="211:3" />
-		<block name="chain-command-block-facing-west" id="1059" minecraft="211:4" />
-		<block name="chain-command-block-facing-east" id="1060" minecraft="211:5" />
+		<block name="chain-command-block-facing-down" id="1055" minecraft="211:0" pocket="189:0" />
+		<block name="chain-command-block-facing-up" id="1056" minecraft="211:1" pocket="189:1" />
+		<block name="chain-command-block-facing-north" id="1057" minecraft="211:2" pocket="189:2" />
+		<block name="chain-command-block-facing-south" id="1058" minecraft="211:3" pocket="189:3" />
+		<block name="chain-command-block-facing-west" id="1059" minecraft="211:4" pocket="189:4" />
+		<block name="chain-command-block-facing-east" id="1060" minecraft="211:5" pocket="189:5" />
 
-		<block name="conditional-chain-command-block-facing-down" id="1061" minecraft="211:8" />
-		<block name="conditional-chain-command-block-facing-up" id="1062" minecraft="211:9" />
-		<block name="conditional-chain-command-block-facing-north" id="1063" minecraft="211:10" />
-		<block name="conditional-chain-command-block-facing-south" id="1064" minecraft="211:11" />
-		<block name="conditional-chain-command-block-facing-west" id="1065" minecraft="211:12" />
-		<block name="conditional-chain-command-block-facing-east" id="1066" minecraft="211:13" />
+		<block name="conditional-chain-command-block-facing-down" id="1061" minecraft="211:8" pocket="189:8" />
+		<block name="conditional-chain-command-block-facing-up" id="1062" minecraft="211:9" pocket="189:9" />
+		<block name="conditional-chain-command-block-facing-north" id="1063" minecraft="211:10" pocket="189:10" />
+		<block name="conditional-chain-command-block-facing-south" id="1064" minecraft="211:11" pocket="189:11" />
+		<block name="conditional-chain-command-block-facing-west" id="1065" minecraft="211:12" pocket="189:12" />
+		<block name="conditional-chain-command-block-facing-east" id="1066" minecraft="211:13" pocket="189:13" />
 
 	</group>
 

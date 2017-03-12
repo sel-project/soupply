@@ -921,22 +921,22 @@
 
 			<packet name="resource-pack-data-info" id="79" clientbound="true" serverbound="false">
 				<field name="id" type="string" />
-				<field name="?" type="uint" endianness="little-endian" />
-				<field name="?" type="uint" endianness="little-endian" />
-				<field name="?" type="ulong" endianness="little-endian" />
-				<field name="?" type="string" />
+				<field name="max-chunk-size" type="uint" endianness="little-endian" />
+				<field name="chunk-count" type="uint" endianness="little-endian" />
+				<field name="compressed-pack-size" type="ulong" endianness="little-endian" />
+				<field name="sha256" type="string" />
 			</packet>
 
 			<packet name="resource-pack-chunk-data" id="80" clientbound="true" serverbound="false">
 				<field name="id" type="string" />
-				<field name="?" type="uint" endianness="little-endian" />
-				<field name="?" type="ulong" endianness="little-endian" />
+				<field name="chunk-index" type="uint" endianness="little-endian" />
+				<field name="progress" type="ulong" endianness="little-endian" />
 				<field name="data" type="ubyte[]" />
 			</packet>
 
 			<packet name="resource-pack-chunk-request" id="81" clientbound="false" serverbound="true">
 				<field name="id" type="string" />
-				<field name="index" type="uint" endianness="little-endian" />
+				<field name="chunk-index" type="uint" endianness="little-endian" />
 			</packet>
 
 		</section>
