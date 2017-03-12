@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<attributes>
+
+	<software>Minecraft: Pocket Edition</software>
+
+	<protocol>105</protocol>
+
+	<attribute
+		id="health"
+		name="minecraft:health"
+		min="0"
+		max="20"
+		default="20" />
+
+	<attribute
+		id="absorption"
+		name="minecraft:generic.absorption"
+		min="0"
+		max="4"
+		default="0" />
+
+	<attribute
+		id="hunger"
+		name="minecraft:player.hunger"
+		min="0"
+		max="20"
+		default="20" />
+
+	<attribute
+		id="saturation"
+		name="minecraft:player.saturation"
+		min="0"
+		max="20"
+		default="5" />
+
+	<attribute
+		id="experience"
+		name="minecraft:player.experience"
+		min="0"
+		max="1"
+		default="0" />
+
+	<attribute
+		id="level"
+		name="minecraft:player.level"
+		min="0"
+		max="24791"
+		default="0" />
+
+	<attribute
+		id="speed"
+		name="minecraft:movement"
+		min="0"
+		max="24791"
+		default="0.1" />
+
+	<attribute
+		id="knockback-resistance"
+		name="minecraft:generic.knockback_resistance"
+		min="0"
+		max="1"
+		default="0" />
+
+</attributes>

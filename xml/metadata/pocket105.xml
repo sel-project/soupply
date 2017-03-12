@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<metadata>
+
+	<software>Minecraft: Pocket Edition</software>
+
+	<protocol>105</protocol>
+
+	<encoding length="varuint" types="varuint" ids="varuint">
+
+		<type name="byte" type="byte" id="0" />
+		<type name="short" type="short" id="1" endianness="little-endian" />
+		<type name="int" type="varint" id="2" />
+		<type name="float" type="float" id="3" />
+		<type name="string" type="string" id="4" />
+		<type name="slot" type="slot" id="5" />
+		<type name="block-position" type="varint<xyz>" id="6" />
+		<type name="long" type="varlong" id="7" />
+		<type name="entity-position" type="float<xyz>" id="8" />
+
+	</encoding>
+
+	<metadatas>
+
+		<type name="entity-flags" type="long" id="0" default="0" required="true">
+			<flag name="on-fire" bit="0" />
+			<flag name="sneaking" bit="1" />
+			<flag name="riding" bit="2" />
+			<flag name="sprinting" bit="3" />
+			<flag name="using-item" bit="4" />
+			<flag name="invisible" bit="5" />
+			<flag name="tempted" bit="6" />
+			<flag name="in-love" bit="7" />
+			<flag name="saddled" bit="8" />
+			<flag name="powered" bit="9" />
+			<flag name="ignited" bit="10" />
+			<flag name="baby" bit="11" />
+			<flag name="converting" bit="12" />
+			<flag name="critical" bit="13" />
+			<flag name="show-nametag" bit="14" />
+			<flag name="always-show-nametag" bit="15" />
+			<flag name="no-ai" bit="16" />
+			<flag name="silent" bit="17" />
+			<flag name="climbing" bit="18" />
+			<flag name="resting" bit="19" />
+			<flag name="sitting" bit="20" />
+			<flag name="angry" bit="21" />
+			<flag name="interested" bit="22" />
+			<flag name="charged" bit="23" />
+			<flag name="tamed" bit="24" />
+			<flag name="leashed" bit="25" />
+			<flag name="sheared" bit="26" />
+			<flag name="gliding" bit="27" />
+			<flag name="elder" bit="28" />
+			<flag name="moving" bit="29" />
+			<flag name="breathing" bit="30" />
+			<flag name="chested" bit="31" />
+			<flag name="stackable" bit="32" />
+			<flag name="idling" bit="36" />
+		</type>
+
+		<type name="variant" type="int" id="2" />
+
+		<type name="color" type="byte" id="3" />
+
+		<type name="nametag" type="string" id="4" />
+
+		<type name="owner" type="long" id="5" default="-1" />
+
+		<type name="air" type="short" id="7" default="0" required="true">
+			Indicates the percentage of the air for the entity (and shows the right amount of bubbles). 0 means out of water or drowning (no bubbles) and 300 means underwater with full air.
+		</type>
+
+		<type name="potion-color" type="int" id="8" />
+
+		<type name="potion-ambient" type="byte" id="9" />
+
+		<type name="slime-size" type="byte" id="16" default="1" />
+
+		<type name="player-flags" type="byte" id="27">
+			<flag name="asleep" bit="1" />
+		</type>
+
+		<type name="player-index" type="int" id="28" />
+
+		<type name="bed-position" type="block-position" id="29" />
+
+		<type name="lead-holder" type="long" id="38" default="-1" required="true" />
+
+		<type name="scale" type="float" id="39" default="1" />
+
+		<type name="interactive-tag" type="string" id="40" />
+
+		<type name="interactive-tag-url" type="string" id="43" />
+
+		<type name="max-air" type="short" id="44" />
+
+		<type name="mark-variant" type="int" id="45" />
+
+		<type name="bounding-box-width" type="float" id="54" />
+
+		<type name="bounding-box-height" type="float" id="55" />
+
+		<type name="fuse-length" type="int" id="56" />
+
+		<type name="area-effect-cloud-radius" type="float" id="61" />
+
+		<type name="area-effect-cloud-waiting" type="int" id="62" />
+
+		<type name="area-effect-cloud-particle" type="int" id="63" />
+
+		<type name="trading-player" type="long" id="68" />
+
+	</metadatas>
+
+</metadata>
