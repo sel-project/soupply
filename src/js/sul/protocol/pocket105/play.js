@@ -4290,14 +4290,14 @@ const Play = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return true; }
 
-		constructor(update=false, position=null, mode=0, redstoneMode=false, conditional=false, entityId=0, command="", lastOutput="", hover="", trackOutput=false) {
+		constructor(updateBlock=false, position=null, mode=0, redstoneMode=false, conditional=false, minecart=0, command="", lastOutput="", hover="", trackOutput=false) {
 			super();
-			this.update = update;
+			this.updateBlock = updateBlock;
 			this.position = position;
 			this.mode = mode;
 			this.redstoneMode = redstoneMode;
 			this.conditional = conditional;
-			this.entityId = entityId;
+			this.minecart = minecart;
 			this.command = command;
 			this.lastOutput = lastOutput;
 			this.hover = hover;
@@ -4308,12 +4308,12 @@ const Play = {
 		encode() {
 			this._buffer = [];
 			this.writeBigEndianByte(80);
-			this.writeBigEndianByte(this.update?1:0);
-			if(update==true){ this.writeBytes(this.position.encode()); }
-			if(update==true){ this.writeVaruint(this.mode); }
-			if(update==true){ this.writeBigEndianByte(this.redstoneMode?1:0); }
-			if(update==true){ this.writeBigEndianByte(this.conditional?1:0); }
-			if(update==false){ this.writeVarlong(this.entityId); }
+			this.writeBigEndianByte(this.updateBlock?1:0);
+			if(updateBlock==true){ this.writeBytes(this.position.encode()); }
+			if(updateBlock==true){ this.writeVaruint(this.mode); }
+			if(updateBlock==true){ this.writeBigEndianByte(this.redstoneMode?1:0); }
+			if(updateBlock==true){ this.writeBigEndianByte(this.conditional?1:0); }
+			if(updateBlock==false){ this.writeVarlong(this.minecart); }
 			var dhc5b1y5=this.encodeString(this.command); this.writeVaruint(dhc5b1y5.length); this.writeBytes(dhc5b1y5);
 			var dhc5yntv=this.encodeString(this.lastOutput); this.writeVaruint(dhc5yntv.length); this.writeBytes(dhc5yntv);
 			var dhc5bzc=this.encodeString(this.hover); this.writeVaruint(dhc5bzc.length); this.writeBytes(dhc5bzc);
@@ -4325,12 +4325,12 @@ const Play = {
 		decode(_buffer) {
 			this._buffer = Array.from(_buffer);
 			var _id=this.readBigEndianByte();
-			this.update=this.readBigEndianByte()!==0;
-			if(update==true){ this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer; }
-			if(update==true){ this.mode=this.readVaruint(); }
-			if(update==true){ this.redstoneMode=this.readBigEndianByte()!==0; }
-			if(update==true){ this.conditional=this.readBigEndianByte()!==0; }
-			if(update==false){ this.entityId=this.readVarlong(); }
+			this.updateBlock=this.readBigEndianByte()!==0;
+			if(updateBlock==true){ this.position=Types.BlockPosition.fromBuffer(this._buffer); this._buffer=this.position._buffer; }
+			if(updateBlock==true){ this.mode=this.readVaruint(); }
+			if(updateBlock==true){ this.redstoneMode=this.readBigEndianByte()!==0; }
+			if(updateBlock==true){ this.conditional=this.readBigEndianByte()!==0; }
+			if(updateBlock==false){ this.minecart=this.readVarlong(); }
 			this.command=this.decodeString(this.readBytes(this.readVaruint()));
 			this.lastOutput=this.decodeString(this.readBytes(this.readVaruint()));
 			this.hover=this.decodeString(this.readBytes(this.readVaruint()));
@@ -4345,7 +4345,7 @@ const Play = {
 
 		/** @return {string} */
 		toString() {
-			return "CommandBlockUpdate(update: " + this.update + ", position: " + this.position + ", mode: " + this.mode + ", redstoneMode: " + this.redstoneMode + ", conditional: " + this.conditional + ", entityId: " + this.entityId + ", command: " + this.command + ", lastOutput: " + this.lastOutput + ", hover: " + this.hover + ", trackOutput: " + this.trackOutput + ")";
+			return "CommandBlockUpdate(updateBlock: " + this.updateBlock + ", position: " + this.position + ", mode: " + this.mode + ", redstoneMode: " + this.redstoneMode + ", conditional: " + this.conditional + ", minecart: " + this.minecart + ", command: " + this.command + ", lastOutput: " + this.lastOutput + ", hover: " + this.hover + ", trackOutput: " + this.trackOutput + ")";
 		}
 
 	},

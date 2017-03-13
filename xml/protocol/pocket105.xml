@@ -1164,12 +1164,12 @@
 			</packet>
 
 			<packet name="command-block-update" id="80" clientbound="true" serverbound="true">
-				<field name="update" type="bool" />
-				<field name="position" type="block-position" when="update==true" />
-				<field name="mode" type="varuint" when="update==true" />
-				<field name="redstone-mode" type="bool" when="update==true" />
-				<field name="conditional" type="bool" when="update==true" />
-				<field name="entity-id" type="entity-id" when="update==false" />
+				<field name="update-block" type="bool" />
+				<field name="position" type="block-position" when="update-block==true" />
+				<field name="mode" type="varuint" when="update-block==true" />
+				<field name="redstone-mode" type="bool" when="update-block==true" />
+				<field name="conditional" type="bool" when="update-block==true" />
+				<field name="minecart" type="entity-id" when="update-block==false" />
 				<field name="command" type="string" />
 				<field name="last-output" type="string" />
 				<field name="hover" type="string" />

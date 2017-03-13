@@ -2304,33 +2304,33 @@
 				"serverbound": true,
 				"fields": [
 					{
-						"name": "update",
+						"name": "update_block",
 						"type": "bool"
 					},
 					{
 						"name": "position",
 						"type": "block_position",
-						"when": "update==true"
+						"when": "update_block==true"
 					},
 					{
 						"name": "mode",
 						"type": "varuint",
-						"when": "update==true"
+						"when": "update_block==true"
 					},
 					{
 						"name": "redstone_mode",
 						"type": "bool",
-						"when": "update==true"
+						"when": "update_block==true"
 					},
 					{
 						"name": "conditional",
 						"type": "bool",
-						"when": "update==true"
+						"when": "update_block==true"
 					},
 					{
-						"name": "entity_id",
+						"name": "minecart",
 						"type": "varlong",
-						"when": "update==false"
+						"when": "update_block==false"
 					},
 					{
 						"name": "command",

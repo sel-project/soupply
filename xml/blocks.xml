@@ -26,7 +26,7 @@
 	<group hardness="2" blastresistance="30">
 
 		<block name="cobblestone" id="12" minecraft="4" pocket="4" />
-		<block name="mossy-stone" id="13" minecraft="48" pocket="48" />
+		<block name="moss-stone" id="13" minecraft="48" pocket="48" />
 
 		<block name="cobblestone-wall" id="14" minecraft="139:0" pocket="139:0" />
 		<block name="mossy-cobblestone-wall" id="15" minecraft="139:1" pocket="139:1" />
@@ -979,7 +979,22 @@
 		<block name="pumpkin-stem-6" id="546" minecraft="104:6" pocket="104:6" />
 		<block name="pumpkin-stem-7" id="547" minecraft="104:7" pocket="104:7" />
 
-		<block name="sugar-canes" id="755" minecraft="83" pocket="83" />
+		<block name="sugar-canes-0" id="755" minecraft="83:0" pocket="83:0" />
+		<block name="sugar-canes-1" id="1331" minecraft="83:1" pocket="83:1" />
+		<block name="sugar-canes-2" id="1332" minecraft="83:2" pocket="83:2" />
+		<block name="sugar-canes-3" id="1333" minecraft="83:3" pocket="83:3" />
+		<block name="sugar-canes-4" id="1334" minecraft="83:4" pocket="83:4" />
+		<block name="sugar-canes-5" id="1335" minecraft="83:5" pocket="83:5" />
+		<block name="sugar-canes-6" id="1336" minecraft="83:6" pocket="83:6" />
+		<block name="sugar-canes-7" id="1337" minecraft="83:7" pocket="83:7" />
+		<block name="sugar-canes-8" id="1338" minecraft="83:8" pocket="83:8" />
+		<block name="sugar-canes-9" id="1339" minecraft="83:9" pocket="83:9" />
+		<block name="sugar-canes-10" id="1340" minecraft="83:10" pocket="83:10" />
+		<block name="sugar-canes-11" id="1341" minecraft="83:11" pocket="83:11" />
+		<block name="sugar-canes-12" id="1342" minecraft="83:12" pocket="83:12" />
+		<block name="sugar-canes-13" id="1343" minecraft="83:13" pocket="83:13" />
+		<block name="sugar-canes-14" id="1344" minecraft="83:14" pocket="83:14" />
+		<block name="sugar-canes-15" id="1345" minecraft="83:15" pocket="83:15" />
 
 		<block name="nether-wart-0" id="968" minecraft="115:0" pocket="115:0" />
 		<block name="nether-wart-1" id="969" minecraft="115:1" pocket="115:1" />

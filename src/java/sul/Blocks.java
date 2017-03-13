@@ -65,7 +65,7 @@ public final class Blocks {
 		add(new Blocks("cracked stone bricks", (short)10, new BlockData(98, 2), new BlockData(98, 2), true, (double)1.5, (double)30, (byte)15, (byte)0));
 		add(new Blocks("chiseled stone bricks", (short)11, new BlockData(98, 3), new BlockData(98, 3), true, (double)1.5, (double)30, (byte)15, (byte)0));
 		add(new Blocks("cobblestone", (short)12, new BlockData(4, 0), new BlockData(4, 0), true, (double)2, (double)30, (byte)15, (byte)0));
-		add(new Blocks("mossy stone", (short)13, new BlockData(48, 0), new BlockData(48, 0), true, (double)2, (double)30, (byte)15, (byte)0));
+		add(new Blocks("moss stone", (short)13, new BlockData(48, 0), new BlockData(48, 0), true, (double)2, (double)30, (byte)15, (byte)0));
 		add(new Blocks("cobblestone wall", (short)14, new BlockData(139, 0), new BlockData(139, 0), true, (double)2, (double)30, (byte)15, (byte)0));
 		add(new Blocks("mossy cobblestone wall", (short)15, new BlockData(139, 1), new BlockData(139, 1), true, (double)2, (double)30, (byte)15, (byte)0));
 		add(new Blocks("coal ore", (short)16, new BlockData(16, 0), new BlockData(16, 0), true, (double)3, (double)15, (byte)15, (byte)0));
@@ -807,7 +807,7 @@ public final class Blocks {
 		add(new Blocks("frosted ice cracked 2", (short)752, new BlockData(212, 2), new BlockData(0, 0), true, (double)0.5, (double)2.5, (byte)3, (byte)0));
 		add(new Blocks("frosted ice cracked 3", (short)753, new BlockData(212, 3), new BlockData(0, 0), true, (double)0.5, (double)2.5, (byte)3, (byte)0));
 		add(new Blocks("cactus", (short)754, new BlockData(81, 0), new BlockData(81, 0), true, (double)0.4, (double)2, (byte)15, (byte)0));
-		add(new Blocks("sugar canes", (short)755, new BlockData(83, 0), new BlockData(83, 0), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 0", (short)755, new BlockData(83, 0), new BlockData(83, 0), true, (double)0, (double)0, (byte)15, (byte)0));
 		add(new Blocks("clay", (short)756, new BlockData(82, 0), new BlockData(82, 0), true, (double)0.6, (double)3, (byte)15, (byte)0));
 		add(new Blocks("jukebox", (short)757, new BlockData(84, 0), new BlockData(84, 0), true, (double)2, (double)30, (byte)15, (byte)0));
 		add(new Blocks("hardened clay", (short)758, new BlockData(172, 0), new BlockData(172, 0), true, (double)1.75, (double)21, (byte)15, (byte)0));
@@ -1383,6 +1383,21 @@ public final class Blocks {
 		add(new Blocks("still lava falling 5", (short)1328, new BlockData(10, 13), new BlockData(10, 13), false, (double)-1, (double)500, (byte)3, (byte)15));
 		add(new Blocks("still lava falling 6", (short)1329, new BlockData(10, 14), new BlockData(10, 14), false, (double)-1, (double)500, (byte)3, (byte)15));
 		add(new Blocks("still lava falling 7", (short)1330, new BlockData(10, 15), new BlockData(10, 15), false, (double)-1, (double)500, (byte)3, (byte)15));
+		add(new Blocks("sugar canes 1", (short)1331, new BlockData(83, 1), new BlockData(83, 1), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 2", (short)1332, new BlockData(83, 2), new BlockData(83, 2), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 3", (short)1333, new BlockData(83, 3), new BlockData(83, 3), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 4", (short)1334, new BlockData(83, 4), new BlockData(83, 4), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 5", (short)1335, new BlockData(83, 5), new BlockData(83, 5), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 6", (short)1336, new BlockData(83, 6), new BlockData(83, 6), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 7", (short)1337, new BlockData(83, 7), new BlockData(83, 7), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 8", (short)1338, new BlockData(83, 8), new BlockData(83, 8), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 9", (short)1339, new BlockData(83, 9), new BlockData(83, 9), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 10", (short)1340, new BlockData(83, 10), new BlockData(83, 10), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 11", (short)1341, new BlockData(83, 11), new BlockData(83, 11), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 12", (short)1342, new BlockData(83, 12), new BlockData(83, 12), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 13", (short)1343, new BlockData(83, 13), new BlockData(83, 13), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 14", (short)1344, new BlockData(83, 14), new BlockData(83, 14), true, (double)0, (double)0, (byte)15, (byte)0));
+		add(new Blocks("sugar canes 15", (short)1345, new BlockData(83, 15), new BlockData(83, 15), true, (double)0, (double)0, (byte)15, (byte)0));
 
 	}
 

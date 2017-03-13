@@ -351,7 +351,7 @@
 			}
 		},
 
-		"mossy_stone": {
+		"moss_stone": {
 			"id": 13,
 			"minecraft": 48,
 			"pocket": 48,
@@ -19708,10 +19708,16 @@
 			}
 		},
 
-		"sugar_canes": {
+		"sugar_canes_0": {
 			"id": 755,
-			"minecraft": 83,
-			"pocket": 83,
+			"minecraft": {
+				"id": 83,
+				"meta": 0
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 0
+			},
 			"solid": true,
 			"hardness": 0,
 			"blast_resistance": 0,
@@ -35423,6 +35429,261 @@
 					"z": 16
 				}
 			}
+		},
+
+		"sugar_canes_1": {
+			"id": 1331,
+			"minecraft": {
+				"id": 83,
+				"meta": 1
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 1
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_2": {
+			"id": 1332,
+			"minecraft": {
+				"id": 83,
+				"meta": 2
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 2
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_3": {
+			"id": 1333,
+			"minecraft": {
+				"id": 83,
+				"meta": 3
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 3
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_4": {
+			"id": 1334,
+			"minecraft": {
+				"id": 83,
+				"meta": 4
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 4
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_5": {
+			"id": 1335,
+			"minecraft": {
+				"id": 83,
+				"meta": 5
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 5
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_6": {
+			"id": 1336,
+			"minecraft": {
+				"id": 83,
+				"meta": 6
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 6
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_7": {
+			"id": 1337,
+			"minecraft": {
+				"id": 83,
+				"meta": 7
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 7
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_8": {
+			"id": 1338,
+			"minecraft": {
+				"id": 83,
+				"meta": 8
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 8
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_9": {
+			"id": 1339,
+			"minecraft": {
+				"id": 83,
+				"meta": 9
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 9
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_10": {
+			"id": 1340,
+			"minecraft": {
+				"id": 83,
+				"meta": 10
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 10
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_11": {
+			"id": 1341,
+			"minecraft": {
+				"id": 83,
+				"meta": 11
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 11
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_12": {
+			"id": 1342,
+			"minecraft": {
+				"id": 83,
+				"meta": 12
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 12
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_13": {
+			"id": 1343,
+			"minecraft": {
+				"id": 83,
+				"meta": 13
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 13
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_14": {
+			"id": 1344,
+			"minecraft": {
+				"id": 83,
+				"meta": 14
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 14
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
+		},
+
+		"sugar_canes_15": {
+			"id": 1345,
+			"minecraft": {
+				"id": 83,
+				"meta": 15
+			},
+			"pocket": {
+				"id": 83,
+				"meta": 15
+			},
+			"solid": true,
+			"hardness": 0,
+			"blast_resistance": 0,
+			"opacity": 15,
+			"luminance": 0
 		}
 
 	}

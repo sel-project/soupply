@@ -4935,14 +4935,14 @@ class CommandBlockUpdate : Buffer {
 	public enum bool CLIENTBOUND = true;
 	public enum bool SERVERBOUND = true;
 
-	public enum string[] FIELDS = ["update", "position", "mode", "redstoneMode", "conditional", "entityId", "command", "lastOutput", "hover", "trackOutput"];
+	public enum string[] FIELDS = ["updateBlock", "position", "mode", "redstoneMode", "conditional", "minecart", "command", "lastOutput", "hover", "trackOutput"];
 
-	public bool update;
+	public bool updateBlock;
 	public sul.protocol.pocket105.types.BlockPosition position;
 	public uint mode;
 	public bool redstoneMode;
 	public bool conditional;
-	public long entityId;
+	public long minecart;
 	public string command;
 	public string lastOutput;
 	public string hover;
@@ -4950,13 +4950,13 @@ class CommandBlockUpdate : Buffer {
 
 	public pure nothrow @safe @nogc this() {}
 
-	public pure nothrow @safe @nogc this(bool update, sul.protocol.pocket105.types.BlockPosition position=sul.protocol.pocket105.types.BlockPosition.init, uint mode=uint.init, bool redstoneMode=bool.init, bool conditional=bool.init, long entityId=long.init, string command=string.init, string lastOutput=string.init, string hover=string.init, bool trackOutput=bool.init) {
-		this.update = update;
+	public pure nothrow @safe @nogc this(bool updateBlock, sul.protocol.pocket105.types.BlockPosition position=sul.protocol.pocket105.types.BlockPosition.init, uint mode=uint.init, bool redstoneMode=bool.init, bool conditional=bool.init, long minecart=long.init, string command=string.init, string lastOutput=string.init, string hover=string.init, bool trackOutput=bool.init) {
+		this.updateBlock = updateBlock;
 		this.position = position;
 		this.mode = mode;
 		this.redstoneMode = redstoneMode;
 		this.conditional = conditional;
-		this.entityId = entityId;
+		this.minecart = minecart;
 		this.command = command;
 		this.lastOutput = lastOutput;
 		this.hover = hover;
@@ -4966,12 +4966,12 @@ class CommandBlockUpdate : Buffer {
 	public pure nothrow @safe ubyte[] encode(bool writeId=true)() {
 		_buffer.length = 0;
 		static if(writeId){ writeBigEndianUbyte(ID); }
-		writeBigEndianBool(update);
-		if(update==true){ position.encode(bufferInstance); }
-		if(update==true){ writeBytes(varuint.encode(mode)); }
-		if(update==true){ writeBigEndianBool(redstoneMode); }
-		if(update==true){ writeBigEndianBool(conditional); }
-		if(update==false){ writeBytes(varlong.encode(entityId)); }
+		writeBigEndianBool(updateBlock);
+		if(updateBlock==true){ position.encode(bufferInstance); }
+		if(updateBlock==true){ writeBytes(varuint.encode(mode)); }
+		if(updateBlock==true){ writeBigEndianBool(redstoneMode); }
+		if(updateBlock==true){ writeBigEndianBool(conditional); }
+		if(updateBlock==false){ writeBytes(varlong.encode(minecart)); }
 		writeBytes(varuint.encode(cast(uint)command.length)); writeString(command);
 		writeBytes(varuint.encode(cast(uint)lastOutput.length)); writeString(lastOutput);
 		writeBytes(varuint.encode(cast(uint)hover.length)); writeString(hover);
@@ -4981,12 +4981,12 @@ class CommandBlockUpdate : Buffer {
 
 	public pure nothrow @safe void decode(bool readId=true)() {
 		static if(readId){ ubyte _id; _id=readBigEndianUbyte(); }
-		update=readBigEndianBool();
-		if(update==true){ position.decode(bufferInstance); }
-		if(update==true){ mode=varuint.decode(_buffer, &_index); }
-		if(update==true){ redstoneMode=readBigEndianBool(); }
-		if(update==true){ conditional=readBigEndianBool(); }
-		if(update==false){ entityId=varlong.decode(_buffer, &_index); }
+		updateBlock=readBigEndianBool();
+		if(updateBlock==true){ position.decode(bufferInstance); }
+		if(updateBlock==true){ mode=varuint.decode(_buffer, &_index); }
+		if(updateBlock==true){ redstoneMode=readBigEndianBool(); }
+		if(updateBlock==true){ conditional=readBigEndianBool(); }
+		if(updateBlock==false){ minecart=varlong.decode(_buffer, &_index); }
 		uint y9bfz=varuint.decode(_buffer, &_index); command=readString(y9bfz);
 		uint bfd9dbd=varuint.decode(_buffer, &_index); lastOutput=readString(bfd9dbd);
 		uint a9zi=varuint.decode(_buffer, &_index); hover=readString(a9zi);
@@ -5001,7 +5001,7 @@ class CommandBlockUpdate : Buffer {
 	}
 
 	public override string toString() {
-		return "CommandBlockUpdate(update: " ~ std.conv.to!string(this.update) ~ ", position: " ~ std.conv.to!string(this.position) ~ ", mode: " ~ std.conv.to!string(this.mode) ~ ", redstoneMode: " ~ std.conv.to!string(this.redstoneMode) ~ ", conditional: " ~ std.conv.to!string(this.conditional) ~ ", entityId: " ~ std.conv.to!string(this.entityId) ~ ", command: " ~ std.conv.to!string(this.command) ~ ", lastOutput: " ~ std.conv.to!string(this.lastOutput) ~ ", hover: " ~ std.conv.to!string(this.hover) ~ ", trackOutput: " ~ std.conv.to!string(this.trackOutput) ~ ")";
+		return "CommandBlockUpdate(updateBlock: " ~ std.conv.to!string(this.updateBlock) ~ ", position: " ~ std.conv.to!string(this.position) ~ ", mode: " ~ std.conv.to!string(this.mode) ~ ", redstoneMode: " ~ std.conv.to!string(this.redstoneMode) ~ ", conditional: " ~ std.conv.to!string(this.conditional) ~ ", minecart: " ~ std.conv.to!string(this.minecart) ~ ", command: " ~ std.conv.to!string(this.command) ~ ", lastOutput: " ~ std.conv.to!string(this.lastOutput) ~ ", hover: " ~ std.conv.to!string(this.hover) ~ ", trackOutput: " ~ std.conv.to!string(this.trackOutput) ~ ")";
 	}
 
 }
