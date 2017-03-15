@@ -53,7 +53,7 @@
 	<!-- blocks crafted using minerals -->
 	<group hardness="5" blastresistance="30">
 
-		<block name="coal-block" id="24" minecraft="173" pocket="173" />
+		<block name="coal-block" id="24" minecraft="173" pocket="173" encouragement="5" flammability="5" />
 		<block name="iron-block" id="25" minecraft="42" pocket="42" />
 		<block name="gold-block" id="26" minecraft="41" pocket="41" hardness="3" />
 		<block name="diamond-block" id="27" minecraft="57" pocket="57" />
@@ -94,7 +94,7 @@
 	</group>
 
 	<!-- planks -->
-	<group hardness="2" blastresistance="15">
+	<group hardness="2" blastresistance="15" encouragement="5" flammability="20">
 
 		<block name="oak-wood-planks" id="44" minecraft="5:0" pocket="5:0" />
 		<block name="spruce-wood-planks" id="45" minecraft="5:1" pocket="5:1" />
@@ -125,7 +125,7 @@
 	<block name="gravel" id="58" minecraft="13" pocket="13" hardness="0.6" blastresistance="3" />
 	
 	<!-- wooden logs -->
-	<group hardness="2" blastresistance="10">
+	<group hardness="2" blastresistance="10" encouragement="5" flammability="5">
 
 		<block name="oak-wood-up-down" id="60" minecraft="17:0" pocket="17:0" />
 		<block name="oak-wood-east-west" id="61" minecraft="17:4" pocket="17:4" />
@@ -160,7 +160,7 @@
 	</group>
 
 	<!-- leaves -->
-	<group hardness="0.2" blastresistance="1" opacity="1">
+	<group hardness="0.2" blastresistance="1" opacity="1" encouragement="30" flammability="60">
 
 		<block name="oak-leaves-decay" id="84" minecraft="18:0" pocket="18:0" />
 		<block name="oak-leaves-no-decay" id="85" minecraft="18:4" pocket="18:4" />
@@ -378,7 +378,7 @@
 	<block name="note-block" id="162" minecraft="25" pocket="25" hardness="0.8" blastresistance="4" />
 
 	<!-- bed components -->
-	<group hardness="0.2" blastresistance="1">
+	<group hardness="0.2" blastresistance="1" boundingbox="0,0,0-16,8,16">
 
 		<block name="bed-foot-facing-south" id="163" minecraft="26:0" pocket="26:0" />
 		<block name="bed-foot-facing-west" id="164" minecraft="26:1" pocket="26:1" />
@@ -511,7 +511,7 @@
 	</group>
 
 	<!-- wools -->
-	<group hardness="0.8" blastresistance="4">
+	<group hardness="0.8" blastresistance="4" encouragement="30" flammability="60">
 
 		<block name="white-wool" id="265" minecraft="35:0" pocket="35:0" />
 		<block name="orange-wool" id="266" minecraft="35:1" pocket="35:1" />
@@ -533,7 +533,7 @@
 	</group>
 
 	<!-- carpets -->
-	<group hardness="0.1" blastresistance="0.5" boundingbox="0,0,0-16,1,16">
+	<group hardness="0.1" blastresistance="0.5" boundingbox="0,0,0-16,1,16" encouragement="30" flammability="60">
 
 		<block name="white-carpet" id="1176" minecraft="171:0" pocket="171:0" />
 		<block name="orange-carpet" id="1177" minecraft="171:1" pocket="171:1" />
@@ -555,7 +555,7 @@
 	</group>
 
 	<!-- flowers and other plants -->
-	<group hardness="0" blastresistance="0" opacity="0" boundingbox="none">
+	<group hardness="0" blastresistance="0" opacity="0" boundingbox="none" encouragement="60" flammability="100">
 
 		<block name="dandelion" id="281" minecraft="37" pocket="37" />
 
@@ -571,24 +571,24 @@
 
 		<block name="sunflower-bottom" id="291" minecraft="175:0" pocket="175:0" />
 		<block name="liliac-bottom" id="292" minecraft="175:1" pocket="175:1" />
-		<block name="double-tallgrass-bottom" id="293" minecraft="175:2" pocket="175:2" />
-		<block name="large-fern-bottom" id="294" minecraft="175:3" pocket="175:3" />
+		<block name="double-tallgrass-bottom" id="293" minecraft="175:2" pocket="175:2" replaceable="true" />
+		<block name="large-fern-bottom" id="294" minecraft="175:3" pocket="175:3" replaceable="true" />
 		<block name="rose-bush-bottom" id="295" minecraft="175:4" pocket="175:4" />
 		<block name="peony-bottom" id="296" minecraft="175:5" pocket="175:5" />
 
 		<block name="sunflower-top" id="297" minecraft="175:8" pocket="175:8" />
 		<block name="liliac-top" id="298" minecraft="175:9" pocket="175:9" />
-		<block name="double-tallgrass-top" id="299" minecraft="175:10" pocket="175:10" />
-		<block name="large-fern-top" id="300" minecraft="175:11" pocket="175:11" />
+		<block name="double-tallgrass-top" id="299" minecraft="175:10" pocket="175:10" replaceable="true" />
+		<block name="large-fern-top" id="300" minecraft="175:11" pocket="175:11" replaceable="true" />
 		<block name="rose-bush-top" id="301" minecraft="175:12" pocket="175:12" />
 		<block name="peony-top" id="302" minecraft="175:13" pocket="175:13" />
 
 		<block name="brown-mushroom" id="303" minecraft="39" pocket="39" />
 		<block name="red-mushroom" id="304" minecraft="40" pocket="40" />
 
-		<block name="tall-grass" id="362" minecraft="31:1" pocket="31:0" />
-		<block name="fern" id="363" minecraft="31:2" pocket="31:2" />
-		<block name="dead-bush" id="364" minecraft="32" pocket="32" />
+		<block name="tall-grass" id="362" minecraft="31:1" pocket="31:0" replaceable="true" />
+		<block name="fern" id="363" minecraft="31:2" pocket="31:2" replaceable="true" />
+		<block name="dead-bush" id="364" minecraft="32" pocket="32" replaceable="true" />
 
 	</group>
 
@@ -611,7 +611,7 @@
 				<block name="purpur-slab" id="314" minecraft="205" pocket="205" />
 			</group>
 
-			<group blastresistance="15">
+			<group blastresistance="15" encouragement="5" flammability="20">
 				<block name="oak-wood-slab" id="315" minecraft="126:0" pocket="158:0" />
 				<block name="spruce-wood-slab" id="316" minecraft="126:1" pocket="158:1" />
 				<block name="birch-wood-slab" id="317" minecraft="126:2" pocket="158:2" />
@@ -765,7 +765,7 @@
 
 		</group>
 
-		<group hardness="2" blastresistance="15">
+		<group hardness="2" blastresistance="15" encouragement="5" flammability="20">
 
 			<block name="oak-wood-stairs-facing-east" id="367" minecraft="53:0" pocket="53:0" />
 			<block name="oak-wood-stairs-facing-west" id="368" minecraft="53:1" pocket="53:1" />
@@ -827,9 +827,9 @@
 
 	<block name="cobweb" id="361" minecraft="30" pocket="30" hardness="4" blastresistance="20" opacity="1" />
 
-	<block name="tnt" id="353" minecraft="46" pocket="46" hardness="0" />
+	<block name="tnt" id="353" minecraft="46" pocket="46" hardness="0" encouragement="15" flammability="100" />
 
-	<block name="bookshelf" id="354" minecraft="47" pocket="47" hardness="1.5" blastresistance="7.5" />
+	<block name="bookshelf" id="354" minecraft="47" pocket="47" hardness="1.5" blastresistance="7.5" encouragement="30" flammability="20" />
 
 	<!-- obsidian -->
 	<group hardness="50" blastresistance="6000">
@@ -924,7 +924,7 @@
 
 	</group>
 
-	<block name="crafting-table" id="503" minecraft="58" pocket="58" hardness="2.5" blastresistance="12.5" />
+	<block name="crafting-table" id="503" minecraft="58" pocket="58" hardness="2.5" blastresistance="12.5" /<name />
 
 	<!-- farming -->
 	<group hardness="0" blastresistance="0" boundingbox="none">
@@ -1022,7 +1022,7 @@
 	</group>
 
 	<!-- signs -->
-	<group hardness="1" blastresistance="5" opacity="0" boundingbox="none">
+	<group hardness="1" blastresistance="5" opacity="0" boundingbox="none" encouragement="5" flammability="20">
 
 		<block name="sign-facing-south" id="556" minecraft="63:0" pocket="63:0" />
 		<block name="sign-facing-south-southwest" id="557" minecraft="63:1" pocket="63:1" />
@@ -1253,7 +1253,7 @@
 	<!-- snow layers -->
 	<group hardness="0.1" blastresistance="0.5" opacity="0">
 
-		<block name="snow-layer-0" id="739" minecraft="78:0" pocket="78:0" boundingbox="0,0,0-16,2,16" />
+		<block name="snow-layer-0" id="739" minecraft="78:0" pocket="78:0" boundingbox="0,0,0-16,2,16" replaceable="true" />
 		<block name="snow-layer-1" id="740" minecraft="78:1" pocket="78:1" boundingbox="0,0,0-16,4,16" />
 		<block name="snow-layer-2" id="741" minecraft="78:2" pocket="78:2" boundingbox="0,0,0-16,6,16" />
 		<block name="snow-layer-3" id="742" minecraft="78:3" pocket="78:3" boundingbox="0,0,0-16,8,16" />
@@ -1281,7 +1281,27 @@
 
 	</group>
 
-	<block name="cactus" id="754" minecraft="81" pocket="81" hardness="0.4" blastresistance="2" boundingbox="1,0,1-15,16,15" />
+	<!-- cactus -->
+	<group hardness="0.4" blastresistance="2">
+
+		<block name="cactus-0" id="754" minecraft="81:0" pocket="81:0" />
+		<block name="cactus-1" id="1346" minecraft="81:1" pocket="81:1" />
+		<block name="cactus-2" id="1347" minecraft="81:2" pocket="81:2" />
+		<block name="cactus-3" id="1348" minecraft="81:3" pocket="81:3" />
+		<block name="cactus-4" id="1349" minecraft="81:4" pocket="81:4" />
+		<block name="cactus-5" id="1350" minecraft="81:5" pocket="81:5" />
+		<block name="cactus-6" id="1351" minecraft="81:6" pocket="81:6" />
+		<block name="cactus-7" id="1352" minecraft="81:7" pocket="81:7" />
+		<block name="cactus-8" id="1353" minecraft="81:8" pocket="81:8" />
+		<block name="cactus-9" id="1354" minecraft="81:9" pocket="81:9" />
+		<block name="cactus-10" id="1355" minecraft="81:10" pocket="81:10" />
+		<block name="cactus-11" id="1356" minecraft="81:11" pocket="81:11" />
+		<block name="cactus-12" id="1357" minecraft="81:12" pocket="81:12" />
+		<block name="cactus-13" id="1358" minecraft="81:13" pocket="81:13" />
+		<block name="cactus-14" id="1359" minecraft="81:14" pocket="81:14" />
+		<block name="cactus-15" id="1360" minecraft="81:15" pocket="81:15" />
+
+	</group>
 
 	<block name="clay" id="756" minecraft="82" pocket="82" hardness="0.6" blastresistance="3" />
 
@@ -1344,7 +1364,7 @@
 	<group hardness="2">
 
 		<!-- wooden -->
-		<group blastresistance="15">
+		<group blastresistance="15" encouragement="5" flammability="20">
 
 			<block name="oak-wood-fence" id="791" minecraft="85" pocket="85:0" />
 			<block name="spruce-wood-fence" id="792" minecraft="188" pocket="85:1" />
@@ -1547,7 +1567,7 @@
 	<block name="melon" id="904" minecraft="103" pocket="103" hardness="1" blastresistance="5" />
 
 	<!-- vines -->
-	<group hardness="0.2" blastresistance="1" solid="false">
+	<group hardness="0.2" blastresistance="1" solid="false" replaceable="true" encouragement="15" flammability="100">
 
 		<block name="vine-south" id="905" minecraft="106:1" pocket="106:1" />
 		<block name="vine-west" id="906" minecraft="106:2" pocket="106:2" />
@@ -1978,7 +1998,7 @@
 	<block name="sea-lantern" id="1172" minecraft="169" pocket="169" hardness="0.3" blastresistance="1.5" opacity="0" luminance="15" />
 
 	<!-- hay bale -->
-	<group hardness="0.5" blastresistance="2.5">
+	<group hardness="0.5" blastresistance="2.5" encouragement="60" flammability="20">
 
 		<block name="hay-bale-vertical" id="1173" minecraft="170:0" pocket="170:0" />
 		<block name="hay-bale-east-west" id="1174" minecraft="170:4" pocket="170:4" />

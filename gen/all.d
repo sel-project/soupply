@@ -87,7 +87,7 @@ alias Point = Tuple!(ubyte, "x", ubyte, "y", ubyte, "z");
 
 alias BoundingBox = Tuple!(Point, "min", Point, "max");
 
-alias Block = Tuple!(string, "name", ushort, "id", BlockData, "minecraft", BlockData, "pocket", bool, "solid", double, "hardness", double, "blastResistance", ubyte, "opacity", ubyte, "luminance", BoundingBox, "boundingBox");
+alias Block = Tuple!(string, "name", ushort, "id", BlockData, "minecraft", BlockData, "pocket", bool, "solid", double, "hardness", double, "blastResistance", ubyte, "opacity", ubyte, "luminance", ubyte, "encouragement", ubyte, "flammability", bool, "replaceable", BoundingBox, "boundingBox");
 
 
 alias ItemData = Tuple!(bool, "exists", ushort, "id", int, "meta");
@@ -429,6 +429,9 @@ void main(string[] args) {
 			auto blastResistance = "blastresistance" in element.tag.attr;
 			auto opacity = "opacity" in element.tag.attr;
 			auto luminance = "luminance" in element.tag.attr;
+			auto encouragement = "encouragement" in element.tag.attr;
+			auto flammability = "flammability" in element.tag.attr;
+			auto replaceable = "replaceable" in element.tag.attr;
 			auto bb = "boundingbox" in element.tag.attr;
 			if(name) block.name = replace(*name, "-", "_");
 			if(id) block.id = to!ushort(*id);
@@ -439,6 +442,9 @@ void main(string[] args) {
 			if(blastResistance) block.blastResistance = to!double(*blastResistance);
 			if(opacity) block.opacity = to!ubyte(*opacity) & 15;
 			if(luminance) block.luminance = to!ubyte(*luminance) & 15;
+			if(encouragement) block.encouragement = to!ubyte(*encouragement);
+			if(flammability) block.flammability = to!ubyte(*flammability);
+			if(replaceable) block.replaceable = to!bool(*replaceable);
 			if(bb) block.boundingBox = boundingBox(*bb);
 			return block;
 		}
@@ -456,7 +462,7 @@ void main(string[] args) {
 				}
 			}
 		}
-		group(Block("", 0, BlockData(0, 0, -1), BlockData(0, 0, -1), true, 0, 0, 15, 0, BoundingBox(Point(0,0,0), Point(16,16,16))), new Document(cast(string)read("../xml/blocks.xml")).elements);
+		group(Block("", 0, BlockData(0, 0, -1), BlockData(0, 0, -1), true, 0, 0, 15, 0, 0, 0, false, BoundingBox(Point(0,0,0), Point(16,16,16))), new Document(cast(string)read("../xml/blocks.xml")).elements);
 	}
 	sort!"a.id < b.id"(blocks);
 

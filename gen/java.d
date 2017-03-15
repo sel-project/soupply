@@ -857,8 +857,9 @@ public class MetadataException extends RuntimeException {
 		data ~= "\tpublic final BlockData minecraft, pocket;\n";
 		data ~= "\tpublic final boolean solid;\n";
 		data ~= "\tpublic final double hardness, blastResistance;\n";
-		data ~= "\tpublic final byte opacity, luminance;\n\n";
-		data ~= "\tprivate Blocks(String name, short id, BlockData minecraft, BlockData pocket, boolean solid, double hardness, double blastResistance, byte opacity, byte luminance) {\n";
+		data ~= "\tpublic final byte opacity, luminance;\n";
+		data ~= "\tpublic final boolean replaceable;\n\n";
+		data ~= "\tprivate Blocks(String name, short id, BlockData minecraft, BlockData pocket, boolean solid, double hardness, double blastResistance, byte opacity, byte luminance, boolean replaceable) {\n";
 		data ~= "\t\tthis.name = name;\n";
 		data ~= "\t\tthis.id = id;\n";
 		data ~= "\t\tthis.minecraft = minecraft;\n";
@@ -868,6 +869,7 @@ public class MetadataException extends RuntimeException {
 		data ~= "\t\tthis.blastResistance = blastResistance;\n";
 		data ~= "\t\tthis.opacity = opacity;\n";
 		data ~= "\t\tthis.luminance = luminance;\n";
+		data ~= "\t\tthis.replaceable = replaceable;\n";
 		data ~= "\t}\n\n";
 		data ~= "\tprivate static class BlockData {\n\n";
 		data ~= "\t\tpublic final int id, meta;\n\n";
@@ -892,7 +894,8 @@ public class MetadataException extends RuntimeException {
 			data ~= "(double)" ~ block.hardness.to!string ~ ", ";
 			data ~= "(double)" ~ block.blastResistance.to!string ~ ", ";
 			data ~= "(byte)" ~ block.opacity.to!string ~ ", ";
-			data ~= "(byte)" ~ block.luminance.to!string;
+			data ~= "(byte)" ~ block.luminance.to!string ~ ", ";
+			data ~= block.replaceable.to!string;
 			data ~= "));\n";
 		}
 		data ~= "\n\t}\n\n";

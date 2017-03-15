@@ -668,7 +668,7 @@ alias varulong = var!ulong;
 		data ~= "\t}\n\n";
 		data ~= "\talias exists this;\n\n";
 		data ~= "}\n\n";
-		data ~= "public alias Block = Tuple!(string, \"name\", ushort, \"id\", BlockData, \"minecraft\", BlockData, \"pocket\", bool, \"solid\", double, \"hardness\", double, \"blastResistance\", ubyte, \"opacity\", ubyte, \"luminance\", BoundingBox, \"boundingBox\");\n\n";
+		data ~= "public alias Block = Tuple!(string, \"name\", ushort, \"id\", BlockData, \"minecraft\", BlockData, \"pocket\", bool, \"solid\", double, \"hardness\", double, \"blastResistance\", ubyte, \"opacity\", ubyte, \"luminance\", ubyte, \"encouragement\", ubyte, \"flammability\", bool, \"replaceable\", BoundingBox, \"boundingBox\");\n\n";
 		data ~= "private struct BlockData {\n\n";
 		data ~= "\tbool exists;\n";
 		data ~= "\tubyte id, meta;\n\n";
@@ -688,18 +688,14 @@ alias varulong = var!ulong;
 			data ~= block.blastResistance.to!string ~ ", ";
 			data ~= block.opacity.to!string ~ ", ";
 			data ~= block.luminance.to!string ~ ", ";
+			data ~= block.encouragement.to!string ~ ", ";
+			data ~= block.flammability.to!string ~ ", ";
+			data ~= block.replaceable.to!string ~ ", ";
 			if(block.boundingBox == BoundingBox.init) data ~= "BoundingBox.init";
 			else data ~= "BoundingBox(Point(" ~ block.boundingBox.min.x.to!string ~ ", " ~ block.boundingBox.min.y.to!string ~ ", " ~ block.boundingBox.min.z.to!string ~ "), Point(" ~ block.boundingBox.max.x.to!string ~ ", " ~ block.boundingBox.max.y.to!string ~ ", " ~ block.boundingBox.max.z.to!string ~ "))";
 			data ~= "),\n";
 		}
-		data ~= "\n";
-		/*data ~= "\tpublic alias typeTuple = TypeTuple!(";
-		foreach(i, block; blocks) {
-			data ~= block.name.toUpper;
-			if(i != blocks.length - 1) data ~= ", ";
-		}
-		data ~= ");\n\n";*/
-		data ~= "}";
+		data ~= "\n}";
 		write("../src/d/sul/blocks.d", data, "blocks");
 	}
 
