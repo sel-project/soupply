@@ -584,17 +584,6 @@ public final class Items {
 		add(new Items("gold nugget", new ItemData(371, 0), new ItemData(371, 0), (byte)64));
 		add(new Items("nether wart", new ItemData(372, 0), new ItemData(372, 0), (byte)64));
 		add(new Items("potion", new ItemData(373, 0), new ItemData(373, 0), (byte)1));
-		add(new Items("awkward potion", new ItemData(373, 16), new ItemData(373, 4), (byte)64));
-		add(new Items("thick potion", new ItemData(373, 32), new ItemData(373, 3), (byte)64));
-		add(new Items("mundane potion", new ItemData(373, 64), new ItemData(373, 1), (byte)64));
-		add(new Items("mundane potion extended", new ItemData(373, 8192), new ItemData(373, 2), (byte)64));
-		add(new Items("night vision potion", new ItemData(373, 8198), new ItemData(373, 5), (byte)64));
-		add(new Items("night vision potion extended", new ItemData(373, 8262), new ItemData(373, 6), (byte)64));
-		add(new Items("invisibility potion", new ItemData(373, 8206), new ItemData(373, 7), (byte)64));
-		add(new Items("invisibility potion extended", new ItemData(373, 8270), new ItemData(373, 8), (byte)64));
-		add(new Items("leaping potion", new ItemData(373, 8203), new ItemData(373, 9), (byte)64));
-		add(new Items("leaping potion extended", new ItemData(373, 8267), new ItemData(373, 10), (byte)64));
-		add(new Items("leaping potion plus", new ItemData(373, 8235), new ItemData(373, 11), (byte)64));
 		add(new Items("glass bottle", new ItemData(374, 0), new ItemData(374, 0), (byte)64));
 		add(new Items("spider eye", new ItemData(375, 0), new ItemData(375, 0), (byte)64));
 		add(new Items("fermented spider eye", new ItemData(376, 0), new ItemData(376, 0), (byte)64));
@@ -709,7 +698,7 @@ public final class Items {
 		add(new Items("dragons breath", new ItemData(437, 0), new ItemData(437, 0), (byte)64));
 		add(new Items("splash potion", new ItemData(438, 0), new ItemData(438, 0), (byte)1));
 		add(new Items("spectral arrow", new ItemData(439, 0), null, (byte)64));
-		add(new Items("tipped arrow", new ItemData(440, 0), null, (byte)64));
+		add(new Items("tipped arrow", new ItemData(440, 0), new ItemData(440, 0), (byte)1));
 		add(new Items("lingering potion", new ItemData(441, 0), new ItemData(441, 0), (byte)1));
 		add(new Items("shield", new ItemData(442, 0), null, (byte)1));
 		add(new Items("elytra", new ItemData(443, 0), new ItemData(444, 0), (byte)64));

@@ -924,7 +924,7 @@
 
 	</group>
 
-	<block name="crafting-table" id="503" minecraft="58" pocket="58" hardness="2.5" blastresistance="12.5" /<name />
+	<block name="crafting-table" id="503" minecraft="58" pocket="58" hardness="2.5" blastresistance="12.5" />
 
 	<!-- farming -->
 	<group hardness="0" blastresistance="0" boundingbox="none">
@@ -1282,7 +1282,7 @@
 	</group>
 
 	<!-- cactus -->
-	<group hardness="0.4" blastresistance="2">
+	<group hardness="0.4" blastresistance="2" boundingbox="1,0,1-15,15,15">
 
 		<block name="cactus-0" id="754" minecraft="81:0" pocket="81:0" />
 		<block name="cactus-1" id="1346" minecraft="81:1" pocket="81:1" />
@@ -1562,12 +1562,12 @@
 
 	</group>
 
-	<block name="iron-bars" id="903" minecraft="101" pocket="101" hardness="5" blastresistance="30" />
+	<block name="iron-bars" id="903" minecraft="101" pocket="101" hardness="5" blastresistance="30" opacity="0" />
 
 	<block name="melon" id="904" minecraft="103" pocket="103" hardness="1" blastresistance="5" />
 
 	<!-- vines -->
-	<group hardness="0.2" blastresistance="1" solid="false" replaceable="true" encouragement="15" flammability="100">
+	<group hardness="0.2" blastresistance="1" solid="false" opacity="0" replaceable="true" encouragement="15" flammability="100">
 
 		<block name="vine-south" id="905" minecraft="106:1" pocket="106:1" />
 		<block name="vine-west" id="906" minecraft="106:2" pocket="106:2" />
@@ -1588,96 +1588,76 @@
 	</group>
 
 	<!-- fence gates -->
-	<group hardness="2" blastresistance="15">
+	<group hardness="2" blastresistance="15" opacity="0">
 
-		<!-- oak -->
+		<!-- closed -->
 		<group>
 
-			<block name="oak-wooden-fence-gate-facing-south" id="920" minecraft="107:0" pocket="107:0" />
-			<block name="oak-wooden-fence-gate-facing-west" id="921" minecraft="107:1" pocket="107:1" />
-			<block name="oak-wooden-fence-gate-facing-north" id="922" minecraft="107:2" pocket="107:2" />
-			<block name="oak-wooden-fence-gate-facing-east" id="923" minecraft="107:3" pocket="107:3" />
+			<block name="oak-wooden-fence-gate-facing-south" id="920" minecraft="107:0" pocket="107:0" boundingbox="0,0,6-16,16,10" />
+			<block name="oak-wooden-fence-gate-facing-west" id="921" minecraft="107:1" pocket="107:1" boundingbox="6,0,0-10,16,16" />
+			<block name="oak-wooden-fence-gate-facing-north" id="922" minecraft="107:2" pocket="107:2" boundingbox="0,0,6-16,16,10" />
+			<block name="oak-wooden-fence-gate-facing-east" id="923" minecraft="107:3" pocket="107:3" boundingbox="6,0,0-10,16,16" />
+
+			<block name="spruce-wooden-fence-gate-facing-south" id="928" minecraft="183:0" pocket="183:0" boundingbox="0,0,6-16,16,10" />
+			<block name="spruce-wooden-fence-gate-facing-west" id="929" minecraft="183:1" pocket="183:1" boundingbox="6,0,0-10,16,16" />
+			<block name="spruce-wooden-fence-gate-facing-north" id="930" minecraft="183:2" pocket="183:2" boundingbox="0,0,6-16,16,10" />
+			<block name="spruce-wooden-fence-gate-facing-east" id="931" minecraft="183:3" pocket="183:3" boundingbox="6,0,0-10,16,16" />
+
+			<block name="birch-wooden-fence-gate-facing-south" id="936" minecraft="184:0" pocket="184:0" boundingbox="0,0,6-16,16,10" />
+			<block name="birch-wooden-fence-gate-facing-west" id="937" minecraft="184:1" pocket="184:1" boundingbox="6,0,0-10,16,16" />
+			<block name="birch-wooden-fence-gate-facing-north" id="938" minecraft="184:2" pocket="184:2" boundingbox="0,0,6-16,16,10" />
+			<block name="birch-wooden-fence-gate-facing-east" id="939" minecraft="184:3" pocket="184:3" boundingbox="6,0,0-10,16,16" />
+
+			<block name="jungle-wooden-fence-gate-facing-south" id="944" minecraft="185:0" pocket="185:0" boundingbox="0,0,6-16,16,10" />
+			<block name="jungle-wooden-fence-gate-facing-west" id="945" minecraft="185:1" pocket="185:1" boundingbox="6,0,0-10,16,16" />
+			<block name="jungle-wooden-fence-gate-facing-north" id="946" minecraft="185:2" pocket="185:2" boundingbox="0,0,6-16,16,10" />
+			<block name="jungle-wooden-fence-gate-facing-east" id="947" minecraft="185:3" pocket="185:3" boundingbox="6,0,0-10,16,16" />
+
+			<block name="acacia-wooden-fence-gate-facing-south" id="952" minecraft="187:0" pocket="187:0" boundingbox="0,0,6-16,16,10" />
+			<block name="acacia-wooden-fence-gate-facing-west" id="953" minecraft="187:1" pocket="187:1" boundingbox="6,0,0-10,16,16" />
+			<block name="acacia-wooden-fence-gate-facing-north" id="954" minecraft="187:2" pocket="187:2" boundingbox="0,0,6-16,16,10" />
+			<block name="acacia-wooden-fence-gate-facing-east" id="955" minecraft="187:3" pocket="187:3" boundingbox="6,0,0-10,16,16" />
+
+			<block name="dark-oak-wooden-fence-gate-facing-south" id="960" minecraft="186:0" pocket="186:0" boundingbox="0,0,6-16,16,10" />
+			<block name="dark-oak-wooden-fence-gate-facing-west" id="961" minecraft="186:1" pocket="186:1" boundingbox="6,0,0-10,16,16" />
+			<block name="dark-oak-wooden-fence-gate-facing-north" id="962" minecraft="186:2" pocket="186:2" boundingbox="0,0,6-16,16,10" />
+			<block name="dark-oak-wooden-fence-gate-facing-east" id="963" minecraft="186:3" pocket="186:3" boundingbox="6,0,0-10,16,16" />
+
+		</group>
+
+		<!-- opened -->
+		<group boundingbox="none">
 
 			<block name="opened-oak-wooden-fence-gate-facing-south" id="924" minecraft="107:4" pocket="107:4" />
 			<block name="opened-oak-wooden-fence-gate-facing-west" id="925" minecraft="107:5" pocket="107:5" />
 			<block name="opened-oak-wooden-fence-gate-facing-north" id="926" minecraft="107:6" pocket="107:6" />
 			<block name="opened-oak-wooden-fence-gate-facing-east" id="927" minecraft="107:7" pocket="107:7" />
 
-		</group>
-
-		<!-- spruce -->
-		<group>
-
-			<block name="spruce-wooden-fence-gate-facing-south" id="928" minecraft="183:0" pocket="183:0" />
-			<block name="spruce-wooden-fence-gate-facing-west" id="929" minecraft="183:1" pocket="183:1" />
-			<block name="spruce-wooden-fence-gate-facing-north" id="930" minecraft="183:2" pocket="183:2" />
-			<block name="spruce-wooden-fence-gate-facing-east" id="931" minecraft="183:3" pocket="183:3" />
-
 			<block name="opened-spruce-wooden-fence-gate-facing-south" id="932" minecraft="183:4" pocket="183:4" />
 			<block name="opened-spruce-wooden-fence-gate-facing-west" id="933" minecraft="183:5" pocket="183:5" />
 			<block name="opened-spruce-wooden-fence-gate-facing-north" id="934" minecraft="183:6" pocket="183:6" />
 			<block name="opened-spruce-wooden-fence-gate-facing-east" id="935" minecraft="183:7" pocket="183:7" />
-
-		</group>
-
-		<!-- birch -->
-		<group>
-
-			<block name="birch-wooden-fence-gate-facing-south" id="936" minecraft="184:0" pocket="184:0" />
-			<block name="birch-wooden-fence-gate-facing-west" id="937" minecraft="184:1" pocket="184:1" />
-			<block name="birch-wooden-fence-gate-facing-north" id="938" minecraft="184:2" pocket="184:2" />
-			<block name="birch-wooden-fence-gate-facing-east" id="939" minecraft="184:3" pocket="184:3" />
 
 			<block name="opened-birch-wooden-fence-gate-facing-south" id="940" minecraft="184:4" pocket="184:4" />
 			<block name="opened-birch-wooden-fence-gate-facing-west" id="941" minecraft="184:5" pocket="184:5" />
 			<block name="opened-birch-wooden-fence-gate-facing-north" id="942" minecraft="184:6" pocket="184:6" />
 			<block name="opened-birch-wooden-fence-gate-facing-east" id="943" minecraft="184:7" pocket="184:7" />
 
-		</group>
-
-		<!-- jungle -->
-		<group>
-
-			<block name="jungle-wooden-fence-gate-facing-south" id="944" minecraft="185:0" pocket="185:0" />
-			<block name="jungle-wooden-fence-gate-facing-west" id="945" minecraft="185:1" pocket="185:1" />
-			<block name="jungle-wooden-fence-gate-facing-north" id="946" minecraft="185:2" pocket="185:2" />
-			<block name="jungle-wooden-fence-gate-facing-east" id="947" minecraft="185:3" pocket="185:3" />
-
 			<block name="opened-jungle-wooden-fence-gate-facing-south" id="948" minecraft="185:4" pocket="185:4" />
 			<block name="opened-jungle-wooden-fence-gate-facing-west" id="949" minecraft="185:5" pocket="185:5" />
 			<block name="opened-jungle-wooden-fence-gate-facing-north" id="950" minecraft="185:6" pocket="185:6" />
 			<block name="opened-jungle-wooden-fence-gate-facing-east" id="951" minecraft="185:7" pocket="185:7" />
-
-		</group>
-
-		<!-- acacia -->
-		<group>
-
-			<block name="acacia-wooden-fence-gate-facing-south" id="952" minecraft="187:0" pocket="187:0" />
-			<block name="acacia-wooden-fence-gate-facing-west" id="953" minecraft="187:1" pocket="187:1" />
-			<block name="acacia-wooden-fence-gate-facing-north" id="954" minecraft="187:2" pocket="187:2" />
-			<block name="acacia-wooden-fence-gate-facing-east" id="955" minecraft="187:3" pocket="187:3" />
 
 			<block name="opened-acacia-wooden-fence-gate-facing-south" id="956" minecraft="187:4" pocket="187:4" />
 			<block name="opened-acacia-wooden-fence-gate-facing-west" id="957" minecraft="187:5" pocket="187:5" />
 			<block name="opened-acacia-wooden-fence-gate-facing-north" id="958" minecraft="187:6" pocket="187:6" />
 			<block name="opened-acacia-wooden-fence-gate-facing-east" id="959" minecraft="187:7" pocket="187:7" />
 
-		</group>
-
-		<!-- dark oak -->
-		<group>
-
-			<block name="dark-oak-wooden-fence-gate-facing-south" id="960" minecraft="186:0" pocket="186:0" />
-			<block name="dark-oak-wooden-fence-gate-facing-west" id="961" minecraft="186:1" pocket="186:1" />
-			<block name="dark-oak-wooden-fence-gate-facing-north" id="962" minecraft="186:2" pocket="186:2" />
-			<block name="dark-oak-wooden-fence-gate-facing-east" id="963" minecraft="186:3" pocket="186:3" />
-
 			<block name="opened-dark-oak-wooden-fence-gate-facing-south" id="964" minecraft="186:4" pocket="186:4" />
 			<block name="opened-dark-oak-wooden-fence-gate-facing-west" id="965" minecraft="186:5" pocket="186:5" />
 			<block name="opened-dark-oak-wooden-fence-gate-facing-north" id="966" minecraft="186:6" pocket="186:6" />
 			<block name="opened-dark-oak-wooden-fence-gate-facing-east" id="967" minecraft="186:7" pocket="186:7" />
-			
+
 		</group>
 
 	</group>

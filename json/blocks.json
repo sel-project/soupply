@@ -19685,10 +19685,16 @@
 			}
 		},
 
-		"cactus": {
+		"cactus_0": {
 			"id": 754,
-			"minecraft": 81,
-			"pocket": 81,
+			"minecraft": {
+				"id": 81,
+				"meta": 0
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 0
+			},
 			"solid": true,
 			"hardness": 0.4,
 			"blast_resistance": 2,
@@ -19702,7 +19708,7 @@
 				},
 				"max": {
 					"x": 15,
-					"y": 16,
+					"y": 15,
 					"z": 15
 				}
 			}
@@ -23922,7 +23928,7 @@
 			"solid": true,
 			"hardness": 5,
 			"blast_resistance": 30,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -23974,7 +23980,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24003,7 +24009,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24032,7 +24038,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24061,7 +24067,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24090,7 +24096,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24119,7 +24125,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24148,7 +24154,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24177,7 +24183,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24206,7 +24212,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24235,7 +24241,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24264,7 +24270,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24293,7 +24299,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24322,7 +24328,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24351,7 +24357,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24380,7 +24386,7 @@
 			"solid": false,
 			"hardness": 0.2,
 			"blast_resistance": 1,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
@@ -24409,18 +24415,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -24438,16 +24444,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -24467,18 +24473,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -24496,16 +24502,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -24525,20 +24531,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_oak_wooden_fence_gate_facing_west": {
@@ -24554,20 +24548,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_oak_wooden_fence_gate_facing_north": {
@@ -24583,20 +24565,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_oak_wooden_fence_gate_facing_east": {
@@ -24612,20 +24582,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"spruce_wooden_fence_gate_facing_south": {
@@ -24641,18 +24599,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -24670,16 +24628,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -24699,18 +24657,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -24728,16 +24686,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -24757,20 +24715,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_spruce_wooden_fence_gate_facing_west": {
@@ -24786,20 +24732,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_spruce_wooden_fence_gate_facing_north": {
@@ -24815,20 +24749,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_spruce_wooden_fence_gate_facing_east": {
@@ -24844,20 +24766,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"birch_wooden_fence_gate_facing_south": {
@@ -24873,18 +24783,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -24902,16 +24812,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -24931,18 +24841,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -24960,16 +24870,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -24989,20 +24899,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_birch_wooden_fence_gate_facing_west": {
@@ -25018,20 +24916,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_birch_wooden_fence_gate_facing_north": {
@@ -25047,20 +24933,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_birch_wooden_fence_gate_facing_east": {
@@ -25076,20 +24950,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"jungle_wooden_fence_gate_facing_south": {
@@ -25105,18 +24967,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -25134,16 +24996,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -25163,18 +25025,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -25192,16 +25054,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -25221,20 +25083,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_jungle_wooden_fence_gate_facing_west": {
@@ -25250,20 +25100,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_jungle_wooden_fence_gate_facing_north": {
@@ -25279,20 +25117,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_jungle_wooden_fence_gate_facing_east": {
@@ -25308,20 +25134,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"acacia_wooden_fence_gate_facing_south": {
@@ -25337,18 +25151,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -25366,16 +25180,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -25395,18 +25209,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -25424,16 +25238,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -25453,20 +25267,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_acacia_wooden_fence_gate_facing_west": {
@@ -25482,20 +25284,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_acacia_wooden_fence_gate_facing_north": {
@@ -25511,20 +25301,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_acacia_wooden_fence_gate_facing_east": {
@@ -25540,20 +25318,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"dark_oak_wooden_fence_gate_facing_south": {
@@ -25569,18 +25335,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -25598,16 +25364,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -25627,18 +25393,18 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
 					"x": 0,
 					"y": 0,
-					"z": 0
+					"z": 6
 				},
 				"max": {
 					"x": 16,
 					"y": 16,
-					"z": 16
+					"z": 10
 				}
 			}
 		},
@@ -25656,16 +25422,16 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
+			"opacity": 0,
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 6,
 					"y": 0,
 					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 10,
 					"y": 16,
 					"z": 16
 				}
@@ -25685,20 +25451,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_dark_oak_wooden_fence_gate_facing_west": {
@@ -25714,20 +25468,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_dark_oak_wooden_fence_gate_facing_north": {
@@ -25743,20 +25485,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"opened_dark_oak_wooden_fence_gate_facing_east": {
@@ -25772,20 +25502,8 @@
 			"solid": true,
 			"hardness": 2,
 			"blast_resistance": 15,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 16,
-					"z": 16
-				}
-			}
+			"opacity": 0,
+			"luminance": 0
 		},
 
 		"nether_wart_0": {
@@ -35684,6 +35402,441 @@
 			"blast_resistance": 0,
 			"opacity": 15,
 			"luminance": 0
+		},
+
+		"cactus_1": {
+			"id": 1346,
+			"minecraft": {
+				"id": 81,
+				"meta": 1
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 1
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_2": {
+			"id": 1347,
+			"minecraft": {
+				"id": 81,
+				"meta": 2
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 2
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_3": {
+			"id": 1348,
+			"minecraft": {
+				"id": 81,
+				"meta": 3
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 3
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_4": {
+			"id": 1349,
+			"minecraft": {
+				"id": 81,
+				"meta": 4
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 4
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_5": {
+			"id": 1350,
+			"minecraft": {
+				"id": 81,
+				"meta": 5
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 5
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_6": {
+			"id": 1351,
+			"minecraft": {
+				"id": 81,
+				"meta": 6
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 6
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_7": {
+			"id": 1352,
+			"minecraft": {
+				"id": 81,
+				"meta": 7
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 7
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_8": {
+			"id": 1353,
+			"minecraft": {
+				"id": 81,
+				"meta": 8
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 8
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_9": {
+			"id": 1354,
+			"minecraft": {
+				"id": 81,
+				"meta": 9
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 9
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_10": {
+			"id": 1355,
+			"minecraft": {
+				"id": 81,
+				"meta": 10
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 10
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_11": {
+			"id": 1356,
+			"minecraft": {
+				"id": 81,
+				"meta": 11
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 11
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_12": {
+			"id": 1357,
+			"minecraft": {
+				"id": 81,
+				"meta": 12
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 12
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_13": {
+			"id": 1358,
+			"minecraft": {
+				"id": 81,
+				"meta": 13
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 13
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_14": {
+			"id": 1359,
+			"minecraft": {
+				"id": 81,
+				"meta": 14
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 14
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
+		},
+
+		"cactus_15": {
+			"id": 1360,
+			"minecraft": {
+				"id": 81,
+				"meta": 15
+			},
+			"pocket": {
+				"id": 81,
+				"meta": 15
+			},
+			"solid": true,
+			"hardness": 0.4,
+			"blast_resistance": 2,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 1,
+					"y": 0,
+					"z": 1
+				},
+				"max": {
+					"x": 15,
+					"y": 15,
+					"z": 15
+				}
+			}
 		}
 
 	}

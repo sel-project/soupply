@@ -546,18 +546,6 @@
 	<item name="gold-nugget" data="371" />
 	<item name="nether-wart" data="372" />
 	<item name="potion" data="373" stack="1" />
-	<item name="awkward-potion" minecraft="373:16" pocket="373:4" />
-	<item name="thick-potion" minecraft="373:32" pocket="373:3" />
-	<item name="mundane-potion" minecraft="373:64" pocket="373:1" />
-	<item name="mundane-potion-extended" minecraft="373:8192" pocket="373:2" />
-	<item name="night-vision-potion" minecraft="373:8198" pocket="373:5" />
-	<item name="night-vision-potion-extended" minecraft="373:8262" pocket="373:6" />
-	<item name="invisibility-potion" minecraft="373:8206" pocket="373:7" />
-	<item name="invisibility-potion-extended" minecraft="373:8270" pocket="373:8" />
-	<item name="leaping-potion" minecraft="373:8203" pocket="373:9" />
-	<item name="leaping-potion-extended" minecraft="373:8267" pocket="373:10" />
-	<item name="leaping-potion-plus" minecraft="373:8235" pocket="373:11" />
-	<!-- TODO: potions -->
 	<item name="glass-bottle" data="374" />
 	<item name="spider-eye" data="375" />
 	<item name="fermented-spider-eye" data="376" />
@@ -671,12 +659,9 @@
 	<item name="beetroot-soup" minecraft="436" pocket="459" stack="1" />
 	<item name="dragons-breath" data="437" />
 	<item name="splash-potion" data="438" stack="1" />
-	<!-- TODO: potions -->
 	<item name="spectral-arrow" minecraft="439" />
-	<item name="tipped-arrow" minecraft="440" />
-	<!-- TODO: tipped arrows -->
+	<item name="tipped-arrow" data="440" stack="1" />
 	<item name="lingering-potion" data="441" stack="1" />
-	<!-- TODO: potions -->
 	<item name="shield" minecraft="442" stack="1" />
 	<item name="elytra" minecraft="443" pocket="444" />
 	<item name="spruce-boat" minecraft="444" pocket="333:1" stack="1" />

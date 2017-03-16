@@ -4311,138 +4311,6 @@
 			"stack": 1
 		},
 
-		"awkward_potion": {
-			"minecraft": {
-				"id": 373,
-				"meta": 16
-			},
-			"pocket": {
-				"id": 373,
-				"meta": 4
-			},
-			"stack": 64
-		},
-
-		"thick_potion": {
-			"minecraft": {
-				"id": 373,
-				"meta": 32
-			},
-			"pocket": {
-				"id": 373,
-				"meta": 3
-			},
-			"stack": 64
-		},
-
-		"mundane_potion": {
-			"minecraft": {
-				"id": 373,
-				"meta": 64
-			},
-			"pocket": {
-				"id": 373,
-				"meta": 1
-			},
-			"stack": 64
-		},
-
-		"mundane_potion_extended": {
-			"minecraft": {
-				"id": 373,
-				"meta": 8192
-			},
-			"pocket": {
-				"id": 373,
-				"meta": 2
-			},
-			"stack": 64
-		},
-
-		"night_vision_potion": {
-			"minecraft": {
-				"id": 373,
-				"meta": 8198
-			},
-			"pocket": {
-				"id": 373,
-				"meta": 5
-			},
-			"stack": 64
-		},
-
-		"night_vision_potion_extended": {
-			"minecraft": {
-				"id": 373,
-				"meta": 8262
-			},
-			"pocket": {
-				"id": 373,
-				"meta": 6
-			},
-			"stack": 64
-		},
-
-		"invisibility_potion": {
-			"minecraft": {
-				"id": 373,
-				"meta": 8206
-			},
-			"pocket": {
-				"id": 373,
-				"meta": 7
-			},
-			"stack": 64
-		},
-
-		"invisibility_potion_extended": {
-			"minecraft": {
-				"id": 373,
-				"meta": 8270
-			},
-			"pocket": {
-				"id": 373,
-				"meta": 8
-			},
-			"stack": 64
-		},
-
-		"leaping_potion": {
-			"minecraft": {
-				"id": 373,
-				"meta": 8203
-			},
-			"pocket": {
-				"id": 373,
-				"meta": 9
-			},
-			"stack": 64
-		},
-
-		"leaping_potion_extended": {
-			"minecraft": {
-				"id": 373,
-				"meta": 8267
-			},
-			"pocket": {
-				"id": 373,
-				"meta": 10
-			},
-			"stack": 64
-		},
-
-		"leaping_potion_plus": {
-			"minecraft": {
-				"id": 373,
-				"meta": 8235
-			},
-			"pocket": {
-				"id": 373,
-				"meta": 11
-			},
-			"stack": 64
-		},
-
 		"glass_bottle": {
 			"minecraft": 374,
 			"pocket": 374,
@@ -5394,7 +5262,8 @@
 
 		"tipped_arrow": {
 			"minecraft": 440,
-			"stack": 64
+			"pocket": 440,
+			"stack": 1
 		},
 
 		"lingering_potion": {
