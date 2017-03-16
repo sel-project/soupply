@@ -698,7 +698,7 @@ public final class Items {
 		add(new Items("dragons breath", new ItemData(437, 0), new ItemData(437, 0), (byte)64));
 		add(new Items("splash potion", new ItemData(438, 0), new ItemData(438, 0), (byte)1));
 		add(new Items("spectral arrow", new ItemData(439, 0), null, (byte)64));
-		add(new Items("tipped arrow", new ItemData(440, 0), new ItemData(440, 0), (byte)1));
+		add(new Items("tipped arrow", new ItemData(440, 0), new ItemData(440, 0), (byte)64));
 		add(new Items("lingering potion", new ItemData(441, 0), new ItemData(441, 0), (byte)1));
 		add(new Items("shield", new ItemData(442, 0), null, (byte)1));
 		add(new Items("elytra", new ItemData(443, 0), new ItemData(444, 0), (byte)64));

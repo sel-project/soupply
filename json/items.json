@@ -5263,7 +5263,7 @@
 		"tipped_arrow": {
 			"minecraft": 440,
 			"pocket": 440,
-			"stack": 1
+			"stack": 64
 		},
 
 		"lingering_potion": {

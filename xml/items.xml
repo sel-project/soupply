@@ -660,7 +660,7 @@
 	<item name="dragons-breath" data="437" />
 	<item name="splash-potion" data="438" stack="1" />
 	<item name="spectral-arrow" minecraft="439" />
-	<item name="tipped-arrow" data="440" stack="1" />
+	<item name="tipped-arrow" data="440" />
 	<item name="lingering-potion" data="441" stack="1" />
 	<item name="shield" minecraft="442" stack="1" />
 	<item name="elytra" minecraft="443" pocket="444" />

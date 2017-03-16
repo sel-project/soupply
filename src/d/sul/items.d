@@ -681,7 +681,7 @@ enum Items : Item {
 	DRAGONS_BREATH = Item("dragons breath", 654, ItemData(true, 437, 0), ItemData(true, 437, 0), 64),
 	SPLASH_POTION = Item("splash potion", 655, ItemData(true, 438, 0), ItemData(true, 438, 0), 1),
 	SPECTRAL_ARROW = Item("spectral arrow", 656, ItemData(true, 439, 0), ItemData(false), 64),
-	TIPPED_ARROW = Item("tipped arrow", 657, ItemData(true, 440, 0), ItemData(true, 440, 0), 1),
+	TIPPED_ARROW = Item("tipped arrow", 657, ItemData(true, 440, 0), ItemData(true, 440, 0), 64),
 	LINGERING_POTION = Item("lingering potion", 658, ItemData(true, 441, 0), ItemData(true, 441, 0), 1),
 	SHIELD = Item("shield", 659, ItemData(true, 442, 0), ItemData(false), 1),
 	ELYTRA = Item("elytra", 660, ItemData(true, 443, 0), ItemData(true, 444, 0), 64),
