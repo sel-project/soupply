@@ -100,7 +100,7 @@
 	<item name="iron-block" data="42" />
 	<item name="double-stone-slab" data="43:0" />
 	<item name="double-sandstone-slab" data="43:1" />
-	<item name="double-woodstone-slab" data="43:2" />
+	<item name="double-stone-wooden-slab" data="43:2" />
 	<item name="double-cobblestone-slab" data="43:3" />
 	<item name="double-brick-slab" data="43:4" />
 	<item name="double-stone-brick-slab" data="43:5" />
@@ -108,9 +108,9 @@
 	<item name="double-quartz-slab" data="43:7" />
 	<item name="stone-slab" data="44:0" />
 	<item name="sandstone-slab" data="44:1" />
-	<item name="woodstone-slab" data="44:2" />
+	<item name="stone-wooden-slab" data="44:2" />
 	<item name="cobblestone-slab" data="44:3" />
-	<item name="brick-slab" data="44:4" />
+	<item name="bricks-slab" data="44:4" />
 	<item name="stone-brick-slab" data="44:5" />
 	<item name="nether-brick-slab" data="44:6" />
 	<item name="quartz-slab" data="44:7" />
@@ -334,7 +334,7 @@
 	<item name="double-tallgrass" data="175:2" />
 	<item name="large-fern" data="175:3" />
 	<item name="rose-bush" data="175:4" />
-	<item name="poeny" data="175:5" />
+	<item name="peony" data="175:5" />
 	<item name="planted-banner" data="176" />
 	<item name="wall-banner" data="177" />
 	<item name="inverted-daylight-sensor" data="178" />
@@ -450,14 +450,14 @@
 	<item name="seeds" data="295" />
 	<item name="wheat" data="296" />
 	<item name="bread" data="297" />
-	<item name="leather-armor" data="298" stack="1" />
+	<item name="leather-cap" data="298" stack="1" />
 	<item name="leather-tunic" data="299" stack="1" />
 	<item name="leather-pants" data="300" stack="1" />
 	<item name="leather-boots" data="301" stack="1" />
-	<item name="chainmail-helmet" data="302" stack="1" />
-	<item name="chainmail-chestplate" data="303" stack="1" />
-	<item name="chainmail-leggings" data="304" stack="1" />
-	<item name="chainmail-boots" data="305" stack="1" />
+	<item name="chain-helmet" data="302" stack="1" />
+	<item name="chain-chestplate" data="303" stack="1" />
+	<item name="chain-leggings" data="304" stack="1" />
+	<item name="chain-boots" data="305" stack="1" />
 	<item name="iron-helmet" data="306" stack="1" />
 	<item name="iron-chestplate" data="307" stack="1" />
 	<item name="iron-leggings" data="308" stack="1" />
@@ -484,7 +484,7 @@
 	<item name="minecart" data="328" stack="1" />
 	<item name="saddle" data="329" stack="1" />
 	<item name="iron-door" data="330" />
-	<item name="redstone" data="331" />
+	<item name="redstone-dust" data="331" />
 	<item name="snowball" data="332" stack="16" />
 	<item name="oak-boat" data="333" stack="1" />
 	<item name="leather" data="334" />
@@ -632,7 +632,7 @@
 	<item name="prismarine-crystals" minecraft="410" pocket="422" />
 	<item name="raw-rabbit" data="411" />
 	<item name="cooked-rabbit" data="412" />
-	<item name="rabbit-stew" data="413" />
+	<item name="rabbit-stew" data="413" stack="1" />
 	<item name="rabbit-foot" data="414" />
 	<item name="rabbit-hide" data="415" />
 	<item name="armor-stand" minecraft="416" stack="16" />

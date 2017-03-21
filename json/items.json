@@ -1073,7 +1073,7 @@
 			"stack": 64
 		},
 
-		"brick_slab": {
+		"bricks_slab": {
 			"minecraft": {
 				"id": 44,
 				"meta": 4

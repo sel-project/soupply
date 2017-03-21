@@ -149,7 +149,7 @@ public final class Items {
 		add(new Items("sandstone slab", new ItemData(44, 1), new ItemData(44, 1), (byte)64));
 		add(new Items("woodstone slab", new ItemData(44, 2), new ItemData(44, 2), (byte)64));
 		add(new Items("cobblestone slab", new ItemData(44, 3), new ItemData(44, 3), (byte)64));
-		add(new Items("brick slab", new ItemData(44, 4), new ItemData(44, 4), (byte)64));
+		add(new Items("bricks slab", new ItemData(44, 4), new ItemData(44, 4), (byte)64));
 		add(new Items("stone brick slab", new ItemData(44, 5), new ItemData(44, 5), (byte)64));
 		add(new Items("nether brick slab", new ItemData(44, 6), new ItemData(44, 6), (byte)64));
 		add(new Items("quartz slab", new ItemData(44, 7), new ItemData(44, 7), (byte)64));
