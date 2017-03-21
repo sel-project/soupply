@@ -953,7 +953,7 @@
 			"stack": 64
 		},
 
-		"double_woodstone_slab": {
+		"double_stone_wooden_slab": {
 			"minecraft": {
 				"id": 43,
 				"meta": 2
@@ -1049,7 +1049,7 @@
 			"stack": 64
 		},
 
-		"woodstone_slab": {
+		"stone_wooden_slab": {
 			"minecraft": {
 				"id": 44,
 				"meta": 2
@@ -2912,7 +2912,7 @@
 			"stack": 64
 		},
 
-		"poeny": {
+		"peony": {
 			"minecraft": {
 				"id": 175,
 				"meta": 5
@@ -3610,7 +3610,7 @@
 			"stack": 64
 		},
 
-		"leather_armor": {
+		"leather_cap": {
 			"minecraft": 298,
 			"pocket": 298,
 			"stack": 1
@@ -3634,25 +3634,25 @@
 			"stack": 1
 		},
 
-		"chainmail_helmet": {
+		"chain_helmet": {
 			"minecraft": 302,
 			"pocket": 302,
 			"stack": 1
 		},
 
-		"chainmail_chestplate": {
+		"chain_chestplate": {
 			"minecraft": 303,
 			"pocket": 303,
 			"stack": 1
 		},
 
-		"chainmail_leggings": {
+		"chain_leggings": {
 			"minecraft": 304,
 			"pocket": 304,
 			"stack": 1
 		},
 
-		"chainmail_boots": {
+		"chain_boots": {
 			"minecraft": 305,
 			"pocket": 305,
 			"stack": 1
@@ -3823,7 +3823,7 @@
 			"stack": 64
 		},
 
-		"redstone": {
+		"redstone_dust": {
 			"minecraft": 331,
 			"pocket": 331,
 			"stack": 64
@@ -5100,7 +5100,7 @@
 		"rabbit_stew": {
 			"minecraft": 413,
 			"pocket": 413,
-			"stack": 64
+			"stack": 1
 		},
 
 		"rabbit_foot": {

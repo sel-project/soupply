@@ -1018,8 +1018,31 @@
 			}
 		},
 
-		"farmland_0": {
+		"grass_path": {
 			"id": 41,
+			"minecraft": 208,
+			"pocket": 198,
+			"solid": true,
+			"hardness": 0.6,
+			"blast_resistance": 3.25,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"max": {
+					"x": 16,
+					"y": 15,
+					"z": 16
+				}
+			}
+		},
+
+		"farmland_0": {
+			"id": 42,
 			"minecraft": {
 				"id": 60,
 				"meta": 0
@@ -1048,7 +1071,7 @@
 		},
 
 		"farmland_1": {
-			"id": 42,
+			"id": 43,
 			"minecraft": {
 				"id": 60,
 				"meta": 1
@@ -1077,7 +1100,7 @@
 		},
 
 		"farmland_2": {
-			"id": 43,
+			"id": 44,
 			"minecraft": {
 				"id": 60,
 				"meta": 2
@@ -1106,7 +1129,7 @@
 		},
 
 		"farmland_3": {
-			"id": 44,
+			"id": 45,
 			"minecraft": {
 				"id": 60,
 				"meta": 3
@@ -1135,7 +1158,7 @@
 		},
 
 		"farmland_4": {
-			"id": 45,
+			"id": 46,
 			"minecraft": {
 				"id": 60,
 				"meta": 4
@@ -1164,7 +1187,7 @@
 		},
 
 		"farmland_5": {
-			"id": 46,
+			"id": 47,
 			"minecraft": {
 				"id": 60,
 				"meta": 5
@@ -1193,7 +1216,7 @@
 		},
 
 		"farmland_6": {
-			"id": 47,
+			"id": 48,
 			"minecraft": {
 				"id": 60,
 				"meta": 6
@@ -1222,7 +1245,7 @@
 		},
 
 		"farmland_7": {
-			"id": 48,
+			"id": 49,
 			"minecraft": {
 				"id": 60,
 				"meta": 7
@@ -1234,29 +1257,6 @@
 			"solid": true,
 			"hardness": 0.6,
 			"blast_resistance": 3,
-			"opacity": 15,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 16,
-					"y": 15,
-					"z": 16
-				}
-			}
-		},
-
-		"grass_path": {
-			"id": 49,
-			"minecraft": 208,
-			"pocket": 198,
-			"solid": true,
-			"hardness": 0.6,
-			"blast_resistance": 3.25,
 			"opacity": 15,
 			"luminance": 0,
 			"bounding_box": {
@@ -28747,7 +28747,7 @@
 			}
 		},
 
-		"oak_wooden_fence_gate_facing_south": {
+		"oak_wood_fence_gate_facing_south": {
 			"id": 1079,
 			"minecraft": {
 				"id": 107,
@@ -28776,7 +28776,7 @@
 			}
 		},
 
-		"oak_wooden_fence_gate_facing_west": {
+		"oak_wood_fence_gate_facing_west": {
 			"id": 1080,
 			"minecraft": {
 				"id": 107,
@@ -28805,7 +28805,7 @@
 			}
 		},
 
-		"oak_wooden_fence_gate_facing_north": {
+		"oak_wood_fence_gate_facing_north": {
 			"id": 1081,
 			"minecraft": {
 				"id": 107,
@@ -28834,7 +28834,7 @@
 			}
 		},
 
-		"oak_wooden_fence_gate_facing_east": {
+		"oak_wood_fence_gate_facing_east": {
 			"id": 1082,
 			"minecraft": {
 				"id": 107,
@@ -28863,7 +28863,7 @@
 			}
 		},
 
-		"spruce_wooden_fence_gate_facing_south": {
+		"spruce_wood_fence_gate_facing_south": {
 			"id": 1083,
 			"minecraft": {
 				"id": 183,
@@ -28892,7 +28892,7 @@
 			}
 		},
 
-		"spruce_wooden_fence_gate_facing_west": {
+		"spruce_wood_fence_gate_facing_west": {
 			"id": 1084,
 			"minecraft": {
 				"id": 183,
@@ -28921,7 +28921,7 @@
 			}
 		},
 
-		"spruce_wooden_fence_gate_facing_north": {
+		"spruce_wood_fence_gate_facing_north": {
 			"id": 1085,
 			"minecraft": {
 				"id": 183,
@@ -28950,7 +28950,7 @@
 			}
 		},
 
-		"spruce_wooden_fence_gate_facing_east": {
+		"spruce_wood_fence_gate_facing_east": {
 			"id": 1086,
 			"minecraft": {
 				"id": 183,
@@ -28979,7 +28979,7 @@
 			}
 		},
 
-		"birch_wooden_fence_gate_facing_south": {
+		"birch_wood_fence_gate_facing_south": {
 			"id": 1087,
 			"minecraft": {
 				"id": 184,
@@ -29008,7 +29008,7 @@
 			}
 		},
 
-		"birch_wooden_fence_gate_facing_west": {
+		"birch_wood_fence_gate_facing_west": {
 			"id": 1088,
 			"minecraft": {
 				"id": 184,
@@ -29037,7 +29037,7 @@
 			}
 		},
 
-		"birch_wooden_fence_gate_facing_north": {
+		"birch_wood_fence_gate_facing_north": {
 			"id": 1089,
 			"minecraft": {
 				"id": 184,
@@ -29066,7 +29066,7 @@
 			}
 		},
 
-		"birch_wooden_fence_gate_facing_east": {
+		"birch_wood_fence_gate_facing_east": {
 			"id": 1090,
 			"minecraft": {
 				"id": 184,
@@ -29095,7 +29095,7 @@
 			}
 		},
 
-		"jungle_wooden_fence_gate_facing_south": {
+		"jungle_wood_fence_gate_facing_south": {
 			"id": 1091,
 			"minecraft": {
 				"id": 185,
@@ -29124,7 +29124,7 @@
 			}
 		},
 
-		"jungle_wooden_fence_gate_facing_west": {
+		"jungle_wood_fence_gate_facing_west": {
 			"id": 1092,
 			"minecraft": {
 				"id": 185,
@@ -29153,7 +29153,7 @@
 			}
 		},
 
-		"jungle_wooden_fence_gate_facing_north": {
+		"jungle_wood_fence_gate_facing_north": {
 			"id": 1093,
 			"minecraft": {
 				"id": 185,
@@ -29182,7 +29182,7 @@
 			}
 		},
 
-		"jungle_wooden_fence_gate_facing_east": {
+		"jungle_wood_fence_gate_facing_east": {
 			"id": 1094,
 			"minecraft": {
 				"id": 185,
@@ -29211,7 +29211,7 @@
 			}
 		},
 
-		"acacia_wooden_fence_gate_facing_south": {
+		"acacia_wood_fence_gate_facing_south": {
 			"id": 1095,
 			"minecraft": {
 				"id": 187,
@@ -29240,7 +29240,7 @@
 			}
 		},
 
-		"acacia_wooden_fence_gate_facing_west": {
+		"acacia_wood_fence_gate_facing_west": {
 			"id": 1096,
 			"minecraft": {
 				"id": 187,
@@ -29269,7 +29269,7 @@
 			}
 		},
 
-		"acacia_wooden_fence_gate_facing_north": {
+		"acacia_wood_fence_gate_facing_north": {
 			"id": 1097,
 			"minecraft": {
 				"id": 187,
@@ -29298,7 +29298,7 @@
 			}
 		},
 
-		"acacia_wooden_fence_gate_facing_east": {
+		"acacia_wood_fence_gate_facing_east": {
 			"id": 1098,
 			"minecraft": {
 				"id": 187,
@@ -29327,7 +29327,7 @@
 			}
 		},
 
-		"dark_oak_wooden_fence_gate_facing_south": {
+		"dark_oak_wood_fence_gate_facing_south": {
 			"id": 1099,
 			"minecraft": {
 				"id": 186,
@@ -29356,7 +29356,7 @@
 			}
 		},
 
-		"dark_oak_wooden_fence_gate_facing_west": {
+		"dark_oak_wood_fence_gate_facing_west": {
 			"id": 1100,
 			"minecraft": {
 				"id": 186,
@@ -29385,7 +29385,7 @@
 			}
 		},
 
-		"dark_oak_wooden_fence_gate_facing_north": {
+		"dark_oak_wood_fence_gate_facing_north": {
 			"id": 1101,
 			"minecraft": {
 				"id": 186,
@@ -29414,7 +29414,7 @@
 			}
 		},
 
-		"dark_oak_wooden_fence_gate_facing_east": {
+		"dark_oak_wood_fence_gate_facing_east": {
 			"id": 1102,
 			"minecraft": {
 				"id": 186,
@@ -29443,7 +29443,7 @@
 			}
 		},
 
-		"opened_oak_wooden_fence_gate_facing_south": {
+		"opened_oak_wood_fence_gate_facing_south": {
 			"id": 1103,
 			"minecraft": {
 				"id": 107,
@@ -29460,7 +29460,7 @@
 			"luminance": 0
 		},
 
-		"opened_oak_wooden_fence_gate_facing_west": {
+		"opened_oak_wood_fence_gate_facing_west": {
 			"id": 1104,
 			"minecraft": {
 				"id": 107,
@@ -29477,7 +29477,7 @@
 			"luminance": 0
 		},
 
-		"opened_oak_wooden_fence_gate_facing_north": {
+		"opened_oak_wood_fence_gate_facing_north": {
 			"id": 1105,
 			"minecraft": {
 				"id": 107,
@@ -29494,7 +29494,7 @@
 			"luminance": 0
 		},
 
-		"opened_oak_wooden_fence_gate_facing_east": {
+		"opened_oak_wood_fence_gate_facing_east": {
 			"id": 1106,
 			"minecraft": {
 				"id": 107,
@@ -29511,7 +29511,7 @@
 			"luminance": 0
 		},
 
-		"opened_spruce_wooden_fence_gate_facing_south": {
+		"opened_spruce_wood_fence_gate_facing_south": {
 			"id": 1107,
 			"minecraft": {
 				"id": 183,
@@ -29528,7 +29528,7 @@
 			"luminance": 0
 		},
 
-		"opened_spruce_wooden_fence_gate_facing_west": {
+		"opened_spruce_wood_fence_gate_facing_west": {
 			"id": 1108,
 			"minecraft": {
 				"id": 183,
@@ -29545,7 +29545,7 @@
 			"luminance": 0
 		},
 
-		"opened_spruce_wooden_fence_gate_facing_north": {
+		"opened_spruce_wood_fence_gate_facing_north": {
 			"id": 1109,
 			"minecraft": {
 				"id": 183,
@@ -29562,7 +29562,7 @@
 			"luminance": 0
 		},
 
-		"opened_spruce_wooden_fence_gate_facing_east": {
+		"opened_spruce_wood_fence_gate_facing_east": {
 			"id": 1110,
 			"minecraft": {
 				"id": 183,
@@ -29579,7 +29579,7 @@
 			"luminance": 0
 		},
 
-		"opened_birch_wooden_fence_gate_facing_south": {
+		"opened_birch_wood_fence_gate_facing_south": {
 			"id": 1111,
 			"minecraft": {
 				"id": 184,
@@ -29596,7 +29596,7 @@
 			"luminance": 0
 		},
 
-		"opened_birch_wooden_fence_gate_facing_west": {
+		"opened_birch_wood_fence_gate_facing_west": {
 			"id": 1112,
 			"minecraft": {
 				"id": 184,
@@ -29613,7 +29613,7 @@
 			"luminance": 0
 		},
 
-		"opened_birch_wooden_fence_gate_facing_north": {
+		"opened_birch_wood_fence_gate_facing_north": {
 			"id": 1113,
 			"minecraft": {
 				"id": 184,
@@ -29630,7 +29630,7 @@
 			"luminance": 0
 		},
 
-		"opened_birch_wooden_fence_gate_facing_east": {
+		"opened_birch_wood_fence_gate_facing_east": {
 			"id": 1114,
 			"minecraft": {
 				"id": 184,
@@ -29647,7 +29647,7 @@
 			"luminance": 0
 		},
 
-		"opened_jungle_wooden_fence_gate_facing_south": {
+		"opened_jungle_wood_fence_gate_facing_south": {
 			"id": 1115,
 			"minecraft": {
 				"id": 185,
@@ -29664,7 +29664,7 @@
 			"luminance": 0
 		},
 
-		"opened_jungle_wooden_fence_gate_facing_west": {
+		"opened_jungle_wood_fence_gate_facing_west": {
 			"id": 1116,
 			"minecraft": {
 				"id": 185,
@@ -29681,7 +29681,7 @@
 			"luminance": 0
 		},
 
-		"opened_jungle_wooden_fence_gate_facing_north": {
+		"opened_jungle_wood_fence_gate_facing_north": {
 			"id": 1117,
 			"minecraft": {
 				"id": 185,
@@ -29698,7 +29698,7 @@
 			"luminance": 0
 		},
 
-		"opened_jungle_wooden_fence_gate_facing_east": {
+		"opened_jungle_wood_fence_gate_facing_east": {
 			"id": 1118,
 			"minecraft": {
 				"id": 185,
@@ -29715,7 +29715,7 @@
 			"luminance": 0
 		},
 
-		"opened_acacia_wooden_fence_gate_facing_south": {
+		"opened_acacia_wood_fence_gate_facing_south": {
 			"id": 1119,
 			"minecraft": {
 				"id": 187,
@@ -29732,7 +29732,7 @@
 			"luminance": 0
 		},
 
-		"opened_acacia_wooden_fence_gate_facing_west": {
+		"opened_acacia_wood_fence_gate_facing_west": {
 			"id": 1120,
 			"minecraft": {
 				"id": 187,
@@ -29749,7 +29749,7 @@
 			"luminance": 0
 		},
 
-		"opened_acacia_wooden_fence_gate_facing_north": {
+		"opened_acacia_wood_fence_gate_facing_north": {
 			"id": 1121,
 			"minecraft": {
 				"id": 187,
@@ -29766,7 +29766,7 @@
 			"luminance": 0
 		},
 
-		"opened_acacia_wooden_fence_gate_facing_east": {
+		"opened_acacia_wood_fence_gate_facing_east": {
 			"id": 1122,
 			"minecraft": {
 				"id": 187,
@@ -29783,7 +29783,7 @@
 			"luminance": 0
 		},
 
-		"opened_dark_oak_wooden_fence_gate_facing_south": {
+		"opened_dark_oak_wood_fence_gate_facing_south": {
 			"id": 1123,
 			"minecraft": {
 				"id": 186,
@@ -29800,7 +29800,7 @@
 			"luminance": 0
 		},
 
-		"opened_dark_oak_wooden_fence_gate_facing_west": {
+		"opened_dark_oak_wood_fence_gate_facing_west": {
 			"id": 1124,
 			"minecraft": {
 				"id": 186,
@@ -29817,7 +29817,7 @@
 			"luminance": 0
 		},
 
-		"opened_dark_oak_wooden_fence_gate_facing_north": {
+		"opened_dark_oak_wood_fence_gate_facing_north": {
 			"id": 1125,
 			"minecraft": {
 				"id": 186,
@@ -29834,7 +29834,7 @@
 			"luminance": 0
 		},
 
-		"opened_dark_oak_wooden_fence_gate_facing_east": {
+		"opened_dark_oak_wood_fence_gate_facing_east": {
 			"id": 1126,
 			"minecraft": {
 				"id": 186,
@@ -29851,7 +29851,7 @@
 			"luminance": 0
 		},
 
-		"enchanting_table": {
+		"enchantment_table": {
 			"id": 1127,
 			"minecraft": 116,
 			"pocket": 116,
@@ -29859,7 +29859,7 @@
 			"hardness": 5,
 			"blast_resistance": 6000,
 			"opacity": 15,
-			"luminance": 0,
+			"luminance": 12,
 			"bounding_box": {
 				"min": {
 					"x": 0,
@@ -29897,7 +29897,7 @@
 				},
 				"max": {
 					"x": 16,
-					"y": 16,
+					"y": 2,
 					"z": 16
 				}
 			}
@@ -29926,7 +29926,7 @@
 				},
 				"max": {
 					"x": 16,
-					"y": 16,
+					"y": 2,
 					"z": 16
 				}
 			}
@@ -29955,7 +29955,7 @@
 				},
 				"max": {
 					"x": 16,
-					"y": 16,
+					"y": 2,
 					"z": 16
 				}
 			}
@@ -29984,7 +29984,7 @@
 				},
 				"max": {
 					"x": 16,
-					"y": 16,
+					"y": 2,
 					"z": 16
 				}
 			}
@@ -30013,7 +30013,7 @@
 				},
 				"max": {
 					"x": 16,
-					"y": 16,
+					"y": 2,
 					"z": 16
 				}
 			}
@@ -30042,7 +30042,7 @@
 				},
 				"max": {
 					"x": 16,
-					"y": 16,
+					"y": 2,
 					"z": 16
 				}
 			}
@@ -30071,7 +30071,7 @@
 				},
 				"max": {
 					"x": 16,
-					"y": 16,
+					"y": 2,
 					"z": 16
 				}
 			}
@@ -30100,7 +30100,7 @@
 				},
 				"max": {
 					"x": 16,
-					"y": 16,
+					"y": 2,
 					"z": 16
 				}
 			}
@@ -32593,153 +32593,8 @@
 			}
 		},
 
-		"anvil_south_north": {
-			"id": 1229,
-			"minecraft": {
-				"id": 145,
-				"meta": 2
-			},
-			"pocket": {
-				"id": 145,
-				"meta": 2
-			},
-			"solid": true,
-			"hardness": 5,
-			"blast_resistance": 6000,
-			"opacity": 0,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 2,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 14,
-					"y": 16,
-					"z": 16
-				}
-			}
-		},
-
-		"slightly_anvil_north_south": {
-			"id": 1230,
-			"minecraft": {
-				"id": 145,
-				"meta": 4
-			},
-			"pocket": {
-				"id": 145,
-				"meta": 4
-			},
-			"solid": true,
-			"hardness": 5,
-			"blast_resistance": 6000,
-			"opacity": 0,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 2,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 14,
-					"y": 16,
-					"z": 16
-				}
-			}
-		},
-
-		"slightly_anvil_south_north": {
-			"id": 1231,
-			"minecraft": {
-				"id": 145,
-				"meta": 6
-			},
-			"pocket": {
-				"id": 145,
-				"meta": 6
-			},
-			"solid": true,
-			"hardness": 5,
-			"blast_resistance": 6000,
-			"opacity": 0,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 2,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 14,
-					"y": 16,
-					"z": 16
-				}
-			}
-		},
-
-		"very_anvil_north_south": {
-			"id": 1232,
-			"minecraft": {
-				"id": 145,
-				"meta": 8
-			},
-			"pocket": {
-				"id": 145,
-				"meta": 8
-			},
-			"solid": true,
-			"hardness": 5,
-			"blast_resistance": 6000,
-			"opacity": 0,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 2,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 14,
-					"y": 16,
-					"z": 16
-				}
-			}
-		},
-
-		"very_anvil_south_north": {
-			"id": 1233,
-			"minecraft": {
-				"id": 145,
-				"meta": 10
-			},
-			"pocket": {
-				"id": 145,
-				"meta": 10
-			},
-			"solid": true,
-			"hardness": 5,
-			"blast_resistance": 6000,
-			"opacity": 0,
-			"luminance": 0,
-			"bounding_box": {
-				"min": {
-					"x": 2,
-					"y": 0,
-					"z": 0
-				},
-				"max": {
-					"x": 14,
-					"y": 16,
-					"z": 16
-				}
-			}
-		},
-
 		"anvil_east_west": {
-			"id": 1234,
+			"id": 1229,
 			"minecraft": {
 				"id": 145,
 				"meta": 1
@@ -32763,19 +32618,164 @@
 					"x": 16,
 					"y": 16,
 					"z": 14
+				}
+			}
+		},
+
+		"anvil_south_north": {
+			"id": 1230,
+			"minecraft": {
+				"id": 145,
+				"meta": 2
+			},
+			"pocket": {
+				"id": 145,
+				"meta": 2
+			},
+			"solid": true,
+			"hardness": 5,
+			"blast_resistance": 6000,
+			"opacity": 0,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 2,
+					"y": 0,
+					"z": 0
+				},
+				"max": {
+					"x": 14,
+					"y": 16,
+					"z": 16
 				}
 			}
 		},
 
 		"anvil_west_east": {
+			"id": 1231,
+			"minecraft": {
+				"id": 145,
+				"meta": 3
+			},
+			"pocket": {
+				"id": 145,
+				"meta": 3
+			},
+			"solid": true,
+			"hardness": 5,
+			"blast_resistance": 6000,
+			"opacity": 0,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 0,
+					"y": 0,
+					"z": 2
+				},
+				"max": {
+					"x": 16,
+					"y": 16,
+					"z": 14
+				}
+			}
+		},
+
+		"slightly_damaged_anvil_north_south": {
+			"id": 1232,
+			"minecraft": {
+				"id": 145,
+				"meta": 4
+			},
+			"pocket": {
+				"id": 145,
+				"meta": 4
+			},
+			"solid": true,
+			"hardness": 5,
+			"blast_resistance": 6000,
+			"opacity": 0,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 2,
+					"y": 0,
+					"z": 0
+				},
+				"max": {
+					"x": 14,
+					"y": 16,
+					"z": 16
+				}
+			}
+		},
+
+		"slightly_damaged_anvil_east_west": {
+			"id": 1233,
+			"minecraft": {
+				"id": 145,
+				"meta": 5
+			},
+			"pocket": {
+				"id": 145,
+				"meta": 5
+			},
+			"solid": true,
+			"hardness": 5,
+			"blast_resistance": 6000,
+			"opacity": 0,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 0,
+					"y": 0,
+					"z": 2
+				},
+				"max": {
+					"x": 16,
+					"y": 16,
+					"z": 14
+				}
+			}
+		},
+
+		"slightly_damaged_anvil_south_north": {
+			"id": 1234,
+			"minecraft": {
+				"id": 145,
+				"meta": 6
+			},
+			"pocket": {
+				"id": 145,
+				"meta": 6
+			},
+			"solid": true,
+			"hardness": 5,
+			"blast_resistance": 6000,
+			"opacity": 0,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 2,
+					"y": 0,
+					"z": 0
+				},
+				"max": {
+					"x": 14,
+					"y": 16,
+					"z": 16
+				}
+			}
+		},
+
+		"slightly_damaged_anvil_west_east": {
 			"id": 1235,
 			"minecraft": {
 				"id": 145,
-				"meta": 3
+				"meta": 7
 			},
 			"pocket": {
 				"id": 145,
-				"meta": 3
+				"meta": 7
 			},
 			"solid": true,
 			"hardness": 5,
@@ -32796,15 +32796,15 @@
 			}
 		},
 
-		"slightly_anvil_east_west": {
+		"very_damaged_anvil_north_south": {
 			"id": 1236,
 			"minecraft": {
 				"id": 145,
-				"meta": 5
+				"meta": 8
 			},
 			"pocket": {
 				"id": 145,
-				"meta": 5
+				"meta": 8
 			},
 			"solid": true,
 			"hardness": 5,
@@ -32813,27 +32813,27 @@
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 2,
 					"y": 0,
-					"z": 2
+					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 14,
 					"y": 16,
-					"z": 14
+					"z": 16
 				}
 			}
 		},
 
-		"slightly_anvil_west_east": {
+		"very_damaged_anvil_east_west": {
 			"id": 1237,
 			"minecraft": {
 				"id": 145,
-				"meta": 7
+				"meta": 9
 			},
 			"pocket": {
 				"id": 145,
-				"meta": 7
+				"meta": 9
 			},
 			"solid": true,
 			"hardness": 5,
@@ -32854,15 +32854,15 @@
 			}
 		},
 
-		"very_anvil_east_west": {
+		"very_damaged_anvil_south_north": {
 			"id": 1238,
 			"minecraft": {
 				"id": 145,
-				"meta": 9
+				"meta": 10
 			},
 			"pocket": {
 				"id": 145,
-				"meta": 9
+				"meta": 10
 			},
 			"solid": true,
 			"hardness": 5,
@@ -32871,19 +32871,19 @@
 			"luminance": 0,
 			"bounding_box": {
 				"min": {
-					"x": 0,
+					"x": 2,
 					"y": 0,
-					"z": 2
+					"z": 0
 				},
 				"max": {
-					"x": 16,
+					"x": 14,
 					"y": 16,
-					"z": 14
+					"z": 16
 				}
 			}
 		},
 
-		"very_anvil_west_east": {
+		"very_damaged_anvil_west_east": {
 			"id": 1239,
 			"minecraft": {
 				"id": 145,
@@ -35569,9 +35569,12 @@
 			}
 		},
 
-		"purpur_pillar": {
+		"purpur_pillar_vertical": {
 			"id": 1346,
-			"minecraft": 202,
+			"minecraft": {
+				"id": 202,
+				"meta": 0
+			},
 			"pocket": {
 				"id": 201,
 				"meta": 2
@@ -35595,8 +35598,66 @@
 			}
 		},
 
-		"magma_block": {
+		"purpur_pillar_east_west": {
 			"id": 1347,
+			"minecraft": {
+				"id": 202,
+				"meta": 4
+			},
+			"pocket": {
+				"id": 201,
+				"meta": 6
+			},
+			"solid": true,
+			"hardness": 1.5,
+			"blast_resistance": 30,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"max": {
+					"x": 16,
+					"y": 16,
+					"z": 16
+				}
+			}
+		},
+
+		"purpur_pillar_north_south": {
+			"id": 1348,
+			"minecraft": {
+				"id": 202,
+				"meta": 8
+			},
+			"pocket": {
+				"id": 201,
+				"meta": 10
+			},
+			"solid": true,
+			"hardness": 1.5,
+			"blast_resistance": 30,
+			"opacity": 15,
+			"luminance": 0,
+			"bounding_box": {
+				"min": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"max": {
+					"x": 16,
+					"y": 16,
+					"z": 16
+				}
+			}
+		},
+
+		"magma_block": {
+			"id": 1349,
 			"minecraft": 213,
 			"solid": true,
 			"hardness": 0.5,
@@ -35618,7 +35679,7 @@
 		},
 
 		"nether_wart_block": {
-			"id": 1348,
+			"id": 1350,
 			"minecraft": 214,
 			"solid": true,
 			"hardness": 1,
@@ -35640,7 +35701,7 @@
 		},
 
 		"bone_block_vertical": {
-			"id": 1349,
+			"id": 1351,
 			"minecraft": {
 				"id": 216,
 				"meta": 0
@@ -35665,7 +35726,7 @@
 		},
 
 		"bone_block_east_west": {
-			"id": 1350,
+			"id": 1352,
 			"minecraft": {
 				"id": 216,
 				"meta": 4
@@ -35690,7 +35751,7 @@
 		},
 
 		"bone_block_north_south": {
-			"id": 1351,
+			"id": 1353,
 			"minecraft": {
 				"id": 216,
 				"meta": 8
@@ -35714,8 +35775,18 @@
 			}
 		},
 
+		"structure_void": {
+			"id": 1354,
+			"minecraft": 217,
+			"solid": false,
+			"hardness": -1,
+			"blast_resistance": 0,
+			"opacity": 0,
+			"luminance": 0
+		},
+
 		"white_shulker_box": {
-			"id": 1352,
+			"id": 1355,
 			"minecraft": 219,
 			"solid": true,
 			"hardness": 6,
@@ -35737,7 +35808,7 @@
 		},
 
 		"orange_shulker_box": {
-			"id": 1353,
+			"id": 1356,
 			"minecraft": 220,
 			"solid": true,
 			"hardness": 6,
@@ -35759,7 +35830,7 @@
 		},
 
 		"magenta_shulker_box": {
-			"id": 1354,
+			"id": 1357,
 			"minecraft": 221,
 			"solid": true,
 			"hardness": 6,
@@ -35781,7 +35852,7 @@
 		},
 
 		"light_blue_shulker_box": {
-			"id": 1355,
+			"id": 1358,
 			"minecraft": 222,
 			"solid": true,
 			"hardness": 6,
@@ -35803,7 +35874,7 @@
 		},
 
 		"yellow_shulker_box": {
-			"id": 1356,
+			"id": 1359,
 			"minecraft": 223,
 			"solid": true,
 			"hardness": 6,
@@ -35825,7 +35896,7 @@
 		},
 
 		"lime_shulker_box": {
-			"id": 1357,
+			"id": 1360,
 			"minecraft": 224,
 			"solid": true,
 			"hardness": 6,
@@ -35847,7 +35918,7 @@
 		},
 
 		"pink_shulker_box": {
-			"id": 1358,
+			"id": 1361,
 			"minecraft": 225,
 			"solid": true,
 			"hardness": 6,
@@ -35869,7 +35940,7 @@
 		},
 
 		"gray_shulker_box": {
-			"id": 1359,
+			"id": 1362,
 			"minecraft": 226,
 			"solid": true,
 			"hardness": 6,
@@ -35890,8 +35961,8 @@
 			}
 		},
 
-		"light_shulker_box": {
-			"id": 1360,
+		"light_gray_shulker_box": {
+			"id": 1363,
 			"minecraft": 227,
 			"solid": true,
 			"hardness": 6,
@@ -35913,7 +35984,7 @@
 		},
 
 		"cyan_shulker_box": {
-			"id": 1361,
+			"id": 1364,
 			"minecraft": 228,
 			"solid": true,
 			"hardness": 6,
@@ -35935,7 +36006,7 @@
 		},
 
 		"purple_shulker_box": {
-			"id": 1362,
+			"id": 1365,
 			"minecraft": 229,
 			"solid": true,
 			"hardness": 6,
@@ -35957,7 +36028,7 @@
 		},
 
 		"blue_shulker_box": {
-			"id": 1363,
+			"id": 1366,
 			"minecraft": 230,
 			"solid": true,
 			"hardness": 6,
@@ -35979,7 +36050,7 @@
 		},
 
 		"brown_shulker_box": {
-			"id": 1364,
+			"id": 1367,
 			"minecraft": 231,
 			"solid": true,
 			"hardness": 6,
@@ -36001,7 +36072,7 @@
 		},
 
 		"green_shulker_box": {
-			"id": 1365,
+			"id": 1368,
 			"minecraft": 232,
 			"solid": true,
 			"hardness": 6,
@@ -36023,7 +36094,7 @@
 		},
 
 		"red_shulker_box": {
-			"id": 1366,
+			"id": 1369,
 			"minecraft": 233,
 			"solid": true,
 			"hardness": 6,
@@ -36045,7 +36116,7 @@
 		},
 
 		"black_shulker_box": {
-			"id": 1367,
+			"id": 1370,
 			"minecraft": 234,
 			"solid": true,
 			"hardness": 6,
@@ -36067,7 +36138,7 @@
 		},
 
 		"update_block": {
-			"id": 1368,
+			"id": 1371,
 			"pocket": 248,
 			"solid": true,
 			"hardness": 0,
@@ -36089,7 +36160,7 @@
 		},
 
 		"ateupd_block": {
-			"id": 1369,
+			"id": 1372,
 			"pocket": 249,
 			"solid": true,
 			"hardness": 0,
@@ -36111,7 +36182,7 @@
 		},
 
 		"structure_block_save": {
-			"id": 1370,
+			"id": 1373,
 			"minecraft": {
 				"id": 255,
 				"meta": 0
@@ -36136,7 +36207,7 @@
 		},
 
 		"structure_block_load": {
-			"id": 1371,
+			"id": 1374,
 			"minecraft": {
 				"id": 255,
 				"meta": 1
@@ -36161,7 +36232,7 @@
 		},
 
 		"structure_block_corner": {
-			"id": 1372,
+			"id": 1375,
 			"minecraft": {
 				"id": 255,
 				"meta": 2
@@ -36186,7 +36257,7 @@
 		},
 
 		"structure_block_data": {
-			"id": 1373,
+			"id": 1376,
 			"minecraft": {
 				"id": 255,
 				"meta": 3

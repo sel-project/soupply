@@ -1,0 +1,1111 @@
+{
+
+	"__software": "Hub-Node Communication",
+	"__protocol": 2,
+	"__website": "https://github.com/sel-project/sel-utils",
+
+	"encoding": {
+
+		"endianness": {
+			"ushort": "little_endian",
+			"*": "big_endian"
+		},
+
+		"id": "ubyte",
+
+		"array_length": "varuint",
+
+		"types": {
+
+			"address": [
+				{
+					"name": "bytes",
+					"type": "ubyte[]"
+				},
+				{
+					"name": "port",
+					"type": "ushort"
+				}
+			],
+
+			"game": [
+				{
+					"name": "type",
+					"type": "ubyte",
+					"constants": {
+						"pocket": 1,
+						"minecraft": 2,
+						"console": 3
+					}
+				},
+				{
+					"name": "protocols",
+					"type": "varuint[]"
+				}
+			],
+
+			"game_info": [
+				{
+					"name": "game",
+					"type": "game"
+				},
+				{
+					"name": "motd",
+					"type": "string"
+				},
+				{
+					"name": "port",
+					"type": "ushort"
+				}
+			],
+
+			"plugin": [
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "version",
+					"type": "string"
+				}
+			],
+
+			"motd": [
+				{
+					"name": "type",
+					"type": "ubyte",
+					"constants": {
+						"pocket": 1,
+						"minecraft": 2,
+						"console": 3
+					}
+				},
+				{
+					"name": "motd",
+					"type": "string"
+				}
+			],
+
+			"skin": [
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "data",
+					"type": "ubyte[]"
+				}
+			]
+
+		}
+
+	},
+
+	"packets": {
+
+		"util": {
+
+			"uncompressed": {
+				"id": 1,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "packets",
+						"type": "ubyte[][]"
+					}
+				]
+			},
+
+			"compressed": {
+				"id": 2,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "size",
+						"type": "varuint"
+					},
+					{
+						"name": "payload",
+						"type": "bytes"
+					}
+				]
+			}
+
+		},
+
+		"login": {
+
+			"connection_request": {
+				"id": 3,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "protocol",
+						"type": "varuint"
+					},
+					{
+						"name": "password",
+						"type": "string"
+					},
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "main",
+						"type": "bool"
+					}
+				]
+			},
+
+			"connection_response": {
+				"id": 4,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "status",
+						"type": "ubyte",
+						"constants": {
+							"ok": 0,
+							"outdated_hub": 1,
+							"outdated_node": 2,
+							"password_required": 3,
+							"wrong_password": 4,
+							"invalid_name_length": 5,
+							"invalid_name_characters": 6,
+							"name_already_used": 7,
+							"name_reserved": 8
+						}
+					},
+					{
+						"name": "protocol",
+						"type": "varuint",
+						"when": "status==1||status==2"
+					}
+				]
+			},
+
+			"hub_info": {
+				"id": 5,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "time",
+						"type": "varulong"
+					},
+					{
+						"name": "server_id",
+						"type": "varulong"
+					},
+					{
+						"name": "reserved_uuids",
+						"type": "varulong"
+					},
+					{
+						"name": "display_name",
+						"type": "string"
+					},
+					{
+						"name": "online_mode",
+						"type": "bool"
+					},
+					{
+						"name": "games_info",
+						"type": "game_info[]"
+					},
+					{
+						"name": "online",
+						"type": "varuint"
+					},
+					{
+						"name": "max",
+						"type": "varint",
+						"constants": {
+							"unlimited": "-1"
+						}
+					},
+					{
+						"name": "language",
+						"type": "string"
+					},
+					{
+						"name": "accepted_languages",
+						"type": "string[]"
+					},
+					{
+						"name": "additional_json",
+						"type": "string"
+					}
+				]
+			},
+
+			"node_info": {
+				"id": 6,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "time",
+						"type": "varulong"
+					},
+					{
+						"name": "max",
+						"type": "varuint",
+						"constants": {
+							"unlimited": 0
+						}
+					},
+					{
+						"name": "accepted_games",
+						"type": "game[]"
+					},
+					{
+						"name": "plugins",
+						"type": "plugin[]"
+					},
+					{
+						"name": "additional_json",
+						"type": "string"
+					}
+				]
+			}
+
+		},
+
+		"status": {
+
+			"add_node": {
+				"id": 7,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "main",
+						"type": "bool"
+					},
+					{
+						"name": "accepted_games",
+						"type": "game[]"
+					}
+				]
+			},
+
+			"remove_node": {
+				"id": 8,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					}
+				]
+			},
+
+			"message_serverbound": {
+				"id": 9,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "addressees",
+						"type": "varuint[]"
+					},
+					{
+						"name": "payload",
+						"type": "ubyte[]"
+					}
+				]
+			},
+
+			"message_clientbound": {
+				"id": 10,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "sender",
+						"type": "varuint"
+					},
+					{
+						"name": "payload",
+						"type": "ubyte[]"
+					}
+				]
+			},
+
+			"players": {
+				"id": 11,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "online",
+						"type": "varuint"
+					},
+					{
+						"name": "max",
+						"type": "varint",
+						"constants": {
+							"unlimited": "-1"
+						}
+					}
+				]
+			},
+
+			"resources_usage": {
+				"id": 12,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "tps",
+						"type": "float"
+					},
+					{
+						"name": "ram",
+						"type": "varulong"
+					},
+					{
+						"name": "cpu",
+						"type": "float"
+					}
+				]
+			},
+
+			"log": {
+				"id": 13,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "timestamp",
+						"type": "varulong"
+					},
+					{
+						"name": "world",
+						"type": "varint",
+						"constants": {
+							"no_world": "-1"
+						}
+					},
+					{
+						"name": "logger",
+						"type": "string",
+						"when": "world<0"
+					},
+					{
+						"name": "message",
+						"type": "string"
+					},
+					{
+						"name": "command_id",
+						"type": "varint"
+					}
+				]
+			},
+
+			"remote_command": {
+				"id": 14,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "origin",
+						"type": "ubyte",
+						"constants": {
+							"hub": 0,
+							"external_console": 1,
+							"rcon": 2
+						}
+					},
+					{
+						"name": "sender",
+						"type": "address",
+						"when": "origin!=0"
+					},
+					{
+						"name": "command",
+						"type": "string"
+					},
+					{
+						"name": "command_id",
+						"type": "varint"
+					}
+				]
+			},
+
+			"update_list": {
+				"id": 15,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "list",
+						"type": "ubyte",
+						"constants": {
+							"whitelist": 0,
+							"blacklist": 1
+						}
+					},
+					{
+						"name": "action",
+						"type": "ubyte",
+						"constants": {
+							"add": 0,
+							"remove": 1
+						}
+					},
+					{
+						"name": "type",
+						"type": "ubyte"
+					}
+				],
+				"variants": {
+					"field": "type",
+					"values": {
+						"by_hub_id": {
+							"value": 0,
+							"fields": [
+								{
+									"name": "hub_id",
+									"type": "varuint"
+								}
+							]
+						},
+						"by_name": {
+							"value": 1,
+							"fields": [
+								{
+									"name": "username",
+									"type": "string"
+								}
+							]
+						},
+						"by_uuid": {
+							"value": 2,
+							"fields": [
+								{
+									"name": "game",
+									"type": "ubyte",
+									"constants": {
+										"pocket": 1,
+										"minecraft": 2,
+										"console": 3
+									}
+								},
+								{
+									"name": "uuid",
+									"type": "uuid"
+								}
+							]
+						}
+					}
+				}
+			},
+
+			"reload": {
+				"id": 16,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "display_name",
+						"type": "string"
+					},
+					{
+						"name": "motds",
+						"type": "motd[]"
+					},
+					{
+						"name": "language",
+						"type": "string"
+					},
+					{
+						"name": "accepted_languages",
+						"type": "string[]"
+					},
+					{
+						"name": "social_json",
+						"type": "string"
+					}
+				]
+			}
+
+		},
+
+		"player": {
+
+			"add": {
+				"id": 17,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "reason",
+						"type": "ubyte",
+						"constants": {
+							"first_join": 0,
+							"transferred": 1,
+							"forcibly_transferred": 2
+						}
+					},
+					{
+						"name": "type",
+						"type": "ubyte"
+					},
+					{
+						"name": "protocol",
+						"type": "varuint"
+					},
+					{
+						"name": "version",
+						"type": "string"
+					},
+					{
+						"name": "username",
+						"type": "string"
+					},
+					{
+						"name": "display_name",
+						"type": "string"
+					},
+					{
+						"name": "dimension",
+						"type": "ubyte",
+						"when": "reason!=0"
+					},
+					{
+						"name": "view_distance",
+						"type": "varuint",
+						"when": "reason!=0"
+					},
+					{
+						"name": "client_address",
+						"type": "address"
+					},
+					{
+						"name": "server_address",
+						"type": "string"
+					},
+					{
+						"name": "server_port",
+						"type": "ushort"
+					},
+					{
+						"name": "uuid",
+						"type": "uuid"
+					},
+					{
+						"name": "skin",
+						"type": "skin"
+					},
+					{
+						"name": "language",
+						"type": "string"
+					},
+					{
+						"name": "input_mode",
+						"type": "ubyte",
+						"constants": {
+							"keyboard": 0,
+							"touch": 1,
+							"controller": 2
+						}
+					},
+					{
+						"name": "latency",
+						"type": "varuint"
+					}
+				],
+				"variants": {
+					"field": "type",
+					"values": {
+						"pocket": {
+							"value": 1,
+							"fields": [
+								{
+									"name": "xuid",
+									"type": "varlong"
+								},
+								{
+									"name": "edu",
+									"type": "bool"
+								},
+								{
+									"name": "packet_loss",
+									"type": "float"
+								},
+								{
+									"name": "device_os",
+									"type": "ubyte",
+									"constants": {
+										"unknown": 0,
+										"android": 1,
+										"ios": 2,
+										"fire_os": 3,
+										"gear_vr": 4,
+										"apple_tv": 5,
+										"fire_tv": 6,
+										"windows10": 7
+									}
+								},
+								{
+									"name": "device_model",
+									"type": "string"
+								}
+							]
+						},
+						"minecraft": {
+							"value": 2,
+							"fields": []
+						},
+						"console": {
+							"value": 3,
+							"fields": []
+						}
+					}
+				}
+			},
+
+			"remove": {
+				"id": 18,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "reason",
+						"type": "ubyte",
+						"constants": {
+							"left": 0,
+							"timed_out": 1,
+							"kicked": 2,
+							"transferred": 3
+						}
+					}
+				]
+			},
+
+			"kick": {
+				"id": 19,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "reason",
+						"type": "string"
+					},
+					{
+						"name": "translation",
+						"type": "bool"
+					},
+					{
+						"name": "parameters",
+						"type": "string[]",
+						"when": "translation==true"
+					}
+				]
+			},
+
+			"transfer": {
+				"id": 20,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "node",
+						"type": "varuint"
+					},
+					{
+						"name": "on_fail",
+						"type": "ubyte",
+						"constants": {
+							"disconnect": 0,
+							"auto": 1,
+							"reconnect": 2
+						}
+					}
+				]
+			},
+
+			"update_display_name": {
+				"id": 21,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "display_name",
+						"type": "string"
+					}
+				]
+			},
+
+			"update_world": {
+				"id": 22,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "world",
+						"type": "varuint"
+					}
+				]
+			},
+
+			"update_view_distance": {
+				"id": 23,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "view_distance",
+						"type": "varuint"
+					}
+				]
+			},
+
+			"update_language": {
+				"id": 24,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "language",
+						"type": "string"
+					}
+				]
+			},
+
+			"update_gamemode": {
+				"id": 25,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "gamemode",
+						"type": "ubyte"
+					}
+				]
+			},
+
+			"update_input_mode": {
+				"id": 26,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "input_mode",
+						"type": "ubyte",
+						"constants": {
+							"keyboard": 0,
+							"touch": 1,
+							"controller": 2
+						}
+					}
+				]
+			},
+
+			"update_latency": {
+				"id": 27,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "latency",
+						"type": "varuint"
+					}
+				]
+			},
+
+			"update_packet_loss": {
+				"id": 28,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "packet_loss",
+						"type": "float"
+					}
+				]
+			},
+
+			"game_packet": {
+				"id": 29,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "packet",
+						"type": "bytes"
+					}
+				]
+			},
+
+			"ordered_game_packet": {
+				"id": 30,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "hub_id",
+						"type": "varuint"
+					},
+					{
+						"name": "order",
+						"type": "varuint"
+					},
+					{
+						"name": "packet",
+						"type": "bytes"
+					}
+				]
+			}
+
+		},
+
+		"world": {
+
+			"add": {
+				"id": 31,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "world_id",
+						"type": "varuint"
+					},
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "dimension",
+						"type": "ubyte",
+						"constants": {
+							"overworld": 0,
+							"nether": 1,
+							"end": 2
+						}
+					},
+					{
+						"name": "generator",
+						"type": "ubyte",
+						"constants": {
+							"default": 0,
+							"flat": 1
+						}
+					},
+					{
+						"name": "difficulty",
+						"type": "ubyte",
+						"constants": {
+							"peaceful": 0,
+							"easy": 1,
+							"normal": 2,
+							"hard": 3,
+							"hardcore": 4
+						}
+					},
+					{
+						"name": "gamemode",
+						"type": "ubyte",
+						"constants": {
+							"survival": 0,
+							"creative": 1,
+							"adventure": 2,
+							"spectator": 3
+						}
+					},
+					{
+						"name": "spawn_point",
+						"type": "varint<xz>"
+					},
+					{
+						"name": "time",
+						"type": "short"
+					},
+					{
+						"name": "seed",
+						"type": "varint"
+					},
+					{
+						"name": "parent",
+						"type": "varint"
+					}
+				]
+			},
+
+			"remove": {
+				"id": 32,
+				"clientbound": false,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "world_id",
+						"type": "varuint"
+					}
+				]
+			},
+
+			"update_difficulty": {
+				"id": 33,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "world_id",
+						"type": "varuint"
+					},
+					{
+						"name": "difficulty",
+						"type": "ubyte"
+					}
+				]
+			},
+
+			"update_gamemode": {
+				"id": 34,
+				"clientbound": true,
+				"serverbound": true,
+				"fields": [
+					{
+						"name": "world_id",
+						"type": "varuint"
+					},
+					{
+						"name": "gamemode",
+						"type": "ubyte"
+					}
+				]
+			},
+
+			"request_creation": {
+				"id": 35,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "dimension",
+						"type": "ubyte"
+					},
+					{
+						"name": "generator",
+						"type": "ubyte"
+					},
+					{
+						"name": "difficulty",
+						"type": "ubyte"
+					},
+					{
+						"name": "gamemode",
+						"type": "ubyte"
+					},
+					{
+						"name": "seed",
+						"type": "varint"
+					},
+					{
+						"name": "parent",
+						"type": "varint"
+					}
+				]
+			}
+
+		},
+
+		"panel": {
+
+			"connection": {
+				"id": 36,
+				"clientbound": true,
+				"serverbound": false,
+				"fields": [
+					{
+						"name": "hash",
+						"type": "ubyte[64]"
+					},
+					{
+						"name": "address",
+						"type": "ubyte[]"
+					},
+					{
+						"name": "world_id",
+						"type": "varuint"
+					}
+				]
+			}
+
+		}
+
+	}
+
+}

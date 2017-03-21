@@ -139,7 +139,7 @@ public final class Items {
 		add(new Items("iron block", new ItemData(42, 0), new ItemData(42, 0), (byte)64));
 		add(new Items("double stone slab", new ItemData(43, 0), new ItemData(43, 0), (byte)64));
 		add(new Items("double sandstone slab", new ItemData(43, 1), new ItemData(43, 1), (byte)64));
-		add(new Items("double woodstone slab", new ItemData(43, 2), new ItemData(43, 2), (byte)64));
+		add(new Items("double stone wooden slab", new ItemData(43, 2), new ItemData(43, 2), (byte)64));
 		add(new Items("double cobblestone slab", new ItemData(43, 3), new ItemData(43, 3), (byte)64));
 		add(new Items("double brick slab", new ItemData(43, 4), new ItemData(43, 4), (byte)64));
 		add(new Items("double stone brick slab", new ItemData(43, 5), new ItemData(43, 5), (byte)64));
@@ -147,7 +147,7 @@ public final class Items {
 		add(new Items("double quartz slab", new ItemData(43, 7), new ItemData(43, 7), (byte)64));
 		add(new Items("stone slab", new ItemData(44, 0), new ItemData(44, 0), (byte)64));
 		add(new Items("sandstone slab", new ItemData(44, 1), new ItemData(44, 1), (byte)64));
-		add(new Items("woodstone slab", new ItemData(44, 2), new ItemData(44, 2), (byte)64));
+		add(new Items("stone wooden slab", new ItemData(44, 2), new ItemData(44, 2), (byte)64));
 		add(new Items("cobblestone slab", new ItemData(44, 3), new ItemData(44, 3), (byte)64));
 		add(new Items("bricks slab", new ItemData(44, 4), new ItemData(44, 4), (byte)64));
 		add(new Items("stone brick slab", new ItemData(44, 5), new ItemData(44, 5), (byte)64));
@@ -373,7 +373,7 @@ public final class Items {
 		add(new Items("double tallgrass", new ItemData(175, 2), new ItemData(175, 2), (byte)64));
 		add(new Items("large fern", new ItemData(175, 3), new ItemData(175, 3), (byte)64));
 		add(new Items("rose bush", new ItemData(175, 4), new ItemData(175, 4), (byte)64));
-		add(new Items("poeny", new ItemData(175, 5), new ItemData(175, 5), (byte)64));
+		add(new Items("peony", new ItemData(175, 5), new ItemData(175, 5), (byte)64));
 		add(new Items("planted banner", new ItemData(176, 0), new ItemData(176, 0), (byte)64));
 		add(new Items("wall banner", new ItemData(177, 0), new ItemData(177, 0), (byte)64));
 		add(new Items("inverted daylight sensor", new ItemData(178, 0), new ItemData(178, 0), (byte)64));
@@ -488,14 +488,14 @@ public final class Items {
 		add(new Items("seeds", new ItemData(295, 0), new ItemData(295, 0), (byte)64));
 		add(new Items("wheat", new ItemData(296, 0), new ItemData(296, 0), (byte)64));
 		add(new Items("bread", new ItemData(297, 0), new ItemData(297, 0), (byte)64));
-		add(new Items("leather armor", new ItemData(298, 0), new ItemData(298, 0), (byte)1));
+		add(new Items("leather cap", new ItemData(298, 0), new ItemData(298, 0), (byte)1));
 		add(new Items("leather tunic", new ItemData(299, 0), new ItemData(299, 0), (byte)1));
 		add(new Items("leather pants", new ItemData(300, 0), new ItemData(300, 0), (byte)1));
 		add(new Items("leather boots", new ItemData(301, 0), new ItemData(301, 0), (byte)1));
-		add(new Items("chainmail helmet", new ItemData(302, 0), new ItemData(302, 0), (byte)1));
-		add(new Items("chainmail chestplate", new ItemData(303, 0), new ItemData(303, 0), (byte)1));
-		add(new Items("chainmail leggings", new ItemData(304, 0), new ItemData(304, 0), (byte)1));
-		add(new Items("chainmail boots", new ItemData(305, 0), new ItemData(305, 0), (byte)1));
+		add(new Items("chain helmet", new ItemData(302, 0), new ItemData(302, 0), (byte)1));
+		add(new Items("chain chestplate", new ItemData(303, 0), new ItemData(303, 0), (byte)1));
+		add(new Items("chain leggings", new ItemData(304, 0), new ItemData(304, 0), (byte)1));
+		add(new Items("chain boots", new ItemData(305, 0), new ItemData(305, 0), (byte)1));
 		add(new Items("iron helmet", new ItemData(306, 0), new ItemData(306, 0), (byte)1));
 		add(new Items("iron chestplate", new ItemData(307, 0), new ItemData(307, 0), (byte)1));
 		add(new Items("iron leggings", new ItemData(308, 0), new ItemData(308, 0), (byte)1));
@@ -522,7 +522,7 @@ public final class Items {
 		add(new Items("minecart", new ItemData(328, 0), new ItemData(328, 0), (byte)1));
 		add(new Items("saddle", new ItemData(329, 0), new ItemData(329, 0), (byte)1));
 		add(new Items("iron door", new ItemData(330, 0), new ItemData(330, 0), (byte)64));
-		add(new Items("redstone", new ItemData(331, 0), new ItemData(331, 0), (byte)64));
+		add(new Items("redstone dust", new ItemData(331, 0), new ItemData(331, 0), (byte)64));
 		add(new Items("snowball", new ItemData(332, 0), new ItemData(332, 0), (byte)16));
 		add(new Items("oak boat", new ItemData(333, 0), new ItemData(333, 0), (byte)1));
 		add(new Items("leather", new ItemData(334, 0), new ItemData(334, 0), (byte)64));
@@ -670,7 +670,7 @@ public final class Items {
 		add(new Items("prismarine crystals", new ItemData(410, 0), new ItemData(422, 0), (byte)64));
 		add(new Items("raw rabbit", new ItemData(411, 0), new ItemData(411, 0), (byte)64));
 		add(new Items("cooked rabbit", new ItemData(412, 0), new ItemData(412, 0), (byte)64));
-		add(new Items("rabbit stew", new ItemData(413, 0), new ItemData(413, 0), (byte)64));
+		add(new Items("rabbit stew", new ItemData(413, 0), new ItemData(413, 0), (byte)1));
 		add(new Items("rabbit foot", new ItemData(414, 0), new ItemData(414, 0), (byte)64));
 		add(new Items("rabbit hide", new ItemData(415, 0), new ItemData(415, 0), (byte)64));
 		add(new Items("armor stand", new ItemData(416, 0), null, (byte)16));

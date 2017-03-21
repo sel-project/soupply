@@ -295,7 +295,7 @@ public class MetadataException extends RuntimeException {
 		bool usesMetadata;
 		
 		@property string convert(string type) {
-			auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
+			auto end = min(cast(size_t)type.indexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
 			auto t = type[0..end];
 			auto e = type[end..$].replaceAll(ctRegex!`\[[0-9]{1,}\]`, "[]");
 			auto a = t in defaultAliases;
