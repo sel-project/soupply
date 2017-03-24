@@ -33,6 +33,11 @@ public class Add extends Packet {
 	public static final byte TRANSFERRED = 1;
 	public static final byte FORCIBLY_TRANSFERRED = 2;
 
+	// dimension
+	public static final byte OVERWORLD = 0;
+	public static final byte NETHER = 1;
+	public static final byte END = 2;
+
 	// input mode
 	public static final byte KEYBOARD = 0;
 	public static final byte TOUCH = 1;
@@ -75,9 +80,7 @@ public class Add extends Packet {
 	public String displayName;
 
 	/**
-	 * Dimension in which the player was playing before being transferred. It could diffent
-	 * from client's game type and version because the dimension's ids are different in
-	 * Minecraft and Minecraft: Pocket Edition.
+	 * Dimension in which the player was playing before being transferred.
 	 * It's used to send the game's change dimension packet to despawn old entities and
 	 * delete old chunks.
 	 */

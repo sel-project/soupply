@@ -17,7 +17,7 @@ import std.uuid : UUID;
 import sul.utils.buffer;
 import sul.utils.var;
 
-import sul.metadata.pocket101;
+static if(__traits(compiles, { import sul.metadata.pocket101; })) import sul.metadata.pocket101;
 
 struct PackWithSize {
 

@@ -16,6 +16,7 @@ import sul.utils.*;
 /**
  * Notifies the node that the hub's reloadeable settings have been reloaded and that
  * the node should also reload its resources (for example plugin's settings).
+ * The fields of the packet may be empty if not updated during the reload.
  */
 public class Reload extends Packet {
 
@@ -29,8 +30,19 @@ public class Reload extends Packet {
 		return ID;
 	}
 
+	/**
+	 * Display name of the server, same as HubInfo.displayName.
+	 */
 	public String displayName;
+
+	/**
+	 * New MOTDs (message of the day) for the supported games.
+	 */
 	public sul.protocol.hncom2.types.Motd[] motds = new sul.protocol.hncom2.types.Motd[0];
+
+	/**
+	 * Main language of the server, in the same format as HubInfo.language.
+	 */
 	public String language;
 	public String[] acceptedLanguages = new String[0];
 	public String socialJson;

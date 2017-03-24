@@ -17,7 +17,7 @@ import std.uuid : UUID;
 import sul.utils.buffer;
 import sul.utils.var;
 
-import sul.metadata.minecraft210;
+static if(__traits(compiles, { import sul.metadata.minecraft210; })) import sul.metadata.minecraft210;
 
 struct Statistic {
 

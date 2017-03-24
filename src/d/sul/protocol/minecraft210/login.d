@@ -20,7 +20,7 @@ import sul.utils.var;
 
 static import sul.protocol.minecraft210.types;
 
-import sul.metadata.minecraft210;
+static if(__traits(compiles, { import sul.metadata.minecraft210; })) import sul.metadata.minecraft210;
 
 alias Packets = TypeTuple!(Disconnect, LoginStart, EncryptionRequest, EncryptionResponse, LoginSuccess, SetCompression);
 

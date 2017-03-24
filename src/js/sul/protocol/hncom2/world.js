@@ -145,7 +145,7 @@ const World = {
 
 		static get ID(){ return 33; }
 
-		static get CLIENTBOUND(){ return true; }
+		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
 
 		constructor(worldId=0, difficulty=0) {
@@ -188,7 +188,7 @@ const World = {
 
 		static get ID(){ return 34; }
 
-		static get CLIENTBOUND(){ return true; }
+		static get CLIENTBOUND(){ return false; }
 		static get SERVERBOUND(){ return true; }
 
 		constructor(worldId=0, gamemode=0) {

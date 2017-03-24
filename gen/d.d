@@ -35,7 +35,7 @@ void d(Attributes[string] attributes, Protocols[string] protocols, Metadatas[str
 	mkdirRecurse("../src/d/sul/utils");
 
 	// about
-	write("../src/d/sul/utils/about.d", "package sul.utils.about;\n\nenum __sul = " ~ to!string(sulVersion) ~ ";");
+	write("../src/d/sul/utils/about.d", "module sul.utils.about;\n\nenum __sul = " ~ to!string(sulVersion) ~ ";");
 
 	// write varints
 	write("../src/d/sul/utils/var.d", q{
@@ -433,7 +433,7 @@ alias varulong = var!ulong;
 		// types
 		string t = "module sul.protocol." ~ game ~ ".types;\n\n";
 		t ~= "import std.bitmanip : write, peek;\nstatic import std.conv;\nimport std.system : Endian;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\nimport sul.utils.buffer;\nimport sul.utils.var;\n\n";
-		if(game in metadatas) t ~= "import sul.metadata." ~ game ~ ";\n\n";
+		t ~= "static if(__traits(compiles, { import sul.metadata." ~ game ~ "; })) import sul.metadata." ~ game ~ ";\n\n";
 		foreach(type ; prts.data.types) {
 			immutable has_length = type.length.length != 0;
 			if(type.description.length) t ~= ddoc("", type.description);
@@ -478,7 +478,7 @@ alias varulong = var!ulong;
 			data ~= "module sul.protocol." ~ game ~ "." ~ section.name ~ ";\n\n";
 			data ~= "import std.bitmanip : write, peek;\nstatic import std.conv;\nimport std.system : Endian;\nimport std.typetuple : TypeTuple;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\n";
 			data ~= "import sul.utils.buffer;\nimport sul.utils.var;\n\nstatic import sul.protocol." ~ game ~ ".types;\n\n";
-			if(game in metadatas) data ~= "import sul.metadata." ~ game ~ ";\n\n";
+			data ~= "static if(__traits(compiles, { import sul.metadata." ~ game ~ "; })) import sul.metadata." ~ game ~ ";\n\n";
 			string[] names;
 			foreach(packet ; section.packets) names ~= toPascalCase(packet.name);
 			data ~= "alias Packets = TypeTuple!(" ~ names.join(", ") ~ ");\n\n";
@@ -644,9 +644,9 @@ alias varulong = var!ulong;
 			write("../src/d/sul/metadata/" ~ game ~ ".d", data, "metadata/" ~ game);
 		} else if(usesMetadata) {
 			// dummy
-			string data = "module sul.metadata." ~ game ~ ";\n\nimport sul.utils.metadata;\n\n";
+			string data = "module sul.metadata." ~ game ~ ";\n\nimport sul.utils.buffer : Buffer;\n\n";
 			data ~= "class Metadata {\n\n";
-			data ~= "\tpublic pure nothrow @safe @nogc ubyte[] encode() {\n\t\treturn new ubyte[0];\n\t}\n\n";
+			data ~= "\tpublic pure nothrow @safe @nogc ubyte[] encode() {\n\t\treturn (ubyte[]).init;\n\t}\n\n";
 			data ~= "\tpublic static pure nothrow @safe @nogc Metadata decode(Buffer buffer) {\n\t\treturn null;\n\t}\n\n";
 			data ~= "}";
 			write("../src/d/sul/metadata/" ~ game ~ ".d", data);

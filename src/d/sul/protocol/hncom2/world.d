@@ -20,6 +20,8 @@ import sul.utils.var;
 
 static import sul.protocol.hncom2.types;
 
+static if(__traits(compiles, { import sul.metadata.hncom2; })) import sul.metadata.hncom2;
+
 alias Packets = TypeTuple!(Add, Remove, UpdateDifficulty, UpdateGamemode, RequestCreation);
 
 class Add : Buffer {
@@ -168,7 +170,7 @@ class UpdateDifficulty : Buffer {
 
 	public enum ubyte ID = 33;
 
-	public enum bool CLIENTBOUND = true;
+	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
 	public enum string[] FIELDS = ["worldId", "difficulty"];
@@ -214,7 +216,7 @@ class UpdateGamemode : Buffer {
 
 	public enum ubyte ID = 34;
 
-	public enum bool CLIENTBOUND = true;
+	public enum bool CLIENTBOUND = false;
 	public enum bool SERVERBOUND = true;
 
 	public enum string[] FIELDS = ["worldId", "gamemode"];

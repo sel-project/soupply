@@ -20,6 +20,8 @@ import sul.utils.var;
 
 static import sul.protocol.minecraft108.types;
 
+static if(__traits(compiles, { import sul.metadata.minecraft108; })) import sul.metadata.minecraft108;
+
 alias Packets = TypeTuple!(Disconnect, LoginStart, EncryptionRequest, EncryptionResponse, LoginSuccess, SetCompression);
 
 class Disconnect : Buffer {

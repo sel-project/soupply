@@ -20,6 +20,8 @@ import sul.utils.var;
 
 static import sul.protocol.minecraft47.types;
 
+static if(__traits(compiles, { import sul.metadata.minecraft47; })) import sul.metadata.minecraft47;
+
 alias Packets = TypeTuple!(KeepAlive, JoinGame, ChatMessage, TimeUpdate, EntityEquipment, SpawnPosition, UpdateHealth, Respawn, PlayerPositionAndLook, HeldItemChange, UseBed, Animation, SpawnPlayer, CollectItem, SpawnObject, SpawnMob, SpawnPainting, SpawnExperienceOrb, EntityVelocity, DestroyEntities, Entity, EntityRelativeMove, EntityLook, EntityLookAndRelativeMove, EntityTeleport, EntityHeadLook, EntityStatus, AttachEntity, EntityMetadata, EntityEffect, RemoveEntityEffect, SetExperience, EntityProperties, ChunkData, MultiBlockChange, BlockChange, BlockAction, BlockBreakAnimation, Explosion, Effect, SoundEffect, Particle, ChangeGameState, SpawnGlobalEntity, OpenWindow, CloseWindow, SetSlot, WindowItems, WindowProperty, ConfirmTransaction, UpdateSign, Map, UpdateBlockEntity, OpenSignEditor, Statistics, PlayerListItem, PlayerAbilities, TabComplete, ScoreboardObjective, UpdateScore, DisplayScoreboard, Teams, PluginMessage, Disconnect, ServerDifficulty, CombatEvent, Camera, WorldBorder, Title, PlayerListHeaderAndFooter, ResourcePackSend, UpdateEntityNbt);
 
 class KeepAlive : Buffer {

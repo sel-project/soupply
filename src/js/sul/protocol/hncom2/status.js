@@ -579,6 +579,7 @@ const Status = {
 	/**
 	 * Notifies the node that the hub's reloadeable settings have been reloaded and that
 	 * the node should also reload its resources (for example plugin's settings).
+	 * The fields of the packet may be empty if not updated during the reload.
 	 */
 	Reload: class extends Buffer {
 
@@ -587,6 +588,14 @@ const Status = {
 		static get CLIENTBOUND(){ return true; }
 		static get SERVERBOUND(){ return false; }
 
+		/**
+		 * @param displayName
+		 *        Display name of the server, same as {HubInfo.displayName}.
+		 * @param motds
+		 *        New MOTDs (message of the day) for the supported games.
+		 * @param language
+		 *        Main language of the server, in the same format as {HubInfo.language}.
+		 */
 		constructor(displayName="", motds=[], language="", acceptedLanguages=[], socialJson="") {
 			super();
 			this.displayName = displayName;

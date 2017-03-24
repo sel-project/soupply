@@ -20,6 +20,8 @@ import sul.utils.var;
 
 static import sul.protocol.raknet8.types;
 
+static if(__traits(compiles, { import sul.metadata.raknet8; })) import sul.metadata.raknet8;
+
 alias Packets = TypeTuple!(Ack, Nack, Encapsulated);
 
 class Ack : Buffer {

@@ -110,6 +110,8 @@
 
 		<section name="util">
 
+			Packets used for sending more than one packet at once.
+
 			<packet name="uncompressed" id="1" clientbound="true" serverbound="true">
 				<field name="packets" type="ubyte[][]" />
 			</packet>
@@ -422,9 +424,16 @@
 
 			<packet name="reload" id="16" clientbound="true" serverbound="false">
 				Notifies the node that the hub's reloadeable settings have been reloaded and that the node should also reload its resources (for example plugin's settings).
-				<field name="display-name" type="string" />
-				<field name="motds" type="motd[]" />
-				<field name="language" type="string" />
+				The fields of the packet may be empty if not updated during the reload.
+				<field name="display-name" type="string">
+					Display name of the server, same as [HubInfo.displayName](#login_hub-info_display-name).
+				</field>
+				<field name="motds" type="motd[]">
+					New MOTDs (message of the day) for the supported games.
+				</field>
+				<field name="language" type="string">
+					Main language of the server, in the same format as [HubInfo.language](#login_hub-info_language).
+				</field>
 				<field name="accepted-languages" type="string[]" />
 				<field name="social-json" type="string" />
 			</packet>
@@ -466,8 +475,11 @@
 					Display name of the player, which can contain formatting codes. By default it's equals to the username but it can be updated by the node using [UpdateDisplayName](#player_update-display-name).
 				</field>
 				<field name="dimension" type="ubyte" when="reason!=0">
-					Dimension in which the player was playing before being transferred. It could diffent from client's game type and version because the dimension's ids are different in Minecraft and Minecraft: Pocket Edition.
+					Dimension in which the player was playing before being transferred.
 					It's used to send the game's change dimension packet to despawn old entities and delete old chunks.
+					<constant name="overworld" value="0" />
+					<constant name="nether" value="1" />
+					<constant name="end" value="2" />
 				</field>
 				<field name="view-distance" type="varuint" when="reason!=0">
 					Client's view distance (or chunk radius). See [UpdateViewDistance.viewDistance](#player_update-view-distance_view-distance) for more informations.
@@ -722,12 +734,12 @@
 				<field name="world-id" type="world-id" />
 			</packet>
 
-			<packet name="update-difficulty" id="33" clientbound="true" serverbound="true">
+			<packet name="update-difficulty" id="33" clientbound="false" serverbound="true">
 				<field name="world-id" type="world-id" />
 				<field name="difficulty" type="ubyte" />
 			</packet>
 
-			<packet name="update-gamemode" id="34" clientbound="true" serverbound="true">
+			<packet name="update-gamemode" id="34" clientbound="false" serverbound="true">
 				<field name="world-id" type="world-id" />
 				<field name="gamemode" type="ubyte" />
 			</packet>

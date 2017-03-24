@@ -20,6 +20,8 @@ import sul.utils.var;
 
 static import sul.protocol.raknet8.types;
 
+static if(__traits(compiles, { import sul.metadata.raknet8; })) import sul.metadata.raknet8;
+
 alias Packets = TypeTuple!(Ping, Pong, OpenConnectionRequest1, OpenConnectionReply1, OpenConnectionRequest2, OpenConnectionReply2);
 
 class Ping : Buffer {

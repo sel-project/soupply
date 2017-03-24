@@ -6,6 +6,9 @@
  * Repository: https://github.com/sel-project/sel-utils
  * Generated from https://github.com/sel-project/sel-utils/blob/master/xml/protocol/hncom2.xml
  */
+/**
+ * Packets used for sending more than one packet at once.
+ */
 module sul.protocol.hncom2.util;
 
 import std.bitmanip : write, peek;
@@ -19,6 +22,8 @@ import sul.utils.buffer;
 import sul.utils.var;
 
 static import sul.protocol.hncom2.types;
+
+static if(__traits(compiles, { import sul.metadata.hncom2; })) import sul.metadata.hncom2;
 
 alias Packets = TypeTuple!(Uncompressed, Compressed);
 

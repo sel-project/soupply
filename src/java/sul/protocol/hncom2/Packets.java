@@ -44,6 +44,9 @@ public final class Packets {
 
 	private Packets() {}
 
+	/**
+	 * Packets used for sending more than one packet at once.
+	 */
 	public static final Map<Integer, Class<? extends Packet>> UTIL;
 
 	/**

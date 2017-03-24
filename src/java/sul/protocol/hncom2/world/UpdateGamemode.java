@@ -14,7 +14,7 @@ public class UpdateGamemode extends Packet {
 
 	public static final byte ID = (byte)34;
 
-	public static final boolean CLIENTBOUND = true;
+	public static final boolean CLIENTBOUND = false;
 	public static final boolean SERVERBOUND = true;
 
 	@Override

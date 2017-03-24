@@ -23,6 +23,8 @@ import sul.utils.var;
 
 static import sul.protocol.hncom2.types;
 
+static if(__traits(compiles, { import sul.metadata.hncom2; })) import sul.metadata.hncom2;
+
 alias Packets = TypeTuple!(AddNode, RemoveNode, MessageServerbound, MessageClientbound, Players, ResourcesUsage, Log, RemoteCommand, UpdateList, Reload);
 
 /**
@@ -728,6 +730,7 @@ class UpdateList : Buffer {
 /**
  * Notifies the node that the hub's reloadeable settings have been reloaded and that
  * the node should also reload its resources (for example plugin's settings).
+ * The fields of the packet may be empty if not updated during the reload.
  */
 class Reload : Buffer {
 
@@ -738,8 +741,19 @@ class Reload : Buffer {
 
 	public enum string[] FIELDS = ["displayName", "motds", "language", "acceptedLanguages", "socialJson"];
 
+	/**
+	 * Display name of the server, same as HubInfo.displayName.
+	 */
 	public string displayName;
+
+	/**
+	 * New MOTDs (message of the day) for the supported games.
+	 */
 	public sul.protocol.hncom2.types.Motd[] motds;
+
+	/**
+	 * Main language of the server, in the same format as HubInfo.language.
+	 */
 	public string language;
 	public string[] acceptedLanguages;
 	public string socialJson;

@@ -17,6 +17,8 @@ import std.uuid : UUID;
 import sul.utils.buffer;
 import sul.utils.var;
 
+static if(__traits(compiles, { import sul.metadata.hncom1; })) import sul.metadata.hncom1;
+
 /**
  * Internet protocol address. Could be either version 4 or 6.
  */

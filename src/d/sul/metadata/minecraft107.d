@@ -7,12 +7,12 @@
  */
 module sul.metadata.minecraft107;
 
-import sul.utils.metadata;
+import sul.utils.buffer : Buffer;
 
 class Metadata {
 
 	public pure nothrow @safe @nogc ubyte[] encode() {
-		return new ubyte[0];
+		return (ubyte[]).init;
 	}
 
 	public static pure nothrow @safe @nogc Metadata decode(Buffer buffer) {

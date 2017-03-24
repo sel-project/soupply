@@ -17,6 +17,8 @@ import std.uuid : UUID;
 import sul.utils.buffer;
 import sul.utils.var;
 
+static if(__traits(compiles, { import sul.metadata.raknet8; })) import sul.metadata.raknet8;
+
 struct Address {
 
 	public enum string[] FIELDS = ["type", "ipv4", "ipv6", "port"];

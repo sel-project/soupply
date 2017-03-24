@@ -17,6 +17,8 @@ import std.uuid : UUID;
 import sul.utils.buffer;
 import sul.utils.var;
 
+static if(__traits(compiles, { import sul.metadata.externalconsole2; })) import sul.metadata.externalconsole2;
+
 struct Game {
 
 	// type

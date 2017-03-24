@@ -20,7 +20,7 @@ import sul.utils.var;
 
 static import sul.protocol.minecraft316.types;
 
-import sul.metadata.minecraft316;
+static if(__traits(compiles, { import sul.metadata.minecraft316; })) import sul.metadata.minecraft316;
 
 alias Packets = TypeTuple!(SpawnObject, SpawnExperienceOrb, SpawnGlobalEntity, SpawnMob, SpawnPainting, SpawnPlayer, Animation, Statistics, BlockBreakAnimation, UpdateBlockEntity, BlockAction, BlockChange, BossBar, ServerDifficulty, TabComplete, ChatMessage, MultiBlockChange, ConfirmTransaction, CloseWindow, OpenWindow, WindowItems, WindowProperty, SetSlot, SetCooldown, PluginMessage, NamedSoundEffect, Disconnect, EntityStatus, Explosion, UnloadChunk, ChangeGameState, KeepAlive, ChunkData, Effect, Particle, JoinGame, Map, EntityRelativeMove, EntityLookAndRelativeMove, EntityLook, Entity, VehicleMove, OpenSignEditor, PlayerAbilities, CombatEvent, PlayerListItem, PlayerPositionAndLook, UseBed, DestroyEntities, RemoveEntityEffect, ResourcePackSend, Respawn, EntityHeadLook, WorldBorder, Camera, HeldItemChange, DisplayScoreboard, EntityMetadata, AttachEntity, EntityVelocity, EntityEquipment, SetExperience, UpdateHealth, ScoreboardObjective, SetPassengers, Teams, UpdateScore, SpawnPosition, TimeUpdate, Title, SoundEffect, PlayerListHeaderAndFooter, CollectItem, EntityTeleport, EntityProperties, EntityEffect);
 

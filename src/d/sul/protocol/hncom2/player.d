@@ -24,6 +24,8 @@ import sul.utils.var;
 
 static import sul.protocol.hncom2.types;
 
+static if(__traits(compiles, { import sul.metadata.hncom2; })) import sul.metadata.hncom2;
+
 alias Packets = TypeTuple!(Add, Remove, Kick, Transfer, UpdateDisplayName, UpdateWorld, UpdateViewDistance, UpdateLanguage, UpdateGamemode, UpdateInputMode, UpdateLatency, UpdatePacketLoss, GamePacket, OrderedGamePacket);
 
 /**
@@ -40,6 +42,11 @@ class Add : Buffer {
 	public enum ubyte FIRST_JOIN = 0;
 	public enum ubyte TRANSFERRED = 1;
 	public enum ubyte FORCIBLY_TRANSFERRED = 2;
+
+	// dimension
+	public enum ubyte OVERWORLD = 0;
+	public enum ubyte NETHER = 1;
+	public enum ubyte END = 2;
 
 	// input mode
 	public enum ubyte KEYBOARD = 0;
@@ -85,9 +92,7 @@ class Add : Buffer {
 	public string displayName;
 
 	/**
-	 * Dimension in which the player was playing before being transferred. It could diffent
-	 * from client's game type and version because the dimension's ids are different in
-	 * Minecraft and Minecraft: Pocket Edition.
+	 * Dimension in which the player was playing before being transferred.
 	 * It's used to send the game's change dimension packet to despawn old entities and
 	 * delete old chunks.
 	 */

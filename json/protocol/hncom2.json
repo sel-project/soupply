@@ -590,7 +590,12 @@
 					{
 						"name": "dimension",
 						"type": "ubyte",
-						"when": "reason!=0"
+						"when": "reason!=0",
+						"constants": {
+							"overworld": 0,
+							"nether": 1,
+							"end": 2
+						}
 					},
 					{
 						"name": "view_distance",
@@ -1014,7 +1019,7 @@
 
 			"update_difficulty": {
 				"id": 33,
-				"clientbound": true,
+				"clientbound": false,
 				"serverbound": true,
 				"fields": [
 					{
@@ -1030,7 +1035,7 @@
 
 			"update_gamemode": {
 				"id": 34,
-				"clientbound": true,
+				"clientbound": false,
 				"serverbound": true,
 				"fields": [
 					{

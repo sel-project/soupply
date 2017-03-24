@@ -20,6 +20,8 @@ import sul.utils.var;
 
 static import sul.protocol.hncom2.types;
 
+static if(__traits(compiles, { import sul.metadata.hncom2; })) import sul.metadata.hncom2;
+
 alias Packets = TypeTuple!(Connection);
 
 class Connection : Buffer {

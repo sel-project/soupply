@@ -24,6 +24,8 @@ import sul.utils.var;
 
 static import sul.protocol.hncom1.types;
 
+static if(__traits(compiles, { import sul.metadata.hncom1; })) import sul.metadata.hncom1;
+
 alias Packets = TypeTuple!(Add, Remove, Kick, Transfer, UpdateDisplayName, UpdateWorld, UpdateViewDistance, UpdateLanguage, UpdateInputMode, UpdateLatency, UpdatePacketLoss, GamePacket, OrderedGamePacket);
 
 /**

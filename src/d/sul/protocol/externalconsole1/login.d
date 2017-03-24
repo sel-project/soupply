@@ -24,6 +24,8 @@ import sul.utils.var;
 
 static import sul.protocol.externalconsole1.types;
 
+static if(__traits(compiles, { import sul.metadata.externalconsole1; })) import sul.metadata.externalconsole1;
+
 alias Packets = TypeTuple!(AuthCredentials, Auth, Welcome);
 
 /**

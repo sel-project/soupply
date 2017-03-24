@@ -23,6 +23,8 @@ import sul.utils.var;
 
 static import sul.protocol.externalconsole2.types;
 
+static if(__traits(compiles, { import sul.metadata.externalconsole2; })) import sul.metadata.externalconsole2;
+
 alias Packets = TypeTuple!(KeepAlive, UpdateNodes, RequestStats, UpdateStats);
 
 /**

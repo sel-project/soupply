@@ -10,6 +10,9 @@
 
 //import Types from 'types';
 
+/**
+ * Packets used for sending more than one packet at once.
+ */
 const Util = {
 
 	Uncompressed: class extends Buffer {

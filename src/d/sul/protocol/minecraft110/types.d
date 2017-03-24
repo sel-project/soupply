@@ -17,6 +17,8 @@ import std.uuid : UUID;
 import sul.utils.buffer;
 import sul.utils.var;
 
+static if(__traits(compiles, { import sul.metadata.minecraft110; })) import sul.metadata.minecraft110;
+
 struct Statistic {
 
 	public enum string[] FIELDS = ["name", "value"];

@@ -20,7 +20,7 @@ import sul.utils.var;
 
 static import sul.protocol.minecraft316.types;
 
-import sul.metadata.minecraft316;
+static if(__traits(compiles, { import sul.metadata.minecraft316; })) import sul.metadata.minecraft316;
 
 alias Packets = TypeTuple!(Handshake, Request, Response, Latency);
 

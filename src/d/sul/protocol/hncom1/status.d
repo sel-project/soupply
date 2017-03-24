@@ -23,6 +23,8 @@ import sul.utils.var;
 
 static import sul.protocol.hncom1.types;
 
+static if(__traits(compiles, { import sul.metadata.hncom1; })) import sul.metadata.hncom1;
+
 alias Packets = TypeTuple!(AddNode, RemoveNode, MessageServerbound, MessageClientbound, Players, ResourcesUsage, Log, RemoteCommand, UpdateList, Reload);
 
 /**

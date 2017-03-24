@@ -31,6 +31,11 @@ const Player = {
 		static get TRANSFERRED(){ return 1; }
 		static get FORCIBLY_TRANSFERRED(){ return 2; }
 
+		// dimension
+		static get OVERWORLD(){ return 0; }
+		static get NETHER(){ return 1; }
+		static get END(){ return 2; }
+
 		// input mode
 		static get KEYBOARD(){ return 0; }
 		static get TOUCH(){ return 1; }
@@ -58,9 +63,7 @@ const Player = {
 		 *        Display name of the player, which can contain formatting codes. By default it's equals to the username
 		 *        but it can be updated by the node using {UpdateDisplayName}.
 		 * @param dimension
-		 *        Dimension in which the player was playing before being transferred. It could diffent from client's
-		 *        game type and version because the dimension's ids are different in Minecraft and Minecraft: Pocket
-		 *        Edition.
+		 *        Dimension in which the player was playing before being transferred.
 		 *        It's used to send the game's change dimension packet to despawn old entities and delete old chunks.
 		 * @param viewDistance
 		 *        Client's view distance (or chunk radius). See {UpdateViewDistance.viewDistance} for more informations.
