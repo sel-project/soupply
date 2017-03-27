@@ -19,7 +19,7 @@ after_success:
  - cd d
  - git remote
  - git add .
- - git commit -m ${MESSAGE}
+ - git commit -m "${MESSAGE}"
  - git push "https://${TOKEN}@${REPO_D}" master
 # java
  - cd ..
@@ -28,6 +28,6 @@ after_success:
  - cd java
  - git remote
  - git add .
- - git commit -m ${MESSAGE}
+ - git commit -m "${MESSAGE}"
  - git push "https://${TOKEN}@${REPO_JAVA}" master
-# TODO js
+# TODO: js
