@@ -5,14 +5,9 @@ d:
  
 install:
  - rm -r -f src
- - curl -L -O https://raw.githubusercontent.com/sel-project/sel-manager/master/manager.d
- - rdmd --build-only manager.d
  
 script:
  - cd gen && rdmd all.d -no-update && cd ..
- - ./manager compress src/d src/d/release.sa
- - ./manager compress src/java src/java/release.sa
- - ./manager compress src/js src/js/release.sa
 
 after_success:
  - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
