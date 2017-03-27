@@ -2,17 +2,39 @@
 
 __Automatically generated libraries for SEL, Minecraft and Minecraft: Pocket Edition__
 
-The generated documentation can be found at [sel-project.github.io/sel-utils](https://sel-project.github.io/sel-utils).
+The code is generated from XML files at [/xml](https://github.com/sel-project/sel-utils/tree/master/xml) using the generators in the [/gen]/https://github.com/sel-project/sel-utils/tree/master/gen) folder.
 
-### Specification
- | Protocol | Metadata | Attributes | Recipes | Creative Inventory | Blocks | Items | Entities
- ---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
- JSON | ✓ | ✓ | ✓ |   | ✓ | ✓ | ✓ | ✓ 
- XML | ✓ | ✓ | ✓ |   | ✓ | ✓ | ✓ | ✓ 
- 
-### Generated code
- | Protocol | Metadata | Attributes | Recipes | Creative Inventory | Blocks | Items | Entities
- ---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
- D | ✓ | encoding | ✓ |   | ✓ | ✓ | ✓ | ✓ 
- Java | ✓ |   | ✓ |   | ✓ | ✓ | ✓ | ✓ 
- JavaScript | ✓ | ✓ | ✓ |   | ✓ |   |   |     
+Automatically generated documentation is available at the [project's website](https://sel-utils.github.io/).
+
+**Jump to**: [D](#d), [Java](#java)
+
+### [D](https://github.com/sel-utils/d)
+
+[![Build Status](https://travis-ci.org/sel-utils/d.svg?branch=master)](https://travis-ci.org/sel-utils/d)
+[![DUB Package](https://img.shields.io/dub/v/sul.svg)](https://code.dlang.org/packages/sul)
+
+[x] Protocol
+[ ] Metadata (encoding only)
+[x] Attributes
+[x] Blocks
+[x] Items
+[x] Entities
+[x] Effects
+[x] Enchantments
+[ ] Recipes
+[x] MCPE's creative inventory
+
+### [Java](https://github.com/sel-utils/java)
+
+[![Build Status](https://travis-ci.org/sel-utils/java.svg?branch=master)](https://travis-ci.org/sel-utils/java)
+
+[x] Protocol
+[ ] Metadata
+[x] Attributes
+[x] Blocks
+[x] Items
+[x] Entities
+[x] Effects
+[x] Enchantments
+[ ] Recipes
+[x] MCPE's creative inventory 
