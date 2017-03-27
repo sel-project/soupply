@@ -30,7 +30,6 @@ static import java;
 static import js;
 
 static import diff;
-static import doc;
 static import docs;
 static import json;
 
@@ -548,7 +547,6 @@ void main(string[] args) {
 
 	//if(wall || wdiff) diff.diff(attributes, protocols, metadata);
 	if(wall || wdocs) docs.docs(attributes, protocols, metadata);
-
 	if(wall || wjson) json.json(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
 
 }

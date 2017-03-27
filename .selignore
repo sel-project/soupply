@@ -1,5 +1,6 @@
 release.sa
 README.md
+.travis.yml
 .gitignore
 .git/
 doc/
