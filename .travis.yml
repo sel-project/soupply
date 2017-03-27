@@ -7,7 +7,7 @@ install:
  - rm -r -f src
  
 script:
- - cd gen && rdmd all.d -no-update
+ - cd gen && rdmd all.d -no-update && cd ..
 
 after_success:
  - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
