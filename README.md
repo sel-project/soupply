@@ -6,7 +6,7 @@ The code is generated from XML files at [/xml](https://github.com/sel-project/se
 
 Automatically generated documentation is available at the [project's website](https://sel-utils.github.io/).
 
-**Jump to**: [D](#d), [Java](#java)
+**Jump to**: [D](#d), [Java](#java), [JavaScript](#javascript)
 
 ### [D](https://github.com/sel-utils/d)
 
@@ -39,5 +39,20 @@ Automatically generated documentation is available at the [project's website](ht
 - [x] Entities
 - [x] Effects
 - [x] Enchantments
+- [ ] Recipes
+- [x] MCPE's creative inventory 
+
+### [JavaScript](https://github.com/sel-utils/js)
+
+[![Build Status](https://travis-ci.org/sel-utils/js.svg?branch=master)](https://travis-ci.org/sel-utils/js)
+
+- [x] Protocol
+- [ ] Metadata
+- [x] Attributes
+- [ ] Blocks
+- [ ] Items
+- [ ] Entities
+- [ ] Effects
+- [ ] Enchantments
 - [ ] Recipes
 - [x] MCPE's creative inventory 
