@@ -20,6 +20,7 @@ after_success:
  - cp -r -f json/ gp/json
  - cd gp
  - git remote
+ - git add .
  - git commit -m "${MESSAGE}" -m "${DESC}"
  - git push "https://${TOKEN}@${REPO_GP}" master
 # d
@@ -28,7 +29,6 @@ after_success:
  - cd d
  - git remote
  - git add .
- - git rm -f -r d
  - git commit -m "${MESSAGE}" -m "${DESC}"
  - git push "https://${TOKEN}@${REPO_D}" master
  - git tag v1.0.$(<../gen/.version)
@@ -40,7 +40,14 @@ after_success:
  - cd java
  - git remote
  - git add .
- - git rm -f -r java
  - git commit -m "${MESSAGE}" -m "${DESC}"
  - git push "https://${TOKEN}@${REPO_JAVA}" master
-# TODO: js
+# js
+ - cd ..
+ - git clone git://${REPO_JS} js
+ - cp -r -f src/js/ js/src
+ - cd js
+ - git remote
+ - git add .
+ - git commit -m "${MESSAGE}" -m "${DESC}"
+ - git push "https://${TOKEN}@${REPO_JS}" master
