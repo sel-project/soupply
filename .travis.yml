@@ -11,8 +11,8 @@ script:
 
 after_success:
  - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
- - git config user.email ${EMAIL}
- - git config user.name ${USER}
+ - git config --global user.email ${EMAIL}
+ - git config --global user.name ${USER}
 # d
  - git clone git://${REPO_D} d
  - mv -f src/d d
