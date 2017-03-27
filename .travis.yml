@@ -1,0 +1,22 @@
+language: d
+
+d:
+ - dmd
+ 
+install:
+ - rm -r -f src
+ 
+script:
+ - cd gen && rdmd all.d -no-update
+
+after_success:
+ - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
+ - git clone git://${REPO_D}
+ - mv -f . ${REPO_D}
+ - cd ${REPO_D}
+ - git remote
+ - git config user.email ${EMAIL}
+ - git config user.name ${USER}
+ - git add .
+ - git commit -m ${MESSAGE}
+ - git push "https://${TOKEN}@${REPO_D}" master

@@ -16,7 +16,6 @@ module all;
 
 import std.algorithm : canFind, min, sort;
 import std.base64 : Base64URL;
-import std.bitmanip : nativeToLittleEndian, littleEndianToNative;
 import std.conv : to;
 import std.file : dirEntries, SpanMode, read, isFile, _write = write, exists;
 import std.json;
@@ -115,11 +114,10 @@ void main(string[] args) {
 
 	// update generation version
 	if(exists(".version")) {
-		ubyte[4] data = cast(ubyte[])read(".version");
-		n_version = littleEndianToNative!uint(data);
+		n_version = to!uint(cast(string)read(".version"));
 	}
-	n_version++;
-	_write(".version", nativeToLittleEndian(n_version));
+	if(!args.canFind("-no-update")) n_version++;
+	_write(".version", to!string(n_version));
 
 	bool wd = args.canFind("d");
 	bool wjava = args.canFind("java");
