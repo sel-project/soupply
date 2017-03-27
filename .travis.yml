@@ -30,3 +30,4 @@ after_success:
  - git add .
  - git commit -m ${MESSAGE}
  - git push "https://${TOKEN}@${REPO_JAVA}" master
+# TODO js
