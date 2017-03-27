@@ -26,6 +26,7 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 
 	// attributes
 	mkdirRecurse("../json/attributes");
+	mkdirRecurse("../json/min/attributes");
 	foreach(string game, Attributes attrs; attributes) {
 		string data = "{\n\n\t\"__software\": " ~ JSONValue(attrs.software).toString() ~ ",\n\t\"__protocol\": " ~ attrs.protocol.to!string ~ ",\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n\t\"attributes\": {\n\n";
 		foreach(i, attr; attrs.data) {
@@ -39,11 +40,12 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\n\n";
 		}
 		data ~= "\t}\n\n}\n";
-		_write("../json/attributes/" ~ game ~ ".json", data);
+		writeJson("attributes/" ~ game, data);
 	}
 
 	// creative items
 	mkdirRecurse("../json/creative");
+	mkdirRecurse("../json/min/creative");
 	foreach(string game, Creative c; creative) {
 		string data = "{\n\n\t\"__software\": " ~ JSONValue(c.software).toString() ~ ",\n\t\"__protocol\": " ~ c.protocol.to!string ~ ",\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n\t\"items\": [\n\n";
 		foreach(i, item; c.data) {
@@ -68,11 +70,12 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			else data ~= "\n\n";
 		}
 		data ~= "\t]\n\n}\n";
-		_write("../json/creative/" ~ game ~ ".json", data);
+		writeJson("creative/" ~ game, data);
 	}
 
 	// metadata
 	mkdirRecurse("../json/metadata");
+	mkdirRecurse("../json/min/metadata");
 	foreach(string game, Metadatas m; metadatas) {
 		string data = "{\n\n\t\"__software\": " ~ JSONValue(m.software).toString() ~ ",\n\t\"__protocol\": " ~ m.protocol.to!string ~ ",\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
 		data ~= "\t\"encoding\": {\n\n";
@@ -109,11 +112,12 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		}
 		data ~= "\t}\n\n";
 		data ~= "}\n";
-		_write("../json/metadata/" ~ game ~ ".json", data);
+		writeJson("metadata/" ~ game, data);
 	}
 
 	// protocol
 	mkdirRecurse("../json/protocol");
+	mkdirRecurse("../json/min/protocol");
 	foreach(string game, Protocols p; protocols) {
 		string data = "{\n\n\t\"__software\": " ~ JSONValue(p.software).toString() ~ ",\n\t\"__protocol\": " ~ p.protocol.to!string ~ ",\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
 		void writeFields(string space, Field[] fields) {
@@ -213,7 +217,7 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		}
 		data ~= "\t}\n\n";
 		data ~= "}\n";
-		_write("../json/protocol/" ~ game ~ ".json", data);
+		writeJson("protocol/" ~ game, data);
 	}
 
 	// blocks
@@ -262,7 +266,7 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t}" ~ (i != blocks.length -1 ? "," : "") ~ "\n\n";
 		}
 		data ~= "\t}\n\n}\n";
-		_write("../json/blocks.json", data);
+		writeJson("blocks", data);
 	}
 
 	// items
@@ -290,7 +294,7 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t}" ~ (i != items.length - 1 ? "," : "") ~ "\n\n";
 		}
 		data ~= "\t}\n\n}\n";
-		_write("../json/items.json", data);
+		writeJson("items", data);
 	}
 
 	// entities
@@ -311,7 +315,7 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\n\t\t}" ~ (i != entities.length - 1 ? "," : "") ~ "\n\n";
 		}
 		data ~= "\t}\n\n}\n";
-		_write("../json/entities.json", data);
+		writeJson("entities", data);
 	}
 
 	// enchantments
@@ -326,7 +330,7 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t}" ~ (i != enchantments.length - 1 ? "," : "") ~ "\n\n";
 		}
 		data ~= "\t}\n\n}\n";
-		_write("../json/enchantments.json", data);
+		writeJson("enchantments", data);
 	}
 
 	// effects
@@ -340,7 +344,13 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t}" ~ (i != effects.length - 1 ? "," : "") ~ "\n\n";
 		}
 		data ~= "\t}\n\n}\n";
-		_write("../json/effects.json", data);
+		writeJson("effects", data);
 	}
 
+}
+
+void writeJson(string location, string data) {
+	auto json = parseJSON(data);
+	_write("../json/" ~ location ~ ".json", data);
+	_write("../json/min/" ~ location ~ ".json", json.toString());
 }

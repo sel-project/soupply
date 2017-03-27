@@ -1,6 +1,0 @@
-[submodule "src/d"]
-	path = src/d
-	url = https://github.com/sel-utils/d.git
-[submodule "src/java"]
-	path = src/java
-	url = https://github.com/sel-utils/java.git

@@ -27,7 +27,7 @@ alias writeHtml = write!("<!--", " + ", " +-->");
 
 void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas) {
 	
-	std.file.mkdirRecurse("../docs");
+	std.file.mkdirRecurse("../pages");
 	
 	enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "string", "varshort", "varushort", "varint", "varuint", "varlong", "varulong", "triad", "uuid", "bytes"];
 	
@@ -487,8 +487,8 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		}
 		data ~= "\t</body>\n</html>\n";
 		immutable ps = ptrs.protocol.to!string;
-		std.file.mkdirRecurse("../docs/" ~ game[0..$-ps.length]);
-		writeHtml("../docs/" ~ game[0..$-ps.length] ~ "/" ~ ps ~ ".html", data);
+		std.file.mkdirRecurse("../pages/" ~ game[0..$-ps.length]);
+		writeHtml("../pages/" ~ game[0..$-ps.length] ~ "/" ~ ps ~ ".html", data);
 	}
 	
 	// index
@@ -534,11 +534,8 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		data ~= "\t\t</table>\n";
 	}
 	data ~= "\t</body>\n</html>\n";
-	writeHtml("../docs/index.html", data);
+	writeHtml("../pages/index.html", data);
 
-	// minify style.css
-	std.file.write("../docs/style.min.css", (cast(string)std.file.read("../docs/style.css")).replaceAll(ctRegex!`[\r\n\t]*`, "").replaceAll(ctRegex!`[ ]*([\{\:\,])[ ]*`, "$1"));
-	
 }
 
 string head(string title, bool back, string game="", string protocol="", string description="") {
