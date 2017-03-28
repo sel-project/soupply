@@ -34,7 +34,7 @@ after_success:
 # java
  - cd ..
  - git clone git://${REPO_JAVA} java
- - rm -r java/src
+ - rm -r java/src/main/java
  - cp -r -f src/java/. java/src/main/java
  - cd gen && rdmd replace.d ../java/pom.xml.template ../java/pom.xml && cd ..
  - cd java
