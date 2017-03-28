@@ -14,7 +14,8 @@
  */
 module java;
 
-import std.algorithm : canFind, min, max, reverse;
+import std.algorithm : canFind, min, max, reverse, count;
+import std.array : replicate;
 import std.ascii : newline;
 import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
@@ -508,8 +509,9 @@ public class MetadataException extends RuntimeException {
 				} else {
 					ret ~= "final int " ~ hash("l" ~ name) ~ "=" ~ conv[lo+1..lc] ~ "; ";
 				}
+				immutable newexp = cnt.indexOf("[") >= 0 ? (cnt[0..cnt.indexOf("[")] ~ "[" ~ hash("l" ~ name) ~ "][]") : (cnt ~ "[" ~ hash("l" ~ name) ~ "]");
 				if(cnt == "byte") return ret ~ name ~ "=this.readBytes(" ~ hash("l" ~ name) ~ ");";
-				else return ret ~ name ~ "=new " ~ cnt ~ "[" ~ hash("l" ~ name) ~ "]; for(int " ~ hash(name) ~ "=0;" ~ hash(name) ~ "<" ~ name ~ ".length;" ~ hash(name) ~ "++){ " ~ createDecoding(nt, name ~ "[" ~ hash(name) ~ "]") ~ " }";
+				else return ret ~ name ~ "=new " ~ newexp ~ "; for(int " ~ hash(name) ~ "=0;" ~ hash(name) ~ "<" ~ name ~ ".length;" ~ hash(name) ~ "++){ " ~ createDecoding(nt, name ~ "[" ~ hash(name) ~ "]") ~ " }";
 			}
 			auto ts = conv.lastIndexOf("<");
 			if(ts > 0) {
@@ -553,7 +555,8 @@ public class MetadataException extends RuntimeException {
 				immutable oa = field.type.indexOf("[");
 				immutable ca = field.type.indexOf("]");
 				data ~= space ~ "public " ~ c ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name));
-				if(c.indexOf("[") != -1) data ~= " = new " ~ c[0..c.indexOf("[")] ~ "[" ~ (ca == -1 || ca == oa + 1 ? "0" : field.type[oa+1..ca]) ~ "]";
+				//if(c.indexOf("[") != -1) data ~= " = new " ~ c[0..c.indexOf("[")] ~ "[" ~ (ca == -1 || ca == oa + 1 ? "0" : field.type[oa+1..ca]) ~ "]";
+				if(c.indexOf("[") != -1) data ~= " = new " ~ c[0..c.indexOf("[")] ~ (oa == -1 ? "[0]" : field.type[oa..$].replace("[]", "[0]"));
 				else if(field.def.length) data ~= " = " ~ constOf(field.def);
 				else if(field.type == "bytes") data ~= " = new byte[0]";
 				else if(c.startsWith("Tuples.")) data ~= " = new " ~ c ~ "()";

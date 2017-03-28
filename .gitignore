@@ -1,3 +1,4 @@
-**/panel1/*
-**/panel1.*
-**/panel/1.*
+src
+pages
+json
+xml/protocol/panel1.xml
