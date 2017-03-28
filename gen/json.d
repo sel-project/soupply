@@ -26,7 +26,6 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 
 	// attributes
 	mkdirRecurse("../json/attributes");
-	mkdirRecurse("../json/min/attributes");
 	foreach(string game, Attributes attrs; attributes) {
 		string data = "{\n\n\t\"__software\": " ~ JSONValue(attrs.software).toString() ~ ",\n\t\"__protocol\": " ~ attrs.protocol.to!string ~ ",\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n\t\"attributes\": {\n\n";
 		foreach(i, attr; attrs.data) {
@@ -45,7 +44,6 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 
 	// creative items
 	mkdirRecurse("../json/creative");
-	mkdirRecurse("../json/min/creative");
 	foreach(string game, Creative c; creative) {
 		string data = "{\n\n\t\"__software\": " ~ JSONValue(c.software).toString() ~ ",\n\t\"__protocol\": " ~ c.protocol.to!string ~ ",\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n\t\"items\": [\n\n";
 		foreach(i, item; c.data) {
@@ -75,7 +73,6 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 
 	// metadata
 	mkdirRecurse("../json/metadata");
-	mkdirRecurse("../json/min/metadata");
 	foreach(string game, Metadatas m; metadatas) {
 		string data = "{\n\n\t\"__software\": " ~ JSONValue(m.software).toString() ~ ",\n\t\"__protocol\": " ~ m.protocol.to!string ~ ",\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
 		data ~= "\t\"encoding\": {\n\n";
@@ -117,7 +114,6 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 
 	// protocol
 	mkdirRecurse("../json/protocol");
-	mkdirRecurse("../json/min/protocol");
 	foreach(string game, Protocols p; protocols) {
 		string data = "{\n\n\t\"__software\": " ~ JSONValue(p.software).toString() ~ ",\n\t\"__protocol\": " ~ p.protocol.to!string ~ ",\n\t\"__website\": \"https://github.com/sel-project/sel-utils\",\n\n";
 		void writeFields(string space, Field[] fields) {
@@ -350,7 +346,6 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 }
 
 void writeJson(string location, string data) {
-	auto json = parseJSON(data);
 	_write("../json/" ~ location ~ ".json", data);
-	_write("../json/min/" ~ location ~ ".json", json.toString());
+	_write("../json/" ~ location ~ ".min.json", parseJSON(data).toString());
 }

@@ -113,10 +113,10 @@ void main(string[] args) {
 
 	// update generation version
 	if(exists(".version")) {
-		n_version = to!uint(cast(string)read(".version"));
+		n_version = to!uint(split(cast(string)read(".version"), ".")[2]);
 	}
 	if(!args.canFind("-no-update")) n_version++;
-	_write(".version", to!string(n_version));
+	_write(".version", "1.0." ~ to!string(n_version));
 
 	bool wd = args.canFind("d");
 	bool wjava = args.canFind("java");
