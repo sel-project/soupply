@@ -18,6 +18,7 @@ import std.conv : to;
 import std.file : mkdirRecurse, _write = write;
 import std.json;
 import std.math : isNaN;
+import std.regex : ctRegex, replaceAll;
 import std.string : toUpper;
 
 import all;
@@ -347,5 +348,19 @@ void json(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 
 void writeJson(string location, string data) {
 	_write("../json/" ~ location ~ ".json", data);
-	_write("../json/" ~ location ~ ".min.json", parseJSON(data).toString());
+	{
+		// ` +(?=[^"]*(?:"[^"]*"[^"]*)*$)` // <-- this causes an infinite loop in the program
+		bool inString = false;
+		string min = "";
+		foreach(char c ; data.replaceAll(ctRegex!`"__[a-z0-9_]*": ["]{0,1}[a-zA-Z0-9 :\/\-.]*["]{0,1}\,|\t|\n`, "")) {
+			if(c == '"') {
+				// there are no escaped characters
+				inString ^= true;
+			}
+			if(c != ' ' || inString) {
+				min ~= c;
+			}
+		}
+		_write("../json/" ~ location ~ ".min.json", min);
+	}
 }

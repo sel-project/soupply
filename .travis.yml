@@ -4,7 +4,10 @@ d:
  - dmd
  
 script:
- - cd gen && rdmd all.d -no-update && cd ..
+ - cd gen
+ - rdmd --build-only all.d
+ - ./all -no-update
+ - cd ..
 
 after_success:
  - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
