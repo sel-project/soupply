@@ -12,9 +12,9 @@ Automatically generated documentation is available at the [project's website](ht
 
 [![Build Status](https://travis-ci.org/sel-utils/d.svg?branch=master)](https://travis-ci.org/sel-utils/d)
 
-[![DUB Package](https://img.shields.io/dub/v/sul-utils.svg)](https://code.dlang.org/packages/sul-utils)
+[![DUB Package](https://img.shields.io/dub/v/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)
 
-[![DUB Downloads](https://img.shields.io/dub/dt/sul-utils.svg)](https://code.dlang.org/packages/sul-utils)
+[![DUB Downloads](https://img.shields.io/dub/dt/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)
 
 - [x] Protocol
 - [ ] Metadata (encoding only)

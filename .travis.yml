@@ -3,9 +3,6 @@ language: d
 d:
  - dmd
  
-install:
- - rm -r -f src
- 
 script:
  - cd gen && rdmd all.d -no-update && cd ..
 
@@ -20,7 +17,7 @@ after_success:
  - cp -r -f pages/. gp
  - cp -r -f json/. gp/json
  - cd gp
- - git add .
+ - git add --all .
  - git commit -m "${MESSAGE}" -m "${DESC}"
  - git push "https://${TOKEN}@${REPO_GP}" master
 # d
@@ -29,7 +26,7 @@ after_success:
  - rm -r d/src
  - cp -r -f src/d/. d/src
  - cd d
- - git add .
+ - git add --all .
  - git commit -m "${MESSAGE}" -m "${DESC}"
  - git push "https://${TOKEN}@${REPO_D}" master
  - git tag -a v$(<../gen/.version) -m "${MESSAGE}"
@@ -41,7 +38,7 @@ after_success:
  - cp -r -f src/java/. java/src/main/java
  - cd gen && rdmd replace.d ../java/pom.xml.template ../java/pom.xml && cd ..
  - cd java
- - git add .
+ - git add --all .
  - git commit -m "${MESSAGE}" -m "${DESC}"
  - git push "https://${TOKEN}@${REPO_JAVA}" master
 # js
@@ -51,6 +48,6 @@ after_success:
  - cp -r -f src/js/. js/src
  - cd gen && rdmd replace.d ../js/package.json.template ../js/package.json && cd ..
  - cd js
- - git add .
+ - git add --all .
  - git commit -m "${MESSAGE}" -m "${DESC}"
  - git push "https://${TOKEN}@${REPO_JS}" master
