@@ -6,7 +6,7 @@
 
 	<protocol>105</protocol>
 
-	<released>2017/3/22</released>
+	<released>2017/3/28</released>
 
 	<from>1.0.5</from>
 
@@ -194,8 +194,11 @@
 		<type name="rule">
 			A game rule that prevents the client from doing client-side actions and animations.
 			<field name="name" type="string">
-				Name of the rule. Same of the `gamerule` command's field in Minecraft: Education Edition.
+				Name of the rule. Same of the `gamerule` command's field in the game.
 				The behaviours indicated in the following constants' descriptions is enabled or disabled.
+				<constant name="command-block-output" value="commandblockoutput">
+					Command's block output in the chat
+				</constant>
 				<constant name="drowning-damage" value="drowningdamage">
 					Damage animation when drowning
 				</constant>
@@ -205,12 +208,10 @@
 				<constant name="fire-damage" value="firedamage">
 					Damage animation when burning
 				</constant>
-				<constant name="immutable-world" value="immutableworld">
-					Breaking animation and related packets
-				</constant>
 				<constant name="pvp" value="pvp">
 					Damage animation and related packets
 				</constant>
+				<constant name="send-command-feedback" value="sendcommandfeedback" />
 			</field>
 			<field name="value" type="bool">
 				Indicates whether the game rule is enabled.

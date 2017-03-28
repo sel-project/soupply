@@ -642,7 +642,7 @@
 	<item name="diamond-horse-armor" data="419" stack="1" />
 	<item name="lead" data="420" />
 	<item name="name-tag" data="421" />
-	<item name="minecart-with-command-block" minecraft="422" stack="1" />
+	<item name="minecart-with-command-block" minecraft="422" pocket="443" stack="1" />
 	<item name="raw-mutton" data="423" />
 	<item name="cooked-mutton" data="424" />
 	<item name="banner" minecraft="425" />
