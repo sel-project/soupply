@@ -1,0 +1,51 @@
+--- start utils ---
+{{items}}
+{{item_data}}
+--- end ---
+--- start items utils/Item.php ---
+namespace sul\utils;
+
+use sul\utils\ItemData;
+
+class Item {
+	
+	/** @var string */
+	public $name;
+
+	/** @var ItemData */
+	public $minecraft, $pocket;
+
+	/** @var int */
+	public $stack;
+
+	function __construct(string $name, ItemData $minecraft, ItemData $pocket, int $stack) {
+		$this->name = $name;
+		$this->minecraft = $minecraft;
+		$this->pocket = $pocket;
+		$this->stack = $stack;
+	}
+
+}
+--- end ---
+--- start item_data utils/ItemData.php ---
+namespace sul\utils;
+
+class ItemData {
+	
+	/** @var bool */
+	public $exists;
+
+	/** @var int */
+	public $id;
+
+	/** @var int */
+	public $meta;
+
+	function __construct($exists, int $id, int $meta) {
+		$this->exists = $exists;
+		$this->id = $id;
+		$this->meta = $meta;
+	}
+
+}
+--- end ---

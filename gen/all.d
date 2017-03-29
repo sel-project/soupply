@@ -29,6 +29,8 @@ static import d;
 static import java;
 static import js;
 
+static import src;
+
 static import diff;
 static import docs;
 static import json;
@@ -121,10 +123,11 @@ void main(string[] args) {
 	bool wd = args.canFind("d");
 	bool wjava = args.canFind("java");
 	bool wjs = args.canFind("js");
+	bool wsrc = args.canFind("src");
 	bool wdiff = args.canFind("diff");
 	bool wdocs = args.canFind("docs");
 	bool wjson = args.canFind("json");
-	bool wall = !wd && !wjava && !wjs && !wdiff && !wdocs && !wjson;
+	bool wall = !wd && !wjava && !wjs && !wsrc && !wdiff && !wdocs && !wjson;
 
 	// attributes
 	Attributes[string] attributes;
@@ -544,6 +547,8 @@ void main(string[] args) {
 	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
 	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
 	if(wall || wjs) js.js(attributes, protocols, metadata, creative, blocks, items, entities);
+
+	if(wall || wsrc) src.src(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
 
 	//if(wall || wdiff) diff.diff(attributes, protocols, metadata);
 	if(wall || wdocs) docs.docs(attributes, protocols, metadata);

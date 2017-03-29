@@ -1,0 +1,37 @@
+--- start creative creative/{{GAME}}.json ---
+{
+
+	"__software": "{{SOFTWARE}}",
+	"__protocol": {{PROTOCOL}},
+	
+	"items": [
+
+{{items_values@ITEMS}}
+
+	]
+
+}
+
+--- end ---
+--- start items_values ---
+		{
+			"name": "{{NAME:spaced}}",
+			"id": {{ID}}{{META!=0?{{meta}}}}{{HAS_ENCHANTMENTS==true?{{enchantments}}}}
+		}{{LAST==false?,}}
+--- end ---
+--- start meta ---
+,
+			"meta": {{META}}
+--- end ---
+--- start enchantments ---
+,
+			"enchantments": [
+				{{enchantments_values@ENCHANTMENTS}}
+			]
+--- end ---
+--- start enchantments_values ---
+{
+					"id": {{ID}},
+					"level": {{LEVEL}}
+				}{{LAST==false?,}}
+--- end ---
