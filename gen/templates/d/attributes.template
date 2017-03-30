@@ -1,0 +1,17 @@
+--- start attributes attributes/{{GAME:lowercase}}.d ---
+module sul.attributes.{{GAME:lowercase}};
+
+import std.typecons : Tuple;
+
+alias Attribute = Tuple!(string, "name", float, "min", float, "max", float, "def");
+
+public enum Attributes : Attribute
+{
+	
+{{attributes_values@ATTRIBUTES}}
+}
+--- end ---
+--- start attributes_values ---
+	{{NAME:camel_case}} = Attribute("{{ID}}", {{MIN}}f, {{MAX}}f, {{DEFAULT}}f),
+
+--- end ---

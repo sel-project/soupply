@@ -1,27 +1,27 @@
 --- start enchantments enchantments.d ---
 module sul.enchantments;
 
-struct EnchantmentValue {
+public struct EnchantmentValue
+{
 	
 	bool exists;
-
 	ubyte id;
 
 	alias exists this;
 
 }
 
-struct Enchantment {
+public struct Enchantment
+{
 	
 	string name;
-
 	EnchantmentData minecraft, pocket;
-
 	ubyte max;
 
 }
 
-enum Enchantments : Enchantment {
+public enum Enchantments : Enchantment
+{
 
 {{enchantments_values@ENCHANTMENTS}}	
 

@@ -1,0 +1,6 @@
+--- start utils ---
+{{about}}
+--- end ---
+--- start about utils/about.d ---
+public enum __sul = {{VERSION}};
+--- end ---

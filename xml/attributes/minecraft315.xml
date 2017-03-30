@@ -7,43 +7,43 @@
 	<protocol>315</protocol>
 
 	<attribute
-		id="max-health"
-		name="generic.maxHealth"
+		name="max-health"
+		id="generic.maxHealth"
 		min="0"
 		max="1024"
 		default="20" />
 
 	<attribute
-		id="absorption"
-		name="generic.absorption"
+		name="absorption"
+		id="generic.absorption"
 		min="0"
 		max="4"
 		default="0" />
 
 	<attribute
-		id="movement-speed"
-		name="generic.movementSpeed"
+		name="movement-speed"
+		id="generic.movementSpeed"
 		min="0"
 		max="24791"
 		default="0.1" />
 
 	<attribute
-		id="knockback-resistance"
-		name="generic.knockbackResistance"
+		name="knockback-resistance"
+		id="generic.knockbackResistance"
 		min="0"
 		max="1"
 		default="0" />
 
 	<attribute
-		id="attack-damage"
-		name="generic.attackDamage"
+		name="attack-damage"
+		id="generic.attackDamage"
 		min="0"
 		max="2048"
 		default="2" />
 
 	<attribute
-		id="attack-speed"
-		name="generic.attackSpeed"
+		name="attack-speed"
+		id="generic.attackSpeed"
 		min="0"
 		max="1024"
 		default="4" />

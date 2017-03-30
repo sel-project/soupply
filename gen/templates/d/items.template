@@ -1,27 +1,27 @@
 --- start items items.d ---
 module sul.items;
 
-struct ItemData {
+public struct ItemData
+{
 	
 	bool exists;
-
 	ushort id, meta;
 
 	alias exists this;
 
 }
 
-struct Item {
+public struct Item 
+{
 	
 	string name;
-
 	ItemData minecraft, pocket;
-
 	ubyte stack;
 
 }
 
-enum Items : Item {
+public enum Items : Item
+{
 
 {{items_values@ITEMS}}	
 

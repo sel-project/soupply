@@ -22,8 +22,8 @@ static import std.file;
 import std.json;
 import std.math : isNaN;
 import std.path : dirSeparator;
-//import std.regex : ctRegex, matchAll;
 import std.string;
+import std.typetuple : TypeTuple;
 
 import all;
 
@@ -102,42 +102,11 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			values["utils"] = Data([Data(["": Data.init])]);
 		}
 
-		/*foreach(immutable type ; TypeTuple!("attributes", "creative", "protocols", "metadatas", "blocks", "items", "entities", "enchantments", "effects")) {
+		foreach(immutable type ; TypeTuple!("attributes", "creative", "protocols", "metadatas", "blocks", "items", "entities", "enchantments", "effects")) {
 			if(templateExists(lang, type)) {
 				values[type] = Data(mixin("create" ~ capitalize(type) ~ "(" ~ type ~ ", options)"));
 			}
-		}*/
-
-		// attributes
-		if(templateExists(lang, "attributes")) {
-			values["attributes"] = Data(createAttributes(attributes, options));
 		}
-
-		// creative
-		if(templateExists(lang, "creative")) {
-			values["creative"] = Data(createCreative(creative, options));
-		}
-
-		// protocol
-
-		// blocks
-
-		// items
-		if(templateExists(lang, "items")) {
-			values["items"] = Data(createItems(items, options));
-		}
-
-		// entities
-		if(templateExists(lang, "entities")) {
-			values["entities"] = Data(createEntities(entities, options));
-		}
-
-		// enchantments
-		if(templateExists(lang, "enchantments")) {
-			values["enchantments"] = Data(createEnchantments(enchantments, options));
-		}
-
-		// effects
 
 		foreach(type, data; values) {
 			addLast(data.array);
@@ -222,6 +191,47 @@ Data[] createCreative(Creative[string] creative, JSONValue[string] options) {
 	return ret;
 }
 
+Data[] createProtocols(Protocols[string] protocols, JSONValue[string] options) {
+	return (Data[]).init;
+}
+
+Data[] createMetadatas(Metadatas[string] metadatas, JSONValue[string] options) {
+	return (Data[]).init;
+}
+
+Data[] createBlocks(Block[] blocks, JSONValue[string] options) {
+	Data[] ret;
+	foreach(i, block; blocks) {
+		Data[string] values;
+		values["NAME"] = block.name;
+		values["MINECRAFT"] = to!string(block.minecraft.hash >= 0);
+		values["MINECRAFT_ID"] = max(0, block.minecraft.id).to!string;
+		values["HAS_MINECRAFT_META"] = to!string(block.minecraft.meta >= 0);
+		values["MINECRAFT_META"] = max(0, block.minecraft.meta).to!string;
+		values["POCKET"] = to!string(block.pocket.hash >= 0);
+		values["POCKET_ID"] = max(0, block.pocket.id).to!string;
+		values["HAS_POCKET_META"] = to!string(block.pocket.meta >= 0);
+		values["POCKET_META"] = max(0, block.pocket.meta).to!string;
+		values["SOLID"] = block.solid.to!string;
+		values["HARDNESS"] = block.hardness.to!string;
+		values["BLAST_RESISTANCE"] = block.blastResistance.to!string;
+		values["OPACITY"] = block.opacity.to!string;
+		values["LUMINANCE"] = block.luminance.to!string;
+		values["ENCOURAGEMENT"] = block.encouragement.to!string;
+		values["FLAMMABILITY"] = block.flammability.to!string;
+		values["REPLACEABLE"] = block.replaceable.to!string;
+		values["HAS_BOUNDING_BOX"] = to!string(block.boundingBox != BoundingBox.init);
+		values["BB_MIN_X"] = block.boundingBox.min.x.to!string;
+		values["BB_MIN_Y"] = block.boundingBox.min.y.to!string;
+		values["BB_MIN_Z"] = block.boundingBox.min.z.to!string;
+		values["BB_MAX_X"] = block.boundingBox.max.x.to!string;
+		values["BB_MAX_Y"] = block.boundingBox.max.y.to!string;
+		values["BB_MAX_Z"] = block.boundingBox.max.z.to!string;
+		ret ~= Data(values);
+	}
+	return [Data(["BLOCKS": Data(ret)])];
+}
+
 Data[] createItems(Item[] items, JSONValue[string] options) {
 	Data[] ret;
 	foreach(i, item; items) {
@@ -271,6 +281,19 @@ Data[] createEnchantments(Enchantment[] enchantments, JSONValue[string] options)
 	return [Data(["ENCHANTMENTS": Data(ret)])];
 }
 
+Data[] createEffects(Effect[] effects, JSONValue[string] options) {
+	Data[] ret;
+	foreach(i, effect; effects) {
+		Data[string] values;
+		values["NAME"] = effect.name;
+		values["ID"] = effect.id.to!string;
+		values["COLOR"] = effect.particles.to!string;
+		values["COLOR_16"] = (effect.particles.to!string(16) ~ "000000")[0..6];
+		ret ~= Data(values);
+	}
+	return [Data(["EFFECTS": Data(ret)])];
+}
+
 // stuff about template parsing
 
 @property bool templateExists(string lang, string t) {
@@ -306,6 +329,12 @@ struct Template {
 				if(open && (*open).type == JSON_TYPE.STRING) this.header_open = (*open).str;
 				if(line && (*line).type == JSON_TYPE.STRING) this.header_line = (*line).str;
 				if(close && (*close).type == JSON_TYPE.STRING) this.header_close = (*close).str;
+			}
+		}
+		auto indentation = "indentation" in options;
+		if(indentation && (*indentation).type == JSON_TYPE.STRING) {
+			if((*indentation).str == "spaces") {
+				this.content = this.content.replace("\t", "    ");
 			}
 		}
 		auto new_line = "new_line" in options;
@@ -434,6 +463,7 @@ string parseValueImpl(string value, Data[string] values, Template[string] templa
 				case "camel_case": return toCamelCase(str);
 				case "pascal_case": return toPascalCase(str);
 				case "uppercase": return toUpper(str);
+				case "lowercase": return replace(str, "_", "");
 				case "spaced": return replace(str, "_", " ");
 				case "dashed": return replace(str, "_", "-");
 			}

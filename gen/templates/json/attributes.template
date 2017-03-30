@@ -1,6 +1,7 @@
 --- start attributes attributes/{{GAME}}.json ---
 {
 
+	"__website": "{{WEBSITE}}",
 	"__software": "{{SOFTWARE}}",
 	"__protocol": {{PROTOCOL}},
 	
@@ -8,8 +9,8 @@
 }
 --- end ---
 --- start attributes_values ---
-	"{{ID}}": {
-		"name": "{{NAME}}",
+	"{{NAME}}": {
+		"name": "{{ID}}",
 		"min": {{MIN}},
 		"max": {{MAX}},
 		"default": {{DEFAULT}}

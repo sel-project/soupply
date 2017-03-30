@@ -17,7 +17,7 @@ void main(string[] args) {
 
 	string exclude = args[4]; // exclude from comparation
 
-	string message = args[5..$].join(" "); // never use that symbol!!! --> "
+	string message = args[5..$].join(" ").replace("\\n", "\n"); // never use that symbol!!! --> "
 
 	wait(spawnShell("git clone git://github.com/sel-utils/" ~ lang ~ " " ~ lang));
 
@@ -69,7 +69,9 @@ void main(string[] args) {
 	}
 
 	// maybe some file has been added or removed
-	foreach(string file ; dirEntries(dest, SpanMode.breadth)) count--;
+	foreach(string file ; dirEntries(dest, SpanMode.breadth)) {
+		if(file.isFile) count--;
+	}
 	if(count != 0) diff();
 
 }

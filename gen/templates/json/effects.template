@@ -1,0 +1,19 @@
+--- start effects effects.json ---
+{
+	
+	"__website": "{{WEBSITE}}",
+
+	"effects": {
+
+{{effects_values@EFFECTS}}
+	}
+
+}
+--- end ---
+--- start effects_values ---
+		"{{NAME}}": {
+			"id": {{ID}},
+			"color": "#{{COLOR_16}}"
+		}{{LAST==false?,}}
+
+--- end ---

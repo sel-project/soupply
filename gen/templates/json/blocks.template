@@ -1,0 +1,18 @@
+--- start blocks blocks.json ---
+{
+	
+	"__website": "{{WEBSITE}}",
+
+	"blocks": {
+
+{{blocks_values@BLOCKS}}
+	}
+
+}
+--- end ---
+--- start blocks_values ---
+		"{{NAME}}": {
+			
+		}{{LAST==false?,}}
+
+--- end ---

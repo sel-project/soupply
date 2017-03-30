@@ -1,0 +1,50 @@
+--- start blocks blocks.d ---
+module sul.blocks;
+
+public struct BlockData
+{
+	
+	bool exists;
+	ubyte id, meta;
+
+	alias exists this;
+
+}
+
+public struct Point
+{
+	
+	ubyte x, y, z;
+
+}
+
+public struct BoundingBox
+{
+	
+	Point min, max;
+
+}
+
+public struct Block
+{
+	
+	string name;
+	BlockData minecraft, pocket;
+	bool solid;
+	double hardness, blastResistance;
+	ubyte opacity, luminance, encouragement, flammability;
+	bool replaceable;
+	BoundingBox boundingBox;
+
+}
+
+public enum Blocks : Block
+{
+	
+{{blocks_values@BLOCKS}}
+
+}
+--- end ---
+--- start blocks_values ---
+	{{NAME:uppercase}} = Block("{{NAME:spaced}}", BlockData({{MINECRAFT}}{{MINECRAFT==true?, {{MINECRAFT_ID}}, {{MINECRAFT_META}}}}), BlockData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}, {{POCKET_META}}}}), {{SOLID}}, {{HARDNESS}}, {{BLAST_RESISTANCE}}, {{OPACITY}}, {{LUMINANCE}}, {{ENCOURAGEMENT}}, {{FLAMMABILITY}}, {{REPLACEABLE}}{{HAS_BOUNDING_BOX==true?, BoundingBox(Point({{BB_MIN_X}}, {{BB_MIN_Y}}, {{BB_MIN_Z}}), Point({{BB_MAX_X}}, {{BB_MAX_Y}}, {{BB_MAX_Z}}))}}),
+--- end ---

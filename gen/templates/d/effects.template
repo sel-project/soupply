@@ -1,0 +1,22 @@
+--- start effects effects.d ---
+module sul.effects;
+
+public struct Effect
+{
+
+	string name;	
+	ubyte id;
+	uint color;
+
+}
+
+public enum Effects : Effect
+{
+	
+{{effects_values@EFFECTS}}
+
+}
+--- end ---
+--- start effects_values ---
+	{{NAME:uppercase}} = Effect("{{NAME}}", {{ID}}, {{COLOR}}),
+--- end ---

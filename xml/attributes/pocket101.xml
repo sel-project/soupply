@@ -7,57 +7,57 @@
 	<protocol>101</protocol>
 
 	<attribute
-		id="health"
-		name="minecraft:health"
+		name="health"
+		id="minecraft:health"
 		min="0"
 		max="20"
 		default="20" />
 
 	<attribute
-		id="absorption"
-		name="minecraft:generic.absorption"
+		name="absorption"
+		id="minecraft:generic.absorption"
 		min="0"
 		max="4"
 		default="0" />
 
 	<attribute
-		id="hunger"
-		name="minecraft:player.hunger"
+		name="hunger"
+		id="minecraft:player.hunger"
 		min="0"
 		max="20"
 		default="20" />
 
 	<attribute
-		id="saturation"
-		name="minecraft:player.saturation"
+		name="saturation"
+		id="minecraft:player.saturation"
 		min="0"
 		max="20"
 		default="5" />
 
 	<attribute
-		id="experience"
-		name="minecraft:player.experience"
+		name="experience"
+		id="minecraft:player.experience"
 		min="0"
 		max="1"
 		default="0" />
 
 	<attribute
-		id="level"
-		name="minecraft:player.level"
+		name="level"
+		id="minecraft:player.level"
 		min="0"
 		max="24791"
 		default="0" />
 
 	<attribute
-		id="speed"
-		name="minecraft:movement"
+		name="speed"
+		id="minecraft:movement"
 		min="0"
 		max="24791"
 		default="0.1" />
 
 	<attribute
-		id="knockback-resistance"
-		name="minecraft:generic.knockback_resistance"
+		name="knockback-resistance"
+		id="minecraft:generic.knockback_resistance"
 		min="0"
 		max="1"
 		default="0" />
