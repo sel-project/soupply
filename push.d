@@ -3,7 +3,7 @@ module push;
 import std.algorithm : canFind;
 import std.file;
 import std.process : wait, spawnShell;
-import std.string : endsWith, replace;
+import std.string : endsWith, replace, join;
 
 void main(string[] args) {
 
