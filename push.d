@@ -15,23 +15,13 @@ void main(string[] args) {
 
 	string dest = lang ~ "/" ~ args[3];
 
-	args = args[4..$]; // exclude from comparation
+	string exclude = args[4]; // exclude from comparation
+
+	string message = args[5..$].join(" "); // never use that symbol!!! --> "
 
 	wait(spawnShell("git clone git://github.com/sel-utils/" ~ lang ~ " " ~ lang));
 
 	void diff() {
-
-		/+
-		// remove old files
-		foreach(string file ; dirEntries(dest, SpanMode.breadth)) {
-			if(file.isFile) remove(file);
-		}
-
-		// copy new files
-		foreach(string file ; dirEntries("src/" ~ lang, SpanMode.breadth)) {
-			if(file.isFile) write(dest ~ file[lang.length + 4..$], read(file));
-		}
-		+/
 
 		wait(spawnShell("rm -r " ~ dest));
 		wait(spawnShell("cp -r src/" ~ lang ~ "/. " ~ dest));
@@ -51,11 +41,11 @@ void main(string[] args) {
 		}
 
 		// push
-		wait(spawnShell(`cd ` ~ lang ~ ` && git add --all . && git commit -m "${MESSAGE}" -m "${DESC}" && git push "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
+		wait(spawnShell(`cd ` ~ lang ~ ` && git add --all . && git commit -m "` ~ message ~ `" && git push "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
 
 		// push tags
 		if(args[2] == "true") {
-			wait(spawnShell(`cd ` ~ lang ~ ` && git tag -a v` ~ variables["VERSION"] ~ ` -m "${MESSAGE}" && git push --tags "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
+			wait(spawnShell(`cd ` ~ lang ~ ` && git tag -a v` ~ variables["VERSION"] ~ ` -m "` ~ message ~ `"" && git push --tags "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
 		}
 
 	}
@@ -66,7 +56,7 @@ void main(string[] args) {
 		if(file.isFile) {
 			count++;
 			immutable location = file[lang.length + 5..$];
-			if(!args.canFind(location)) {
+			if(location != exclude) {
 				if(exists(dest ~ location)) {
 					if(read(file) != read(dest ~ location)) {
 						return diff();

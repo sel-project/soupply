@@ -8,21 +8,19 @@ script:
  - rdmd --build-only push.d
 
 after_success:
- - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
- - DESC="Automatically committed from https://github.com/sel-project/sel-utils/commit/${TRAVIS_COMMIT}"
+ - MESSAGE="$(git log --format=%B -n 1 $TRAVIS_COMMIT)\n\nAutomatically committed from https://github.com/sel-project/sel-utils/commit/${TRAVIS_COMMIT}"
  - git config --global user.email ${EMAIL}
  - git config --global user.name ${USER}
-# html (github pages) and json
  - git clone git://${REPO_GP} gp
  - rm -r gp/json
  - cp -r -f pages/. gp
  - cp -r -f json/. gp/json
  - cd gp
  - git add --all .
- - git commit -m "${MESSAGE}" -m "${DESC}"
+ - git commit -m "${MESSAGE}"
  - git push "https://${TOKEN}@${REPO_GP}" master
  - cd ..
- - ./push d true src sul/utils/about.d
- - ./push java false src/main/java sul/utils/About.java
- - ./push js false src sul/utils/about.js
- - ./push php false src sul/utils/About.php
+ - ./push d true src sul/utils/about.d $MESSAGE
+ - ./push java false src/main/java sul/utils/About.java $MESSAGE
+ - ./push js false src sul/utils/about.js $MESSAGE
+ - ./push php false src sul/utils/About.php $MESSAGE
