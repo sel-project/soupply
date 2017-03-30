@@ -21,6 +21,7 @@ void main(string[] args) {
 
 	void diff() {
 
+		/+
 		// remove old files
 		foreach(string file ; dirEntries(dest, SpanMode.breadth)) {
 			if(file.isFile) remove(file);
@@ -30,6 +31,13 @@ void main(string[] args) {
 		foreach(string file ; dirEntries("src/" ~ lang, SpanMode.breadth)) {
 			if(file.isFile) write(dest ~ file[lang.length + 4..$], read(file));
 		}
+		+/
+
+		wait(spawnShell("rm -r " ~ dest));
+		wait(spawnShell("cp -r src/" ~ lang ~ "/. " ~ dest));
+
+		import std.stdio : writeln;
+		writeln("copied");
 
 		// replace template files
 		foreach(string file ; dirEntries(lang, SpanMode.breadth)) {
