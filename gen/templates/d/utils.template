@@ -2,5 +2,7 @@
 {{about}}
 --- end ---
 --- start about utils/about.d ---
+module sul.utils.about;
+
 public enum __sul = {{VERSION}};
 --- end ---

@@ -1,0 +1,51 @@
+--- start protocols protocol/{{GAME}}.json ---
+{
+	
+	"__website": "{{WEBSITE}}",
+	"__software": "{{SOFTWARE}}",
+	"__protocol": {{PROTOCOL}},
+
+	"encoding": {
+
+
+	},
+
+	"packets": {
+
+{{sections@SECTIONS}}
+	}
+
+}
+--- end ---
+--- start sections ---
+		"{{NAME}}": {
+
+{{packets@PACKETS}}
+		}{{LAST==false?,}}
+
+--- end ---
+--- start packets ---
+			"{{NAME}}": {
+				"id": {{ID}},
+				"clientbound": {{CLIENTBOUND}},
+				"serverbound": {{SERVERBOUND}},
+				"fields": [
+{{packet_fields@FIELDS}}
+				]
+			}{{LAST==false?,}}
+
+--- end ---
+--- start packet_fields ---
+					{
+						"name": "{{NAME}}",
+						"type": "{{TYPE}}"{{WHEN!=?,
+						"when": {{WHEN}}}}{{HAS_CONSTANTS==true?,
+						"constants": {
+{{packet_constants@CONSTANTS}}
+						\}}}
+					}{{LAST==false?,}}
+--- end ---
+--- start packet_constants ---
+							"{{NAME}}": {{VALUE_ENCODED}}{{LAST==false?,
+}}
+--- end ---

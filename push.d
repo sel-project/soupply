@@ -3,8 +3,10 @@ module push;
 import std.algorithm : canFind;
 import std.file;
 import std.process : wait, spawnShell;
-import std.string : endsWith, replace, join;
+import std.stdio : writeln;
+import std.string : endsWith, replace, strip;
 
+		
 void main(string[] args) {
 
 	// variables that will be replaced in .template files
@@ -15,19 +17,17 @@ void main(string[] args) {
 
 	string dest = lang ~ "/" ~ args[3];
 
-	string exclude = args[4]; // exclude from comparation
-
-	string message = args[5..$].join(" ").replace("\\n", "\n\n"); // never use that symbol!!! --> "
+	string[] exclude = args[4..$]; // exclude from comparation
+	
+	string message = strip(cast(string)read("message.txt"));
+	string desc = strip(cast(string)read("desc.txt"));
 
 	wait(spawnShell("git clone git://github.com/sel-utils/" ~ lang ~ " " ~ lang));
 
 	void diff() {
-
+	
 		wait(spawnShell("rm -r " ~ dest));
 		wait(spawnShell("cp -r src/" ~ lang ~ "/. " ~ dest));
-
-		import std.stdio : writeln;
-		writeln("copied");
 
 		// replace template files
 		foreach(string file ; dirEntries(lang, SpanMode.breadth)) {
@@ -41,13 +41,13 @@ void main(string[] args) {
 		}
 
 		// push
-		wait(spawnShell(`cd ` ~ lang ~ ` && git add --all . && git commit -m "` ~ message ~ `" && git push "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
+		wait(spawnShell(`cd ` ~ lang ~ ` && git add --all . && git commit -m "` ~ message ~ `" -m "` ~ desc ~ `" && git push "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
 
 		// push tags
 		if(args[2] == "true") {
 			wait(spawnShell(`cd ` ~ lang ~ ` && git tag -a v` ~ variables["VERSION"] ~ ` -m "` ~ message ~ `" && git push --tags "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
 		}
-
+		
 	}
 
 	// compare files (from src/$LANG to $LANG/$DEST)
@@ -56,22 +56,29 @@ void main(string[] args) {
 		if(file.isFile) {
 			count++;
 			immutable location = file[lang.length + 5..$];
-			if(location != exclude) {
-				if(exists(dest ~ location)) {
-					if(read(file) != read(dest ~ location)) {
+			if(!exclude.canFind(location)) {
+				if(exists(dest ~ "/" ~ location)) {
+					if(read(file) != read(dest ~ "/" ~ location)) {
+						writeln("File ", location, " is different, the repository will be updated");
 						return diff();
 					}
 				} else {
+					writeln("File ", location, " is new, the repository will be updated");
 					return diff();
 				}
 			}
 		}
 	}
+	
+	writeln(count);
 
 	// maybe some file has been added or removed
 	foreach(string file ; dirEntries(dest, SpanMode.breadth)) {
 		if(file.isFile) count--;
 	}
-	if(count != 0) diff();
+	if(count != 0) {
+		writeln("One ore more files have been removed, the repository will be updated");
+		diff();
+	}
 
 }
