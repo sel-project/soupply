@@ -9,7 +9,6 @@ abstract final class Items {
 {{items_values@ITEMS}}
 
 }
-
 --- end ---
 --- start items_values ---
 	const {{NAME:uppercase}} = new Item("{{NAME:spaced}}", new ItemData({{MINECRAFT}}, {{MINECRAFT_ID}}, {{MINECRAFT_META}}), new ItemData({{POCKET}}, {{POCKET_ID}}, {{POCKET_META}}), {{STACK}});

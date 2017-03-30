@@ -152,6 +152,26 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 
 }
 
+// add last to every array that contains an object
+void addLast(ref Data[] data) {
+	foreach(i, ref d; data) {
+		if(d.type == Data.Type.array) {
+			addLast(d.array);
+		} else if(d.type == Data.Type.object) {
+			d.object["LAST"] = to!string(i == data.length - 1);
+			addLastObject(d.object);
+		}
+	}
+}
+
+// ditto
+void addLastObject(ref Data[string] data) {
+	foreach(ref d ; data) {
+		if(d.type == Data.Type.array) addLast(d.array);
+		else if(d.type == Data.Type.object) addLastObject(d.object);
+	}
+}
+
 Data[] createAttributes(Attributes[string] attributes, JSONValue[string] options) {
 	Data[] ret;
 	foreach(game, a; attributes) {
@@ -167,31 +187,11 @@ Data[] createAttributes(Attributes[string] attributes, JSONValue[string] options
 			values["MIN"] = attribute.min.to!string;
 			values["MAX"] = attribute.max.to!string;
 			values["DEFAULT"] = attribute.def.to!string;
-			values["LAST"] = to!string(i == a.data.length - 1);
 			g["ATTRIBUTES"].array ~= Data(values);
 		}
 		ret ~= Data(g);
 	}
 	return ret;
-}
-
-// add last to every array that contains an object
-void addLast(ref Data[] data) {
-	foreach(i, ref d; data) {
-		if(d.type == Data.Type.array) {
-			addLast(d.array);
-		} else if(d.type == Data.Type.object) {
-			d.object["LAST"] = to!string(i == data.length - 1);
-			addLastObject(d.object);
-		}
-	}
-}
-
-void addLastObject(ref Data[string] data) {
-	foreach(ref d ; data) {
-		if(d.type == Data.Type.array) addLast(d.array);
-		else if(d.type == Data.Type.object) addLastObject(d.object);
-	}
 }
 
 Data[] createCreative(Creative[string] creative, JSONValue[string] options) {
@@ -213,10 +213,8 @@ Data[] createCreative(Creative[string] creative, JSONValue[string] options) {
 				Data[string] e;
 				e["ID"] = ench.id.to!string;
 				e["LEVEL"] = ench.level.to!string;
-				e["LAST"] = to!string(j == item.enchantments.length - 1);
 				values["ENCHANTMENTS"].array ~= Data(e);
 			}
-			values["LAST"] = to!string(i == c.data.length - 1);
 			g["ITEMS"].array ~= Data(values);
 		}
 		ret ~= Data(g);
@@ -238,7 +236,6 @@ Data[] createItems(Item[] items, JSONValue[string] options) {
 		values["POCKET_META"] = max(0, item.pocket.meta).to!string;
 		values["HAS_POCKET_META"] = to!string(item.pocket.meta >= 0);
 		values["STACK"] = item.stack.to!string;
-		values["LAST"] = to!string(i == items.length - 1);
 		ret ~= Data(values);
 	}
 	return [Data(["ITEMS": Data(ret)])];
@@ -254,7 +251,6 @@ Data[] createEntities(Entity[] entities, JSONValue[string] options) {
 		values["HAS_SIZE"] = to!string(!entity.width.isNaN);
 		values["WIDTH"] = entity.width.to!string;
 		values["HEIGHT"] = entity.height.to!string;
-		values["LAST"] = to!string(i == entities.length - 1);
 		ret ~= Data(values);
 	}
 	return [Data(["ENTITIES": Data(ret)])];
@@ -270,7 +266,6 @@ Data[] createEnchantments(Enchantment[] enchantments, JSONValue[string] options)
 		values["POCKET"] = to!string(enchantment.pocket >= 0);
 		values["POCKET_ID"] = max(0, enchantment.pocket).to!string;
 		values["MAX"] = enchantment.max.to!string;
-		//values["LAST"] = to!string(i == enchantments.length - 1);
 		ret ~= Data(values);
 	}
 	return [Data(["ENCHANTMENTS": Data(ret)])];
@@ -323,7 +318,8 @@ struct Template {
 	public string parse(Data[string] values, Template[string] templates) {
 		string ret = parseValue(this.content, values, templates);
 		if(this.location.length) {
-			immutable location = "../src/" ~ this.lang ~ "/" ~ parseValue(this.location, values, templates);
+			ret = ret.strip;
+			immutable location = "../src/" ~ this.lang ~ "/sul/" ~ parseValue(this.location, values, templates);
 			std.file.mkdirRecurse(location[0..location.lastIndexOf("/")]);
 			if(this.write_header) {
 				write(location, ret ~ this.new_line, "", this.header_open, this.header_line, this.header_close);

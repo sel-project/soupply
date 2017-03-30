@@ -633,5 +633,5 @@ void write(string file, string data, string from="", string open="/*", string li
 		line ~ "License: https://github.com/sel-project/sel-utils/blob/master/LICENSE\n" ~
 		line ~ "Repository: https://github.com/sel-project/sel-utils\n" ~
 		(from.length ? line ~ "Generated from https://github.com/sel-project/sel-utils/blob/master/xml/" ~ from ~ ".xml\n" : "") ~
-		close ~ "\n" ~ data.strip);
+		close ~ "\n" ~ data);
 }

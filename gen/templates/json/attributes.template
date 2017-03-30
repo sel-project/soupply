@@ -6,7 +6,6 @@
 	
 {{attributes_values@ATTRIBUTES}}
 }
-
 --- end ---
 --- start attributes_values ---
 	"{{ID}}": {
