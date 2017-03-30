@@ -16,6 +16,7 @@ module src;
 
 import std.stdio : writeln;
 
+import std.algorithm : max;
 import std.conv : to;
 static import std.file;
 import std.json;
@@ -85,22 +86,27 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 	Data[string] v;
 	v["WEBSITE"] = "https://github.com/sel-project/sel-utils";
 	v["VERSION"] = to!string(sulVersion);
-	//TODO other stuff
 
 	foreach(lang ; languages) {
 
 		JSONValue[string] options;
 
-		if(std.file.exists("templates/" ~ lang ~ "/info.json")) {
-			//TODO parse options
+		if(std.file.exists("templates/" ~ lang ~ "/options.json")) {
+			options = parseJSON(cast(string)std.file.read("templates/" ~ lang ~ "/options.json")).object;
 		}
 
 		Data[string] values;
 
 		// utils
 		if(templateExists(lang, "utils")) {
-
+			values["utils"] = Data([Data(["": Data.init])]);
 		}
+
+		/*foreach(immutable type ; TypeTuple!("attributes", "creative", "protocols", "metadatas", "blocks", "items", "entities", "enchantments", "effects")) {
+			if(templateExists(lang, type)) {
+				values[type] = Data(mixin("create" ~ capitalize(type) ~ "(" ~ type ~ ", options)"));
+			}
+		}*/
 
 		// attributes
 		if(templateExists(lang, "attributes")) {
@@ -117,6 +123,9 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 		// blocks
 
 		// items
+		if(templateExists(lang, "items")) {
+			values["items"] = Data(createItems(items, options));
+		}
 
 		// entities
 		if(templateExists(lang, "entities")) {
@@ -124,11 +133,15 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 		}
 
 		// enchantments
+		if(templateExists(lang, "enchantments")) {
+			values["enchantments"] = Data(createEnchantments(enchantments, options));
+		}
 
 		// effects
 
 		foreach(type, data; values) {
-			auto temp = parseTemplate(lang, type);
+			addLast(data.array);
+			auto temp = parseTemplate(lang, type, options);
 			auto ptr = type in temp;
 			foreach(d ; data.array) {
 				(*ptr).parse(d.object, temp);
@@ -162,6 +175,25 @@ Data[] createAttributes(Attributes[string] attributes, JSONValue[string] options
 	return ret;
 }
 
+// add last to every array that contains an object
+void addLast(ref Data[] data) {
+	foreach(i, ref d; data) {
+		if(d.type == Data.Type.array) {
+			addLast(d.array);
+		} else if(d.type == Data.Type.object) {
+			d.object["LAST"] = to!string(i == data.length - 1);
+			addLastObject(d.object);
+		}
+	}
+}
+
+void addLastObject(ref Data[string] data) {
+	foreach(ref d ; data) {
+		if(d.type == Data.Type.array) addLast(d.array);
+		else if(d.type == Data.Type.object) addLastObject(d.object);
+	}
+}
+
 Data[] createCreative(Creative[string] creative, JSONValue[string] options) {
 	Data[] ret;
 	foreach(game, c; creative) {
@@ -192,6 +224,26 @@ Data[] createCreative(Creative[string] creative, JSONValue[string] options) {
 	return ret;
 }
 
+Data[] createItems(Item[] items, JSONValue[string] options) {
+	Data[] ret;
+	foreach(i, item; items) {
+		Data[string] values;
+		values["NAME"] = item.name;
+		values["MINECRAFT"] = item.minecraft.exists.to!string;
+		values["MINECRAFT_ID"] = item.minecraft.id.to!string;
+		values["MINECRAFT_META"] = max(0, item.minecraft.meta).to!string;
+		values["HAS_MINECRAFT_META"] = to!string(item.minecraft.meta >= 0);
+		values["POCKET"] = item.pocket.exists.to!string;
+		values["POCKET_ID"] = item.pocket.id.to!string;
+		values["POCKET_META"] = max(0, item.pocket.meta).to!string;
+		values["HAS_POCKET_META"] = to!string(item.pocket.meta >= 0);
+		values["STACK"] = item.stack.to!string;
+		values["LAST"] = to!string(i == items.length - 1);
+		ret ~= Data(values);
+	}
+	return [Data(["ITEMS": Data(ret)])];
+}
+
 Data[] createEntities(Entity[] entities, JSONValue[string] options) {
 	Data[] ret;
 	foreach(i, entity; entities) {
@@ -208,29 +260,85 @@ Data[] createEntities(Entity[] entities, JSONValue[string] options) {
 	return [Data(["ENTITIES": Data(ret)])];
 }
 
+Data[] createEnchantments(Enchantment[] enchantments, JSONValue[string] options) {
+	Data[] ret;
+	foreach(i, enchantment; enchantments) {
+		Data[string] values;
+		values["NAME"] = enchantment.name;
+		values["MINECRAFT"] = to!string(enchantment.minecraft >= 0);
+		values["MINECRAFT_ID"] = max(0, enchantment.minecraft).to!string;
+		values["POCKET"] = to!string(enchantment.pocket >= 0);
+		values["POCKET_ID"] = max(0, enchantment.pocket).to!string;
+		values["MAX"] = enchantment.max.to!string;
+		//values["LAST"] = to!string(i == enchantments.length - 1);
+		ret ~= Data(values);
+	}
+	return [Data(["ENCHANTMENTS": Data(ret)])];
+}
+
+// stuff about template parsing
+
 @property bool templateExists(string lang, string t) {
 	return std.file.exists("templates/" ~ lang ~ "/" ~ t ~ ".template");
 }
 
-//alias Template = Tuple!(string, "location", string, "content");
-
 struct Template {
 
-	string lang, location, content;
+	JSONValue[string] options;
 
-	string parse(Data[string] values, Template[string] templates) {
+	private string lang, location, content;
+
+	private bool write_header = true;
+	private string header_open = "/*";
+	private string header_line = " * ";
+	private string header_close = " */";
+
+	private string new_line = "\n";
+
+	public this(JSONValue[string] options, string lang, string location, string content) {
+		this.options = options;
+		this.lang = lang;
+		this.location = location;
+		this.content = content;
+		auto header = "header" in options;
+		if(header) {
+			if((*header).type == JSON_TYPE.FALSE) {
+				this.write_header = false;
+			} else if((*header).type == JSON_TYPE.OBJECT) {
+				auto open = "open" in *header;
+				auto line = "line" in *header;
+				auto close = "close" in *header;
+				if(open && (*open).type == JSON_TYPE.STRING) this.header_open = (*open).str;
+				if(line && (*line).type == JSON_TYPE.STRING) this.header_line = (*line).str;
+				if(close && (*close).type == JSON_TYPE.STRING) this.header_close = (*close).str;
+			}
+		}
+		auto new_line = "new_line" in options;
+		if(new_line) {
+			if((*new_line).type == JSON_TYPE.STRING) this.new_line = (*new_line).str;
+			else if((*new_line).type == JSON_TYPE.FALSE) this.new_line = "";
+		}
+	}
+
+	public string parse(Data[string] values, Template[string] templates) {
 		string ret = parseValue(this.content, values, templates);
 		if(this.location.length) {
 			immutable location = "../src/" ~ this.lang ~ "/" ~ parseValue(this.location, values, templates);
 			std.file.mkdirRecurse(location[0..location.lastIndexOf("/")]);
-			std.file.write(location, ret);
+			if(this.write_header) {
+				write(location, ret ~ this.new_line, "", this.header_open, this.header_line, this.header_close);
+			} else {
+				std.file.write(location, ret ~ this.new_line);
+			}
 		}
 		return ret;
 	}
 
 }
 
-Template[string] parseTemplate(string lang, string t) {
+Template[string] parseTemplate(string lang, string t, JSONValue[string] options) {
+	auto sel = "strip_empty_lines" in options;
+	immutable emptyLines = sel is null || (*sel).type != JSON_TYPE.FALSE;
 	Template[string] ret;
 	string data = cast(string)std.file.read("templates/" ~ lang ~ "/" ~ t ~ ".template");
 	// cannot use regex because they eat memory
@@ -238,7 +346,15 @@ Template[string] parseTemplate(string lang, string t) {
 		auto m = match.strip.split("---");
 		if(m.length >= 3) {
 			string[] header = m[0].strip.split(" ");
-			ret[header[0]] = Template(lang, header.length > 1 ? header[1..$].join(" ") : "", m[1..$-2].join("---")[1..$-1]);
+			string content = m[1..$-2].join("---")[1..$-1];
+			if(emptyLines) {
+				string[] lines = content.split("\n");
+				foreach(ref line ; lines) {
+					if(line.strip.length == 0) line = "";
+				}
+				content = lines.join("\n");
+			}
+			ret[header[0]] = Template(options, lang, header.length > 1 ? header[1..$].join(" ") : "", content);
 		}
 	}
 	return ret;
@@ -255,10 +371,11 @@ string parseValue(string value, Data[string] values, Template[string] templates)
 	size_t open_at;
 	size_t i;
 	for(i=0; i<value.length; i++) {
-		/*if(value[i] == '\\' && open != 0 && i != l && value[i+1] == '}') {
-			value = value[0..i] ~ value[i+1..$];
-			i++;
-		} else */if(value[i] == '{' && i != l && value[i+1] == '{') {
+		if(value[i] == '\\' && open != 0 && i != l && (value[i+1] == '{' || value[i+1] == '}')) {
+			if(open == 1) {
+				value = value[0..i] ~ value[i+1..$];
+			}
+		} else if(value[i] == '{' && i != l && value[i+1] == '{') {
 			if(++open == 1) {
 				i++;
 				open_at = i+1;
@@ -305,9 +422,7 @@ string parseValueImpl(string value, Data[string] values, Template[string] templa
 		string expected = value[condition+2..$];
 		value = value[0..condition];
 		auto ptr = value in values;
-		if(ptr && (*ptr).type == Data.Type.string && ((*ptr).str == expected) == check) {
-			/*if(result.startsWith("{{" && result.endsWith("}}"))) return parseValue(result[2..$-2], values, templates);
-			else return result;*/
+		if((((ptr && (*ptr).type == Data.Type.string) ? (*ptr).str : "") == expected) == check) {
 			return parseValue(result, values, templates);
 		} else {
 			return "";
@@ -348,7 +463,7 @@ string parseValueImpl(string value, Data[string] values, Template[string] templa
 	} else {
 		auto tmp = value in templates;
 		if(tmp) {
-			return parseValue((*tmp).content, values, templates);
+			return (*tmp).parse(values, templates);
 		}
 	}
 	return "";

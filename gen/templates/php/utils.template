@@ -26,6 +26,7 @@ class Item {
 	}
 
 }
+
 --- end ---
 --- start item_data utils/ItemData.php ---
 namespace sul\utils;
@@ -48,4 +49,5 @@ class ItemData {
 	}
 
 }
+
 --- end ---

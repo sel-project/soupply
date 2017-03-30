@@ -23,7 +23,9 @@ import std.typecons : Tuple, tuple;
 
 import all;
 
-alias writeHtml = write!("<!--", " + ", " +-->");
+void writeHtml(string file, string data, string from="") {
+	write(file, data ~ "\n", from, "<!--", " + ", " +-->");
+}
 
 void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas) {
 	

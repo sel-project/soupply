@@ -1,0 +1,33 @@
+--- start enchantments enchantments.d ---
+module sul.enchantments;
+
+struct EnchantmentValue {
+	
+	bool exists;
+
+	ubyte id;
+
+	alias exists this;
+
+}
+
+struct Enchantment {
+	
+	string name;
+
+	EnchantmentData minecraft, pocket;
+
+	ubyte max;
+
+}
+
+enum Enchantments : Enchantment {
+
+{{enchantments_values@ENCHANTMENTS}}	
+
+}
+
+--- end ---
+--- start enchantments_values ---
+	{{NAME:uppercase}} = Enchantment("{{NAME:spaced}}", EnchantmentData({{MINECRAFT}}, {{MINECRAFT_ID}}), EnchantmentData({{POCKET}}, {{POCKET_ID}}), {{MAX}}),
+--- end ---
