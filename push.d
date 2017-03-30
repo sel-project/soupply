@@ -17,7 +17,7 @@ void main(string[] args) {
 
 	string exclude = args[4]; // exclude from comparation
 
-	string message = args[5..$].join(" ").replace("\\n", "\n"); // never use that symbol!!! --> "
+	string message = args[5..$].join(" ").replace("\\n", "\n\n"); // never use that symbol!!! --> "
 
 	wait(spawnShell("git clone git://github.com/sel-utils/" ~ lang ~ " " ~ lang));
 
@@ -45,7 +45,7 @@ void main(string[] args) {
 
 		// push tags
 		if(args[2] == "true") {
-			wait(spawnShell(`cd ` ~ lang ~ ` && git tag -a v` ~ variables["VERSION"] ~ ` -m "` ~ message ~ `"" && git push --tags "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
+			wait(spawnShell(`cd ` ~ lang ~ ` && git tag -a v` ~ variables["VERSION"] ~ ` -m "` ~ message ~ `" && git push --tags "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
 		}
 
 	}

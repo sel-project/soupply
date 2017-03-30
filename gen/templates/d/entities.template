@@ -1,0 +1,31 @@
+--- start entities entities.d ---
+module sul.entities;
+
+public struct EntityData
+{
+	
+	bool exists;
+	ubyte id;
+
+}
+
+public struct Entity
+{
+	
+	string name;
+	EntityData minecraft, pocket;
+	bool object;
+	double width, height;
+
+}
+
+public enum Entities : Entity
+{
+	
+{{entities_values@ENTITIES}}
+
+}
+--- end ---
+--- start entities_values ---
+	{{NAME:uppercase}} = Entity("{{NAME:spaced}}", EntityData({{MINECRAFT}}{{MINECRAFT==true?, {{MINECRAFT_ID}}}}), EntityData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}}}), {{OBJECT}}{{HAS_SIZE==true?, {{WIDTH}}, {{HEIGHT}}}}),
+--- end ---

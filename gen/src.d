@@ -72,6 +72,8 @@ struct Data {
 	
 }
 
+Data[string] global;
+
 void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments, Effect[] effects) {
 
 	string[] languages;
@@ -83,9 +85,8 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 		}
 	}
 
-	Data[string] v;
-	v["WEBSITE"] = "https://github.com/sel-project/sel-utils";
-	v["VERSION"] = to!string(sulVersion);
+	global["WEBSITE"] = "https://github.com/sel-project/sel-utils";
+	global["VERSION"] = to!string(sulVersion);
 
 	foreach(lang ; languages) {
 
@@ -256,8 +257,10 @@ Data[] createEntities(Entity[] entities, JSONValue[string] options) {
 	foreach(i, entity; entities) {
 		Data[string] values;
 		values["NAME"] = entity.name;
-		values["MINECRAFT"] = entity.minecraft.to!string;
-		values["POCKET"] = entity.pocket.to!string;
+		values["MINECRAFT"] = to!string(entity.minecraft != 0);
+		values["MINECRAFT_ID"] = entity.minecraft.to!string;
+		values["POCKET"] = to!string(entity.pocket != 0);
+		values["POCKET_ID"] = entity.pocket.to!string;
 		values["HAS_SIZE"] = to!string(!entity.width.isNaN);
 		values["WIDTH"] = entity.width.to!string;
 		values["HEIGHT"] = entity.height.to!string;
@@ -434,6 +437,10 @@ string parseValue(string value, Data[string] values, Template[string] templates)
  * ---
  */
 string parseValueImpl(string value, Data[string] values, Template[string] templates) {
+	Data* getValue(string name) {
+		auto ptr = name in values; //TODO check if the value has a point (ITEM.NAME)
+		return ptr ? ptr : name in global;
+	}
 	auto condition = value.indexOf("?");
 	if(condition >= 0) {
 		string result = value[condition+1..$];
@@ -446,7 +453,7 @@ string parseValueImpl(string value, Data[string] values, Template[string] templa
 		}
 		string expected = value[condition+2..$];
 		value = value[0..condition];
-		auto ptr = value in values;
+		auto ptr = getValue(value);
 		if((((ptr && (*ptr).type == Data.Type.string) ? (*ptr).str : "") == expected) == check) {
 			return parseValue(result, values, templates);
 		} else {
@@ -455,7 +462,7 @@ string parseValueImpl(string value, Data[string] values, Template[string] templa
 	}
 	auto format = value.indexOf(":");
 	if(format >= 0) {
-		auto ptr = value[0..format] in values;
+		auto ptr = getValue(value[0..format]);
 		if(ptr && (*ptr).type == Data.Type.string) {
 			string str = (*ptr).str;
 			final switch(value[format+1..$]) {
@@ -474,7 +481,7 @@ string parseValueImpl(string value, Data[string] values, Template[string] templa
 	auto at = value.indexOf("@");
 	if(at >= 0) {
 		auto tmp = value[0..at] in templates;
-		auto v = value[at+1..$] in values;
+		auto v = getValue(value[at+1..$]);
 		if(tmp && v && (*v).type == Data.Type.array) {
 			string[] ret;
 			foreach(d ; (*v).array) {
@@ -483,7 +490,7 @@ string parseValueImpl(string value, Data[string] values, Template[string] templa
 			return ret.join("\n");
 		}
 	}
-	auto ptr = value in values;
+	auto ptr = getValue(value);
 	if(ptr && (*ptr).type == Data.Type.string) {
 		return (*ptr).str;
 	} else {

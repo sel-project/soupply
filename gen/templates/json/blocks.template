@@ -12,7 +12,34 @@
 --- end ---
 --- start blocks_values ---
 		"{{NAME}}": {
-			
+			{{MINECRAFT==true?"minecraft": {{HAS_MINECRAFT_META==true?{
+				"id": {{MINECRAFT_ID}},
+				"meta": {{MINECRAFT_META}}
+			\}}}{{HAS_MINECRAFT_META==false?{{MINECRAFT_ID}}}},
+			}}{{POCKET==true?"pocket": {{HAS_POCKET_META==true?{
+				"id": {{POCKET_ID}},
+				"meta": {{POCKET_META}}
+			\}}}{{HAS_POCKET_META==false?{{POCKET_ID}}}},
+			}}"solid": {{SOLID}},
+			"hardness": {{HARDNESS}},
+			"blast_resistance": {{BLAST_RESISTANCE}},
+			"opacity": {{OPACITY}},
+			"luminance": {{LUMINANCE}},
+			"encouragement": {{ENCOURAGEMENT}},
+			"flammability": {{FLAMMABILITY}},
+			"replaceable": {{REPLACEABLE}},
+			"bounding_box": {{HAS_BOUNDING_BOX==false?null}}{{HAS_BOUNDING_BOX==true?{
+				"min": {
+					"x": {{BB_MIN_X}},
+					"y": {{BB_MIN_Y}},
+					"z": {{BB_MIN_Z}}
+				},
+				"max": {
+					"x": {{BB_MAX_X}},
+					"y": {{BB_MAX_Y}},
+					"z": {{BB_MAX_Z}}
+				}
+			\}}}
 		}{{LAST==false?,}}
 
 --- end ---

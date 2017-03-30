@@ -1,13 +1,63 @@
 --- start utils ---
-{{items}}
+{{attribute}}
+{{block}}
+{{block_data}}
+{{item}}
 {{item_data}}
 --- end ---
---- start items utils/Item.php ---
+--- start attribute utils/Attribute.php ---
+namespace sul\utils;
+
+public class Attribute
+{
+
+	/** @var string */
+	public $id;
+
+	/** @var float */
+	public $min, $max, $default;
+
+	public function __construct(string $id, $min, $max, $default)
+	{
+		$this->id = $id;
+		$this->min = $min;
+		$this->max = $max;
+		$this->default = $default;
+	}
+
+}
+--- end ---
+--- start block utils/Block.php ---
+namespace sul\utils;
+
+public class Block
+{
+
+
+
+}
+--- end ---
+--- start block_data utils/BlockData.php ---
+namespace sul\utils;
+
+public class BlockData
+{
+
+	/** @var bool */
+	public $exists;
+
+	/** @var int */
+	public $id, $meta;
+
+}
+--- end ---
+--- start item utils/Item.php ---
 namespace sul\utils;
 
 use sul\utils\ItemData;
 
-class Item {
+public class Item
+{
 	
 	/** @var string */
 	public $name;
@@ -18,7 +68,8 @@ class Item {
 	/** @var int */
 	public $stack;
 
-	function __construct(string $name, ItemData $minecraft, ItemData $pocket, int $stack) {
+	public function __construct(string $name, ItemData $minecraft, ItemData $pocket, int $stack)
+	{
 		$this->name = $name;
 		$this->minecraft = $minecraft;
 		$this->pocket = $pocket;
@@ -30,7 +81,8 @@ class Item {
 --- start item_data utils/ItemData.php ---
 namespace sul\utils;
 
-class ItemData {
+public class ItemData
+{
 	
 	/** @var bool */
 	public $exists;
@@ -41,7 +93,8 @@ class ItemData {
 	/** @var int */
 	public $meta;
 
-	function __construct($exists, int $id, int $meta) {
+	public function __construct($exists, int $id, int $meta)
+	{
 		$this->exists = $exists;
 		$this->id = $id;
 		$this->meta = $meta;

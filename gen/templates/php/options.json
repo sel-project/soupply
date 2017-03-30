@@ -1,5 +1,6 @@
 {
 	"header": {
 		"open": "<?php\n\n/*"
-	}
+	},
+	"indentation": "spaces"
 }
