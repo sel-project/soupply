@@ -4,11 +4,8 @@ d:
  - dmd
  
 script:
- - cd gen
+ - cd gen && rdmd all.d -no-update && cd ..
  - rdmd --build-only push.d
- - rdmd --build-only all.d
- - ./all -no-update
- - cd ..
 
 after_success:
  - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
@@ -28,4 +25,4 @@ after_success:
  - ./push d true src sul/utils/about.d
  - ./push java false src/main/java sul/utils/About.java
  - ./push js false src sul/utils/about.js
- - ./push php false src sul/utils/About.js
+ - ./push php false src sul/utils/About.php
