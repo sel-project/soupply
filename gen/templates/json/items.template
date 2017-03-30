@@ -1,0 +1,33 @@
+--- start items items.json ---
+{
+	
+	"__website": "{{WEBSITE}}",
+
+	"items": {
+
+{{items_values@ITEMS}}
+	}
+
+}
+
+--- end ---
+--- start items_values ---
+		"{{NAME}}": {
+			{{MINECRAFT==true?{{minecraft}},
+			}}{{POCKET==true?{{pocket}},
+			}}"stack": {{STACK}}
+		}{{LAST==false?,}}
+
+--- end ---
+--- start minecraft ---
+"minecraft": {{HAS_MINECRAFT_META==false?{{MINECRAFT_ID}}}}{{HAS_MINECRAFT_META==true?{
+				"id": {{MINECRAFT_ID}},
+				"meta": {{MINECRAFT_META}}
+			\}}}
+--- end ---
+--- start pocket ---
+"pocket": {{HAS_POCKET_META==false?{{POCKET_ID}}}}{{HAS_POCKET_META==true?{
+				"id": {{POCKET_ID}},
+				"meta": {{POCKET_META}}
+			\}}}
+--- end ---

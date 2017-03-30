@@ -1,0 +1,33 @@
+--- start items items.d ---
+module sul.items;
+
+struct ItemData {
+	
+	bool exists;
+
+	ushort id, meta;
+
+	alias exists this;
+
+}
+
+struct Item {
+	
+	string name;
+
+	ItemData minecraft, pocket;
+
+	ubyte stack;
+
+}
+
+enum Items : Item {
+
+{{items_values@ITEMS}}	
+
+}
+
+--- end ---
+--- start items_values ---
+	{{NAME:uppercase}} = Item("{{NAME:spaced}}", ItemData({{MINECRAFT}}{{MINECRAFT==true?, {{MINECRAFT_ID}}, {{MINECRAFT_META}}}}), ItemData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}, {{POCKET_META}}}}), {{STACK}}),
+--- end ---
