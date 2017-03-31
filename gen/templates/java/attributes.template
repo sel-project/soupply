@@ -1,0 +1,24 @@
+--- start attributes attributes/{{GAME:camel_case}}.java ---
+package sul.attributes;
+
+public enum {{GAME:camel_case}}
+{
+{{attributes_values@ATTRIBUTES}}
+
+	public final String id;
+	public final float min, max, def;
+
+	Minecraft107(String id, float min, float max, float def)
+	{
+		this.id = id;
+		this.min = min;
+		this.max = max;
+		this.def = def;
+	}
+
+}
+--- end ---
+--- start attributes_values ---
+
+	{{NAME:uppercase}}("{{ID}}", {{MIN}}f, {{MAX}}f, {{DEFAULT}}f){{LAST==true?;}}{{LAST==false?,}}
+--- end ---

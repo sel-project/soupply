@@ -17,7 +17,7 @@ module src;
 import std.stdio : writeln;
 
 import std.algorithm : max;
-import std.conv : to;
+import std.conv : to, ConvException;
 static import std.file;
 import std.json;
 import std.math : isNaN;
@@ -96,7 +96,10 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			options = parseJSON(cast(string)std.file.read("templates/" ~ lang ~ "/options.json")).object;
 		}
 
+		immutable bool allt = templateExists(lang, "all");
+
 		Data[string] values;
+		if(allt) values["all"] = (Data[string]).init;
 
 		// utils
 		if(templateExists(lang, "utils")) {
@@ -105,7 +108,9 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 
 		foreach(immutable type ; TypeTuple!("attributes", "creative", "protocols", "metadatas", "blocks", "items", "entities", "enchantments", "effects")) {
 			if(templateExists(lang, type)) {
-				values[type] = Data(mixin("create" ~ capitalize(type) ~ "(" ~ type ~ ", options)"));
+				Data[] data = mixin("create" ~ capitalize(type) ~ "(" ~ type ~ ", options)");
+				values[type] = data;
+				if(allt) values["all"].object[type] = data;
 			}
 		}
 
@@ -146,6 +151,7 @@ Data[] createAttributes(Attributes[string] attributes, JSONValue[string] options
 	Data[] ret;
 	foreach(game, a; attributes) {
 		Data[string] g;
+		g["GENERATOR"] = "attributes/" ~ game;
 		g["GAME"] = game;
 		g["SOFTWARE"] = a.software;
 		g["PROTOCOL"] = a.protocol.to!string;
@@ -168,6 +174,7 @@ Data[] createCreative(Creative[string] creative, JSONValue[string] options) {
 	Data[] ret;
 	foreach(game, c; creative) {
 		Data[string] g;
+		g["GENERATOR"] = "creative/" ~ game;
 		g["GAME"] = game;
 		g["SOFTWARE"] = c.software;
 		g["PROTOCOL"] = c.protocol.to!string;
@@ -230,7 +237,7 @@ Data[] createBlocks(Block[] blocks, JSONValue[string] options) {
 		values["BB_MAX_Z"] = block.boundingBox.max.z.to!string;
 		ret ~= Data(values);
 	}
-	return [Data(["BLOCKS": Data(ret)])];
+	return [Data(["BLOCKS": Data(ret), "GENERATOR": Data("blocks")])];
 }
 
 Data[] createItems(Item[] items, JSONValue[string] options) {
@@ -249,7 +256,7 @@ Data[] createItems(Item[] items, JSONValue[string] options) {
 		values["STACK"] = item.stack.to!string;
 		ret ~= Data(values);
 	}
-	return [Data(["ITEMS": Data(ret)])];
+	return [Data(["ITEMS": Data(ret), "GENERATOR": Data("items")])];
 }
 
 Data[] createEntities(Entity[] entities, JSONValue[string] options) {
@@ -257,6 +264,7 @@ Data[] createEntities(Entity[] entities, JSONValue[string] options) {
 	foreach(i, entity; entities) {
 		Data[string] values;
 		values["NAME"] = entity.name;
+		values["OBJECT"] = entity.object.to!string;
 		values["MINECRAFT"] = to!string(entity.minecraft != 0);
 		values["MINECRAFT_ID"] = entity.minecraft.to!string;
 		values["POCKET"] = to!string(entity.pocket != 0);
@@ -266,7 +274,7 @@ Data[] createEntities(Entity[] entities, JSONValue[string] options) {
 		values["HEIGHT"] = entity.height.to!string;
 		ret ~= Data(values);
 	}
-	return [Data(["ENTITIES": Data(ret)])];
+	return [Data(["ENTITIES": Data(ret), "GENERATOR": Data("entities")])];
 }
 
 Data[] createEnchantments(Enchantment[] enchantments, JSONValue[string] options) {
@@ -281,7 +289,7 @@ Data[] createEnchantments(Enchantment[] enchantments, JSONValue[string] options)
 		values["MAX"] = enchantment.max.to!string;
 		ret ~= Data(values);
 	}
-	return [Data(["ENCHANTMENTS": Data(ret)])];
+	return [Data(["ENCHANTMENTS": Data(ret), "GENERATOR": Data("enchantments")])];
 }
 
 Data[] createEffects(Effect[] effects, JSONValue[string] options) {
@@ -294,7 +302,7 @@ Data[] createEffects(Effect[] effects, JSONValue[string] options) {
 		values["COLOR_16"] = (effect.particles.to!string(16) ~ "000000")[0..6];
 		ret ~= Data(values);
 	}
-	return [Data(["EFFECTS": Data(ret)])];
+	return [Data(["EFFECTS": Data(ret), "GENERATOR": Data("effects")])];
 }
 
 // stuff about template parsing
@@ -303,7 +311,7 @@ Data[] createEffects(Effect[] effects, JSONValue[string] options) {
 	return std.file.exists("templates/" ~ lang ~ "/" ~ t ~ ".template");
 }
 
-struct Template {
+class Template {
 
 	JSONValue[string] options;
 
@@ -315,6 +323,9 @@ struct Template {
 	private string header_close = " */";
 
 	private string new_line = "\n";
+	private string tab = "\t";
+
+	private this() {}
 
 	public this(JSONValue[string] options, string lang, string location, string content) {
 		this.options = options;
@@ -337,6 +348,7 @@ struct Template {
 		auto indentation = "indentation" in options;
 		if(indentation && (*indentation).type == JSON_TYPE.STRING) {
 			if((*indentation).str == "spaces") {
+				this.tab = "    ";
 				this.content = this.content.replace("\t", "    ");
 			}
 		}
@@ -354,11 +366,25 @@ struct Template {
 			immutable location = "../src/" ~ this.lang ~ "/sul/" ~ parseValue(this.location, values, templates);
 			std.file.mkdirRecurse(location[0..location.lastIndexOf("/")]);
 			if(this.write_header) {
-				write(location, ret ~ this.new_line, "", this.header_open, this.header_line, this.header_close);
+				auto gen = "GENERATOR" in values;
+				write(location, ret ~ this.new_line, gen ? (*gen).str : "", this.header_open, this.header_line, this.header_close);
 			} else {
 				std.file.write(location, ret ~ this.new_line);
 			}
 		}
+		return ret;
+	}
+
+	public Template addTabulation(size_t amount) {
+		Template ret = new Template();
+		foreach(m ; __traits(allMembers, Template)) {
+			static if(is(typeof(__traits(getMember, ret, t)))) mixin("ret." ~ m ~ " = this." ~ m ~ ";");
+		}
+		string space;
+		foreach(i ; 0..amount) space ~= ret.tab;
+		string[] lines = ret.content.split("\n");
+		foreach(ref line ; lines) line = space ~ line;
+		ret.content = lines.join("\n");
 		return ret;
 	}
 
@@ -382,7 +408,7 @@ Template[string] parseTemplate(string lang, string t, JSONValue[string] options)
 				}
 				content = lines.join("\n");
 			}
-			ret[header[0]] = Template(options, lang, header.length > 1 ? header[1..$].join(" ") : "", content);
+			ret[header[0]] = new Template(options, lang, header.length > 1 ? header[1..$].join(" ") : "", content);
 		}
 	}
 	return ret;
@@ -480,14 +506,35 @@ string parseValueImpl(string value, Data[string] values, Template[string] templa
 	}
 	auto at = value.indexOf("@");
 	if(at >= 0) {
-		auto tmp = value[0..at] in templates;
-		auto v = getValue(value[at+1..$]);
-		if(tmp && v && (*v).type == Data.Type.array) {
-			string[] ret;
-			foreach(d ; (*v).array) {
-				ret ~= (*tmp).parse(d.object, templates);
+		string tmpn = value[0..at];
+		ptrdiff_t tabs = -1;
+		auto comma = tmpn.indexOf(",");
+		if(comma >= 0) {
+			try {
+				tabs = to!size_t(tmpn[0..comma]);
+				tmpn = tmpn[comma+1..$];
+			} catch(ConvException) {}
+		}
+		auto tmp = tmpn in templates;
+		if(tmp) {
+			Template getTemplate() {
+				if(tabs >= 0) {
+					return (*tmp).addTabulation(tabs);
+				} else {
+					return *tmp;
+				}
 			}
-			return ret.join("\n");
+			auto v = getValue(value[at+1..$]);
+			if(v && (*v).type == Data.Type.array) {
+				auto t = getTemplate();
+				string[] ret;
+				foreach(d ; (*v).array) {
+					ret ~= t.parse(d.object, templates);
+				}
+				return ret.join("\n");
+			} else if(tabs >= 0) {
+				return getTemplate().parse(values, templates);
+			}
 		}
 	}
 	auto ptr = getValue(value);

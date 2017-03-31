@@ -11,6 +11,7 @@
 --- end ---
 --- start entities_values ---
 		"{{NAME}}": {
+			"object": {{OBJECT}},
 			{{MINECRAFT==true?"minecraft": {{MINECRAFT_ID}},
 			}}{{POCKET==true?"pocket": {{POCKET_ID}},
 			}}"size": {{HAS_SIZE==false?null}}{{HAS_SIZE==true?{

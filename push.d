@@ -40,6 +40,9 @@ void main(string[] args) {
 			}
 		}
 
+		// add .version
+		wait(spawnShell("cp -f gen/.version " ~ lang));
+
 		// push
 		wait(spawnShell(`cd ` ~ lang ~ ` && git add --all . && git commit -m "` ~ message ~ `" -m "` ~ desc ~ `" && git push "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
 
