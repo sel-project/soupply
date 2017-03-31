@@ -17,7 +17,7 @@ after_success:
  - git clone git://${REPO_GP} gp
  - rm -r gp/json
  - cp -r -f pages/. gp
- - cp -r -f src/json/. gp/json
+ - cp -r -f src/json/sul/. gp/json
  - cd gp
  - git add --all .
  - git commit -m "${MESSAGE}" -m "${DESC}"

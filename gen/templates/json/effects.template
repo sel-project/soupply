@@ -13,7 +13,7 @@
 --- start effects_values ---
 		"{{NAME}}": {
 			"id": {{ID}},
-			"color": "#{{COLOR_16}}"
+			"particles": "#{{COLOR_16}}"
 		}{{LAST==false?,}}
 
 --- end ---

@@ -72,8 +72,6 @@ void main(string[] args) {
 			}
 		}
 	}
-	
-	writeln(count);
 
 	// maybe some file has been added or removed
 	foreach(string file ; dirEntries(dest, SpanMode.breadth)) {

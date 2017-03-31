@@ -591,7 +591,9 @@ class Template {
 	public string parse(Data[string] values, Template[string] templates, size_t space=0) {
 		string ret = parseValue(this.content, values, templates, space);
 		if(this.location.length) {
-			ret = ret.strip;
+			string[] lines = ret.split("\n");
+			foreach(ref line ; lines) line = line.stripRight;
+			ret = lines.join("\n");
 			immutable location = "../src/" ~ this.lang ~ "/sul/" ~ parseValue(this.location, values, templates, 0);
 			std.file.mkdirRecurse(location[0..location.lastIndexOf("/")]);
 			if(this.write_header) {
