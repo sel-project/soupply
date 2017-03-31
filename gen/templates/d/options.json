@@ -17,5 +17,16 @@
 			}
 		]
 	},
-	"indentation": "spaces"
+	"indentation": "spaces",
+	"doc": {
+		"open": "/**",
+		"line": " * ",
+		"close": " */",
+		"line_length": 80,
+		"replace": {
+			"# ([a-zA-Z]*)": "<h1>$1</h1>",
+
+			"ììì[a-z]{1,}([])ììì": "---$1---"
+		}
+	}
 }

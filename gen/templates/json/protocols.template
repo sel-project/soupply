@@ -7,6 +7,24 @@
 
 	"encoding": {
 
+		"endianness": {
+			"*": "{{DEFAULT_ENDIANNESS}}"{{HAS_ENDIANNESS==true?,
+{{endianness@ENDIANNESS}}}}
+		},
+
+		"id": "{{ID}}",
+
+		"array_length": "{{ARRAY_LENGTH}}",
+
+		"types": {
+
+{{types@TYPES}}
+		}{{HAS_ARRAYS==true?,
+
+		"arrays": {
+
+{{arrays@ARRAYS}}
+		\}}}
 
 	},
 
@@ -16,6 +34,23 @@
 	}
 
 }
+--- end ---
+--- start endianness ---
+			"{{TYPE}}": "{{ENDIANNESS}}"{{LAST==false?,}}
+--- end ---
+--- start arrays ---
+			"{{NAME}}": {
+				"base": "{{BASE}}",
+				"length": "{{LENGTH}}"{{ENDIANNESS!=?,
+				"endianness": "{{ENDIANNESS}}"}}
+			}{{LAST==false?,}}
+
+--- end ---
+--- start types ---
+			"{{NAME}}": [
+{{fields@4,FIELDS}}
+			]{{LAST==false?,}}
+
 --- end ---
 --- start sections ---
 		"{{NAME}}": {
@@ -30,22 +65,36 @@
 				"clientbound": {{CLIENTBOUND}},
 				"serverbound": {{SERVERBOUND}},
 				"fields": [
-{{packet_fields@FIELDS}}
-				]
+{{fields@5,FIELDS}}
+				]{{HAS_VARIANTS==true?,
+				"variants": {
+					"field": "{{VARIANT_FIELD}}",
+					"values": {
+{{variants@6,VARIANTS}}
+					}
+				\}}}
 			}{{LAST==false?,}}
 
 --- end ---
---- start packet_fields ---
-					{
-						"name": "{{NAME}}",
-						"type": "{{TYPE}}"{{WHEN!=?,
-						"when": {{WHEN}}}}{{HAS_CONSTANTS==true?,
-						"constants": {
-{{packet_constants@CONSTANTS}}
-						\}}}
-					}{{LAST==false?,}}
+--- start variants ---
+"{{NAME}}": {
+	"value": {{VALUE_ENCODED}},
+	"fields": [
+{{fields@2,FIELDS}}
+	]
+}{{LAST==false?,}}
 --- end ---
---- start packet_constants ---
-							"{{NAME}}": {{VALUE_ENCODED}}{{LAST==false?,
-}}
+--- start fields ---
+{
+	"name": "{{NAME}}",
+	"type": "{{TYPE}}"{{DEFAULT!=?,
+	"default": {{DEFAULT_ENCODED}}}}{{WHEN!=?,
+	"when": "{{WHEN}}"}}{{HAS_CONSTANTS==true?,
+	"constants": {
+{{constants@2,CONSTANTS}}
+	\}}}
+}{{LAST==false?,}}
+--- end ---
+--- start constants ---
+"{{NAME}}": {{VALUE_ENCODED}}{{LAST==false?,}}
 --- end ---

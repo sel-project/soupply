@@ -6,15 +6,11 @@ The code is generated from XML files at [/xml](https://github.com/sel-project/se
 
 Automatically generated documentation is available at the [project's website](https://sel-utils.github.io/).
 
-**Jump to**: [d](#d), [java](#java), [php](#php)
+**Jump to**: [D](#d), [Java](#java), [PHP](#php)
 
 ### [D](https://github.com/sel-utils/d)
 
-[![Build Status](https://travis-ci.org/sel-utils/d.svg?branch=master)](https://travis-ci.org/sel-utils/d)
-
-[![DUB Package](https://img.shields.io/dub/v/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)
-
-[![DUB Downloads](https://img.shields.io/dub/dt/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)
+[![Build Status](https://travis-ci.org/sel-utils/d.svg?branch=master)](https://travis-ci.org/sel-utils/d)&nbsp;&nbsp;&nbsp;&nbsp;[![DUB Package](https://img.shields.io/dub/v/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)&nbsp;&nbsp;&nbsp;&nbsp;[![DUB Downloads](https://img.shields.io/dub/dt/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)
 
 - [ ] Protocol
 - [ ] Metadata

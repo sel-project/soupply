@@ -1,0 +1,54 @@
+--- start metadatas metadata/{{GAME}}.json ---
+{
+	
+	"__website": "{{WEBSITE}}",
+	"__software": "{{SOFTWARE}}",
+	"__protocol": "{{PROTOCOL}}",
+
+	"encoding": {
+
+		"types": "{{TYPE}}",
+
+		"ids": "{{ID}}"{{LENGTH!=?,
+
+		"length": "{{LENGTH}}"}}{{SUFFIX!=?,
+
+		"suffix": "{{SUFFIX}}"}}
+
+	},
+
+	"types": {
+
+{{types@2,TYPES}}
+	},
+
+	"metadata": {
+
+{{metadata@2,METADATA}}
+	}
+
+}
+--- end ---
+--- start types ---
+"{{NAME}}": {
+	"type": "{{TYPE}}",
+	"id": {{ID}}{{ENDIANNESS!=?,
+	"endianness": "{{ENDIANNESS}}"}}	
+}{{LAST==false?,}}
+
+--- end ---
+--- start metadata ---
+"{{NAME}}": {
+	"type": "{{TYPE}}",
+	"id": {{ID}},
+	"required": {{REQUIRED}}{{DEFAULT!=?,
+	"default": {{DEFAULT_ENCODED}}}}{{HAS_FLAGS==true?,
+	"flags": {
+{{flags@2,FLAGS}}
+	\}}}
+}{{LAST==false?,}}
+
+--- end ---
+--- start flags ---
+"{{NAME}}": {{BIT}}{{LAST==false?,}}
+--- end ---

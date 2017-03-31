@@ -1,6 +1,7 @@
 --- start creative creative/{{GAME}}.json ---
 {
 
+	"__website": "{{WEBSITE}}",
 	"__software": "{{SOFTWARE}}",
 	"__protocol": {{PROTOCOL}},
 	

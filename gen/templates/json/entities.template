@@ -1,5 +1,7 @@
 --- start entities entities.json ---
 {
+
+	"__website": "{{WEBSITE}}",
 	
 	"entities": {
 

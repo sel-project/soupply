@@ -33,7 +33,6 @@ static import src;
 
 static import diff;
 static import docs;
-static import json;
 
 
 alias File(T) = Tuple!(string, "software", size_t, "protocol", T, "data");
@@ -126,8 +125,7 @@ void main(string[] args) {
 	bool wsrc = args.canFind("src");
 	bool wdiff = args.canFind("diff");
 	bool wdocs = args.canFind("docs");
-	bool wjson = args.canFind("json");
-	bool wall = !wd && !wjava && !wjs && !wsrc && !wdiff && !wdocs && !wjson;
+	bool wall = !wd && !wjava && !wjs && !wsrc && !wdiff && !wdocs;
 
 	// attributes
 	Attributes[string] attributes;
@@ -212,7 +210,7 @@ void main(string[] args) {
 						foreach(t ; element.elements) {
 							if(t.tag.name == "type") {
 								auto e = "endianness" in t.tag.attr;
-								m.data.types ~= MetadataType(t.tag.attr["name"].replace("-", "_"), t.tag.attr["type"].replace("-", "_"), t.tag.attr["id"].to!ubyte, e ? *e : "");
+								m.data.types ~= MetadataType(t.tag.attr["name"].replace("-", "_"), t.tag.attr["type"].replace("-", "_"), t.tag.attr["id"].to!ubyte, e ? replace(*e, "-", "_") : "");
 							}
 						}
 						break;
@@ -552,7 +550,27 @@ void main(string[] args) {
 
 	//if(wall || wdiff) diff.diff(attributes, protocols, metadata);
 	if(wall || wdocs) docs.docs(attributes, protocols, metadata);
-	if(wall || wjson) json.json(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
+
+	// minify json
+	if(wall || wsrc) {
+		foreach(string file ; dirEntries("../src/json", SpanMode.breadth)) {
+			if(file.isFile && !file.endsWith(".min.json")) {
+				// ` +(?=[^"]*(?:"[^"]*"[^"]*)*$)` // <-- this causes an infinite loop in the program
+				bool inString = false;
+				string min = "";
+				foreach(char c ; (cast(string)read(file)).replaceAll(ctRegex!`"__[a-z0-9_]*": ["]{0,1}[a-zA-Z0-9 :\/\-.]*["]{0,1}\,|\t|\n`, "")) {
+					if(c == '"') {
+						// there are no escaped characters
+						inString ^= true;
+					}
+					if(c != ' ' || inString) {
+						min ~= c;
+					}
+				}
+				_write(file[0..$-4] ~ "min.json", min);
+			}
+		}
+	}
 
 }
 
