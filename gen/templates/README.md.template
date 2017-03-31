@@ -1,0 +1,7 @@
+![SEL Logo](http://i.imgur.com/jPfQuZ0.png)
+
+__Automatically generated libraries for SEL, Minecraft and Minecraft: Pocket Edition__
+
+The code is generated from XML files at [/xml](https://github.com/sel-project/sel-utils/tree/master/xml) using the generators in the [/gen](https://github.com/sel-project/sel-utils/tree/master/gen) folder.
+
+Automatically generated documentation is available at the [project's website](https://sel-utils.github.io/).

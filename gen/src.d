@@ -16,7 +16,7 @@ module src;
 
 import std.stdio : writeln;
 
-import std.algorithm : max;
+import std.algorithm : sort, max;
 import std.conv : to, ConvException;
 static import std.file;
 import std.json;
@@ -78,6 +78,8 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 
 	string[] languages;
 
+	string[string] travis, readme;
+
 	// read templates
 	foreach(string file ; std.file.dirEntries("templates", std.file.SpanMode.breadth)) {
 		if(std.file.isDir(file)) {
@@ -123,6 +125,70 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			}
 		}
 
+		auto repo = "repo" in options;
+		if(repo) {
+			string name = (*repo)["name"].str;
+			string src = (*repo)["src"].str;
+			auto tag = "tag" in *repo;
+			string[] exclude;
+			if("exclude" in *repo) {
+				foreach(e ; (*repo)["exclude"].array) {
+					exclude ~= e.str;
+				}
+			}
+			travis[lang] = " - ./push " ~ lang ~ " " ~ to!string(tag && (*tag).type == JSON_TYPE.TRUE) ~ " " ~ src ~ " " ~ exclude.join(" ");
+			string rm = "### [" ~ name ~ "](https://github.com/sel-utils/" ~ lang ~ ")\n\n";
+			rm ~= "[![Build Status](https://travis-ci.org/sel-utils/" ~ lang ~ ".svg?branch=master)](https://travis-ci.org/sel-utils/" ~ lang ~ ")\n\n";
+			auto badges = "badges" in *repo;
+			if(badges) {
+				void addBadge(JSONValue json) {
+					rm ~= "[![" ~ json["alt"].str ~ "](" ~ json["image"].str ~ ")](" ~ json["url"].str ~ ")\n\n";
+				}
+				foreach(b ; (*badges).array) addBadge(b);
+			}
+			void writeCheck(string search, string display) {
+				rm ~= "- [" ~ (search in values ? "x" : " ") ~ "] " ~ display ~ "\n";
+			}
+			writeCheck("protocols", "Protocol");
+			writeCheck("metadatas", "Metadata");
+			writeCheck("blocks", "Blocks");
+			writeCheck("items", "Items");
+			writeCheck("entities", "Entities");
+			writeCheck("effects", "Effects");
+			writeCheck("enchantments", "Enchantments");
+			readme[lang] = rm;
+			//TODO generate repository's README.md with examples
+		}
+
+	}
+
+	sort(languages);
+
+	// rewrite .travis.yml
+	{
+		string file = cast(string)std.file.read("templates/.travis.yml.template");
+		foreach_reverse(lang ; languages) {
+			auto ptr = lang in travis;
+			if(ptr) file ~= *ptr ~ "\n";
+		}
+		std.file.write("../.travis.yml", file);
+	}
+
+	// rewrite README.md
+	{
+		string file = cast(string)std.file.read("templates/README.md.template");
+		string[] langs;
+		string[] descs;
+		foreach(lang ; languages) {
+			auto ptr = lang in readme;
+			if(ptr) {
+				langs ~= "[" ~ lang ~ "](#" ~ lang ~ ")";
+				descs ~= *ptr;
+			}
+		}
+		file ~= "\n**Jump to**: " ~ langs.join(", ") ~ "\n\n";
+		file ~= descs.join("\n\n");
+		std.file.write("../README.md", file);
 	}
 
 }

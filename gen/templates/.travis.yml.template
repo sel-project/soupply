@@ -23,6 +23,3 @@ after_success:
  - git commit -m "${MESSAGE}" -m "${DESC}"
  - git push "https://${TOKEN}@${REPO_GP}" master
  - cd ..
- - ./push php false src sul/utils/About.php
- - ./push java true src/main/java sul/utils/About.java
- - ./push d true src sul/utils/about.d

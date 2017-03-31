@@ -1,3 +1,21 @@
 {
+	"repo": {
+		"name": "D",
+		"src": "src",
+		"exclude": ["sul/utils/about.d"],
+		"tag": true,
+		"badges": [
+			{
+				"image": "https://img.shields.io/dub/v/sel-utils.svg",
+				"url": "https://code.dlang.org/packages/sel-utils",
+				"alt": "DUB Package"
+			},
+			{
+				"image": "https://img.shields.io/dub/dt/sel-utils.svg",
+				"url": "https://code.dlang.org/packages/sel-utils",
+				"alt": "DUB Downloads"
+			}
+		]
+	},
 	"indentation": "spaces"
 }

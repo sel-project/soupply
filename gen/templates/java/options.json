@@ -1,3 +1,9 @@
 {
+	"repo": {
+		"name": "Java",
+		"src": "src/main/java",
+		"exclude": ["sul/utils/About.java"],
+		"tag": true
+	},
 	"indentation": "spaces"
 }

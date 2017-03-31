@@ -6,7 +6,7 @@ The code is generated from XML files at [/xml](https://github.com/sel-project/se
 
 Automatically generated documentation is available at the [project's website](https://sel-utils.github.io/).
 
-**Jump to**: [D](#d), [Java](#java), [JavaScript](#javascript)
+**Jump to**: [d](#d), [java](#java), [php](#php)
 
 ### [D](https://github.com/sel-utils/d)
 
@@ -16,43 +16,36 @@ Automatically generated documentation is available at the [project's website](ht
 
 [![DUB Downloads](https://img.shields.io/dub/dt/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)
 
-- [x] Protocol
-- [ ] Metadata (encoding only)
-- [x] Attributes
+- [ ] Protocol
+- [ ] Metadata
 - [x] Blocks
 - [x] Items
 - [x] Entities
 - [x] Effects
 - [x] Enchantments
-- [ ] Recipes
-- [x] MCPE's creative inventory
+
 
 ### [Java](https://github.com/sel-utils/java)
 
 [![Build Status](https://travis-ci.org/sel-utils/java.svg?branch=master)](https://travis-ci.org/sel-utils/java)
 
-- [x] Protocol
+- [ ] Protocol
 - [ ] Metadata
-- [x] Attributes
-- [x] Blocks
-- [x] Items
-- [x] Entities
-- [x] Effects
-- [x] Enchantments
-- [ ] Recipes
-- [x] MCPE's creative inventory 
-
-### [JavaScript](https://github.com/sel-utils/js)
-
-[![Build Status](https://travis-ci.org/sel-utils/js.svg?branch=master)](https://travis-ci.org/sel-utils/js)
-
-- [x] Protocol
-- [ ] Metadata
-- [x] Attributes
 - [ ] Blocks
 - [ ] Items
+- [x] Entities
+- [ ] Effects
+- [ ] Enchantments
+
+
+### [PHP](https://github.com/sel-utils/php)
+
+[![Build Status](https://travis-ci.org/sel-utils/php.svg?branch=master)](https://travis-ci.org/sel-utils/php)
+
+- [ ] Protocol
+- [ ] Metadata
+- [x] Blocks
+- [x] Items
 - [ ] Entities
 - [ ] Effects
 - [ ] Enchantments
-- [ ] Recipes
-- [x] MCPE's creative inventory 

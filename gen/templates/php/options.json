@@ -1,4 +1,9 @@
 {
+	"repo": {
+		"name": "PHP",
+		"src": "src",
+		"exclude": ["sul/utils/About.php"]
+	},
 	"header": {
 		"open": "<?php\n\n/*"
 	},
