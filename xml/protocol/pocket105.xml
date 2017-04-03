@@ -1159,9 +1159,9 @@
 				<field name="command" type="string" />
 				<field name="overload" type="string" />
 				<field name="?" type="varuint" />
-				<field name="?" type="varuint" />
-				<field name="is-output" type="bool" />
-				<field name="?" type="varulong" />
+				<field name="current-step" type="varuint" />
+				<field name="done" type="bool" />
+				<field name="client-id" type="varulong" />
 				<field name="input" type="json" />
 				<field name="output" type="json" />
 			</packet>
