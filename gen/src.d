@@ -126,7 +126,7 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			}
 		}
 
-		string crm = "[![SEL](http://i.imgur.com/iiDRUQQ.png)](https://github.com/sel-project/sel-utils)\n\n**Automatically generated libraries for Minecraft and Minecraft: Pocket Edition from [https://github.com/sel-project/sel-utils](sel-project/sel-utils)**\n\n";
+		string crm = "[![SEL](http://i.imgur.com/iiDRUQQ.png)](https://github.com/sel-project/sel-utils)\n\n**Automatically generated libraries for Minecraft and Minecraft: Pocket Edition from [sel-project/sel-utils](https://github.com/sel-project/sel-utils)**\n\n";
 
 		auto repo = "repo" in options;
 		if(repo) {

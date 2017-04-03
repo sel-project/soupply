@@ -430,6 +430,7 @@
 					Indicates whether the cheats are enabled. If the cheats are disabled the player cannot send commands.
 				</field>
 				<field name="texture-required" type="bool" />
+				<field name="game-rules" type="rule[]" />
 				<field name="level-id" type="string" />
 				<field name="world-name" type="string">
 					World's name that will be displayed in the game's world settings. It can contain formatting codes.
