@@ -1,7 +1,7 @@
 # http://editorconfig.org
 root = true
 
-[*.{java,d,js,xml,json,html,css}]
+[*.{d,xml}]
 end_of_line = lf
 insert_final_newline = true
 indent_style = tab

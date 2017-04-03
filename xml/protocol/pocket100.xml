@@ -26,6 +26,8 @@
 
 		<alias name="angle" type="ubyte" />
 
+		<alias name="json" type="string" />
+
 		<type name="pack-with-size">
 			<field name="id" type="string" />
 			<field name="version" type="string" />

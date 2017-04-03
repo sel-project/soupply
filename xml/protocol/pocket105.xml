@@ -337,7 +337,6 @@
 
 			<packet name="text" id="10" clientbound="true" serverbound="true">
 				Sends or receives a message from the player. Every variant's field can contain Minecraft's formatting codes.
-				Every packet sent in the same game tick should be joined together with `\n§r` (line break and reset formatting), otherwise the messages will be displayed multiple times on the client's chat (see [MCPE-17631](https://bugs.mojang.com/browse/MCPE-17631)).
 				<field name="type" type="ubyte" />
 				<variants field="type">
 					<variant name="raw" value="0">

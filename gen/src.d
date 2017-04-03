@@ -82,9 +82,9 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 	string[][string] readme;
 
 	// read templates
-	foreach(string file ; std.file.dirEntries("templates", std.file.SpanMode.breadth)) {
+	foreach(string file ; std.file.dirEntries("../templates", std.file.SpanMode.breadth)) {
 		if(std.file.isDir(file)) {
-			languages ~= file[file.indexOf(dirSeparator)+1..$];
+			languages ~= file[13..$];
 		}
 	}
 
@@ -95,8 +95,8 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 
 		JSONValue[string] options;
 
-		if(std.file.exists("templates/" ~ lang ~ "/options.json")) {
-			options = parseJSON(cast(string)std.file.read("templates/" ~ lang ~ "/options.json")).object;
+		if(std.file.exists("../templates/" ~ lang ~ "/options.json")) {
+			options = parseJSON(cast(string)std.file.read("../templates/" ~ lang ~ "/options.json")).object;
 		}
 
 		immutable bool allt = templateExists(lang, "all");
@@ -126,6 +126,8 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			}
 		}
 
+		string crm = "[![SEL](http://i.imgur.com/iiDRUQQ.png)](https://github.com/sel-project/sel-utils)\n\n**Automatically generated libraries for Minecraft and Minecraft: Pocket Edition from [https://github.com/sel-project/sel-utils](sel-project/sel-utils)**\n\n";
+
 		auto repo = "repo" in options;
 		if(repo) {
 			string name = (*repo)["name"].str;
@@ -138,12 +140,11 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 				}
 			}
 			travis[lang] = " - ./push " ~ lang ~ " " ~ to!string(tag && (*tag).type == JSON_TYPE.TRUE) ~ " " ~ src ~ " " ~ exclude.join(" ");
-			string rm = "### [" ~ name ~ "](https://github.com/sel-utils/" ~ lang ~ ")\n\n";
-			rm ~= "[![Build Status](https://travis-ci.org/sel-utils/" ~ lang ~ ".svg?branch=master)](https://travis-ci.org/sel-utils/" ~ lang ~ ")";
+			string rm = "[![Build Status](https://travis-ci.org/sel-utils/" ~ lang ~ ".svg?branch=master)](https://travis-ci.org/sel-utils/" ~ lang ~ ")";
 			auto badges = "badges" in *repo;
 			if(badges) {
 				void addBadge(JSONValue json) {
-					rm ~= "&nbsp;&nbsp;&nbsp;&nbsp;[![" ~ json["alt"].str ~ "](" ~ json["image"].str ~ ")](" ~ json["url"].str ~ ")";
+					rm ~= "&nbsp;&nbsp;[![" ~ json["alt"].str ~ "](" ~ json["image"].str ~ ")](" ~ json["url"].str ~ ")";
 				}
 				foreach(b ; (*badges).array) addBadge(b);
 			}
@@ -158,9 +159,12 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			writeCheck("entities", "Entities");
 			writeCheck("effects", "Effects");
 			writeCheck("enchantments", "Enchantments");
-			readme[lang] = [name, rm];
+			readme[lang] = [name, "### [" ~ name ~ "](https://github.com/sel-utils/" ~ lang ~ ")\n\n" ~ rm];
+			crm ~= rm;
 			//TODO generate repository's README.md with examples
 		}
+
+		std.file.write("../src/" ~ lang ~ "/README.md", crm ~ "\n");
 
 	}
 
@@ -168,7 +172,7 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 
 	// rewrite .travis.yml
 	{
-		string file = cast(string)std.file.read("templates/.travis.yml.template");
+		string file = cast(string)std.file.read("../templates/.travis.yml.template");
 		foreach_reverse(lang ; languages) {
 			auto ptr = lang in travis;
 			if(ptr) file ~= *ptr ~ "\n";
@@ -178,7 +182,7 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 
 	// rewrite README.md
 	{
-		string file = cast(string)std.file.read("templates/README.md.template");
+		string file = cast(string)std.file.read("../templates/README.md.template");
 		string[] langs;
 		string[] descs;
 		foreach(lang ; languages) {
@@ -534,7 +538,7 @@ Data[] createEffects(Effect[] effects, JSONValue[string] options) {
 // stuff about template parsing
 
 @property bool templateExists(string lang, string t) {
-	return std.file.exists("templates/" ~ lang ~ "/" ~ t ~ ".template");
+	return std.file.exists("../templates/" ~ lang ~ "/" ~ t ~ ".template");
 }
 
 class Template {
@@ -631,7 +635,7 @@ Template[string] parseTemplate(string lang, string t, JSONValue[string] options)
 	auto sel = "strip_empty_lines" in options;
 	immutable emptyLines = sel is null || (*sel).type != JSON_TYPE.FALSE;
 	Template[string] ret;
-	string data = cast(string)std.file.read("templates/" ~ lang ~ "/" ~ t ~ ".template");
+	string data = cast(string)std.file.read("../templates/" ~ lang ~ "/" ~ t ~ ".template");
 	// cannot use regex because they eat memory
 	foreach(match ; data.replace("\r\n", "\n").split("--- start ")) {
 		auto m = match.strip.split("---");
