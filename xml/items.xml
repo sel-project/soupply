@@ -374,29 +374,77 @@
 	<item name="end-gateway" data="209" />
 	<item name="repeating-command-block" minecraft="210" />
 	<item name="chain-command-block" minecraft="211" />
-	<item name="frosted-ice" minecraft="212" />
+	<item name="frosted-ice" minecraft="212" pocket="207" />
 	<item name="magma-block" minecraft="213" />
 	<item name="nether-wart-block" minecraft="214" />
 	<item name="red-nether-brick" minecraft="215" />
 	<item name="bone-block" minecraft="216" />
 	<item name="structure-void" minecraft="217" />
 	<item name="observer" minecraft="218" pocket="251" />
-	<item name="white-shulker-box" minecraft="219" />
-	<item name="orange-shulker-box" minecraft="220" />
-	<item name="magenta-shulker-box" minecraft="221" />
-	<item name="light-blue-shulker-box" minecraft="222" />
-	<item name="yellow-shulker-box" minecraft="223" />
-	<item name="lime-shulker-box" minecraft="224" />
-	<item name="pink-shulker-box" minecraft="225" />
-	<item name="gray-shulker-box" minecraft="226" />
-	<item name="light-gray-shulker-box" minecraft="227" />
-	<item name="cyan-shulker-box" minecraft="228" />
-	<item name="purple-shulker-box" minecraft="229" />
-	<item name="blue-shulker-box" minecraft="230" />
-	<item name="brown-shulker-box" minecraft="231" />
-	<item name="green-shulker-box" minecraft="232" />
-	<item name="red-shulker-box" minecraft="233" />
-	<item name="black-shulker-box" minecraft="234" />
+	<item name="white-shulker-box" minecraft="219" pocket="218" />
+	<item name="orange-shulker-box" minecraft="220" pocket="218" />
+	<item name="magenta-shulker-box" minecraft="221" pocket="218" />
+	<item name="light-blue-shulker-box" minecraft="222" pocket="218" />
+	<item name="yellow-shulker-box" minecraft="223" pocket="218" />
+	<item name="lime-shulker-box" minecraft="224" pocket="218" />
+	<item name="pink-shulker-box" minecraft="225" pocket="218" />
+	<item name="gray-shulker-box" minecraft="226" pocket="218" />
+	<item name="light-gray-shulker-box" minecraft="227" pocket="218" />
+	<item name="cyan-shulker-box" minecraft="228" pocket="218" />
+	<item name="purple-shulker-box" minecraft="229" pocket="218" />
+	<item name="blue-shulker-box" minecraft="230" pocket="218" />
+	<item name="brown-shulker-box" minecraft="231" pocket="218" />
+	<item name="green-shulker-box" minecraft="232" pocket="218" />
+	<item name="red-shulker-box" minecraft="233" pocket="218" />
+	<item name="black-shulker-box" minecraft="234" pocket="218" />
+	<item name="white-glazed-terracotta" minecraft="235" pocket="219" />
+	<item name="orange-glazed-terracotta" minecraft="236" pocket="219" />
+	<item name="magenta-glazed-terracotta" minecraft="237" pocket="219" />
+	<item name="light-blue-glazed-terracotta" minecraft="238" pocket="219" />
+	<item name="yellow-glazed-terracotta" minecraft="239" pocket="219" />
+	<item name="lime-glazed-terracotta" minecraft="240" pocket="219" />
+	<item name="pink-glazed-terracotta" minecraft="241" pocket="219" />
+	<item name="gray-glazed-terracotta" minecraft="242" pocket="219" />
+	<item name="light-gray-glazed-terracotta" minecraft="243" pocket="219" />
+	<item name="cyan-glazed-terracotta" minecraft="244" pocket="219" />
+	<item name="purple-glazed-terracotta" minecraft="245" pocket="219" />
+	<item name="blue-glazed-terracotta" minecraft="246" pocket="219" />
+	<item name="brown-glazed-terracotta" minecraft="247" pocket="219" />
+	<item name="green-glazed-terracotta" minecraft="248" pocket="219" />
+	<item name="red-glazed-terracotta" minecraft="249" pocket="219" />
+	<item name="black-glazed-terracotta" minecraft="250" pocket="219" />
+	<item name="white-concrete" minecraft="251:0" pocket="236:0" />
+	<item name="orange-concrete" minecraft="251:1" pocket="236:1" />
+	<item name="magenta-concrete" minecraft="251:2" pocket="236:2" />
+	<item name="light-blue-concrete" minecraft="251:3" pocket="236:3" />
+	<item name="yellow-concrete" minecraft="251:4" pocket="236:4" />
+	<item name="lime-concrete" minecraft="251:5" pocket="236:5" />
+	<item name="pink-concrete" minecraft="251:6" pocket="236:6" />
+	<item name="gray-concrete" minecraft="251:7" pocket="236:7" />
+	<item name="light-gray-concrete" minecraft="251:8" pocket="236:8" />
+	<item name="cyan-concrete" minecraft="251:9" pocket="236:9" />
+	<item name="purple-concrete" minecraft="251:10" pocket="236:10" />
+	<item name="blue-concrete" minecraft="251:11" pocket="236:11" />
+	<item name="brown-concrete" minecraft="251:12" pocket="236:12" />
+	<item name="green-concrete" minecraft="251:13" pocket="236:13" />
+	<item name="red-concrete" minecraft="251:14" pocket="236:14" />
+	<item name="black-concrete" minecraft="251:15" pocket="236:15" />
+	<item name="white-concrete-powder" minecraft="252:0" pocket="237:0" />
+	<item name="orange-concrete-powder" minecraft="252:1" pocket="237:1" />
+	<item name="magenta-concrete-powder" minecraft="252:2" pocket="237:2" />
+	<item name="light-blue-concrete-powder" minecraft="252:3" pocket="237:3" />
+	<item name="yellow-concrete-powder" minecraft="252:4" pocket="237:4" />
+	<item name="lime-concrete-powder" minecraft="252:5" pocket="237:5" />
+	<item name="pink-concrete-powder" minecraft="252:6" pocket="237:6" />
+	<item name="gray-concrete-powder" minecraft="252:7" pocket="237:7" />
+	<item name="light-gray-concrete-powder" minecraft="252:8" pocket="237:8" />
+	<item name="cyan-concrete-powder" minecraft="252:9" pocket="237:9" />
+	<item name="purple-concrete-powder" minecraft="252:10" pocket="237:10" />
+	<item name="blue-concrete-powder" minecraft="252:11" pocket="237:11" />
+	<item name="brown-concrete-powder" minecraft="252:12" pocket="237:12" />
+	<item name="green-concrete-powder" minecraft="252:13" pocket="237:13" />
+	<item name="red-concrete-powder" minecraft="252:14" pocket="237:14" />
+	<item name="black-concrete-powder" minecraft="252:15" pocket="237:15" />
 	<item name="stonecutter" pocket="245" />
 	<item name="glowing-obsidian" pocket="246" />
 	<item name="nether-reactor-core" pocket="247" />
@@ -669,9 +717,9 @@
 	<item name="jungle-boat" minecraft="446" pocket="333:3" stack="1" />
 	<item name="acacia-boat" minecraft="447" pocket="333:4" stack="1" />
 	<item name="dark-oak-boat" minecraft="448" pocket="333:5" stack="1" />
-	<item name="undying-totem" minecraft="449" stack="1" />
+	<item name="undying-totem" minecraft="449" pocket="450" stack="1" />
 	<item name="shulker-shell" minecraft="450" pocket="445" />
-	<item name="iron-nugget" minecraft="452" />
+	<item name="iron-nugget" data="452" />
 	<item name="disc-13" minecraft="2256" stack="1" />
 	<item name="disc-cat" minecraft="2257" stack="1" />
 	<item name="disc-blocks" minecraft="2258" stack="1" />

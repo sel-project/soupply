@@ -379,7 +379,7 @@
 	<block name="note-block" id="250" minecraft="25" pocket="25" hardness="0.8" blastresistance="4" />
 
 	<!-- bed components -->
-	<group hardness="0.2" blastresistance="1" boundingbox="0,0,0-16,8,16">
+	<group hardness="0.2" blastresistance="1" boundingbox="0,0,0-16,9,16">
 
 		<block name="bed-foot-facing-south" id="251" minecraft="26:0" pocket="26:0" />
 		<block name="bed-foot-facing-west" id="252" minecraft="26:1" pocket="26:1" />
