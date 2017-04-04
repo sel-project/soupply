@@ -14,6 +14,6 @@ abstract final public class Blocks
 }
 --- end ---
 --- start blocks_values ---
-	const {{NAME:uppercase}} = new Block("{{NAME:spaced}}", new BlockData({{MINECRAFT}}{{MINECRAFT==true?, {{MINECRAFT_ID}}, {{MINECRAFT_META}}}}), new BlockData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}, {{POCKET_META}}}}), {{SOLID}}, {{HARDNESS}}, {{BLAST_RESISTANCE}}, {{OPACITY}}, {{LUMINANCE}}, {{ENCOURAGEMENT}}, {{FLAMMABILITY}}, {{REPLACEABLE}}{{HAS_BOUNDING_BOX==true?, new BoundingBox(new Point({{BB_MIN_X}}, {{BB_MIN_Y}}, {{BB_MIN_Z}}), new Point({{BB_MAX_X}}, {{BB_MAX_Y}}, {{BB_MAX_Z}}))}}),
+	const {{NAME:uppercase}} = new Block("{{NAME:spaced}}", {{ID}}, new BlockData({{MINECRAFT}}{{MINECRAFT==true?, {{MINECRAFT_ID}}, {{MINECRAFT_META}}}}), new BlockData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}, {{POCKET_META}}}}), {{SOLID}}, {{HARDNESS}}, {{BLAST_RESISTANCE}}, {{OPACITY}}, {{LUMINANCE}}, {{ENCOURAGEMENT}}, {{FLAMMABILITY}}, {{REPLACEABLE}}{{HAS_BOUNDING_BOX==true?, new BoundingBox(new Point({{BB_MIN_X}}, {{BB_MIN_Y}}, {{BB_MIN_Z}}), new Point({{BB_MAX_X}}, {{BB_MAX_Y}}, {{BB_MAX_Z}}))}}),
 --- end ---
 

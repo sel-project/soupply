@@ -12,6 +12,7 @@
 --- end ---
 --- start blocks_values ---
 		"{{NAME}}": {
+			"id": {{ID}},
 			{{MINECRAFT==true?"minecraft": {{HAS_MINECRAFT_META==true?{
 				"id": {{MINECRAFT_ID}},
 				"meta": {{MINECRAFT_META}}

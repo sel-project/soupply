@@ -76,6 +76,8 @@ Data[string] global;
 
 void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments, Effect[] effects) {
 
+	std.file.mkdirRecurse("../readme");
+
 	string[] languages;
 
 	string[string] travis;
@@ -164,7 +166,7 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			//TODO generate repository's README.md with examples
 		}
 
-		std.file.write("../src/" ~ lang ~ "/README.md", crm ~ "\n");
+		std.file.write("../readme/" ~ lang ~ ".md", crm ~ "\n");
 
 	}
 
@@ -442,6 +444,7 @@ Data[] createBlocks(Block[] blocks, JSONValue[string] options) {
 	foreach(i, block; blocks) {
 		Data[string] values;
 		values["NAME"] = block.name;
+		values["ID"] = block.id.to!string;
 		values["MINECRAFT"] = to!string(block.minecraft.hash >= 0);
 		values["MINECRAFT_ID"] = max(0, block.minecraft.id).to!string;
 		values["HAS_MINECRAFT_META"] = to!string(block.minecraft.meta >= 0);
@@ -475,6 +478,7 @@ Data[] createItems(Item[] items, JSONValue[string] options) {
 	foreach(i, item; items) {
 		Data[string] values;
 		values["NAME"] = item.name;
+		values["INDEX"] = i.to!string;
 		values["MINECRAFT"] = item.minecraft.exists.to!string;
 		values["MINECRAFT_ID"] = item.minecraft.id.to!string;
 		values["MINECRAFT_META"] = max(0, item.minecraft.meta).to!string;

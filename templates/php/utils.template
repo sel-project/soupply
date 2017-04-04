@@ -62,15 +62,19 @@ public class Item
 	/** @var string */
 	public $name;
 
+	/** @var int */
+	public $index;
+
 	/** @var ItemData */
 	public $minecraft, $pocket;
 
 	/** @var int */
 	public $stack;
 
-	public function __construct(string $name, ItemData $minecraft, ItemData $pocket, int $stack)
+	public function __construct(string $name, int $index, ItemData $minecraft, ItemData $pocket, int $stack)
 	{
 		$this->name = $name;
+		$this->index = $index;
 		$this->minecraft = $minecraft;
 		$this->pocket = $pocket;
 		$this->stack = $stack;
