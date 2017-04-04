@@ -39,7 +39,7 @@
 --- end ---
 --- start metadata ---
 "{{NAME}}": {
-	"type": "{{TYPE}}",
+	"type": "{{ORIGINAL_TYPE}}",
 	"id": {{ID}},
 	"required": {{REQUIRED}}{{DEFAULT!=?,
 	"default": {{DEFAULT_ENCODED}}}}{{HAS_FLAGS==true?,

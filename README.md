@@ -6,7 +6,20 @@ The code is generated from XML files at [/xml](https://github.com/sel-project/se
 
 Automatically generated documentation is available at the [project's website](https://sel-utils.github.io/).
 
-**Jump to**: [D](#d), [Java](#java), [PHP](#php)
+**Jump to**: [C#](#csharp), [D](#d), [Java](#java), [PHP](#php)
+
+### [C#](https://github.com/sel-utils/csharp)
+
+[![Build Status](https://travis-ci.org/sel-utils/csharp.svg?branch=master)](https://travis-ci.org/sel-utils/csharp)
+
+- [x] Protocol
+- [ ] Metadata
+- [ ] Blocks
+- [ ] Items
+- [ ] Entities
+- [ ] Effects
+- [ ] Enchantments
+
 
 ### [D](https://github.com/sel-utils/d)
 

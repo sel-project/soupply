@@ -18,15 +18,32 @@
 		]
 	},
 	"indentation": "spaces",
-	"doc": {
-		"open": "/**",
-		"line": " * ",
-		"close": " */",
-		"line_length": 80,
-		"replace": {
-			"# ([a-zA-Z]*)": "<h1>$1</h1>",
-
-			"ììì[a-z]{1,}([])ììì": "---$1---"
+	"types": {
+		"change_names": {
+			"version": "vers",
+			"body": "body_",
+			"safe": "safe_"
+		},
+		"basic": {
+			"bytes": "ubyte[]",
+			"uuid": "UUID",
+			"triad": "int",
+			"varshort": "short",
+			"varushort": "ushort",
+			"varint": "int",
+			"varuint": "uint",
+			"varlong": "long",
+			"varulong": "ulong"
+		},
+		"tuples": {
+			"2": "Tuple!(%, $0, %, $1)",
+			"3": "Tuple!(%, $0, %, $1, %, $2)"
+		},
+		"metadata": "sul.metadata.{{GAME:lowercase}}.Metadata",
+		"others": "sul.protocol.{{GAME:lowercase}}.types.{{TYPE:pascal_case}}",
+		"encoding": {
+			"basic": "this.write{{TYPE:pascal_case}}({{NAME:camel_case}})",
+			"types": "{{NAME:camel_case}}.encode()"
 		}
 	}
 }

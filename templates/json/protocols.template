@@ -87,7 +87,7 @@
 --- start fields ---
 {
 	"name": "{{NAME}}",
-	"type": "{{TYPE}}"{{DEFAULT!=?,
+	"type": "{{ORIGINAL_TYPE}}"{{DEFAULT!=?,
 	"default": {{DEFAULT_ENCODED}}}}{{WHEN!=?,
 	"when": "{{WHEN}}"}}{{HAS_CONSTANTS==true?,
 	"constants": {

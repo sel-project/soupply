@@ -16,7 +16,7 @@ module src;
 
 import std.stdio : writeln;
 
-import std.algorithm : sort, max;
+import std.algorithm : sort, max, canFind;
 import std.conv : to, ConvException;
 static import std.file;
 import std.json;
@@ -74,6 +74,63 @@ struct Data {
 
 Data[string] global;
 
+struct Options {
+
+	struct Repo {
+
+		struct Badge {
+
+			string image, url, alt;
+
+		}
+
+		bool exists = false;
+
+		string name, src;
+		string[] exclude;
+		bool tag;
+		Badge[] badges;
+
+		alias exists this;
+
+	}
+	
+	Repo repo;
+
+	string indentation = "tabs";
+
+	string start = "";
+	string end = "\n";
+
+	bool stripEmptyLines = true;
+
+	struct Header {
+
+		bool exists = true;
+
+		string open = "/*";
+		string line = " * ";
+		string close = " */";
+
+		alias exists this;
+
+	}
+
+	Header header;
+
+	struct Types {
+
+		string[string] basic;
+		string[size_t] tuples;
+		string metadata;
+		string others;
+
+	}
+
+	Types types;
+
+}
+
 void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments, Effect[] effects) {
 
 	std.file.mkdirRecurse("../readme");
@@ -95,10 +152,75 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 
 	foreach(lang ; languages) {
 
-		JSONValue[string] options;
+		Options options;
 
 		if(std.file.exists("../templates/" ~ lang ~ "/options.json")) {
-			options = parseJSON(cast(string)std.file.read("../templates/" ~ lang ~ "/options.json")).object;
+			auto json = parseJSON(cast(string)std.file.read("../templates/" ~ lang ~ "/options.json")).object;
+			auto repo = "repo" in json;
+			auto header = "header" in json;
+			auto indentation = "indentation" in json;
+			auto start = "start" in json;
+			auto end = "end" in json;
+			auto stripEmptyLines = "strip_empty_lines" in json;
+			auto types = "types" in json;
+			if(repo) {
+				options.repo.exists = true;
+				options.repo.name = (*repo)["name"].str;
+				options.repo.src = (*repo)["src"].str;
+				auto exclude = "exclude" in *repo;
+				auto tag = "tag" in *repo;
+				auto badges = "badges" in *repo;
+				if(exclude) {
+					if((*exclude).type == JSON_TYPE.STRING) options.repo.exclude = [(*exclude).str];
+					else if((*exclude).type == JSON_TYPE.ARRAY) {
+						foreach(ex ; (*exclude).array) {
+							options.repo.exclude ~= ex.str;
+						}
+					}
+				}
+				options.repo.tag = tag && (*tag).type == JSON_TYPE.TRUE;
+				if(badges) {
+					foreach(b ; (*badges).array) {
+						options.repo.badges ~= Options.Repo.Badge(b["image"].str, b["url"].str, b["alt"].str);
+					}
+				}
+			}
+			if(indentation) {
+				options.indentation = (*indentation).str;
+			}
+			if(start) options.start = (*start).str;
+			if(end) options.end = (*end).str;
+			if(stripEmptyLines) options.stripEmptyLines = (*stripEmptyLines).type != JSON_TYPE.FALSE;
+			if(header) {
+				if((*header).type == JSON_TYPE.OBJECT) {
+					auto open = "open" in *header;
+					auto line = "line" in *header;
+					auto close = "close" in *header;
+					if(open) options.header.open = (*open).str;
+					if(line) options.header.line = (*line).str;
+					if(close) options.header.close = (*close).str;
+				} else {
+					options.header.exists = (*header).type != JSON_TYPE.FALSE;
+				}
+			}
+			if(types) {
+				auto basic = "basic" in *types;
+				auto tuples = "tuples" in *types;
+				auto metadata = "metadata" in *types;
+				auto others = "others" in *types;
+				if(basic) {
+					foreach(key, value; (*basic).object) {
+						options.types.basic[key] = value.str;
+					}
+				}
+				if(tuples) {
+					foreach(size, value; (*tuples).object) {
+						options.types.tuples[to!size_t(size)] = value.str;
+					}
+				}
+				if(metadata) options.types.metadata = (*metadata).str;
+				if(others) options.types.others = (*others).str;
+			}
 		}
 
 		immutable bool allt = templateExists(lang, "all");
@@ -130,25 +252,11 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 
 		string crm = "[![SEL](http://i.imgur.com/iiDRUQQ.png)](https://github.com/sel-project/sel-utils)\n\n**Automatically generated libraries for Minecraft and Minecraft: Pocket Edition from [sel-project/sel-utils](https://github.com/sel-project/sel-utils)**\n\n";
 
-		auto repo = "repo" in options;
-		if(repo) {
-			string name = (*repo)["name"].str;
-			string src = (*repo)["src"].str;
-			auto tag = "tag" in *repo;
-			string[] exclude;
-			if("exclude" in *repo) {
-				foreach(e ; (*repo)["exclude"].array) {
-					exclude ~= e.str;
-				}
-			}
-			travis[lang] = " - ./push " ~ lang ~ " " ~ to!string(tag && (*tag).type == JSON_TYPE.TRUE) ~ " " ~ src ~ " " ~ exclude.join(" ");
+		if(options.repo) {
+			travis[lang] = " - ./push " ~ lang ~ " " ~ to!string(options.repo.tag) ~ " " ~ options.repo.src ~ " " ~ options.repo.exclude.join(" ");
 			string rm = "[![Build Status](https://travis-ci.org/sel-utils/" ~ lang ~ ".svg?branch=master)](https://travis-ci.org/sel-utils/" ~ lang ~ ")";
-			auto badges = "badges" in *repo;
-			if(badges) {
-				void addBadge(JSONValue json) {
-					rm ~= "&nbsp;&nbsp;[![" ~ json["alt"].str ~ "](" ~ json["image"].str ~ ")](" ~ json["url"].str ~ ")";
-				}
-				foreach(b ; (*badges).array) addBadge(b);
+			foreach(badge ; options.repo.badges) {
+				rm ~= "&nbsp;&nbsp;[![" ~ badge.alt ~ "](" ~ badge.image ~ ")](" ~ badge.url ~ ")";
 			}
 			rm ~= "\n\n";
 			void writeCheck(string search, string display) {
@@ -161,7 +269,7 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			writeCheck("entities", "Entities");
 			writeCheck("effects", "Effects");
 			writeCheck("enchantments", "Enchantments");
-			readme[lang] = [name, "### [" ~ name ~ "](https://github.com/sel-utils/" ~ lang ~ ")\n\n" ~ rm];
+			readme[lang] = [options.repo.name, "### [" ~ options.repo.name ~ "](https://github.com/sel-utils/" ~ lang ~ ")\n\n" ~ rm];
 			crm ~= rm;
 			//TODO generate repository's README.md with examples
 		}
@@ -207,6 +315,7 @@ void addLast(ref Data[] data) {
 		if(d.type == Data.Type.array) {
 			addLast(d.array);
 		} else if(d.type == Data.Type.object) {
+			d.object["FIRST"] = to!string(i == 0);
 			d.object["LAST"] = to!string(i == data.length - 1);
 			addLastObject(d.object);
 		}
@@ -221,17 +330,39 @@ void addLastObject(ref Data[string] data) {
 	}
 }
 
-string createEncoded(string value) {
-	if(value == "true" || value == "false") return value;
-	try {
-		value.to!double;
-		return value;
-	} catch(ConvException) {
-		return JSONValue(value).toString();
+string createEncoded(string value, string type) {
+	if(type == "string") return JSONValue(value).toString();
+	else return value;
+}
+
+enum basicTypes = ["bool", "byte", "ubyte", "short", "ushort", "varshort", "varushort", "triad", "int", "uint", "varint", "varuint", "long", "ulong", "varlong", "varulong", "float", "double", "string", "uuid", "bytes"];
+
+string convertType(string game, string type, Options.Types options) {
+	auto array = type.indexOf("["); //TODO custom arrays
+	if(array >= 0) {
+		return convertType(game, type[0..array], options) ~ type[array..$];
+	}
+	auto tuple = type.indexOf("<");
+	if(tuple >= 0) {
+		assert(type[$-1] == '>');
+		string coords = type[tuple+1..$-1];
+		auto t = coords.length in options.tuples;
+		if(!t) return type;
+		string[string] repl = ["%": convertType(game, type[0..tuple], options)];
+		foreach(i, c; coords) repl["$" ~ to!string(i)] = "" ~ c;
+		string ret = *t;
+		foreach(from, to; repl) ret = ret.replace(from, to);
+		return ret;
+	}
+	if(basicTypes.canFind(type)) {
+		auto conv = type in options.basic;
+		return conv ? *conv : type;
+	} else {
+		return parseValue(type == "metadata" ? options.metadata : options.others, ["GAME": Data(game), "TYPE": Data(type)], (Template[string]).init, 0);
 	}
 }
 
-Data[] createAttributes(Attributes[string] attributes, JSONValue[string] options) {
+Data[] createAttributes(Attributes[string] attributes, Options options) {
 	Data[] ret;
 	foreach(game, a; attributes) {
 		Data[string] g;
@@ -254,7 +385,7 @@ Data[] createAttributes(Attributes[string] attributes, JSONValue[string] options
 	return ret;
 }
 
-Data[] createCreative(Creative[string] creative, JSONValue[string] options) {
+Data[] createCreative(Creative[string] creative, Options options) {
 	Data[] ret;
 	foreach(game, c; creative) {
 		Data[string] g;
@@ -283,29 +414,31 @@ Data[] createCreative(Creative[string] creative, JSONValue[string] options) {
 	return ret;
 }
 
-Data[] createProtocols(Protocols[string] protocols, JSONValue[string] options) {
-	Data[] createConstants(Constant[] constants) {
+Data[] createProtocols(Protocols[string] protocols, Options options) {
+	Data[] createConstants(Field field, Constant[] constants) {
 		Data[] ret;
 		foreach(constant ; constants) {
 			Data[string] c;
 			c["NAME"] = constant.name;
+			c["TYPE"] = convertType("", field.type, options.types);
 			c["VALUE"] = constant.value;
-			c["VALUE_ENCODED"] = createEncoded(constant.value);
+			c["VALUE_ENCODED"] = createEncoded(constant.value, field.type);
 			ret ~= Data(c);
 		}
 		return ret;
 	}
-	Data[] createFields(Field[] fields) {
+	Data[] createFields(string game, Field[] fields) {
 		Data[] ret;
 		foreach(field ; fields) {
 			Data[string] f;
 			f["NAME"] = field.name;
-			f["TYPE"] = field.type;
+			f["ORIGINAL_TYPE"] = field.type;
+			f["TYPE"] = convertType(game, field.type, options.types);
 			f["WHEN"] = field.condition;
 			f["DEFAULT"] = field.def;
-			f["DEFAULT_ENCODED"] = createEncoded(field.def);
+			f["DEFAULT_ENCODED"] = createEncoded(field.def, field.type);
 			f["HAS_CONSTANTS"] = to!string(field.constants.length != 0);
-			f["CONSTANTS"] = createConstants(field.constants);
+			f["CONSTANTS"] = createConstants(field, field.constants);
 			ret ~= Data(f);
 		}
 		return ret;
@@ -325,13 +458,14 @@ Data[] createProtocols(Protocols[string] protocols, JSONValue[string] options) {
 		if(p.data.endianness.length > 1) {
 			g["ENDIANNESS"] = (){
 				Data[] ret;
-				foreach(type, e; (){ auto ret=p.data.endianness; ret.remove("*"); return ret; }()) {
+				foreach(type, e; (){ auto ret=p.data.endianness.dup; ret.remove("*"); return ret; }()) {
 					ret ~= Data(["TYPE": Data(type), "ENDIANNESS": Data(e)]);
 				}
 				return ret;
 			}();
 		}
 		g["HAS_ARRAYS"] = to!string(p.data.arrays.length != 0);
+		immutable id_type = convertType(game, p.data.id, options.types);
 		g["ARRAYS"] = new Data[0];
 		g["TYPES"] = new Data[0];
 		g["SECTIONS"] = new Data[0];
@@ -346,26 +480,30 @@ Data[] createProtocols(Protocols[string] protocols, JSONValue[string] options) {
 		foreach(type ; p.data.types) {
 			Data[string] t;
 			t["GENERATOR"] = generator;
+			t["GAME"] = game;
 			t["NAME"] = type.name;
 			t["HAS_FIELDS"] = to!string(type.fields.length != 0);
-			t["FIELDS"] = createFields(type.fields);
+			t["FIELDS"] = createFields(game, type.fields);
 			g["TYPES"].array ~= Data(t);
 		}
 		foreach(section ; p.data.sections) {
 			Data[string] s;
 			s["GENERATOR"] = generator;
+			s["GAME"] = game;
 			s["NAME"] = section.name;
 			s["DESCRIPTION"] = section.description;
 			s["PACKETS"] = new Data[0];
 			foreach(packet ; section.packets) {
 				Data[string] pk;
 				pk["GENERATOR"] = generator;
+				pk["GAME"] = game;
+				pk["ID_TYPE"] = id_type;
 				pk["NAME"] = packet.name;
 				pk["ID"] = packet.id.to!string;
 				pk["CLIENTBOUND"] = packet.clientbound.to!string;
 				pk["SERVERBOUND"] = packet.serverbound.to!string;
 				pk["HAS_FIELDS"] = to!string(packet.fields.length != 0);
-				pk["FIELDS"] = createFields(packet.fields);
+				pk["FIELDS"] = createFields(game, packet.fields);
 				pk["HAS_VARIANTS"] = to!string(packet.variants.length != 0);
 				if(packet.variants.length) {
 					pk["VARIANT_FIELD"] = packet.variantField;
@@ -375,8 +513,8 @@ Data[] createProtocols(Protocols[string] protocols, JSONValue[string] options) {
 							Data[string] v;
 							v["NAME"] = variant.name;
 							v["VALUE"] = variant.value;
-							v["VALUE_ENCODED"] = createEncoded(variant.value);
-							v["FIELDS"] = createFields(variant.fields);
+							v["VALUE_ENCODED"] = createEncoded(variant.value, ""); //TODO variant field
+							v["FIELDS"] = createFields(game, variant.fields);
 							vret ~= Data(v);
 						}
 						return vret;
@@ -391,7 +529,7 @@ Data[] createProtocols(Protocols[string] protocols, JSONValue[string] options) {
 	return ret;
 }
 
-Data[] createMetadatas(Metadatas[string] metadatas, JSONValue[string] options) {
+Data[] createMetadatas(Metadatas[string] metadatas, Options options) {
 	Data[] ret;
 	foreach(game, m; metadatas) {
 		Data[string] g;
@@ -403,9 +541,11 @@ Data[] createMetadatas(Metadatas[string] metadatas, JSONValue[string] options) {
 		g["SUFFIX"] = m.data.suffix;
 		g["TYPE"] = m.data.type;
 		g["ID"] = m.data.id;
+		string[string] typesMap;
 		g["TYPES"] = (){
 			Data[] r;
 			foreach(type ; m.data.types) {
+				typesMap[type.name] = type.type;
 				r ~= Data(["NAME": Data(type.name), "TYPE": Data(type.type), "ID": Data(type.id.to!string), "ENDIANNESS": Data(type.endianness)]);
 			}
 			return r;
@@ -415,17 +555,18 @@ Data[] createMetadatas(Metadatas[string] metadatas, JSONValue[string] options) {
 			foreach(metadata ; m.data.data) {
 				Data[string] m;
 				m["NAME"] = metadata.name;
-				m["TYPE"] = metadata.type;
+				m["ORIGINAL_TYPE"] = metadata.type;
+				m["TYPE"] = convertType(game, typesMap[metadata.type], options.types);
 				m["ID"] = metadata.id.to!string;
 				m["REQUIRED"] = metadata.required.to!string;
 				m["DEFAULT"] = metadata.def;
-				m["DEFAULT_ENCODED"] = createEncoded(metadata.def);
+				m["DEFAULT_ENCODED"] = createEncoded(metadata.def, metadata.type);
 				m["HAS_FLAGS"] = to!string(metadata.flags.length != 0);
 				if(metadata.flags.length) {
 					m["FLAGS"] = (){
 						Data[] f;
 						foreach(flag ; metadata.flags) {
-							f ~= Data(["NAME": Data(flag.name), "BIT": Data(flag.bit.to!string)]);
+							f ~= Data(["OWNER": Data(metadata.name), "TYPE": Data(metadata.type), "NAME": Data(flag.name), "BIT": Data(flag.bit.to!string)]);
 						}
 						return f;
 					}();
@@ -439,7 +580,7 @@ Data[] createMetadatas(Metadatas[string] metadatas, JSONValue[string] options) {
 	return ret;
 }
 
-Data[] createBlocks(Block[] blocks, JSONValue[string] options) {
+Data[] createBlocks(Block[] blocks, Options options) {
 	Data[] ret;
 	foreach(i, block; blocks) {
 		Data[string] values;
@@ -473,7 +614,7 @@ Data[] createBlocks(Block[] blocks, JSONValue[string] options) {
 	return [Data(["BLOCKS": Data(ret), "GENERATOR": Data("blocks")])];
 }
 
-Data[] createItems(Item[] items, JSONValue[string] options) {
+Data[] createItems(Item[] items, Options options) {
 	Data[] ret;
 	foreach(i, item; items) {
 		Data[string] values;
@@ -493,7 +634,7 @@ Data[] createItems(Item[] items, JSONValue[string] options) {
 	return [Data(["ITEMS": Data(ret), "GENERATOR": Data("items")])];
 }
 
-Data[] createEntities(Entity[] entities, JSONValue[string] options) {
+Data[] createEntities(Entity[] entities, Options options) {
 	Data[] ret;
 	foreach(i, entity; entities) {
 		Data[string] values;
@@ -511,7 +652,7 @@ Data[] createEntities(Entity[] entities, JSONValue[string] options) {
 	return [Data(["ENTITIES": Data(ret), "GENERATOR": Data("entities")])];
 }
 
-Data[] createEnchantments(Enchantment[] enchantments, JSONValue[string] options) {
+Data[] createEnchantments(Enchantment[] enchantments, Options options) {
 	Data[] ret;
 	foreach(i, enchantment; enchantments) {
 		Data[string] values;
@@ -526,7 +667,7 @@ Data[] createEnchantments(Enchantment[] enchantments, JSONValue[string] options)
 	return [Data(["ENCHANTMENTS": Data(ret), "GENERATOR": Data("enchantments")])];
 }
 
-Data[] createEffects(Effect[] effects, JSONValue[string] options) {
+Data[] createEffects(Effect[] effects, Options options) {
 	Data[] ret;
 	foreach(i, effect; effects) {
 		Data[string] values;
@@ -547,9 +688,9 @@ Data[] createEffects(Effect[] effects, JSONValue[string] options) {
 
 class Template {
 
-	JSONValue[string] options;
+	Options options;
 
-	private string lang, location, content, originalContent;
+	public string lang, location, content, originalContent;
 
 	private size_t space = 0;
 
@@ -563,52 +704,31 @@ class Template {
 
 	private this() {}
 
-	public this(JSONValue[string] options, string lang, string location, string content) {
+	public this(Options options, string lang, string location, string content) {
 		this.options = options;
 		this.lang = lang;
 		this.location = location;
 		this.content = content;
-		auto header = "header" in options;
-		if(header) {
-			if((*header).type == JSON_TYPE.FALSE) {
-				this.write_header = false;
-			} else if((*header).type == JSON_TYPE.OBJECT) {
-				auto open = "open" in *header;
-				auto line = "line" in *header;
-				auto close = "close" in *header;
-				if(open && (*open).type == JSON_TYPE.STRING) this.header_open = (*open).str;
-				if(line && (*line).type == JSON_TYPE.STRING) this.header_line = (*line).str;
-				if(close && (*close).type == JSON_TYPE.STRING) this.header_close = (*close).str;
-			}
-		}
-		auto indentation = "indentation" in options;
-		if(indentation && (*indentation).type == JSON_TYPE.STRING) {
-			if((*indentation).str == "spaces") {
-				this.tab = "    ";
-				this.content = this.content.replace("\t", "    ");
-			}
-		}
-		auto new_line = "new_line" in options;
-		if(new_line) {
-			if((*new_line).type == JSON_TYPE.STRING) this.new_line = (*new_line).str;
-			else if((*new_line).type == JSON_TYPE.FALSE) this.new_line = "";
+		if(options.indentation == "spaces") {
+			this.tab = "    ";
+			this.content = this.content.replace("\t", "    ");
 		}
 		this.originalContent = this.content.dup;
 	}
 
 	public string parse(Data[string] values, Template[string] templates, size_t space=0) {
 		string ret = parseValue(this.content, values, templates, space);
-		if(this.location.length) {
+		if(this.location.length && this.location != "inline") {
 			string[] lines = ret.split("\n");
 			foreach(ref line ; lines) line = line.stripRight;
-			ret = lines.join("\n");
+			ret = this.options.start ~ lines.join("\n") ~ this.options.end;
 			immutable location = "../src/" ~ this.lang ~ "/sul/" ~ parseValue(this.location, values, templates, 0);
 			std.file.mkdirRecurse(location[0..location.lastIndexOf("/")]);
-			if(this.write_header) {
+			if(this.options.header) {
 				auto gen = "GENERATOR" in values;
-				write(location, ret ~ this.new_line, gen ? (*gen).str : "", this.header_open, this.header_line, this.header_close);
+				write(location, ret, gen ? (*gen).str : "", this.options.header.open, this.options.header.line, this.options.header.close);
 			} else {
-				std.file.write(location, ret ~ this.new_line);
+				std.file.write(location, ret);
 			}
 		}
 		return ret;
@@ -635,9 +755,7 @@ class Template {
 
 }
 
-Template[string] parseTemplate(string lang, string t, JSONValue[string] options) {
-	auto sel = "strip_empty_lines" in options;
-	immutable emptyLines = sel is null || (*sel).type != JSON_TYPE.FALSE;
+Template[string] parseTemplate(string lang, string t, Options options) {
 	Template[string] ret;
 	string data = cast(string)std.file.read("../templates/" ~ lang ~ "/" ~ t ~ ".template");
 	// cannot use regex because they eat memory
@@ -646,7 +764,7 @@ Template[string] parseTemplate(string lang, string t, JSONValue[string] options)
 		if(m.length >= 3) {
 			string[] header = m[0].strip.split(" ");
 			string content = m[1..$-2].join("---")[1..$-1];
-			if(emptyLines) {
+			if(options.stripEmptyLines) {
 				string[] lines = content.split("\n");
 				foreach(ref line ; lines) {
 					if(line.strip.length == 0) line = "";
@@ -777,7 +895,7 @@ string parseValueImpl(string value, Data[string] values, Template[string] templa
 				foreach(d ; (*v).array) {
 					ret ~= t.parse(d.object, templates, space);
 				}
-				return ret.join("\n");
+				return ret.join(t.location == "inline" ? "" : "\n");
 			} else if(tabs >= 0) {
 				return getTemplate().parse(values, templates, space);
 			}

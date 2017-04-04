@@ -26,3 +26,4 @@ after_success:
  - ./push php false src sul/utils/About.php
  - ./push java true src/main/java sul/utils/About.java
  - ./push d true src sul/utils/about.d
+ - ./push csharp false src sul/Utils/About.d

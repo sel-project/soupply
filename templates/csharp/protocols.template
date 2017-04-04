@@ -1,0 +1,73 @@
+--- start protocols ---
+{{section@SECTIONS}}
+--- end ---
+--- start section Protocol/{{GAME:pascal_case}}/{{NAME:pascal_case}}.cs ---
+using Types = sul.{{GAME:pascal_case}}.Types;
+
+namespace sul.{{GAME:pascal_case}}
+{
+	
+{{packets@1,PACKETS}}
+}
+--- end ---
+--- start packets ---
+public class {{NAME:pascal_case}} : Packet
+{
+
+	public const {{ID_TYPE}} Id = {{ID}};
+
+	public const bool Clientbound = {{CLIENTBOUND}};
+	public const bool Serverbound = {{SERVERBOUND}};{{constants@FIELDS}}
+
+{{fields@1,FIELDS}}
+
+	public {{NAME:pascal_case}}() {}{{HAS_FIELDS==true?
+
+	public {{NAME:pascal_case}}({{constructor@FIELDS}})
+	{
+{{constructor_assign@2,FIELDS}}
+	\}}}
+
+	public override int GetId()
+	{
+		return Id;
+	}
+
+	public override byte[] Encode()
+	{
+		return this._buffer;
+	}
+
+	public override void Decode(byte[] buffer)
+	{
+		this._buffer = buffer;
+	}
+
+	public static {{NAME:pascal_case}} FromBuffer(byte[] buffer)
+	{
+		var ret = new {{NAME:pascal_case}}();
+		ret.decode(buffer);
+		return ret;
+	}
+
+}
+
+--- end ---
+--- start constants inline ---
+{{HAS_CONSTANTS==true?
+
+		// {{NAME:spaced}}
+{{constants_impl@1,CONSTANTS}}}}
+--- end ---
+--- start constants_impl ---
+public const {{TYPE}} {{NAME:pascal_case}} = {{VALUE_ENCODED}};
+--- end ---
+--- start constructor inline ---
+{{TYPE}} {{NAME:camel_case}}{{LAST==false?, }}
+--- end ---
+--- start constructor_assign ---
+this.{{NAME:camel_case}} = {{NAME:camel_case}};
+--- end ---
+--- start fields ---
+public {{TYPE}} {{NAME:camel_case}}{{DEFAULT!=? = {{DEFAULT_ENCODED}}}};
+--- end ---

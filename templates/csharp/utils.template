@@ -1,0 +1,18 @@
+--- start utils ---
+{{about}}
+--- end ---
+--- start about Utils/About.cs ---
+namespace Utils
+{
+
+	public class About
+	{
+
+		public const Website = "{{WEBSITE}}";
+
+		public const Version = {{VERSION}};
+
+	}
+
+}
+--- end ---

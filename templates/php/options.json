@@ -4,8 +4,6 @@
 		"src": "src",
 		"exclude": ["sul/utils/About.php"]
 	},
-	"header": {
-		"open": "<?php\n\n/*"
-	},
+	"start": "<?php\n\n",
 	"indentation": "spaces"
 }

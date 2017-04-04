@@ -1,0 +1,90 @@
+--- start metadatas metadata/{{GAME:lowercase}}.d ---
+module sul.metadata.{{GAME:lowercase}};
+
+import sul.utils.buffer : Buffer;
+
+static import sul.protocol.{{GAME:lowercase}}.types;
+
+struct Changed(T) {
+	
+	T value;
+	bool changed = false;
+
+	alias value this;
+
+}
+
+class Metadata
+{
+	
+	private bool _cached = false;
+	private ubyte[] _cache;
+
+	private void delegate(Buffer) pure nothrow @safe[] _changed;
+
+{{declaration@METADATA}}
+
+	public pure nothrow @safe this()
+	{
+		this.reset();
+	}
+
+	public pure nothrow @safe void reset()
+	{
+		this._changed = [
+{{default@METADATA}}		];
+	}
+
+{{methods@METADATA}}
+
+}
+--- end ---
+--- start declaration ---
+	private {{REQUIRED==true?{{TYPE}}}}{{REQUIRED==false?Changed!({{TYPE}})}} _{{NAME:camel_case}}{{DEFAULT!=? = {{DEFAULT_ENCODED}}}};
+--- end ---
+--- start default inline ---
+{{REQUIRED==true?			&this.encode{{NAME:pascal_case}},
+}}
+--- end ---
+--- start methods ---
+	public pure nothrow @property @safe @nogc {{TYPE}} {{NAME:camel_case}}()
+	{
+		return this._{{NAME:camel_case}};
+	}
+
+	public pure nothrow @property @safe {{TYPE}} {{NAME:camel_case}}({{TYPE}} value)
+	{
+		this._cached = false;
+		this._{{NAME:camel_case}}.value = value;
+		{{DEFAULT!=?if(!this._{{NAME:camel_case}}.changed)
+		{
+			this._{{NAME:camel_case}}.changed = true;
+			this._changed ~= &this.encode{{NAME:pascal_case}};
+		}
+		}}return value;
+	}
+
+	protected pure nothrow @safe encode{{NAME:pascal_case}}(Buffer buffer)
+	{
+		with(buffer)
+		{
+			//TODO
+		}
+	}
+{{HAS_FLAGS==true?
+{{flags@FLAGS}}}}
+--- end ---
+--- start flags ---
+	public pure nothrow @property @safe bool {{NAME:camel_case}}()
+	{
+		return (this._{{OWNER:camel_case}}.value >>> {{BIT}}) & 1;
+	}
+
+	public pure nothrow @property @safe bool {{NAME:camel_case}}(bool value)
+	{
+		if(value) this.{{OWNER:camel_case}} = cast({{TYPE}})(this._{{OWNER:camel_case}}.value | (cast({{TYPE}})true << {{BIT}}));
+		else this.{{OWNER:camel_case}} = cast({{TYPE}})(this._{{OWNER:camel_case}}.value & ~(cast({{TYPE}})true << {{BIT}}));
+		return value;
+	}
+
+--- end ---

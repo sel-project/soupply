@@ -18,10 +18,16 @@ public struct Point
 
 }
 
-public struct BoundingBox
+public class BoundingBox
 {
 	
 	Point min, max;
+
+	public this(Point min, Point max)
+	{
+		this.min = min;
+		this.max = max;
+	}
 
 }
 
@@ -35,7 +41,7 @@ public struct Block
 	double hardness, blastResistance;
 	ubyte opacity, luminance, encouragement, flammability;
 	bool replaceable;
-	BoundingBox boundingBox;
+	BoundingBox boundingBox = null;
 
 }
 
