@@ -250,7 +250,10 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 			}
 		}
 
-		string crm = "[![SEL](http://i.imgur.com/iiDRUQQ.png)](https://github.com/sel-project/sel-utils)\n\n**Automatically generated libraries for Minecraft and Minecraft: Pocket Edition from [sel-project/sel-utils](https://github.com/sel-project/sel-utils)**\n\n";
+		string crm = "[![SEL](http://i.imgur.com/iiDRUQQ.png)](https://github.com/sel-project/sel-utils)\n\n" ~
+				"**Automatically generated libraries for Minecraft and Minecraft: Pocket Edition from [sel-project/sel-utils](https://github.com/sel-project/sel-utils)**\n\n" ~
+				"To report a problem or request a new feature related to the generated code open an issue on [sel-utils](https://github.com/sel-project/sel-utils) adding `" ~ lang ~ "` in the title or in the description.\n" ~
+				"To contribute at the project read the [contribution guidelines](https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md).\n\n";
 
 		if(options.repo) {
 			travis[lang] = " - ./push " ~ lang ~ " " ~ to!string(options.repo.tag) ~ " " ~ options.repo.src ~ " " ~ options.repo.exclude.join(" ");

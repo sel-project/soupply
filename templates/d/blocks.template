@@ -45,7 +45,7 @@ public struct Block
 	double hardness, blastResistance;
 	ubyte opacity, luminance, encouragement, flammability;
 	bool replaceable;
-	BoundingBox boundingBox = null;
+	BoundingBox boundingBox;
 
 }
 
