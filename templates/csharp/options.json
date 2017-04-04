@@ -2,7 +2,7 @@
 	"repo": {
 		"name": "C#",
 		"src": "src",
-		"exclude": ["sul/Utils/About.d"]
+		"exclude": ["sul/Utils/About.cs"]
 	},
 	"indentation": "spaces",
 	"types": {
