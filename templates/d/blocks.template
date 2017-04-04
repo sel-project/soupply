@@ -18,16 +18,20 @@ public struct Point
 
 }
 
-public class BoundingBox
+public struct BoundingBox
 {
 	
+	bool exists;
 	Point min, max;
 
 	public this(Point min, Point max)
 	{
+		this.exists = true;
 		this.min = min;
 		this.max = max;
 	}
+
+	alias exists this;
 
 }
 
