@@ -11,9 +11,9 @@ public struct Attributes
 	@disable this();
 	
 {{attributes_values@ATTRIBUTES}}
+
 }
 --- end ---
 --- start attributes_values ---
 	enum {{NAME:camel_case}} = Attribute("{{ID}}", {{MIN}}f, {{MAX}}f, {{DEFAULT}}f);
-
 --- end ---

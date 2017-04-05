@@ -2,7 +2,20 @@
 	"repo": {
 		"name": "PHP",
 		"src": "src",
-		"exclude": ["sul/utils/About.php"]
+		"exclude": ["sul/utils/About.php"],
+		"tag": true,
+		"badges": [
+			{
+				"image": "https://poser.pugx.org/sel-project/sel-utils/v/stable",
+				"url": "https://packagist.org/packages/sel-project/sel-utils",
+				"alt": "Composer Package"
+			},
+			{
+				"image": "https://poser.pugx.org/sel-project/sel-utils/downloads",
+				"url": "https://packagist.org/packages/sel-project/sel-utils",
+				"alt": "Composer Downloads"
+			}
+		]
 	},
 	"start": "<?php\n\n",
 	"indentation": "spaces"

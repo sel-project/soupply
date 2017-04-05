@@ -1,0 +1,13 @@
+--- start attributes attributes/{{GAME:pascal_case}}.php ---
+namespace sul\attributes;
+
+class {{GAME:pascal_case}}
+{
+	
+{{attributes_values@ATTRIBUTES}}
+
+}
+--- end ---
+--- start attributes_values ---
+	const {{NAME:uppercase}} = ["id" => "{{ID}}", "min" => {{MIN}}, "max" => {{MAX}}, "default" => {{DEFAULT}}];
+--- end ---

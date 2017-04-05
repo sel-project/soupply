@@ -19,30 +19,32 @@
 	},
 	"indentation": "spaces",
 	"types": {
-		"change_names": {
+		"names": {
 			"version": "vers",
 			"body": "body_",
 			"safe": "safe_"
 		},
-		"basic": {
-			"bytes": "ubyte[]",
-			"uuid": "UUID",
-			"triad": "int",
-			"varshort": "short",
-			"varushort": "ushort",
-			"varint": "int",
-			"varuint": "uint",
-			"varlong": "long",
-			"varulong": "ulong"
+		"conv": {
+			"basic": {
+				"bytes": "ubyte[]",
+				"uuid": "UUID",
+				"triad": "int",
+				"varshort": "short",
+				"varushort": "ushort",
+				"varint": "int",
+				"varuint": "uint",
+				"varlong": "long",
+				"varulong": "ulong"
+			},
+			"tuples": {
+				"2": "Tuple!(%, $0, %, $1)",
+				"3": "Tuple!(%, $0, %, $1, %, $2)"
+			},
+			"metadata": "sul.metadata.{{GAME:lowercase}}.Metadata",
+			"others": "sul.protocol.{{GAME:lowercase}}.types.{{TYPE:pascal_case}}"
 		},
-		"tuples": {
-			"2": "Tuple!(%, $0, %, $1)",
-			"3": "Tuple!(%, $0, %, $1, %, $2)"
-		},
-		"metadata": "sul.metadata.{{GAME:lowercase}}.Metadata",
-		"others": "sul.protocol.{{GAME:lowercase}}.types.{{TYPE:pascal_case}}",
 		"encoding": {
-			"basic": "this.write{{TYPE:pascal_case}}({{NAME:camel_case}})",
+			"basic": "this.write{{ENDIANNESS:pascal_case}}{{TYPE:pascal_case}}({{NAME:camel_case}})",
 			"types": "{{NAME:camel_case}}.encode()"
 		}
 	}

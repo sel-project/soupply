@@ -1,11 +1,11 @@
---- start metadatas metadata/{{GAME:lowercase}}.d ---
+--- start metadatas ../../tests/metadata/{{GAME:lowercase}}.d ---
 module sul.metadata.{{GAME:lowercase}};
 
 import sul.utils.buffer : Buffer;
 
 static import sul.protocol.{{GAME:lowercase}}.types;
 
-struct Changed(T) {
+private struct Changed(T) {
 	
 	T value;
 	bool changed = false;
@@ -14,7 +14,7 @@ struct Changed(T) {
 
 }
 
-class Metadata
+public class Metadata
 {
 	
 	private bool _cached = false;
@@ -36,6 +36,25 @@ class Metadata
 	}
 
 {{methods@METADATA}}
+
+}
+
+public struct MetadataType
+{
+	
+	private {{TYPE}} type;
+	private union Types
+	{
+
+	}
+	private Types types;
+
+	public this()
+	{
+
+	}
+
+	public pure nothrow @property @safe @nogc 
 
 }
 --- end ---

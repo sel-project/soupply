@@ -26,7 +26,7 @@ Automatically generated documentation is available at the [project's website](ht
 [![Build Status](https://travis-ci.org/sel-utils/d.svg?branch=master)](https://travis-ci.org/sel-utils/d)&nbsp;&nbsp;[![DUB Package](https://img.shields.io/dub/v/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)&nbsp;&nbsp;[![DUB Downloads](https://img.shields.io/dub/dt/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)
 
 - [ ] Protocol
-- [ ] Metadata
+- [x] Metadata
 - [x] Blocks
 - [x] Items
 - [x] Entities
@@ -49,11 +49,11 @@ Automatically generated documentation is available at the [project's website](ht
 
 ### [PHP](https://github.com/sel-utils/php)
 
-[![Build Status](https://travis-ci.org/sel-utils/php.svg?branch=master)](https://travis-ci.org/sel-utils/php)
+[![Build Status](https://travis-ci.org/sel-utils/php.svg?branch=master)](https://travis-ci.org/sel-utils/php)&nbsp;&nbsp;[![Composer Package](https://poser.pugx.org/sel-project/sel-utils/v/stable)](https://packagist.org/packages/sel-project/sel-utils)&nbsp;&nbsp;[![Composer Downloads](https://poser.pugx.org/sel-project/sel-utils/downloads)](https://packagist.org/packages/sel-project/sel-utils)
 
 - [ ] Protocol
 - [ ] Metadata
-- [x] Blocks
+- [ ] Blocks
 - [x] Items
 - [ ] Entities
 - [ ] Effects

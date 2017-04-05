@@ -4,13 +4,55 @@ namespace sul;
 use sul\utils\Item;
 use sul\utils\ItemData;
 
-abstract final public class Items
+class Items
 {
+
+	private static $needInit = true;
+	private static $minecraftList, $pocketList;
 	
+	public static function init()
+	{
+
+		self::$needInit = false;
+		self::$minecraftList = [];
+		self::$pocketList = [];
+
 {{items_values@ITEMS}}
+
+	}
+
+	private static function add(Item $item)
+	{
+		if($item->minecraft instanceof ItemData) self::$minecraftList[$item->minecraft->id][$item->minecraft->meta] = $item;
+		if($item->pocket instanceof ItemData) self::$pocketList[$item->pocket->id][$item->pocket->meta] = $item;
+	}
+
+	/**
+	 * @param int $id
+	 * @param int $meta
+	 *
+	 * @return Item
+	 */
+	public static function getMinecraftItem($id, $meta=0)
+	{
+		if(self::$needInit) self::init();
+		return self::$minecraftList[$id][$meta];
+	}
+
+	/**
+	 * @param int $id
+	 * @param int $meta
+	 *
+	 * @return Item
+	 */
+	public static function getPocketItem($id, $meta=0)
+	{
+		if(self::$needInit) self::init();
+		return self::$pocketList[$id][$meta];
+	}
 
 }
 --- end ---
 --- start items_values ---
-	const {{NAME:uppercase}} = new Item("{{NAME:spaced}}", {{INDEX}}, new ItemData({{MINECRAFT}}, {{MINECRAFT_ID}}, {{MINECRAFT_META}}), new ItemData({{POCKET}}, {{POCKET_ID}}, {{POCKET_META}}), {{STACK}});
+		self::add(new Item("{{NAME:spaced}}", {{MINECRAFT==true?new ItemData({{MINECRAFT_ID}}, {{MINECRAFT_META}})}}{{MINECRAFT==false?null}}, {{POCKET==true?new ItemData({{POCKET_ID}}, {{POCKET_META}})}}{{POCKET==false?null}}, {{STACK}}));
 --- end ---

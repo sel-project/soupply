@@ -1,80 +1,33 @@
 --- start utils ---
-{{attribute}}
-{{block}}
-{{block_data}}
 {{item}}
 {{item_data}}
---- end ---
---- start attribute utils/Attribute.php ---
-namespace sul\utils;
-
-public class Attribute
-{
-
-	/** @var string */
-	public $id;
-
-	/** @var float */
-	public $min, $max, $default;
-
-	public function __construct(string $id, $min, $max, $default)
-	{
-		$this->id = $id;
-		$this->min = $min;
-		$this->max = $max;
-		$this->default = $default;
-	}
-
-}
---- end ---
---- start block utils/Block.php ---
-namespace sul\utils;
-
-public class Block
-{
-
-
-
-}
---- end ---
---- start block_data utils/BlockData.php ---
-namespace sul\utils;
-
-public class BlockData
-{
-
-	/** @var bool */
-	public $exists;
-
-	/** @var int */
-	public $id, $meta;
-
-}
 --- end ---
 --- start item utils/Item.php ---
 namespace sul\utils;
 
 use sul\utils\ItemData;
 
-public class Item
+class Item
 {
 	
 	/** @var string */
 	public $name;
 
-	/** @var int */
-	public $index;
-
-	/** @var ItemData */
+	/** @var ItemData|null */
 	public $minecraft, $pocket;
 
 	/** @var int */
 	public $stack;
 
-	public function __construct(string $name, int $index, ItemData $minecraft, ItemData $pocket, int $stack)
+	/**
+	 * @param string $name
+	 * @param ItemData|null $minecraft
+	 * @param ItemData|null $pocket
+	 * @param int $stack
+	 */
+	public function __construct(string $name, $minecraft, $pocket, $stack)
 	{
 		$this->name = $name;
-		$this->index = $index;
 		$this->minecraft = $minecraft;
 		$this->pocket = $pocket;
 		$this->stack = $stack;
@@ -85,21 +38,18 @@ public class Item
 --- start item_data utils/ItemData.php ---
 namespace sul\utils;
 
-public class ItemData
+class ItemData
 {
-	
-	/** @var bool */
-	public $exists;
 
 	/** @var int */
-	public $id;
+	public $id, $meta;
 
-	/** @var int */
-	public $meta;
-
-	public function __construct($exists, int $id, int $meta)
+	/**
+	 * @param int $id
+	 * @param int $meta
+	 */
+	public function __construct($id, $meta)
 	{
-		$this->exists = $exists;
 		$this->id = $id;
 		$this->meta = $meta;
 	}

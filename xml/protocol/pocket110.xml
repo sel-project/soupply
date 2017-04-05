@@ -271,8 +271,8 @@
 						Spawn in a world
 					</constant>
 					<constant name="invalid-tenant" value="4" />
-					<constant name="edu-required" value="5" />
-					<constant name="vanilla-required" value="6" />
+					<constant name="edition-mismatch-edu-to-vanilla" value="5" />
+					<constant name="edition-mismatch-vanilla-to-edu" value="6" />
 				</field>
 			</packet>
 

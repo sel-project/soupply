@@ -6,24 +6,34 @@
 	},
 	"indentation": "spaces",
 	"types": {
-		"basic": {
-			"byte": "sbyte",
-			"ubyte": "byte",
-			"bytes": "byte[]",
-			"uuid": "Guid",
-			"triad": "int",
-			"varshort": "short",
-			"varushort": "ushort",
-			"varint": "int",
-			"varuint": "uint",
-			"varlong": "long",
-			"varulong": "ulong"
+		"conv": {
+			"basic": {
+				"byte": "sbyte",
+				"ubyte": "byte",
+				"bytes": "byte[]",
+				"uuid": "Guid",
+				"triad": "int",
+				"varshort": "short",
+				"varushort": "ushort",
+				"varint": "int",
+				"varuint": "uint",
+				"varlong": "long",
+				"varulong": "ulong"
+			},
+			"tuples": {
+				"2": "Tuple<%, %>",
+				"3": "Tuple<%, %, %>"
+			},
+			"metadata": "sul.Metadata.{{GAME:pascal_case}}.Metadata",
+			"others": "Types.{{TYPE:pascal_case}}"
 		},
-		"tuples": {
-			"2": "Tuple<%, %>",
-			"3": "Tuple<%, %, %>"
+		"encoding": {
+			"basic": "this.Write{{ENDIANNESS:pascal_case}}{{TYPE:pascal_case}}(this.{{NAME:camel_case}})",
+			"types": "this.{{NAME:camel_case}}.Encode(this)"
 		},
-		"metadata": "sul.Metadata.{{GAME:pascal_case}}.Metadata",
-		"others": "Types.{{TYPE:pascal_case}}"
+		"decoding": {
+			"basic": "this.{{NAME:camel_case}} = this.Read{{ENDIANNESS:pascal_case}}{{TYPE:pascal_case}}()",
+			"types": "this.{{NAME:camel_case}}.Decode()"
+		}
 	}
 }

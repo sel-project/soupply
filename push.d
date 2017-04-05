@@ -44,13 +44,13 @@ void main(string[] args) {
 		wait(spawnShell("cp -f gen/.version " ~ lang));
 		wait(spawnShell("cp -f readme/" ~ lang ~ ".md " ~ lang ~ "/README.md"));
 
-		// push
-		wait(spawnShell(`cd ` ~ lang ~ ` && git add --all . && git commit -m "` ~ message ~ `" -m "` ~ desc ~ `" && git push "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
-
-		// push tags
+		// create tag
 		if(args[2] == "true") {
-			wait(spawnShell(`cd ` ~ lang ~ ` && git tag -a v` ~ variables["VERSION"] ~ ` -m "` ~ message ~ `" && git push --tags "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
+			wait(spawnShell(`cd ` ~ lang ~ ` && git tag -a v` ~ variables["VERSION"] ~ ` -m "` ~ message ~ `"`));
 		}
+
+		// push (changed files and tag)
+		wait(spawnShell(`cd ` ~ lang ~ ` && git add --all . && git commit -m "` ~ message ~ `" -m "` ~ desc ~ `" && git push "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
 		
 	}
 

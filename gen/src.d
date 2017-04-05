@@ -120,6 +120,8 @@ struct Options {
 
 	struct Types {
 
+		string[string] names;
+
 		string[string] basic;
 		string[size_t] tuples;
 		string metadata;
@@ -204,22 +206,31 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 				}
 			}
 			if(types) {
-				auto basic = "basic" in *types;
-				auto tuples = "tuples" in *types;
-				auto metadata = "metadata" in *types;
-				auto others = "others" in *types;
-				if(basic) {
-					foreach(key, value; (*basic).object) {
-						options.types.basic[key] = value.str;
+				auto names = "names" in *types;
+				if(names) {
+					foreach(from, to; (*names).object) {
+						options.types.names[from] = to.str;
 					}
 				}
-				if(tuples) {
-					foreach(size, value; (*tuples).object) {
-						options.types.tuples[to!size_t(size)] = value.str;
+				auto conv = "conv" in *types;
+				if(conv) {
+					auto basic = "basic" in *conv;
+					auto tuples = "tuples" in *conv;
+					auto metadata = "metadata" in *conv;
+					auto others = "others" in *conv;
+					if(basic) {
+						foreach(key, value; (*basic).object) {
+							options.types.basic[key] = value.str;
+						}
 					}
+					if(tuples) {
+						foreach(size, value; (*tuples).object) {
+							options.types.tuples[to!size_t(size)] = value.str;
+						}
+					}
+					if(metadata) options.types.metadata = (*metadata).str;
+					if(others) options.types.others = (*others).str;
 				}
-				if(metadata) options.types.metadata = (*metadata).str;
-				if(others) options.types.others = (*others).str;
 			}
 		}
 
@@ -338,10 +349,13 @@ string createEncoded(string value, string type) {
 	else return value;
 }
 
+enum endiannessTypes = ["short", "ushort", "triad", "int", "uint", "long", "ulong", "float", "double"];
+
 enum basicTypes = ["bool", "byte", "ubyte", "short", "ushort", "varshort", "varushort", "triad", "int", "uint", "varint", "varuint", "long", "ulong", "varlong", "varulong", "float", "double", "string", "uuid", "bytes"];
 
 string convertType(string game, string type, Options.Types options) {
-	auto array = type.indexOf("["); //TODO custom arrays
+	//TODO convert custom arrays
+	auto array = type.indexOf("[");
 	if(array >= 0) {
 		return convertType(game, type[0..array], options) ~ type[array..$];
 	}
@@ -363,6 +377,11 @@ string convertType(string game, string type, Options.Types options) {
 	} else {
 		return parseValue(type == "metadata" ? options.metadata : options.others, ["GAME": Data(game), "TYPE": Data(type)], (Template[string]).init, 0);
 	}
+}
+
+string convertName(string name, Options.Types options) {
+	auto conv = name in options.names;
+	return conv ? *conv : name;
 }
 
 Data[] createAttributes(Attributes[string] attributes, Options options) {
@@ -418,36 +437,39 @@ Data[] createCreative(Creative[string] creative, Options options) {
 }
 
 Data[] createProtocols(Protocols[string] protocols, Options options) {
-	Data[] createConstants(Field field, Constant[] constants) {
-		Data[] ret;
-		foreach(constant ; constants) {
-			Data[string] c;
-			c["NAME"] = constant.name;
-			c["TYPE"] = convertType("", field.type, options.types);
-			c["VALUE"] = constant.value;
-			c["VALUE_ENCODED"] = createEncoded(constant.value, field.type);
-			ret ~= Data(c);
-		}
-		return ret;
-	}
-	Data[] createFields(string game, Field[] fields) {
-		Data[] ret;
-		foreach(field ; fields) {
-			Data[string] f;
-			f["NAME"] = field.name;
-			f["ORIGINAL_TYPE"] = field.type;
-			f["TYPE"] = convertType(game, field.type, options.types);
-			f["WHEN"] = field.condition;
-			f["DEFAULT"] = field.def;
-			f["DEFAULT_ENCODED"] = createEncoded(field.def, field.type);
-			f["HAS_CONSTANTS"] = to!string(field.constants.length != 0);
-			f["CONSTANTS"] = createConstants(field, field.constants);
-			ret ~= Data(f);
-		}
-		return ret;
-	}
 	Data[] ret;
 	foreach(game, p; protocols) {
+		immutable defaultEndianness = p.data.endianness["*"];
+		Data[] createConstants(Field field, Constant[] constants) {
+			Data[] ret;
+			foreach(constant ; constants) {
+				Data[string] c;
+				c["NAME"] = constant.name;
+				c["TYPE"] = convertType("", field.type, options.types);
+				c["VALUE"] = constant.value;
+				c["VALUE_ENCODED"] = createEncoded(constant.value, field.type);
+				ret ~= Data(c);
+			}
+			return ret;
+		}
+		Data[] createFields(Field[] fields) {
+			Data[] ret;
+			foreach(field ; fields) {
+				Data[string] f;
+				f["NAME"] = convertName(field.name, options.types);
+				f["ORIGINAL_TYPE"] = field.type;
+				f["TYPE"] = convertType(game, field.type, options.types);
+				f["WHEN"] = field.condition;
+				f["HAS_ENDIANNESS"] = to!string(field.endianness != "");
+				f["ENDIANNESS"] = field.endianness != "" ? field.endianness : (endiannessTypes.canFind(field.type) ? defaultEndianness : "");
+				f["DEFAULT"] = field.def;
+				f["DEFAULT_ENCODED"] = createEncoded(field.def, field.type);
+				f["HAS_CONSTANTS"] = to!string(field.constants.length != 0);
+				f["CONSTANTS"] = createConstants(field, field.constants);
+				ret ~= Data(f);
+			}
+			return ret;
+		}
 		Data[string] g;
 		immutable generator = "protocol/" ~ game;
 		g["GENERATOR"] = generator;
@@ -486,7 +508,7 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 			t["GAME"] = game;
 			t["NAME"] = type.name;
 			t["HAS_FIELDS"] = to!string(type.fields.length != 0);
-			t["FIELDS"] = createFields(game, type.fields);
+			t["FIELDS"] = createFields(type.fields);
 			g["TYPES"].array ~= Data(t);
 		}
 		foreach(section ; p.data.sections) {
@@ -506,7 +528,7 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				pk["CLIENTBOUND"] = packet.clientbound.to!string;
 				pk["SERVERBOUND"] = packet.serverbound.to!string;
 				pk["HAS_FIELDS"] = to!string(packet.fields.length != 0);
-				pk["FIELDS"] = createFields(game, packet.fields);
+				pk["FIELDS"] = createFields(packet.fields);
 				pk["HAS_VARIANTS"] = to!string(packet.variants.length != 0);
 				if(packet.variants.length) {
 					pk["VARIANT_FIELD"] = packet.variantField;
@@ -517,7 +539,7 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 							v["NAME"] = variant.name;
 							v["VALUE"] = variant.value;
 							v["VALUE_ENCODED"] = createEncoded(variant.value, ""); //TODO variant field
-							v["FIELDS"] = createFields(game, variant.fields);
+							v["FIELDS"] = createFields(variant.fields);
 							vret ~= Data(v);
 						}
 						return vret;
@@ -724,15 +746,14 @@ class Template {
 		if(this.location.length && this.location != "inline") {
 			string[] lines = ret.split("\n");
 			foreach(ref line ; lines) line = line.stripRight;
-			ret = this.options.start ~ lines.join("\n") ~ this.options.end;
+			ret = lines.join("\n");
 			immutable location = "../src/" ~ this.lang ~ "/sul/" ~ parseValue(this.location, values, templates, 0);
 			std.file.mkdirRecurse(location[0..location.lastIndexOf("/")]);
 			if(this.options.header) {
 				auto gen = "GENERATOR" in values;
-				write(location, ret, gen ? (*gen).str : "", this.options.header.open, this.options.header.line, this.options.header.close);
-			} else {
-				std.file.write(location, ret);
+				ret = createHeader(gen ? (*gen).str : "", this.options.header.open, this.options.header.line, this.options.header.close) ~ ret;
 			}
+			std.file.write(location, this.options.start ~ ret ~ this.options.end);
 		}
 		return ret;
 	}
@@ -748,8 +769,7 @@ class Template {
 		string[] lines = ret.content.split("\n");
 		foreach(ref line ; lines) {
 			if(line.length) {
-				if(line.startsWith("{{") && line.endsWith("}}")){}// line = alwaysSpace ~ line;
-				else line = space ~ line;
+				if(!(line.startsWith("{{") && line.endsWith("}}"))) line = space ~ line;
 			}
 		}
 		ret.content = lines.join("\n");
