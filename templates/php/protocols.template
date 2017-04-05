@@ -1,0 +1,50 @@
+--- start protocols ---
+{{section@SECTIONS}}
+--- end ---
+---
+--- start section ---
+{{packets@PACKETS}}
+--- end ---
+--- start packets protocol/{{GAME:camel_case}}/{{SECTION:camel_case}}/{{NAME:pascal_case}}.php ---
+namespace sul\protocol\{{SECTION:camel_case}}\{{GAME:camel_case}};
+
+use utils\Packet;
+
+class {{NAME:pascal_case}} extends Packet
+{
+
+	public const ID = {{ID}};
+
+	public const CLIENTBOUND = {{CLIENTBOUND}};
+	public const SERVERBOUND = {{SERVERBOUND}};{{constants@FIELDS}}
+
+{{fields@1,FIELDS}}
+
+	public function __constructor() {}{{HAS_FIELDS==true?
+
+	public function __constructor({{constructor@FIELDS}})
+	{
+{{constructor_assign@2,FIELDS}}
+	\}}}
+
+}
+
+--- end ---
+--- start constants inline ---
+{{HAS_CONSTANTS==true?
+
+	// {{NAME:spaced}}
+{{constants_impl@1,CONSTANTS}}}}
+--- end ---
+--- start constants_impl ---
+public const {{NAME:uppercase}} = {{VALUE_ENCODED}};
+--- end ---
+--- start constructor inline ---
+{{CUSTOM_TYPE==true?{{TYPE}} }}${{NAME:camel_case}}{{LAST==false?, }}
+--- end ---
+--- start constructor_assign ---
+$this->{{NAME:camel_case}} = ${{NAME:camel_case}};
+--- end ---
+--- start fields ---
+public ${{NAME:camel_case}}{{DEFAULT!=? = {{DEFAULT_ENCODED}}}};
+--- end ---

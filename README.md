@@ -51,7 +51,7 @@ Automatically generated documentation is available at the [project's website](ht
 
 [![Build Status](https://travis-ci.org/sel-utils/php.svg?branch=master)](https://travis-ci.org/sel-utils/php)&nbsp;&nbsp;[![Composer Package](https://poser.pugx.org/sel-project/sel-utils/v/stable)](https://packagist.org/packages/sel-project/sel-utils)&nbsp;&nbsp;[![Composer Downloads](https://poser.pugx.org/sel-project/sel-utils/downloads)](https://packagist.org/packages/sel-project/sel-utils)
 
-- [ ] Protocol
+- [x] Protocol
 - [ ] Metadata
 - [ ] Blocks
 - [x] Items

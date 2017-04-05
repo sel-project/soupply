@@ -459,6 +459,7 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				f["NAME"] = convertName(field.name, options.types);
 				f["ORIGINAL_TYPE"] = field.type;
 				f["TYPE"] = convertType(game, field.type, options.types);
+				f["CUSTOM_TYPE"] = to!string(!basicTypes.canFind(field.type) && field.type.indexOf("[") == -1 && field.type.indexOf("<") == -1); //TODO not in custom arrays
 				f["WHEN"] = field.condition;
 				f["HAS_ENDIANNESS"] = to!string(field.endianness != "");
 				f["ENDIANNESS"] = field.endianness != "" ? field.endianness : (endiannessTypes.canFind(field.type) ? defaultEndianness : "");
@@ -523,6 +524,7 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				pk["GENERATOR"] = generator;
 				pk["GAME"] = game;
 				pk["ID_TYPE"] = id_type;
+				pk["SECTION"] = section.name;
 				pk["NAME"] = packet.name;
 				pk["ID"] = packet.id.to!string;
 				pk["CLIENTBOUND"] = packet.clientbound.to!string;

@@ -18,5 +18,18 @@
 		]
 	},
 	"start": "<?php\n\n",
-	"indentation": "spaces"
+	"indentation": "spaces",
+	"types": {
+		"conv": {
+			"basic": {
+
+			},
+			"tuples": {
+				"2": "Tuple!(%, $0, %, $1)",
+				"3": "Tuple!(%, $0, %, $1, %, $2)"
+			},
+			"metadata": "\\sul\\metadata\\{{GAME:lowercase}}\\Metadata",
+			"others": "\\sul\\protocol\\{{GAME:lowercase}}\\types\\{{TYPE:pascal_case}}"
+		}
+	}
 }
