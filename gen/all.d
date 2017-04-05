@@ -118,7 +118,16 @@ void main(string[] args) {
 	if(exists(".version")) {
 		n_version = to!uint(split(cast(string)read(".version"), ".")[2]);
 	}
-	if(!args.canFind("-no-update")) n_version++;
+	if(!args.canFind("-no-update")) {
+		n_version++;
+	} else {
+		foreach(i, arg; args) {
+			if(arg == "-no-update") {
+				args = args[0..i] ~ args[i+1..$];
+				break;
+			}
+		}
+	}
 	_write(".version", "1.0." ~ to!string(n_version));
 
 	// attributes

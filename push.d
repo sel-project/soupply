@@ -23,6 +23,8 @@ void main(string[] args) {
 	string message = JSONValue(strip(cast(string)read("message.txt"))).toString();
 	string desc = JSONValue(strip(cast(string)read("desc.txt"))).toString();
 
+	if(!exists(dest)) return;
+
 	wait(spawnShell("git clone git://github.com/sel-utils/" ~ lang ~ " " ~ lang));
 
 	void diff() {
