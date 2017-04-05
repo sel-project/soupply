@@ -14,14 +14,14 @@
  */
 module src;
 
-import std.stdio : writeln;
-
 import std.algorithm : sort, max, canFind;
 import std.conv : to, ConvException;
+import std.datetime : StopWatch, AutoStart;
 static import std.file;
 import std.json;
 import std.math : isNaN;
 import std.path : dirSeparator;
+import std.stdio : writeln;
 import std.string;
 import std.typetuple : TypeTuple;
 
@@ -133,7 +133,7 @@ struct Options {
 
 }
 
-void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments, Effect[] effects) {
+void src(string[] args, Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments, Effect[] effects) {
 
 	std.file.mkdirRecurse("../readme");
 
@@ -153,6 +153,8 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 	global["VERSION"] = to!string(sulVersion);
 
 	foreach(lang ; languages) {
+
+		auto timer = StopWatch(AutoStart.yes);
 
 		Options options;
 
@@ -251,14 +253,18 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 				if(allt) values["all"].object[type] = data;
 			}
 		}
+		
+		if(!args.length || args.canFind(lang)) {
 
-		foreach(type, data; values) {
-			addLast(data.array);
-			auto temp = parseTemplate(lang, type, options);
-			auto ptr = type in temp;
-			foreach(d ; data.array) {
-				(*ptr).parse(d.object, temp);
+			foreach(type, data; values) {
+				addLast(data.array);
+				auto temp = parseTemplate(lang, type, options);
+				auto ptr = type in temp;
+				foreach(d ; data.array) {
+					(*ptr).parse(d.object, temp);
+				}
 			}
+
 		}
 
 		string crm = "[![SEL](http://i.imgur.com/iiDRUQQ.png)](https://github.com/sel-project/sel-utils)\n\n" ~
@@ -289,6 +295,10 @@ void src(Attributes[string] attributes, Protocols[string] protocols, Metadatas[s
 		}
 
 		std.file.write("../readme/" ~ lang ~ ".md", crm ~ "\n");
+
+		timer.stop();
+
+		writeln("Generated code for ", (options.repo.name.length ? options.repo.name : lang), " in ", timer.peek.msecs, " ms");
 
 	}
 

@@ -39,10 +39,10 @@ public class Metadata
 
 }
 
-public struct MetadataType
+/*public struct MetadataType
 {
 	
-	private {{TYPE}} type;
+	private {{TYPE}} n_type;
 	private union Types
 	{
 
@@ -54,9 +54,12 @@ public struct MetadataType
 
 	}
 
-	public pure nothrow @property @safe @nogc 
+	public pure nothrow @property @safe @nogc {{TYPE}} type()
+	{
+		return this.n_type;
+	}
 
-}
+}*/
 --- end ---
 --- start declaration ---
 	private {{REQUIRED==true?{{TYPE}}}}{{REQUIRED==false?Changed!({{TYPE}})}} _{{NAME:camel_case}}{{DEFAULT!=? = {{DEFAULT_ENCODED}}}};

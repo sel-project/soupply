@@ -112,20 +112,14 @@ public @property uint sulVersion() {
 
 void main(string[] args) {
 
+	args = args[1..$];
+
 	// update generation version
 	if(exists(".version")) {
 		n_version = to!uint(split(cast(string)read(".version"), ".")[2]);
 	}
 	if(!args.canFind("-no-update")) n_version++;
 	_write(".version", "1.0." ~ to!string(n_version));
-
-	bool wd = args.canFind("d");
-	bool wjava = args.canFind("java");
-	bool wjs = args.canFind("js");
-	bool wsrc = args.canFind("src");
-	bool wdiff = args.canFind("diff");
-	bool wdocs = args.canFind("docs");
-	bool wall = !wd && !wjava && !wjs && !wsrc && !wdiff && !wdocs;
 
 	// attributes
 	Attributes[string] attributes;
@@ -542,17 +536,17 @@ void main(string[] args) {
 		}
 	}
 
-	if(wall || wd) d.d(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
-	if(wall || wjava) java.java(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
-	if(wall || wjs) js.js(attributes, protocols, metadata, creative, blocks, items, entities);
+	if(!args.length || args.canFind("d")) d.d(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
+	if(!args.length || args.canFind("java")) java.java(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
+	if(!args.length || args.canFind("js")) js.js(attributes, protocols, metadata, creative, blocks, items, entities);
 
-	if(wall || wsrc) src.src(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
+	src.src(args, attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
 
-	//if(wall || wdiff) diff.diff(attributes, protocols, metadata);
-	if(wall || wdocs) docs.docs(attributes, protocols, metadata);
+	//if(!args.length || args.canFind("diff")) diff.diff(attributes, protocols, metadata);
+	if(!args.length || args.canFind("docs")) docs.docs(attributes, protocols, metadata);
 
 	// minify json
-	if(wall || wsrc) {
+	if(!args.length || args.canFind("json")) {
 		foreach(string file ; dirEntries("../src/json", SpanMode.breadth)) {
 			if(file.isFile && !file.endsWith(".min.json")) {
 				// ` +(?=[^"]*(?:"[^"]*"[^"]*)*$)` // <-- this causes an infinite loop in the program

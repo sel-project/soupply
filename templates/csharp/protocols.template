@@ -71,3 +71,6 @@ this.{{NAME:camel_case}} = {{NAME:camel_case}};
 --- start fields ---
 public {{TYPE}} {{NAME:camel_case}}{{DEFAULT!=? = {{DEFAULT_ENCODED}}}};
 --- end ---
+--- start encoding ---
+{{WHEN!=?if({{WHEN:camel_case}}){ }}{{ENCODING}};{{WHEN!=? \}}}
+--- end ---
