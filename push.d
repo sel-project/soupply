@@ -45,7 +45,11 @@ void main(string[] args) {
 		wait(spawnShell("cp -f gen/.version " ~ lang));
 		wait(spawnShell("cp -f readme/" ~ lang ~ ".md " ~ lang ~ "/README.md"));
 
-		string[] cmd = ["cd " ~ lang, "git commit -m " ~ message ~ " -m " ~ desc];
+		string[] cmd = [
+			"cd " ~ lang,
+			"git add --all .",
+			"git commit -m " ~ message ~ " -m " ~ desc
+		];
 
 		// create tag
 		if(args[2] == "true") {
