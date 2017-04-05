@@ -2,9 +2,10 @@ module push;
 
 import std.algorithm : canFind;
 import std.file;
+import std.json : JSONValue;
 import std.process : wait, spawnShell;
 import std.stdio : writeln;
-import std.string : endsWith, replace, strip;
+import std.string : endsWith, replace, strip, join;
 
 		
 void main(string[] args) {
@@ -19,8 +20,8 @@ void main(string[] args) {
 
 	string[] exclude = args[4..$]; // exclude from comparation
 	
-	string message = strip(cast(string)read("message.txt"));
-	string desc = strip(cast(string)read("desc.txt"));
+	string message = JSONValue(strip(cast(string)read("message.txt"))).toString();
+	string desc = JSONValue(strip(cast(string)read("desc.txt"))).toString();
 
 	wait(spawnShell("git clone git://github.com/sel-utils/" ~ lang ~ " " ~ lang));
 
@@ -44,13 +45,17 @@ void main(string[] args) {
 		wait(spawnShell("cp -f gen/.version " ~ lang));
 		wait(spawnShell("cp -f readme/" ~ lang ~ ".md " ~ lang ~ "/README.md"));
 
+		string[] cmd = ["cd " ~ lang, "git commit -m " ~ message ~ " -m " ~ desc];
+
 		// create tag
 		if(args[2] == "true") {
-			wait(spawnShell(`cd ` ~ lang ~ ` && git tag -a v` ~ variables["VERSION"] ~ ` -m "` ~ message ~ `"`));
+			cmd ~= "git tag -a v" ~ variables["VERSION"] ~ " -m " ~ message;
 		}
 
+		cmd ~= "git push --follow-tags \"https://${TOKEN}@github.com/sel-utils/" ~ lang ~ "\" master";
+
 		// push (changed files and tag)
-		wait(spawnShell(`cd ` ~ lang ~ ` && git add --all . && git commit -m "` ~ message ~ `" -m "` ~ desc ~ `" && git push "https://${TOKEN}@github.com/sel-utils/` ~ lang ~ `" master`));
+		wait(spawnShell(cmd.join(" && "));
 		
 	}
 
