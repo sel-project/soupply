@@ -55,7 +55,7 @@ void main(string[] args) {
 		cmd ~= "git push --follow-tags \"https://${TOKEN}@github.com/sel-utils/" ~ lang ~ "\" master";
 
 		// push (changed files and tag)
-		wait(spawnShell(cmd.join(" && "));
+		wait(spawnShell(cmd.join(" && ")));
 		
 	}
 
