@@ -438,7 +438,7 @@ void main(string[] args) {
 			if(minecraft) block.minecraft = blockData(*minecraft);
 			if(pocket) block.pocket = blockData(*pocket);
 			if(solid) block.solid = to!bool(*solid);
-			else block.solid = !!bb;
+			if(bb && *bb == "none") block.solid = false;
 			if(hardness) block.hardness = to!double(*hardness);
 			if(blastResistance) block.blastResistance = to!double(*blastResistance);
 			if(opacity) block.opacity = to!ubyte(*opacity) & 15;
