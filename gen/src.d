@@ -428,7 +428,6 @@ Data[] createCreative(Creative[string] creative, Options options) {
 		g["ITEMS"] = new Data[0];
 		foreach(i, item; c.data) {
 			Data[string] values;
-			values["NAME"] = item.name;
 			values["ID"] = item.id.to!string;
 			values["META"] = item.meta.to!string;
 			values["HAS_ENCHANTMENTS"] = to!string(item.enchantments.length != 0);

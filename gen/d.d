@@ -145,28 +145,6 @@ alias varulong = var!ulong;
 		mkdirRecurse("../src/d/sul/attributes");
 		write("../src/d/sul/attributes/" ~ game ~ ".d", data ~ "}", "attributes/" ~ game);
 	}
-	
-	// creative
-	foreach(string game, Creative c; creative) {
-		string data = "module sul.creative." ~ game ~ ";\n\nimport std.typecons : Tuple;\n\n";
-		data ~= "alias Enchantment = Tuple!(ubyte, \"id\", ubyte, \"level\");\n\n";
-		data ~= "alias Item = Tuple!(string, \"name\", ushort, \"id\", ushort, \"meta\", Enchantment[], \"enchantments\");\n\n";
-		data ~= "enum Item[] items = [\n";
-		foreach(i, item; c.data) {
-			data ~= "\tItem(" ~ JSONValue(item.name).toString() ~ ", " ~ item.id.to!string ~ ", " ~ item.meta.to!string ~ ", ";
-			if(item.enchantments.length) {
-				string[] e;
-				foreach(ench ; item.enchantments) e ~= "Enchantment(" ~ ench.id.to!string ~ ", " ~ ench.level.to!string ~ ")";
-				data ~= "[" ~ e.join(", ") ~ "]";
-			} else {
-				data ~= "new Enchantment[0]";
-			}
-			data ~= ")" ~ (i != c.data.length - 1 ? "," : "") ~ "\n";
-		}
-		data ~= "];";
-		mkdirRecurse("../src/d/sul/creative");
-		write("../src/d/sul/creative/" ~ game ~ ".d", data, "creative/" ~ game);
-	}
 
 	size_t lengthOf(string type) {
 		switch(type) {

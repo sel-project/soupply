@@ -1,8 +1,8 @@
 module push;
 
 import std.algorithm : canFind;
+import std.conv : to;
 import std.file;
-import std.json : JSONValue;
 import std.process : wait, spawnShell;
 import std.stdio : writeln;
 import std.string : endsWith, replace, strip, join;
@@ -22,8 +22,8 @@ void main(string[] args) {
 
 	string[] exclude = args[4..$]; // exclude from comparation
 	
-	string message = JSONValue(strip(cast(string)read("message.txt"))).toString();
-	string desc = JSONValue(strip(cast(string)read("desc.txt"))).toString();
+	string message = to!string([strip(cast(string)read("message.txt"))])[1..$-1];
+	string desc = to!string([strip(cast(string)read("desc.txt"))])[1..$-1];
 
 	wait(spawnShell("git clone git://github.com/sel-utils/" ~ lang ~ " " ~ lang));
 

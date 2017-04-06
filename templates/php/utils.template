@@ -56,3 +56,17 @@ class ItemData
 
 }
 --- end ---
+--- start packet utils/Packet.php ---
+namespace utils;
+
+class Packet
+{
+
+	public abstract function getId();
+
+	public abstract function encode();
+
+	public abstract function decode();
+
+}
+--- end ---

@@ -934,7 +934,7 @@
 				<field name="window" type="varuint" />
 				<field name="entity-id" type="entity-id" />
 				<field name="slots" type="slot[]" />
-				<field name="hotbar" type="varint[]" when="window==0" />
+				<field name="hotbar" type="varint[]" />
 			</packet>
 
 			<packet name="crafting-data" id="53" clientbound="true" serverbound="false">

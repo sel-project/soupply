@@ -41,25 +41,6 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Metadatas[st
 		write("../src/js/sul/attributes/" ~ game ~ ".js", data ~ "}", "attributes/" ~ game);
 	}
 
-	// creative
-	foreach(string game, Creative c; creative) {
-		string data = "const Creative = [\n\n";
-		foreach(i, item; c.data) {
-			data ~= "\t{name: " ~ JSONValue(item.name).toString() ~ ", id: " ~ item.id.to!string;
-			if(item.meta != 0) data ~= ", meta: " ~ item.meta.to!string;
-			if(item.enchantments.length) {
-				string[] e;
-				foreach(ench ; item.enchantments) {
-					e ~= "{id: " ~ ench.id.to!string ~ ", level: " ~ ench.level.to!string ~ "}";
-				}
-				data ~= ", enchantments: [" ~ e.join(", ") ~ "]";
-			}
-			data ~= "}" ~ (i != c.data.length - 1 ? "," : "") ~ "\n";
-		}
-		mkdirRecurse("../src/js/sul/creative");
-		write("../src/js/sul/creative/" ~ game ~ ".js", data ~ "\n]", "creative/" ~ game);
-	}
-
 	enum defaultTypes = ["byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double"];
 
 	// utils

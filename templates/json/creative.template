@@ -16,7 +16,6 @@
 --- end ---
 --- start items_values ---
 		{
-			"name": "{{NAME:spaced}}",
 			"id": {{ID}}{{META!=0?{{meta}}}}{{HAS_ENCHANTMENTS==true?{{enchantments}}}}
 		}{{LAST==false?,}}
 --- end ---

@@ -11,7 +11,7 @@
 	<enchantment name="aqua-affinity" minecraft="6" pocket="8" max="1" />
 	<enchantment name="thorns" minecraft="7" pocket="5" max="3" />
 	<enchantment name="depth-strider" minecraft="8" pocket="7" max="3" />
-	<enchantment name="frost-walker" minecraft="9" max="2" />
+	<enchantment name="frost-walker" minecraft="9" pocket="25" max="2" />
 	<enchantment name="curse-of-binding" minecraft="10" max="1" />
 
 	<enchantment name="sharpness" minecraft="16" pocket="9" max="5" />
@@ -35,7 +35,7 @@
 	<enchantment name="luck-of-the-sea" minecraft="61" pocket="23" max="3" />
 	<enchantment name="lure" minecraft="62" pocket="24" max="3" />
 
-	<enchantment name="mending" minecraft="70" max="1" />
+	<enchantment name="mending" minecraft="70" pocket="26" max="1" />
 	<enchantment name="curse-of-vanishing" minecraft="71" max="1" />
 
 </enchantments>

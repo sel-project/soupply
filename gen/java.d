@@ -268,25 +268,6 @@ public class MetadataException extends RuntimeException {
 		write("../src/java/sul/attributes/" ~ toPascalCase(game) ~ ".java", data, "attributes/" ~ game);
 	}
 	
-	// creative
-	foreach(string game, Creative c; creative) {
-		string data = "package sul.creative;\n\nimport sul.utils.*;\n\npublic final class " ~ toPascalCase(game) ~ " {\n\n";
-		data ~= "\tprivate " ~ toPascalCase(game) ~ "() {}\n\n";
-		data ~= "\tpublic static final Item[] ITEMS = new Item[]{\n";
-		foreach(i, item; c.data) {
-			data ~= "\t\tnew Item(" ~ JSONValue(item.name).toString() ~ ", " ~ item.id.to!string ~ ", " ~ item.meta.to!string ~ ", new Enchantment[]{";
-			if(item.enchantments.length) {
-				string[] e;
-				foreach(ench ; item.enchantments) e ~= "new Enchantment((byte)" ~ ench.id.to!string ~ ", (short)" ~ ench.level.to!string ~ ")";
-				data ~= e.join(", ");
-			}
-			data ~= "})" ~ (i != c.data.length - 1 ? "," : "") ~ "\n";
-		}
-		data ~= "\t};\n\n}";
-		mkdirRecurse("../src/java/sul/creative");
-		write("../src/java/sul/creative/" ~ toPascalCase(game) ~ ".java", data, "creative/" ~ game);
-	}
-	
 	// protocols
 	string[] tuples;
 	foreach(string game, Protocols prs; protocols) {
