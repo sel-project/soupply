@@ -16,14 +16,14 @@ void main(string[] args) {
 
 	string lang = args[1];
 
+	if(!exists("src/" ~ lang)) return;
+
 	string dest = lang ~ "/" ~ args[3];
 
 	string[] exclude = args[4..$]; // exclude from comparation
 	
 	string message = JSONValue(strip(cast(string)read("message.txt"))).toString();
 	string desc = JSONValue(strip(cast(string)read("desc.txt"))).toString();
-
-	if(!exists(dest)) return;
 
 	wait(spawnShell("git clone git://github.com/sel-utils/" ~ lang ~ " " ~ lang));
 
