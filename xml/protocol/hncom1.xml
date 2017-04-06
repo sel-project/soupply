@@ -482,11 +482,13 @@
 							<constant name="unknown" value="0" />
 							<constant name="android" value="1" />
 							<constant name="ios" value="2" />
-							<constant name="fire-os" value="3">untested</constant>
-							<constant name="gear-vr" value="4">untested</constant>
-							<constant name="apple-tv" value="5">untested</constant>
-							<constant name="fire-tv" value="6">untested</constant>
+							<constant name="osx" value="3" />
+							<constant name="fire-os" value="4" />
+							<constant name="gear-vr" value="5" />
+							<constant name="hololens" value="6" />
 							<constant name="windows10" value="7" />
+							<constant name="windows32" value="8" />
+							<constant name="dedicated" value="9" />
 						</field>
 						<field name="device-model" type="string">
 							Client's device model, if supplied by the client. This field is usually a string in the format `MANUFACTURER MODEL`: for example, the Oneplus one is `ONEPLUS A0001`. This field's value may be used to ban low-end devices.
