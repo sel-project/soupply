@@ -708,7 +708,10 @@ Data[] createEffects(Effect[] effects, Options options) {
 	foreach(i, effect; effects) {
 		Data[string] values;
 		values["NAME"] = effect.name;
-		values["ID"] = effect.id.to!string;
+		values["HAS_MINECRAFT"] = to!string(effect.minecraft >= 0);
+		values["MINECRAFT"] = effect.minecraft.to!string;
+		values["HAS_POCKET"] = to!string(effect.pocket >= 0);
+		values["POCKET"] = effect.pocket.to!string;
 		values["COLOR"] = effect.particles.to!string;
 		values["COLOR_16"] = (effect.particles.to!string(16) ~ "000000")[0..6];
 		ret ~= Data(values);

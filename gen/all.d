@@ -100,7 +100,7 @@ alias Entity = Tuple!(string, "name", ubyte, "minecraft", ubyte, "pocket", bool,
 alias Enchantment = Tuple!(string, "name", byte, "minecraft", byte, "pocket", ubyte, "max");
 
 
-alias Effect = Tuple!(string, "name", ubyte, "id", uint, "particles");
+alias Effect = Tuple!(string, "name", byte, "minecraft", byte, "pocket", uint, "particles");
 
 
 private uint n_version;
@@ -540,7 +540,9 @@ void main(string[] args) {
 	foreach(element ; new Document(cast(string)read("../xml/effects.xml")).elements) {
 		with(element.tag) {
 			if(name == "effect") {
-				effects ~= Effect(attr["name"].replace("-", "_"), to!ubyte(attr["id"]), to!uint(attr["particles"], 16));
+				auto minecraft = "minecraft" in attr;
+				auto pocket = "pocket" in attr;
+				effects ~= Effect(attr["name"].replace("-", "_"), minecraft ? to!ubyte(*minecraft) : -1, pocket ? to!ubyte(*pocket) : -1, to!uint(attr["particles"], 16));
 			}
 		}
 	}

@@ -12,8 +12,9 @@
 --- end ---
 --- start effects_values ---
 		"{{NAME}}": {
-			"id": {{ID}},
-			"particles": "#{{COLOR_16}}"
+			{{HAS_MINECRAFT==true?"minecraft": {{MINECRAFT}},
+			}}{{HAS_POCKET==true?"pocket": {{POCKET}},
+			}}"particles": "#{{COLOR_16}}"
 		}{{LAST==false?,}}
 
 --- end ---

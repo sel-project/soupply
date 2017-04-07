@@ -1,11 +1,21 @@
 --- start effects effects.d ---
 module sul.effects;
 
+public struct EffectValue
+{
+
+	bool exists;
+	ubyte id;
+
+	alias exists this;
+
+}
+
 public struct Effect
 {
 
 	string name;	
-	ubyte id;
+	EffectValue minecraft, pocket;
 	uint particles;
 
 }
@@ -18,5 +28,5 @@ public enum Effects : Effect
 }
 --- end ---
 --- start effects_values ---
-	{{NAME:uppercase}} = Effect("{{NAME}}", {{ID}}, {{COLOR}}),
+	{{NAME:uppercase}} = Effect("{{NAME}}", EffectValue({{HAS_MINECRAFT}}{{HAS_MINECRAFT==true?, {{MINECRAFT}}}}), EffectValue({{HAS_POCKET}}{{HAS_POCKET==true?, {{POCKET}}}}), {{COLOR}}),
 --- end ---
