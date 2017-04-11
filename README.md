@@ -1,10 +1,35 @@
-![SEL Logo](http://i.imgur.com/jPfQuZ0.png)
+![SEL Logo](https://i.imgur.com/jPfQuZ0.png)
 
-__Automatically generated libraries for SEL, Minecraft and Minecraft: Pocket Edition__
-
-The code is generated from XML files at [/xml](https://github.com/sel-project/sel-utils/tree/master/xml) using the generators in the [/gen](https://github.com/sel-project/sel-utils/tree/master/gen) folder.
+__Automatically generated libraries and documentation for Minecraft, Minecraft: Pocket Edition and SEL__
 
 Automatically generated documentation is available at the [project's website](https://sel-utils.github.io/).
+
+### Data provided
+
+The following data is provided through XML files (located in [xml](https://github.com/sel-project/sel-utils/tree/master/xml)) and it's used to generate code using the generators in the [gen](https://github.com/sel-project/sel-utils/tree/master/gen) directory and the templates in the [templates](https://github.com/sel-project/sel-utils/tree/master/templates) directory.
+
+| | Description | Available
+|:---:|---|:---:
+| Protocol | Packets and encoding | ✔
+| Metadata | Types and encoding | ✔
+| Blocks | Ids and behaviours | ✔
+| Items | Ids, metas and stack size | ✔
+| Entities | Ids and sizes | ✔
+| Effects | Ids and particles' colours | ✔
+| Enchantments | Ids and highest level | ✔
+| Biomes | Ids and temperature | 
+| Windows | Ids | 
+| Recipes | | 
+| Creative Inventory | Minecraft: Pocket Edition's items in the creative inventory | ✔
+
+### Projects using sel-utils
+
+| | Type | Used Data
+|---:|---|---
+| [sel-server](https://github.com/sel-project/sel-server) | server (MC and MCPE) | protocol, metadata, blocks, items, effects, enchantments, creative inventory
+
+
+### Generated code
 
 **Jump to**: [C#](#csharp), [D](#d), [Java](#java), [PHP](#php)
 
@@ -19,6 +44,9 @@ Automatically generated documentation is available at the [project's website](ht
 - [ ] Entities
 - [ ] Effects
 - [ ] Enchantments
+- [ ] Biomes
+- [ ] Windows
+- [ ] Recipes
 
 
 ### [D](https://github.com/sel-utils/d)
@@ -32,6 +60,9 @@ Automatically generated documentation is available at the [project's website](ht
 - [x] Entities
 - [x] Effects
 - [x] Enchantments
+- [ ] Biomes
+- [ ] Windows
+- [ ] Recipes
 
 
 ### [Java](https://github.com/sel-utils/java)
@@ -45,6 +76,9 @@ Automatically generated documentation is available at the [project's website](ht
 - [x] Entities
 - [ ] Effects
 - [ ] Enchantments
+- [ ] Biomes
+- [ ] Windows
+- [ ] Recipes
 
 
 ### [PHP](https://github.com/sel-utils/php)
@@ -58,3 +92,6 @@ Automatically generated documentation is available at the [project's website](ht
 - [ ] Entities
 - [ ] Effects
 - [ ] Enchantments
+- [ ] Biomes
+- [ ] Windows
+- [ ] Recipes

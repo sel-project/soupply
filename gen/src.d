@@ -267,7 +267,7 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 
 		}
 
-		string crm = "[![SEL](http://i.imgur.com/iiDRUQQ.png)](https://github.com/sel-project/sel-utils)\n\n" ~
+		string crm = "[![SEL](https://i.imgur.com/iiDRUQQ.png)](https://github.com/sel-project/sel-utils)\n\n" ~
 				"**Automatically generated libraries for Minecraft and Minecraft: Pocket Edition from [sel-project/sel-utils](https://github.com/sel-project/sel-utils)**\n\n" ~
 				"To report a problem or request a new feature related to the generated code open an issue on [sel-utils](https://github.com/sel-project/sel-utils) adding `" ~ lang ~ "` in the title or in the description.\n" ~
 				"To contribute at the project read the [contribution guidelines](https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md).\n\n";
@@ -289,6 +289,9 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 			writeCheck("entities", "Entities");
 			writeCheck("effects", "Effects");
 			writeCheck("enchantments", "Enchantments");
+			writeCheck("biomes", "Biomes");
+			writeCheck("windows", "Windows");
+			writeCheck("recipes", "Recipes");
 			readme[lang] = [options.repo.name, "### [" ~ options.repo.name ~ "](https://github.com/sel-utils/" ~ lang ~ ")\n\n" ~ rm];
 			crm ~= rm;
 			//TODO generate repository's README.md with examples
