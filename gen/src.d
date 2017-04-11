@@ -133,7 +133,7 @@ struct Options {
 
 }
 
-void src(string[] args, Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments, Effect[] effects) {
+void src(string[] args, Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments, Effect[] effects, Biome[] biomes) {
 
 	std.file.mkdirRecurse("../readme");
 
@@ -246,7 +246,7 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 			values["utils"] = Data([Data(["": Data.init])]);
 		}
 
-		foreach(immutable type ; TypeTuple!("attributes", "creative", "protocols", "metadatas", "blocks", "items", "entities", "enchantments", "effects")) {
+		foreach(immutable type ; TypeTuple!("attributes", "creative", "protocols", "metadatas", "blocks", "items", "entities", "enchantments", "effects", "biomes")) {
 			if(templateExists(lang, type)) {
 				Data[] data = mixin("create" ~ capitalize(type) ~ "(" ~ type ~ ", options)");
 				values[type] = data;
@@ -708,7 +708,7 @@ Data[] createEnchantments(Enchantment[] enchantments, Options options) {
 
 Data[] createEffects(Effect[] effects, Options options) {
 	Data[] ret;
-	foreach(i, effect; effects) {
+	foreach(effect ; effects) {
 		Data[string] values;
 		values["NAME"] = effect.name;
 		values["HAS_MINECRAFT"] = to!string(effect.minecraft >= 0);
@@ -720,6 +720,18 @@ Data[] createEffects(Effect[] effects, Options options) {
 		ret ~= Data(values);
 	}
 	return [Data(["EFFECTS": Data(ret), "GENERATOR": Data("effects")])];
+}
+
+Data[] createBiomes(Biome[] biomes, Options options) {
+	Data[] ret;
+	foreach(biome ; biomes) {
+		Data[string] values;
+		values["NAME"] = biome.name;
+		values["ID"] = biome.id.to!string;
+		values["TEMPERATURE"] = biome.temperature.to!string;
+		ret ~= Data(values);
+	}
+	return [Data(["BIOMES": Data(ret), "GENERATOR": Data("biomes")])];
 }
 
 // stuff about template parsing

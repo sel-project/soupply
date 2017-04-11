@@ -1,0 +1,19 @@
+--- start biomes biomes.json ---
+{
+	
+	"__website": "{{WEBSITE}}",
+
+	"biomes": {
+
+{{biomes_values@BIOMES}}
+	}
+
+}
+--- end ---
+--- start biomes_values ---
+		"{{NAME}}": {
+			"id": {{ID}},
+			"temperature": {{TEMPERATURE}}
+		}{{LAST==false?,}}
+
+--- end ---

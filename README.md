@@ -10,17 +10,17 @@ The following data is provided through XML files (located in [xml](https://githu
 
 | | Description | Available
 |:---:|---|:---:
-| Protocol | Packets and encoding | ✔
-| Metadata | Types and encoding | ✔
-| Blocks | Ids and behaviours | ✔
-| Items | Ids, metas and stack size | ✔
-| Entities | Ids and sizes | ✔
-| Effects | Ids and particles' colours | ✔
-| Enchantments | Ids and highest level | ✔
-| Biomes | Ids and temperature | 
+| Protocol | Packets and encoding | ✓
+| Metadata | Types and encoding | ✓
+| Blocks | Ids and behaviours | ✓
+| Items | Ids, metas and stack size | ✓
+| Entities | Ids and sizes | ✓
+| Effects | Ids and particles' colours | ✓
+| Enchantments | Ids and highest level | ✓
+| Biomes | Ids and temperature | ✓
 | Windows | Ids | 
 | Recipes | | 
-| Creative Inventory | Minecraft: Pocket Edition's items in the creative inventory | ✔
+| Creative Inventory | Minecraft: Pocket Edition's items in the creative inventory | ✓
 
 ### Projects using sel-utils
 
@@ -60,7 +60,7 @@ The following data is provided through XML files (located in [xml](https://githu
 - [x] Entities
 - [x] Effects
 - [x] Enchantments
-- [ ] Biomes
+- [x] Biomes
 - [ ] Windows
 - [ ] Recipes
 

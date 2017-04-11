@@ -103,6 +103,9 @@ alias Enchantment = Tuple!(string, "name", byte, "minecraft", byte, "pocket", ub
 alias Effect = Tuple!(string, "name", byte, "minecraft", byte, "pocket", uint, "particles");
 
 
+alias Biome = Tuple!(string, "name", ubyte, "id", float, "temperature");
+
+
 private uint n_version;
 
 public @property uint sulVersion() {
@@ -534,7 +537,7 @@ void main(string[] args) {
 			}
 		}
 	}
-
+	
 	// effects
 	Effect[] effects;
 	foreach(element ; new Document(cast(string)read("../xml/effects.xml")).elements) {
@@ -546,12 +549,22 @@ void main(string[] args) {
 			}
 		}
 	}
+	
+	// biomes
+	Biome[] biomes;
+	foreach(element ; new Document(cast(string)read("../xml/biomes.xml")).elements) {
+		with(element.tag) {
+			if(name == "biome") {
+				biomes ~= Biome(attr["name"].replace("-", "_"), to!ubyte(attr["id"]), to!float(attr["temperature"]));
+			}
+		}
+	}
 
 	if(!args.length || args.canFind("d")) d.d(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
 	if(!args.length || args.canFind("java")) java.java(attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
 	if(!args.length || args.canFind("js")) js.js(attributes, protocols, metadata, creative, blocks, items, entities);
 
-	src.src(args, attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects);
+	src.src(args, attributes, protocols, metadata, creative, blocks, items, entities, enchantments, effects, biomes);
 
 	//if(!args.length || args.canFind("diff")) diff.diff(attributes, protocols, metadata);
 	if(!args.length || args.canFind("docs")) docs.docs(attributes, protocols, metadata);
