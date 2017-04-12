@@ -4,6 +4,7 @@
 
 	<object name="boat" minecraft="1" pocket="90" width="1.5" height="0.6" />
 	<object name="dropped-item" minecraft="2" pocket="64" width="0.25" height="0.25" />
+	<object name="experience-orb" minecraft="2" pocket="69" width="0.25" height="0.25" />
 	<object name="area-effect-cloud" minecraft="3" pocket="95" width="2" height="0.5" />
 	<object name="minecart" minecraft="10" pocket="84" width="0.98" height="0.7" />
 	<object name="minecart-with-hopper" pocket="96" width="0.98" height="0.7" />
@@ -34,6 +35,8 @@
 	<object name="spectral-arrow" minecraft="91" width="0.5" height="0.5" />
 	<object name="dragon-fireball" minecraft="93" pocket="79" width="1" height="1" />
 	<object name="camera" pocket="62" /> <!-- TODO: size -->
+	<object name="painting" pocket="83" />
+	<object name="lightning" pocket="93" />
 
 	<entity name="elder-guardian" minecraft="4" pocket="50" width="1.9975" height="1.9975" />
 	<entity name="wither-skeleton" minecraft="5" pocket="48" width="0.7" height="2.4" />
