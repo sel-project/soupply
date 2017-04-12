@@ -6,8 +6,6 @@
 
 	<protocol>110</protocol>
 
-	<released>2017/4/1</released>
-
 	<from>1.1.0</from>
 
 	<description>
@@ -49,19 +47,13 @@
 		<type name="pack-with-size">
 			<field name="id" type="string" />
 			<field name="version" type="string" />
-			<field name="size" type="ulong" endianness="little-endian" />
+			<field name="size" type="varulong" />
 		</type>
-
-		<array name="pack-with-size-array" base="pack-with-size" length="ushort" endianness="little-endian" />
 
 		<type name="pack">
 			<field name="id" type="string" />
 			<field name="version" type="string" />
 		</type>
-
-		<array name="pack-array" base="pack" length="ushort" endianness="little-endian" />
-
-		<array name="pack-ids" base="string" length="ushort" endianness="little-endian" />
 
 		<type name="slot">
 			Informations about a slot, that, if not empty, contains an item id and meta, the count (0-255) and, optionally, an nbt tag for enchantments, custom name, colours and more.
@@ -242,12 +234,12 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint">
+				<field name="protocol" type="uint" default="110">
 					Version of the protocol used by the player.
 				</field>
-				<field name="edition" type="ubyte">
+				<field name="version" type="ubyte">
 					Edition that the player is using to join the server. The different editions may have different features and servers may block the access from unaccepted editions of the game.
-					<constant name="classic" value="0" />
+					<constant name="vanilla" value="0" />
 					<constant name="education" value="1" />
 				</field>
 				<field name="body" type="ubyte[]">
@@ -295,14 +287,14 @@
 
 			<packet name="resource-packs-info" id="6" clientbound="true" serverbound="false">
 				<field name="must-accept" type="bool" />
-				<field name="behaviour-packs" type="pack-with-size-array" />
-				<field name="resource-packs" type="pack-with-size-array" />
+				<field name="behaviour-packs" type="pack-with-size[]" />
+				<field name="resource-packs" type="pack-with-size[]" />
 			</packet>
 
 			<packet name="resource-packs-stack-packet" id="7" clientbound="true" serverbound="false">
 				<field name="must-accept" type="bool" />
-				<field name="behaviour-packs" type="pack-array" />
-				<field name="resource-packs" type="pack-array" />
+				<field name="behaviour-packs" type="pack[]" />
+				<field name="resource-packs" type="pack[]" />
 			</packet>
 
 			<packet name="resource-pack-client-response" id="8" clientbound="false" serverbound="true">
@@ -312,7 +304,7 @@
 					<constant name="have-all-packs" value="3" />
 					<constant name="completed" value="4" />
 				</field>
-				<field name="pack-ids" type="pack-ids" />
+				<field name="pack-ids" type="string[]" />
 			</packet>
 
 			<packet name="text" id="9" clientbound="true" serverbound="true">
@@ -366,9 +358,6 @@
 				<field name="time" type="varint">
 					Time of the day in a range from 0 to 24000. If higher or lower it will be moduled to 24000.
 				</field>
-				<field name="daylight-cycle" type="bool">
-					Indicates whether the daylight cycle is active. If not, the time will be stopped at the value given in the previous field.
-				</field>
 			</packet>
 
 			<packet name="start-game" id="11" clientbound="true" serverbound="false">
@@ -401,6 +390,7 @@
 					Default's world gamemode. If the player's gamemode is different from the default's one a [SetPlayerGameType](#play_set-player-game-type) should be sent after this.
 					<constant name="survival" value="0" />
 					<constant name="creative" value="1" />
+					<constant name="adventure" value="2" />
 				</field>
 				<field name="difficulty" type="varint">
 					World's difficulty. The value is visible in the client's world settings.
@@ -415,11 +405,10 @@
 				<field name="loaded-in-creative" type="bool" />
 				<field name="time" type="varint">
 					Time of the day that should be in a range from 0 to 24000. If not the absolute value is moduled per 24000.
-					If the world's time is stopped a [SetTime](#play_set-time) packet should be sent after this.
 				</field>
-				<field name="edition" type="ubyte">
+				<field name="version" type="ubyte">
 					Game's edition. Some behaviours (some entities for example) may only work in a version and not in the other.
-					<constant name="classic" value="0" />
+					<constant name="vanilla" value="0" />
 					<constant name="education" value="1" />
 				</field>
 				<field name="rain-level" type="float">
@@ -507,6 +496,7 @@
 				<field name="pitch" type="angle" />
 				<field name="head-yaw" type="angle" />
 				<field name="yaw" type="angle" />
+				<field name="on-ground" type="bool" />
 			</packet>
 
 			<packet name="move-player" id="19" clientbound="true" serverbound="true">
@@ -1029,6 +1019,7 @@
 				<field name="gamemode" type="varint">
 					<constant name="survival" value="0" />
 					<constant name="creative" value="1" />
+					<constant name="adventure" value="2" />
 				</field>
 			</packet>
 
@@ -1186,22 +1177,22 @@
 
 			<packet name="resource-pack-data-info" id="83" clientbound="true" serverbound="false">
 				<field name="id" type="string" />
-				<field name="max-chunk-size" type="uint" endianness="little-endian" />
-				<field name="chunk-count" type="uint" endianness="little-endian" />
-				<field name="compressed-pack-size" type="ulong" endianness="little-endian" />
+				<field name="max-chunk-size" type="varuint" />
+				<field name="chunk-count" type="varuint" />
+				<field name="compressed-pack-size" type="varulong" />
 				<field name="sha256" type="string" />
 			</packet>
 
 			<packet name="resource-pack-chunk-data" id="84" clientbound="true" serverbound="false">
 				<field name="id" type="string" />
-				<field name="chunk-index" type="uint" endianness="little-endian" />
-				<field name="progress" type="ulong" endianness="little-endian" />
+				<field name="chunk-index" type="varuint" />
+				<field name="progress" type="varulong" />
 				<field name="data" type="ubyte[]" />
 			</packet>
 
 			<packet name="resource-pack-chunk-request" id="85" clientbound="false" serverbound="true">
 				<field name="id" type="string" />
-				<field name="chunk-index" type="uint" endianness="little-endian" />
+				<field name="chunk-index" type="varuint" />
 			</packet>
 
 			<packet name="transfer" id="86" clientbound="true" serverbound="false">

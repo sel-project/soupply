@@ -503,7 +503,8 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	foreach(string name ; ["Minecraft", "Minecraft: Pocket Edition", "Raknet", "Hub-Node Communication", "External Console"]) {
 		size_t date(string str) {
 			auto spl = str.split("/");
-			return (to!size_t(spl[0]) * 366 + to!size_t(spl[1])) * 31 + to!size_t(spl[2]);
+			if(spl.length == 3) return (to!size_t(spl[0]) * 366 + to!size_t(spl[1])) * 31 + to!size_t(spl[2]);
+			else return size_t.max;
 		}
 		auto sorted = sort!((a, b) => date(a[0].released) > date(b[0].released))(p[name]).release();
 		bool _released, _from, _to;
