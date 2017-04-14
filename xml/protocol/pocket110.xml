@@ -1218,15 +1218,30 @@
 			</packet>
 
 			<packet name="set-title" id="89" clientbound="true" serverbound="false">
+				Displays titles on the client's screen.
 				<field name="action" type="varint">
-					<constant name="hide" value="0" />
-					<constant name="reset" value="1" />
-					<constant name="set-title" value="2" />
-					<constant name="set-subtitle" value="3" />
-					<constant name="set-action-bar" value="4" />
-					<constant name="set-timings" value="5" />
+					<constant name="hide" value="0">
+						Hides the title and the subtitle
+					</constant>
+					<constant name="reset" value="1">
+						Hides and resets the title and the subtitle
+					</constant>
+					<constant name="set-title" value="2">
+						Sets the title
+					</constant>
+					<constant name="set-subtitle" value="3">
+						Sets the subtitle, displayed under the title
+					</constant>
+					<constant name="set-action-bar" value="4">
+						Show a message over the hotbar for some seconds
+					</constant>
+					<constant name="set-timings" value="5">
+						Shows the title and the subtitle
+					</constant>
 				</field>
-				<field name="text" type="string" />
+				<field name="text" type="string">
+					Text that will be displayed in the place specified in the action field.
+				</field>
 				<field name="fade-in" type="varint" />
 				<field name="stay" type="varint" />
 				<field name="fade-out" type="varint" />
@@ -1237,6 +1252,14 @@
 			</packet>
 
 			<packet name="structure-block-update" id="91" clientbound="true" serverbound="false">
+
+			</packet>
+
+			<packet name="show-store-offer" id="92" clientbound="true" serverbound="false">
+
+			</packet>
+
+			<packet name="purchase-receipt" id="93" clientbound="false" serverbound="true">
 
 			</packet>
 

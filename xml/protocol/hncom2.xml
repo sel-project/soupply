@@ -104,6 +104,12 @@
 			</field>
 		</type>
 
+		<type name="property">
+			<type name="name" type="string" />
+			<type name="value" type="string" />
+			<type name="signature" type="string" />
+		</type>
+
 	</encoding>
 
 	<packets>
@@ -541,7 +547,10 @@
 						</field>
 					</variant>
 					<variant name="minecraft" value="2">
-						A Minecraft client. Currently there are no additional fields.
+						A Minecraft client.
+						<field name="properties" type="property[]">
+							Additional properties like textures when the server is on online mode.
+						</field>
 					</variant>
 					<variant name="console" value="3" />
 				</variants>
