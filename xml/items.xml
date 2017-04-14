@@ -673,6 +673,7 @@
 	<item name="baked-potato" data="393" />
 	<item name="poisonous-potato" data="394" />
 	<item name="empty-map" data="395" />
+	<item name="empty-locator-map" pocket="395:2" />
 	<item name="golden-carrot" data="396" />
 	<item name="skeleton-skull" data="397:0" />
 	<item name="wither-skeleton-skull" data="397:1" />
