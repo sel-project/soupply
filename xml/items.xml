@@ -575,22 +575,22 @@
 	<item name="bone" data="352" />
 	<item name="sugar" data="353" />
 	<item name="cake" data="354" stack="1" />
-	<item name="white-bed" pocket="355:0" />
-	<item name="orange-bed" pocket="355:1" />
-	<item name="magenta-bed" pocket="355:2" />
-	<item name="light-blue-bed" pocket="355:3" />
-	<item name="yellow-bed" pocket="355:4" />
-	<item name="lime-bed" pocket="355:5" />
-	<item name="pink-bed" pocket="355:6" />
-	<item name="gray-bed" pocket="355:7" />
-	<item name="light-gray-bed" pocket="355:8" />
-	<item name="cyan-bed" pocket="355:9" />
-	<item name="purple-bed" pocket="355:10" />
-	<item name="blue-bed" pocket="355:11" />
-	<item name="brown-bed" pocket="355:12" />
-	<item name="green-bed" pocket="355:13" />
-	<item name="red-bed" minecraft="355" pocket="355:14" />
-	<item name="black-bed" pocket="355:15" />
+	<item name="white-bed" data="355:0" />
+	<item name="orange-bed" data="355:1" />
+	<item name="magenta-bed" data="355:2" />
+	<item name="light-blue-bed" data="355:3" />
+	<item name="yellow-bed" data="355:4" />
+	<item name="lime-bed" data="355:5" />
+	<item name="pink-bed" data="355:6" />
+	<item name="gray-bed" data="355:7" />
+	<item name="light-gray-bed" data="355:8" />
+	<item name="cyan-bed" data="355:9" />
+	<item name="purple-bed" data="355:10" />
+	<item name="blue-bed" data="355:11" />
+	<item name="brown-bed" data="355:12" />
+	<item name="green-bed" data="355:13" />
+	<item name="red-bed" data="355:14" />
+	<item name="black-bed" data="355:15" />
 	<item name="redstone-repeater" data="356" />
 	<item name="cookie" data="357" />
 	<item name="map" data="358" />
