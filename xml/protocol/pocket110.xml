@@ -365,6 +365,12 @@
 					Player's entity id that uniquely identifies the entity of the server.
 				</field>
 				<field name="runtime-id" type="runtime-id" />
+				<field name="gamemode" type="varint">
+					Player's gamemode that may differ from the world's gamemode.
+					<constant name="survival" value="0" />
+					<constant name="creative" value="1" />
+					<constant name="adventure" value="2" />
+				</field>
 				<field name="position" type="entity-position">
 					Position where the player will spawn.
 				</field>
@@ -387,10 +393,7 @@
 					<constant name="flat" value="2" />
 				</field>
 				<field name="world-gamemode" type="varint">
-					Default's world gamemode. If the player's gamemode is different from the default's one a [SetPlayerGameType](#play_set-player-game-type) should be sent after this.
-					<constant name="survival" value="0" />
-					<constant name="creative" value="1" />
-					<constant name="adventure" value="2" />
+					Default's world gamemode.
 				</field>
 				<field name="difficulty" type="varint">
 					World's difficulty. The value is visible in the client's world settings.
@@ -424,6 +427,7 @@
 				<field name="world-name" type="string">
 					World's name that will be displayed in the game's world settings. It can contain formatting codes.
 				</field>
+				<field name="premium-world-template" type="string" />
 			</packet>
 
 			<packet name="add-player" id="12" clientbound="true" serverbound="false">
@@ -511,6 +515,7 @@
 					<constant name="rotation" value="2" />
 				</field>
 				<field name="on-ground" type="bool" />
+				<field name="?" type="entity-id" />
 			</packet>
 
 			<packet name="rider-jump" id="20" clientbound="true" serverbound="true">

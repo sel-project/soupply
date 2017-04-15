@@ -27,6 +27,3 @@ after_success:
  - ./push java true src/main/java sul/utils/About.java
  - ./push d true src sul/utils/about.d
  - ./push csharp false src sul/Utils/About.cs
-
-notifications:
- - email: false

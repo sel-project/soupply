@@ -56,6 +56,9 @@
 			<flag name="breathing" bit="33" />
 			<flag name="chested" bit="34" />
 			<flag name="stackable" bit="35" />
+			<flag name="showbase" bit="36" />
+			<flag name="rearing" bit="37" />
+			<flag name="vibrating" bit="38" />
 			<flag name="idling" bit="39" />
 		</type>
 
@@ -76,6 +79,8 @@
 		<type name="potion-ambient" type="byte" id="9" />
 
 		<type name="slime-size" type="byte" id="16" default="1" />
+
+		<type name="age" type="short" id="25" />
 
 		<type name="player-flags" type="byte" id="27">
 			<flag name="asleep" bit="1" />
@@ -110,6 +115,10 @@
 		<type name="area-effect-cloud-particle" type="int" id="63" />
 
 		<type name="trading-player" type="long" id="68" />
+
+		<type name="strength" type="int" id="76" />
+
+		<type name="max-strength" type="int" id="77" />
 
 	</metadatas>
 
