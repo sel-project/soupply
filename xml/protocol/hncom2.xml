@@ -32,8 +32,6 @@
 
 		<endianness type="*" value="big-endian" />
 
-		<endianness type="ushort" value="little-endian" />
-
 		<alias name="hub-id" type="varuint" />
 
 		<alias name="world-id" type="varuint" />
@@ -68,6 +66,9 @@
 			</field>
 			<field name="motd" type="string">
 				"Message of the day" which is displayed in the game's server list. It may contain Minecraft formatting codes.
+			</field>
+			<field name="online-mode" type="bool">
+				Indicates whether the players are authenticated using the games' official authentication services and their identity should be trusted.
 			</field>
 			<field name="port" type="ushort">
 				Port, or main port if the server allows the connection from multiple ports, where the socket is listening for connections.
@@ -198,9 +199,6 @@
 				<field name="display-name" type="string">
 					Unformatted name of the server as indicated in the hub's configuration file.
 				</field>
-				<field name="online-mode" type="bool">
-					Indicates whether the player are authenticated using the games' official authentication services and their identity should be trusted.
-				</field>
 				<field name="games-info" type="game-info[]">
 					Informations about the games supported by the hub.
 				</field>
@@ -236,7 +234,7 @@
 					      "twitter": "example_tweets",
 					      "youtube": "examplechannel",
 					      "instagram": "example",
-					      "google_plus": "example-plus"					
+					      "google-plus": "example-plus"					
 					   },
 					   "system": {
 					      "os": "Ubuntu 16.04",
