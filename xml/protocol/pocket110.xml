@@ -485,6 +485,7 @@
 				<field name="item" type="slot" />
 				<field name="position" type="entity-position" />
 				<field name="motion" type="entity-position" />
+				<field name="metadata" type="metadata" />
 			</packet>
 
 			<packet name="add-hanging-entity" id="16" clientbound="true" serverbound="false">
@@ -511,6 +512,7 @@
 				<field name="head-yaw" type="angle" />
 				<field name="yaw" type="angle" />
 				<field name="on-ground" type="bool" />
+				<field name="?" type="bool" />
 			</packet>
 
 			<packet name="move-player" id="19" clientbound="true" serverbound="true">
