@@ -16,14 +16,14 @@
 		+ The server always replies with a [PlayerStatus](#play_play-status)
 		+ If [status](#play_play-status_status) field in the packet sent was different from [ok](#play_play-status_status_ok) the connection is closed
 
-		<!--### Spawning sequence
+		### Spawning sequence
 		+ The server sends a [StartGame](#play_start-game) packet with the world's informations
 		+ The server sends zero or more [FullChunkData](#play_full-chunk-data) with the chunk's blocks and tiles
 		+ The server sends the player's inventory using [ContainerSetContent](#play_container-set-content)
 		+ The server sends the world's textures through [ResourcePacksInfo](#play_resource-packs-info) (the textures may be empty)
 		+ The client replies with [ResourcePackClientResponse](#play_resource-pack-client-response) telling the server that the textures have been loaded
 		+ The server sends a [PlayStatus](#play_play-status) packet set to [spawned](#play_play-status_status_spawned)
-		+ The client spawns-->
+		+ The client spawns
 
 		Everything written in the documentation has been tested on [sel-server](https://github.com/sel-project/sel-server). The types and the packets without documentation haven't been tested yet or it's not clear what their real purpose in the game is.
 	</description>
@@ -43,6 +43,13 @@
 		<alias name="angle" type="ubyte" />
 
 		<alias name="json" type="string" />
+
+		<type name="login-body">
+			<field name="chain" type="login-payload" />
+			<field name="client-data" type="login-payload" />
+		</type>
+
+		<array name="login-payload" base="ubyte" length="uint" endianness="little-endian" />
 
 		<type name="pack-with-size">
 			<field name="id" type="string" />
@@ -242,8 +249,11 @@
 					<constant name="vanilla" value="0" />
 					<constant name="education" value="1" />
 				</field>
-				<field name="body" type="ubyte[]">
-					Zlib-compressed bytes that contains 2 JWTs with more informations about the player and its account. Once uncompressed the resulting payload will contain 2 JWTs which length is indicated by a little-endian unsigned integer each.
+				<field name="body-length" type="varuint">
+					Length, in bytes, of the following field. This field was used when the body was compressed.
+				</field>
+				<field name="body" type="login-body">
+					Payload that contains 2 JWTs (with each length indicated by an unsigned little-endian 32-bits integer) with more informations about the player and its account.
 				</field>
 			</packet>
 

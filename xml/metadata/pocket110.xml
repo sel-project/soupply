@@ -62,6 +62,8 @@
 			<flag name="idling" bit="39" />
 		</type>
 
+		<type name="health" type="int" id="1" />
+
 		<type name="variant" type="int" id="2" />
 
 		<type name="color" type="byte" id="3" />
@@ -70,6 +72,8 @@
 
 		<type name="owner" type="long" id="5" default="-1" />
 
+		<type name="target" type="long" id="6" />
+
 		<type name="air" type="short" id="7" default="0" required="true">
 			Indicates the percentage of the air for the entity (and shows the right amount of bubbles). 0 means out of water or drowning (no bubbles) and 300 means underwater with full air.
 		</type>
@@ -77,6 +81,12 @@
 		<type name="potion-color" type="int" id="8" />
 
 		<type name="potion-ambient" type="byte" id="9" />
+
+		<type name="hurt-time" type="int" id="11" />
+
+		<type name="hurt-direction" type="int" id="12" />
+
+		<type name="experience-count" type="int" id="15" />
 
 		<type name="slime-size" type="byte" id="16" default="1" />
 
@@ -90,11 +100,15 @@
 
 		<type name="bed-position" type="block-position" id="29" />
 
+		<type name="potion-aux-value" type="short" id="37" />
+
 		<type name="lead-holder" type="long" id="38" default="-1" required="true" />
 
 		<type name="scale" type="float" id="39" default="1" />
 
 		<type name="interactive-tag" type="string" id="40" />
+
+		<type name="npc-id" type="string" id="41" />
 
 		<type name="interactive-tag-url" type="string" id="43" />
 
@@ -102,19 +116,23 @@
 
 		<type name="mark-variant" type="int" id="45" />
 
-		<type name="bounding-box-width" type="float" id="54" />
+		<type name="bounding-box-width" type="float" id="55" />
 
-		<type name="bounding-box-height" type="float" id="55" />
+		<type name="bounding-box-height" type="float" id="56" />
 
-		<type name="fuse-length" type="int" id="56" />
+		<type name="fuse-length" type="int" id="57" />
 
-		<type name="area-effect-cloud-radius" type="float" id="61" />
+		<type name="rider-seat-position" type="entity-position" id="58" />
 
-		<type name="area-effect-cloud-waiting" type="int" id="62" />
+		<type name="area-effect-cloud-radius" type="float" id="62" default="0.5" />
 
-		<type name="area-effect-cloud-particle" type="int" id="63" />
+		<type name="area-effect-cloud-waiting" type="int" id="63" />
 
-		<type name="trading-player" type="long" id="68" />
+		<type name="area-effect-cloud-particle" type="int" id="64" />
+
+		<type name="trading-player" type="long" id="69" />
+
+		<type name="controlling-rider-seat-number" type="byte" id="75" />
 
 		<type name="strength" type="int" id="76" />
 
