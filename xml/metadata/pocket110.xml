@@ -42,6 +42,9 @@
 			<flag name="no-ai" bit="16" />
 			<flag name="silent" bit="17" />
 			<flag name="climbing" bit="18" />
+			<flag name="can-climb" bit="19" />
+			<flag name="can-swim" bit="20" />
+			<flag name="can-fly" bit="21" />
 			<flag name="resting" bit="22" />
 			<flag name="sitting" bit="23" />
 			<flag name="angry" bit="24" />
@@ -86,6 +89,10 @@
 
 		<type name="hurt-direction" type="int" id="12" />
 
+		<type name="paddle-time-left" type="float" id="13" />
+
+		<type name="paddle-time-right" type="float" id="14" />
+
 		<type name="experience-count" type="int" id="15" />
 
 		<type name="slime-size" type="byte" id="16" default="1" />
@@ -110,33 +117,61 @@
 
 		<type name="npc-id" type="string" id="41" />
 
-		<type name="interactive-tag-url" type="string" id="43" />
+		<type name="interactive-tag-url" type="string" id="43">
+			NPC's tag with external link.
+		</type>
 
 		<type name="max-air" type="short" id="44" />
 
 		<type name="mark-variant" type="int" id="45" />
 
-		<type name="bounding-box-width" type="float" id="55" />
+		<type name="invulnerable-time" type="int" id="49">
+			Wither's invulnerable time.
+		</type>
 
-		<type name="bounding-box-height" type="float" id="56" />
+		<type name="center-head-target" type="long" id="50">
+			Wither's centre head.
+		</type>
+		
+		<type name="left-head-target" type="long" id="51">
+			Wither's left (or right?) head.
+		</type>
 
-		<type name="fuse-length" type="int" id="57" />
+		<type name="right-head-target" type="long" id="52">
+			Wither's right (or left?) head.
+		</type>
 
-		<type name="rider-seat-position" type="entity-position" id="58" />
+		<type name="bounding-box-width" type="float" id="54" />
 
-		<type name="area-effect-cloud-radius" type="float" id="62" default="0.5" />
+		<type name="bounding-box-height" type="float" id="55" />
 
-		<type name="area-effect-cloud-waiting" type="int" id="63" />
+		<type name="fuse-length" type="int" id="56" />
 
-		<type name="area-effect-cloud-particle" type="int" id="64" />
+		<type name="rider-seat-position" type="entity-position" id="57" />
 
-		<type name="trading-player" type="long" id="69" />
+		<type name="rider-rotation-locked" type="byte" id="58" />
 
-		<type name="controlling-rider-seat-number" type="byte" id="75" />
+		<type name="rider-max-rotation" type="float" id="59" />
 
-		<type name="strength" type="int" id="76" />
+		<type name="rider-min-rotation" type="float" id="60" />
 
-		<type name="max-strength" type="int" id="77" />
+		<type name="area-effect-cloud-radius" type="float" id="61" default="0.5" />
+
+		<type name="area-effect-cloud-waiting" type="int" id="62" />
+
+		<type name="area-effect-cloud-particle" type="int" id="63" />
+
+		<type name="shuker-direction" type="byte" id="65" />
+
+		<type name="shulker-attachment" type="block-position" id="67" />
+
+		<type name="trading-player" type="long" id="68" />
+
+		<type name="controlling-rider-seat-number" type="byte" id="74" />
+
+		<type name="strength" type="int" id="75" />
+
+		<type name="max-strength" type="int" id="76" />
 
 	</metadatas>
 

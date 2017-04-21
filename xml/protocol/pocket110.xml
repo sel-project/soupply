@@ -892,6 +892,7 @@
 					<constant name="wake-up" value="3" />
 				</field>
 				<field name="entity-id" type="entity-id" />
+				<field name="?" type="float" when="action>128" />
 			</packet>
 
 			<packet name="respawn" id="45" clientbound="true" serverbound="false">
