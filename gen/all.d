@@ -118,20 +118,11 @@ void main(string[] args) {
 	args = args[1..$];
 
 	// update generation version
-	if(exists(".version")) {
-		n_version = to!uint(split(cast(string)read(".version"), ".")[2]);
-	}
-	if(!args.canFind("-no-update")) {
-		n_version++;
+	if(exists("version.txt")) {
+		n_version = to!uint(strip(cast(string)read("version.txt")));
 	} else {
-		foreach(i, arg; args) {
-			if(arg == "-no-update") {
-				args = args[0..i] ~ args[i+1..$];
-				break;
-			}
-		}
+		n_version = 1;
 	}
-	_write(".version", "1.0." ~ to!string(n_version));
 
 	// attributes
 	Attributes[string] attributes;

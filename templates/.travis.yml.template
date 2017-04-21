@@ -4,8 +4,9 @@ d:
  - dmd
  
 script:
- - cd gen && rdmd all.d -no-update && cd ..
- - rdmd --build-only push.d
+ - cd gen && echo "${TRAVIS_BUILD_NUMBER}" > version.txt
+ - rdmd all.d
+ - cd .. && rdmd --build-only push.d
 
 after_success:
  - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)

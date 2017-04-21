@@ -12,7 +12,7 @@ void main(string[] args) {
 
 	// variables that will be replaced in .template files
 	string[string] variables;
-	variables["VERSION"] = cast(string)read("gen/.version");
+	variables["VERSION"] = "1.1." ~ strip(cast(string)read("gen/version.txt"));
 
 	string lang = args[1];
 
@@ -22,8 +22,8 @@ void main(string[] args) {
 
 	string[] exclude = args[4..$]; // exclude from comparation
 	
-	string message = to!string([strip(cast(string)read("message.txt"))])[1..$-1];
-	string desc = to!string([strip(cast(string)read("desc.txt"))])[1..$-1];
+	string message = replace(strip(cast(string)read("message.txt")), "\"", "\\\"");
+	string desc = replace(strip(cast(string)read("desc.txt")), "\"", "\\\"");
 
 	wait(spawnShell("git clone git://github.com/sel-utils/" ~ lang ~ " " ~ lang));
 
