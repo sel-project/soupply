@@ -44,7 +44,6 @@ void main(string[] args) {
 		}
 
 		// add other files
-		wait(spawnShell("cp -f gen/.version " ~ lang));
 		wait(spawnShell("cp -f readme/" ~ lang ~ ".md " ~ lang ~ "/README.md"));
 
 		string[] cmd = [
