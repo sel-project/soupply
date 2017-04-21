@@ -22,8 +22,8 @@ void main(string[] args) {
 
 	string[] exclude = args[4..$]; // exclude from comparation
 	
-	string message = replace(strip(cast(string)read("message.txt")), "\"", "\\\"");
-	string desc = replace(strip(cast(string)read("desc.txt")), "\"", "\\\"");
+	string message = "\"" ~ replace(strip(cast(string)read("message.txt")), "\"", "\\\"") ~ "\"";
+	string desc = "\"" ~ replace(strip(cast(string)read("desc.txt")), "\"", "\\\"") ~ "\"";
 
 	wait(spawnShell("git clone git://github.com/sel-utils/" ~ lang ~ " " ~ lang));
 
