@@ -4,7 +4,7 @@
 
 	<software>Minecraft: Pocket Edition</software>
 
-	<protocol>110</protocol>
+	<protocol>111</protocol>
 
 	<from>1.1.0</from>
 
@@ -241,7 +241,7 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint" default="110">
+				<field name="protocol" type="uint" default="111">
 					Version of the protocol used by the player.
 				</field>
 				<field name="version" type="ubyte">
@@ -512,7 +512,7 @@
 				<field name="head-yaw" type="angle" />
 				<field name="yaw" type="angle" />
 				<field name="on-ground" type="bool" />
-				<field name="?" type="bool" />
+				<field name="teleported" type="bool" />
 			</packet>
 
 			<packet name="move-player" id="19" clientbound="true" serverbound="true">
