@@ -34,7 +34,7 @@ void main(string[] args) {
 
 	// variables that will be replaced in .template files
 	string[string] variables;
-	variables["VERSION"] = "1.2." ~ to!string(85 - to!uint(strip(cast(string)read("gen/version.txt"))));
+	variables["VERSION"] = "1.2." ~ to!string(86 - to!uint(strip(cast(string)read("gen/version.txt"))));
 
 	string lang = args[1];
 
@@ -67,7 +67,7 @@ void main(string[] args) {
 
 		// add/remove other files
 		wait(spawnShell("cp -f readme/" ~ lang ~ ".md " ~ lang ~ "/README.md"));
-		remove(lang ~ ".version");
+		if(exists(lang ~ "/.version")) remove(lang ~ "/.version");
 
 		string[] cmd = [
 			"cd " ~ lang,
