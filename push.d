@@ -34,7 +34,7 @@ void main(string[] args) {
 
 	// variables that will be replaced in .template files
 	string[string] variables;
-	variables["VERSION"] = "1.2." ~ to!string(86 - to!uint(strip(cast(string)read("gen/version.txt"))));
+	variables["VERSION"] = "1.2." ~ to!string(to!uint(strip(cast(string)read("gen/version.txt"))) - 88);
 
 	string lang = args[1];
 
