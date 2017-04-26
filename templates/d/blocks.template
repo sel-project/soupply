@@ -46,6 +46,8 @@ public struct Block
 	ubyte opacity, luminance, encouragement, flammability;
 	bool replaceable;
 	BoundingBox boundingBox;
+	
+	alias id this;
 
 }
 

@@ -18,6 +18,8 @@ public struct Item
 	size_t index;
 	ItemData minecraft, pocket;
 	ubyte stack;
+	
+	alias index this;
 
 }
 
