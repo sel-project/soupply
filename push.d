@@ -43,8 +43,9 @@ void main(string[] args) {
 			}
 		}
 
-		// add other files
+		// add/remove other files
 		wait(spawnShell("cp -f readme/" ~ lang ~ ".md " ~ lang ~ "/README.md"));
+		remove(lang ~ ".version");
 
 		string[] cmd = [
 			"cd " ~ lang,
