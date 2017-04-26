@@ -29,5 +29,5 @@ public enum Enchantments : Enchantment
 
 --- end ---
 --- start enchantments_values ---
-	{{NAME:uppercase}} = Enchantment("{{NAME:spaced}}", EnchantmentData({{MINECRAFT}}, {{MINECRAFT_ID}}), EnchantmentData({{POCKET}}, {{POCKET_ID}}), {{MAX}}),
+	{{NAME:camel_case}} = Enchantment("{{NAME:spaced}}", EnchantmentData({{MINECRAFT}}, {{MINECRAFT_ID}}), EnchantmentData({{POCKET}}, {{POCKET_ID}}), {{MAX}}),
 --- end ---

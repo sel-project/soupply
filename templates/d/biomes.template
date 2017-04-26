@@ -18,5 +18,5 @@ public enum Biomes : Biome
 }
 --- end ---
 --- start biomes_values ---
-	{{NAME:uppercase}} = Biome("{{NAME:spaced}}", {{ID}}, {{TEMPERATURE}}f),
+	{{NAME:camel_case}} = Biome("{{NAME:spaced}}", {{ID}}, {{TEMPERATURE}}f),
 --- end ---

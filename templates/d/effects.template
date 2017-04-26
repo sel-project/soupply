@@ -28,5 +28,5 @@ public enum Effects : Effect
 }
 --- end ---
 --- start effects_values ---
-	{{NAME:uppercase}} = Effect("{{NAME}}", EffectValue({{HAS_MINECRAFT}}{{HAS_MINECRAFT==true?, {{MINECRAFT}}}}), EffectValue({{HAS_POCKET}}{{HAS_POCKET==true?, {{POCKET}}}}), {{COLOR}}),
+	{{NAME:camel_case}} = Effect("{{NAME}}", EffectValue({{HAS_MINECRAFT}}{{HAS_MINECRAFT==true?, {{MINECRAFT}}}}), EffectValue({{HAS_POCKET}}{{HAS_POCKET==true?, {{POCKET}}}}), {{COLOR}}),
 --- end ---
