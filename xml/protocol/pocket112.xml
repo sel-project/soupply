@@ -360,6 +360,10 @@
 						<field name="sender" type="string" />
 						<field name="message" type="string" />
 					</variant>
+					<variant name="announcement" value="7">
+						<field name="announcer" type="string" />
+						<field name="message" type="string" />
+					</variant>
 				</variants>
 			</packet>
 
@@ -524,10 +528,13 @@
 				<field name="animation" type="ubyte">
 					<constant name="full" value="0" />
 					<constant name="none" value="1" />
-					<constant name="rotation" value="2" />
+					<constant name="teleport" value="2" />
+					<constant name="pitch" value="3" />
 				</field>
 				<field name="on-ground" type="bool" />
 				<field name="?" type="entity-id" />
+				<field name="?" type="int" endianness="little-endian" when="animation==3" />
+				<field name="?" type="int" endianness="little-endian" when="animation==3" />
 			</packet>
 
 			<packet name="rider-jump" id="20" clientbound="true" serverbound="true">
