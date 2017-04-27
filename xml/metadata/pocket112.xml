@@ -4,7 +4,7 @@
 
 	<software>Minecraft: Pocket Edition</software>
 
-	<protocol>111</protocol>
+	<protocol>112</protocol>
 
 	<encoding length="varuint" types="varuint" ids="varuint">
 
@@ -63,6 +63,9 @@
 			<flag name="rearing" bit="37" />
 			<flag name="vibrating" bit="38" />
 			<flag name="idling" bit="39" />
+			<flag name="evoker-spell" bit="40" />
+			<flag name="charge-attack" bit="41" />
+			<flag name="linger" bit="45" />
 		</type>
 
 		<type name="health" type="int" id="1" />
@@ -95,7 +98,15 @@
 
 		<type name="experience-count" type="int" id="15" />
 
-		<type name="slime-size" type="byte" id="16" default="1" />
+		<type name="minecart-block" type="int" id="16" />
+
+		<type name="minecart-offset" type="int" id="17" />
+
+		<type name="minecart-has-block" type="byte" id="18" />
+
+		<type name="enderman-item-id" type="short" id="23" />
+
+		<type name="enderman-item-damage" type="short" id="24" />
 
 		<type name="age" type="short" id="25" />
 
@@ -107,6 +118,12 @@
 
 		<type name="bed-position" type="block-position" id="29" />
 
+		<type name="fireball-power-x" type="float" id="30" />
+
+		<type name="fireball-power-y" type="float" id="31" />
+
+		<type name="fireball-power-z" type="float" id="32" />
+
 		<type name="potion-aux-value" type="short" id="37" />
 
 		<type name="lead-holder" type="long" id="38" default="-1" required="true" />
@@ -117,13 +134,15 @@
 
 		<type name="npc-id" type="string" id="41" />
 
-		<type name="interactive-tag-url" type="string" id="43">
+		<type name="interactive-tag-url" type="string" id="42">
 			NPC's tag with external link.
 		</type>
 
-		<type name="max-air" type="short" id="44" />
+		<type name="max-air" type="short" id="43" />
 
-		<type name="mark-variant" type="int" id="45" />
+		<type name="mark-variant" type="int" id="44" />
+
+		<type name="block-target" type="block-position" id="48" />
 
 		<type name="invulnerable-time" type="int" id="49">
 			Wither's invulnerable time.
@@ -166,6 +185,12 @@
 		<type name="shulker-attachment" type="block-position" id="67" />
 
 		<type name="trading-player" type="long" id="68" />
+
+		<type name="command-block-command" type="string" id="71" />
+
+		<type name="command-block-last-output" type="string" id="72" />
+
+		<type name="command-block-track-output" type="string" id="73" />
 
 		<type name="controlling-rider-seat-number" type="byte" id="74" />
 
