@@ -100,6 +100,11 @@
 			<field name="z" type="varint" />
 		</type>
 
+		<type name="mcpe-uuid">
+			<field name="most-significant-bits" type="long" endianness="little-endian" />
+			<field name="least-significant-bits" type="long" endianness="little-endian" />
+		</type>
+
 		<type name="skin">
 			Player's [skin](http://minecraft.gamepedia.com/Skin).
 			<field name="name" type="string">
@@ -112,7 +117,7 @@
 
 		<type name="player-list">
 			Informations about a player that will be added to the player's list in the pause menu.
-			<field name="uuid" type="uuid">
+			<field name="uuid" type="mcpe-uuid">
 				UUID of the player. If it's associated with an XBOX Live account the player's profile will also be available in pause menu.
 			</field>
 			<field name="entity-id" type="entity-id">
@@ -447,7 +452,7 @@
 			<packet name="add-player" id="12" clientbound="true" serverbound="false">
 				Spawns a player after adding it to the player's list using [PlayerList](#play_player-list). If [PlayerList](#play_player-list) is sent after this packet the player will appear to have the same skin as the player who receives this packet.
 				Spawning a player to itself (using the same entity id given in the [StartGame](#play_start-game) packet) will crash the client's game.
-				<field name="uuid" type="uuid">
+				<field name="uuid" type="mcpe-uuid">
 					Player's UUID, should match an UUID of a player in the list added through [PlayerList](#play_player-list).
 				</field>
 				<field name="username" type="string">
@@ -959,7 +964,7 @@
 			<packet name="crafting-event" id="54" clientbound="false" serverbound="true">
 				<field name="window" type="ubyte" />
 				<field name="type" type="varint" />
-				<field name="uuid" type="uuid" />
+				<field name="uuid" type="mcpe-uuid" />
 				<field name="input" type="slot[]" />
 				<field name="output" type="slot[]" />
 			</packet>
@@ -1056,7 +1061,7 @@
 						<field name="players" type="player-list[]" />
 					</variant>
 					<variant name="remove" value="1">
-						<field name="players" type="uuid[]" />
+						<field name="players" type="mcpe-uuid[]" />
 					</variant>
 				</variants>
 			</packet>
