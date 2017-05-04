@@ -23,6 +23,7 @@
 module src;
 
 import std.algorithm : sort, max, canFind;
+import std.base64;
 import std.conv : to, ConvException;
 import std.datetime : StopWatch, AutoStart;
 static import std.file;
@@ -139,6 +140,17 @@ struct Options {
 
 	Types types;
 
+	struct Expressions {
+
+		string basic;
+		string types;
+		string each;
+		string tuples;
+
+	}
+
+	Expressions encoding, decoding;
+
 }
 
 void src(string[] args, Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments, Effect[] effects, Biome[] biomes) {
@@ -241,6 +253,19 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 					if(metadata) options.types.metadata = (*metadata).str;
 					if(others) options.types.others = (*others).str;
 				}
+				foreach(immutable exp ; TypeTuple!("encoding", "decoding")) {
+					auto data = exp in *types;
+					if(data) {
+						auto basic = "basic" in *data;
+						auto types_ = "types" in *data;
+						auto each = "arrays" in *data;
+						auto tuples = "tuples" in *data;
+						if(basic) mixin("options." ~ exp ~ ".basic") = (*basic).str;
+						if(types_) mixin("options." ~ exp ~ ".types") = (*types_).str;
+						if(each) mixin("options." ~ exp ~ ".each") = (*each).str;
+						if(tuples) mixin("options." ~ exp ~ ".tuples") = (*tuples).str;
+					}
+				}
 			}
 		}
 
@@ -275,7 +300,7 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 
 		}
 
-		string crm = "[![SEL](https://i.imgur.com/iiDRUQQ.png)](https://github.com/sel-project/sel-utils)\n\n" ~
+		string crm = "[![SEL](https://i.imgur.com/1c3vVJB.png)](https://github.com/sel-project/sel-utils)\n\n" ~
 				"**Automatically generated libraries for Minecraft and Minecraft: Pocket Edition from [sel-project/sel-utils](https://github.com/sel-project/sel-utils)**\n\n" ~
 				"To report a problem or request a new feature related to the generated code open an issue on [sel-utils](https://github.com/sel-project/sel-utils) adding `" ~ lang ~ "` in the title or in the description.\n" ~
 				"To contribute at the project read the [contribution guidelines](https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md).\n\n";
@@ -405,6 +430,47 @@ string convertName(string name, Options.Types options) {
 	return conv ? *conv : name;
 }
 
+string convertEncoding(string type, string game, string length, Data[string] data, Options options) {
+	//TODO custom arrays
+	if(type.endsWith("]")) {
+		// array
+		auto t = type[0..type.lastIndexOf("[")];
+		string[] ret;
+		if(type.length - t.length != 2) {
+			// not-fixed array, encode length
+			ret ~= "/* TODO: encode length */";
+		}
+		data["ELEMENT_NAME"] = data["NAME"].str ~ "_child";
+		data["ELEMENT_ORIGINAL_TYPE"] = t;
+		data["ELEMENT_TYPE"] = convertType(game, t, options.types);
+		auto d = data.dup;
+		d["NAME"] = data["ELEMENT_NAME"];
+		d["ORIGINAL_TYPE"] = data["ELEMENT_ORIGINAL_TYPE"];
+		d["TYPE"] = data["ELEMENT_TYPE"];
+		data["CONTENT"] = convertEncoding(t, game, length, d, options);
+		return parseValue(options.encoding.each, data, (Template[string]).init, 0);
+	} else if(type.endsWith(">")) {
+		auto t = type[0..type.lastIndexOf("<")];
+		string[] ret;
+		foreach(i, char c; type[type.lastIndexOf("<")+1..$-1]) {
+			auto d = data.dup;
+			d["INDEX"] = to!string(i);
+			d["NAME"] = parseValue(options.encoding.tuples, d, (Template[string]).init, 0);
+			//TODO type
+			ret ~= convertEncoding(t, game, length, d, options);
+		}
+		return ret.join(" ");
+	} else {
+		if(type == "string" || type == "bytes") {
+			//TODO write length
+		}
+		return parseValue((){
+			if(basicTypes.canFind(type)) return options.encoding.basic;
+			else return options.encoding.types;
+		}(), data, (Template[string]).init, 0);
+	}
+}
+
 Data[] createAttributes(Attributes[string] attributes, Options options) {
 	Data[] ret;
 	foreach(game, a; attributes) {
@@ -482,11 +548,13 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				f["CUSTOM_TYPE"] = to!string(!basicTypes.canFind(field.type) && field.type.indexOf("[") == -1 && field.type.indexOf("<") == -1); //TODO not in custom arrays
 				f["WHEN"] = field.condition;
 				f["HAS_ENDIANNESS"] = to!string(field.endianness != "");
-				f["ENDIANNESS"] = field.endianness != "" ? field.endianness : (endiannessTypes.canFind(field.type) ? defaultEndianness : "");
+				f["ENDIANNESS"] = endiannessTypes.canFind(field.type) ? (field.endianness.length ? field.endianness : defaultEndianness) : "";
 				f["DEFAULT"] = field.def;
 				f["DEFAULT_ENCODED"] = createEncoded(field.def, field.type);
 				f["HAS_CONSTANTS"] = to!string(field.constants.length != 0);
 				f["CONSTANTS"] = createConstants(field, field.constants);
+				f["ENCODING"] = convertEncoding(field.type, game, p.data.arrayLength, f, options);
+				//f["DECODING"] = convertDecoding(field, options);
 				ret ~= Data(f);
 			}
 			return ret;
@@ -543,7 +611,8 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				Data[string] pk;
 				pk["GENERATOR"] = generator;
 				pk["GAME"] = game;
-				pk["ID_TYPE"] = id_type;
+				pk["ID_TYPE"] = p.data.id;
+				pk["ID_TYPE_ENCODED"] = id_type;
 				pk["SECTION"] = section.name;
 				pk["NAME"] = packet.name;
 				pk["ID"] = packet.id.to!string;
@@ -806,7 +875,7 @@ class Template {
 		string[] lines = ret.content.split("\n");
 		foreach(ref line ; lines) {
 			if(line.length) {
-				if(!(line.startsWith("{{") && line.endsWith("}}"))) line = space ~ line;
+				if(!(line.startsWith("{{") && line.endsWith("}}"))) line = space ~ (line.startsWith("^") ? line[1..$] : line);
 			}
 		}
 		ret.content = lines.join("\n");

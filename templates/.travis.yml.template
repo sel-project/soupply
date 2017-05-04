@@ -2,6 +2,9 @@ language: d
 
 d:
  - dmd
+
+notifications:
+ - email: false
  
 script:
  - cd gen && echo "${TRAVIS_BUILD_NUMBER}" > version.txt

@@ -4,6 +4,9 @@
 --- start section Protocol/{{GAME:pascal_case}}/{{NAME:pascal_case}}.cs ---
 using Types = sul.{{GAME:pascal_case}}.Types;
 
+using Utils.Buffer;
+using Utils.Packet;
+
 namespace sul.{{GAME:pascal_case}}
 {
 	
@@ -14,7 +17,7 @@ namespace sul.{{GAME:pascal_case}}
 public class {{NAME:pascal_case}} : Packet
 {
 
-	public const {{ID_TYPE}} Id = {{ID}};
+	public const {{ID_TYPE_ENCODED}} Id = {{ID}};
 
 	public const bool Clientbound = {{CLIENTBOUND}};
 	public const bool Serverbound = {{SERVERBOUND}};{{constants@FIELDS}}
@@ -33,14 +36,24 @@ public class {{NAME:pascal_case}} : Packet
 		return Id;
 	}
 
-	public override byte[] Encode()
+	public override void EncodeId(Buffer _buffer)
 	{
-		return this._buffer;
+		_buffer.Write{{ENDIANNESS:pascal_case}}{{ID_TYPE:pascal_case}}(Id);
 	}
 
-	public override void Decode(byte[] buffer)
+	public override void DecodeId(Buffer _buffer)
 	{
-		this._buffer = buffer;
+		_buffer.Read{{ENDIANNESS:pascal_case}}{{ID_TYPE:pascal_case}}();
+	}
+
+	public override void EncodeImpl(Buffer _buffer)
+	{
+{{encode@2,FIELDS}}
+	}
+
+	public override void DecodeImpl(Buffer _buffer)
+	{
+{{decode@2,FIELDS}}
 	}
 
 	public static {{NAME:pascal_case}} FromBuffer(byte[] buffer)
@@ -71,6 +84,6 @@ this.{{NAME:camel_case}} = {{NAME:camel_case}};
 --- start fields ---
 public {{TYPE}} {{NAME:camel_case}}{{DEFAULT!=? = {{DEFAULT_ENCODED}}}};
 --- end ---
---- start encoding ---
-{{WHEN!=?if({{WHEN:camel_case}}){ }}{{ENCODING}};{{WHEN!=? \}}}
+--- start encode ---
+^{{WHEN!=?if({{WHEN:camel_case}}){ }}{{ENCODING}}{{WHEN!=? \}}}
 --- end ---

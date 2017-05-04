@@ -30,6 +30,14 @@
 			},
 			"metadata": "\\sul\\metadata\\{{GAME:lowercase}}\\Metadata",
 			"others": "\\sul\\protocol\\{{GAME:lowercase}}\\types\\{{TYPE:pascal_case}}"
+		},
+		"encode": {
+			"basic": "$this->write{{ENDIANNESS:pascal_case}}{{TYPE:pascal_case}}($this->{{NAME:camel_case}});",
+			"types": "$this->writeBytes($this->{{NAME:camel_case}}.encode());"
+		},
+		"decode": {
+			"basic": "$this->{{NAME:camel_case}} = $this->read{{ENDIANNESS:pascal_case}}{{TYPE:pascal_case}}();",
+			"types": "$this->{{NAME:camel_case}} = new {{TYPE:pascal_case}}();"
 		}
 	}
 }

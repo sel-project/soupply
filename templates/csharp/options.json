@@ -28,12 +28,14 @@
 			"others": "Types.{{TYPE:pascal_case}}"
 		},
 		"encoding": {
-			"basic": "this.Write{{ENDIANNESS:pascal_case}}{{TYPE:pascal_case}}(this.{{NAME:camel_case}})",
-			"types": "this.{{NAME:camel_case}}.Encode(this)"
+			"basic": "_buffer.Write{{ENDIANNESS:pascal_case}}{{ORIGINAL_TYPE:pascal_case}}({{NAME:camel_case}});",
+			"types": "{{NAME:camel_case}}.EncodeImpl(_buffer);",
+			"arrays": "foreach({{ELEMENT_TYPE}} {{ELEMENT_NAME:camel_case}} in {{NAME:camel_case}}){ {{CONTENT}} }",
+			"tuples": "{{NAME:camel_case}}[{{INDEX}}]"
 		},
 		"decoding": {
-			"basic": "this.{{NAME:camel_case}} = this.Read{{ENDIANNESS:pascal_case}}{{TYPE:pascal_case}}()",
-			"types": "this.{{NAME:camel_case}}.Decode()"
+			"basic": "{{NAME:camel_case}} = _buffer.Read{{ENDIANNESS:pascal_case}}{{ORIGINAL_TYPE:pascal_case}}();",
+			"types": "{{NAME:camel_case}}.DecodeImpl(_buffer);"
 		}
 	}
 }

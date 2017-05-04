@@ -1,5 +1,8 @@
 --- start utils ---
 {{about}}
+{{buffer}}
+{{stream}}
+{{packet}}
 --- end ---
 --- start about Utils/About.cs ---
 namespace Utils
@@ -11,6 +14,152 @@ namespace Utils
 		public const Website = "{{WEBSITE}}";
 
 		public const Version = {{VERSION}};
+
+	}
+
+}
+--- end ---
+--- start buffer Utils/Buffer.cs ---
+using System.IO;
+
+namespace Utils
+{
+
+	public class Buffer
+	{
+
+		private BinaryWriter writer;
+		private BinaryReader reader;
+
+		public Buffer(BinaryWriter writer)
+		{
+			this.writer = writer;
+		}
+
+		public Buffer(BinaryReader reader)
+		{
+			this.reader = reader;
+		}
+
+		public void WriteBool(bool value)
+		{
+			writer.WriteBoolean(value);
+		}
+
+		public void WriteByte(sbyte value)
+		{
+			writer.WriteSByte(value);
+		}
+
+		public void WriteUbyte(byte value)
+		{
+			writer.WriteByte(value);
+		}
+
+		//
+
+		public bool ReadBool()
+		{
+			return reader.ReadBoolean();
+		}
+
+		public sbyte ReadByte()
+		{
+			return reader.readSByte();
+		}
+
+		public byte readUbyte()
+		{
+			return reader.readByte();
+		}
+
+		//
+
+		public static Buffer Writer()
+		{
+			return new Buffer(new BinaryWriter(new MemoryStream()));
+		}
+
+		public static Buffer Reader(byte[] _buffer)
+		{
+			return new Buffer(new BinaryReader(new MemoryStream(_buffer)));
+		}
+
+	}
+
+}
+--- end ---
+--- start stream Utils/Stream.cs ---
+using Utils.Buffer;
+
+namespace Utils
+{
+
+	public abstract class Stream
+	{
+
+		public byte[] Encode()
+		{
+			var buffer = Buffer.Writer();
+			EncodeImpl(buffer);
+			return buffer.buffer;
+		}
+
+		public Packet Decode(byte[] _buffer)
+		{
+			var buffer = Buffer.Reader(_buffer);
+			DecodeImpl(buffer);
+			return this;
+		}
+
+		public abstract void EncodeImpl(Buffer buffer);
+
+		public abstract void DecodeImpl(Buffer buffer);
+
+	}
+
+}
+--- end ---
+--- start packet Utils/Packet.cs ---
+using Utils.Stream;
+
+namespace Utils
+{
+
+	public abstract class Packet : Stream
+	{
+
+		public abstract int GetId();
+
+		public byte[] EncodeWithoutId()
+		{
+			return base.Encode();
+		}
+
+		public Packet DecodeWithoutId(byte[] _buffer)
+		{
+			return base.Decode(_buffer);
+		}
+
+		public override byte[] Encode()
+		{
+			var buffer = Buffer.Writer();
+			EncodeId(buffer);
+			EncodeImpl(buffer);
+			return buffer.buffer;
+		}
+
+		public override Packet Decode(byte[] _buffer)
+		{
+			var buffer = Buffer.Reader(_buffer);
+			DecodeId(buffer);
+			DecodeImpl(buffer);
+			return this;
+		}
+
+		public abstract void EncodeId(Buffer buffer);
+
+		public abstract void DecodeId(Buffer buffer);
 
 	}
 

@@ -27,6 +27,19 @@ class {{NAME:pascal_case}} extends Packet
 {{constructor_assign@2,FIELDS}}
 	\}}}
 
+	public function getId()
+	{
+		return self::ID;
+	}
+
+	public function encode()
+	{
+{{encode@2,FIELDS}}
+	}
+
+	public function decode()
+	{}
+
 }
 
 --- end ---
@@ -47,4 +60,7 @@ $this->{{NAME:camel_case}} = ${{NAME:camel_case}};
 --- end ---
 --- start fields ---
 public ${{NAME:camel_case}}{{DEFAULT!=? = {{DEFAULT_ENCODED}}}};
+--- end ---
+--- start encode ---
+{{ENCODE}}
 --- end ---
