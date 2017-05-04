@@ -565,6 +565,7 @@ string head(string title, bool back, string game="", string protocol="", string 
 			"\t\t<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js\"></script>\n" ~
 			"\t\t<script>hljs.initHighlightingOnLoad();</script>\n" ~
 			"\t\t<script src=\"https://platform.twitter.com/widgets.js\"></script>\n" ~
+			"\t\t<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-98448660-1', 'auto');ga('send', 'pageview');</script>\n" ~
 			"\t</head>\n" ~
 			"\t<body>\n" ~
 			"\t\t<div class=\"nav\">" ~
