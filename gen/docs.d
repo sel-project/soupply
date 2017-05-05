@@ -550,16 +550,15 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 }
 
 string head(string title, bool back, string game="", string protocol="", string description="") {
-	string b = back ? "../" : "";
 	return "<!DOCTYPE html>\n<html lang=\"en\">\n" ~
 			"\t<head>\n\t\t<meta charset=\"UTF-8\" />\n" ~
-			"\t\t<title>" ~ title ~ " | SEL Utils</title>\n" ~
+			"\t\t<title>" ~ title ~ "</title>\n" ~
 			"\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n" ~
 			"\t\t<meta name=\"theme-color\" content=\"#1E2327\" />\n" ~
 			(description.length ? "\t\t<meta name=\"description\" content=\"" ~ description.replace(`"`, `\"`) ~ "\" />\n" : "") ~
-			"\t\t<link rel=\"icon\" type=\"image/png\" href=\"" ~ b ~ "favicon.png\" />\n" ~
-			"\t\t<link rel=\"canonical\" href=\"https://sel-utils.github.io/docs" ~ (back ? "/" ~ game ~ "/" ~ protocol ~ ".html" : "") ~ "\" />\n" ~
-			"\t\t<link rel=\"stylesheet\" href=\"" ~ b ~ "style.min.css\" />\n" ~
+			"\t\t<link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" />\n" ~
+			"\t\t<link rel=\"canonical\" href=\"https://sel-utils.github.io/doc" ~ (back ? "/" ~ game ~ "/" ~ protocol ~ ".html" : "") ~ "\" />\n" ~
+			"\t\t<link rel=\"stylesheet\" href=\"/style.css\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css\" />\n" ~
 			"\t\t<script src=\"https://apis.google.com/js/platform.js\" async defer></script>\n" ~
 			"\t\t<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js\"></script>\n" ~
@@ -569,7 +568,7 @@ string head(string title, bool back, string game="", string protocol="", string 
 			"\t</head>\n" ~
 			"\t<body>\n" ~
 			"\t\t<div class=\"nav\">" ~
-			"<a href=\"" ~ b ~ "\">Index</a>  " ~
+			"<a href=\"/doc\">Index</a>  " ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/README.md\">About</a>    " ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/TYPES.md\">Types</a>    " ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md\">Contribute</a>    " ~
