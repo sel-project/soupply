@@ -41,20 +41,23 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	
 	enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "string", "varshort", "varushort", "varint", "varuint", "varlong", "varulong", "triad", "uuid", "bytes"];
 	
-	@property string convert(string type) {
-		if(type == "metadata") return "<a href=\"#metadata\">metadata</a>";
-		auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
-		immutable t = type[0..end];
-		immutable e = type[end..$].replace("<", "&lt;").replace(">", "&gt;");
-		if(defaultTypes.canFind(t)) return t ~ e;
-		else return "<a href=\"#" ~ link("types", t) ~ "\">" ~ toCamelCase(t) ~ "</a>" ~ e;
-	}
+
 	
 	foreach(string game, Protocols ptrs; protocols) {
 		immutable gameName = game[0..$-ptrs.protocol.to!string.length];
+		@property string convert(string type) {
+			auto array = type.indexOf("[");
+			auto tup = type.indexOf("<");
+			if(array >= 0) return convert(type[0..array]) ~ type[array..$];
+			else if(tup >= 0) return convert(type[0..tup]) ~ type[tup..$].replace("<", "&lt;").replace(">", "&gt;");
+			else if(type == "metadata") return "<a href=\"/protocol/" ~ game ~ "/metadata\">metadata</a>";
+			else if(defaultTypes.canFind(type)) return type;
+			else if(type in ptrs.data.arrays) return "<a href=\"/protocol/" ~ game ~ "/arrays#" ~ type.replace("_", "-") ~ "\">" ~ toCamelCase(type) ~ "</a>";
+			else return "<a href=\"/protocol/" ~ game ~ "/types/" ~ type.replace("_", "-") ~ "\">" ~ toCamelCase(type) ~ "</a>";
+		}
 		auto attributes = game in attributes;
 		auto metadata = game in metadatas;
-		string data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, gameName, ptrs.protocol.to!string, ptrs.data.description.length ? ptrs.data.description.replaceAll(ctRegex!`<[a-z0-9]+>|<\/[a-z0-9]+>`, "").replaceAll(ctRegex!`\[([a-zA-Z0-9_\-\. ]+)\]\([a-zA-Z0-9_\-\.:\#\/]+\)`, "$1").split("\n")[0].strip : "");
+		string data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, gameName, ptrs.protocol.to!string);
 		data ~= "\t\t<h1>" ~ ptrs.software ~ " " ~ ptrs.protocol.to!string ~ "</h1>\n";
 		data ~= "\t\t<a href=\"https://twitter.com/__selproject\" class=\"twitter-follow-button\" data-lang=\"en\" data-show-count=\"true\">Follow @__selproject</a>\n";
 		data ~= "\t\t<div style=\"height:4px\"></div>\n";
@@ -69,15 +72,17 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			sort(others);
 			string[] str;
 			foreach(o ; others) {
-				str ~= "<a href=\"diff/" ~ to!string(min(o, ptrs.protocol)) ~ "-" ~ to!string(max(o, ptrs.protocol)) ~ ".html\">" ~ to!string(o) ~ "</a>";
+				//str ~= "<a href=\"diff/" ~ to!string(min(o, ptrs.protocol)) ~ "-" ~ to!string(max(o, ptrs.protocol)) ~ ".html\">" ~ to!string(o) ~ "</a>";
+				str ~= "<a href=\"./" ~ gameName ~ o.to!string ~ "\">" ~ o.to!string ~ "</a>";
 			}
 			//data ~= "\t\t<p><strong>Compare</strong>: " ~ str.join(", ") ~ "</p>\n";
+			data ~= "\t\t<p>Other protocols: " ~ str.join(", ") ~ "</p>\n";
 		}
 		string[] jumps = ["<a href=\"#encoding\">Encoding</a>", "<a href=\"#packets\">Packets</a>"];
-		if(ptrs.data.types.length) jumps ~= "<a href=\"#types\">Types</a>";
-		if(ptrs.data.arrays.length) jumps ~= "<a href=\"#arrays\">Arrays</a>";
-		if(metadata) jumps ~= "<a href=\"#metadata\">Metadata</a>";
-		if(attributes) jumps ~= "<a href=\"#attributes\">Attributes</a>";
+		if(ptrs.data.types.length) jumps ~= "<a href=\"types\">Types</a>";
+		if(ptrs.data.arrays.length) jumps ~= "<a href=\"types#arrays\">Arrays</a>";
+		if(metadata) jumps ~= "<a href=\"metadata\">Metadata</a>";
+		if(attributes) jumps ~= "<a href=\"attributes\">Attributes</a>";
 		data ~= "\t\t<p><strong>Jump to</strong>: " ~ jumps.join(", ") ~ "</p>\n";
 		if(ptrs.data.released.length) {
 			auto spl = ptrs.data.released.split("/");
@@ -245,20 +250,26 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		data ~= "\t\t\t<tr>\n\t\t\t\t<th>Section</th>\n\t\t\t\t<th>Packets</th>\n\t\t\t</tr>\n";
 		foreach(section ; ptrs.data.sections) {
 			data ~= "\t\t\t<tr>\n";
-			data ~= "\t\t\t\t<td><a href=\"#" ~ section.name.replace("_", "-") ~ "\">" ~ pretty(toCamelCase(section.name)) ~ "</a></td>\n";
+			data ~= "\t\t\t\t<td><a href=\"" ~ game ~ "/" ~ section.name.replace("_", "-") ~ "\">" ~ pretty(toCamelCase(section.name)) ~ "</a></td>\n";
 			data ~= "\t\t\t\t<td class=\"center\">" ~ to!string(section.packets.length) ~ "</td>\n";
 			data ~= "\t\t\t</tr>\n";
 		}
 		data ~= "\t\t</table>\n";
+		data ~= "\t</body>\n";
+		data ~= "</html>";
+		writeHtml("../pages/" ~ game ~ ".html", data);
+		std.file.mkdirRecurse("../pages/" ~ game);
+
 		// sections
 		foreach(section ; ptrs.data.sections) {
-			data ~= "\t\t<h3 id=\"" ~ link(section.name) ~ "\">" ~ pretty(toCamelCase(section.name)) ~ "</h3>\n";
+			data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, gameName, ptrs.protocol.to!string, "/" ~ section.name);
+			data ~= "\t\t<h2>" ~ pretty(toCamelCase(section.name)) ~ "</h2>\n";
 			if(section.description.length) data ~= desc("\t\t", section.description);
 			data ~= "\t\t<table>\n";
 			data ~= "\t\t\t<tr>\n\t\t\t\t<th>Packets</th>\n\t\t\t\t<th>Id</th>\n\t\t\t\t<th>Clientbound</th>\n\t\t\t\t<th>Serverbound</th>\n\t\t\t</tr>\n";
 			foreach(packet ; section.packets) {
 				data ~= "\t\t\t<tr>\n";
-				data ~= "\t\t\t\t<td><a href=\"#" ~ link(section.name, packet.name) ~ "\">" ~ pretty(toCamelCase(packet.name)) ~ "</a></td>\n";
+				data ~= "\t\t\t\t<td><a href=\"" ~ section.name ~ "/" ~ packet.name.replace("_", "-") ~ "\">" ~ pretty(toCamelCase(packet.name)) ~ "</a></td>\n";
 				data ~= "\t\t\t\t<td class=\"center\">" ~ packet.id.to!string ~ "</td>\n";
 				//data ~= "\t\t\t\t<td class=\"center\">" ~ ("0" ~ packet.id.to!string(16))[$-2..$] ~ "₁₆</td>\n";
 				data ~= "\t\t\t\t<td class=\"center\">" ~ (packet.clientbound ? "✓" : "") ~ "</td>\n";
@@ -266,88 +277,91 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 				data ~= "\t\t\t</tr>\n";
 			}
 			data ~= "\t\t</table>\n";
+			data ~= "\t</body>\n";
+			data ~= "</html>";
+			writeHtml("../pages/" ~ game ~ "/" ~ section.name ~ ".html", data);
+			std.file.mkdirRecurse("../pages/" ~ game ~ "/" ~ section.name);
+
 			// packets
-			data ~= "\t\t<ul>\n";
 			foreach(packet ; section.packets) {
-				data ~= "\t\t\t<li>\n";
-				data ~= "\t\t\t\t<h3 id=\"" ~ link(section.name, packet.name) ~ "\">" ~ pretty(toCamelCase(packet.name)) ~ "</h3>\n";
-				/*data ~= "\t\t\t\t<table>\n";
-				data ~= "\t\t\t\t\t<tr><th colspan=\"3\">Id</th><th>Clientbound</th><th>Serverbound</th></tr>\n";
-				data ~= "\t\t\t\t\t<tr><td class=\"center\">" ~ packet.id.to!string ~ "</td>";
-				data ~= "<td class=\"center\">" ~ ("00000000" ~ packet.id.to!string(2))[$-8..$] ~ "₂</td>";
-				data ~= "<td class=\"center\">" ~ ("00" ~ packet.id.to!string(16))[$-2..$] ~ "₁₆</td>";
-				data ~= "<td class=\"center\">" ~ (packet.clientbound ? "✓" : "") ~ "</td>";
-				data ~= "<td class=\"center\">" ~ (packet.serverbound ? "✓" : "") ~ "</td></tr>\n";
-				data ~= "\t\t\t\t</table>\n";*/
-				data ~= "\t\t\t\t<div class=\"desc\">\n";
-				data ~= "\t\t\t\t\t<p><strong>Id</strong>: " ~ packet.id.to!string ~ "</p>\n";
-				data ~= "\t\t\t\t\t<p><strong>Hex</strong>: " ~ ("00" ~ packet.id.to!string(16))[$-2..$] ~ "</p>\n";
-				data ~= "\t\t\t\t\t<p><strong>Bin</strong>: " ~ ("00000000" ~ packet.id.to!string(2))[$-8..$] ~ "</p>\n";
-				data ~= "\t\t\t\t\t<p>";
+				data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, gameName, ptrs.protocol.to!string, "/" ~ section.name ~ "/" ~ packet.name.replace("_", "-"));
+				data ~= "\t\t<p><a href=\"../../" ~ game ~ "\">" ~ game ~ "</a> / <strong><a href=\"../" ~ section.name ~ "\">" ~ section.name ~ "</a></strong></p>\n";
+				data ~= "\t\t<h2>" ~ pretty(toCamelCase(packet.name)) ~ "</h2>\n";
+				data ~= "\t\t<div class=\"desc\">\n";
+				data ~= "\t\t\t<p><strong>Id</strong>: " ~ packet.id.to!string ~ "</p>\n";
+				data ~= "\t\t\t<p><strong>Hex</strong>: " ~ ("00" ~ packet.id.to!string(16))[$-2..$] ~ "</p>\n";
+				data ~= "\t\t\t<p><strong>Bin</strong>: " ~ ("00000000" ~ packet.id.to!string(2))[$-8..$] ~ "</p>\n";
+				data ~= "\t\t\t<p>";
 				if(packet.clientbound && packet.serverbound) data ~= "Sent by the <strong>server</strong> and the <strong>client</strong>";
 				else if(packet.clientbound) data ~= "Sent by the <strong>server</strong>";
 				else if(packet.serverbound) data ~= "Sent by the <strong>client</strong>";
 				else data ~= "Unbounded (not sent by the <strong>server</strong> nor by the <strong>client</strong>";
 				data ~= "</p>\n";
-				data ~= "\t\t\t\t</div>\n";
-				if(packet.description.length) data ~= desc("\t\t\t\t", packet.description);
-				writeFields([section.name, packet.name], packet.fields, 4);
+				data ~= "\t\t</div>\n";
+				if(packet.description.length) data ~= desc("\t\t", packet.description);
+				writeFields([], packet.fields, 4);
 				if(packet.variants.length) {
-					data ~= "\t\t\t\t<p><strong>Variants</strong>:</p>\n";
-					data ~= "\t\t\t\t<table>\n";
-					data ~= "\t\t\t\t\t<tr>\n";
-					data ~= "\t\t\t\t\t\t<th>Variant</th>\n";
-					data ~= "\t\t\t\t\t\t<th>Field</th>\n";
-					data ~= "\t\t\t\t\t\t<th>Value</th>\n";
-					data ~= "\t\t\t\t\t</tr>\n";
+					data ~= "\t\t<p><strong>Variants</strong>:</p>\n";
+					data ~= "\t\t<table>\n";
+					data ~= "\t\t\t<tr>\n";
+					data ~= "\t\t\t\t<th>Variant</th>\n";
+					data ~= "\t\t\t\t<th>Field</th>\n";
+					data ~= "\t\t\t\t<th>Value</th>\n";
+					data ~= "\t\t\t</tr>\n";
 					foreach(variant ; packet.variants) {
-						data ~= "\t\t\t\t\t<tr>\n";
-						data ~= "\t\t\t\t\t\t<td><a href=\"#" ~ link(section.name, packet.name, variant.name) ~ "\">" ~ pretty(toCamelCase(variant.name)) ~ "</a></td>\n";
-						data ~= "\t\t\t\t\t\t<td>" ~ toCamelCase(packet.variantField) ~ "</td>\n";
-						data ~= "\t\t\t\t\t\t<td class=\"center\">" ~ variant.value ~ "</td>\n";
-						data ~= "\t\t\t\t\t</tr>\n";
+						data ~= "\t\t\t<tr>\n";
+						data ~= "\t\t\t\t<td><a href=\"#" ~ link(variant.name) ~ "\">" ~ pretty(toCamelCase(variant.name)) ~ "</a></td>\n";
+						data ~= "\t\t\t\t<td>" ~ toCamelCase(packet.variantField) ~ "</td>\n";
+						data ~= "\t\t\t\t<td class=\"center\">" ~ variant.value ~ "</td>\n";
+						data ~= "\t\t\t</tr>\n";
 					}
-					data ~= "\t\t\t\t</table>\n";
-					data ~= "\t\t\t\t<ul>\n";
+					data ~= "\t\t</table>\n";
+					data ~= "\t\t<ul>\n";
 					foreach(variant ; packet.variants) {
-						data ~= "\t\t\t\t\t<li>\n";
-						data ~= "\t\t\t\t\t\t<h3 id=\"" ~ link(section.name, packet.name, variant.name) ~ "\">" ~ pretty(toCamelCase(variant.name)) ~ "</h3>\n";
-						if(variant.description.length) data ~= desc("\t\t\t\t\t\t", variant.description);
-						writeFields([section.name, packet.name, variant.name], variant.fields, 6, "Additional Fields");
-						data ~= "\t\t\t\t\t</li>\n";
+						data ~= "\t\t\t<li>\n";
+						data ~= "\t\t\t\t<h3 id=\"" ~ link(variant.name) ~ "\">" ~ pretty(toCamelCase(variant.name)) ~ "</h3>\n";
+						if(variant.description.length) data ~= desc("\t\t\t\t", variant.description);
+						writeFields([variant.name], variant.fields, 6, "Additional Fields");
+						data ~= "\t\t\t</li>\n";
 					}
-					data ~= "\t\t\t\t</ul>\n";
+					data ~= "\t\t</ul>\n";
 				}
-				data ~= "\t\t\t</li>\n";
+				data ~= "\t</body>\n";
+				data ~= "</html>";
+				writeHtml("../pages/" ~ game ~ "/" ~ section.name ~ "/" ~ packet.name.replace("_", "-") ~ ".html", data);
 			}
-			data ~= "\t\t</ul>\n";
 		}
 		// types
 		if(ptrs.data.types.length) {
-			data ~= "\t\t<hr>\n";
-			data ~= "\t\t<h2 id=\"types\">Types</h2>\n";
-			if(ptrs.data.types.length > 3) {
+			data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, gameName, ptrs.protocol.to!string, "/types");
+			data ~= "\t\t<h2>Types</h2>\n";
+			//TODO index table instead of jump to
+			data ~= "\t</body>\n";
+			data ~= "</html>";
+			/+if(ptrs.data.types.length > 3) {
 				string[] jt;
 				foreach(type ; ptrs.data.types) {
 					jt ~= "<a href=\"#" ~ link("types", type.name) ~ "\">" ~ pretty(toCamelCase(type.name)) ~ "</a>";
 				}
 				data ~= "\t\t<p><strong>Jump to</strong>: " ~ jt.join(", ") ~ "</p>\n";
-			}
-			data ~= "\t\t<ul>\n";
+			}+/
+			writeHtml("../pages/" ~ game ~ "/types.html", data);
+			std.file.mkdirRecurse("../pages/" ~ game ~ "/types");
 			foreach(type ; ptrs.data.types) {
-				data ~= "\t\t\t<li>\n";
-				data ~= "\t\t\t\t<h3 id=\"" ~ link("types", type.name) ~ "\">" ~ pretty(toCamelCase(type.name)) ~ "</h3>\n";
-				if(type.length.length) data ~= "\t\t\t\t<p>⚠️️ This type is prefixed with its length encoded as <strong>" ~ type.length ~ "</strong> ⚠️️</p>\n";
-				if(type.description.length) data ~= desc("\t\t\t\t", type.description);
-				writeFields(["types", type.name], type.fields, 4);
-				data ~= "\t\t\t</li>\n";
+				data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, gameName, ptrs.protocol.to!string, "/types/" ~ type.name.replace("_", "-"));
+				data ~= "\t\t<h2>" ~ pretty(toCamelCase(type.name)) ~ "</h2>\n";
+				if(type.length.length) data ~= "\t\t<p>⚠️️ This type is prefixed with its length encoded as <strong>" ~ type.length ~ "</strong> ⚠️️</p>\n";
+				if(type.description.length) data ~= desc("\t\t", type.description);
+				writeFields([], type.fields, 2);
+				data ~= "\t</body>\n";
+				data ~= "</html>";
+				writeHtml("../pages/" ~ game ~ "/types/" ~ type.name.replace("_", "-") ~ ".html", data);
 			}
-			data ~= "\t\t</ul>\n";
 		}
 		// arrays
 		if(ptrs.data.arrays.length) {
-			data ~= "\t\t<hr>\n";
-			data ~= "\t\t<h2 id=\"arrays\">Arrays</h2>\n";
+			data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, gameName, ptrs.protocol.to!string, "/arrays");
+			data ~= "\t\t<h2>Arrays</h2>\n";
 			bool e = false;
 			foreach(a ; ptrs.data.arrays) {
 				e |= a.endianness.length != 0;
@@ -368,11 +382,14 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 				data ~= "\t\t\t</tr>\n";
 			}
 			data ~= "\t\t</table>\n";
+			data ~= "\t</body>\n";
+			data ~= "</html>";
+			writeHtml("../pages/" ~ game ~ "/arrays.html", data);
 		}
 		// metadata
 		if(metadata) {
-			data ~= "\t\t<hr>\n";
-			data ~= "\t\t<h2 id=\"metadata\">Metadata</h2>\n";
+			data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, gameName, ptrs.protocol.to!string, "/metadata");
+			data ~= "\t\t<h2>Metadata</h2>\n";
 			data ~= "\t\t<ul>\n";
 			// encoding
 			data ~= "\t\t\t<li>\n";
@@ -425,7 +442,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 				data ~= "\t\t\t\t\t<tr>\n";
 				data ~= "\t\t\t\t\t\t<td>";
 				immutable name = pretty(toCamelCase(meta.name));
-				if(meta.description.length || meta.flags.length) data ~= "<a href=\"#" ~ link("metadata", meta.name) ~ "\">" ~ name ~ "</a>";
+				if(meta.description.length || meta.flags.length) data ~= "<a href=\"#" ~ link(meta.name) ~ "\">" ~ name ~ "</a>";
 				else data ~= name;
 				data ~= "</td>\n";
 				data ~= "\t\t\t\t\t\t<td>" ~ convert(meta.type) ~ "</td>\n";
@@ -440,7 +457,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			foreach(meta ; (*metadata).data.data) {
 				if(meta.description.length || meta.flags.length) {
 					data ~= "\t\t\t\t\t<li>\n";
-					data ~= "\t\t\t\t\t<h4 id=\"" ~ link("metadata", meta.name) ~ "\">" ~ pretty(toCamelCase(meta.name)) ~ "</h4>\n";
+					data ~= "\t\t\t\t\t<h4 id=\"" ~ link(meta.name) ~ "\">" ~ pretty(toCamelCase(meta.name)) ~ "</h4>\n";
 					if(meta.description.length) data ~= desc("\t\t\t\t\t", meta.description);
 					if(meta.flags.length) {
 						bool description;
@@ -472,18 +489,21 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t\t\t</ul>\n";
 			data ~= "\t\t\t</li>\n";
 			data ~= "\t\t</ul>\n";
+			data ~= "\t</body>\n";
+			data ~= "</html>";
+			writeHtml("../pages/" ~ game ~ "/metadata.html", data);
 		}
 		// attributes
 		if(attributes) {
-			data ~= "\t\t<hr>\n";
-			data ~= "\t\t<h2 id=\"attributes\">Attributes</h2>\n";
+			data = head(ptrs.software ~ " " ~ ptrs.protocol.to!string, true, gameName, ptrs.protocol.to!string, "/attributes");
+			data ~= "\t\t<h2>Attributes</h2>\n";
 			string[] jmp;
-			foreach(attribute ; (*attributes).data) jmp ~= "<a href=\"#" ~ link("attributes", attribute.name) ~ "\"/>" ~ pretty(toCamelCase(attribute.id)) ~ "</a>";
+			foreach(attribute ; (*attributes).data) jmp ~= "<a href=\"#" ~ link(attribute.name) ~ "\"/>" ~ pretty(toCamelCase(attribute.id)) ~ "</a>";
 			data ~= "\t\t<p><strong>Jump to</strong>: " ~ jmp.join(", ") ~ "</p>\n";
 			data ~= "\t\t<ul>\n";
 			foreach(attribute ; (*attributes).data) {
 				data ~= "\t\t\t<li>\n";
-				data ~= "\t\t\t\t<h3 id=\"" ~ link("attributes", attribute.id) ~ "\">" ~ pretty(toCamelCase(attribute.id)) ~ "</h3>\n";
+				data ~= "\t\t\t\t<h3 id=\"" ~ link(attribute.id) ~ "\">" ~ pretty(toCamelCase(attribute.id)) ~ "</h3>\n";
 				data ~= "\t\t\t\t<code class=\"attribute\">" ~ attribute.name ~ "</code>\n";
 				data ~= "\t\t\t\t<div class=\"desc attribute\">\n";
 				data ~= "\t\t\t\t\t<p><strong>Minimum</strong>: " ~ attribute.min.to!string ~ "</p>\n";
@@ -496,9 +516,9 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t</ul>\n";
 		}
 		data ~= "\t</body>\n</html>\n";
-		immutable ps = ptrs.protocol.to!string;
-		std.file.mkdirRecurse("../pages/" ~ game[0..$-ps.length]);
-		writeHtml("../pages/" ~ game[0..$-ps.length] ~ "/" ~ ps ~ ".html", data);
+		data ~= "\t</body>\n";
+		data ~= "</html>";
+		writeHtml("../pages/" ~ game ~ "/attributes.html", data);
 	}
 	
 	// index
@@ -536,7 +556,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			size_t packets = 0;
 			foreach(section ; cp[0].sections) packets += section.packets.length;
 			data ~= "\t\t\t<tr>\n";
-			data ~= "\t\t\t\t<td class=\"center\"><a href=\"" ~ cp[2][0..$-ps.length] ~ "/" ~ ps ~ "\">" ~ ps ~ "</a></td>\n";
+			data ~= "\t\t\t\t<td class=\"center\"><a href=\"" ~ cp[2][0..$-ps.length] ~ ps ~ "\">" ~ ps ~ "</a></td>\n";
 			data ~= "\t\t\t\t<td class=\"center\">" ~ to!string(packets) ~ "</td>\n";
 			if(_released) data ~= "\t\t\t\t<td class=\"center\">" ~ cp[0].released ~ "</td>\n";
 			if(_from) data ~= "\t\t\t\t<td class=\"center\">" ~ cp[0].from ~ "</td>\n";
@@ -545,22 +565,22 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		}
 		data ~= "\t\t</table>\n";
 		// copy latest into game/index.html
-		std.file.write("../pages/" ~ namespace ~ ".html", std.file.read("../pages/" ~ namespace ~ "/" ~ to!string(sorted[0][1]) ~ ".html"));
+		std.file.write("../pages/" ~ namespace ~ ".html", std.file.read("../pages/" ~ namespace ~ to!string(sorted[0][1]) ~ ".html")); //TODO replace canonical?
 	}
 	data ~= "\t</body>\n</html>\n";
 	writeHtml("../pages/index.html", data);
 
 }
 
-string head(string title, bool back, string game="", string protocol="", string description="") {
+string head(string title, bool back, string game="", string protocol="", string section="") {
 	return "<!DOCTYPE html>\n<html lang=\"en\">\n" ~
 			"\t<head>\n\t\t<meta charset=\"UTF-8\" />\n" ~
 			"\t\t<title>" ~ title ~ "</title>\n" ~
 			"\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n" ~
 			"\t\t<meta name=\"theme-color\" content=\"#1E2327\" />\n" ~
-			(description.length ? "\t\t<meta name=\"description\" content=\"" ~ description.replace(`"`, `\"`) ~ "\" />\n" : "") ~
+			//(description.length ? "\t\t<meta name=\"description\" content=\"" ~ description.replace(`"`, `\"`) ~ "\" />\n" : "") ~
 			"\t\t<link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" />\n" ~
-			"\t\t<link rel=\"canonical\" href=\"https://sel-utils.github.io/docs" ~ (back ? "/" ~ game ~ "/" ~ protocol : "") ~ "\" />\n" ~
+			"\t\t<link rel=\"canonical\" href=\"https://sel-utils.github.io/protocol/" ~ game ~ protocol ~ section ~ "\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"/style.css\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css\" />\n" ~
 			"\t\t<script src=\"https://apis.google.com/js/platform.js\" async defer></script>\n" ~
@@ -571,13 +591,13 @@ string head(string title, bool back, string game="", string protocol="", string 
 			"\t</head>\n" ~
 			"\t<body>\n" ~
 			"\t\t<div class=\"nav\">" ~
-			"<a href=\"/docs\">Index</a>  " ~
+			"<a href=\"/protocol/\">Index</a>  " ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/README.md\">About</a>    " ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/TYPES.md\">Types</a>    " ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md\">Contribute</a>    " ~
 			(game.length ? "<a href=\"https://github.com/sel-project/sel-utils/blob/master/xml/protocol/" ~ game ~ protocol ~ ".xml\">XML</a>    " : "") ~
 			"<a href=\"https://github.com/sel-project/sel-utils\">Github</a></div></div>\n" ~
-			"</div>\n" ~
+			"\t\t</div>\n" ~
 			"\t\t<div class=\"logo\" onclick=\"if(document.body.classList.contains('dark')){document.body.classList.remove('dark');}else{document.body.classList.add('dark');}\"></div>\n"; //TODO remember theme
 }
 

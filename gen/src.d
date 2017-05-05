@@ -356,7 +356,7 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 	{
 		import std.regex : ctRegex, replaceAll;
 		string num(size_t conv) {
-			return "`" ~ conv.to!string.dup.reverse.replaceAll(ctRegex!"([0-9]{3})", "$1 ").reverse.idup.strip ~ "`";
+			return conv.to!string.dup.reverse.replaceAll(ctRegex!"([0-9]{3})", "$1 ").reverse.idup.strip.replace(" ", "&#8239;");
 		}
 		string file = cast(string)std.file.read("../templates/README.md.template");
 		string[] langs;

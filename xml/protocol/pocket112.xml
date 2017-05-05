@@ -44,7 +44,7 @@
 
 		<alias name="json" type="string" />
 
-		<type name="login-body">
+		<type name="login-body" length="">
 			<field name="chain" type="login-payload" />
 			<field name="client-data" type="login-payload" />
 		</type>
@@ -253,9 +253,6 @@
 					Edition that the player is using to join the server. The different editions may have different features and servers may block the access from unaccepted editions of the game.
 					<constant name="vanilla" value="0" />
 					<constant name="education" value="1" />
-				</field>
-				<field name="body-length" type="varuint">
-					Length, in bytes, of the following field. This field was used when the body was compressed.
 				</field>
 				<field name="body" type="login-body">
 					Payload that contains 2 JWTs (with each length indicated by an unsigned little-endian 32-bits integer) with more informations about the player and its account.
