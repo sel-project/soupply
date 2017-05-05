@@ -674,8 +674,10 @@
 					<constant name="haggle-yes" value="91" />
 					<constant name="haggle-no" value="92" />
 					<constant name="haggle-idle" value="93" />
-					<constant name="default" value="94" />
-					<constant name="undefined" value="95" />
+					<constant name="chorus-grow" value="94" />
+					<constant name="chorus-death" value="95" />
+					<constant name="default" value="96" />
+					<constant name="undefined" value="97" />
 				</field>
 				<field name="position" type="entity-position">
 					Position where the sound was generated. The closer to the player the more intense will be on the client.
@@ -691,50 +693,55 @@
 					<constant name="start-thunder" value="3002" />
 					<constant name="stop-rain" value="3003" />
 					<constant name="stop-thunder" value="3004" />
+					<constant name="start-block-break" value="3600" />
+					<constant name="stop-block-break" value="3601" />
 					<constant name="set-data" value="4000" />
 					<constant name="players-sleeping" value="9800" />
-					<constant name="bubble" value="16385" />
-					<constant name="critical" value="16386" />
-					<constant name="block-force-field" value="16387" />
-					<constant name="smoke" value="16388" />
-					<constant name="explode" value="16389" />
-					<constant name="evaporation" value="16390" />
-					<constant name="flame" value="16391" />
-					<constant name="lava" value="16392" />
-					<constant name="large-smoke" value="16393" />
-					<constant name="redstone" value="16394" />
-					<constant name="rising-red-dust" value="16395" />
-					<constant name="item-break" value="16396" />
-					<constant name="snowball-poof" value="16397" />
-					<constant name="huge-explode" value="16398" />
-					<constant name="huge-explode-seed" value="16399" />
-					<constant name="mob-flame" value="16400" />
-					<constant name="heart" value="16401" />
-					<constant name="terrain" value="16402" />
-					<constant name="town-aura" value="16403" />
-					<constant name="portal" value="16404" />
-					<constant name="water-splash" value="16405" />
-					<constant name="water-wake" value="16406" />
-					<constant name="drip-water" value="16407" />
-					<constant name="drip-lava" value="16408" />
-					<constant name="falling-dust" value="16409" />
-					<constant name="mob-spell" value="16410" />
-					<constant name="mob-spell-ambient" value="16411" />
-					<constant name="mob-spell-instantaneous" value="16412" />
-					<constant name="ink" value="16413" />
-					<constant name="slime" value="16414" />
-					<constant name="rain-splash" value="16415" />
-					<constant name="villager-angry" value="16416" />
-					<constant name="villager-happy" value="16417" />
-					<constant name="enchantment-table" value="16418" />
-					<constant name="tracking-emitter" value="16419" />
-					<constant name="note" value="16420" />
-					<constant name="witch-spell" value="16421" />
-					<constant name="carrot" value="16422" />
-					<constant name="end-rod" value="16424" />
-					<constant name="dragon-breath" value="16425" />
-					<constant name="shoot" value="2000" />
-					<constant name="destroy" value="2001" />
+					<constant name="particle-bubble" value="16385" />
+					<constant name="particle-critical" value="16386" />
+					<constant name="particle-block-force-field" value="16387" />
+					<constant name="particle-smoke" value="16388" />
+					<constant name="particle-explode" value="16389" />
+					<constant name="particle-evaporation" value="16390" />
+					<constant name="particle-flame" value="16391" />
+					<constant name="particle-lava" value="16392" />
+					<constant name="particle-large-smoke" value="16393" />
+					<constant name="particle-redstone" value="16394" />
+					<constant name="particle-rising-red-dust" value="16395" />
+					<constant name="particle-item-break" value="16396" />
+					<constant name="particle-snowball-poof" value="16397" />
+					<constant name="particle-huge-explode" value="16398" />
+					<constant name="particle-huge-explode-seed" value="16399" />
+					<constant name="particle-mob-flame" value="16400" />
+					<constant name="particle-heart" value="16401" />
+					<constant name="particle-terrain" value="16402" />
+					<constant name="particle-town-aura" value="16403" />
+					<constant name="particle-portal" value="16404" />
+					<constant name="particle-water-splash" value="16405" />
+					<constant name="particle-water-wake" value="16406" />
+					<constant name="particle-drip-water" value="16407" />
+					<constant name="particle-drip-lava" value="16408" />
+					<constant name="particle-falling-dust" value="16409" />
+					<constant name="particle-mob-spell" value="16410" />
+					<constant name="particle-mob-spell-ambient" value="16411" />
+					<constant name="particle-mob-spell-instantaneous" value="16412" />
+					<constant name="particle-ink" value="16413" />
+					<constant name="particle-slime" value="16414" />
+					<constant name="particle-rain-splash" value="16415" />
+					<constant name="particle-villager-angry" value="16416" />
+					<constant name="particle-villager-happy" value="16417" />
+					<constant name="particle-enchantment-table" value="16418" />
+					<constant name="particle-tracking-emitter" value="16419" />
+					<constant name="particle-note" value="16420" />
+					<constant name="particle-witch-spell" value="16421" />
+					<constant name="particle-carrot" value="16422" />
+					<constant name="particle-end-rod" value="16424" />
+					<constant name="particle-dragon-breath" value="16425" />
+					<constant name="particle-shoot" value="2000" />
+					<constant name="particle-destroy" value="2001" />
+					<constant name="particle-splash" value="2002" />
+					<constant name="particle-eye-despawn" value="2003" />
+					<constant name="particle-spawn" value="2004" />
 				</field>
 				<field name="position" type="entity-position" />
 				<field name="data" type="varint" />
@@ -844,6 +851,7 @@
 					<constant name="stop-sneak" value="12" />
 					<constant name="start-gliding" value="15" />
 					<constant name="stop-gliding" value="16" />
+					<constant name="continue-break" value="18" />
 				</field>
 				<field name="position" type="block-position" />
 				<field name="face" type="varint" />

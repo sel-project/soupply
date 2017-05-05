@@ -1,4 +1,4 @@
-![SEL Logo](https://i.imgur.com/1c3vVJB.png)
+![SEL Logo](http://i.imgur.com/cTu1FE5.png)
 
 __Automatically generated libraries and documentation for Minecraft, Minecraft: Pocket Edition and SEL__
 
@@ -27,7 +27,7 @@ The following data is provided through [XML files](https://github.com/sel-projec
 ### Projects using sel-utils
 
 | | Type | Language | Used Data
-|---:|---|---
+|---:|---|---|---
 | [sel-server](https://github.com/sel-project/sel-server) | server (MC and MCPE) | D | protocol, metadata, blocks, items, effects, enchantments, biomes, creative inventory
 
 ### Generated code
