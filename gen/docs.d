@@ -558,7 +558,7 @@ string head(string title, bool back, string game="", string protocol="", string 
 			"\t\t<meta name=\"theme-color\" content=\"#1E2327\" />\n" ~
 			(description.length ? "\t\t<meta name=\"description\" content=\"" ~ description.replace(`"`, `\"`) ~ "\" />\n" : "") ~
 			"\t\t<link rel=\"icon\" type=\"image/png\" href=\"" ~ b ~ "favicon.png\" />\n" ~
-			"\t\t<link rel=\"canonical\" href=\"https://sel-project.github.io/sel-utils" ~ (back ? "/" ~ game ~ "/" ~ protocol ~ ".html" : "") ~ "\" />\n" ~
+			"\t\t<link rel=\"canonical\" href=\"https://sel-utils.github.io/docs" ~ (back ? "/" ~ game ~ "/" ~ protocol ~ ".html" : "") ~ "\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"" ~ b ~ "style.min.css\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css\" />\n" ~
 			"\t\t<script src=\"https://apis.google.com/js/platform.js\" async defer></script>\n" ~
