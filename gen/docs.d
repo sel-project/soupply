@@ -514,6 +514,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			if(spl.length == 3) return (to!size_t(spl[0]) * 366 + to!size_t(spl[1])) * 31 + to!size_t(spl[2]);
 			else return size_t.max;
 		}
+		string namespace = p[name][0][2][0..$-(p[name][0][1].to!string.length)];
 		auto sorted = sort!((a, b) => date(a[0].released) > date(b[0].released))(p[name]).release();
 		bool _released, _from, _to;
 		foreach(pr ; sorted) {
@@ -543,6 +544,8 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t\t</tr>\n";
 		}
 		data ~= "\t\t</table>\n";
+		// copy latest into game/index.html
+		std.file.write("../pages/" ~ namespace ~ "/index.html", std.file.read("../pages/" ~ namespace ~ "/" ~ to!string(sorted[0][1]) ~ ".html"));
 	}
 	data ~= "\t</body>\n</html>\n";
 	writeHtml("../pages/index.html", data);
@@ -557,7 +560,7 @@ string head(string title, bool back, string game="", string protocol="", string 
 			"\t\t<meta name=\"theme-color\" content=\"#1E2327\" />\n" ~
 			(description.length ? "\t\t<meta name=\"description\" content=\"" ~ description.replace(`"`, `\"`) ~ "\" />\n" : "") ~
 			"\t\t<link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" />\n" ~
-			"\t\t<link rel=\"canonical\" href=\"https://sel-utils.github.io/doc" ~ (back ? "/" ~ game ~ "/" ~ protocol ~ ".html" : "") ~ "\" />\n" ~
+			"\t\t<link rel=\"canonical\" href=\"https://sel-utils.github.io/docs" ~ (back ? "/" ~ game ~ "/" ~ protocol ~ ".html" : "") ~ "\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"/style.css\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css\" />\n" ~
 			"\t\t<script src=\"https://apis.google.com/js/platform.js\" async defer></script>\n" ~
@@ -568,7 +571,7 @@ string head(string title, bool back, string game="", string protocol="", string 
 			"\t</head>\n" ~
 			"\t<body>\n" ~
 			"\t\t<div class=\"nav\">" ~
-			"<a href=\"/doc\">Index</a>  " ~
+			"<a href=\"/docs\">Index</a>  " ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/README.md\">About</a>    " ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/TYPES.md\">Types</a>    " ~
 			"<a href=\"https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md\">Contribute</a>    " ~
