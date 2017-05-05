@@ -87,3 +87,6 @@ public {{TYPE}} {{NAME:camel_case}}{{DEFAULT!=? = {{DEFAULT_ENCODED}}}};
 --- start encode ---
 ^{{WHEN!=?if({{WHEN:camel_case}}){ }}{{ENCODING}}{{WHEN!=? \}}}
 --- end ---
+--- start decode ---
+^{{WHEN!=?if({{WHEN:camel_case}}){ }}{{DECODING}}{{WHEN!=? \}}}
+--- end ---

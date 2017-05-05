@@ -22,7 +22,7 @@
  */
 module src;
 
-import std.algorithm : sort, max, canFind;
+import std.algorithm : sort, max, canFind, count;
 import std.base64;
 import std.conv : to, ConvException;
 import std.datetime : StopWatch, AutoStart;
@@ -152,6 +152,8 @@ struct Options {
 	Expressions encoding, decoding;
 
 }
+
+size_t lines_of_code, total_files;
 
 void src(string[] args, Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entities, Enchantment[] enchantments, Effect[] effects, Biome[] biomes) {
 
@@ -300,7 +302,7 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 
 		}
 
-		string crm = "[![SEL](http://i.imgur.com/cTu1FE5.png)](https://github.com/sel-project/sel-utils)\n\n" ~
+		string crm = "[![SEL](https://i.imgur.com/cTu1FE5.png)](https://github.com/sel-project/sel-utils)\n\n" ~
 				"**Automatically generated libraries for Minecraft and Minecraft: Pocket Edition from [sel-project/sel-utils](https://github.com/sel-project/sel-utils)**\n\n" ~
 				"To report a problem or request a new feature related to the generated code open an issue on [sel-utils](https://github.com/sel-project/sel-utils) adding `" ~ lang ~ "` in the title or in the description.\n" ~
 				"To contribute at the project read the [contribution guidelines](https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md).\n\n";
@@ -352,6 +354,10 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 
 	// rewrite README.md
 	{
+		import std.regex : ctRegex, replaceAll;
+		string num(size_t conv) {
+			return "`" ~ conv.to!string.dup.reverse.replaceAll(ctRegex!"([0-9]{3})", "$1 ").reverse.idup.strip ~ "`";
+		}
 		string file = cast(string)std.file.read("../templates/README.md.template");
 		string[] langs;
 		string[] descs;
@@ -363,6 +369,7 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 			}
 		}
 		file ~= "\n**Jump to**: " ~ langs.join(", ") ~ "\n\n";
+		file ~= num(lines_of_code) ~ " lines of code in " ~ num(total_files) ~ " files\n\n";
 		file ~= descs.join("\n\n");
 		std.file.write("../README.md", file);
 	}
@@ -860,6 +867,8 @@ class Template {
 				ret = createHeader(gen ? (*gen).str : "", this.options.header.open, this.options.header.line, this.options.header.close) ~ ret;
 			}
 			std.file.write(location, this.options.start ~ ret ~ this.options.end);
+			lines_of_code += ret.count("\n");
+			total_files++;
 		}
 		return ret;
 	}

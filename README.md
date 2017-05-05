@@ -1,4 +1,4 @@
-![SEL Logo](http://i.imgur.com/cTu1FE5.png)
+![SEL Logo](https://i.imgur.com/cTu1FE5.png)
 
 __Automatically generated libraries and documentation for Minecraft, Minecraft: Pocket Edition and SEL__
 
@@ -33,6 +33,8 @@ The following data is provided through [XML files](https://github.com/sel-projec
 ### Generated code
 
 **Jump to**: [C#](#csharp), [D](#d), [Java](#java), [PHP](#php)
+
+`280 779` lines of code in `1 519` files
 
 ### [C#](https://github.com/sel-utils/csharp)
 

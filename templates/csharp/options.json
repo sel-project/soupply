@@ -24,6 +24,9 @@
 				"2": "Tuple<%, %>",
 				"3": "Tuple<%, %, %>"
 			},
+			"arrays": {
+				"fixed": "{{TYPE}}[] {{NAME}} = new {{TYPE}}[{{SIZE}}]"
+			},
 			"metadata": "sul.Metadata.{{GAME:pascal_case}}.Metadata",
 			"others": "Types.{{TYPE:pascal_case}}"
 		},

@@ -522,7 +522,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			_from |= pr[0].from.length != 0;
 			_to |= pr[0].to.length != 0;
 		}
-		data ~= "\t\t<h2>" ~ name ~ "</h2>\n";
+		data ~= "\t\t<h2><a href=\"" ~ namespace ~ "\">" ~ name ~ "</a></h2>\n";
 		data ~= "\t\t<table>\n";
 		data ~= "\t\t\t<tr>\n";
 		data ~= "\t\t\t\t<th>Protocol</th>\n";
@@ -536,7 +536,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			size_t packets = 0;
 			foreach(section ; cp[0].sections) packets += section.packets.length;
 			data ~= "\t\t\t<tr>\n";
-			data ~= "\t\t\t\t<td class=\"center\"><a href=\"" ~ cp[2][0..$-ps.length] ~ "/" ~ ps ~ ".html\">" ~ ps ~ "</a></td>\n";
+			data ~= "\t\t\t\t<td class=\"center\"><a href=\"" ~ cp[2][0..$-ps.length] ~ "/" ~ ps ~ "\">" ~ ps ~ "</a></td>\n";
 			data ~= "\t\t\t\t<td class=\"center\">" ~ to!string(packets) ~ "</td>\n";
 			if(_released) data ~= "\t\t\t\t<td class=\"center\">" ~ cp[0].released ~ "</td>\n";
 			if(_from) data ~= "\t\t\t\t<td class=\"center\">" ~ cp[0].from ~ "</td>\n";
@@ -545,7 +545,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		}
 		data ~= "\t\t</table>\n";
 		// copy latest into game/index.html
-		std.file.write("../pages/" ~ namespace ~ "/index.html", std.file.read("../pages/" ~ namespace ~ "/" ~ to!string(sorted[0][1]) ~ ".html"));
+		std.file.write("../pages/" ~ namespace ~ ".html", std.file.read("../pages/" ~ namespace ~ "/" ~ to!string(sorted[0][1]) ~ ".html"));
 	}
 	data ~= "\t</body>\n</html>\n";
 	writeHtml("../pages/index.html", data);
@@ -560,7 +560,7 @@ string head(string title, bool back, string game="", string protocol="", string 
 			"\t\t<meta name=\"theme-color\" content=\"#1E2327\" />\n" ~
 			(description.length ? "\t\t<meta name=\"description\" content=\"" ~ description.replace(`"`, `\"`) ~ "\" />\n" : "") ~
 			"\t\t<link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" />\n" ~
-			"\t\t<link rel=\"canonical\" href=\"https://sel-utils.github.io/docs" ~ (back ? "/" ~ game ~ "/" ~ protocol ~ ".html" : "") ~ "\" />\n" ~
+			"\t\t<link rel=\"canonical\" href=\"https://sel-utils.github.io/docs" ~ (back ? "/" ~ game ~ "/" ~ protocol : "") ~ "\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"/style.css\" />\n" ~
 			"\t\t<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css\" />\n" ~
 			"\t\t<script src=\"https://apis.google.com/js/platform.js\" async defer></script>\n" ~
