@@ -2,6 +2,7 @@
 {{about}}
 {{buffer}}
 {{stream}}
+{{length_prefixed_type}}
 {{packet}}
 --- end ---
 --- start about Utils/About.cs ---
@@ -112,9 +113,49 @@ namespace Utils
 			return this;
 		}
 
-		public abstract void EncodeImpl(Buffer buffer);
+		public void EncodeBody(Buffer buffer)
+		{
+			EncodeImpl(buffer);
+		}
 
-		public abstract void DecodeImpl(Buffer buffer);
+		public void DecodeBody(Buffer buffer)
+		{
+			DecodeImpl(buffer);
+		}
+
+		protected abstract void EncodeImpl(Buffer buffer);
+
+		protected abstract void DecodeImpl(Buffer buffer);
+
+	}
+
+}
+--- end ---
+--- start length_prefixed_type Utils/LengthPrefixedType.cs ---
+using Utils.Stream;
+
+namespace Utils
+{
+
+	public abstract class LengthPrefixedType : Stream
+	{
+
+		public override void EncodeBody(Buffer buffer)
+		{
+			var _buffer = Buffer.Writer();
+			EncodeImpl(_buffer);
+			EncodeLength(_buffer.length, buffer);
+			buffer.WriteBytes(_buffer.buffer);
+		}
+
+		public override void DecodeBody(Buffer buffer)
+		{
+			DecodeImpl(buffer.ReadBytes(DecodeLength(buffer)));
+		}
+
+		protected void EncodeLength(int length, Buffer buffer);
+
+		protected int DecodeLength(Buffer buffer);
 
 	}
 
@@ -145,7 +186,7 @@ namespace Utils
 		{
 			var buffer = Buffer.Writer();
 			EncodeId(buffer);
-			EncodeImpl(buffer);
+			EncodeBody(buffer);
 			return buffer.buffer;
 		}
 
@@ -153,13 +194,13 @@ namespace Utils
 		{
 			var buffer = Buffer.Reader(_buffer);
 			DecodeId(buffer);
-			DecodeImpl(buffer);
+			DecodeBody(buffer);
 			return this;
 		}
 
-		public abstract void EncodeId(Buffer buffer);
+		protected abstract void EncodeId(Buffer buffer);
 
-		public abstract void DecodeId(Buffer buffer);
+		protected abstract void DecodeId(Buffer buffer);
 
 	}
 

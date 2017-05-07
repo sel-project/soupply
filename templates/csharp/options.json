@@ -32,13 +32,13 @@
 		},
 		"encoding": {
 			"basic": "_buffer.Write{{ENDIANNESS:pascal_case}}{{ORIGINAL_TYPE:pascal_case}}({{NAME:camel_case}});",
-			"types": "{{NAME:camel_case}}.EncodeImpl(_buffer);",
+			"types": "{{NAME:camel_case}}.EncodeBody(_buffer);",
 			"arrays": "foreach({{ELEMENT_TYPE}} {{ELEMENT_NAME:camel_case}} in {{NAME:camel_case}}){ {{CONTENT}} }",
 			"tuples": "{{NAME:camel_case}}[{{INDEX}}]"
 		},
 		"decoding": {
 			"basic": "{{NAME:camel_case}} = _buffer.Read{{ENDIANNESS:pascal_case}}{{ORIGINAL_TYPE:pascal_case}}();",
-			"types": "{{NAME:camel_case}}.DecodeImpl(_buffer);"
+			"types": "{{NAME:camel_case}}.DecodeBody(_buffer);"
 		}
 	}
 }
