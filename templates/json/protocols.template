@@ -86,7 +86,7 @@
 --- end ---
 --- start fields ---
 {
-	"name": "{{NAME}}",
+	"name": "{{ORIGINAL_NAME}}",
 	"type": "{{ORIGINAL_TYPE}}"{{HAS_ENDIANNESS==true?,
 	"endianness": "{{ENDIANNESS}}"}}{{DEFAULT!=?,
 	"default": {{DEFAULT_ENCODED}}}}{{WHEN!=?,

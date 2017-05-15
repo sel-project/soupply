@@ -69,7 +69,7 @@ public class {{NAME:pascal_case}} : Packet
 --- start constants inline ---
 {{HAS_CONSTANTS==true?
 
-		// {{NAME:spaced}}
+		// {{ORIGINAL_NAME:spaced}}
 {{constants_impl@1,CONSTANTS}}}}
 --- end ---
 --- start constants_impl ---

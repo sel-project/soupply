@@ -652,6 +652,7 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 			Data[] ret;
 			foreach(i, field; fields) {
 				Data[string] f;
+				f["ORIGINAL_NAME"] = field.name;
 				f["NAME"] = convertName(field.name, i);
 				f["ORIGINAL_TYPE"] = field.type;
 				f["TYPE"] = convertType(field.type);
@@ -779,10 +780,10 @@ Data[] createMetadatas(Metadatas[string] metadatas, Options options) {
 		g["METADATA"] = (){
 			Data[] r;
 			foreach(metadata ; m.data.data) {
-				/*Data[string] m;
+				Data[string] m;
 				m["NAME"] = metadata.name;
 				m["ORIGINAL_TYPE"] = metadata.type;
-				m["TYPE"] = convertType(game, typesMap[metadata.type], options.types);
+				//m["TYPE"] = convertType(game, typesMap[metadata.type], options.types);
 				m["ID"] = metadata.id.to!string;
 				m["REQUIRED"] = metadata.required.to!string;
 				m["DEFAULT"] = metadata.def;
@@ -797,7 +798,7 @@ Data[] createMetadatas(Metadatas[string] metadatas, Options options) {
 						return f;
 					}();
 				}
-				r ~= Data(m);*/
+				r ~= Data(m);
 			}
 			return r;
 		}();
