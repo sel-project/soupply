@@ -146,6 +146,7 @@ struct Options {
 		string types;
 		string each;
 		string tuples;
+		string arrayLength, stringLength;
 
 	}
 
@@ -262,10 +263,14 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 						auto types_ = "types" in *data;
 						auto each = "arrays" in *data;
 						auto tuples = "tuples" in *data;
+						auto arrayLength = "array_length" in *data;
+						auto stringLength = "string_length" in *data;
 						if(basic) mixin("options." ~ exp ~ ".basic") = (*basic).str;
 						if(types_) mixin("options." ~ exp ~ ".types") = (*types_).str;
 						if(each) mixin("options." ~ exp ~ ".each") = (*each).str;
 						if(tuples) mixin("options." ~ exp ~ ".tuples") = (*tuples).str;
+						if(arrayLength) mixin("options." ~ exp ~ ".arrayLength") = (*arrayLength).str;
+						if(stringLength) mixin("options." ~ exp ~ ".stringLength") = (*stringLength).str;
 					}
 				}
 			}
@@ -406,78 +411,6 @@ enum endiannessTypes = ["short", "ushort", "triad", "int", "uint", "long", "ulon
 
 enum basicTypes = ["bool", "byte", "ubyte", "short", "ushort", "varshort", "varushort", "triad", "int", "uint", "varint", "varuint", "long", "ulong", "varlong", "varulong", "float", "double", "string", "uuid", "bytes"];
 
-string convertType(string game, string type, Options.Types options) {
-	//TODO convert custom arrays
-	auto array = type.indexOf("[");
-	if(array >= 0) {
-		return convertType(game, type[0..array], options) ~ type[array..$];
-	}
-	auto tuple = type.indexOf("<");
-	if(tuple >= 0) {
-		assert(type[$-1] == '>');
-		string coords = type[tuple+1..$-1];
-		auto t = coords.length in options.tuples;
-		if(!t) return type;
-		string[string] repl = ["%": convertType(game, type[0..tuple], options)];
-		foreach(i, c; coords) repl["$" ~ to!string(i)] = "" ~ c;
-		string ret = *t;
-		foreach(from, to; repl) ret = ret.replace(from, to);
-		return ret;
-	}
-	if(basicTypes.canFind(type)) {
-		auto conv = type in options.basic;
-		return conv ? *conv : type;
-	} else {
-		return parseValue(type == "metadata" ? options.metadata : options.others, ["GAME": Data(game), "TYPE": Data(type)], (Template[string]).init, 0);
-	}
-}
-
-string convertName(string name, Options.Types options) {
-	auto conv = name in options.names;
-	return conv ? *conv : name;
-}
-
-string convertEncoding(string type, string game, string length, Data[string] data, Options options) {
-	//TODO custom arrays
-	if(type.endsWith("]")) {
-		// array
-		auto t = type[0..type.lastIndexOf("[")];
-		string[] ret;
-		if(type.length - t.length != 2) {
-			// not-fixed array, encode length
-			ret ~= "/* TODO: encode length */";
-		}
-		data["ELEMENT_NAME"] = data["NAME"].str ~ "_child";
-		data["ELEMENT_ORIGINAL_TYPE"] = t;
-		data["ELEMENT_TYPE"] = convertType(game, t, options.types);
-		auto d = data.dup;
-		d["NAME"] = data["ELEMENT_NAME"];
-		d["ORIGINAL_TYPE"] = data["ELEMENT_ORIGINAL_TYPE"];
-		d["TYPE"] = data["ELEMENT_TYPE"];
-		data["CONTENT"] = convertEncoding(t, game, length, d, options);
-		return parseValue(options.encoding.each, data, (Template[string]).init, 0);
-	} else if(type.endsWith(">")) {
-		auto t = type[0..type.lastIndexOf("<")];
-		string[] ret;
-		foreach(i, char c; type[type.lastIndexOf("<")+1..$-1]) {
-			auto d = data.dup;
-			d["INDEX"] = to!string(i);
-			d["NAME"] = parseValue(options.encoding.tuples, d, (Template[string]).init, 0);
-			//TODO type
-			ret ~= convertEncoding(t, game, length, d, options);
-		}
-		return ret.join(" ");
-	} else {
-		if(type == "string" || type == "bytes") {
-			//TODO write length
-		}
-		return parseValue((){
-			if(basicTypes.canFind(type)) return options.encoding.basic;
-			else return options.encoding.types;
-		}(), data, (Template[string]).init, 0);
-	}
-}
-
 Data[] createAttributes(Attributes[string] attributes, Options options) {
 	Data[] ret;
 	foreach(game, a; attributes) {
@@ -532,35 +465,205 @@ Data[] createCreative(Creative[string] creative, Options options) {
 Data[] createProtocols(Protocols[string] protocols, Options options) {
 	Data[] ret;
 	foreach(game, p; protocols) {
+
+		/**
+		 * What's left to do:
+		 * - field's declaration (x = new y[w])
+		 * - decoding
+		 * - types
+		 * - types with length
+		 * - variants
+		 */
+
 		immutable defaultEndianness = p.data.endianness["*"];
+
+		/**
+		 * Gets the endianness for a field.
+		 * Returns: "big-endian", "little-endian" or ""
+		 */
+		string getEndianness(Field field) {
+			auto custom = field.type in p.data.endianness;
+			if(custom) {
+				return *custom;
+			} else if(endiannessTypes.canFind(field.type)) {
+				return field.endianness.length ? field.endianness : defaultEndianness;
+			} else {
+				return "";
+			}
+		}
+
+		/**
+		 * Converts a type into a language-accepted type.
+		 */
+		string convertType(string type) {
+			auto custom = type in p.data.arrays;
+			if(custom) {
+				// custom array
+				type = (*custom).base ~ "[]";
+			}
+			auto array = type.indexOf("[");
+			if(array >= 0) {
+				// normal array
+				return convertType(type[0..array]) ~ type[array..$];
+			}
+			auto tuple = type.indexOf("<");
+			if(tuple >= 0) {
+				// tuple
+				assert(type[$-1] == '>');
+				string coords = type[tuple+1..$-1];
+				auto t = coords.length in options.types.tuples;
+				if(!t) return type;
+				string[string] repl = ["%": convertType(type[0..tuple])];
+				foreach(i, c; coords) repl["$" ~ to!string(i)] = "" ~ c;
+				string ret = *t;
+				foreach(from, to; repl) ret = ret.replace(from, to);
+				return ret;
+			}
+			if(basicTypes.canFind(type)) {
+				auto conv = type in options.types.basic;
+				return conv ? *conv : type;
+			} else {
+				// metadata or special type (sul-defined)
+				return parseValue(type == "metadata" ? options.types.metadata : options.types.others, ["GAME": Data(game), "TYPE": Data(type)], (Template[string]).init, 0);
+			}
+		}
+
+		/**
+		 * Converts a name into a language-accepted name.
+		 * Params:
+		 * 		name = the original name of the variables
+		 * 		i = the packet's index of the field, used for unknown variables
+		 * Example:
+		 * ---
+		 * // D does not accept 'body' as variable name
+		 * assert(convertName("body", 0) == "body_");
+		 * 
+		 * // unknown variable
+		 * assert(convertName("?", 1) == "unknown1");
+		 */
+		string convertName(string name, size_t index) {
+			if(name == "?") return "unknown" ~ to!string(index);
+			auto conv = name in options.types.names;
+			return conv ? *conv : name;
+		}
+
+		/**
+		 * Creates the encoding function(s) as specified in the language's
+		 * options.json file.
+		 * Params:
+		 * 		type = type of the value, not converted
+		 * 		data = current data
+		 */
+		string convertEncoding(string type, Data[string] data) {
+
+			string ret;
+
+			/**
+			 * Encodes a length.
+			 * Params:
+			 * 		ltype = type of the length
+			 * 		conv = expression to encode the length
+			 */
+			void encodeLength(string ltype, string conv) {
+				auto d = data.dup;
+				d["NAME"] = conv.replace("%", data["NAME"].str);
+				d["ORIGINAL_TYPE"] = ltype;
+				d["TYPE"] = convertType(ltype);
+				ret ~= convertEncoding(ltype, d);
+				ret ~= " ";
+			}
+
+			string length = p.data.arrayLength;
+			auto custom = type in p.data.arrays;
+			if(custom) {
+				type = (*custom).base ~ "[]";
+				length = (*custom).length;
+				if((*custom).endianness.length) {
+					data["ENDIANNESS"] = (*custom).endianness;
+				}
+			}
+			if(type == "ubyte[]") {
+				// use the same function used for 'bytes' instead of encode every element
+				encodeLength(length, options.encoding.arrayLength);
+				type = "bytes";
+			}
+			if(type.endsWith("]")) {
+				// array
+				auto t = type[0..type.lastIndexOf("[")];
+				if(type.length - t.length == 2) {
+					// not-fixed array, encode length
+					encodeLength(length, options.encoding.arrayLength);
+				}
+				data["ELEMENT_NAME"] = data["NAME"].str ~ "_child";
+				data["ELEMENT_ORIGINAL_TYPE"] = t;
+				data["ELEMENT_TYPE"] = convertType(t);
+				auto d = data.dup;
+				d["NAME"] = data["ELEMENT_NAME"];
+				d["ORIGINAL_TYPE"] = data["ELEMENT_ORIGINAL_TYPE"];
+				d["TYPE"] = data["ELEMENT_TYPE"];
+				data["CONTENT"] = convertEncoding(t, d);
+				return ret ~ parseValue(options.encoding.each, data, (Template[string]).init, 0);
+			} else if(type.endsWith(">")) {
+				// tuple
+				auto t = type[0..type.lastIndexOf("<")];
+				string[] r;
+				foreach(i, char c; type[type.lastIndexOf("<")+1..$-1]) {
+					auto d = data.dup;
+					d["INDEX"] = to!string(i);
+					d["NAME"] = parseValue(options.encoding.tuples, d, (Template[string]).init, 0);
+					d["ORIGINAL_TYPE"] = t;
+					d["TYPE"] = convertType(t);
+					d["ENDIANNESS"] = getEndianness(Field("", t));
+					r ~= convertEncoding(t, d);
+				}
+				return ret ~ r.join(" ");
+			} else {
+				if(type == "string") encodeLength(length, options.encoding.stringLength);
+				auto d = data.dup;
+				d["ORIGINAL_TYPE"] = type;
+				d["TYPE"] = convertType(type);
+				return ret ~ parseValue((){
+					if(basicTypes.canFind(type)) return options.encoding.basic;
+					else return options.encoding.types;
+				}(), d, (Template[string]).init, 0);
+			}
+		}
+
+		/**
+		 * Creates a constant.
+		 */
 		Data[] createConstants(Field field, Constant[] constants) {
 			Data[] ret;
 			foreach(constant ; constants) {
 				Data[string] c;
 				c["NAME"] = constant.name;
-				c["TYPE"] = convertType("", field.type, options.types);
+				c["TYPE"] = convertType(field.type);
 				c["VALUE"] = constant.value;
 				c["VALUE_ENCODED"] = createEncoded(constant.value, field.type);
 				ret ~= Data(c);
 			}
 			return ret;
 		}
+
+		/**
+		 * Converts an array of fields into Data.
+		 */
 		Data[] createFields(Field[] fields) {
 			Data[] ret;
-			foreach(field ; fields) {
+			foreach(i, field; fields) {
 				Data[string] f;
-				f["NAME"] = convertName(field.name, options.types);
+				f["NAME"] = convertName(field.name, i);
 				f["ORIGINAL_TYPE"] = field.type;
-				f["TYPE"] = convertType(game, field.type, options.types);
+				f["TYPE"] = convertType(field.type);
 				f["CUSTOM_TYPE"] = to!string(!basicTypes.canFind(field.type) && field.type.indexOf("[") == -1 && field.type.indexOf("<") == -1); //TODO not in custom arrays
 				f["WHEN"] = field.condition;
 				f["HAS_ENDIANNESS"] = to!string(field.endianness != "");
-				f["ENDIANNESS"] = endiannessTypes.canFind(field.type) ? (field.endianness.length ? field.endianness : defaultEndianness) : "";
+				f["ENDIANNESS"] = getEndianness(field);
 				f["DEFAULT"] = field.def;
 				f["DEFAULT_ENCODED"] = createEncoded(field.def, field.type);
 				f["HAS_CONSTANTS"] = to!string(field.constants.length != 0);
 				f["CONSTANTS"] = createConstants(field, field.constants);
-				f["ENCODING"] = convertEncoding(field.type, game, p.data.arrayLength, f, options);
+				f["ENCODING"] = convertEncoding(field.type, f);
 				//f["DECODING"] = convertDecoding(field, options);
 				ret ~= Data(f);
 			}
@@ -586,7 +689,7 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 			}();
 		}
 		g["HAS_ARRAYS"] = to!string(p.data.arrays.length != 0);
-		immutable id_type = convertType(game, p.data.id, options.types);
+		immutable id_type = convertType(p.data.id);
 		g["ARRAYS"] = new Data[0];
 		g["TYPES"] = new Data[0];
 		g["SECTIONS"] = new Data[0];
@@ -676,7 +779,7 @@ Data[] createMetadatas(Metadatas[string] metadatas, Options options) {
 		g["METADATA"] = (){
 			Data[] r;
 			foreach(metadata ; m.data.data) {
-				Data[string] m;
+				/*Data[string] m;
 				m["NAME"] = metadata.name;
 				m["ORIGINAL_TYPE"] = metadata.type;
 				m["TYPE"] = convertType(game, typesMap[metadata.type], options.types);
@@ -694,7 +797,7 @@ Data[] createMetadatas(Metadatas[string] metadatas, Options options) {
 						return f;
 					}();
 				}
-				r ~= Data(m);
+				r ~= Data(m);*/
 			}
 			return r;
 		}();

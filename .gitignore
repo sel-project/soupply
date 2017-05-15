@@ -1,4 +1,7 @@
 *.exe
+*.sln
+*.dproj
+*.userprefs
 /src
 /pages
 /readme

@@ -30,7 +30,6 @@ import std.json;
 import std.path : dirSeparator;
 import std.regex : ctRegex, replaceAll;
 import std.string;
-import std.typecons : Tuple, tuple;
 import std.xml;
 
 static import d;
@@ -41,6 +40,20 @@ static import src;
 
 static import diff;
 static import docs;
+
+struct Tuple(E...) if(E.length % 2 == 0) {
+
+	mixin((){
+		string data;
+		foreach(i, member; E) {
+			static if(i % 2 == 0) {
+				data ~= "public E[" ~ to!string(i) ~ "] " ~ E[i+1] ~ ";";
+			}
+		}
+		return data;
+	}());
+
+}
 
 
 alias File(T) = Tuple!(string, "software", size_t, "protocol", T, "data");

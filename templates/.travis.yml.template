@@ -19,11 +19,10 @@ after_success:
  - git config --global user.email ${EMAIL}
  - git config --global user.name ${USER}
  - git clone git://${REPO_GP} gp
- - rm -r gp/docs
  - rm -r gp/protocol
  - rm -r gp/api
- - mkdir gp/api
  - cp -r -f pages/. gp/protocol
+ - mkdir gp/api
  - cp -r -f src/json/sul/. gp/api/json
  - cp -r -f src/js/sul/. gp/api/js
  - cd gp

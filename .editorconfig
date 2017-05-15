@@ -1,8 +1,14 @@
 # http://editorconfig.org
 root = true
 
-[*.{d,xml}]
+[*.{d,json,template}]
 end_of_line = lf
 insert_final_newline = true
 indent_style = tab
 indent_size = 4
+
+[*.xml]
+end_of_line = lf
+insert_final_newline = true
+indent_style = tab
+indent_size = 2
