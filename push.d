@@ -45,7 +45,7 @@ void main(string[] args) {
 	string dest = lang ~ "/" ~ args[3];
 
 	string[] exclude, include;
-	auto json = parseJSON(Base64.decode(args[4]));
+	auto json = parseJSON(cast(string)Base64.decode(args[4]));
 	foreach(immutable t ; TypeTuple!("exclude", "include")) {
 		auto array = t in json;
 		if(array) {
