@@ -23,7 +23,7 @@
 module push;
 
 import std.algorithm : canFind;
-import std.Base64 : Base64;
+import std.base64 : Base64;
 import std.conv : to;
 import std.file;
 import std.json : parseJSON;
