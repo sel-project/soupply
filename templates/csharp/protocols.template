@@ -3,9 +3,7 @@
 {{section@SECTIONS}}
 --- end ---
 --- start types Protocol/{{GAME:pascal_case}}/Types.cs ---
-using Utils.Buffer;
-using Utils.LengthPrefixedType;
-using Utils.Stream;
+using System.Text;
 
 namespace sul.{{GAME:pascal_case}}.Types
 {
@@ -14,10 +12,10 @@ namespace sul.{{GAME:pascal_case}}.Types
 }
 --- end ---
 --- start section Protocol/{{GAME:pascal_case}}/{{NAME:pascal_case}}.cs ---
-using Types = sul.{{GAME:pascal_case}}.Types;
+using System.Text;
 
-using Utils.Buffer;
-using Utils.Packet;
+using sul.Utils;
+using sul.{{GAME:pascal_case}}.Types;
 
 namespace sul.{{GAME:pascal_case}}.{{NAME:pascal_case}}
 {
@@ -26,34 +24,34 @@ namespace sul.{{GAME:pascal_case}}.{{NAME:pascal_case}}
 }
 --- end ---
 --- start type ---
-public class {{NAME:pascal_case}} : {{IS_LENGTH_PREFIXED==true?LengthPrefixedType}}{{IS_LENGTH_PREFIXED==false?Stream}}
+public class {{NAME:pascal_case}} : sul.Utils.{{IS_LENGTH_PREFIXED==true?LengthPrefixedType}}{{IS_LENGTH_PREFIXED==false?Stream}}
 { {{constants@FIELDS}}
 
 {{fields@1,FIELDS}}
 
-	public {{NAME:pascal_case}}() {}{{HAS_FIELDS==true?
+	{{HAS_FIELDS==true?public {{NAME:pascal_case}}() : this({{default_ctor@FIELDS}}) {}
 
-	public {{NAME:pascal_case}}({{constructor@FIELDS}})
+	}}public {{NAME:pascal_case}}({{constructor@FIELDS}})
 	{
 {{constructor_assign@2,FIELDS}}
-	\}}}{{IS_LENGTH_PREFIXED==true?
+	}{{IS_LENGTH_PREFIXED==true?
 
-	protected override void EncodeLength(int length, Buffer buffer)
+	protected override void EncodeLength(int length, sul.Utils.Buffer _buffer)
 	{
 		{{LENGTH_ENCODE}}
 	}
 
-	protected override int DecodeLength(Buffer buffer)
+	protected override int DecodeLength(sul.Utils.Buffer _buffer)
 	{
-
+		return (int){{LENGTH_DECODE}}
 	\}}}
 
-	protected override void EncodeImpl(Buffer buffer)
+	protected override void EncodeImpl(sul.Utils.Buffer _buffer)
 	{
 {{encode@2,FIELDS}}
 	}
 
-	protected override void DecodeImpl(Buffer buffer)
+	protected override void DecodeImpl(sul.Utils.Buffer _buffer)
 	{
 {{decode@2,FIELDS}}
 	}
@@ -62,7 +60,7 @@ public class {{NAME:pascal_case}} : {{IS_LENGTH_PREFIXED==true?LengthPrefixedTyp
 
 --- end ---
 --- start packets ---
-public class {{NAME:pascal_case}} : Packet
+public class {{NAME:pascal_case}} : sul.Utils.Packet
 {
 
 	public const {{ID_TYPE_ENCODED}} Id = {{ID}};
@@ -72,34 +70,34 @@ public class {{NAME:pascal_case}} : Packet
 
 {{fields@1,FIELDS}}
 
-	public {{NAME:pascal_case}}() {}{{HAS_FIELDS==true?
-
-	public {{NAME:pascal_case}}({{constructor@FIELDS}})
+	{{HAS_FIELDS==true?public {{NAME:pascal_case}}() : this({{default_ctor@FIELDS}}) {}
+	
+	}}public {{NAME:pascal_case}}({{constructor@FIELDS}})
 	{
 {{constructor_assign@2,FIELDS}}
-	\}}}
+	}
 
 	public override int GetId()
 	{
-		return Id;
+		return (int)Id;
 	}
 
-	protected override void EncodeId(Buffer _buffer)
+	protected override void EncodeId(sul.Utils.Buffer _buffer)
 	{
 		_buffer.Write{{ENDIANNESS:pascal_case}}{{ID_TYPE:pascal_case}}(Id);
 	}
 
-	protected override void DecodeId(Buffer _buffer)
+	protected override void DecodeId(sul.Utils.Buffer _buffer)
 	{
-		_buffer.Read{{ENDIANNESS:pascal_case}}{{ID_TYPE:pascal_case}}();
+		//_buffer.Read{{ENDIANNESS:pascal_case}}{{ID_TYPE:pascal_case}}();
 	}
 
-	protected override void EncodeImpl(Buffer _buffer)
+	protected override void EncodeImpl(sul.Utils.Buffer _buffer)
 	{
 {{encode@2,FIELDS}}
 	}
 
-	protected override void DecodeImpl(Buffer _buffer)
+	protected override void DecodeImpl(sul.Utils.Buffer _buffer)
 	{
 {{decode@2,FIELDS}}
 	}
@@ -107,7 +105,7 @@ public class {{NAME:pascal_case}} : Packet
 	public static {{NAME:pascal_case}} FromBuffer(byte[] buffer)
 	{
 		var ret = new {{NAME:pascal_case}}();
-		ret.decode(buffer);
+		ret.Decode(buffer);
 		return ret;
 	}
 
@@ -121,7 +119,10 @@ public class {{NAME:pascal_case}} : Packet
 {{constants_impl@1,CONSTANTS}}}}
 --- end ---
 --- start constants_impl ---
-public const {{TYPE}} {{NAME:pascal_case}} = {{VALUE_ENCODED}};
+public const {{TYPE}} {{NAME:uppercase}} = {{VALUE_ENCODED}};
+--- end ---
+--- start default_ctor inline ---
+{{DEFAULT_DECLARATION}}{{LAST==false?, }}
 --- end ---
 --- start constructor inline ---
 {{TYPE}} {{NAME:camel_case}}{{LAST==false?, }}
@@ -130,11 +131,11 @@ public const {{TYPE}} {{NAME:pascal_case}} = {{VALUE_ENCODED}};
 this.{{NAME:camel_case}} = {{NAME:camel_case}};
 --- end ---
 --- start fields ---
-public {{TYPE}} {{NAME:camel_case}}{{DEFAULT!=? = {{DEFAULT_ENCODED}}}};
+public {{TYPE}} {{NAME:camel_case}};
 --- end ---
 --- start encode ---
 ^{{WHEN!=?if({{WHEN:camel_case}}){ }}{{ENCODING}}{{WHEN!=? \}}}
 --- end ---
 --- start decode ---
-^{{WHEN!=?if({{WHEN:camel_case}}){ }}{{DECODING}}{{WHEN!=? \}}}
+//{{WHEN!=?if({{WHEN:camel_case}}){ }}{{DECODING}}{{WHEN!=? \}}}
 --- end ---

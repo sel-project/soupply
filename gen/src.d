@@ -96,7 +96,7 @@ struct Options {
 		bool exists = false;
 
 		string name, src;
-		string[] exclude;
+		string[] exclude, include;
 		bool tag;
 		Badge[] badges;
 
@@ -133,12 +133,26 @@ struct Options {
 
 		string[string] basic;
 		string[size_t] tuples;
+		string arrays;
+		string fixedArrays;
 		string metadata;
 		string others;
 
 	}
 
 	Types types;
+
+	struct Default {
+
+		string number;
+		string type;
+		string str;
+		string array, fixedArray;
+		string uuid;
+
+	}
+
+	Default def;
 
 	struct Expressions {
 
@@ -173,6 +187,7 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 	}
 
 	global["WEBSITE"] = "https://github.com/sel-project/sel-utils";
+	global["DESCRIPTION"] = "Automatically generated libraries for Minecraft and Minecraft: Pocket Edition";
 	global["VERSION"] = to!string(sulVersion);
 
 	foreach(lang ; languages) {
@@ -195,13 +210,16 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 				options.repo.name = (*repo)["name"].str;
 				options.repo.src = (*repo)["src"].str;
 				auto exclude = "exclude" in *repo;
+				auto include = "include" in *repo;
 				auto tag = "tag" in *repo;
 				auto badges = "badges" in *repo;
-				if(exclude) {
-					if((*exclude).type == JSON_TYPE.STRING) options.repo.exclude = [(*exclude).str];
-					else if((*exclude).type == JSON_TYPE.ARRAY) {
-						foreach(ex ; (*exclude).array) {
-							options.repo.exclude ~= ex.str;
+				foreach(immutable t ; TypeTuple!("exclude", "include")) {
+					if(mixin(t)) {
+						if((*mixin(t)).type == JSON_TYPE.STRING) mixin("options.repo." ~ t) = [(*mixin(t)).str];
+						else if((*mixin(t)).type == JSON_TYPE.ARRAY) {
+							foreach(ex ; (*mixin(t)).array) {
+								mixin("options.repo." ~ t) ~= ex.str;
+							}
 						}
 					}
 				}
@@ -241,6 +259,7 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 				if(conv) {
 					auto basic = "basic" in *conv;
 					auto tuples = "tuples" in *conv;
+					auto arrays = "arrays" in *conv;
 					auto metadata = "metadata" in *conv;
 					auto others = "others" in *conv;
 					if(basic) {
@@ -253,8 +272,29 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 							options.types.tuples[to!size_t(size)] = value.str;
 						}
 					}
+					if(arrays) {
+						auto dynamic = "dynamic" in *arrays;
+						auto fixed = "fixed" in *arrays;
+						if(dynamic) options.types.arrays = (*dynamic).str;
+						if(fixed) options.types.fixedArrays = (*fixed).str;
+					}
 					if(metadata) options.types.metadata = (*metadata).str;
 					if(others) options.types.others = (*others).str;
+				}
+				auto def = "default" in *types;
+				if(def) {
+					auto number = "number" in *def;
+					auto type = "type" in *def;
+					auto str = "string" in *def;
+					auto array = "array" in *def;
+					auto fixedArray = "fixed_array" in *def;
+					auto uuid = "uuid" in *def;
+					if(number) options.def.number = (*number).str;
+					if(type) options.def.type = (*type).str;
+					if(str) options.def.str = (*str).str;
+					if(array) options.def.array = (*array).str;
+					if(fixedArray) options.def.fixedArray = (*fixedArray).str;
+					if(uuid) options.def.uuid = (*uuid).str;
 				}
 				foreach(immutable exp ; TypeTuple!("encoding", "decoding")) {
 					auto data = exp in *types;
@@ -300,8 +340,12 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 				addLast(data.array);
 				auto temp = parseTemplate(lang, type, options);
 				auto ptr = type in temp;
-				foreach(d ; data.array) {
-					(*ptr).parse(d.object, temp);
+				if(data.type == Data.Type.array) {
+					foreach(d ; data.array) {
+						(*ptr).parse(d.object, temp);
+					}
+				} else if(data.type == Data.Type.object) {
+					(*ptr).parse(data.object, temp);
 				}
 			}
 
@@ -313,7 +357,7 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 				"To contribute at the project read the [contribution guidelines](https://github.com/sel-project/sel-utils/blob/master/CONTRIBUTING.md).\n\n";
 
 		if(options.repo) {
-			travis[lang] = " - ./push " ~ lang ~ " " ~ to!string(options.repo.tag) ~ " " ~ options.repo.src ~ " " ~ options.repo.exclude.join(" ");
+			travis[lang] = " - ./push " ~ lang ~ " " ~ to!string(options.repo.tag) ~ " " ~ options.repo.src ~ " " ~ Base64.encode(cast(ubyte[])JSONValue(["exclude": options.repo.exclude, "include": options.repo.include]).toString()).idup;
 			string rm;
 			foreach(badge ; options.repo.badges) {
 				rm ~= "[![" ~ badge.alt ~ "](" ~ badge.image ~ ")](" ~ badge.url ~ ") ";
@@ -499,10 +543,24 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				// custom array
 				type = (*custom).base ~ "[]";
 			}
-			auto array = type.indexOf("[");
+			auto array = type.lastIndexOf("[");
 			if(array >= 0) {
-				// normal array
-				return convertType(type[0..array]) ~ type[array..$];
+				assert(type[$-1] == ']');
+				Data[string] d;
+				d["TYPE"] = convertType(type[0..array]);
+				if(array == type.length - 2) {
+					// normal array
+					if(options.types.arrays.length) {
+						return parseValue(options.types.arrays, d, (Template[string]).init, 0);
+					}
+				} else {
+					// fixed-size array
+					if(options.types.fixedArrays.length) {
+						d["SIZE"] = type[array+1..$-1];
+						return parseValue(options.types.fixedArrays, d, (Template[string]).init, 0);
+					}
+				}
+				return d["TYPE"].str ~ type[array..$];
 			}
 			auto tuple = type.indexOf("<");
 			if(tuple >= 0) {
@@ -546,6 +604,47 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 		}
 
 		/**
+		 * Gets the default initialization value for a type.
+		 */
+		string getDefault(string type) {
+			auto custom = type in p.data.arrays;
+			if(custom) {
+				type = (*custom).base ~ "[]";
+			}
+			Data[string] d;
+			string exp;
+			if(type.endsWith("]")) {
+				auto array = type.lastIndexOf("[");
+				d["TYPE"] = convertType(type[0..array]);
+				if(array == type.length - 2) {
+					exp = options.def.array;
+				} else {
+					d["SIZE"] = type[array+1..$-1];
+					exp = options.def.fixedArray;
+				}
+			} else if(type.endsWith(">")) {
+				return "null";
+			} else {
+				if(type == "string") {
+					return options.def.str;
+				} else if(type == "bytes") {
+					d["TYPE"] = convertType("ubyte");
+					exp = options.def.array;
+				} else if(type == "uuid") {
+					return options.def.uuid;
+				} else if(type == "bool") {
+					return "false";
+				} else if(basicTypes.canFind(type)) {
+					return options.def.number;
+				} else {
+					d["NAME"] = type;
+					exp = options.def.type;
+				}
+			}
+			return parseValue(exp, d, (Template[string]).init, 0);
+		}
+		 
+		/**
 		 * Creates the encoding function(s) as specified in the language's
 		 * options.json file.
 		 * Params:
@@ -553,7 +652,7 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 		 * 		data = current data
 		 */
 		string convertEncoding(string type, Data[string] data) {
-
+			
 			string ret;
 			
 			/**
@@ -563,27 +662,29 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 			 * 		conv = expression to get the length from the settings
 			 * 		data = current data
 			 */
-			void encodeLength(string ltype, string conv) {
+			void encodeLength(string ltype, string conv, string endianness=defaultEndianness) {
 				auto d = data.dup;
 				d["NAME"] = conv.replace("%", data["NAME"].str);
 				d["ORIGINAL_TYPE"] = ltype;
 				d["TYPE"] = convertType(ltype);
+				d["ENDIANNESS"] = endianness;
 				ret ~= convertEncoding(ltype, d);
 				ret ~= " ";
 			}
-
+			
 			string length = p.data.arrayLength;
+			string lengthEndianness = defaultEndianness;
 			auto custom = type in p.data.arrays;
 			if(custom) {
 				type = (*custom).base ~ "[]";
 				length = (*custom).length;
 				if((*custom).endianness.length) {
-					data["ENDIANNESS"] = (*custom).endianness;
+					lengthEndianness = (*custom).endianness;
 				}
 			}
 			if(type == "ubyte[]") {
 				// use the same function used for 'bytes' instead of encode every element
-				encodeLength(length, options.encoding.arrayLength);
+				encodeLength(length, options.encoding.arrayLength, lengthEndianness);
 				type = "bytes";
 			}
 			if(type.endsWith("]")) {
@@ -609,6 +710,7 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				foreach(i, char c; type[type.lastIndexOf("<")+1..$-1]) {
 					auto d = data.dup;
 					d["INDEX"] = to!string(i);
+					d["INDEX1"] = to!string(i+1);
 					d["NAME"] = parseValue(options.encoding.tuples, d, (Template[string]).init, 0);
 					d["ORIGINAL_TYPE"] = t;
 					d["TYPE"] = convertType(t);
@@ -622,11 +724,101 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				d["ORIGINAL_TYPE"] = type;
 				d["TYPE"] = convertType(type);
 				return ret ~ parseValue((){
+						if(basicTypes.canFind(type)) {
+							if(!endiannessTypes.canFind(type)) d.remove("ENDIANNESS");
+							return options.encoding.basic;
+						} else {
+							return options.encoding.types;
+						}
+					}(), d, (Template[string]).init, 0);
+			}
+		}
+		
+		/**
+		 * Creates the decoding function(s) as specified in the language's
+		 * options.json file.
+		 * Params:
+		 * 		type = type of the value, not converted
+		 * 		data = current data
+		 */
+		string convertDecoding(string type, Data[string] data) {
+			
+			string ret;
+			
+			/**
+			 * Adds the decoding expression for a length to 'ret'.
+			 * Params:
+			 * 		type = ltype of the length
+			 * 		conv = expression to get the length from the settings
+			 * 		data = current data
+			 */
+			void decodeLength(string ltype, string conv, string endianness=defaultEndianness) {
+				auto d = data.dup;
+				d["NAME"] = conv.replace("%", data["NAME"].str);
+				d["ORIGINAL_TYPE"] = ltype;
+				d["TYPE"] = convertType(ltype);
+				d["ENDIANNESS"] = endianness;
+				ret ~= convertEncoding(ltype, d);
+				ret ~= " ";
+			}
+			
+			/+string length = p.data.arrayLength;
+			string lengthEndianness = defaultEndianness;
+			auto custom = type in p.data.arrays;
+			if(custom) {
+				type = (*custom).base ~ "[]";
+				length = (*custom).length;
+				if((*custom).endianness.length) {
+					lengthEndianness = (*custom).endianness;
+				}
+			}
+			if(type == "ubyte[]") {
+				// use the same function used for 'bytes' instead of encode every element
+				decodeLength(length, options.encoding.arrayLength, lengthEndianness);
+				type = "bytes";
+			}
+			if(type.endsWith("]")) {
+				// array
+				auto t = type[0..type.lastIndexOf("[")];
+				if(type.length - t.length == 2) {
+					// not-fixed array, encode length
+					encodeLength(length, options.encoding.arrayLength);
+				}
+				data["ELEMENT_NAME"] = data["NAME"].str ~ "_child";
+				data["ELEMENT_ORIGINAL_TYPE"] = t;
+				data["ELEMENT_TYPE"] = convertType(t);
+				auto d = data.dup;
+				d["NAME"] = data["ELEMENT_NAME"];
+				d["ORIGINAL_TYPE"] = data["ELEMENT_ORIGINAL_TYPE"];
+				d["TYPE"] = data["ELEMENT_TYPE"];
+				data["CONTENT"] = convertEncoding(t, d);
+				return ret ~ parseValue(options.encoding.each, data, (Template[string]).init, 0);
+			} else +/if(type.endsWith(">")) {
+				// tuple
+				auto t = type[0..type.lastIndexOf("<")];
+				string[] r;
+				foreach(i, char c; type[type.lastIndexOf("<")+1..$-1]) {
+					auto d = data.dup;
+					d["INDEX"] = to!string(i);
+					d["INDEX1"] = to!string(i+1);
+					d["NAME"] = parseValue(options.decoding.tuples, d, (Template[string]).init, 0);
+					d["ORIGINAL_TYPE"] = t;
+					d["TYPE"] = convertType(t);
+					d["ENDIANNESS"] = getEndianness(Field("", t));
+					r ~= convertDecoding(t, d);
+				}
+				return ret ~ r.join(" ");
+			} else {
+				//if(type == "string") decodeLength(length, options.encoding.stringLength);
+				auto d = data.dup;
+				d["ORIGINAL_TYPE"] = type;
+				d["TYPE"] = convertType(type);
+				return ret ~ parseValue((){
 					if(basicTypes.canFind(type)) {
 						if(!endiannessTypes.canFind(type)) d.remove("ENDIANNESS");
-						return options.encoding.basic;
+						return options.decoding.basic;
 					} else {
-						return options.encoding.types;
+						return options.decoding.types;
 					}
 				}(), d, (Template[string]).init, 0);
 			}
@@ -665,10 +857,11 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				f["ENDIANNESS"] = getEndianness(field);
 				f["DEFAULT"] = field.def;
 				f["DEFAULT_ENCODED"] = createEncoded(field.def, field.type);
+				f["DEFAULT_DECLARATION"] = field.def.length ? field.def : getDefault(field.type); //TODO
 				f["HAS_CONSTANTS"] = to!string(field.constants.length != 0);
 				f["CONSTANTS"] = createConstants(field, field.constants);
 				f["ENCODING"] = convertEncoding(field.type, f);
-				//f["DECODING"] = convertDecoding(field, options);
+				f["DECODING"] = convertDecoding(field.type, f);
 				ret ~= Data(f);
 			}
 			return ret;
@@ -715,8 +908,7 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 			t["IS_LENGTH_PREFIXED"] = to!string(type.length.length != 0);
 			t["LENGTH"] = type.length;
 			t["LENGTH_ENCODE"] = (){ auto d = t.dup; d["NAME"] = "length"; return convertEncoding(type.length, d); }();
-			//TODO encoded length
-			//TODO decoded length
+			t["LENGTH_DECODE"] = replace((){ auto d = t.dup; d["NAME"] = "length"; return convertDecoding(type.length, d); }(), "length =", "").strip;
 			g["TYPES"].array ~= Data(t);
 		}
 		foreach(section ; p.data.sections) {
@@ -974,7 +1166,7 @@ class Template {
 			ret = lines.join("\n");
 			immutable location = "../src/" ~ this.lang ~ "/sul/" ~ parseValue(this.location, values, templates, 0);
 			std.file.mkdirRecurse(location[0..location.lastIndexOf("/")]);
-			if(this.options.header) {
+			if(this.options.header && !location.endsWith("proj") && !location.endsWith(".xml")) {
 				auto gen = "GENERATOR" in values;
 				ret = createHeader(gen ? (*gen).str : "", this.options.header.open, this.options.header.line, this.options.header.close) ~ ret;
 			}

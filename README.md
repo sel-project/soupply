@@ -34,7 +34,7 @@ The following data is provided through [XML files](https://github.com/sel-projec
 
 **Jump to**: [C#](#csharp), [D](#d), [Java](#java), [PHP](#php)
 
-287&#8239;416 lines of code in 1&#8239;538 files
+287&#8239;702 lines of code in 1&#8239;541 files
 
 ### [C#](https://github.com/sel-utils/csharp)
 

@@ -23,12 +23,14 @@
 module push;
 
 import std.algorithm : canFind;
+import std.Base64 : Base64;
 import std.conv : to;
 import std.file;
+import std.json : parseJSON;
 import std.process : wait, spawnShell;
 import std.stdio : writeln;
-import std.string : endsWith, replace, strip, join;
-
+import std.string : endsWith, replace, strip, join, lastIndexOf;
+import std.typetuple : TypeTuple;
 		
 void main(string[] args) {
 
@@ -42,7 +44,16 @@ void main(string[] args) {
 
 	string dest = lang ~ "/" ~ args[3];
 
-	string[] exclude = args[4..$]; // exclude from comparation
+	string[] exclude, include;
+	auto json = parseJSON(Base64.decode(args[4]));
+	foreach(immutable t ; TypeTuple!("exclude", "include")) {
+		auto array = t in json;
+		if(array) {
+			foreach(el ; (*array).array) {
+				mixin(t) ~= el.str;
+			}
+		}
+	}
 	
 	string message = "\"" ~ replace(strip(cast(string)read("message.txt")), "\"", "\\\"") ~ "\"";
 	string desc = "\"" ~ replace(strip(cast(string)read("desc.txt")), "\"", "\\\"") ~ "\"";
@@ -53,6 +64,12 @@ void main(string[] args) {
 	
 		wait(spawnShell("rm -r " ~ dest));
 		wait(spawnShell("cp -r src/" ~ lang ~ "/. " ~ dest));
+
+		// copy additional files
+		foreach(incl ; include) {
+			if(incl.lastIndexOf("/")) mkdirRecurse(dest ~ "/" ~ incl[0..incl.lastIndexOf("/")]);
+			write(dest ~ "/" ~ incl, read("src/" ~ lang ~ "/" ~ incl));
+		}
 
 		// replace template files
 		foreach(string file ; dirEntries(lang, SpanMode.breadth)) {

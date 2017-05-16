@@ -1,0 +1,53 @@
+--- start all ../sel-utils.csproj ---
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<ProjectGuid>{9835A9AC-DD06-452F-9ECA-5D8373934657}</ProjectGuid>
+		<OutputType>Library</OutputType>
+		<RootNamespace>sel-utils</RootNamespace>
+		<AssemblyName>sel-utils</AssemblyName>
+		<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>..\bin\Debug</OutputPath>
+		<DefineConstants>DEBUG;</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+		<ConsolePause>false</ConsolePause>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>full</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>..\bin\Release</OutputPath>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	<ConsolePause>false</ConsolePause>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="System" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="Properties\AssemblyInfo.cs" />
+{{compile_protocols@protocols}}
+		<Compile Include="sul\Utils\About.cs" />
+		<Compile Include="sul\Utils\Buffer.cs" />
+		<Compile Include="sul\Utils\LengthPrefixedType.cs" />
+		<Compile Include="sul\Utils\Packet.cs" />
+		<Compile Include="sul\Utils\Stream.cs" />
+		<Compile Include="sul\Utils\Metadata.cs" />
+	</ItemGroup>
+	<Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
+--- end ---
+--- start compile_protocols ---
+		<Compile Include="sul\Protocol\{{GAME:pascal_case}}\Types.cs" />
+{{compile_sections@SECTIONS}}
+--- end ---
+--- start compile_sections ---
+		<Compile Include="sul\Protocol\{{GAME:pascal_case}}\{{NAME:pascal_case}}.cs" />
+--- end ---
