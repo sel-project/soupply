@@ -6,6 +6,11 @@
 	},
 	"indentation": "spaces",
 	"types": {
+		"names": {
+			"default": "@default",
+			"value": "@value",
+			"event": "@event"
+		},
 		"conv": {
 			"basic": {
 				"byte": "sbyte",
@@ -29,6 +34,9 @@
 			},
 			"metadata": "sul.Metadata.{{GAME:pascal_case}}.Metadata",
 			"others": "Types.{{TYPE:pascal_case}}"
+		},
+		"declaration": {
+			"fixed_array": "{{TYPE}}[] = new {{TYPE}}[{{SIZE}}]"
 		},
 		"encoding": {
 			"basic": "_buffer.Write{{ENDIANNESS:pascal_case}}{{ORIGINAL_TYPE:pascal_case}}({{NAME:camel_case}});",

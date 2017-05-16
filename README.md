@@ -34,11 +34,11 @@ The following data is provided through [XML files](https://github.com/sel-projec
 
 **Jump to**: [C#](#csharp), [D](#d), [Java](#java), [PHP](#php)
 
-280&#8239;837 lines of code in 1&#8239;520 files
+287&#8239;416 lines of code in 1&#8239;538 files
 
 ### [C#](https://github.com/sel-utils/csharp)
 
-[![Build Status](https://travis-ci.org/sel-utils/csharp.svg?branch=master)](https://travis-ci.org/sel-utils/csharp)
+
 
 - [x] Protocol
 - [ ] Metadata
@@ -54,7 +54,7 @@ The following data is provided through [XML files](https://github.com/sel-projec
 
 ### [D](https://github.com/sel-utils/d)
 
-[![Build Status](https://travis-ci.org/sel-utils/d.svg?branch=master)](https://travis-ci.org/sel-utils/d)&nbsp;&nbsp;[![DUB Package](https://img.shields.io/dub/v/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)&nbsp;&nbsp;[![DUB Downloads](https://img.shields.io/dub/dt/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)
+[![Build Status](https://travis-ci.org/sel-utils/d.svg?branch=master)](https://travis-ci.org/sel-utils/d) [![DUB Package](https://img.shields.io/dub/v/sel-utils.svg)](https://code.dlang.org/packages/sel-utils) [![DUB Downloads](https://img.shields.io/dub/dt/sel-utils.svg)](https://code.dlang.org/packages/sel-utils) 
 
 - [ ] Protocol
 - [x] Metadata
@@ -70,7 +70,7 @@ The following data is provided through [XML files](https://github.com/sel-projec
 
 ### [Java](https://github.com/sel-utils/java)
 
-[![Build Status](https://travis-ci.org/sel-utils/java.svg?branch=master)](https://travis-ci.org/sel-utils/java)
+[![Build Status](https://travis-ci.org/sel-utils/java.svg?branch=master)](https://travis-ci.org/sel-utils/java) [![Release](http://github-release-version.herokuapp.com/github/sel-utils/java/release.svg)](https://github.com/sel-utils/java/releases/latest) 
 
 - [ ] Protocol
 - [ ] Metadata
@@ -86,7 +86,7 @@ The following data is provided through [XML files](https://github.com/sel-projec
 
 ### [PHP](https://github.com/sel-utils/php)
 
-[![Build Status](https://travis-ci.org/sel-utils/php.svg?branch=master)](https://travis-ci.org/sel-utils/php)&nbsp;&nbsp;[![Composer Package](https://poser.pugx.org/sel-project/sel-utils/v/stable)](https://packagist.org/packages/sel-project/sel-utils)&nbsp;&nbsp;[![Composer Downloads](https://poser.pugx.org/sel-project/sel-utils/downloads)](https://packagist.org/packages/sel-project/sel-utils)
+[![Build Status](https://travis-ci.org/sel-utils/php.svg?branch=master)](https://travis-ci.org/sel-utils/php) [![Composer Package](https://poser.pugx.org/sel-project/sel-utils/v/stable)](https://packagist.org/packages/sel-project/sel-utils) [![Composer Downloads](https://poser.pugx.org/sel-project/sel-utils/downloads)](https://packagist.org/packages/sel-project/sel-utils) 
 
 - [x] Protocol
 - [ ] Metadata

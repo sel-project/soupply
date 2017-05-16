@@ -1,5 +1,17 @@
 --- start protocols ---
+{{types}}
 {{section@SECTIONS}}
+--- end ---
+--- start types Protocol/{{GAME:pascal_case}}/Types.cs ---
+using Utils.Buffer;
+using Utils.LengthPrefixedType;
+using Utils.Stream;
+
+namespace sul.{{GAME:pascal_case}}.Types
+{
+
+{{type@1,TYPES}}
+}
 --- end ---
 --- start section Protocol/{{GAME:pascal_case}}/{{NAME:pascal_case}}.cs ---
 using Types = sul.{{GAME:pascal_case}}.Types;
@@ -7,11 +19,47 @@ using Types = sul.{{GAME:pascal_case}}.Types;
 using Utils.Buffer;
 using Utils.Packet;
 
-namespace sul.{{GAME:pascal_case}}
+namespace sul.{{GAME:pascal_case}}.{{NAME:pascal_case}}
 {
 	
 {{packets@1,PACKETS}}
 }
+--- end ---
+--- start type ---
+public class {{NAME:pascal_case}} : {{IS_LENGTH_PREFIXED==true?LengthPrefixedType}}{{IS_LENGTH_PREFIXED==false?Stream}}
+{ {{constants@FIELDS}}
+
+{{fields@1,FIELDS}}
+
+	public {{NAME:pascal_case}}() {}{{HAS_FIELDS==true?
+
+	public {{NAME:pascal_case}}({{constructor@FIELDS}})
+	{
+{{constructor_assign@2,FIELDS}}
+	\}}}{{IS_LENGTH_PREFIXED==true?
+
+	protected override void EncodeLength(int length, Buffer buffer)
+	{
+		{{LENGTH_ENCODE}}
+	}
+
+	protected override int DecodeLength(Buffer buffer)
+	{
+
+	\}}}
+
+	protected override void EncodeImpl(Buffer buffer)
+	{
+{{encode@2,FIELDS}}
+	}
+
+	protected override void DecodeImpl(Buffer buffer)
+	{
+{{decode@2,FIELDS}}
+	}
+
+}
+
 --- end ---
 --- start packets ---
 public class {{NAME:pascal_case}} : Packet

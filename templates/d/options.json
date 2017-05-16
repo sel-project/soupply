@@ -6,6 +6,11 @@
 		"tag": true,
 		"badges": [
 			{
+				"image": "https://travis-ci.org/sel-utils/d.svg?branch=master",
+				"url": "https://travis-ci.org/sel-utils/d",
+				"alt": "Build Status"
+			},
+			{
 				"image": "https://img.shields.io/dub/v/sel-utils.svg",
 				"url": "https://code.dlang.org/packages/sel-utils",
 				"alt": "DUB Package"

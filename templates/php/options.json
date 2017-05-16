@@ -6,6 +6,11 @@
 		"tag": true,
 		"badges": [
 			{
+				"image": "https://travis-ci.org/sel-utils/php.svg?branch=master",
+				"url": "https://travis-ci.org/sel-utils/php",
+				"alt": "Build Status"
+			},
+			{
 				"image": "https://poser.pugx.org/sel-project/sel-utils/v/stable",
 				"url": "https://packagist.org/packages/sel-project/sel-utils",
 				"alt": "Composer Package"

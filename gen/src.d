@@ -314,9 +314,9 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 
 		if(options.repo) {
 			travis[lang] = " - ./push " ~ lang ~ " " ~ to!string(options.repo.tag) ~ " " ~ options.repo.src ~ " " ~ options.repo.exclude.join(" ");
-			string rm = "[![Build Status](https://travis-ci.org/sel-utils/" ~ lang ~ ".svg?branch=master)](https://travis-ci.org/sel-utils/" ~ lang ~ ")";
+			string rm;
 			foreach(badge ; options.repo.badges) {
-				rm ~= "&nbsp;&nbsp;[![" ~ badge.alt ~ "](" ~ badge.image ~ ")](" ~ badge.url ~ ")";
+				rm ~= "[![" ~ badge.alt ~ "](" ~ badge.image ~ ")](" ~ badge.url ~ ") ";
 			}
 			rm ~= "\n\n";
 			void writeCheck(string search, string display) {
@@ -470,8 +470,6 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 		 * What's left to do:
 		 * - field's declaration (x = new y[w])
 		 * - decoding
-		 * - types
-		 * - types with length
 		 * - variants
 		 */
 
@@ -479,16 +477,16 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 
 		/**
 		 * Gets the endianness for a field.
-		 * Returns: "big-endian", "little-endian" or ""
+		 * Returns: "big-endian" or "little-endian"
 		 */
 		string getEndianness(Field field) {
+			if(field.endianness.length) return field.endianness;
 			auto custom = field.type in p.data.endianness;
 			if(custom) {
 				return *custom;
-			} else if(endiannessTypes.canFind(field.type)) {
-				return field.endianness.length ? field.endianness : defaultEndianness;
 			} else {
-				return "";
+				// the encoder/decoder will unset the endianness if the type doesn't need it
+				return defaultEndianness;
 			}
 		}
 
@@ -557,12 +555,13 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 		string convertEncoding(string type, Data[string] data) {
 
 			string ret;
-
+			
 			/**
-			 * Encodes a length.
+			 * Adds the encoding expression for a length to 'ret'.
 			 * Params:
-			 * 		ltype = type of the length
-			 * 		conv = expression to encode the length
+			 * 		type = ltype of the length
+			 * 		conv = expression to get the length from the settings
+			 * 		data = current data
 			 */
 			void encodeLength(string ltype, string conv) {
 				auto d = data.dup;
@@ -623,8 +622,12 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				d["ORIGINAL_TYPE"] = type;
 				d["TYPE"] = convertType(type);
 				return ret ~ parseValue((){
-					if(basicTypes.canFind(type)) return options.encoding.basic;
-					else return options.encoding.types;
+					if(basicTypes.canFind(type)) {
+						if(!endiannessTypes.canFind(type)) d.remove("ENDIANNESS");
+						return options.encoding.basic;
+					} else {
+						return options.encoding.types;
+					}
 				}(), d, (Template[string]).init, 0);
 			}
 		}
@@ -709,6 +712,11 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 			t["NAME"] = type.name;
 			t["HAS_FIELDS"] = to!string(type.fields.length != 0);
 			t["FIELDS"] = createFields(type.fields);
+			t["IS_LENGTH_PREFIXED"] = to!string(type.length.length != 0);
+			t["LENGTH"] = type.length;
+			t["LENGTH_ENCODE"] = (){ auto d = t.dup; d["NAME"] = "length"; return convertEncoding(type.length, d); }();
+			//TODO encoded length
+			//TODO decoded length
 			g["TYPES"].array ~= Data(t);
 		}
 		foreach(section ; p.data.sections) {

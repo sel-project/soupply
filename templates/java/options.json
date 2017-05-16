@@ -3,7 +3,19 @@
 		"name": "Java",
 		"src": "src/main/java",
 		"exclude": ["sul/utils/About.java"],
-		"tag": true
+		"tag": true,
+		"badges": [
+			{
+				"image": "https://travis-ci.org/sel-utils/java.svg?branch=master",
+				"url": "https://travis-ci.org/sel-utils/java",
+				"alt": "Build Status"
+			},
+			{
+				"image": "http://github-release-version.herokuapp.com/github/sel-utils/java/release.svg",
+				"url": "https://github.com/sel-utils/java/releases/latest",
+				"alt": "Release"
+			}
+		]
 	},
 	"indentation": "spaces"
 }
