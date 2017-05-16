@@ -67,7 +67,7 @@ void main(string[] args) {
 
 		// copy additional files
 		foreach(incl ; include) {
-			if(incl.lastIndexOf("/")) mkdirRecurse(dest ~ "/" ~ incl[0..incl.lastIndexOf("/")]);
+			if(incl.lastIndexOf("/") > 0) mkdirRecurse(dest ~ "/" ~ incl[0..incl.lastIndexOf("/")]);
 			write(dest ~ "/" ~ incl, read("src/" ~ lang ~ "/" ~ incl));
 		}
 
