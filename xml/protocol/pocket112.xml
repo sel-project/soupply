@@ -645,42 +645,52 @@
 					<constant name="item-fizz" value="59" />
 					<constant name="chest-open" value="60" />
 					<constant name="chest-closed" value="61" />
-					<constant name="power-on" value="62" />
-					<constant name="power-off" value="63" />
-					<constant name="attach" value="64" />
-					<constant name="detach" value="65" />
-					<constant name="deny" value="66" />
-					<constant name="tripod" value="67" />
-					<constant name="pop" value="68" />
-					<constant name="drop-slot" value="69" />
-					<constant name="note" value="70" />
-					<constant name="thorns" value="71" />
-					<constant name="piston-in" value="72" />
-					<constant name="piston-out" value="73" />
-					<constant name="portal" value="74" />
-					<constant name="water" value="75" />
-					<constant name="lava-pop" value="76" />
-					<constant name="lava" value="77" />
-					<constant name="burp" value="78" />
-					<constant name="bucket-fill-water" value="79" />
-					<constant name="bucket-fill-lava" value="80" />
-					<constant name="bucket-empty-water" value="81" />
-					<constant name="bucket-empty-lava" value="82" />
-					<constant name="guardian-flop" value="83" />
-					<constant name="elderguardian-curse" value="84" />
-					<constant name="mob-warning" value="85" />
-					<constant name="mob-warning-baby" value="86" />
-					<constant name="teleport" value="87" />
-					<constant name="shulker-open" value="88" />
-					<constant name="shulker-close" value="89" />
-					<constant name="haggle" value="90" />
-					<constant name="haggle-yes" value="91" />
-					<constant name="haggle-no" value="92" />
-					<constant name="haggle-idle" value="93" />
-					<constant name="chorus-grow" value="94" />
-					<constant name="chorus-death" value="95" />
-					<constant name="default" value="96" />
-					<constant name="undefined" value="97" />
+					<constant name="shulker-box-open" value="62" />
+					<constant name="shulker-box-close" value="63" />
+					<constant name="power-on" value="64" />
+					<constant name="power-off" value="65" />
+					<constant name="attach" value="66" />
+					<constant name="detach" value="67" />
+					<constant name="deny" value="68" />
+					<constant name="tripod" value="69" />
+					<constant name="pop" value="70" />
+					<constant name="drop-slot" value="71" />
+					<constant name="note" value="72" />
+					<constant name="thorns" value="73" />
+					<constant name="piston-in" value="74" />
+					<constant name="piston-out" value="75" />
+					<constant name="portal" value="76" />
+					<constant name="water" value="77" />
+					<constant name="lava-pop" value="78" />
+					<constant name="lava" value="79" />
+					<constant name="burp" value="80" />
+					<constant name="bucket-fill-water" value="81" />
+					<constant name="bucket-fill-lava" value="82" />
+					<constant name="bucket-empty-water" value="83" />
+					<constant name="bucket-empty-lava" value="84" />
+					<constant name="guardian-flop" value="85" />
+					<constant name="elderguardian-curse" value="86" />
+					<constant name="mob-warning" value="87" />
+					<constant name="mob-warning-baby" value="88" />
+					<constant name="teleport" value="89" />
+					<constant name="shulker-open" value="90" />
+					<constant name="shulker-close" value="91" />
+					<constant name="haggle" value="92" />
+					<constant name="haggle-yes" value="93" />
+					<constant name="haggle-no" value="94" />
+					<constant name="haggle-idle" value="95" />
+					<constant name="chorus-grow" value="96" />
+					<constant name="chorus-death" value="97" />
+					<constant name="glass" value="98" />
+					<constant name="cast-spell" value="99" />
+					<constant name="prepare-attack" value="100" />
+					<constant name="prepare-summon" value="101" />
+					<constant name="prepare-wololo" value="102" />
+					<constant name="fang" value="103" />
+					<constant name="charge" value="104" />
+					<constant name="take-picture" value="105" />
+					<constant name="default" value="106" />
+					<constant name="undefined" value="107" />
 				</field>
 				<field name="position" type="entity-position">
 					Position where the sound was generated. The closer to the player the more intense will be on the client.
@@ -1247,15 +1257,15 @@
 			</packet>
 
 			<packet name="play-sound" id="87" clientbound="true" serverbound="false">
-				<field name="?" type="string" />
+				<field name="name" type="string" />
 				<field name="position" type="block-position" />
-				<field name="?" type="float" />
-				<field name="?" type="float" />
+				<field name="volume" type="float" />
+				<field name="pitch" type="float" />
 			</packet>
 
 			<packet name="stop-sound" id="88" clientbound="true" serverbound="false">
-				<field name="?" type="string" />
-				<field name="?" type="bool" />
+				<field name="name" type="string" />
+				<field name="stop-all" type="bool" />
 			</packet>
 
 			<packet name="set-title" id="89" clientbound="true" serverbound="false">
