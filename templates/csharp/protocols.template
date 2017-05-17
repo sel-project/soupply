@@ -5,7 +5,7 @@
 --- start types Protocol/{{GAME:pascal_case}}/Types.cs ---
 using System.Text;
 
-namespace sul.{{GAME:pascal_case}}.Types
+namespace sul.Protocol.{{GAME:pascal_case}}.Types
 {
 
 {{type@1,TYPES}}
@@ -15,9 +15,9 @@ namespace sul.{{GAME:pascal_case}}.Types
 using System.Text;
 
 using sul.Utils;
-using sul.{{GAME:pascal_case}}.Types;
+using sul.Protocol.{{GAME:pascal_case}}.Types;
 
-namespace sul.{{GAME:pascal_case}}.{{NAME:pascal_case}}
+namespace sul.Protocol.{{GAME:pascal_case}}.{{NAME:pascal_case}}
 {
 	
 {{packets@1,PACKETS}}

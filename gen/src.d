@@ -634,7 +634,8 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				} else if(type == "bool") {
 					return "false";
 				} else if(basicTypes.canFind(type)) {
-					return options.def.number;
+					d["TYPE"] = convertType(type);
+					exp = options.def.number;
 				} else {
 					d["NAME"] = type;
 					exp = options.def.type;
@@ -1189,7 +1190,7 @@ class Template {
 		string[] lines = ret.content.split("\n");
 		foreach(ref line ; lines) {
 			if(line.length) {
-				if(!(line.startsWith("{{") && line.endsWith("}}"))) line = space ~ (line.startsWith("^") ? line[1..$] : line);
+				if(!line.startsWith("{{") || !line.endsWith("}}")) line = space ~ (line.startsWith("^") ? line[1..$] : line);
 			}
 		}
 		ret.content = lines.join("\n");

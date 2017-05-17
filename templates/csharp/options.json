@@ -8,7 +8,7 @@
 		"badges": [
 			{
 				"image": "https://ci.appveyor.com/api/projects/status/r64c62387r8j9424?svg=true",
-				"url": "https://ci.appveyor.com/api/projects/status/r64c62387r8j9424",
+				"url": "https://ci.appveyor.com/project/Kripth/csharp",
 				"alt": "Build Status"
 			}
 		]

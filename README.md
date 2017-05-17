@@ -38,7 +38,7 @@ The following data is provided through [XML files](https://github.com/sel-projec
 
 ### [C#](https://github.com/sel-utils/csharp)
 
-[![Build Status](https://ci.appveyor.com/api/projects/status/r64c62387r8j9424?svg=true)](https://ci.appveyor.com/api/projects/status/r64c62387r8j9424) 
+[![Build Status](https://ci.appveyor.com/api/projects/status/r64c62387r8j9424?svg=true)](https://ci.appveyor.com/project/Kripth/csharp) 
 
 - [x] Protocol
 - [ ] Metadata
