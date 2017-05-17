@@ -34,11 +34,11 @@ The following data is provided through [XML files](https://github.com/sel-projec
 
 **Jump to**: [C#](#csharp), [D](#d), [Java](#java), [PHP](#php)
 
-287&#8239;702 lines of code in 1&#8239;541 files
+297&#8239;768 lines of code in 1&#8239;542 files
 
 ### [C#](https://github.com/sel-utils/csharp)
 
-
+[![Build Status](https://ci.appveyor.com/api/projects/status/r64c62387r8j9424?svg=true)](https://ci.appveyor.com/api/projects/status/r64c62387r8j9424) 
 
 - [x] Protocol
 - [ ] Metadata

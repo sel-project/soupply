@@ -82,12 +82,12 @@ public class {{NAME:pascal_case}} : sul.Utils.Packet
 		return (int)Id;
 	}
 
-	protected override void EncodeId(sul.Utils.Buffer _buffer)
+	public override void EncodeId(sul.Utils.Buffer _buffer)
 	{
 		_buffer.Write{{ENDIANNESS:pascal_case}}{{ID_TYPE:pascal_case}}(Id);
 	}
 
-	protected override void DecodeId(sul.Utils.Buffer _buffer)
+	public override void DecodeId(sul.Utils.Buffer _buffer)
 	{
 		//_buffer.Read{{ENDIANNESS:pascal_case}}{{ID_TYPE:pascal_case}}();
 	}
@@ -107,6 +107,44 @@ public class {{NAME:pascal_case}} : sul.Utils.Packet
 		var ret = new {{NAME:pascal_case}}();
 		ret.Decode(buffer);
 		return ret;
+	}{{HAS_VARIANTS==true?
+
+{{variants@1,VARIANTS}}
+	}}
+
+}
+
+--- end ---
+--- start variants ---
+public {{NAME:pascal_case}}Variant {{NAME:pascal_case}}({{constructor@FIELDS}})
+{
+	var _variant = new {{NAME:pascal_case}}Variant(this);
+{{constructor_assign_variant@1,FIELDS}}
+	return _variant;
+}
+
+public sealed class {{NAME:pascal_case}}Variant : sul.Utils.Variant
+{
+
+	private {{PARENT_NAME:pascal_case}} _parent;
+
+{{fields@1,FIELDS}}
+
+	public {{NAME:pascal_case}}Variant({{PARENT_NAME:pascal_case}} parent) : base(parent)
+	{
+		this._parent = parent;
+		this._parent.{{VARIANT_FIELD:camel_case}} = {{VALUE_ENCODED}};
+	}
+
+	protected override void EncodeImpl(sul.Utils.Buffer _buffer)
+	{
+		_parent.EncodeImpl(_buffer);
+{{encode@2,FIELDS}}
+	}
+
+	protected override void DecodeImpl(sul.Utils.Buffer _buffer)
+	{
+		//TODO
 	}
 
 }
@@ -129,6 +167,9 @@ public const {{TYPE}} {{NAME:uppercase}} = {{VALUE_ENCODED}};
 --- end ---
 --- start constructor_assign ---
 this.{{NAME:camel_case}} = {{NAME:camel_case}};
+--- end ---
+--- start constructor_assign_variant ---
+_variant.{{NAME:camel_case}} = {{NAME:camel_case}};
 --- end ---
 --- start fields ---
 public {{TYPE}} {{NAME:camel_case}};

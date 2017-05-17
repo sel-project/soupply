@@ -37,9 +37,10 @@
 		<Compile Include="sul\Utils\About.cs" />
 		<Compile Include="sul\Utils\Buffer.cs" />
 		<Compile Include="sul\Utils\LengthPrefixedType.cs" />
+		<Compile Include="sul\Utils\Metadata.cs" />
 		<Compile Include="sul\Utils\Packet.cs" />
 		<Compile Include="sul\Utils\Stream.cs" />
-		<Compile Include="sul\Utils\Metadata.cs" />
+		<Compile Include="sul\Utils\Variant.cs" />
 	</ItemGroup>
 	<Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

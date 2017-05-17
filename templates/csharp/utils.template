@@ -5,6 +5,7 @@
 {{stream}}
 {{length_prefixed_type}}
 {{packet}}
+{{variant}}
 {{metadata}} // remove when metadata is properly implemented
 --- end ---
 --- start assembly ../Properties/AssemblyInfo.cs ---
@@ -308,9 +309,42 @@ namespace sul.Utils
 			return this;
 		}
 
-		protected abstract void EncodeId(Buffer buffer);
+		public abstract void EncodeId(Buffer buffer);
 
-		protected abstract void DecodeId(Buffer buffer);
+		public abstract void DecodeId(Buffer buffer);
+
+	}
+
+}
+--- end ---
+--- start variant Utils/Variant.cs ---
+namespace sul.Utils
+{
+
+	public abstract class Variant : Packet
+	{
+
+		private Packet packet;
+
+		public Variant(Packet packet)
+		{
+			this.packet = packet;
+		}
+
+		public override int GetId()
+		{
+			return this.packet.GetId();
+		}
+
+		public override void EncodeId(Buffer buffer)
+		{
+			this.packet.EncodeId(buffer);
+		}
+
+		public override void DecodeId(Buffer buffer)
+		{
+			this.packet.DecodeId(buffer);
+		}
 
 	}
 

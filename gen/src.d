@@ -512,9 +512,8 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 
 		/**
 		 * What's left to do:
-		 * - field's declaration (x = new y[w])
 		 * - decoding
-		 * - variants
+		 * - encoded length
 		 */
 
 		immutable defaultEndianness = p.data.endianness["*"];
@@ -724,13 +723,13 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 				d["ORIGINAL_TYPE"] = type;
 				d["TYPE"] = convertType(type);
 				return ret ~ parseValue((){
-						if(basicTypes.canFind(type)) {
-							if(!endiannessTypes.canFind(type)) d.remove("ENDIANNESS");
-							return options.encoding.basic;
-						} else {
-							return options.encoding.types;
-						}
-					}(), d, (Template[string]).init, 0);
+					if(basicTypes.canFind(type)) {
+						if(!endiannessTypes.canFind(type)) d.remove("ENDIANNESS");
+						return options.encoding.basic;
+					} else {
+						return options.encoding.types;
+					}
+				}(), d, (Template[string]).init, 0);
 			}
 		}
 		
@@ -938,6 +937,8 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 						Data[] vret;
 						foreach(variant ; packet.variants) {
 							Data[string] v;
+							v["PARENT_NAME"] = packet.name;
+							v["VARIANT_FIELD"] = convertName(packet.variantField, 0);
 							v["NAME"] = variant.name;
 							v["VALUE"] = variant.value;
 							v["VALUE_ENCODED"] = createEncoded(variant.value, ""); //TODO variant field

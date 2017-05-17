@@ -33,4 +33,4 @@ after_success:
  - ./push php true src eyJleGNsdWRlIjpbInN1bFwvdXRpbHNcL0Fib3V0LnBocCJdLCJpbmNsdWRlIjpbXX0=
  - ./push java true src/main/java eyJleGNsdWRlIjpbInN1bFwvdXRpbHNcL0Fib3V0LmphdmEiXSwiaW5jbHVkZSI6W119
  - ./push d true src eyJleGNsdWRlIjpbInN1bFwvdXRpbHNcL2Fib3V0LmQiXSwiaW5jbHVkZSI6W119
- - ./push csharp false src eyJleGNsdWRlIjpbInN1bFwvVXRpbHNcL0Fib3V0LmNzIl0sImluY2x1ZGUiOlsic2VsLXV0aWxzLmNzcHJvaiIsIlByb3BlcnRpZXNcL0Fzc2VtYmx5SW5mby5jcyJdfQ==
+ - ./push csharp true src eyJleGNsdWRlIjpbInN1bFwvVXRpbHNcL0Fib3V0LmNzIl0sImluY2x1ZGUiOlsic2VsLXV0aWxzLmNzcHJvaiIsIlByb3BlcnRpZXNcL0Fzc2VtYmx5SW5mby5jcyJdfQ==
