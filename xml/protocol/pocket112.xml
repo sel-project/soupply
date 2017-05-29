@@ -232,10 +232,14 @@
 				</constant>
 				<constant name="send-command-feedback" value="sendcommandfeedback" />
 			</field>
-			<field name="value" type="bool">
-				Indicates whether the game rule is enabled.
+			<field name="type" type="ubyte">
+				<constant name="boolean" value="1" />
+				<constant name="integer" value="2" />
+				<constant name="floating" value="3" />
 			</field>
-			<field name="?" type="bool" />
+			<field name="boolean-value" type="bool" when="type==1" />
+			<field name="integer-value" type="int" when="type==2" />
+			<field name="floating-value" type="float" when="type==3" />
 		</type>
 
 		<array name="rules" base="rule" length="uint" />
@@ -914,9 +918,12 @@
 			</packet>
 
 			<packet name="set-spawn-position" id="43" clientbound="true" serverbound="false">
-				<field name="?" type="varint" />
+				<field name="type" type="varint">
+					<constant name="player-spawn" value="0" />
+					<constant name="world-spawn" value="1" />
+				</field>
 				<field name="position" type="block-position" />
-				<field name="?" type="bool" />
+				<field name="forced" type="bool" />
 			</packet>
 
 			<packet name="animate" id="44" clientbound="true" serverbound="true">

@@ -152,9 +152,6 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Metadatas[st
 	mkdirRecurse("../src/js/sul/utils");
 	write("../src/js/sul/utils/buffer.js", utils);
 
-	// about
-	write("../src/js/sul/utils/about.js", "const __sul = " ~ to!string(sulVersion) ~ ";");
-
 	// protocol
 	foreach(string game, Protocols prs; protocols) {
 		mkdirRecurse("../src/js/sul/protocol/" ~ game);
