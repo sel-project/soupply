@@ -1,0 +1,1429 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<protocol>
+
+	<software>Minecraft</software>
+
+	<protocol>333</protocol>
+
+	<released>2017/6/2</released>
+
+	<from>1.12</from>
+
+	<encoding id="varuint" arraylength="varuint">
+
+		<endianness type="*" value="big-endian" />
+
+		<alias name="entity-id" type="varuint" />
+
+		<alias name="entity-position" type="double<xyz>" />
+
+		<alias name="entity-velocity" type="short<xyz>" />
+
+		<alias name="block-position" type="ulong" />
+
+		<alias name="angle" type="ubyte" />
+
+		<type name="statistic">
+			<field name="name" type="string" />
+			<field name="value" type="varuint" />
+		</type>
+
+		<type name="block-change">
+			<field name="xz" type="ubyte" />
+			<field name="y" type="ubyte" />
+			<field name="block" type="varuint" />
+		</type>
+
+		<type name="slot">
+			<field name="id" type="short" />
+			<field name="count" type="ubyte" when="id>0" />
+			<field name="damage" type="ushort" when="id>0" />
+			<field name="nbt" type="bytes" when="id>0" />
+		</type>
+
+		<array name="slots" base="slot" length="ushort" />
+
+		<array name="explosion-records" base="byte<xyz>" length="uint" />
+
+		<type name="icon">
+			<field name="direction-and-type" type="ubyte">
+				<constant name="white-arrow" value="0" />
+				<constant name="green-arrow" value="1" />
+				<constant name="red-arrow" value="2" />
+				<constant name="blue-arrow" value="3" />
+				<constant name="white-cross" value="4" />
+				<constant name="red-pointer" value="5" />
+				<constant name="white-circle" value="6" />
+				<constant name="small-white-circle" value="7" />
+				<constant name="mansion" value="8" />
+				<constant name="temple" value="9" />
+			</field>
+			<field name="position" type="ubyte<xz>" />
+		</type>
+
+		<type name="property">
+			<field name="name" type="string" />
+			<field name="value" type="string" />
+			<field name="signed" type="bool" />
+			<field name="signature" type="string" when="signed==true" />
+		</type>
+
+		<type name="list-add-player">
+			<field name="uuid" type="uuid" />
+			<field name="name" type="string" />
+			<field name="properties" type="property[]" />
+			<field name="gamemode" type="varuint">
+				<constant name="survival" value="0" />
+				<constant name="creative" value="1" />
+				<constant name="adventure" value="2" />
+				<constant name="spectator" value="3" />
+			</field>
+			<field name="latency" type="varuint" />
+			<field name="has-display-name" type="bool" />
+			<field name="display-name" type="string" when="has-display-name==true" />
+		</type>
+
+		<type name="list-update-gamemode">
+			<field name="uuid" type="uuid" />
+			<field name="gamemode" type="varuint">
+				<constant name="survival" value="0" />
+				<constant name="creative" value="1" />
+				<constant name="adventure" value="2" />
+				<constant name="spectator" value="3" />
+			</field>
+		</type>
+
+		<type name="list-update-latency">
+			<field name="uuid" type="uuid" />
+			<field name="latency" type="varuint" />
+		</type>
+
+		<type name="list-update-display-name">
+			<field name="uuid" type="uuid" />
+			<field name="has-display-name" type="bool" />
+			<field name="display-name" type="string" when="has-display-name==true" />
+		</type>
+
+		<type name="modifier">
+			<field name="uuid" type="uuid" />
+			<field name="amount" type="double" />
+			<field name="operation" type="ubyte">
+				<constant name="add-substract-amount" value="0" />
+				<constant name="add-substract-amount-percentage" value="1" />
+				<constant name="multiply-amount-percentage" value="2" />
+			</field>
+		</type>
+
+		<type name="attribute">
+			<field name="key" type="string" />
+			<field name="value" type="double" />
+			<field name="modifiers" type="modifier[]" />
+		</type>
+
+		<array name="attributes" base="attribute" length="uint" />
+
+		<type name="entry">
+			<field name="item" type="slot" />
+			<field name="crafting-slot" type="ubyte" />
+			<field name="player-slot" type="ubyte" />
+		</type>
+
+		<array name="entries-array" base="entry" length="ushort" />
+
+		<type name="optional-position">
+			<field name="has-position" type="bool" />
+			<field name="position" type="block-position" when="has-position==true" />
+		</type>
+
+		<type name="optional-uuid">
+			<field name="has-uuid" type="bool" />
+			<field name="uuid" type="uuid" />
+		</type>
+
+	</encoding>
+
+	<packets>
+
+		<section name="status">
+
+			<packet name="handshake" id="0" clientbound="false" serverbound="true">
+				<field name="protocol" type="varuint" default="333" />
+				<field name="server-address" type="string" />
+				<field name="server-port" type="ushort" />
+				<field name="next" type="varuint">
+					<constant name="status" value="1" />
+					<constant name="login" value="2" />
+				</field>
+			</packet>
+
+			<packet name="request" id="0" clientbound="false" serverbound="true">
+
+			</packet>
+
+			<packet name="response" id="0" clientbound="true" serverbound="false">
+				<field name="json" type="string" />
+			</packet>
+
+			<packet name="latency" id="1" clientbound="true" serverbound="true">
+				<field name="id" type="long" />
+			</packet>
+
+		</section>
+
+		<section name="login">
+
+			<packet name="disconnect" id="0" clientbound="true" serverbound="false">
+				<field name="reason" type="string" />
+			</packet>
+
+			<packet name="login-start" id="0" clientbound="false" serverbound="true">
+				<field name="username" type="string" />
+			</packet>
+
+			<packet name="encryption-request" id="1" clientbound="true" serverbound="false">
+				<field name="server-id" type="string" />
+				<field name="public-key" type="ubyte[]" />
+				<field name="verify-token" type="ubyte[]" />
+			</packet>
+
+			<packet name="encryption-response" id="1" clientbound="false" serverbound="true">
+				<field name="shared-secret" type="ubyte[]" />
+				<field name="verify-token" type="ubyte[]" />
+			</packet>
+
+			<packet name="login-success" id="2" clientbound="true" serverbound="false">
+				<field name="uuid" type="string" />
+				<field name="username" type="string" />
+			</packet>
+
+			<packet name="set-compression" id="3" clientbound="true" serverbound="false">
+				<field name="thresold" type="varuint" />
+			</packet>
+
+		</section>
+
+		<section name="clientbound">
+
+			<packet name="spawn-object" id="0" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="uuid" type="uuid" />
+				<field name="type" type="ubyte" />
+				<field name="position" type="entity-position" />
+				<field name="pitch" type="angle" />
+				<field name="yaw" type="angle" />
+				<field name="data" type="int" />
+				<field name="velocity" type="entity-velocity" />
+			</packet>
+
+			<packet name="spawn-experience-orb" id="1" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="position" type="entity-position" />
+				<field name="count" type="ushort" />
+			</packet>
+
+			<packet name="spawn-global-entity" id="2" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="type" type="ubyte">
+					<constant name="thunderbolt" value="1" />
+				</field>
+				<field name="position" type="entity-position" />
+			</packet>
+
+			<packet name="spawn-mob" id="3" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="uuid" type="uuid" />
+				<field name="type" type="varuint" />
+				<field name="position" type="entity-position" />
+				<field name="yaw" type="angle" />
+				<field name="pitch" type="angle" />
+				<field name="head-pitch" type="angle" />
+				<field name="velocity" type="entity-velocity" />
+				<field name="metadata" type="metadata" />
+			</packet>
+
+			<packet name="spawn-painting" id="4" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="uuid" type="uuid" />
+				<field name="title" type="string" />
+				<field name="position" type="block-position" />
+				<field name="direction" type="ubyte">
+					<constant name="south" value="0" />
+					<constant name="west" value="1" />
+					<constant name="north" value="2" />
+					<constant name="east" value="3" />
+				</field>
+			</packet>
+
+			<packet name="spawn-player" id="5" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="uuid" type="uuid" />
+				<field name="position" type="entity-position" />
+				<field name="yaw" type="angle" />
+				<field name="pitch" type="angle" />
+				<field name="metadata" type="metadata" />
+			</packet>
+
+			<packet name="animation" id="6" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="animation" type="ubyte">
+					<constant name="swing-main-arm" value="0" />
+					<constant name="take-damage" value="1" />
+					<constant name="leave-bed" value="2" />
+					<constant name="swing-offhand" value="3" />
+					<constant name="critical-effect" value="4" />
+					<constant name="magical-critical-effect" value="5" />
+				</field>
+			</packet>
+
+			<packet name="statistics" id="7" clientbound="true" serverbound="false">
+				<field name="statistics" type="statistic[]" />
+			</packet>
+
+			<packet name="block-break-animation" id="8" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="position" type="block-position" />
+				<field name="stage" type="ubyte" />
+			</packet>
+
+			<packet name="update-block-entity" id="9" clientbound="true" serverbound="false">
+				<field name="position" type="block-position" />
+				<field name="action" type="ubyte">
+					<constant name="mob-spawner-data" value="1" />
+					<constant name="command-block-text" value="2" />
+					<constant name="beacon-powers" value="3" />
+					<constant name="mob-head-data" value="4" />
+					<constant name="flower-pot-flower" value="5" />
+					<constant name="banner-data" value="6" />
+					<constant name="structure-data" value="7" />
+					<constant name="end-gateway-destination" value="8" />
+					<constant name="sign-text" value="9" />
+					<constant name="shulker-box-declaration" value="10" />
+					<constant name="bed-color" value="11" />
+				</field>
+				<field name="nbt" type="bytes" />
+			</packet>
+
+			<packet name="block-action" id="10" clientbound="true" serverbound="false">
+				<field name="position" type="block-position" />
+				<field name="action" type="ubyte">
+					<constant name="note-block-harp" value="0" />
+					<constant name="note-block-bass-drum" value="1" />
+					<constant name="note-block-snare-drum" value="2" />
+					<constant name="note-block-clicks" value="3" />
+					<constant name="note-block-sticks" value="3" />
+					<constant name="note-block-bass-guitar" value="4" />
+					<constant name="piston-extend" value="0" />
+					<constant name="piston-retract" value="1" />
+					<constant name="chest-watchers" value="1" />
+					<constant name="beacon-recalculate" value="1" />
+					<constant name="mob-spawner-reset-delay" value="1" />
+					<constant name="end-gateway-yellow-beam" value="1" />
+				</field>
+				<field name="parameter" type="ubyte">
+					<constant name="piston-down" value="0" />
+					<constant name="piston-up" value="1" />
+					<constant name="piston-south" value="2" />
+					<constant name="piston-west" value="3" />
+					<constant name="piston-north" value="4" />
+					<constant name="piston-east" value="5" />
+				</field>
+				<field name="block-type" type="varuint" />
+			</packet>
+
+			<packet name="block-change" id="11" clientbound="true" serverbound="false">
+				<field name="position" type="block-position" />
+				<field name="block" type="varuint" />
+			</packet>
+
+			<packet name="boss-bar" id="12" clientbound="true" serverbound="false">
+				<field name="uuid" type="uuid" />
+				<field name="action" type="varuint" />
+				<variants field="action">
+					<variant name="add" value="0">
+						<field name="title" type="string" />
+						<field name="health" type="float" />
+						<field name="color" type="varuint">
+							<constant name="pink" value="0" />
+							<constant name="blue" value="1" />
+							<constant name="red" value="2" />
+							<constant name="green" value="3" />
+							<constant name="yellow" value="4" />
+							<constant name="purple" value="5" />
+							<constant name="white" value="6" />
+						</field>
+						<field name="division" type="varuint">
+							<constant name="no-division" value="0" />
+							<constant name="six-notches" value="1" />
+							<constant name="ten-notches" value="2" />
+							<constant name="twelve-notches" value="3" />
+							<constant name="twenty-notches" value="4" />
+						</field>
+						<field name="flags" type="ubyte">
+							<constant name="dark-sky" value="1" />
+							<constant name="is-dragon-bar" value="2" />
+						</field>
+					</variant>
+					<variant name="remove" value="1" />
+					<variant name="update-health" value="2">
+						<field name="health" type="float" />
+					</variant>
+					<variant name="update-title" value="3">
+						<field name="title" type="string" />
+					</variant>
+					<variant name="update-style" value="4">
+						<field name="color" type="varuint">
+							<constant name="pink" value="0" />
+							<constant name="blue" value="1" />
+							<constant name="red" value="2" />
+							<constant name="green" value="3" />
+							<constant name="yellow" value="4" />
+							<constant name="purple" value="5" />
+							<constant name="white" value="6" />
+						</field>
+						<field name="division" type="varuint">
+							<constant name="no-division" value="0" />
+							<constant name="six-notches" value="1" />
+							<constant name="ten-notches" value="2" />
+							<constant name="twelve-notches" value="3" />
+							<constant name="twenty-notches" value="4" />
+						</field>
+					</variant>
+					<variant name="update-flags" value="5">
+						<field name="flags" type="ubyte">
+							<constant name="dark-sky" value="1" />
+							<constant name="is-dragon-bar" value="2" />
+						</field>
+					</variant>
+				</variants>
+			</packet>
+
+			<packet name="server-difficulty" id="13" clientbound="true" serverbound="false">
+				<field name="difficulty" type="ubyte">
+					<constant name="peaceful" value="0" />
+					<constant name="easy" value="1" />
+					<constant name="normal" value="2" />
+					<constant name="hard" value="3" />
+				</field>
+			</packet>
+
+			<packet name="tab-complete" id="14" clientbound="true" serverbound="false">
+				<field name="matches" type="string[]" />
+			</packet>
+
+			<packet name="chat-message" id="15" clientbound="true" serverbound="false">
+				<field name="message" type="string" />
+				<field name="position" type="ubyte">
+					<constant name="chat" value="0" />
+					<constant name="system-message" value="1" />
+					<constant name="above-hotbar" value="2" />
+				</field>
+			</packet>
+
+			<packet name="multi-block-change" id="16" clientbound="true" serverbound="false">
+				<field name="chunk" type="int<xz>" />
+				<field name="changes" type="block-change[]" />
+			</packet>
+
+			<packet name="confirm-transaction" id="17" clientbound="true" serverbound="false">
+				<field name="window" type="ubyte" />
+				<field name="action" type="ushort" />
+				<field name="accepted" type="bool" />
+			</packet>
+
+			<packet name="close-window" id="18" clientbound="true" serverbound="false">
+				<field name="window" type="ubyte" />
+			</packet>
+
+			<packet name="open-window" id="19" clientbound="true" serverbound="false">
+				<field name="window" type="ubyte" />
+				<field name="type" type="string" />
+				<field name="title" type="string" />
+				<field name="slots" type="ubyte" />
+			</packet>
+
+			<packet name="window-items" id="20" clientbound="true" serverbound="false">
+				<field name="window" type="ubyte" />
+				<field name="slots" type="slots" />
+			</packet>
+
+			<packet name="window-property" id="21" clientbound="true" serverbound="false">
+				<field name="window" type="ubyte" />
+				<field name="property" type="ushort">
+					<constant name="furnance-fire-icon" value="0" />
+					<constant name="furnace-max-fuel-burn-time" value="1" />
+					<constant name="furnace-progress-arrow" value="2" />
+					<constant name="furnce-max-progress" value="3" />
+					<constant name="enchantment-level-requirement-top" value="0" />
+					<constant name="enchantment-level-requirement-middle" value="1" />
+					<constant name="enchantment-level-requirement-bottom" value="2" />
+					<constant name="enchantment-seed" value="3" />
+					<constant name="enchantment-id-top" value="4" />
+					<constant name="enchantment-id-middle" value="5" />
+					<constant name="enchantment-id-bottom" value="6" />
+					<constant name="enchantment-level-top" value="7" />
+					<constant name="enchantment-level-middle" value="8" />
+					<constant name="enchantment-level-bottom" value="9" />
+					<constant name="beacon-power-level" value="0" />
+					<constant name="beacon-first-effect" value="1" />
+					<constant name="beacon-second-effect" value="2" />
+					<constant name="anvil-repair-cost" value="0" />
+					<constant name="brewing-stand-brew-time" value="0" />
+				</field>
+				<field name="value" type="short" />
+			</packet>
+
+			<packet name="set-slot" id="22" clientbound="true" serverbound="false">
+				<field name="window" type="ubyte" />
+				<field name="slot" type="ushort" />
+				<field name="item" type="slot" />
+			</packet>
+
+			<packet name="set-cooldown" id="23" clientbound="true" serverbound="false">
+				<field name="item" type="varuint" />
+				<field name="cooldown" type="varuint" />
+			</packet>
+
+			<packet name="plugin-message" id="24" clientbound="true" serverbound="false">
+				<field name="channel" type="string" />
+				<field name="data" type="bytes" />
+			</packet>
+
+			<packet name="named-sound-effect" id="25" clientbound="true" serverbound="false">
+				<field name="name" type="string" />
+				<field name="category" type="varuint" />
+				<field name="position" type="int<xyz>" />
+				<field name="volume" type="float" />
+				<field name="pitch" type="float" />
+			</packet>
+
+			<packet name="disconnect" id="26" clientbound="true" serverbound="false">
+				<field name="reason" type="string" />
+			</packet>
+
+			<packet name="entity-status" id="27" clientbound="true" serverbound="false">
+				<field name="entity-id" type="uint" />
+				<field name="status" type="ubyte">
+					<constant name="spawn-tipped-arrow-particle-effects" value="0" />
+					<constant name="play-jumping-animation-and-particles" value="1" />
+					<constant name="reset-spawner-delay" value="1" />
+					<constant name="play-hurt-animation-and-sound" value="2" />
+					<constant name="play-death-animation-and-sound" value="3" />
+					<constant name="play-attack-animation-and-sound" value="4" />
+					<constant name="spawn-smoke-particles" value="6" />
+					<constant name="spawn-heart-particles" value="7" />
+					<constant name="play-shaking-water-animation" value="8" />
+					<constant name="finished-consuming" value="9" />
+					<constant name="play-eating-grass-animation" value="10" />
+					<constant name="ignite-minecart-tnt" value="10" />
+					<constant name="hold-poppy" value="11" />
+					<constant name="spawn-villager-mating-heart-particles" value="12" />
+					<constant name="spawn-villager-angry-particles" value="13" />
+					<constant name="spawn-villager-happy-particles" value="14" />
+					<constant name="spawn-witch-magic-particles" value="15" />
+					<constant name="play-zombie-cure-finished-sound" value="16" />
+					<constant name="spawn-firework-explosion-effect" value="17" />
+					<constant name="spawn-love-particles" value="18" />
+					<constant name="reset-squid-rotation" value="19" />
+					<constant name="spawn-explosion-particles" value="20" />
+					<constant name="play-guardian-sound-effect" value="21" />
+					<constant name="enable-reduced-debug-screen" value="22" />
+					<constant name="disable-reduced-debug-screen" value="23" />
+					<constant name="set-op-permission-level-0" value="24" />
+					<constant name="set-op-permission-level-1" value="25" />
+					<constant name="set-op-permission-level-2" value="26" />
+					<constant name="set-op-permission-level-3" value="27" />
+					<constant name="set-op-permission-level-4" value="28" />
+					<constant name="play-shield-block-sound" value="29" />
+					<constant name="play-shield-break-sound" value="30" />
+					<constant name="hook-knockback" value="31" />
+					<constant name="play-hit-sound" value="32" />
+					<constant name="play-thorns-hurt-animation-and-sound" value="33" />
+					<constant name="remove-poppy" value="34" />
+					<constant name="play-totem-undying-animation" value="35" />
+				</field>
+			</packet>
+
+			<packet name="explosion" id="28" clientbound="true" serverbound="false">
+				<field name="position" type="float<xyz>" />
+				<field name="radius" type="float" />
+				<field name="records" type="explosion-records" />
+				<field name="motion" type="float<xyz>" />
+			</packet>
+
+			<packet name="unload-chunk" id="29" clientbound="true" serverbound="false">
+				<field name="position" type="int<xz>" />
+			</packet>
+
+			<packet name="change-game-state" id="30" clientbound="true" serverbound="false">
+				<field name="reason" type="ubyte">
+					<constant name="invalid-bed" value="0" />
+					<constant name="end-raining" value="1" />
+					<constant name="begin-raining" value="2" />
+					<constant name="change-gamemode" value="3" />
+					<constant name="exit-end" value="4" />
+					<constant name="demo-message" value="5" />
+					<constant name="arrow-hitting-player" value="6" />
+					<constant name="fade-value" value="7" />
+					<constant name="fade-time" value="8" />
+					<constant name="play-elder-guardian-mob-appearance" value="10" />
+				</field>
+				<field name="value" type="float">
+					<constant name="survival" value="0" />
+					<constant name="creative" value="1" />
+					<constant name="adventure" value="2" />
+					<constant name="spectator" value="3" />
+					<constant name="respawn-immediately" value="0" />
+					<constant name="respawn-after-credits" value="1" />
+					<constant name="show-demo-screen" value="0" />
+					<constant name="tell-movement-controls" value="101" />
+					<constant name="tell-jump-controls" value="102" />
+					<constant name="tell-inventory-controls" value="103" />
+					<constant name="bright" value="0" />
+					<constant name="dark" value="1" />
+				</field>
+			</packet>
+
+			<packet name="keep-alive" id="31" clientbound="true" serverbound="false">
+				<field name="id" type="varuint" />
+			</packet>
+
+			<packet name="chunk-data" id="32" clientbound="true" serverbound="false">
+				<field name="position" type="int<xz>" />
+				<field name="full" type="bool" />
+				<field name="sections" type="varuint" />
+				<field name="data" type="ubyte[]" />
+				<field name="tiles-count" type="varuint" />
+				<field name="tiles" type="bytes" />
+			</packet>
+
+			<packet name="effect" id="33" clientbound="true" serverbound="false">
+				<field name="effect-id" type="uint">
+					<constant name="dispenser-dispense" value="1000" />
+					<constant name="dispenser-fail-dispense" value="1001" />
+					<constant name="dispenser-shoot" value="1002" />
+					<constant name="ender-eye-launch" value="1003" />
+					<constant name="firework-shot" value="1004" />
+					<constant name="iron-door-open" value="1005" />
+					<constant name="wooden-door-open" value="1006" />
+					<constant name="wooden-trapdoor-open" value="1007" />
+					<constant name="fence-gate-open" value="1008" />
+					<constant name="fire-extinguish" value="1009" />
+					<constant name="play-record" value="1010" />
+					<constant name="iron-door-close" value="1011" />
+					<constant name="wooden-door-close" value="1012" />
+					<constant name="wooden-trapdoor-close" value="1013" />
+					<constant name="fence-gate-close" value="1014" />
+					<constant name="ghast-warn" value="1015" />
+					<constant name="ghast-shoot" value="1016" />
+					<constant name="enderdragon-shoot" value="1017" />
+					<constant name="blaze-shoot" value="1018" />
+					<constant name="zombie-attack-wood-door" value="1019" />
+					<constant name="zombie-attack-iron-door" value="1020" />
+					<constant name="zombie-break-wood-door" value="1021" />
+					<constant name="wither-break-block" value="1022" />
+					<constant name="wither-spawn" value="1023" />
+					<constant name="wither-shoot" value="1024" />
+					<constant name="bat-take-off" value="1025" />
+					<constant name="zombie-infect-villager" value="1026" />
+					<constant name="zombie-villager-convert" value="1027" />
+					<constant name="ender-dragon-breath" value="1028" />
+					<constant name="anvil-break" value="1029" />
+					<constant name="anvil-use" value="1030" />
+					<constant name="anvil-land" value="1031" />
+					<constant name="portal-travel" value="1032" />
+					<constant name="chorus-flower-grow" value="1033" />
+					<constant name="chorus-flower-die" value="1034" />
+					<constant name="brewing-stand-brew" value="1035" />
+					<constant name="iron-trapdoor-open" value="1036" />
+					<constant name="iron-trapdoor-close" value="1037" />
+					<constant name="spawn-10-smoke-particles" value="2000" />
+					<constant name="break-break-particles-and-sound" value="2001" />
+					<constant name="splash-potion-particles-and-sound" value="2002" />
+					<constant name="ender-eye-break-particles-and-sound" value="2003" />
+					<constant name="mob-spawn-particles" value="2004" />
+					<constant name="bonemeal-particles" value="2005" />
+					<constant name="dragon-breath" value="2006" />
+					<constant name="end-gateway-spawn" value="3000" />
+					<constant name="enderdragon-growl" value="3001" />
+				</field>
+				<field name="position" type="block-position" />
+				<field name="data" type="uint" />
+				<field name="disable-volume" type="bool" />
+			</packet>
+
+			<packet name="particle" id="34" clientbound="true" serverbound="false">
+				<field name="particle-id" type="uint">
+					<constant name="explode" value="0" />
+					<constant name="large-explosion" value="1" />
+					<constant name="huge-explosion" value="2" />
+					<constant name="firework-spark" value="3" />
+					<constant name="bubble" value="4" />
+					<constant name="splash" value="5" />
+					<constant name="wake" value="6" />
+					<constant name="suspended" value="7" />
+					<constant name="depth-suspend" value="8" />
+					<constant name="crit" value="9" />
+					<constant name="magic-crit" value="10" />
+					<constant name="smoke" value="11" />
+					<constant name="large-smoke" value="12" />
+					<constant name="spell" value="13" />
+					<constant name="instant-spell" value="14" />
+					<constant name="mob-spell" value="15" />
+					<constant name="mob-spell-ambient" value="16" />
+					<constant name="witch-magic" value="17" />
+					<constant name="drip-water" value="18" />
+					<constant name="drip-lava" value="19" />
+					<constant name="angry-villager" value="20" />
+					<constant name="happy-villager" value="21" />
+					<constant name="town-aura" value="22" />
+					<constant name="note" value="23" />
+					<constant name="portal" value="24" />
+					<constant name="enchantment-table" value="25" />
+					<constant name="flame" value="26" />
+					<constant name="lava" value="27" />
+					<constant name="footstep" value="28" />
+					<constant name="cloud" value="29" />
+					<constant name="red-dust" value="30" />
+					<constant name="snowball-poof" value="31" />
+					<constant name="snow-shovel" value="32" />
+					<constant name="slime" value="33" />
+					<constant name="heart" value="34" />
+					<constant name="barrier" value="35" />
+					<constant name="item-crack" value="36" />
+					<constant name="block-crack" value="37" />
+					<constant name="block-dust" value="38" />
+					<constant name="droplet" value="39" />
+					<constant name="take" value="40" />
+					<constant name="mob-appearance" value="41" />
+					<constant name="dragon-breath" value="42" />
+					<constant name="endrod" value="43" />
+					<constant name="damage-indicator" value="44" />
+					<constant name="sweep-attack" value="45" />
+					<constant name="falling-dust" value="46" />
+				</field>
+				<field name="long-distance" type="bool" />
+				<field name="position" type="float<xyz>" />
+				<field name="offset" type="float<xyz>" />
+				<field name="data" type="float" />
+				<field name="count" type="uint" />
+				<field name="additional-data" type="varuint[2]" />
+			</packet>
+
+			<packet name="join-game" id="35" clientbound="true" serverbound="false">
+				<field name="entity-id" type="uint" />
+				<field name="gamemode" type="ubyte">
+					<constant name="survival" value="0" />
+					<constant name="creative" value="1" />
+					<constant name="adventure" value="2" />
+					<constant name="spectator" value="3" />
+				</field>
+				<field name="dimension" type="int">
+					<constant name="nether" value="-1" />
+					<constant name="overworld" value="0" />
+					<constant name="end" value="1" />
+				</field>
+				<field name="difficulty" type="ubyte">
+					<constant name="peaceful" value="0" />
+					<constant name="easy" value="1" />
+					<constant name="normal" value="2" />
+					<constant name="hard" value="3" />
+				</field>
+				<field name="max-players" type="ubyte" />
+				<field name="level-type" type="string">
+					<constant name="infinity" value="default" />
+					<constant name="flat" value="flat" />
+					<constant name="amplified" value="amplified" />
+					<constant name="large-biomes" value="largeBiomes" />
+				</field>
+				<field name="reduced-debug" type="bool" />
+			</packet>
+
+			<packet name="map" id="36" clientbound="true" serverbound="false">
+				<field name="map-id" type="varuint" />
+				<field name="scale" type="ubyte" />
+				<field name="show-icons" type="bool" />
+				<field name="icons" type="icon[]" />
+				<field name="colums" type="ubyte" />
+				<field name="rows" type="ubyte" />
+				<field name="offset" type="ubyte<xz>" />
+				<field name="data" type="ubyte[]" />
+			</packet>
+
+			<packet name="entity" id="37" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+			</packet>
+
+			<packet name="entity-relative-move" id="38" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="delta" type="short<xyz>" />
+				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="entity-look-and-relative-move" id="39" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="delta" type="short<xyz>" />
+				<field name="yaw" type="angle" />
+				<field name="pitch" type="angle" />
+				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="entity-look" id="40" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="yaw" type="angle" />
+				<field name="pitch" type="angle" />
+				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="vehicle-move" id="41" clientbound="true" serverbound="false">
+				<field name="position" type="entity-position" />
+				<field name="yaw" type="float" />
+				<field name="pitch" type="float" />
+			</packet>
+
+			<packet name="open-sign-editor" id="42" clientbound="true" serverbound="false">
+				<field name="position" type="block-position" />
+			</packet>
+
+			<packet name="player-abilities" id="43" clientbound="true" serverbound="false">
+				<field name="flags" type="ubyte">
+					<constant name="invulnerable" value="1" />
+					<constant name="flying" value="2" />
+					<constant name="allow-flying" value="4" />
+					<constant name="creative-mode" value="8" />
+				</field>
+				<field name="flying-speed" type="float" />
+				<field name="fov-modifier" type="float" />
+			</packet>
+
+			<packet name="combat-event" id="44" clientbound="true" serverbound="false">
+				<field name="event-id" type="ubyte" />
+				<variants field="event-id">
+					<variant name="enter-combat" value="0" />
+					<variant name="end-combat" value="1">
+						<field name="duration" type="varuint" />
+						<field name="entity-id" type="uint" />
+					</variant>
+					<variant name="entity-dead" value="2">
+						<field name="player-id" type="entity-id" />
+						<field name="entity-id" type="uint" />
+						<field name="message" type="string" />
+					</variant>
+				</variants>
+			</packet>
+
+			<packet name="player-list-item" id="45" clientbound="true" serverbound="false">
+				<field name="action" type="varuint" />
+				<variants field="action">
+					<variant name="add-player" value="0">
+						<field name="players" type="list-add-player[]" />
+					</variant>
+					<variant name="update-gamemode" value="1">
+						<field name="players" type="list-update-gamemode[]" />
+					</variant>
+					<variant name="update-latency" value="2">
+						<field name="players" type="list-update-latency[]" />
+					</variant>
+					<variant name="update-display-name" value="3">
+						<field name="players" type="list-update-display-name[]" />
+					</variant>
+					<variant name="remove-player" value="4">
+						<field name="players" type="uuid[]" />
+					</variant>
+				</variants>
+			</packet>
+
+			<packet name="player-position-and-look" id="46" clientbound="true" serverbound="false">
+				<field name="position" type="entity-position" />
+				<field name="yaw" type="float" />
+				<field name="pitch" type="float" />
+				<field name="flags" type="ubyte">
+					<constant name="x" value="1" />
+					<constant name="y" value="2" />
+					<constant name="z" value="4" />
+					<constant name="y-rotation" value="8" />
+					<constant name="x-rotation" value="16" />
+				</field>
+				<field name="teleport-id" type="varuint" />
+			</packet>
+
+			<packet name="use-bed" id="47" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="position" type="block-position" />
+			</packet>
+
+			<packet name="unlock-recipes" id="48" clientbound="true" serverbound="false">
+				<field name="action" type="varuint">
+					<constant name="add" value="1" />
+					<constant name="remove" value="2" />
+					<constant name="add-without-notification" value="3" />
+				</field>
+				<field name="open-book" type="bool" />
+				<field name="filtering" type="bool" />
+				<field name="recipes" type="varuint[]" />
+				<field name="book-recipes" type="varuint[]" when="action==1||action==3" />
+			</packet>
+
+			<packet name="destroy-entities" id="49" clientbound="true" serverbound="false">
+				<field name="entity-ids" type="entity-id[]" />
+			</packet>
+
+			<packet name="remove-entity-effect" id="50" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="effect-id" type="ubyte" />
+			</packet>
+
+			<packet name="resource-pack-send" id="51" clientbound="true" serverbound="false">
+				<field name="url" type="string" />
+				<field name="hash" type="string" />
+			</packet>
+
+			<packet name="respawn" id="52" clientbound="true" serverbound="false">
+				<field name="dimension" type="int">
+					<constant name="nether" value="-1" />
+					<constant name="overworld" value="0" />
+					<constant name="end" value="1" />
+				</field>
+				<field name="difficulty" type="ubyte">
+					<constant name="peaceful" value="0" />
+					<constant name="easy" value="1" />
+					<constant name="normal" value="2" />
+					<constant name="hard" value="3" />
+				</field>
+				<field name="gamemode" type="ubyte">
+					<constant name="survival" value="0" />
+					<constant name="creative" value="1" />
+					<constant name="adventure" value="2" />
+					<constant name="spectator" value="3" />
+				</field>
+				<field name="level-type" type="string">
+					<constant name="infinity" value="default" />
+					<constant name="flat" value="flat" />
+					<constant name="amplified" value="amplified" />
+					<constant name="large-biomes" value="largeBiomes" />
+				</field>
+			</packet>
+
+			<packet name="entity-head-look" id="53" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="head-yaw" type="angle" />
+			</packet>
+
+			<packet name="advancement-progress" id="54" clientbound="true" serverbound="false">
+				<field name="not-empty" type="bool" />
+				<field name="identifier" type="string" when="not-empty==true" />
+			</packet>
+
+			<packet name="world-border" id="55" clientbound="true" serverbound="false">
+				<field name="action" type="varuint" />
+				<variants field="action">
+					<variant name="set-size" value="0">
+						<field name="diameter" type="double" />
+					</variant>
+					<variant name="lerp-size" value="1">
+						<field name="old-diameter" type="double" />
+						<field name="new-diameter" type="double" />
+						<field name="speed" type="varulong" />
+					</variant>
+					<variant name="set-center" value="2">
+						<field name="center" type="double<xyz>" />
+					</variant>
+					<variant name="initialize" value="3">
+						<field name="center" type="double<xyz>" />
+						<field name="old-diameter" type="double" />
+						<field name="new-diameter" type="double" />
+						<field name="speed" type="varulong" />
+						<field name="portal-teleport-boundary" type="varuint" />
+						<field name="warning-time" type="varuint" />
+						<field name="warning-blocks" type="varuint" />
+					</variant>
+					<variant name="set-warning-time" value="4">
+						<field name="warning-time" type="varuint" />
+					</variant>
+					<variant name="set-warning-blocks" value="5">
+						<field name="warning-blocks" type="varuint" />
+					</variant>
+				</variants>
+			</packet>
+
+			<packet name="camera" id="56" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+			</packet>
+
+			<packet name="held-item-change" id="57" clientbound="true" serverbound="false">
+				<field name="slot" type="ubyte" />
+			</packet>
+
+			<packet name="display-scoreboard" id="58" clientbound="true" serverbound="false">
+				<field name="position" type="ubyte">
+					<constant name="list" value="0" />
+					<constant name="sidebar" value="1" />
+					<constant name="below-name" value="2" />
+				</field>
+				<field name="score-name" type="string" />
+			</packet>
+
+			<packet name="entity-metadata" id="59" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="metadata" type="metadata" />
+			</packet>
+
+			<packet name="attach-entity" id="60" clientbound="true" serverbound="false">
+				<field name="target" type="uint" />
+				<field name="holder" type="uint" />
+			</packet>
+
+			<packet name="entity-velocity" id="61" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="velocity" type="entity-velocity" />
+			</packet>
+
+			<packet name="entity-equipment" id="62" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="slot" type="varuint" />
+				<field name="item" type="slot" />
+			</packet>
+
+			<packet name="set-experience" id="63" clientbound="true" serverbound="false">
+				<field name="experience" type="float" />
+				<field name="level" type="varuint" />
+				<field name="total-experience" type="varuint" />
+			</packet>
+
+			<packet name="update-health" id="64" clientbound="true" serverbound="false">
+				<field name="health" type="float" />
+				<field name="hunger" type="varuint" />
+				<field name="saturation" type="float" />
+			</packet>
+
+			<packet name="scoreboard-objective" id="65" clientbound="true" serverbound="false">
+				<field name="name" type="string" />
+				<field name="mode" type="ubyte">
+					<constant name="create" value="0" />
+					<constant name="remove" value="1" />
+					<constant name="update" value="2" />
+				</field>
+				<field name="value" type="string" when="mode!=1" />
+				<field name="type" type="string" when="mode!=1">
+					<constant name="numeric" value="integer" />
+					<constant name="graphic" value="hearts" />
+				</field>
+			</packet>
+
+			<packet name="set-passengers" id="66" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="passengers" type="entity-id[]" />
+			</packet>
+
+			<packet name="teams" id="67" clientbound="true" serverbound="false">
+				<field name="name" type="string" />
+				<field name="mode" type="ubyte" />
+				<variants field="mode">
+					<variant name="create-team" value="0">
+						<field name="display-name" type="string" />
+						<field name="prefix" type="string" />
+						<field name="suffix" type="string" />
+						<field name="friendly-flags" type="ubyte">
+							<constant name="friendly-fire" value="1" />
+							<constant name="see-team-invisible-players" value="2" />
+						</field>
+						<field name="nametag-visibility" type="string">
+							<constant name="always-hide" value="always" />
+							<constant name="hide-other-teams" value="hideOtherTeams" />
+							<constant name="hide-own-team" value="hideOwnTeam" />
+							<constant name="never-hide" value="never" />
+						</field>
+						<field name="collision-rule" type="string">
+							<constant name="always-push" value="always" />
+							<constant name="push-other-teams" value="pushOtherTeams" />
+							<constant name="push-own-team" value="pushOwnTeam" />
+							<constant name="never-push" value="never" />
+						</field>
+						<field name="color" type="ubyte" />
+						<field name="players" type="string[]" />
+					</variant>
+					<variant name="remove-team" value="1" />
+					<variant name="update-team-info" value="2">
+						<field name="display-name" type="string" />
+						<field name="prefix" type="string" />
+						<field name="suffix" type="string" />
+						<field name="friendly-flags" type="ubyte">
+							<constant name="friendly-fire" value="1" />
+							<constant name="see-team-invisible-players" value="2" />
+						</field>
+						<field name="nametag-visibility" type="string">
+							<constant name="always-hide" value="always" />
+							<constant name="hide-other-teams" value="hideOtherTeams" />
+							<constant name="hide-own-team" value="hideOwnTeam" />
+							<constant name="never-hide" value="never" />
+						</field>
+						<field name="collision-rule" type="string">
+							<constant name="always-push" value="always" />
+							<constant name="push-other-teams" value="pushOtherTeams" />
+							<constant name="push-own-team" value="pushOwnTeam" />
+							<constant name="never-push" value="never" />
+						</field>
+						<field name="color" type="ubyte" />
+					</variant>
+					<variant name="add-players" value="3">
+						<field name="players" type="string[]" />
+					</variant>
+					<variant name="remove-players" value="4">
+						<field name="players" type="string[]" />
+					</variant>
+				</variants>
+			</packet>
+
+			<packet name="update-score" id="68" clientbound="true" serverbound="false">
+				<field name="score-name" type="string" />
+				<field name="action" type="ubyte">
+					<constant name="update" value="0" />
+					<constant name="remove" value="1" />
+				</field>
+				<field name="objective-name" type="string" />
+				<field name="value" type="varuint" when="action==0" />
+			</packet>
+
+			<packet name="spawn-position" id="69" clientbound="true" serverbound="false">
+				<field name="position" type="block-position" />
+			</packet>
+
+			<packet name="time-update" id="70" clientbound="true" serverbound="false">
+				<field name="world-age" type="ulong" />
+				<field name="time" type="long" />
+			</packet>
+
+			<packet name="title" id="71" clientbound="true" serverbound="false">
+				<field name="action" type="varuint" />
+				<variants field="action">
+					<variant name="set-title" value="0">
+						<field name="text" type="string" />
+					</variant>
+					<variant name="set-subtitle" value="1">
+						<field name="text" type="string" />
+					</variant>
+					<variant name="set-action-bar" value="2">
+						<field name="text" type="string" />
+					</variant>
+					<variant name="set-timings" value="3">
+						<field name="fade-in" type="uint" />
+						<field name="stay" type="uint" />
+						<field name="fade-out" type="uint" />
+					</variant>
+					<variant name="hide" value="4" />
+					<variant name="reset" value="5" />
+				</variants>
+			</packet>
+
+			<packet name="sound-effect" id="72" clientbound="true" serverbound="false">
+				<field name="sound-id" type="varuint" />
+				<field name="category" type="varuint" />
+				<field name="position" type="int<xyz>" />
+				<field name="volume" type="float" />
+				<field name="pitch" type="float" />
+			</packet>
+
+			<packet name="player-list-header-and-footer" id="73" clientbound="true" serverbound="false">
+				<field name="header" type="string" />
+				<field name="footer" type="string" />
+			</packet>
+
+			<packet name="collect-item" id="74" clientbound="true" serverbound="false">
+				<field name="collected" type="entity-id" />
+				<field name="collector" type="entity-id" />
+				<field name="count" type="varuint" />
+			</packet>
+
+			<packet name="entity-teleport" id="75" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="position" type="double<xyz>" />
+				<field name="yaw" type="angle" />
+				<field name="pitch" type="angle" />
+				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="advencements" id="76" clientbound="true" serverbound="false">
+				<!--- TODO -->
+			</packet>
+
+			<packet name="entity-properties" id="77" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="attributes" type="attributes" />
+			</packet>
+
+			<packet name="entity-effect" id="78" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
+				<field name="effect-id" type="ubyte" />
+				<field name="amplifier" type="ubyte" />
+				<field name="duration" type="varuint" />
+				<field name="flags" type="ubyte">
+					<constant name="ambient" value="1" />
+					<constant name="show-particles" value="2" />
+				</field>
+			</packet>
+
+		</section>
+
+		<section name="serverbound">
+
+			<packet name="teleport-confirm" id="0" clientbound="false" serverbound="true">
+				<field name="teleport-id" type="varuint" />
+			</packet>
+
+			<packet name="crafting-grid" id="1" clientbound="false" serverbound="true">
+				<field name="window" type="ubyte" />
+				<field name="action" type="ushort" />
+				<field name="return-entry" type="entries-array" />
+				<field name="prepare-entry" type="entries-array" />
+			</packet>
+
+			<packet name="tab-complete" id="2" clientbound="false" serverbound="true">
+				<field name="text" type="string" />
+				<field name="command" type="bool" />
+				<field name="has-position" type="bool" />
+				<field name="block" type="block-position" when="has-position==true" />
+			</packet>
+
+			<packet name="chat-message" id="3" clientbound="false" serverbound="true">
+				<field name="text" type="string" />
+			</packet>
+
+			<packet name="client-status" id="4" clientbound="false" serverbound="true">
+				<field name="action" type="varuint">
+					<constant name="respawn" value="0" />
+					<constant name="request-stats" value="1" />
+				</field>
+			</packet>
+
+			<packet name="client-settings" id="5" clientbound="false" serverbound="true">
+				<field name="language" type="string" />
+				<field name="view-distance" type="ubyte" />
+				<field name="chat-mode" type="varuint">
+					<constant name="enabled" value="0" />
+					<constant name="commands-only" value="1" />
+					<constant name="disabled" value="2" />
+				</field>
+				<field name="chat-colors" type="bool" />
+				<field name="displayed-skin-parts" type="ubyte">
+					<constant name="cape" value="1" />
+					<constant name="jacket" value="2" />
+					<constant name="left-sleeve" value="4" />
+					<constant name="right-sleeve" value="8" />
+					<constant name="left-pants" value="16" />
+					<constant name="right-pants" value="32" />
+					<constant name="hat" value="64" />
+				</field>
+				<field name="main-hand" type="ubyte">
+					<constant name="right" value="0" />
+					<constant name="left" value="1" />
+				</field>
+			</packet>
+
+			<packet name="confirm-transaction" id="6" clientbound="false" serverbound="true">
+				<field name="window" type="ubyte" />
+				<field name="action" type="ushort" />
+				<field name="accepted" type="bool" />
+			</packet>
+
+			<packet name="enchant-item" id="7" clientbound="false" serverbound="true">
+				<field name="window" type="ubyte" />
+				<field name="enchantment" type="ubyte" />
+			</packet>
+
+			<packet name="click-window" id="8" clientbound="false" serverbound="true">
+				<field name="window" type="ubyte" />
+				<field name="slot" type="ushort" />
+				<field name="button" type="ubyte" />
+				<field name="action" type="ushort" />
+				<field name="mode" type="varuint" />
+				<field name="clicked-item" type="slot" />
+			</packet>
+
+			<packet name="close-window" id="9" clientbound="false" serverbound="true">
+				<field name="window" type="ubyte" />
+			</packet>
+
+			<packet name="plugin-message" id="10" clientbound="false" serverbound="true">
+				<field name="channel" type="string" />
+				<field name="data" type="bytes" />
+			</packet>
+
+			<packet name="use-entity" id="11" clientbound="false" serverbound="true">
+				<field name="target" type="entity-id" />
+				<field name="type" type="varuint">
+					<constant name="interact" value="0" />
+					<constant name="attack" value="1" />
+					<constant name="interact-at" value="2" />
+				</field>
+				<field name="target-position" type="float<xyz>" when="type==2" />
+				<field name="hand" type="varuint" when="type==2">
+					<constant name="main-hand" value="0" />
+					<constant name="off-hand" value="1" />
+				</field>
+			</packet>
+
+			<packet name="keep-alive" id="12" clientbound="false" serverbound="true">
+				<field name="id" type="varuint" />
+			</packet>
+
+			<packet name="player" id="13" clientbound="false" serverbound="true">
+				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="player-position" id="14" clientbound="false" serverbound="true">
+				<field name="position" type="entity-position" />
+				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="player-position-and-look" id="15" clientbound="false" serverbound="true">
+				<field name="position" type="entity-position" />
+				<field name="yaw" type="float" />
+				<field name="pitch" type="float" />
+				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="player-look" id="16" clientbound="false" serverbound="true">
+				<field name="yaw" type="float" />
+				<field name="pitch" type="float" />
+				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="vehicle-move" id="17" clientbound="false" serverbound="true">
+				<field name="position" type="entity-position" />
+				<field name="yaw" type="float" />
+				<field name="pitch" type="float" />
+			</packet>
+
+			<packet name="steer-boat" id="18" clientbound="false" serverbound="true">
+				<field name="right-paddle-turning" type="bool" />
+				<field name="left-paddle-turning" type="bool" />
+			</packet>
+
+			<packet name="player-abilities" id="19" clientbound="false" serverbound="true">
+				<field name="flags" type="ubyte">
+					<constant name="creative-mode" value="1" />
+					<constant name="flying" value="2" />
+					<constant name="allow-flying" value="4" />
+					<constant name="invincible" value="8" />
+				</field>
+				<field name="flying-speed" type="float" />
+				<field name="walking-speed" type="float" />
+			</packet>
+
+			<packet name="player-digging" id="20" clientbound="false" serverbound="true">
+				<field name="status" type="varuint">
+					<constant name="start-digging" value="0" />
+					<constant name="cancel-digging" value="1" />
+					<constant name="finish-digging" value="2" />
+					<constant name="drop-item-stack" value="3" />
+					<constant name="drop-item" value="4" />
+					<constant name="shoot-arrow" value="5" />
+					<constant name="finish-eating" value="5" />
+					<constant name="swap-item-in-hand" value="6" />
+				</field>
+				<field name="position" type="block-position" />
+				<field name="face" type="ubyte" />
+			</packet>
+
+			<packet name="entity-action" id="21" clientbound="false" serverbound="true">
+				<field name="entity-id" type="entity-id" />
+				<field name="action" type="varuint">
+					<constant name="start-sneaking" value="0" />
+					<constant name="stop-sneaking" value="1" />
+					<constant name="leave-bed" value="2" />
+					<constant name="start-sprinting" value="3" />
+					<constant name="stop-sprinting" value="4" />
+					<constant name="start-horse-jump" value="5" />
+					<constant name="stop-horse-jump" value="6" />
+					<constant name="open-horse-inventory" value="7" />
+					<constant name="start-elytra-flying" value="8" />
+				</field>
+				<field name="jump-boost" type="varuint" when="action==5" />
+			</packet>
+
+			<packet name="steer-vehicle" id="22" clientbound="false" serverbound="true">
+				<field name="sideways" type="float" />
+				<field name="forward" type="float" />
+				<field name="flags" type="ubyte">
+					<constant name="jump" value="1" />
+					<constant name="unmount" value="2" />
+				</field>
+			</packet>
+
+			<packet name="crafting-book-data" id="23" clientbound="false" serverbound="true">
+				<field name="type" type="varuint" />
+				<variants field="type">
+					<variant name="displayed-recipe" value="1">
+						<field name="id" type="uint" />
+					</variant>
+					<variant name="crafting-book-status" value="2">
+						<field name="book-opened" type="bool" />
+						<field name="filtering" type="bool" />
+					</variant>
+				</variants>
+			</packet>
+
+			<packet name="resource-pack-status" id="24" clientbound="false" serverbound="true">
+				<field name="result" type="varuint">
+					<constant name="loaded" value="0" />
+					<constant name="declined" value="1" />
+					<constant name="failed" value="2" />
+					<constant name="accepted" value="3" />
+				</field>
+			</packet>
+
+			<packet name="advencement-tab" id="25" clientbound="false" serverbound="true">
+				<field name="action" type="varuint">
+					<constant name="open-tab" value="0" />
+					<constant name="close-screen" value="1" />
+				</field>
+				<field name="tab" type="string" when="action==0" />
+			</packet>
+
+			<packet name="held-item-change" id="26" clientbound="false" serverbound="true">
+				<field name="slot" type="ushort" />
+			</packet>
+
+			<packet name="creative-inventory-action" id="27" clientbound="false" serverbound="true">
+				<field name="slot" type="ushort" />
+				<field name="clicked-item" type="slot" />
+			</packet>
+
+			<packet name="update-sign" id="28" clientbound="false" serverbound="true">
+				<field name="position" type="block-position" />
+				<field name="lines" type="string[4]" />
+			</packet>
+
+			<packet name="animation" id="29" clientbound="false" serverbound="true">
+				<field name="hand" type="varuint">
+					<constant name="main-hand" value="0" />
+					<constant name="off-hand" value="1" />
+				</field>
+			</packet>
+
+			<packet name="spectate" id="30" clientbound="false" serverbound="true">
+				<field name="player" type="uuid" />
+			</packet>
+
+			<packet name="player-block-placement" id="31" clientbound="false" serverbound="true">
+				<field name="position" type="block-position" />
+				<field name="face" type="varuint" />
+				<field name="hand" type="varuint">
+					<constant name="main-hand" value="0" />
+					<constant name="off-hand" value="1" />
+				</field>
+				<field name="cursor-position" type="float<xyz>" />
+			</packet>
+
+			<packet name="use-item" id="32" clientbound="false" serverbound="true">
+				<field name="hand" type="varuint">
+					<constant name="main-hand" value="0" />
+					<constant name="off-hand" value="1" />
+				</field>
+			</packet>
+
+		</section>
+
+	</packets>
+
+</protocol>

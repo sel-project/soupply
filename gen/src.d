@@ -156,6 +156,7 @@ struct Options {
 
 	struct Expressions {
 
+		string assign;
 		string basic;
 		string types;
 		string each;
@@ -299,12 +300,14 @@ void src(string[] args, Attributes[string] attributes, Protocols[string] protoco
 				foreach(immutable exp ; TypeTuple!("encoding", "decoding")) {
 					auto data = exp in *types;
 					if(data) {
+						auto assign = "assign" in *data;
 						auto basic = "basic" in *data;
 						auto types_ = "types" in *data;
 						auto each = "arrays" in *data;
 						auto tuples = "tuples" in *data;
 						auto arrayLength = "array_length" in *data;
 						auto stringLength = "string_length" in *data;
+						if(assign) mixin("options." ~ exp ~ ".assign") = (*assign).str;
 						if(basic) mixin("options." ~ exp ~ ".basic") = (*basic).str;
 						if(types_) mixin("options." ~ exp ~ ".types") = (*types_).str;
 						if(each) mixin("options." ~ exp ~ ".each") = (*each).str;
@@ -808,8 +811,9 @@ Data[] createProtocols(Protocols[string] protocols, Options options) {
 					r ~= convertDecoding(t, d);
 				}
 				return ret ~ r.join(" ");
-			} else {
-				//if(type == "string") decodeLength(length, options.encoding.stringLength);
+			} /+else if(type == "string") {
+				// {{NAME}} = _buffer.ReadString(_buffer.ReadVaruint());
+			}+/ else {
 				auto d = data.dup;
 				d["ORIGINAL_TYPE"] = type;
 				d["TYPE"] = convertType(type);
