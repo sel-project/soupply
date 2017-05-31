@@ -77,6 +77,7 @@
 			<packet name="ping" id="1" clientbound="false" serverbound="true">
 				<field name="ping-id" type="long" />
 				<field name="magic" type="magic" />
+				<field name="guid" type="long" />
 			</packet>
 
 			<packet name="pong" id="28" clientbound="true" serverbound="false">
