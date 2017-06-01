@@ -456,6 +456,8 @@
 					World's name that will be displayed in the game's world settings. It can contain formatting codes.
 				</field>
 				<field name="premium-world-template" type="string" />
+				<field name="?" type="bool" />
+				<field name="world-ticks" type="ulong" endianness="little-endian" />
 			</packet>
 
 			<packet name="add-player" id="12" clientbound="true" serverbound="false">
