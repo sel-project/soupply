@@ -4,8 +4,10 @@
 
 	<software>Minecraft: Pocket Edition</software>
 
-	<protocol>112</protocol>
+	<protocol>113</protocol>
 
+	<released>2017/6/1</released>
+	
 	<from>1.1.0</from>
 
 	<description>
@@ -256,7 +258,7 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint" default="112">
+				<field name="protocol" type="uint" default="113">
 					Version of the protocol used by the player.
 				</field>
 				<field name="version" type="ubyte">
