@@ -4,9 +4,9 @@
 
 	<software>Minecraft</software>
 
-	<protocol>333</protocol>
+	<protocol>334</protocol>
 
-	<released>2017/6/2</released>
+	<!--<released>2017/6/7</released>-->
 
 	<from>1.12</from>
 
@@ -148,7 +148,7 @@
 		<section name="status">
 
 			<packet name="handshake" id="0" clientbound="false" serverbound="true">
-				<field name="protocol" type="varuint" default="333" />
+				<field name="protocol" type="varuint" default="334" />
 				<field name="server-address" type="string" />
 				<field name="server-port" type="ushort" />
 				<field name="next" type="varuint">

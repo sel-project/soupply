@@ -198,9 +198,9 @@ namespace sul.Utils
 			return 0; //TODO
 		}
 
-		public Guid readUuid()
+		public System.Guid readUuid()
 		{
-			return Guid(ReadBytes(16));
+			return System.Guid(ReadBytes(16));
 		}
 
 		//

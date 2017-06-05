@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  * 
  */
+// file created to work on linux systems
 module push;
 
 import std.algorithm : canFind;
@@ -29,7 +30,7 @@ import std.file;
 import std.json : parseJSON;
 import std.process : wait, spawnShell;
 import std.stdio : writeln;
-import std.string : endsWith, replace, strip, join, lastIndexOf;
+import std.string : endsWith, replace, strip, join, indexOf, lastIndexOf, toLower;
 import std.typetuple : TypeTuple;
 		
 void main(string[] args) {
@@ -101,6 +102,31 @@ void main(string[] args) {
 
 		// push (changed files and tag)
 		wait(spawnShell(cmd.join(" && ")));
+
+		void checkout(string branch, string match) {
+			wait(spawnShell("cd " ~ lang ~ " && git checkout -b " ~ branch));
+			wait(spawnShell("rm -r " ~ lang ~ "/."));
+			// copy only files that has 'match' in the name
+			foreach(string file ; dirEntries("src/" ~ lang ~ "/", SpanMode.breadth)) {
+				if(file.isFile && file.toLower.indexOf(match) != -1) {
+					immutable dest = file[("src/" ~ lang).length+1..$];
+					if(dest.indexOf("/") != -1) mkdirRecurse(dest[0..dest.lastIndexOf("/")]);
+					write(lang ~ dest, read(file));
+				}
+			}
+			wait(spawnShell("cd " ~ lang ~ " && git add --all . && git commit -m " ~ message ~ " -m " ~ desc ~ " && git push -u \"https://${TOKEN}@github.com/sel-utils/" ~ lang ~ "\" " ~ branch));
+		}
+
+		// update branches using push_info.json
+		foreach(game, data; parseJSON(cast(string)read("push_info.json")).object) {
+			foreach(protocol ; data["protocols"].array) {
+				immutable branch = game ~ protocol.integer.to!string;
+				checkout(branch, branch);
+				if(data["latest"].integer == protocol.integer) {
+					checkout(game, branch);
+				}
+			}
+		}
 		
 	}
 

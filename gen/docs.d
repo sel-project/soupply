@@ -25,6 +25,7 @@ module docs;
 import std.algorithm : min, max, canFind, sort;
 import std.conv : to;
 static import std.file;
+import std.json : JSONValue;
 import std.regex : ctRegex, replaceAll, matchFirst;
 import std.string;
 import std.typecons : Tuple, tuple;
@@ -522,6 +523,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	}
 	
 	// index
+	JSONValue[string] push_info;
 	Tuple!(Protocol, size_t, string)[][string] p;
 	foreach(game, prts; protocols) {
 		p[prts.software] ~= tuple(prts.data, prts.protocol, game);
@@ -551,7 +553,9 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		if(_from) data ~= "\t\t\t\t<th>From</th>\n";
 		if(_to) data ~= "\t\t\t\t<th>To</th>\n";
 		data ~= "\t\t\t</tr>\n";
+		JSONValue[] json;
 		foreach(cp ; sorted) {
+			json ~= JSONValue(cp[1]);
 			immutable ps = to!string(cp[1]);
 			size_t packets = 0;
 			foreach(section ; cp[0].sections) packets += section.packets.length;
@@ -563,12 +567,19 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			if(_to) data ~= "\t\t\t\t<td class=\"center\">" ~ cp[0].to ~ "</td>\n";
 			data ~= "\t\t\t</tr>\n";
 		}
+		uint latest;
+		foreach_reverse(cp ; sorted) {
+			if(cp[0].released) latest = cp[1];
+		}
+		push_info[namespace] = JSONValue(["latest": JSONValue(latest), "protocols": JSONValue(json)]);
 		data ~= "\t\t</table>\n";
 		// copy latest into game/index.html
 		std.file.write("../pages/" ~ namespace ~ ".html", std.file.read("../pages/" ~ namespace ~ to!string(sorted[0][1]) ~ ".html")); //TODO replace canonical?
 	}
 	data ~= "\t</body>\n</html>\n";
 	writeHtml("../pages/index.html", data);
+	// write info for push.d to create branches
+	std.file.write("../push_info.json", JSONValue(push_info).toString());
 
 }
 
