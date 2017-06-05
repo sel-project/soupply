@@ -30,11 +30,19 @@ You can choose a specific protocol using the combination `software` + `protocol`
 
 ```
 git init .
-git submodule add -b minecraft316 git://github.com/sel-utils/java sul
+git submodule add -b minecraft316 git://github.com/sel-utils/java minecraft316
 ```
+And add `minecraft316` to your source paths
+
 ```
 git init .
-git submodule add -b pocket git://github.com/sel-utils/d sul
+git submodule add -b pocket git://github.com/sel-utils/d pocket
+```
+And compile using -Ipocket
+
+Utils must always be added to submodules
+```
+git submodule add -b utils git://github.com/sel-utils/php utils
 ```
 
 ### Projects using sel-utils
