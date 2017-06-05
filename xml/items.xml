@@ -352,8 +352,8 @@
 	<item name="spruce-fence" minecraft="188" pocket="85:1" />
 	<item name="birch-fence" minecraft="189" pocket="85:2" />
 	<item name="jungle-fence" minecraft="190" pocket="85:3" />
-	<item name="dark-oak-fence" minecraft="191" pocket="85:4" />
-	<item name="acacia-fence" minecraft="192" pocket="85:5" />
+	<item name="dark-oak-fence" minecraft="191" pocket="85:5" />
+	<item name="acacia-fence" minecraft="192" pocket="85:4" />
 	<item name="spruce-door-block" data="193" />
 	<item name="birch-door-block" data="194" />
 	<item name="jungle-door-block" data="195" />
@@ -397,17 +397,17 @@
 	<item name="green-shulker-box" minecraft="232" pocket="218:13" />
 	<item name="red-shulker-box" minecraft="233" pocket="218:14" />
 	<item name="black-shulker-box" minecraft="234" pocket="218:15" />
-	<item name="white-glazed-terracotta" minecraft="235" pocket="219" />
-	<item name="orange-glazed-terracotta" minecraft="236" pocket="220" />
-	<item name="magenta-glazed-terracotta" minecraft="237" pocket="221" />
-	<item name="light-blue-glazed-terracotta" minecraft="238" pocket="222" />
-	<item name="yellow-glazed-terracotta" minecraft="239" pocket="223" />
-	<item name="lime-glazed-terracotta" minecraft="240" pocket="224" />
-	<item name="pink-glazed-terracotta" minecraft="241" pocket="225" />
-	<item name="gray-glazed-terracotta" minecraft="242" pocket="226" />
-	<item name="light-gray-glazed-terracotta" minecraft="243" pocket="227" />
-	<item name="cyan-glazed-terracotta" minecraft="244" pocket="228" />
-	<item name="purple-glazed-terracotta" minecraft="245" pocket="229" />
+	<item name="white-glazed-terracotta" minecraft="235" pocket="220" />
+	<item name="orange-glazed-terracotta" minecraft="236" pocket="221" />
+	<item name="magenta-glazed-terracotta" minecraft="237" pocket="222" />
+	<item name="light-blue-glazed-terracotta" minecraft="238" pocket="223" />
+	<item name="yellow-glazed-terracotta" minecraft="239" pocket="224" />
+	<item name="lime-glazed-terracotta" minecraft="240" pocket="225" />
+	<item name="pink-glazed-terracotta" minecraft="241" pocket="226" />
+	<item name="gray-glazed-terracotta" minecraft="242" pocket="227" />
+	<item name="light-gray-glazed-terracotta" minecraft="243" pocket="228" />
+	<item name="cyan-glazed-terracotta" minecraft="244" pocket="229" />
+	<item name="purple-glazed-terracotta" minecraft="245" pocket="219" />
 	<item name="blue-glazed-terracotta" minecraft="246" pocket="231" />
 	<item name="brown-glazed-terracotta" minecraft="247" pocket="232" />
 	<item name="green-glazed-terracotta" minecraft="248" pocket="233" />
