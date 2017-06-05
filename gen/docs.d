@@ -567,7 +567,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			if(_to) data ~= "\t\t\t\t<td class=\"center\">" ~ cp[0].to ~ "</td>\n";
 			data ~= "\t\t\t</tr>\n";
 		}
-		uint latest;
+		size_t latest;
 		foreach_reverse(cp ; sorted) {
 			if(cp[0].released) latest = cp[1];
 		}
