@@ -50,6 +50,7 @@
 	<entity name="evoker" minecraft="34" pocket="104" width="0.6" height="1.95" />
 	<entity name="vex" minecraft="35" pocket="105" width="0.4" height="0.8" />
 	<entity name="vindicator" minecraft="36" pocket="56" width="0.6" height="1.95" />
+	<entity name="illusioner" minecraft="37" width="0.6" height="1.95" />
 	<entity name="creeper" minecraft="50" pocket="33" width="0.6" height="1.7" />
 	<entity name="skeleton" minecrat="51" pocket="34" width="0.6" height="1.99" />
 	<entity name="spider" minecraft="52" pocket="35" width="1.4" height="0.9" />
@@ -84,6 +85,7 @@
 	<entity name="rabbit" minecraft="101" pocket="18" width="0.4" height="0.5" />
 	<entity name="polar-bear" minecraft="102" pocket="28" width="1.3" height="1.4" />
 	<entity name="llama" minecraft="103" pocket="29" width="0.9" height="1.87" />
+	<entity name="parrot" minecraft="105" width="0.5" height="1" /> <!-- only observed -->
 	<entity name="villager" minecraft="120" pocket="15" width="0.6" height="1.95" />
 	<entity name="npc" pocket="51" width="0.6" height="1.95" />
 

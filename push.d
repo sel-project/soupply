@@ -29,6 +29,7 @@ import std.conv : to;
 import std.file;
 import std.json : parseJSON;
 import std.process : wait, spawnShell, executeShell;
+import std.regex : replaceAll, regex;
 import std.stdio : writeln;
 import std.string : endsWith, replace, strip, join, indexOf, lastIndexOf, toLower;
 import std.typetuple : TypeTuple;
@@ -107,22 +108,27 @@ void main(string[] args) {
 		if(exists(lang ~ "/.editorconfig")) ec = read(lang ~ "/.editorconfig");
 
 		void checkout(string branch, string match) {
+			string protocol;
+			if(branch != match) {
+				protocol = match[branch.length..$];
+			}
 			if(executeShell("cd " ~ lang ~ " && git rev-parse --verify " ~ branch).output.indexOf("fatal") != -1) {
 				// create new branch
-				wait(spawnShell("cd " ~ lang ~ " && git checkout --orphan " ~ branch ~ " && git rm -rf ."));
+				wait(spawnShell("cd " ~ lang ~ " && git checkout --orphan " ~ branch));
 			} else {
-				// checkout existing branch
-				wait(spawnShell("cd " ~ lang ~ " && git checkout " ~ branch));
-				// delete all files but .git
-				//TODO suppress output
-				wait(spawnShell("cd " ~ lang ~ " && find . -type f -not -wholename '*.git*' -print0 | xargs -0 rm --"));
+				// checkout existing branch and update it
+				wait(spawnShell("cd " ~ lang ~ " && git checkout " ~ branch ~ " && git pull"));
 			}
+			// delete all files but .git
+			//TODO suppress output
+			executeShell("cd " ~ lang ~ " && find . -type f -not -wholename '*.git*' -print0 | xargs -0 rm --");
 			// copy .editorconfig
 			if(ec.length) write(lang ~ "/.editorconfig", ec);
 			// copy only files that has 'match' in the name
 			foreach(string file ; dirEntries("src/" ~ lang ~ "/", SpanMode.breadth)) {
 				if(file.isFile && file.toLower.indexOf(match) != -1) {
-					immutable dest = file[("src/" ~ lang).length+1..$];
+					string dest = file[("src/" ~ lang).length+1..$]; //TODO replace [pocket100] with [pocket] if branch is not equals to match
+					if(protocol.length) dest = dest.replaceAll(regex("(" ~ branch ~ ")" ~ protocol, "mi"), "$1");
 					if(dest.indexOf("/") != -1) mkdirRecurse(lang ~ "/" ~ dest[0..dest.lastIndexOf("/")]);
 					write(lang  ~ "/" ~ dest, read(file));
 				}

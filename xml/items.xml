@@ -659,6 +659,7 @@
 	<item name="spawn-rabbit" minecraft="383:101" pocket="383:18" />
 	<item name="spawn-polar-bear" minecraft="383:102" pocket="383:28" />
 	<item name="spawn-llama" minecraft="383:103" pocket="383:29" />
+	<item name="spawn-parrot" minecraft="383:105" />
 	<item name="spawn-villager" minecraft="383:120" pocket="383:15" />
 	<item name="spawn-npc" pocket="383:51" />
 	<item name="bottle-o-enchanting" data="384" />
@@ -736,6 +737,7 @@
 	<item name="undying-totem" minecraft="449" pocket="450" stack="1" />
 	<item name="shulker-shell" minecraft="450" pocket="445" />
 	<item name="iron-nugget" data="452" />
+	<item name="knowledge-book" minecraft="453" stack="1" />
 	<item name="disc-13" minecraft="2256" stack="1" />
 	<item name="disc-cat" minecraft="2257" stack="1" />
 	<item name="disc-blocks" minecraft="2258" stack="1" />
