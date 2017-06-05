@@ -62,9 +62,10 @@
 			"string_length": "Encoding.UTF8.GetByteCount(%)"
 		},
 		"decoding": {
-			"basic": "{{NAME:camel_case}} = _buffer.Read{{ENDIANNESS:pascal_case}}{{ORIGINAL_TYPE:pascal_case}}();",
+			"assign": "{{NAME:camel_case}} = {{CONTENT}};",
+			"basic": "_buffer.Read{{ENDIANNESS:pascal_case}}{{ORIGINAL_TYPE:pascal_case}}()",
 			"types": "{{NAME:camel_case}}.DecodeBody(_buffer);",
-			"arrays": "?",
+			"arrays": "for(int {{ELEMENT_NAME}}={{READ_EXP}}; {{ELEMENT_NAME}}>0 && _buffer.CanRead(); {{ELEMENT_NAME}}--){ {{CONTENT}} }",
 			"tuples": "{{NAME:camel_case}}.Item{{INDEX1}}",
 			"array_length": "",
 			"string_length": ""

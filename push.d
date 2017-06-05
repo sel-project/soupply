@@ -60,7 +60,7 @@ void main(string[] args) {
 	string message = "\"" ~ replace(strip(cast(string)read("message.txt")), "\"", "\\\"") ~ "\"";
 	string desc = "\"" ~ replace(strip(cast(string)read("desc.txt")), "\"", "\\\"") ~ "\"";
 
-	wait(spawnShell("git clone git://github.com/sel-utils/" ~ lang ~ " " ~ lang));
+	wait(spawnShell("git clone https://github.com/sel-utils/" ~ lang ~ ".git " ~ lang);
 
 	void diff() {
 	
@@ -104,6 +104,9 @@ void main(string[] args) {
 		// push (changed files and tag)
 		wait(spawnShell(cmd.join(" && ")));
 
+		// pull every branch
+		wait(spawnShell("cd " ~ lang ~ " && git pull --all"));
+
 		void[] ec;
 		if(exists(lang ~ "/.editorconfig")) ec = read(lang ~ "/.editorconfig");
 
@@ -112,15 +115,15 @@ void main(string[] args) {
 			if(branch != match) {
 				protocol = match[branch.length..$];
 			}
-			if(executeShell("cd " ~ lang ~ " && git rev-parse --verify " ~ branch).output.indexOf("fatal") != -1) {
+			if(!exists(lang ~ "/.git/refs/heads/" ~ branch)) {
 				// create new branch
 				wait(spawnShell("cd " ~ lang ~ " && git checkout --orphan " ~ branch));
 			} else {
 				// checkout existing branch and update it
+				writeln("Branch ", branch, " already exists, checking it out...");
 				wait(spawnShell("cd " ~ lang ~ " && git checkout " ~ branch ~ " && git pull"));
 			}
 			// delete all files but .git
-			//TODO suppress output
 			executeShell("cd " ~ lang ~ " && find . -type f -not -wholename '*.git*' -print0 | xargs -0 rm --");
 			// copy .editorconfig
 			if(ec.length) write(lang ~ "/.editorconfig", ec);
