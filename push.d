@@ -104,9 +104,6 @@ void main(string[] args) {
 		// push (changed files and tag)
 		wait(spawnShell(cmd.join(" && ")));
 
-		// pull every branch
-		wait(spawnShell("cd " ~ lang ~ " && git pull --all"));
-
 		void[] ec;
 		if(exists(lang ~ "/.editorconfig")) ec = read(lang ~ "/.editorconfig");
 
@@ -115,13 +112,14 @@ void main(string[] args) {
 			if(branch != match) {
 				protocol = match[branch.length..$];
 			}
+			wait(spawnShell("cd " ~ lang ~ " && git checkout " ~ branch));
 			if(!exists(lang ~ "/.git/refs/heads/" ~ branch)) {
 				// create new branch
 				wait(spawnShell("cd " ~ lang ~ " && git checkout --orphan " ~ branch));
 			} else {
 				// checkout existing branch and update it
-				writeln("Branch ", branch, " already exists, checking it out...");
-				wait(spawnShell("cd " ~ lang ~ " && git checkout " ~ branch ~ " && git pull"));
+				writeln("Branch ", branch, " already exists, pulling files...");
+				wait(spawnShell("cd " ~ lang ~ " && git pull"));
 			}
 			// delete all files but .git
 			executeShell("cd " ~ lang ~ " && find . -type f -not -wholename '*.git*' -print0 | xargs -0 rm --");
