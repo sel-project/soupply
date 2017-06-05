@@ -24,11 +24,25 @@ The following data is provided through [XML files](https://github.com/sel-projec
 | Recipes | | 
 | Creative Inventory | Minecraft: Pocket Edition's items in the creative inventory | ✓
 
+The provided data can be used with the language's package manager (check the badges) or as git submodule.
+
+You can choose a specific protocol using the combination `software` + `protocol` or the latest release of the protocol using just `software`.
+
+```
+git init .
+git submodule add -b minecraft316 git://github.com/sel-utils/java sul
+```
+```
+git init .
+git submodule add -b pocket git://github.com/sel-utils/d sul
+```
+
 ### Projects using sel-utils
 
 | | Type | Language | Used Data
 |---:|---|---|---
 | [sel-server](https://github.com/sel-project/sel-server) | server (MC and MCPE) | D | protocol, metadata, blocks, items, effects, enchantments, biomes, creative inventory
+| [sel-client](https://github.com/sel-project/sel-client) | client (MC and MCPE) | D | protocol
 
 ### Generated code
 

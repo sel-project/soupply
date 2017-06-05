@@ -124,13 +124,13 @@ void main(string[] args) {
 			// delete all files but .git
 			executeShell("cd " ~ lang ~ " && find . -type f -not -wholename '*.git*' -print0 | xargs -0 rm --");
 			// copy .editorconfig
-			if(ec.length) write(lang ~ "/.editorconfig", ec);
+			//if(ec.length) write(lang ~ "/.editorconfig", ec);
 			// copy only files that has 'match' in the name
 			auto regex_file = regex("(" ~ branch ~ ")" ~ protocol, "mi");
 			auto regex_content = regex("(" ~branch ~ ")" ~ protocol ~ "((?!\\.xml))", "mi");
-			foreach(string file ; dirEntries("src/" ~ lang ~ "/", SpanMode.breadth)) {
+			foreach(string file ; dirEntries("src/" ~ lang ~ "/sul/", SpanMode.breadth)) {
 				if(file.isFile && (file.toLower.indexOf(match) != -1 || file.toLower.indexOf("utils/") != -1)) {
-					string dest = file[("src/" ~ lang).length+1..$];
+					string dest = file[("src/" ~ lang ~ "/sul/").length..$];
 					if(protocol.length) dest = dest.replaceAll(regex_file, "$1");
 					if(dest.indexOf("/") != -1) mkdirRecurse(lang ~ "/" ~ dest[0..dest.lastIndexOf("/")]);
 					string content = cast(string)read(file);
