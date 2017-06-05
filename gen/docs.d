@@ -573,8 +573,8 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 		}
 		push_info[namespace] = JSONValue(["latest": JSONValue(latest), "protocols": JSONValue(json)]);
 		data ~= "\t\t</table>\n";
-		// copy latest into game/index.html
-		std.file.write("../pages/" ~ namespace ~ ".html", std.file.read("../pages/" ~ namespace ~ to!string(sorted[0][1]) ~ ".html")); //TODO replace canonical?
+		// copy latest (released) into game/index.html
+		std.file.write("../pages/" ~ namespace ~ ".html", std.file.read("../pages/" ~ namespace ~ to!string(latest) ~ ".html")); //TODO replace canonical?
 	}
 	data ~= "\t</body>\n</html>\n";
 	writeHtml("../pages/index.html", data);
