@@ -60,7 +60,7 @@ void main(string[] args) {
 	string message = "\"" ~ replace(strip(cast(string)read("message.txt")), "\"", "\\\"") ~ "\"";
 	string desc = "\"" ~ replace(strip(cast(string)read("desc.txt")), "\"", "\\\"") ~ "\"";
 
-	wait(spawnShell("git clone https://github.com/sel-utils/" ~ lang ~ ".git " ~ lang);
+	wait(spawnShell("git clone https://github.com/sel-utils/" ~ lang ~ ".git " ~ lang));
 
 	void diff() {
 	
@@ -128,12 +128,16 @@ void main(string[] args) {
 			// copy .editorconfig
 			if(ec.length) write(lang ~ "/.editorconfig", ec);
 			// copy only files that has 'match' in the name
+			auto regex_file = regex("(" ~ branch ~ ")" ~ protocol, "mi");
+			auto regex_content = regex("(" ~branch ~ ")" ~ protocol ~ "((?!\\.xml))", "mi");
 			foreach(string file ; dirEntries("src/" ~ lang ~ "/", SpanMode.breadth)) {
 				if(file.isFile && file.toLower.indexOf(match) != -1) {
-					string dest = file[("src/" ~ lang).length+1..$]; //TODO replace [pocket100] with [pocket] if branch is not equals to match
-					if(protocol.length) dest = dest.replaceAll(regex("(" ~ branch ~ ")" ~ protocol, "mi"), "$1");
+					string dest = file[("src/" ~ lang).length+1..$];
+					if(protocol.length) dest = dest.replaceAll(regex_file, "$1");
 					if(dest.indexOf("/") != -1) mkdirRecurse(lang ~ "/" ~ dest[0..dest.lastIndexOf("/")]);
-					write(lang  ~ "/" ~ dest, read(file));
+					string content = cast(string)read(file);
+					if(protocol.length) content = content.replaceAll(regex_content, "$1");
+					write(lang  ~ "/" ~ dest, content);
 				}
 			}
 			wait(spawnShell("cd " ~ lang ~ " && git add --all . && git commit -m " ~ message ~ " -m " ~ desc ~ " && git push -u \"https://${TOKEN}@github.com/sel-utils/" ~ lang ~ "\" " ~ branch));
