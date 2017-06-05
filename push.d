@@ -114,6 +114,7 @@ void main(string[] args) {
 				// checkout existing branch
 				wait(spawnShell("cd " ~ lang ~ " && git checkout " ~ branch));
 				// delete all files but .git
+				//TODO suppress output
 				wait(spawnShell("cd " ~ lang ~ " && find . -type f -not -wholename '*.git*' -print0 | xargs -0 rm --"));
 			}
 			// copy .editorconfig

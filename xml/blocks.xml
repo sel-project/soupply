@@ -2111,6 +2111,50 @@
 
 	</group>
 
+	<!-- concrete -->
+	<group hardness="1.8" blastresistance="9">
+
+		<block name="white-concrete" id="1377" minecraft="251:0" pocket="236:0" />
+		<block name="orange-concrete" id="1378" minecraft="251:1" pocket="236:1" />
+		<block name="magenta-concrete" id="1379" minecraft="251:2" pocket="236:2" />
+		<block name="light-blue-concrete" id="1380" minecraft="251:3" pocket="236:3" />
+		<block name="yellow-concrete" id="1381" minecraft="251:4" pocket="236:4" />
+		<block name="lime-concrete" id="1382" minecraft="251:5" pocket="236:5" />
+		<block name="pink-concrete" id="1383" minecraft="251:6" pocket="236:6" />
+		<block name="gray-concrete" id="1384" minecraft="251:7" pocket="236:7" />
+		<block name="light-gray-concrete" id="1385" minecraft="251:8" pocket="236:8" />
+		<block name="cyan-concrete" id="1386" minecraft="251:9" pocket="236:9" />
+		<block name="purple-concrete" id="1387" minecraft="251:10" pocket="236:10" />
+		<block name="blue-concrete" id="1388" minecraft="251:11" pocket="236:11" />
+		<block name="brown-concrete" id="1389" minecraft="251:12" pocket="236:12" />
+		<block name="green-concrete" id="1390" minecraft="251:13" pocket="236:13" />
+		<block name="red-concrete" id="1391" minecraft="251:14" pocket="236:14" />
+		<block name="black-concrete" id="1392" minecraft="251:15" pocket="236:15" />
+
+	</group>
+
+	<!-- concrete powder -->
+	<group hardness="0.5" blastresistance="2.5">
+
+		<block name="white-concrete-powder" id="1393" minecraft="252:0" pocket="237:0" />
+		<block name="orange-concrete-powder" id="1394" minecraft="252:1" pocket="237:1" />
+		<block name="magenta-concrete-powder" id="1395" minecraft="252:2" pocket="237:2" />
+		<block name="light-blue-concrete-powder" id="1396" minecraft="252:3" pocket="237:3" />
+		<block name="yellow-concrete-powder" id="1397" minecraft="252:4" pocket="237:4" />
+		<block name="lime-concrete-powder" id="1398" minecraft="252:5" pocket="237:5" />
+		<block name="pink-concrete-powder" id="1399" minecraft="252:6" pocket="237:6" />
+		<block name="gray-concrete-powder" id="1400" minecraft="252:7" pocket="237:7" />
+		<block name="light-gray-concrete-powder" id="1401" minecraft="252:8" pocket="237:8" />
+		<block name="cyan-concrete-powder" id="1402" minecraft="252:9" pocket="237:9" />
+		<block name="purple-concrete-powder" id="1403" minecraft="252:10" pocket="237:10" />
+		<block name="blue-concrete-powder" id="1404" minecraft="252:11" pocket="237:11" />
+		<block name="brown-concrete-powder" id="1405" minecraft="252:12" pocket="237:12" />
+		<block name="green-concrete-powder" id="1406" minecraft="252:13" pocket="237:13" />
+		<block name="red-concrete-powder" id="1407" minecraft="252:14" pocket="237:14" />
+		<block name="black-concrete-powder" id="1408" minecraft="252:15" pocket="237:15" />
+
+	</group>
+
 	<!-- structure -->
 	<group hardness="-1" blastresistance="18000000">
 
