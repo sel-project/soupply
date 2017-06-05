@@ -110,7 +110,9 @@ namespace sul.Utils
 
 		public void WriteBigEndianTriad(int value) {}
 
-		public void WriteLittleEndianTriad(int value) {}
+		public void WriteLittleEndianTriad(int value) {
+			
+		}
 
 		public void WriteBigEndianInt(int value) {}
 

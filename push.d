@@ -28,7 +28,7 @@ import std.base64 : Base64;
 import std.conv : to;
 import std.file;
 import std.json : parseJSON;
-import std.process : wait, spawnShell;
+import std.process : wait, spawnShell, executeShell;
 import std.stdio : writeln;
 import std.string : endsWith, replace, strip, join, indexOf, lastIndexOf, toLower;
 import std.typetuple : TypeTuple;
@@ -103,10 +103,21 @@ void main(string[] args) {
 		// push (changed files and tag)
 		wait(spawnShell(cmd.join(" && ")));
 
+		void[] ec;
+		if(exists(lang ~ "/.editorconfig")) ec = read(lang ~ "/.editorconfig");
+
 		void checkout(string branch, string match) {
-			wait(spawnShell("cd " ~ lang ~ " && git checkout -b " ~ branch));
-			// delete all files but .git
-			wait(spawnShell("cd " ~ lang ~ " && find . -type f -not -wholename '*.git*' -not -name '.editorconfig' -print0 | xargs -0 rm --"));
+			if(executeShell("cd " ~ lang ~ " && git rev-parse --verify " ~ branch).output.indexOf("fatal") != -1) {
+				// create new branch
+				wait(spawnShell("cd " ~ lang ~ " && git checkout --orphan " ~ branch ~ " && git rm -rf ."));
+			} else {
+				// checkout existing branch
+				wait(spawnShell("cd " ~ lang ~ " && git checkout " ~ branch));
+				// delete all files but .git
+				wait(spawnShell("cd " ~ lang ~ " && find . -type f -not -wholename '*.git*' -print0 | xargs -0 rm --"));
+			}
+			// copy .editorconfig
+			if(ec.length) write(lang ~ "/.editorconfig", ec);
 			// copy only files that has 'match' in the name
 			foreach(string file ; dirEntries("src/" ~ lang ~ "/", SpanMode.breadth)) {
 				if(file.isFile && file.toLower.indexOf(match) != -1) {
