@@ -38,7 +38,7 @@ void main(string[] args) {
 
 	// variables that will be replaced in .template files
 	string[string] variables;
-	variables["VERSION"] = "1.2." ~ to!string(to!uint(strip(cast(string)read("gen/version.txt"))) - 88);
+	variables["VERSION"] = "1.2." ~ strip(cast(string)read("gen/version.txt"));
 
 	string lang = args[1];
 
@@ -129,7 +129,7 @@ void main(string[] args) {
 			auto regex_file = regex("(" ~ branch ~ ")" ~ protocol, "mi");
 			auto regex_content = regex("(" ~branch ~ ")" ~ protocol ~ "((?!\\.xml))", "mi");
 			foreach(string file ; dirEntries("src/" ~ lang ~ "/", SpanMode.breadth)) {
-				if(file.isFile && file.toLower.indexOf(match) != -1) {
+				if(file.isFile && (file.toLower.indexOf(match) != -1 || file.toLower.indexOf("utils/") != -1)) {
 					string dest = file[("src/" ~ lang).length+1..$];
 					if(protocol.length) dest = dest.replaceAll(regex_file, "$1");
 					if(dest.indexOf("/") != -1) mkdirRecurse(lang ~ "/" ~ dest[0..dest.lastIndexOf("/")]);
@@ -153,6 +153,8 @@ void main(string[] args) {
 		}
 		
 	}
+
+	if(exists("force_push")) return diff();
 
 	// compare files (from src/$LANG to $LANG/$DEST)
 	ptrdiff_t count = 0;

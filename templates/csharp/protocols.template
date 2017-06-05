@@ -43,7 +43,7 @@ public class {{NAME:pascal_case}} : sul.Utils.{{IS_LENGTH_PREFIXED==true?LengthP
 
 	protected override int DecodeLength(sul.Utils.Buffer _buffer)
 	{
-		return (int){{LENGTH_DECODE}}
+		return (int){{LENGTH_DECODE}};
 	\}}}
 
 	protected override void EncodeImpl(sul.Utils.Buffer _buffer)

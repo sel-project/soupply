@@ -2,7 +2,7 @@
 	"repo": {
 		"name": "C#",
 		"src": "src",
-		"exclude": ["sul/Utils/About.cs"],
+		"exclude": ["sul/Utils/About.cs", "Properties/AssemblyInfo.cs"],
 		"include": ["sel-utils.csproj", "Properties/AssemblyInfo.cs"],
 		"tag": true,
 		"badges": [
