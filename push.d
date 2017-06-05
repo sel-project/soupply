@@ -105,13 +105,16 @@ void main(string[] args) {
 
 		void checkout(string branch, string match) {
 			wait(spawnShell("cd " ~ lang ~ " && git checkout -b " ~ branch));
-			wait(spawnShell("rm -r " ~ lang ~ "/."));
+			// delete all files but .git
+			foreach(string file ; dirEntries(lang, SpanMode.breadth)) {
+				if(file.isFile && file.indexOf(".git/") == -1) remove(file);
+			}
 			// copy only files that has 'match' in the name
 			foreach(string file ; dirEntries("src/" ~ lang ~ "/", SpanMode.breadth)) {
 				if(file.isFile && file.toLower.indexOf(match) != -1) {
 					immutable dest = file[("src/" ~ lang).length+1..$];
-					if(dest.indexOf("/") != -1) mkdirRecurse(dest[0..dest.lastIndexOf("/")]);
-					write(lang ~ dest, read(file));
+					if(dest.indexOf("/") != -1) mkdirRecurse(lang ~ "/" ~ dest[0..dest.lastIndexOf("/")]);
+					write(lang  ~ "/" ~ dest, read(file));
 				}
 			}
 			wait(spawnShell("cd " ~ lang ~ " && git add --all . && git commit -m " ~ message ~ " -m " ~ desc ~ " && git push -u \"https://${TOKEN}@github.com/sel-utils/" ~ lang ~ "\" " ~ branch));

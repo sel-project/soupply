@@ -136,7 +136,9 @@ namespace sul.Utils
 
 		public void WriteBigEndianLong(long value) {}
 
-		public void WriteLittleEndianLong(long value) {}
+		public void WriteLittleEndianLong(long value) {
+			this.writer.Write(value);
+		}
 
 		public void WriteBigEndianUlong(ulong value) {}
 
