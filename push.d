@@ -106,7 +106,7 @@ void main(string[] args) {
 		void checkout(string branch, string match) {
 			wait(spawnShell("cd " ~ lang ~ " && git checkout -b " ~ branch));
 			// delete all files but .git
-			wait(spawnShell("find . -not -wholename '*.git*' -not -name '.editorconfig' -print0 | xargs -0 rm -r --"));
+			wait(spawnShell("cd " ~ lang ~ " && find . -not -wholename '*.git*' -not -name '.editorconfig' -print0 | xargs -0 rm -r --"));
 			// copy only files that has 'match' in the name
 			foreach(string file ; dirEntries("src/" ~ lang ~ "/", SpanMode.breadth)) {
 				if(file.isFile && file.toLower.indexOf(match) != -1) {
