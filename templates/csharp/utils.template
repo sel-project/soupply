@@ -149,12 +149,14 @@ namespace sul.Utils
 		public void WriteBigEndianFloat(float value) {}
 
 		public void WriteLittleEndianFloat(float value) {
-			this.write.Write(value);
+			this.writer.Write(value);
 		}
 
 		public void WriteBigEndianDouble(double value) {}
 
-		public void WriteLittleEndianDouble(double value) {}
+		public void WriteLittleEndianDouble(double value) {
+			this.writer.Write(value);
+		}
 
 		public void WriteVarshort(short value) {}
 

@@ -106,7 +106,7 @@ void main(string[] args) {
 		void checkout(string branch, string match) {
 			wait(spawnShell("cd " ~ lang ~ " && git checkout -b " ~ branch));
 			// delete all files but .git
-			wait(spawnShell("cd " ~ lang ~ " && find . -not -wholename '*.git*' -not -name '.editorconfig' -print0 | xargs -0 rm -r --"));
+			wait(spawnShell("cd " ~ lang ~ " && find . -type f -not -wholename '*.git*' -not -name '.editorconfig' -print0 | xargs -0 rm --"));
 			// copy only files that has 'match' in the name
 			foreach(string file ; dirEntries("src/" ~ lang ~ "/", SpanMode.breadth)) {
 				if(file.isFile && file.toLower.indexOf(match) != -1) {
@@ -116,6 +116,8 @@ void main(string[] args) {
 				}
 			}
 			wait(spawnShell("cd " ~ lang ~ " && git add --all . && git commit -m " ~ message ~ " -m " ~ desc ~ " && git push -u \"https://${TOKEN}@github.com/sel-utils/" ~ lang ~ "\" " ~ branch));
+			// go back to master
+			wait(spawnShell("cd " ~ lang ~ " && git checkout master"));
 		}
 
 		// update branches using push_info.json
@@ -123,10 +125,8 @@ void main(string[] args) {
 			foreach(protocol ; data["protocols"].array) {
 				immutable branch = game ~ protocol.integer.to!string;
 				checkout(branch, branch);
-				if(data["latest"].integer == protocol.integer) {
-					checkout(game, branch);
-				}
 			}
+			checkout(game, game ~ data["latest"].integer.to!string);
 		}
 		
 	}
