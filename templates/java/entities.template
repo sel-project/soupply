@@ -1,20 +1,19 @@
 --- start entities Entities.java ---
 package sul;
 
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 public enum Entities
 {
 
-{{entities_values@ENTITIES}}
+{{entities_values@1,ENTITIES}}
 
 	public final String name;
 	public final boolean object;
 	public final int minecraft, pocket;
 	public final double width, height;
 
-	Entities(String name, boolean object, int minecraft, int pocket, double width, double height)
+	private Entities(String name, boolean object, int minecraft, int pocket, double width, double height)
 	{
 		this.name = name;
 		this.object = object;
@@ -24,7 +23,7 @@ public enum Entities
 		this.height = height;
 	}
 
-	Entities(String name, boolean object, int minecraft, int pocket)
+	private Entities(String name, boolean object, int minecraft, int pocket)
 	{
 		this(name, object, minecraft, pocket, Double.NaN, Double.NaN);
 	}
@@ -39,7 +38,7 @@ public enum Entities
 		pocketEntities = new HashMap<Integer, Entities>();
 		pocketObjects = new HashMap<Integer, Entities>();
 
-{{add_entities@ENTITIES}}
+{{add_entities@2,ENTITIES}}
 
 	}
 
@@ -92,8 +91,8 @@ public enum Entities
 }
 --- end ---
 --- start entities_values ---
-	{{NAME:uppercase}}("{{NAME:spaced}}", {{OBJECT}}, {{MINECRAFT_ID}}, {{POCKET_ID}}{{HAS_SIZE==true?, {{WIDTH}}, {{HEIGHT}}}}){{LAST==true?;}}{{LAST==false?,}}
+^{{NAME:uppercase}}("{{NAME:spaced}}", {{OBJECT}}, {{MINECRAFT_ID}}, {{POCKET_ID}}{{HAS_SIZE==true?, {{WIDTH}}, {{HEIGHT}}}}){{LAST==true?;}}{{LAST==false?,}}
 --- end ---
 --- start add_entities ---
-		add({{NAME:uppercase}});
+add({{NAME:uppercase}});
 --- end ---

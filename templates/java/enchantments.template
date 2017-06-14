@@ -1,0 +1,58 @@
+--- start enchantments Enchantments.java ---
+package sul;
+
+import java.util.*;
+
+public enum Enchantments
+{
+
+{{enchantments_values@1,ENCHANTMENTS}}
+
+	public final String name;
+	public final byte minecraft, pocket;
+	public final byte max;
+
+	private Enchantments(String name, byte minecraft, byte pocket, byte max)
+	{
+		this.name = name;
+		this.minecraft = minecraft;
+		this.pocket = pocket;
+		this.max = max;
+	}
+
+	private static Map<Integer, Enchantments> minecraftEnchantments, pocketEnchantments;
+
+	static
+	{
+
+		minecraftEnchantments = new HashMap<Integer, Enchantments>();
+		pocketEnchantments = new HashMap<Integer, Enchantments>();
+
+{{add_enchantments@2,ENCHANTMENTS}}
+
+	}
+
+	private static void add(Enchantments e)
+	{
+		if(e.minecraft != -1) minecraftEnchantments.put((int)e.minecraft, e);
+		if(e.pocket != -1) pocketEnchantments.put((int)e.pocket, e);
+	}
+
+	public static Enchantments getMinecraftEnchantment(int id)
+	{
+		return minecraftEnchantments.get(id);
+	}
+
+	public static Enchantments getPocketEnchantment(int id)
+	{
+		return pocketEnchantments.get(id);
+	}
+
+}
+--- end ---
+--- start enchantments_values ---
+{{NAME:uppercase}}("{{NAME:spaced}}", (byte){{MINECRAFT_ID}}, (byte){{POCKET_ID}}, (byte){{MAX}}){{LAST==true?;}}{{LAST==false?,}}
+--- end ---
+--- start add_enchantments ---
+add({{NAME:uppercase}});
+--- end ---

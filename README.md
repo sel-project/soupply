@@ -56,7 +56,7 @@ git submodule add -b utils git://github.com/sel-utils/php utils/sul
 
 **Jump to**: [C#](#csharp), [D](#d), [Java](#java), [PHP](#php)
 
-318&#8239;117 lines of code in 1&#8239;674 files
+326&#8239;503 lines of code in 1&#8239;680 files
 
 ### [C#](https://github.com/sel-utils/csharp)
 
@@ -96,12 +96,12 @@ git submodule add -b utils git://github.com/sel-utils/php utils/sul
 
 - [ ] Protocol
 - [ ] Metadata
-- [ ] Blocks
-- [ ] Items
+- [x] Blocks
+- [x] Items
 - [x] Entities
 - [ ] Effects
-- [ ] Enchantments
-- [ ] Biomes
+- [x] Enchantments
+- [x] Biomes
 - [ ] Windows
 - [ ] Recipes
 

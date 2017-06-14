@@ -1,0 +1,110 @@
+--- start blocks Blocks.java ---
+package sul;
+
+import java.util.*;
+
+public final class Blocks
+{
+
+{{blocks_values@1,BLOCKS}}
+
+	public final String name;
+	public final short id;
+	public final BlockData minecraft, pocket;
+	public final boolean solid;
+	public final double hardness, blastResistance;
+	public final byte opacity, luminance;
+	public final boolean replaceable;
+
+	private Blocks(String name, short id, BlockData minecraft, BlockData pocket, boolean solid, double hardness, double blastResistance, byte opacity, byte luminance, boolean replaceable)
+	{
+		this.name = name;
+		this.id = id;
+		this.minecraft = minecraft;
+		this.pocket = pocket;
+		this.solid = solid;
+		this.hardness = hardness;
+		this.blastResistance = blastResistance;
+		this.opacity = opacity;
+		this.luminance = luminance;
+		this.replaceable = replaceable;
+	}
+
+	private static class BlockData
+	{
+
+		public final int id, meta;
+
+		public BlockData(int id, int meta) {
+			this.id = id;
+			this.meta = meta;
+		}
+
+	}
+
+	private static Map<Short, Blocks> selBlocks;
+	private static Map<Integer, Map<Integer, Blocks>> minecraftBlocks, pocketBlocks;
+
+	static
+	{
+	
+		selBlocks = new HashMap<Short, Blocks>();
+
+		minecraftBlocks = new HashMap<Integer, Map<Integer, Blocks>>();
+		pocketBlocks = new HashMap<Integer, Map<Integer, Blocks>>();
+
+		init1();
+		init2();
+
+	}
+	
+	private static void init1()
+	{
+{{add_blocks@2,BLOCKS[..1024]}}
+	}
+	
+	private static void init2()
+	{
+{{add_blocks@2,BLOCKS[1024..]}}
+	}
+
+	private static void add(Blocks block)
+	{
+		selBlocks.put(block.id, block);
+		if(block.minecraft != null) {
+			if(!minecraftBlocks.containsKey(block.minecraft.id)) minecraftBlocks.put(block.minecraft.id, new HashMap<Integer, Blocks>());
+			minecraftBlocks.get(block.minecraft.id).put(block.minecraft.meta, block);
+		}
+		if(block.pocket != null) {
+			if(!pocketBlocks.containsKey(block.pocket.id)) pocketBlocks.put(block.pocket.id, new HashMap<Integer, Blocks>());
+			pocketBlocks.get(block.pocket.id).put(block.pocket.meta, block);
+		}
+	}
+
+	public static Blocks getSelBlock(short id)
+	{
+		return selBlocks.get(id);
+	}
+
+	public static Blocks getMinecraftBlock(int id, int meta)
+	{
+		Map<Integer, Blocks> b = minecraftBlocks.get(id);
+		return b != null ? b.get(meta) : null;
+	}
+
+	public static Blocks getPocketBlock(int id, int meta)
+	{
+		Map<Integer, Blocks> b = pocketBlocks.get(id);
+		return b != null ? b.get(meta) : null;
+	}
+
+}
+--- end ---
+# cannot use final because the code in the static
+# constructor would be too big.
+--- start blocks_values ---
+public static Blocks {{NAME:uppercase}};
+--- end ---
+--- start add_blocks ---
+add({{NAME:uppercase}} = new Blocks("{{NAME:spaced}}", (short){{ID}}, {{MINECRAFT==true?new BlockData({{MINECRAFT_ID}}, {{MINECRAFT_META}})}}{{MINECRAFT==false?null}}, {{POCKET==true?new BlockData({{POCKET_ID}}, {{POCKET_META}})}}{{POCKET==false?null}}, {{SOLID}}, (double){{HARDNESS}}, (double){{BLAST_RESISTANCE}}, (byte){{OPACITY}}, (byte){{LUMINANCE}}, {{REPLACEABLE}}));
+--- end ---

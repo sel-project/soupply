@@ -1,0 +1,88 @@
+--- start items Items.java ---
+package sul;
+
+import java.util.*;
+
+public final class Items
+{
+
+{{items_values@1,ITEMS}}
+
+	public final String name;
+	public final ItemData minecraft, pocket;
+	public final byte stack;
+
+	private Items(String name, ItemData minecraft, ItemData pocket, byte stack)
+	{
+		this.name = name;
+		this.minecraft = minecraft;
+		this.pocket = pocket;
+		this.stack = stack;
+	}
+
+	private static class ItemData
+	{
+
+		public final int id, meta;
+
+		public ItemData(int id, int meta) {
+			this.id = id;
+			this.meta = meta;
+		}
+
+	}
+
+	private static Map<Integer, Map<Integer, Items>> minecraftItems, pocketItems;
+
+	static
+	{
+
+		minecraftItems = new HashMap<Integer, Map<Integer, Items>>();
+		pocketItems = new HashMap<Integer, Map<Integer, Items>>();
+
+{{add_items@2,ITEMS}}
+
+	}
+	
+	private static void add(Items item)
+	{
+		if(item.minecraft != null) {
+			if(!minecraftItems.containsKey(item.minecraft.id)) minecraftItems.put(item.minecraft.id, new HashMap<Integer, Items>());
+			minecraftItems.get(item.minecraft.id).put(item.minecraft.meta, item);
+		}
+		if(item.pocket != null) {
+			if(!pocketItems.containsKey(item.pocket.id)) pocketItems.put(item.pocket.id, new HashMap<Integer, Items>());
+			pocketItems.get(item.pocket.id).put(item.pocket.meta, item);
+		}
+	}
+
+	public static Items getMinecraftItem(int id, int meta)
+	{
+		Map<Integer, Items> b = minecraftItems.get(id);
+		if(b != null) {
+			Items ret = b.get(meta);
+			if(ret != null) return ret;
+			else if(meta != 0) return b.get(0);
+		}
+		return null;
+	}
+
+	public static Items getPocketItem(int id, int meta)
+	{
+		Map<Integer, Items> b = pocketItems.get(id);
+		if(b != null) {
+			Items ret = b.get(meta);
+			if(ret != null) return ret;
+			else if(meta != 0) return b.get(0);
+		}
+		return null;
+	}
+
+}
+--- end ---
+--- start items_values ---
+public static final Items {{NAME:uppercase}};
+--- end ---
+--- start add_items ---
+add({{NAME:uppercase}} = new Items("{{NAME:spaced}}", {{MINECRAFT==true?new ItemData({{MINECRAFT_ID}}, {{MINECRAFT_META}})}}{{MINECRAFT==false?null}}, {{POCKET==true?new ItemData({{POCKET_ID}}, {{POCKET_META}})}}{{POCKET==false?null}}, (byte){{STACK}}));
+--- end ---

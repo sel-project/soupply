@@ -1,0 +1,50 @@
+--- start biomes Biomes.java ---
+package sul;
+
+import java.util.*;
+
+public enum Biomes
+{
+
+{{biomes_values@1,BIOMES}}
+
+	public final String name;
+	public final byte id;
+	public final float temperature;
+
+	private Biomes(String name, byte id, float temperature)
+	{
+		this.name = name;
+		this.id = id;
+		this.temperature = temperature;
+	}
+
+	private static Map<Byte, Biomes> biomes;
+
+	static
+	{
+
+		biomes = new HashMap<Byte, Biomes>();
+
+{{add_biomes@2,BIOMES}}
+
+	}
+
+	private static void add(Biomes biome)
+	{
+		biomes.put(biome.id, biome);
+	}
+
+	public static Biomes getBiome(int id)
+	{
+		return biomes.get(id);
+	}
+
+}
+--- end ---
+--- start biomes_values ---
+^{{NAME:uppercase}}("{{NAME:spaced}}", (byte){{ID}}, {{TEMPERATURE}}f){{LAST==true?;}}{{LAST==false?,}}
+--- end ---
+--- start add_biomes ---
+add({{NAME:uppercase}});
+--- end ---

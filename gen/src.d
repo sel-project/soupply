@@ -22,7 +22,7 @@
  */
 module src;
 
-import std.algorithm : sort, max, canFind, count;
+import std.algorithm : sort, max, min, canFind, count;
 import std.base64;
 import std.conv : to, ConvException;
 import std.datetime : StopWatch, AutoStart;
@@ -1303,7 +1303,7 @@ string parseValueImpl(string value, Data[string] values, Template[string] templa
 		if(ptr && (*ptr).type == Data.Type.string) {
 			string str = (*ptr).str;
 			final switch(value[format+1..$]) {
-				case "snake_case": return str; // every string is saved as snake case
+				case "snake_case": return str; // every string is saved in snake case
 				case "camel_case": return toCamelCase(str);
 				case "pascal_case": return toPascalCase(str);
 				case "uppercase": return toUpper(str);
@@ -1336,11 +1336,32 @@ string parseValueImpl(string value, Data[string] values, Template[string] templa
 					return *tmp;
 				}
 			}
+			size_t array_from = 0;
+			size_t array_to = size_t.max;
+			immutable open_array = value.indexOf("[");
+			if(open_array != -1) {
+				immutable close_array = value.indexOf("]");
+				assert(close_array != -1);
+				immutable content = value[open_array+1..close_array];
+				value = value[0..open_array];
+				immutable range = content.indexOf("..");
+				if(range == -1) {
+					// just an index of the array
+					array_from = to!size_t(content);
+					array_to = array_from + 1;
+				} else {
+					// from..to
+					// (0)..to
+					// from..($)
+					if(range != 0) array_from = to!size_t(content[0..range]);
+					if(range + 2 < content.length) array_to = to!size_t(content[range+2..$]);
+				}
+			}
 			auto v = getValue(value);
 			if(v && (*v).type == Data.Type.array) {
 				auto t = getTemplate();
 				string[] ret;
-				foreach(d ; (*v).array) {
+				foreach(d ; (*v).array[array_from..min(array_to, $)]) {
 					ret ~= t.parse(d.object, templates, space);
 				}
 				return ret.join(t.location == "inline" ? "" : "\n");
