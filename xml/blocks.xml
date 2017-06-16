@@ -257,23 +257,23 @@
 		<block name="flowing-lava-falling-6" id="160" minecraft="10:14" pocket="10:14" />
 		<block name="flowing-lava-falling-7" id="161" minecraft="10:15" pocket="10:15" />
 
-		<block name="still-lava-0" id="162" minecraft="10:0" pocket="10:0" />
-		<block name="still-lava-1" id="163" minecraft="10:1" pocket="10:1" />
-		<block name="still-lava-2" id="164" minecraft="10:2" pocket="10:2" />
-		<block name="still-lava-3" id="165" minecraft="10:3" pocket="10:3" />
-		<block name="still-lava-4" id="166" minecraft="10:4" pocket="10:4" />
-		<block name="still-lava-5" id="167" minecraft="10:5" pocket="10:5" />
-		<block name="still-lava-6" id="168" minecraft="10:6" pocket="10:6" />
-		<block name="still-lava-7" id="169" minecraft="10:7" pocket="10:7" />
+		<block name="still-lava-0" id="162" minecraft="11:0" pocket="11:0" />
+		<block name="still-lava-1" id="163" minecraft="11:1" pocket="11:1" />
+		<block name="still-lava-2" id="164" minecraft="11:2" pocket="11:2" />
+		<block name="still-lava-3" id="165" minecraft="11:3" pocket="11:3" />
+		<block name="still-lava-4" id="166" minecraft="11:4" pocket="11:4" />
+		<block name="still-lava-5" id="167" minecraft="11:5" pocket="11:5" />
+		<block name="still-lava-6" id="168" minecraft="11:6" pocket="11:6" />
+		<block name="still-lava-7" id="169" minecraft="11:7" pocket="11:7" />
 
-		<block name="still-lava-falling-0" id="170" minecraft="10:8" pocket="10:8" />
-		<block name="still-lava-falling-1" id="171" minecraft="10:9" pocket="10:9" />
-		<block name="still-lava-falling-2" id="172" minecraft="10:10" pocket="10:10" />
-		<block name="still-lava-falling-3" id="173" minecraft="10:11" pocket="10:11" />
-		<block name="still-lava-falling-4" id="174" minecraft="10:12" pocket="10:12" />
-		<block name="still-lava-falling-5" id="175" minecraft="10:13" pocket="10:13" />
-		<block name="still-lava-falling-6" id="176" minecraft="10:14" pocket="10:14" />
-		<block name="still-lava-falling-7" id="177" minecraft="10:15" pocket="10:15" />
+		<block name="still-lava-falling-0" id="170" minecraft="11:8" pocket="11:8" />
+		<block name="still-lava-falling-1" id="171" minecraft="11:9" pocket="11:9" />
+		<block name="still-lava-falling-2" id="172" minecraft="11:10" pocket="11:10" />
+		<block name="still-lava-falling-3" id="173" minecraft="11:11" pocket="11:11" />
+		<block name="still-lava-falling-4" id="174" minecraft="11:12" pocket="11:12" />
+		<block name="still-lava-falling-5" id="175" minecraft="11:13" pocket="11:13" />
+		<block name="still-lava-falling-6" id="176" minecraft="11:14" pocket="11:14" />
+		<block name="still-lava-falling-7" id="177" minecraft="11:15" pocket="11:15" />
 
 	</group>
 
@@ -875,7 +875,27 @@
 
 	</group>
 
-	<block name="fire" id="591" minecraft="51" pocket="51" hardness="-1" blastresistance="0" opacity="0" luminance="15" solid="false" />
+	<!-- fire -->
+	<group hardness="-1" blastresistance="0" opacity="0" luminance="15" solid="false">
+
+		<block name="fire-0" id="591" minecraft="51:0" pocket="51:0" />
+		<block name="fire-1" id="1409" minecraft="51:1" pocket="51:1" />
+		<block name="fire-2" id="1410" minecraft="51:2" pocket="51:2" />
+		<block name="fire-3" id="1411" minecraft="51:3" pocket="51:3" />
+		<block name="fire-4" id="1412" minecraft="51:4" pocket="51:4" />
+		<block name="fire-5" id="1413" minecraft="51:5" pocket="51:5" />
+		<block name="fire-6" id="1414" minecraft="51:6" pocket="51:6" />
+		<block name="fire-7" id="1415" minecraft="51:7" pocket="51:7" />
+		<block name="fire-8" id="1416" minecraft="51:8" pocket="51:8" />
+		<block name="fire-9" id="1417" minecraft="51:9" pocket="51:9" />
+		<block name="fire-10" id="1418" minecraft="51:10" pocket="51:10" />
+		<block name="fire-11" id="1419" minecraft="51:11" pocket="51:11" />
+		<block name="fire-12" id="1420" minecraft="51:12" pocket="51:12" />
+		<block name="fire-13" id="1421" minecraft="51:13" pocket="51:13" />
+		<block name="fire-14" id="1422" minecraft="51:14" pocket="51:14" />
+		<block name="fire-15" id="1423" minecraft="51:15" pocket="51:15" />
+
+	</group>
 
 	<block name="monster-spawner" id="592" minecraft="52" pocket="52" hardness="5" blastresistance="25" />
 
