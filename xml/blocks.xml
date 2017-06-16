@@ -606,8 +606,8 @@
 				<block name="cobblestone-slab" id="414" minecraft="44:3" pocket="44:3" />
 				<block name="bricks-slab" id="415" minecraft="44:4" pocket="44:4" />
 				<block name="stone-brick-slab" id="416" minecraft="44:5" pocket="44:5" />
-				<block name="nether-brick-slab" id="417" minecraft="44:6" pocket="44:6" />
-				<block name="quartz-slab" id="418" minecraft="44:7" pocket="44:7" />
+				<block name="nether-brick-slab" id="417" minecraft="44:6" pocket="44:7" />
+				<block name="quartz-slab" id="418" minecraft="44:7" pocket="44:6" />
 				<block name="red-sandstone-slab" id="419" minecraft="182" pocket="182" />
 				<block name="purpur-slab" id="420" minecraft="205" pocket="205" />
 			</group>
@@ -633,8 +633,8 @@
 				<block name="upper-cobblestone-slab" id="430" minecraft="44:11" pocket="44:11" />
 				<block name="upper-bricks-slab" id="431" minecraft="44:12" pocket="44:12" />
 				<block name="upper-stone-brick-slab" id="432" minecraft="44:13" pocket="44:13" />
-				<block name="upper-nether-brick-slab" id="433" minecraft="44:14" pocket="44:14" />
-				<block name="upper-quartz-slab" id="434" minecraft="44:15" pocket="44:15" />
+				<block name="upper-nether-brick-slab" id="433" minecraft="44:14" pocket="44:15" />
+				<block name="upper-quartz-slab" id="434" minecraft="44:15" pocket="44:14" />
 				<block name="upper-red-sandstone-slab" id="435" minecraft="182:8" pocket="182:8" />
 				<block name="upper-purpur-slab" id="436" minecraft="205:8" pocket="205:8" />
 			</group>
@@ -660,8 +660,8 @@
 				<block name="double-cobblestone-slab" id="446" minecraft="43:3" pocket="43:3" />
 				<block name="double-bricks-slab" id="447" minecraft="43:4" pocket="43:4" />
 				<block name="double-stone-brick-slab" id="448" minecraft="43:5" pocket="43:5" />
-				<block name="double-nether-brick-slab" id="449" minecraft="43:6" pocket="43:6" />
-				<block name="double-quartz-slab" id="450" minecraft="43:7" pocket="43:7" />
+				<block name="double-nether-brick-slab" id="449" minecraft="43:6" pocket="43:7" />
+				<block name="double-quartz-slab" id="450" minecraft="43:7" pocket="43:6" />
 				<block name="double-red-sandstone-slab" id="451" minecraft="181" pocket="181" />
 				<block name="double-purpur-slab" id="452" minecraft="204" pocket="204" />
 			</group>
@@ -1236,32 +1236,32 @@
 		<!-- TODO: bounding boxes -->
 		
 		<block name="stone-button-facing-down" id="855" minecraft="77:0" pocket="77:0" />
-		<block name="stone-button-facing-east" id="856" minecraft="77:1" pocket="77:1" />
-		<block name="stone-button-facing-west" id="857" minecraft="77:2" pocket="77:2" />
+		<block name="stone-button-facing-east" id="856" minecraft="77:1" pocket="77:5" />
+		<block name="stone-button-facing-west" id="857" minecraft="77:2" pocket="77:4" />
 		<block name="stone-button-facing-south" id="858" minecraft="77:3" pocket="77:3" />
-		<block name="stone-button-facing-north" id="859" minecraft="77:4" pocket="77:4" />
-		<block name="stone-button-facing-up" id="860" minecraft="77:5" pocket="77:5" />
+		<block name="stone-button-facing-north" id="859" minecraft="77:4" pocket="77:2" />
+		<block name="stone-button-facing-up" id="860" minecraft="77:5" pocket="77:1" />
 		
 		<block name="powered-stone-button-facing-down" id="861" minecraft="77:8" pocket="77:8" />
-		<block name="powered-stone-button-facing-east" id="862" minecraft="77:9" pocket="77:9" />
-		<block name="powered-stone-button-facing-west" id="863" minecraft="77:10" pocket="77:10" />
+		<block name="powered-stone-button-facing-east" id="862" minecraft="77:9" pocket="77:13" />
+		<block name="powered-stone-button-facing-west" id="863" minecraft="77:10" pocket="77:12" />
 		<block name="powered-stone-button-facing-south" id="864" minecraft="77:11" pocket="77:11" />
-		<block name="powered-stone-button-facing-north" id="865" minecraft="77:12" pocket="77:12" />
-		<block name="powered-stone-button-facing-up" id="866" minecraft="77:13" pocket="77:13" />
+		<block name="powered-stone-button-facing-north" id="865" minecraft="77:12" pocket="77:10" />
+		<block name="powered-stone-button-facing-up" id="866" minecraft="77:13" pocket="77:9" />
 		
 		<block name="wooden-button-facing-down" id="867" minecraft="143:0" pocket="143:0" />
-		<block name="wooden-button-facing-east" id="868" minecraft="143:1" pocket="143:1" />
-		<block name="wooden-button-facing-west" id="869" minecraft="143:2" pocket="143:2" />
+		<block name="wooden-button-facing-east" id="868" minecraft="143:1" pocket="143:5" />
+		<block name="wooden-button-facing-west" id="869" minecraft="143:2" pocket="143:4" />
 		<block name="wooden-button-facing-south" id="870" minecraft="143:3" pocket="143:3" />
-		<block name="wooden-button-facing-north" id="871" minecraft="143:4" pocket="143:4" />
-		<block name="wooden-button-facing-up" id="872" minecraft="143:5" pocket="143:5" />
+		<block name="wooden-button-facing-north" id="871" minecraft="143:4" pocket="143:2" />
+		<block name="wooden-button-facing-up" id="872" minecraft="143:5" pocket="143:1" />
 		
 		<block name="powered-wooden-button-facing-down" id="873" minecraft="143:8" pocket="143:8" />
-		<block name="powered-wooden-button-facing-east" id="874" minecraft="143:9" pocket="143:9" />
-		<block name="powered-wooden-button-facing-west" id="875" minecraft="143:10" pocket="143:10" />
+		<block name="powered-wooden-button-facing-east" id="874" minecraft="143:9" pocket="143:13" />
+		<block name="powered-wooden-button-facing-west" id="875" minecraft="143:10" pocket="143:12" />
 		<block name="powered-wooden-button-facing-south" id="876" minecraft="143:11" pocket="143:11" />
-		<block name="powered-wooden-button-facing-north" id="877" minecraft="143:12" pocket="143:12" />
-		<block name="powered-wooden-button-facing-up" id="878" minecraft="143:13" pocket="143:13" />
+		<block name="powered-wooden-button-facing-north" id="877" minecraft="143:12" pocket="143:10" />
+		<block name="powered-wooden-button-facing-up" id="878" minecraft="143:13" pocket="143:9" />
 
 	</group>
 
@@ -1487,50 +1487,50 @@
 	<!-- wooden trapdoor, TODO: bounding boxes -->
 	<group hardness="3" blastresistance="15">
 
-		<block name="wooden-trapdoor-south-side" id="998" minecraft="96:0" pocket="96:0" />
-		<block name="wooden-trapdoor-north-side" id="999" minecraft="96:1" pocket="96:1" />
-		<block name="wooden-trapdoor-east-side" id="1000" minecraft="96:2" pocket="96:2" />
-		<block name="wooden-trapdoor-west-side" id="1001" minecraft="96:3" pocket="96:3" />
+		<block name="wooden-trapdoor-south-side" id="998" minecraft="96:0" pocket="96:3" />
+		<block name="wooden-trapdoor-north-side" id="999" minecraft="96:1" pocket="96:2" />
+		<block name="wooden-trapdoor-east-side" id="1000" minecraft="96:2" pocket="96:1" />
+		<block name="wooden-trapdoor-west-side" id="1001" minecraft="96:3" pocket="96:0" />
 
-		<block name="opened-wooden-trapdoor-south-side" id="1002" minecraft="96:4" pocket="96:4" />
-		<block name="opened-wooden-trapdoor-north-side" id="1003" minecraft="96:5" pocket="96:5" />
-		<block name="opened-wooden-trapdoor-east-side" id="1004" minecraft="96:6" pocket="96:6" />
-		<block name="opened-wooden-trapdoor-west-side" id="1005" minecraft="96:7" pocket="96:7" />
+		<block name="opened-wooden-trapdoor-south-side" id="1002" minecraft="96:4" pocket="96:11" />
+		<block name="opened-wooden-trapdoor-north-side" id="1003" minecraft="96:5" pocket="96:10" />
+		<block name="opened-wooden-trapdoor-east-side" id="1004" minecraft="96:6" pocket="96:9" />
+		<block name="opened-wooden-trapdoor-west-side" id="1005" minecraft="96:7" pocket="96:8" />
 
-		<block name="top-wooden-trapdoor-south-side" id="1006" minecraft="96:8" pocket="96:8" />
-		<block name="top-wooden-trapdoor-north-side" id="1007" minecraft="96:9" pocket="96:9" />
-		<block name="top-wooden-trapdoor-east-side" id="1008" minecraft="96:10" pocket="96:10" />
-		<block name="top-wooden-trapdoor-west-side" id="1009" minecraft="96:11" pocket="96:11" />
+		<block name="top-wooden-trapdoor-south-side" id="1006" minecraft="96:8" pocket="96:7" />
+		<block name="top-wooden-trapdoor-north-side" id="1007" minecraft="96:9" pocket="96:6" />
+		<block name="top-wooden-trapdoor-east-side" id="1008" minecraft="96:10" pocket="96:5" />
+		<block name="top-wooden-trapdoor-west-side" id="1009" minecraft="96:11" pocket="96:4" />
 
-		<block name="opened-top-wooden-trapdoor-south-side" id="1010" minecraft="96:12" pocket="96:12" />
-		<block name="opened-top-wooden-trapdoor-north-side" id="1011" minecraft="96:13" pocket="96:13" />
-		<block name="opened-top-wooden-trapdoor-east-side" id="1012" minecraft="96:14" pocket="96:14" />
-		<block name="opened-top-wooden-trapdoor-west-side" id="1013" minecraft="96:15" pocket="96:15" />
+		<block name="opened-top-wooden-trapdoor-south-side" id="1010" minecraft="96:12" pocket="96:15" />
+		<block name="opened-top-wooden-trapdoor-north-side" id="1011" minecraft="96:13" pocket="96:14" />
+		<block name="opened-top-wooden-trapdoor-east-side" id="1012" minecraft="96:14" pocket="96:13" />
+		<block name="opened-top-wooden-trapdoor-west-side" id="1013" minecraft="96:15" pocket="96:12" />
 
 	</group>
 
 	<!-- iron trapdoor, TODO: bounding boxes -->
 	<group hardness="5" blastresistance="25">
 
-		<block name="iron-trapdoor-south-side" id="1014" minecraft="167:0" pocket="167:0" />
-		<block name="iron-trapdoor-north-side" id="1015" minecraft="167:1" pocket="167:1" />
-		<block name="iron-trapdoor-east-side" id="1016" minecraft="167:2" pocket="167:2" />
-		<block name="iron-trapdoor-west-side" id="1017" minecraft="167:3" pocket="167:3" />
+		<block name="iron-trapdoor-south-side" id="1014" minecraft="167:0" pocket="167:3" />
+		<block name="iron-trapdoor-north-side" id="1015" minecraft="167:1" pocket="167:2" />
+		<block name="iron-trapdoor-east-side" id="1016" minecraft="167:2" pocket="167:1" />
+		<block name="iron-trapdoor-west-side" id="1017" minecraft="167:3" pocket="167:0" />
 
-		<block name="opened-iron-trapdoor-south-side" id="1018" minecraft="167:4" pocket="167:4" />
-		<block name="opened-iron-trapdoor-north-side" id="1019" minecraft="167:5" pocket="167:5" />
-		<block name="opened-iron-trapdoor-east-side" id="1020" minecraft="167:6" pocket="167:6" />
-		<block name="opened-iron-trapdoor-west-side" id="1021" minecraft="167:7" pocket="167:7" />
+		<block name="opened-iron-trapdoor-south-side" id="1018" minecraft="167:4" pocket="167:11" />
+		<block name="opened-iron-trapdoor-north-side" id="1019" minecraft="167:5" pocket="167:10" />
+		<block name="opened-iron-trapdoor-east-side" id="1020" minecraft="167:6" pocket="167:9" />
+		<block name="opened-iron-trapdoor-west-side" id="1021" minecraft="167:7" pocket="167:8" />
 
-		<block name="top-iron-trapdoor-south-side" id="1022" minecraft="167:8" pocket="167:8" />
-		<block name="top-iron-trapdoor-north-side" id="1023" minecraft="167:9" pocket="167:9" />
-		<block name="top-iron-trapdoor-east-side" id="1024" minecraft="167:10" pocket="167:10" />
-		<block name="top-iron-trapdoor-west-side" id="1025" minecraft="167:11" pocket="167:11" />
+		<block name="top-iron-trapdoor-south-side" id="1022" minecraft="167:8" pocket="167:7" />
+		<block name="top-iron-trapdoor-north-side" id="1023" minecraft="167:9" pocket="167:6" />
+		<block name="top-iron-trapdoor-east-side" id="1024" minecraft="167:10" pocket="167:5" />
+		<block name="top-iron-trapdoor-west-side" id="1025" minecraft="167:11" pocket="167:4" />
 
-		<block name="opened-top-iron-trapdoor-south-side" id="1026" minecraft="167:12" pocket="167:12" />
-		<block name="opened-top-iron-trapdoor-north-side" id="1027" minecraft="167:13" pocket="167:13" />
-		<block name="opened-top-iron-trapdoor-east-side" id="1028" minecraft="167:14" pocket="167:14" />
-		<block name="opened-top-iron-trapdoor-west-side" id="1029" minecraft="167:15" pocket="167:15" />
+		<block name="opened-top-iron-trapdoor-south-side" id="1026" minecraft="167:12" pocket="167:15" />
+		<block name="opened-top-iron-trapdoor-north-side" id="1027" minecraft="167:13" pocket="167:14" />
+		<block name="opened-top-iron-trapdoor-east-side" id="1028" minecraft="167:14" pocket="167:13" />
+		<block name="opened-top-iron-trapdoor-west-side" id="1029" minecraft="167:15" pocket="167:12" />
 
 	</group>
 
