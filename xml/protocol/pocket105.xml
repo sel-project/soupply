@@ -445,7 +445,7 @@
 				<field name="rain-level" type="float">
 					Intensity of the rain or the snow. Any value lower than or equals to 0 means no rain.
 				</field>
-				<field name="lighting-level" type="float" />
+				<field name="lightning-level" type="float" />
 				<field name="commands-enabled" type="bool">
 					Indicates whether the cheats are enabled. If the cheats are disabled the player cannot send commands.
 				</field>

@@ -278,7 +278,7 @@
 					<constant name="education" value="1" />
 				</field>
 				<field name="rain-level" type="float" />
-				<field name="lighting-level" type="float" />
+				<field name="lightning-level" type="float" />
 				<field name="commands-enabled" type="bool" />
 				<field name="texture-required" type="bool" />
 				<field name="level-id" type="string" />
