@@ -1062,6 +1062,7 @@ Data[] createItems(Item[] items, Options options) {
 		values["POCKET_META"] = max(0, item.pocket.meta).to!string;
 		values["HAS_POCKET_META"] = to!string(item.pocket.meta >= 0);
 		values["STACK"] = item.stack.to!string;
+		values["DURABILITY"] = item.durability.to!string;
 		ret ~= Data(values);
 	}
 	return [Data(["ITEMS": Data(ret), "GENERATOR": Data("items")])];

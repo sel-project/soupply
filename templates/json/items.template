@@ -15,7 +15,8 @@
 		"{{NAME}}": {
 			{{MINECRAFT==true?{{minecraft}},
 			}}{{POCKET==true?{{pocket}},
-			}}"stack": {{STACK}}
+			}}"stack": {{STACK}}{{DURABILITY!=0?,
+			"durability": {{DURABILITY}}}}
 		}{{LAST==false?,}}
 
 --- end ---

@@ -112,7 +112,7 @@ alias Block = Tuple!(string, "name", ushort, "id", BlockData, "minecraft", Block
 
 alias ItemData = Tuple!(bool, "exists", ushort, "id", int, "meta");
 
-alias Item = Tuple!(string, "name", ItemData, "minecraft", ItemData, "pocket", ubyte, "stack");
+alias Item = Tuple!(string, "name", ItemData, "minecraft", ItemData, "pocket", ubyte, "stack", ushort, "durability");
 
 
 alias Entity = Tuple!(string, "name", ubyte, "minecraft", ubyte, "pocket", bool, "object", double, "width", double, "height");
@@ -504,6 +504,7 @@ void main(string[] args) {
 				auto minecraft = "minecraft" in attr;
 				auto pocket = "pocket" in attr;
 				auto stack = "stack" in attr;
+				auto durability = "durability" in attr;
 				if(data) {
 					setData(item.minecraft, *data);
 					setData(item.pocket, *data);
@@ -512,6 +513,7 @@ void main(string[] args) {
 					if(pocket) setData(item.pocket, *pocket);
 				}
 				item.stack = stack ? to!ubyte(*stack) : 64;
+				item.durability = durability ? to!ushort(*durability) : 0;
 				items ~= item;
 			}
 		}

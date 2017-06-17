@@ -11,13 +11,15 @@ public final class Items
 	public final String name;
 	public final ItemData minecraft, pocket;
 	public final byte stack;
+	public final short durability;
 
-	private Items(String name, ItemData minecraft, ItemData pocket, byte stack)
+	private Items(String name, ItemData minecraft, ItemData pocket, byte stack, short durability)
 	{
 		this.name = name;
 		this.minecraft = minecraft;
 		this.pocket = pocket;
 		this.stack = stack;
+		this.durability = durability;
 	}
 
 	private static class ItemData
@@ -84,5 +86,5 @@ public final class Items
 public static final Items {{NAME:uppercase}};
 --- end ---
 --- start add_items ---
-add({{NAME:uppercase}} = new Items("{{NAME:spaced}}", {{MINECRAFT==true?new ItemData({{MINECRAFT_ID}}, {{MINECRAFT_META}})}}{{MINECRAFT==false?null}}, {{POCKET==true?new ItemData({{POCKET_ID}}, {{POCKET_META}})}}{{POCKET==false?null}}, (byte){{STACK}}));
+add({{NAME:uppercase}} = new Items("{{NAME:spaced}}", {{MINECRAFT==true?new ItemData({{MINECRAFT_ID}}, {{MINECRAFT_META}})}}{{MINECRAFT==false?null}}, {{POCKET==true?new ItemData({{POCKET_ID}}, {{POCKET_META}})}}{{POCKET==false?null}}, (byte){{STACK}}, (short){{DURABILITY}}));
 --- end ---

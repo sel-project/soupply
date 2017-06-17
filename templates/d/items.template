@@ -18,6 +18,7 @@ public struct Item
 	size_t index;
 	ItemData minecraft, pocket;
 	ubyte stack;
+	ushort durability;
 	
 	alias index this;
 
@@ -32,5 +33,5 @@ public enum Items : Item
 
 --- end ---
 --- start items_values ---
-	{{NAME:camel_case}} = Item("{{NAME:spaced}}", {{INDEX}}, ItemData({{MINECRAFT}}{{MINECRAFT==true?, {{MINECRAFT_ID}}, {{MINECRAFT_META}}}}), ItemData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}, {{POCKET_META}}}}), {{STACK}}),
+	{{NAME:camel_case}} = Item("{{NAME:spaced}}", {{INDEX}}, ItemData({{MINECRAFT}}{{MINECRAFT==true?, {{MINECRAFT_ID}}, {{MINECRAFT_META}}}}), ItemData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}, {{POCKET_META}}}}), {{STACK}}, {{DURABILITY}}),
 --- end ---

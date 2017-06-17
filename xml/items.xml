@@ -455,69 +455,69 @@
 	<item name="structure-corner" minecraft="255:2" />
 	<item name="structure-data" minecraft="255:3" />
 
-	<item name="iron-shovel" data="256" stack="1" />
-	<item name="iron-pickaxe" data="257" stack="1" />
-	<item name="iron-axe" data="258" stack="1" />
-	<item name="flint-and-steel" data="259" stack="1" />
+	<item name="iron-shovel" data="256" stack="1" durability="251" />
+	<item name="iron-pickaxe" data="257" stack="1" durability="251" />
+	<item name="iron-axe" data="258" stack="1" durability="251" />
+	<item name="flint-and-steel" data="259" stack="1" durability="65" />
 	<item name="apple" data="260" />
-	<item name="bow" data="261" stack="1" />
+	<item name="bow" data="261" stack="1" durability="385" />
 	<item name="arrow" data="262" />
 	<item name="coal" data="263" />
 	<item name="charcoal" data="263:1" />
 	<item name="diamond" data="264" />
 	<item name="iron-ingot" data="265" />
 	<item name="gold-ingot" data="266" />
-	<item name="iron-sword" data="267" stack="1" />
-	<item name="wooden-sword" data="268" stack="1" />
-	<item name="wooden-shovel" data="269" stack="1" />
-	<item name="wooden-pickaxe" data="270" stack="1" />
-	<item name="wooden-axe" data="271" stack="1" />
-	<item name="stone-sword" data="272" stack="1" />
-	<item name="stone-shovel" data="273" stack="1" />
-	<item name="stone-pickaxe" data="274" stack="1" />
-	<item name="stone-axe" data="275" stack="1" />
-	<item name="diamond-sword" data="276" stack="1" />
-	<item name="diamond-shovel" data="277" stack="1" />
-	<item name="diamond-pickaxe" data="278" stack="1" />
-	<item name="diamond-axe" data="279" stack="1" />
+	<item name="iron-sword" data="267" stack="1" durability="251" />
+	<item name="wooden-sword" data="268" stack="1" durability="60" />
+	<item name="wooden-shovel" data="269" stack="1" durability="60" />
+	<item name="wooden-pickaxe" data="270" stack="1" durability="60" />
+	<item name="wooden-axe" data="271" stack="1" durability="60" />
+	<item name="stone-sword" data="272" stack="1" durability="132" />
+	<item name="stone-shovel" data="273" stack="1" durability="132" />
+	<item name="stone-pickaxe" data="274" stack="1" durability="132" />
+	<item name="stone-axe" data="275" stack="1" durability="132" />
+	<item name="diamond-sword" data="276" stack="1" durability="1562" />
+	<item name="diamond-shovel" data="277" stack="1" durability="1562" />
+	<item name="diamond-pickaxe" data="278" stack="1" durability="1562" />
+	<item name="diamond-axe" data="279" stack="1" durability="1562" />
 	<item name="stick" data="280" />
 	<item name="bowl" data="281" />
 	<item name="mushroom-stew" data="282" stack="1" />
-	<item name="golden-sword" data="283" stack="1" />
-	<item name="golden-shovel" data="284" stack="1" />
-	<item name="golden-pickaxe" data="285" stack="1" />
-	<item name="golden-axe" data="286" stack="1" />
+	<item name="golden-sword" data="283" stack="1" durability="33" />
+	<item name="golden-shovel" data="284" stack="1" durability="33" />
+	<item name="golden-pickaxe" data="285" stack="1" durability="33" />
+	<item name="golden-axe" data="286" stack="1" durability="33" />
 	<item name="string" data="287" />
 	<item name="feather" data="288" />
 	<item name="gunpowder" data="289" />
-	<item name="wooden-hoe" data="290" stack="1" />
-	<item name="stone-hoe" data="291" stack="1" />
-	<item name="iron-hoe" data="292" stack="1" />
-	<item name="diamond-hoe" data="293" stack="1" />
-	<item name="golden-hoe" data="294" stack="1" />
+	<item name="wooden-hoe" data="290" stack="1" durability="60" />
+	<item name="stone-hoe" data="291" stack="1" durability="132" />
+	<item name="iron-hoe" data="292" stack="1" durability="251" />
+	<item name="diamond-hoe" data="293" stack="1" durability="1562" />
+	<item name="golden-hoe" data="294" stack="1" durability="33" />
 	<item name="seeds" data="295" />
 	<item name="wheat" data="296" />
 	<item name="bread" data="297" />
-	<item name="leather-cap" data="298" stack="1" />
-	<item name="leather-tunic" data="299" stack="1" />
-	<item name="leather-pants" data="300" stack="1" />
-	<item name="leather-boots" data="301" stack="1" />
-	<item name="chain-helmet" data="302" stack="1" />
-	<item name="chain-chestplate" data="303" stack="1" />
-	<item name="chain-leggings" data="304" stack="1" />
-	<item name="chain-boots" data="305" stack="1" />
-	<item name="iron-helmet" data="306" stack="1" />
-	<item name="iron-chestplate" data="307" stack="1" />
-	<item name="iron-leggings" data="308" stack="1" />
-	<item name="iron-boots" data="309" stack="1" />
-	<item name="diamond-helmet" data="310" stack="1" />
-	<item name="diamond-chestplate" data="311" stack="1" />
-	<item name="diamond-leggings" data="312" stack="1" />
-	<item name="diamond-boots" data="313" stack="1" />
-	<item name="golden-helmet" data="314" stack="1" />
-	<item name="golden-chestplate" data="315" stack="1" />
-	<item name="golden-leggings" data="316" stack="1" />
-	<item name="golden-boots" data="317" stack="1" />
+	<item name="leather-cap" data="298" stack="1" durability="56" />
+	<item name="leather-tunic" data="299" stack="1" durability="81" />
+	<item name="leather-pants" data="300" stack="1" durability="76" />
+	<item name="leather-boots" data="301" stack="1" durability="66" />
+	<item name="chain-helmet" data="302" stack="1" durability="166" />
+	<item name="chain-chestplate" data="303" stack="1" durability="241" />
+	<item name="chain-leggings" data="304" stack="1" durability="226" />
+	<item name="chain-boots" data="305" stack="1" durability="196" />
+	<item name="iron-helmet" data="306" stack="1" durability="166" />
+	<item name="iron-chestplate" data="307" stack="1" durability="241" />
+	<item name="iron-leggings" data="308" stack="1" durability="226" />
+	<item name="iron-boots" data="309" stack="1" durability="196" />
+	<item name="diamond-helmet" data="310" stack="1" durability="364" />
+	<item name="diamond-chestplate" data="311" stack="1" durability="529" />
+	<item name="diamond-leggings" data="312" stack="1" durability="496" />
+	<item name="diamond-boots" data="313" stack="1" durability="430" />
+	<item name="golden-helmet" data="314" stack="1" durability="78" />
+	<item name="golden-chestplate" data="315" stack="1" durability="113" />
+	<item name="golden-leggings" data="316" stack="1" durability="106" />
+	<item name="golden-boots" data="317" stack="1" durability="92" />
 	<item name="flint" data="318" />
 	<item name="raw-porkchop" data="319" />
 	<item name="cooked-porkchop" data="320" />
@@ -547,7 +547,7 @@
 	<item name="minecart-with-furnace" minecraft="343" stack="1" />
 	<item name="egg" data="344" stack="16" />
 	<item name="compass" data="345" />
-	<item name="fishing-rod" data="346" stack="1" />
+	<item name="fishing-rod" data="346" stack="1" durability="65" />
 	<item name="clock" data="347" />
 	<item name="glowstone-dust" data="348" />
 	<item name="raw-fish" minecraft="349:0" pocket="349" />
@@ -594,7 +594,7 @@
 	<item name="redstone-repeater" data="356" />
 	<item name="cookie" data="357" />
 	<item name="map" data="358" />
-	<item name="shears" data="359" stack="1" />
+	<item name="shears" data="359" stack="1" durability="238" />
 	<item name="melon" data="360" />
 	<item name="pumpkin-seeds" data="361" />
 	<item name="melon-seeds" data="362" />
@@ -682,7 +682,7 @@
 	<item name="human-head" data="397:3" />
 	<item name="creeper-head" data="397:4" />
 	<item name="dragon-head" data="397:5" />
-	<item name="carrot-on-a-stick" data="398" stack="1" />
+	<item name="carrot-on-a-stick" data="398" stack="1" durability="26" />
 	<item name="nether-star" data="399" />
 	<item name="pumpkin-pie" data="400" />
 	<item name="firework-rocket" minecraft="401" />
@@ -727,8 +727,8 @@
 	<item name="spectral-arrow" minecraft="439" />
 	<item name="tipped-arrow" data="440" />
 	<item name="lingering-potion" data="441" stack="1" />
-	<item name="shield" minecraft="442" stack="1" />
-	<item name="elytra" minecraft="443" pocket="444" />
+	<item name="shield" minecraft="442" stack="1" durability="337" />
+	<item name="elytra" minecraft="443" pocket="444" durability="432" />
 	<item name="spruce-boat" minecraft="444" pocket="333:1" stack="1" />
 	<item name="birch-boat" minecraft="445" pocket="333:2" stack="1" />
 	<item name="jungle-boat" minecraft="446" pocket="333:3" stack="1" />
