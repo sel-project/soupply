@@ -662,6 +662,7 @@
 				<block name="double-stone-brick-slab" id="448" minecraft="43:5" pocket="43:5" />
 				<block name="double-nether-brick-slab" id="449" minecraft="43:6" pocket="43:7" />
 				<block name="double-quartz-slab" id="450" minecraft="43:7" pocket="43:6" />
+				<block name="smooth-stone-slab" id="1424" minecraft="43:8" />
 				<block name="double-red-sandstone-slab" id="451" minecraft="181" pocket="181" />
 				<block name="double-purpur-slab" id="452" minecraft="204" pocket="204" />
 			</group>

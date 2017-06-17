@@ -54,7 +54,7 @@
 	<entity name="creeper" minecraft="50" pocket="33" width="0.6" height="1.7" />
 	<entity name="skeleton" minecraft="51" pocket="34" width="0.6" height="1.99" />
 	<entity name="spider" minecraft="52" pocket="35" width="1.4" height="0.9" />
-	<entity name="giant" minecraft="53" width="3.6" height="10.8" />
+	<entity name="giant" minecraft="53" width="3.6" height="11.7" />
 	<entity name="zombie" minecraft="54" pocket="32" width="0.6" height="1.95" />
 	<entity name="slime" minecraft="55" pocket="37" width="0.51000005" height="0.51000005" />
 	<entity name="ghast" minecraft="56" pocket="41" width="4" height="4" />
