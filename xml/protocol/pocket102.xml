@@ -805,8 +805,8 @@
 
 			<packet name="interact" id="34" clientbound="false" serverbound="true">
 				<field name="action" type="ubyte">
-					<constant name="attack" value="1" />
-					<constant name="interact" value="2" />
+					<constant name="interact" value="1" />
+					<constant name="attack" value="2" />
 					<constant name="leave-vehicle" value="3" />
 					<constant name="hover" value="4" />
 				</field>
