@@ -97,7 +97,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 					}
 					return "th";
 				}();
-				immutable month = ["January", "February", "March", "April", "May"," June", "July", "August", "September", "October", "November", "December"][to!size_t(spl[1])];
+				immutable month = ["January", "February", "March", "April", "May"," June", "July", "August", "September", "October", "November", "December"][to!size_t(spl[1]) - 1];
 				data ~= "\t\t<p><strong>Released</strong>: " ~ month ~ " " ~ day ~ ", " ~ spl[0] ~ "</p>\n";
 			}
 		}
