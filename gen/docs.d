@@ -80,10 +80,10 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			data ~= "\t\t<p>Other protocols: " ~ str.join(", ") ~ "</p>\n";
 		}
 		string[] jumps = ["<a href=\"#encoding\">Encoding</a>", "<a href=\"#packets\">Packets</a>"];
-		if(ptrs.data.types.length) jumps ~= "<a href=\"types\">Types</a>";
-		if(ptrs.data.arrays.length) jumps ~= "<a href=\"types#arrays\">Arrays</a>";
-		if(metadata) jumps ~= "<a href=\"metadata\">Metadata</a>";
-		if(attributes) jumps ~= "<a href=\"attributes\">Attributes</a>";
+		//if(ptrs.data.types.length) jumps ~= "<a href=\"" ~ game ~ "/types\">Types</a>"; // has no dedicated page
+		if(ptrs.data.arrays.length) jumps ~= "<a href=\"" ~ game ~ "/arrays\">Arrays</a>";
+		if(metadata) jumps ~= "<a href=\"" ~ game ~ "/metadata\">Metadata</a>";
+		if(attributes) jumps ~= "<a href=\"" ~ game ~ "/attributes\">Attributes</a>";
 		data ~= "\t\t<p><strong>Jump to</strong>: " ~ jumps.join(", ") ~ "</p>\n";
 		if(ptrs.data.released.length) {
 			auto spl = ptrs.data.released.split("/");
@@ -97,22 +97,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 					}
 					return "th";
 				}();
-				immutable month = (){
-					final switch(to!size_t(spl[1])) {
-						case 1: return "January";
-						case 2: return "February";
-						case 3: return "March";
-						case 4: return "April";
-						case 5: return "May";
-						case 6: return "June";
-						case 7: return "July";
-						case 8: return "August";
-						case 9: return "September";
-						case 10: return "October";
-						case 11: return "November";
-						case 12: return "December";
-					}
-				}();
+				immutable month = ["January", "February", "March", "April", "May"," June", "July", "August", "September", "October", "November", "December"][to!size_t(spl[1])];
 				data ~= "\t\t<p><strong>Released</strong>: " ~ month ~ " " ~ day ~ ", " ~ spl[0] ~ "</p>\n";
 			}
 		}
@@ -222,7 +207,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 					return false;
 				}
 				bool check(Field field) {
-					return !field.endianness.length && checkImpl(field.type);
+					return checkImpl(field.type);
 				}
 				if(checkImpl(ptrs.data.id)) return;
 				if(checkImpl(ptrs.data.arrayLength)) return;
