@@ -1214,7 +1214,7 @@
 					<constant name="interact-at" value="2" />
 				</field>
 				<field name="target-position" type="float<xyz>" when="type==2" />
-				<field name="hand" type="varuint" when="type==2">
+				<field name="hand" type="varuint" when="type==0||type==2">
 					<constant name="main-hand" value="0" />
 					<constant name="off-hand" value="1" />
 				</field>
@@ -1296,7 +1296,7 @@
 					<constant name="open-horse-inventory" value="7" />
 					<constant name="start-elytra-flying" value="8" />
 				</field>
-				<field name="jump-boost" type="varuint" when="action==5" />
+				<field name="jump-boost" type="varuint" />
 			</packet>
 
 			<packet name="steer-vehicle" id="21" clientbound="false" serverbound="true">

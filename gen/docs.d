@@ -408,7 +408,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 				data ~= "\t\t\t\t\t\t<td>" ~ toCamelCase(type.name) ~ "</td>\n";
 				data ~= "\t\t\t\t\t\t<td>" ~ convert(type.type) ~ "</td>\n";
 				data ~= "\t\t\t\t\t\t<td class=\"center\">" ~ type.id.to!string ~ "</td>\n";
-				if(e) data ~= "\t\t\t\t\t\t<td>" ~ type.endianness.replace("-", " ") ~ "</td>\n";
+				if(e) data ~= "\t\t\t\t\t\t<td>" ~ type.endianness.replace("_", " ") ~ "</td>\n";
 				data ~= "\t\t\t\t\t</tr>\n";
 			}
 			data ~= "\t\t\t\t</table>\n";
