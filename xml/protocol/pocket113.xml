@@ -1098,11 +1098,11 @@
 				</variants>
 			</packet>
 
-			<packet name="simple-event" id="63" clientbound="true" serverbound="true">
+			<packet name="simple-event" id="64" clientbound="true" serverbound="true">
 
 			</packet>
 
-			<packet name="telemetry-event" id="64" clientbound="true" serverbound="false">
+			<packet name="telemetry-event" id="65" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="event-id" type="varint" />
 			</packet>
@@ -1222,14 +1222,14 @@
 			</packet>
 
 			<packet name="update-trade" id="81" clientbound="true" serverbound="false">
-				<field name="?" type="ubyte" />
-				<field name="?" type="ubyte" />
+				<field name="window" type="ubyte" />
+				<field name="window-type" type="ubyte" default="15" />
 				<field name="?" type="varint" />
 				<field name="?" type="varint" />
-				<field name="?" type="bool" />
+				<field name="willing" type="bool" />
 				<field name="trader" type="entity-id" />
 				<field name="player" type="entity-id" />
-				<field name="?" type="string" />
+				<field name="display-name" type="string" />
 				<field name="offers" type="bytes" />
 			</packet>
 
