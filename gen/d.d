@@ -679,7 +679,7 @@ alias varulong = var!ulong;
 				data ~= "\t\t\t\t\tcase " ~ type.id.to!string ~ ":\n";
 				data ~= "\t\t\t\t\t\t" ~ convertType(type.type) ~ " _" ~ type.id.to!string ~ ";\n";
 				data ~= "\t\t\t\t\t\t" ~ createDecoding(type.type, "_" ~ type.id.to!string, type.endianness) ~ "\n";
-				data ~= "\t\t\t\t\t\tmetadata.decoded ~= new DecodedMetadata(id, " ~ type.id.to!string ~ ", _" ~ type.id.to!string ~ ");\n";
+				data ~= "\t\t\t\t\t\tmetadata.decoded ~= DecodedMetadata.from" ~ toPascalCase(type.name) ~ "(id, _" ~ type.id.to!string ~ ");\n";
 				data ~= "\t\t\t\t\t\tbreak;\n";
 			}
 			data ~= "\t\t\t\t\tdefault:\n";
@@ -699,24 +699,24 @@ alias varulong = var!ulong;
 				}
 			}
 			data ~= "class DecodedMetadata {\n\n";
-			data ~= "\tpublic immutable " ~ convertType(m.data.id) ~ " id, type;\n\n";
+			data ~= "\tpublic immutable " ~ convertType(m.data.id) ~ " id;\n";
+			data ~= "\tpublic immutable " ~ convertType(m.data.type) ~ " type;\n\n";
 			data ~= "\tunion {\n";
 			foreach(type ; m.data.types) {
 				data ~= "\t\t" ~ convertType(type.type) ~ " " ~ convertDecoded(type.name) ~ ";\n";
 			}
 			data ~= "\t}\n\n";
+			data ~= "\tprivate pure nothrow @safe @nogc this(" ~ convertType(m.data.id) ~ " id, " ~ convertType(m.data.type) ~ " type) {\n";
+			data ~= "\t\tthis.id = id;\n";
+			data ~= "\t\tthis.type = type;\n";
+			data ~= "\t}\n\n";
 			// constructors
-			string[] defined;
 			foreach(type ; m.data.types) {
-				immutable type_ = convertType(type.type);
-				if(!defined.canFind(type_)) {
-					defined ~= type_;
-					data ~= "\tpublic pure nothrow @trusted this(" ~ convertType(m.data.id) ~ " id, " ~ convertType(m.data.type) ~ " type, " ~ type_ ~ " value) {\n";
-					data ~= "\t\tthis.id = id;\n";
-					data ~= "\t\tthis.type = type;\n";
-					data ~= "\t\tthis." ~ convertDecoded(type.name) ~ " = value;\n";
-					data ~= "\t}\n\n";
-				}
+				data ~= "\tpublic static pure nothrow @trusted DecodedMetadata from" ~ toPascalCase(type.name) ~ "(" ~ convertType(m.data.id) ~ " id, " ~ convertType(type.type) ~ " value) {\n";
+				data ~= "\t\tauto ret = new DecodedMetadata(id, " ~ type.id.to!string ~ ");\n";
+				data ~= "\t\tret." ~ convertDecoded(type.name) ~ " = value;\n";
+				data ~= "\t\treturn ret;\n";
+				data ~= "\t}\n\n";
 			}
 			data ~= "}";
 			write("../src/d/sul/metadata/" ~ game ~ ".d", data, "metadata/" ~ game);

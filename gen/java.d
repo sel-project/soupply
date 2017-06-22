@@ -160,7 +160,7 @@ public final class About {
 				io ~= "\t\t} while(this._buffer[this._index++] < 0 && ++limit < " ~ to!string(varint[1]) ~ " && this._index < this._buffer.length);\n";
 				io ~= "\t\treturn ret;\n";
 			} else {
-				io ~= "\t\t" ~ varint[0] ~ " ret = this.readVaru" ~ varint[0] ~ "();\n";;
+				io ~= "\t\t" ~ varint[0] ~ " ret = this.readVaru" ~ varint[0] ~ "();\n";
 				io ~= "\t\treturn (" ~ varint[0] ~ ")((ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2);\n";
 			}
 			io ~= "\t}\n\n";

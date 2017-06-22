@@ -133,7 +133,7 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Metadatas[st
 				utils ~= "\t\t} while(this._buffer.shift() > 127 && ++limit < " ~ to!string(varint[1]) ~ ");\n";
 				utils ~= "\t\treturn ret;\n";
 			} else {
-				utils ~= "\t\tvar ret = this.readVaru" ~ varint[0] ~ "();\n";;
+				utils ~= "\t\tvar ret = this.readVaru" ~ varint[0] ~ "();\n";
 				utils ~= "\t\treturn (ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2;\n";
 			}
 			utils ~= "\t}\n\n";
