@@ -15,7 +15,7 @@
 
 	<attribute
 		name="absorption"
-		id="minecraft:generic.absorption"
+		id="minecraft:absorption"
 		min="0"
 		max="4"
 		default="0" />

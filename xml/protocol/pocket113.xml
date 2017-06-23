@@ -1038,8 +1038,9 @@
 			</packet>
 
 			<packet name="player-input" id="57" clientbound="false" serverbound="true">
-				<field name="motion" type="entity-position" />
-				<field name="flags" type="ubyte" />
+				<field name="sideways" type="float" />
+				<field name="forward" type="float" />
+				<field name="?" type="bool" />
 				<field name="?" type="bool" />
 			</packet>
 
