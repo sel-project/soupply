@@ -1309,10 +1309,10 @@
 
 		<group opacity="3">
 
-			<block name="frosted-ice-0" id="890" minecraft="212:0" pocket="212:0" />
-			<block name="frosted-ice-1" id="891" minecraft="212:1" pocket="212:1" />
-			<block name="frosted-ice-2" id="892" minecraft="212:2" pocket="212:2" />
-			<block name="frosted-ice-3" id="893" minecraft="212:3" pocket="212:3" />
+			<block name="frosted-ice-0" id="890" minecraft="212:0" pocket="207:0" />
+			<block name="frosted-ice-1" id="891" minecraft="212:1" pocket="207:1" />
+			<block name="frosted-ice-2" id="892" minecraft="212:2" pocket="207:2" />
+			<block name="frosted-ice-3" id="893" minecraft="212:3" pocket="207:3" />
 			
 		</group>
 
