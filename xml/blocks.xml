@@ -466,46 +466,45 @@
 
 		<block name="piston-facing-down" id="313" minecraft="33:0" pocket="33:0" />
 		<block name="piston-facing-up" id="314" minecraft="33:1" pocket="33:1" />
-		<block name="piston-facing-north" id="315" minecraft="33:2" pocket="33:2" />
-		<block name="piston-facing-south" id="316" minecraft="33:3" pocket="33:3" />
-		<block name="piston-facing-west" id="317" minecraft="33:4" pocket="33:4" />
-		<block name="piston-facing-east" id="318" minecraft="33:5" pocket="33:5" />
-		<block name="piston-facing-everywhere" id="319" minecraft="33:6" pocket="33:6" />
-		<block name="piston-facing-everywhere-1" id="320" minecraft="33:7" pocket="33:7" />
+		<block name="piston-facing-north" id="315" minecraft="33:2" pocket="33:3" />
+		<block name="piston-facing-south" id="316" minecraft="33:3" pocket="33:2" />
+		<block name="piston-facing-west" id="317" minecraft="33:4" pocket="33:5" />
+		<block name="piston-facing-east" id="318" minecraft="33:5" pocket="33:4" />
 
 		<block name="extended-piston-facing-down" id="321" minecraft="33:8" pocket="33:8" />
 		<block name="extended-piston-facing-up" id="322" minecraft="33:9" pocket="33:9" />
-		<block name="extended-piston-facing-north" id="323" minecraft="33:10" pocket="33:10" />
-		<block name="extended-piston-facing-south" id="324" minecraft="33:11" pocket="33:11" />
-		<block name="extended-piston-facing-west" id="325" minecraft="33:12" pocket="33:12" />
-		<block name="extended-piston-facing-east" id="326" minecraft="33:13" pocket="33:13" />
-		<block name="extended-piston-facing-everywhere" id="327" minecraft="33:14" pocket="33:14" />
-		<block name="extended-piston-facing-everywhere-1" id="328" minecraft="33:15" pocket="33:15" />
+		<block name="extended-piston-facing-north" id="323" minecraft="33:10" pocket="33:11" />
+		<block name="extended-piston-facing-south" id="324" minecraft="33:11" pocket="33:12" />
+		<block name="extended-piston-facing-west" id="325" minecraft="33:12" pocket="33:13" />
+		<block name="extended-piston-facing-east" id="326" minecraft="33:13" pocket="33:12" />
 
 		<block name="sticky-piston-facing-down" id="329" minecraft="29:0" pocket="29:0" />
 		<block name="sticky-piston-facing-up" id="330" minecraft="29:1" pocket="29:1" />
-		<block name="sticky-piston-facing-north" id="331" minecraft="29:2" pocket="29:2" />
-		<block name="sticky-piston-facing-south" id="332" minecraft="29:3" pocket="29:3" />
-		<block name="sticky-piston-facing-west" id="333" minecraft="29:4" pocket="29:4" />
-		<block name="sticky-piston-facing-east" id="334" minecraft="29:5" pocket="29:5" />
-		<block name="sticky-piston-facing-everywhere" id="335" minecraft="29:6" pocket="29:6" />
-		<block name="sticky-piston-facing-everywhere-1" id="336" minecraft="29:7" pocket="29:7" />
+		<block name="sticky-piston-facing-north" id="331" minecraft="29:2" pocket="29:3" />
+		<block name="sticky-piston-facing-south" id="332" minecraft="29:3" pocket="29:2" />
+		<block name="sticky-piston-facing-west" id="333" minecraft="29:4" pocket="29:5" />
+		<block name="sticky-piston-facing-east" id="334" minecraft="29:5" pocket="29:4" />
 
 		<block name="extended-sticky-piston-facing-down" id="337" minecraft="29:8" pocket="29:8" />
 		<block name="extended-sticky-piston-facing-up" id="338" minecraft="29:9" pocket="29:9" />
-		<block name="extended-sticky-piston-facing-north" id="339" minecraft="29:10" pocket="29:10" />
-		<block name="extended-sticky-piston-facing-south" id="340" minecraft="29:11" pocket="29:11" />
-		<block name="extended-sticky-piston-facing-west" id="341" minecraft="29:12" pocket="29:12" />
-		<block name="extended-sticky-piston-facing-east" id="342" minecraft="29:13" pocket="29:13" />
-		<block name="extended-sticky-piston-facing-everywhere" id="343" minecraft="29:14" pocket="29:14" />
-		<block name="extended-sticky-piston-facing-everywhere-1" id="344" minecraft="29:15" pocket="29:15" />
+		<block name="extended-sticky-piston-facing-north" id="339" minecraft="29:10" pocket="29:11" />
+		<block name="extended-sticky-piston-facing-south" id="340" minecraft="29:11" pocket="29:10" />
+		<block name="extended-sticky-piston-facing-west" id="341" minecraft="29:12" pocket="29:13" />
+		<block name="extended-sticky-piston-facing-east" id="342" minecraft="29:13" pocket="29:12" />
 
 		<block name="piston-head-facing-down" id="345" minecraft="34:0" pocket="34:0" />
 		<block name="piston-head-facing-up" id="346" minecraft="34:1" pocket="34:1" />
-		<block name="piston-head-facing-north" id="347" minecraft="34:2" pocket="34:2" />
-		<block name="piston-head-facing-south" id="348" minecraft="34:3" pocket="34:3" />
-		<block name="piston-head-facing-west" id="349" minecraft="34:4" pocket="34:4" />
-		<block name="piston-head-facing-east" id="350" minecraft="34:5" pocket="34:5" />
+		<block name="piston-head-facing-north" id="347" minecraft="34:2" pocket="34:3" />
+		<block name="piston-head-facing-south" id="348" minecraft="34:3" pocket="34:2" />
+		<block name="piston-head-facing-west" id="349" minecraft="34:4" pocket="34:5" />
+		<block name="piston-head-facing-east" id="350" minecraft="34:5" pocket="34:4" />
+
+		<block name="sticky-piston-head-facing-down" id="319" minecraft="34:8" pocket="34:8" />
+		<block name="sticky-piston-head-facing-up" id="320" minecraft="34:9" pocket="34:9" />
+		<block name="sticky-piston-head-facing-north" id="327" minecraft="34:10" pocket="34:11" />
+		<block name="sticky-piston-head-facing-south" id="328" minecraft="34:11" pocket="34:10" />
+		<block name="sticky-piston-head-facing-west" id="335" minecraft="34:12" pocket="34:13" />
+		<block name="sticky-piston-head-facing-east" id="336" minecraft="34:13" pocket="34:12" />
 
 		<block name="piston-extension" id="351" minecraft="36" pocket="250" /> <!-- facing is controlled by nbt tag -->
 
@@ -662,7 +661,7 @@
 				<block name="double-stone-brick-slab" id="448" minecraft="43:5" pocket="43:5" />
 				<block name="double-nether-brick-slab" id="449" minecraft="43:6" pocket="43:7" />
 				<block name="double-quartz-slab" id="450" minecraft="43:7" pocket="43:6" />
-				<block name="smooth-stone-slab" id="1424" minecraft="43:8" />
+				<block name="smooth-stone-slab" id="343" minecraft="43:8" />
 				<block name="double-red-sandstone-slab" id="451" minecraft="181" pocket="181" />
 				<block name="double-purpur-slab" id="452" minecraft="204" pocket="204" />
 			</group>
@@ -894,7 +893,7 @@
 		<block name="fire-12" id="1420" minecraft="51:12" pocket="51:12" />
 		<block name="fire-13" id="1421" minecraft="51:13" pocket="51:13" />
 		<block name="fire-14" id="1422" minecraft="51:14" pocket="51:14" />
-		<block name="fire-15" id="1423" minecraft="51:15" pocket="51:15" />
+		<block name="fire-15" id="344" minecraft="51:15" pocket="51:15" />
 
 	</group>
 
