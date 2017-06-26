@@ -1,8 +1,29 @@
 --- start utils ---
-{{about}}
+{{metadata_flags}}
 --- end ---
---- start about utils/about.d ---
-module sul.utils.about;
+--- start metadata_flags utils/metadataflags.d ---
+module sul.utils.metadataflags;
 
-public enum __sul = {{VERSION}};
+import std.bitmanip : bitfields;
+import std.conv : to;
+
+union MetadataFlags(T) {
+
+	T value;
+
+	struct { mixin(bitfields!(bits!T)); }
+
+	alias value this;
+
+}
+
+private alias bits(T) = bitsImpl!(0, T.sizeof * 8);
+
+private template bitsImpl(size_t index, size_t length, E...) {
+	static if(index < length) {
+		alias bitsImpl = bitsImpl!(index + 1, length, E, bool, "_" ~ to!string(index), 1);
+	} else {
+		alias bitsImpl = E;
+	}
+}
 --- end ---

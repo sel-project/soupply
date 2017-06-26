@@ -533,7 +533,7 @@ alias varulong = var!ulong;
 		if(m) {
 			string data = "module sul.metadata." ~ game ~ ";\n\n";
 			data ~= "import std.typecons : Tuple, tuple;\n\n";
-			data ~= "import sul.utils.buffer : Buffer;\nimport sul.utils.var;\n\n";
+			data ~= "import sul.utils.buffer : Buffer;\nimport sul.utils.metadataflags;\nimport sul.utils.var;\n\n";
 			data ~= "static import sul.protocol." ~ game ~ ".types;\n\n";
 			data ~= "alias Changed(T) = Tuple!(T, \"value\", bool, \"changed\");\n\n";
 			// types
@@ -568,8 +568,9 @@ alias varulong = var!ulong;
 			data ~= "\tprivate void delegate(Buffer) pure nothrow @safe[] _changed;\n\n";
 			foreach(d ; m.data.data) {
 				immutable tp = convertType(ctable[d.type]);
-				if(d.required) data ~= "\tprivate " ~ tp ~ " _" ~ convertName(d.name) ~ (d.def.length ? " = cast(" ~ tp ~ ")" ~ d.def : "") ~ ";\n";
-				else data ~= "\tprivate Changed!(" ~ tp ~ ") _" ~ convertName(d.name) ~ (d.def.length ? " = tuple(cast(" ~ tp ~ ")" ~ d.def ~ ", false)" : "") ~ ";\n";
+				immutable ctp = d.flags.length ? "MetadataFlags!(" ~ tp ~ ")" : tp;
+				if(d.required) data ~= "\tprivate " ~ ctp ~ " _" ~ convertName(d.name) ~ (d.def.length ? " = cast(" ~ ctp ~ ")" ~ d.def : "") ~ ";\n";
+				else data ~= "\tprivate Changed!(" ~ ctp ~ ") _" ~ convertName(d.name) ~ (d.def.length ? " = tuple(cast(" ~ ctp ~ ")" ~ d.def ~ ", false)" : "") ~ ";\n";
 			}
 			data ~= "\n";
 			data ~= "\tpublic pure nothrow @safe this() {\n";
@@ -636,12 +637,13 @@ alias varulong = var!ulong;
 				foreach(flag ; d.flags) {
 					immutable fname = convertName(flag.name);
 					data ~= "\tpublic pure nothrow @property @safe bool " ~ fname ~ "() {\n";
-					data ~= "\t\treturn (" ~ value ~ " >>> " ~ to!string(flag.bit) ~ ") & 1;\n";
+					//data ~= "\t\treturn (" ~ value ~ " >>> " ~ to!string(flag.bit) ~ ") & 1;\n";
+					data ~= "\t\treturn " ~ value ~ "._" ~ to!string(flag.bit) ~ ";\n";
 					data ~= "\t}\n\n";
 					data ~= "\tpublic pure nothrow @property @safe bool " ~ fname ~ "(bool value) {\n";
-					//if(!d.required) data ~= "\t\t_" ~ name ~ ".changed = true;\n";
-					data ~= "\t\tif(value) " ~ name ~ " = cast(" ~ tp ~ ")(" ~ value ~ " | (cast(" ~ tp ~ ")true << " ~ to!string(flag.bit) ~ "));\n";
-					data ~= "\t\telse " ~ name ~ " = cast(" ~ tp ~ ")(" ~ value ~ " & ~(cast(" ~ tp ~ ")true << " ~ to!string(flag.bit) ~ "));\n";
+					//data ~= "\t\tif(value) " ~ name ~ " = cast(" ~ tp ~ ")(" ~ value ~ " | (1Lu << " ~ to!string(flag.bit) ~ "));\n";
+					//data ~= "\t\telse " ~ name ~ " = cast(" ~ tp ~ ")(" ~ value ~ " & (ulong.max ^ (1Lu << " ~ to!string(flag.bit) ~ ")));\n";
+					data ~= "\t\t" ~ value ~ "._" ~ to!string(flag.bit) ~ " = value;\n";
 					data ~= "\t\treturn value;\n";
 					data ~= "\t}\n\n";
 				}
