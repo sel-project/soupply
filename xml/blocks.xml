@@ -1426,7 +1426,7 @@
 	<group hardness="2" blastresistance="30">
 
 		<block name="nether-brick" id="955" minecraft="112" pocket="112" />
-		<block name="red-nether-brick" id="956" minecraft="215" />
+		<block name="red-nether-brick" id="956" minecraft="215" pocket="215" />
 
 	</group>
 
@@ -2086,16 +2086,16 @@
 
 	</group>
 
-	<block name="magma-block" id="1349" minecraft="213" hardness="0.5" blastresistance="2.5" luminance="3" />
+	<block name="magma-block" id="1349" minecraft="213" pocket="213" hardness="0.5" blastresistance="2.5" luminance="3" />
 
-	<block name="nether-wart-block" id="1350" minecraft="214" hardness="1" blastresistance="5" />
+	<block name="nether-wart-block" id="1350" minecraft="214" pocket="214" hardness="1" blastresistance="5" />
 
 	<!-- bone block -->
 	<group hardness="2" blastresistance="10">
 
-		<block name="bone-block-vertical" id="1351" minecraft="216:0" />
-		<block name="bone-block-east-west" id="1352" minecraft="216:4" />
-		<block name="bone-block-north-south" id="1353" minecraft="216:8" />
+		<block name="bone-block-vertical" id="1351" minecraft="216:0" pocket="216:0" />
+		<block name="bone-block-east-west" id="1352" minecraft="216:4" pocket="216:4" />
+		<block name="bone-block-north-south" id="1353" minecraft="216:8" pocket="216:8" />
 
 	</group>
 

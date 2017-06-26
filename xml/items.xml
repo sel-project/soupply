@@ -375,10 +375,10 @@
 	<item name="repeating-command-block" minecraft="210" />
 	<item name="chain-command-block" minecraft="211" />
 	<item name="frosted-ice" minecraft="212" pocket="207" />
-	<item name="magma-block" minecraft="213" />
-	<item name="nether-wart-block" minecraft="214" />
-	<item name="red-nether-brick" minecraft="215" />
-	<item name="bone-block" minecraft="216" />
+	<item name="magma-block" data="213" />
+	<item name="nether-wart-block" data="214" />
+	<item name="red-nether-brick" data="215" />
+	<item name="bone-block" data="216" />
 	<item name="structure-void" minecraft="217" />
 	<item name="observer" minecraft="218" pocket="251" />
 	<item name="white-shulker-box" minecraft="219" pocket="218:0" />
