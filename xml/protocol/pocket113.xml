@@ -908,12 +908,11 @@
 			</packet>
 
 			<packet name="set-entity-link" id="41" clientbound="true" serverbound="false">
-				<field name="from" type="entity-id" />
-				<field name="to" type="entity-id" />
+				<field name="vehicle" type="entity-id" />
+				<field name="passenger" type="entity-id" />
 				<field name="action" type="ubyte">
-					<constant name="add" value="0" />
-					<constant name="ride" value="1" />
-					<constant name="remove" value="2" />
+					<constant name="remove" value="0" />
+					<constant name="add" value="1" />
 				</field>
 			</packet>
 
