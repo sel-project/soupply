@@ -608,7 +608,44 @@
 	<item name="ghast-tear" data="370" />
 	<item name="gold-nugget" data="371" />
 	<item name="nether-wart" data="372" />
-	<item name="potion" data="373" stack="1" />
+	<item name="uncraftable-potion" minecraft="373" stack="1" />
+	<item name="water-bottle" minecraft="373:{Potion:'minecraft:water'}" pocket="373:0" stack="1" />
+	<item name="mundane-potion" minecraft="373:{Potion:'minecraft:mundane'}" pocket="373:1" stack="1" />
+	<item name="mundane-potion-extended" pocket="373:2" stack="1" />
+	<item name="thick-potion" minecraft="373:{Potion:'minecraft:thick'}" pocket="373:3" stack="1" />
+	<item name="awkward-potion" minecraft="373:{Potion:'minecraft:awkward'}" pocket="373:4" stack="1" />
+	<item name="night-vision-potion" minecraft="373:{Potion:'minecraft:night_vision'}" pocket="373:5" stack="1" />
+	<item name="night-vision-potion-extended" minecraft="373:{Potion:'minecraft:long_night_vision'}" pocket="373:6" stack="1" />
+	<item name="invisibility-potion" minecraft="373:{Potion:'minecraft:invisibility'}" pocket="373:7" stack="1" />
+	<item name="invisibility-potion-extended" minecraft="373:{Potion:'minecraft:long_invisibility'}" pocket="373:8" stack="1" />
+	<item name="leaping-potion" minecraft="373:{Potion:'minecraft:leaping'}" pocket="373:9" stack="1" />
+	<item name="leaping-potion-extended" minecraft="373:{Potion:'minecraft:long_leaping'}" pocket="373:10" stack="1" />
+	<item name="leaping-potion-plus" minecraft="373:{Potion:'minecraft:strong_leaping'}" pocket="373:11" stack="1" />
+	<item name="fire-resistance-potion" minecraft="373:{Potion:'minecraft:fire_resistance'}" pocket="373:12" stack="1" />
+	<item name="fire-resistance-potion-extended" minecraft="373:{Potion:'minecraft:long_fire_resistance'}" pocket="373:13" stack="1" />
+	<item name="swiftness-potion" minecraft="373:{Potion:'minecraft:swiftness'}" pocket="373:14" stack="1" />
+	<item name="swiftness-potion-extended" minecraft="373:{Potion:'minecraft:long_swiftness'}" pocket="373:15" stack="1" />
+	<item name="swiftness-potion-plus" minecraft="373:{Potion:'minecraft:strong_swiftness'}" pocket="373:16" stack="1" />
+	<item name="slowness-potion" minecraft="373:{Potion:'minecraft:slowness'}" pocket="373:17" stack="1" />
+	<item name="slowness-potion-extended" minecraft="373:{Potion:'minecraft:long_slowness'}" pocket="373:18" stack="1" />
+	<item name="water-breathing-potion" minecraft="373:{Potion:'minecraft:water_breathing'}" pocket="373:19" stack="1" />
+	<item name="water-breathing-potion-extended" minecraft="373:{Potion:'minecraft:water_breathing_extended'}" pocket="373:20" stack="1" />
+	<item name="healing-potion" minecraft="373:{Potion:'minecraft:healing'}" pocket="373:21" stack="1" />
+	<item name="healing-potion-plus" minecraft="373:{Potion:'minecraft:strong_healing'}" pocket="373:22" stack="1" />
+	<item name="harming-potion" minecraft="373:{Potion:'minecraft:harming'}" pocket="373:23" stack="1" />
+	<item name="harming-potion-plus" minecraft="373:{Potion:'minecraft:strong_harming'}" pocket="373:24" stack="1" />
+	<item name="poison-potion" minecraft="373:{Potion:'minecraft:poison'}" pocket="373:25" stack="1" />
+	<item name="poison-potion-extended" minecraft="373:{Potion:'minecraft:long_poison'}" pocket="373:26" stack="1" />
+	<item name="poison-potion-plus" minecraft="373:{Potion:'minecraft:strong_poison'}" pocket="373:27" stack="1" />
+	<item name="regeneration-potion" minecraft="373:{Potion:'minecraft:regeneration'}" pocket="373:28" stack="1" />
+	<item name="regeneration-potion-extended" minecraft="373:{Potion:'minecraft:long_regeneration'}" pocket="373:29" stack="1" />
+	<item name="regeneration-potion-plus" minecraft="373:{Potion:'minecraft:strong_regeneration'}" pocket="373:30" stack="1" />
+	<item name="strength-potion" minecraft="373:{Potion:'minecraft:strength'}" pocket="373:31" stack="1" />
+	<item name="strength-potion-extended" minecraft="373:{Potion:'minecraft:long_strength'}" pocket="373:32" stack="1" />
+	<item name="strength-potion-plus" minecraft="373:{Potion:'minecraft:strong_strength'}" pocket="373:33" stack="1" />
+	<item name="weakness-potion" minecraft="373:{Potion:'minecraft:weakness'}" pocket="373:34" stack="1" />
+	<item name="weakness-potion-extended" minecraft="373:{Potion:'minecraft:long_weakness'}" pocket="373:35" stack="1" />
+	<item name="decay-potion" pocket="373:36" stack="1" />
 	<item name="glass-bottle" data="374" />
 	<item name="spider-eye" data="375" />
 	<item name="fermented-spider-eye" data="376" />
@@ -618,49 +655,49 @@
 	<item name="cauldron" data="380" />
 	<item name="eye-of-ender" data="381" stack="16" />
 	<item name="glistering-melon" data="382" />
-	<item name="spawn-elder-guardian" minecraft="383:4" pocket="383:50" />
-	<item name="spawn-wither-skeleton" minecraft="383:5" pocket="383:48" />
-	<item name="spawn-stray" minecraft="383:6" pocket="383:46" />
-	<item name="spawn-husk" minecraft="383:23" pocket="383:47" />
-	<item name="spawn-zombie-villager" minecraft="383:27" pocket="383:44" />
-	<item name="spawn-skeleton-horse" minecraft="383:28" pocket="383:26" />
-	<item name="spawn-zombie-horse" minecraft="383:29" pocket="383:27" />
-	<item name="spawn-donkey" minecraft="383:31" pocket="383:24" />
-	<item name="spawn-mule" minecraft="383:32" pocket="383:25" />
-	<item name="spawn-evoker" minecraft="383:34" pocket="383:104" />
-	<item name="spawn-vex" minecraft="383:35" pocket="383:105" />
-	<item name="spawn-vindicator" minecraft="383:36" pocket="383:56" />
-	<item name="spawn-creeper" minecraft="383:50" pocket="383:33" />
-	<item name="spawn-skeleton" minecraft="383:51" pocket="383:34" />
-	<item name="spawn-spider" minecraft="383:52" pocket="383:35" />
-	<item name="spawn-zombie" minecraft="383:54" pocket="383:32" />
-	<item name="spawn-slime" minecraft="383:55" pocket="383:37" />
-	<item name="spawn-ghast" minecraft="383:56" pocket="383:41" />
-	<item name="spawn-zombie-pigman" minecraft="383:57" pocket="383:36" />
-	<item name="spawn-enderman" minecraft="383:58" pocket="383:38" />
-	<item name="spawn-cave-spider" minecraft="383:59" pocket="383:40" />
-	<item name="spawn-silverfish" minecraft="383:60" pocket="383:39" />
-	<item name="spawn-blaze" minecraft="383:61" pocket="383:43" />
-	<item name="spawn-magma-cube" minecraft="383:62" pocket="383:42" />
-	<item name="spawn-bat" minecraft="383:65" pocket="383:19" />
-	<item name="spawn-witch" minecraft="383:66" pocket="383:45" />
-	<item name="spawn-endermite" minecraft="383:67" pocket="383:55" />
-	<item name="spawn-guardian" minecraft="383:68" pocket="383:49" />
-	<item name="spawn-shulker" minecraft="383:69" pocket="383:54" />
-	<item name="spawn-pig" minecraft="383:90" pocket="383:12" />
-	<item name="spawn-sheep" minecraft="383:91" pocket="383:13" />
-	<item name="spawn-cow" minecraft="383:92" pocket="383:11" />
-	<item name="spawn-chicken" minecraft="383:93" pocket="383:10" />
-	<item name="spawn-squid" minecraft="383:94" pocket="383:17" />
-	<item name="spawn-wolf" minecraft="383:95" pocket="383:14" />
-	<item name="spawn-mooshroom" minecraft="383:96" pocket="383:16" />
-	<item name="spawn-ocelot" minecraft="383:98" pocket="383:22" />
-	<item name="spawn-horse" minecraft="383:100" pocket="383:23" />
-	<item name="spawn-rabbit" minecraft="383:101" pocket="383:18" />
-	<item name="spawn-polar-bear" minecraft="383:102" pocket="383:28" />
-	<item name="spawn-llama" minecraft="383:103" pocket="383:29" />
-	<item name="spawn-parrot" minecraft="383:105" />
-	<item name="spawn-villager" minecraft="383:120" pocket="383:15" />
+	<item name="spawn-elder-guardian" minecraft="383:{EntityTag:{id:'minecraft:elder_guardian'}}" pocket="383:50" />
+	<item name="spawn-wither-skeleton" minecraft="383:{EntityTag:{id:'minecraft:wither_skeleton'}}" pocket="383:48" />
+	<item name="spawn-stray" minecraft="383:{EntityTag:{id:'minecraft:stray'}}" pocket="383:46" />
+	<item name="spawn-husk" minecraft="383:{EntityTag:{id:'minecraft:husk'}}" pocket="383:47" />
+	<item name="spawn-zombie-villager" minecraft="383:{EntityTag:{id:'minecraft:zombie_villager'}}" pocket="383:44" />
+	<item name="spawn-skeleton-horse" minecraft="383:{EntityTag:{id:'minecraft:skeleton_horse'}}" pocket="383:26" />
+	<item name="spawn-zombie-horse" minecraft="383:{EntityTag:{id:'minecraft:zombie_horse'}}" pocket="383:27" />
+	<item name="spawn-donkey" minecraft="383:{EntityTag:{id:'minecraft:donkey'}}" pocket="383:24" />
+	<item name="spawn-mule" minecraft="383:{EntityTag:{id:'minecraft:mule'}}" pocket="383:25" />
+	<item name="spawn-evoker" minecraft="383:{EntityTag:{id:'minecraft:evocation_illager'}}" pocket="383:104" />
+	<item name="spawn-vex" minecraft="383:{EntityTag:{id:'minecraft:vex'}}" pocket="383:105" />
+	<item name="spawn-vindicator" minecraft="383:{EntityTag:{id:'minecraft:vindication_illager'}}" pocket="383:56" />
+	<item name="spawn-creeper" minecraft="383:{EntityTag:{id:'minecraft:creeper'}}" pocket="383:33" />
+	<item name="spawn-skeleton" minecraft="383:{EntityTag:{id:'minecraft:skeleton'}}" pocket="383:34" />
+	<item name="spawn-spider" minecraft="383:{EntityTag:{id:'minecraft:spider'}}" pocket="383:35" />
+	<item name="spawn-zombie" minecraft="383:{EntityTag:{id:'minecraft:zombie'}}" pocket="383:32" />
+	<item name="spawn-slime" minecraft="383:{EntityTag:{id:'minecraft:slime'}}" pocket="383:37" />
+	<item name="spawn-ghast" minecraft="383:{EntityTag:{id:'minecraft:ghast'}}" pocket="383:41" />
+	<item name="spawn-zombie-pigman" minecraft="383:{EntityTag:{id:'minecraft:zombie_pigman'}}" pocket="383:36" />
+	<item name="spawn-enderman" minecraft="383:{EntityTag:{id:'minecraft:enderman'}}" pocket="383:38" />
+	<item name="spawn-cave-spider" minecraft="383:{EntityTag:{id:'minecraft:cave_spider'}}" pocket="383:40" />
+	<item name="spawn-silverfish" minecraft="383:{EntityTag:{id:'minecraft:silverfish'}}" pocket="383:39" />
+	<item name="spawn-blaze" minecraft="383:{EntityTag:{id:'minecraft:blaze'}}" pocket="383:43" />
+	<item name="spawn-magma-cube" minecraft="383:{EntityTag:{id:'minecraft:magma_cube'}}" pocket="383:42" />
+	<item name="spawn-bat" minecraft="383:{EntityTag:{id:'minecraft:bat'}}" pocket="383:19" />
+	<item name="spawn-witch" minecraft="383:{EntityTag:{id:'minecraft:witch'}}" pocket="383:45" />
+	<item name="spawn-endermite" minecraft="383:{EntityTag:{id:'minecraft:endermite'}}" pocket="383:55" />
+	<item name="spawn-guardian" minecraft="383:{EntityTag:{id:'minecraft:guardian'}}" pocket="383:49" />
+	<item name="spawn-shulker" minecraft="383:{EntityTag:{id:'minecraft:shulker'}}" pocket="383:54" />
+	<item name="spawn-pig" minecraft="383:{EntityTag:{id:'minecraft:pig'}}" pocket="383:12" />
+	<item name="spawn-sheep" minecraft="383:{EntityTag:{id:'minecraft:sheep'}}" pocket="383:13" />
+	<item name="spawn-cow" minecraft="383:{EntityTag:{id:'minecraft:cow'}}" pocket="383:11" />
+	<item name="spawn-chicken" minecraft="383:{EntityTag:{id:'minecraft:chicken'}}" pocket="383:10" />
+	<item name="spawn-squid" minecraft="383:{EntityTag:{id:'minecraft:squid'}}" pocket="383:17" />
+	<item name="spawn-wolf" minecraft="383:{EntityTag:{id:'minecraft:wolf'}}" pocket="383:14" />
+	<item name="spawn-mooshroom" minecraft="383:{EntityTag:{id:'minecraft:mooshroom'}}" pocket="383:16" />
+	<item name="spawn-ocelot" minecraft="383:{EntityTag:{id:'minecraft:ocelot'}}" pocket="383:22" />
+	<item name="spawn-horse" minecraft="383:{EntityTag:{id:'minecraft:horse'}}" pocket="383:23" />
+	<item name="spawn-rabbit" minecraft="383:{EntityTag:{id:'minecraft:rabbit'}}" pocket="383:18" />
+	<item name="spawn-polar-bear" minecraft="383:{EntityTag:{id:'minecraft:polar_bear'}}" pocket="383:28" />
+	<item name="spawn-llama" minecraft="383:{EntityTag:{id:'minecraft:llama'}}" pocket="383:29" />
+	<item name="spawn-parrot" minecraft="383:{EntityTag:{id:'minecraft:parrot'}}" />
+	<item name="spawn-villager" minecraft="383:{EntityTag:{id:'minecraft:villager'}}" pocket="383:15" />
 	<item name="spawn-npc" pocket="383:51" />
 	<item name="bottle-o-enchanting" data="384" />
 	<item name="fire-charge" data="385" />
@@ -723,10 +760,121 @@
 	<item name="beetroot-seeds" minecraft="435" pocket="458" />
 	<item name="beetroot-soup" minecraft="436" pocket="459" stack="1" />
 	<item name="dragons-breath" data="437" />
-	<item name="splash-potion" data="438" stack="1" />
+	<item name="uncraftable-splash-potion" minecraft="438" stack="1" />
+	<item name="splash-potion" minecraft="438:{Potion:'minecraft:water'}" pocket="438:0" stack="1" />
+	<item name="mundane-splash-potion" minecraft="438:{Potion:'minecraft:mundane'}" pocket="438:1" stack="1" />
+	<item name="mundane-splash-potion-extended" pocket="438:2" stack="1" />
+	<item name="thick-splash-potion" minecraft="438:{Potion:'minecraft:thick'}" pocket="438:3" stack="1" />
+	<item name="awkward-splash-potion" minecraft="438:{Potion:'minecraft:awkward'}" pocket="438:4" stack="1" />
+	<item name="night-vision-splash-potion" minecraft="438:{Potion:'minecraft:night_vision'}" pocket="438:5" stack="1" />
+	<item name="night-vision-splash-potion-extended" minecraft="438:{Potion:'minecraft:long_night_vision'}" pocket="438:6" stack="1" />
+	<item name="invisibility-splash-potion" minecraft="438:{Potion:'minecraft:invisibility'}" pocket="438:7" stack="1" />
+	<item name="invisibility-splash-potion-extended" minecraft="438:{Potion:'minecraft:long_invisibility'}" pocket="438:8" stack="1" />
+	<item name="leaping-splash-potion" minecraft="438:{Potion:'minecraft:leaping'}" pocket="438:9" stack="1" />
+	<item name="leaping-splash-potion-extended" minecraft="438:{Potion:'minecraft:long_leaping'}" pocket="438:10" stack="1" />
+	<item name="leaping-splash-potion-plus" minecraft="438:{Potion:'minecraft:strong_leaping'}" pocket="438:11" stack="1" />
+	<item name="fire-resistance-splash-potion" minecraft="438:{Potion:'minecraft:fire_resistance'}" pocket="438:12" stack="1" />
+	<item name="fire-resistance-splash-potion-extended" minecraft="438:{Potion:'minecraft:long_fire_resistance'}" pocket="438:13" stack="1" />
+	<item name="swiftness-splash-potion" minecraft="438:{Potion:'minecraft:swiftness'}" pocket="438:14" stack="1" />
+	<item name="swiftness-splash-potion-extended" minecraft="438:{Potion:'minecraft:long_swiftness'}" pocket="438:15" stack="1" />
+	<item name="swiftness-splash-potion-plus" minecraft="438:{Potion:'minecraft:strong_swiftness'}" pocket="438:16" stack="1" />
+	<item name="slowness-splash-potion" minecraft="438:{Potion:'minecraft:slowness'}" pocket="438:17" stack="1" />
+	<item name="slowness-splash-potion-extended" minecraft="438:{Potion:'minecraft:long_slowness'}" pocket="438:18" stack="1" />
+	<item name="water-breathing-splash-potion" minecraft="438:{Potion:'minecraft:water_breathing'}" pocket="438:19" stack="1" />
+	<item name="water-breathing-splash-potion-extended" minecraft="438:{Potion:'minecraft:water_breathing_extended'}" pocket="438:20" stack="1" />
+	<item name="healing-splash-potion" minecraft="438:{Potion:'minecraft:healing'}" pocket="438:21" stack="1" />
+	<item name="healing-splash-potion-plus" minecraft="438:{Potion:'minecraft:strong_healing'}" pocket="438:22" stack="1" />
+	<item name="harming-splash-potion" minecraft="438:{Potion:'minecraft:harming'}" pocket="438:23" stack="1" />
+	<item name="harming-splash-potion-plus" minecraft="438:{Potion:'minecraft:strong_harming'}" pocket="438:24" stack="1" />
+	<item name="poison-splash-potion" minecraft="438:{Potion:'minecraft:poison'}" pocket="438:25" stack="1" />
+	<item name="poison-splash-potion-extended" minecraft="438:{Potion:'minecraft:long_poison'}" pocket="438:26" stack="1" />
+	<item name="poison-splash-potion-plus" minecraft="438:{Potion:'minecraft:strong_poison'}" pocket="438:27" stack="1" />
+	<item name="regeneration-splash-potion" minecraft="438:{Potion:'minecraft:regeneration'}" pocket="438:28" stack="1" />
+	<item name="regeneration-splash-potion-extended" minecraft="438:{Potion:'minecraft:long_regeneration'}" pocket="438:29" stack="1" />
+	<item name="regeneration-splash-potion-plus" minecraft="438:{Potion:'minecraft:strong_regeneration'}" pocket="438:30" stack="1" />
+	<item name="strength-splash-potion" minecraft="438:{Potion:'minecraft:strength'}" pocket="438:31" stack="1" />
+	<item name="strength-splash-potion-extended" minecraft="438:{Potion:'minecraft:long_strength'}" pocket="438:32" stack="1" />
+	<item name="strength-splash-potion-plus" minecraft="438:{Potion:'minecraft:strong_strength'}" pocket="438:33" stack="1" />
+	<item name="weakness-splash-potion" minecraft="438:{Potion:'minecraft:weakness'}" pocket="438:34" stack="1" />
+	<item name="weakness-splash-potion-extended" minecraft="438:{Potion:'minecraft:long_weakness'}" pocket="438:35" stack="1" />
+	<item name="decay-splash-potion" pocket="438:36" stack="1" />
 	<item name="spectral-arrow" minecraft="439" />
-	<item name="tipped-arrow" data="440" />
-	<item name="lingering-potion" data="441" stack="1" />
+	<item name="uncraftable-tipped-arrow" minecraft="440" />
+	<item name="tipped-arrow" minecraft="440:{Potion:'minecraft:water'}" pocket="440:0" />
+	<item name="mundane-tipped-arrow" minecraft="440:{Potion:'minecraft:mundane'}" pocket="440:1" />
+	<item name="mundane-tipped-arrow-extended" pocket="440:2" />
+	<item name="thick-tipped-arrow" minecraft="440:{Potion:'minecraft:thick'}" pocket="440:3" />
+	<item name="awkward-tipped-arrow" minecraft="440:{Potion:'minecraft:awkward'}" pocket="440:4" />
+	<item name="night-vision-tipped-arrow" minecraft="440:{Potion:'minecraft:night_vision'}" pocket="440:5" />
+	<item name="night-vision-tipped-arrow-extended" minecraft="440:{Potion:'minecraft:long_night_vision'}" pocket="440:6" />
+	<item name="invisibility-tipped-arrow" minecraft="440:{Potion:'minecraft:invisibility'}" pocket="440:7" />
+	<item name="invisibility-tipped-arrow-extended" minecraft="440:{Potion:'minecraft:long_invisibility'}" pocket="440:8" />
+	<item name="leaping-tipped-arrow" minecraft="440:{Potion:'minecraft:leaping'}" pocket="440:9" />
+	<item name="leaping-tipped-arrow-extended" minecraft="440:{Potion:'minecraft:long_leaping'}" pocket="440:10" />
+	<item name="leaping-tipped-arrow-plus" minecraft="440:{Potion:'minecraft:strong_leaping'}" pocket="440:11" />
+	<item name="fire-resistance-tipped-arrow" minecraft="440:{Potion:'minecraft:fire_resistance'}" pocket="440:12" />
+	<item name="fire-resistance-tipped-arrow-extended" minecraft="440:{Potion:'minecraft:long_fire_resistance'}" pocket="440:13" />
+	<item name="swiftness-tipped-arrow" minecraft="440:{Potion:'minecraft:swiftness'}" pocket="440:14" />
+	<item name="swiftness-tipped-arrow-extended" minecraft="440:{Potion:'minecraft:long_swiftness'}" pocket="440:15" />
+	<item name="swiftness-tipped-arrow-plus" minecraft="440:{Potion:'minecraft:strong_swiftness'}" pocket="440:16" />
+	<item name="slowness-tipped-arrow" minecraft="440:{Potion:'minecraft:slowness'}" pocket="440:17" />
+	<item name="slowness-tipped-arrow-extended" minecraft="440:{Potion:'minecraft:long_slowness'}" pocket="440:18" />
+	<item name="water-breathing-tipped-arrow" minecraft="440:{Potion:'minecraft:water_breathing'}" pocket="440:19" />
+	<item name="water-breathing-tipped-arrow-extended" minecraft="440:{Potion:'minecraft:water_breathing_extended'}" pocket="440:20" />
+	<item name="healing-tipped-arrow" minecraft="440:{Potion:'minecraft:healing'}" pocket="440:21" />
+	<item name="healing-tipped-arrow-plus" minecraft="440:{Potion:'minecraft:strong_healing'}" pocket="440:22" />
+	<item name="harming-tipped-arrow" minecraft="440:{Potion:'minecraft:harming'}" pocket="440:23" />
+	<item name="harming-tipped-arrow-plus" minecraft="440:{Potion:'minecraft:strong_harming'}" pocket="440:24" />
+	<item name="poison-tipped-arrow" minecraft="440:{Potion:'minecraft:poison'}" pocket="440:25" />
+	<item name="poison-tipped-arrow-extended" minecraft="440:{Potion:'minecraft:long_poison'}" pocket="440:26" />
+	<item name="poison-tipped-arrow-plus" minecraft="440:{Potion:'minecraft:strong_poison'}" pocket="440:27" />
+	<item name="regeneration-tipped-arrow" minecraft="440:{Potion:'minecraft:regeneration'}" pocket="440:28" />
+	<item name="regeneration-tipped-arrow-extended" minecraft="440:{Potion:'minecraft:long_regeneration'}" pocket="440:29" />
+	<item name="regeneration-tipped-arrow-plus" minecraft="440:{Potion:'minecraft:strong_regeneration'}" pocket="440:30" />
+	<item name="strength-tipped-arrow" minecraft="440:{Potion:'minecraft:strength'}" pocket="440:31" />
+	<item name="strength-tipped-arrow-extended" minecraft="440:{Potion:'minecraft:long_strength'}" pocket="440:32" />
+	<item name="strength-tipped-arrow-plus" minecraft="440:{Potion:'minecraft:strong_strength'}" pocket="440:33" />
+	<item name="weakness-tipped-arrow" minecraft="440:{Potion:'minecraft:weakness'}" pocket="440:34" />
+	<item name="weakness-tipped-arrow-extended" minecraft="440:{Potion:'minecraft:long_weakness'}" pocket="440:35" />
+	<item name="decay-tipped-arrow" pocket="440:36" />
+	<item name="uncraftable-lingering-potion" minecraft="441" stack="1" />
+	<item name="lingering-potion" minecraft="441:{Potion:'minecraft:water'}" pocket="441:0" stack="1" />
+	<item name="mundane-lingering-potion" minecraft="441:{Potion:'minecraft:mundane'}" pocket="441:1" stack="1" />
+	<item name="mundane-lingering-potion-extended" pocket="441:2" stack="1" />
+	<item name="thick-lingering-potion" minecraft="441:{Potion:'minecraft:thick'}" pocket="441:3" stack="1" />
+	<item name="awkward-lingering-potion" minecraft="441:{Potion:'minecraft:awkward'}" pocket="441:4" stack="1" />
+	<item name="night-vision-lingering-potion" minecraft="441:{Potion:'minecraft:night_vision'}" pocket="441:5" stack="1" />
+	<item name="night-vision-lingering-potion-extended" minecraft="441:{Potion:'minecraft:long_night_vision'}" pocket="441:6" stack="1" />
+	<item name="invisibility-lingering-potion" minecraft="441:{Potion:'minecraft:invisibility'}" pocket="441:7" stack="1" />
+	<item name="invisibility-lingering-potion-extended" minecraft="441:{Potion:'minecraft:long_invisibility'}" pocket="441:8" stack="1" />
+	<item name="leaping-lingering-potion" minecraft="441:{Potion:'minecraft:leaping'}" pocket="441:9" stack="1" />
+	<item name="leaping-lingering-potion-extended" minecraft="441:{Potion:'minecraft:long_leaping'}" pocket="441:10" stack="1" />
+	<item name="leaping-lingering-potion-plus" minecraft="441:{Potion:'minecraft:strong_leaping'}" pocket="441:11" stack="1" />
+	<item name="fire-resistance-lingering-potion" minecraft="441:{Potion:'minecraft:fire_resistance'}" pocket="441:12" stack="1" />
+	<item name="fire-resistance-lingering-potion-extended" minecraft="441:{Potion:'minecraft:long_fire_resistance'}" pocket="441:13" stack="1" />
+	<item name="swiftness-lingering-potion" minecraft="441:{Potion:'minecraft:swiftness'}" pocket="441:14" stack="1" />
+	<item name="swiftness-lingering-potion-extended" minecraft="441:{Potion:'minecraft:long_swiftness'}" pocket="441:15" stack="1" />
+	<item name="swiftness-lingering-potion-plus" minecraft="441:{Potion:'minecraft:strong_swiftness'}" pocket="441:16" stack="1" />
+	<item name="slowness-lingering-potion" minecraft="441:{Potion:'minecraft:slowness'}" pocket="441:17" stack="1" />
+	<item name="slowness-lingering-potion-extended" minecraft="441:{Potion:'minecraft:long_slowness'}" pocket="441:18" stack="1" />
+	<item name="water-breathing-lingering-potion" minecraft="441:{Potion:'minecraft:water_breathing'}" pocket="441:19" stack="1" />
+	<item name="water-breathing-lingering-potion-extended" minecraft="441:{Potion:'minecraft:water_breathing_extended'}" pocket="441:20" stack="1" />
+	<item name="healing-lingering-potion" minecraft="441:{Potion:'minecraft:healing'}" pocket="441:21" stack="1" />
+	<item name="healing-lingering-potion-plus" minecraft="441:{Potion:'minecraft:strong_healing'}" pocket="441:22" stack="1" />
+	<item name="harming-lingering-potion" minecraft="441:{Potion:'minecraft:harming'}" pocket="441:23" stack="1" />
+	<item name="harming-lingering-potion-plus" minecraft="441:{Potion:'minecraft:strong_harming'}" pocket="441:24" stack="1" />
+	<item name="poison-lingering-potion" minecraft="441:{Potion:'minecraft:poison'}" pocket="441:25" stack="1" />
+	<item name="poison-lingering-potion-extended" minecraft="441:{Potion:'minecraft:long_poison'}" pocket="441:26" stack="1" />
+	<item name="poison-lingering-potion-plus" minecraft="441:{Potion:'minecraft:strong_poison'}" pocket="441:27" stack="1" />
+	<item name="regeneration-lingering-potion" minecraft="441:{Potion:'minecraft:regeneration'}" pocket="441:28" stack="1" />
+	<item name="regeneration-lingering-potion-extended" minecraft="441:{Potion:'minecraft:long_regeneration'}" pocket="441:29" stack="1" />
+	<item name="regeneration-lingering-potion-plus" minecraft="441:{Potion:'minecraft:strong_regeneration'}" pocket="441:30" stack="1" />
+	<item name="strength-lingering-potion" minecraft="441:{Potion:'minecraft:strength'}" pocket="441:31" stack="1" />
+	<item name="strength-lingering-potion-extended" minecraft="441:{Potion:'minecraft:long_strength'}" pocket="441:32" stack="1" />
+	<item name="strength-lingering-potion-plus" minecraft="441:{Potion:'minecraft:strong_strength'}" pocket="441:33" stack="1" />
+	<item name="weakness-lingering-potion" minecraft="441:{Potion:'minecraft:weakness'}" pocket="441:34" stack="1" />
+	<item name="weakness-lingering-potion-extended" minecraft="441:{Potion:'minecraft:long_weakness'}" pocket="441:35" stack="1" />
+	<item name="decay-lingering-potion" pocket="441:36" stack="1" />
 	<item name="shield" minecraft="442" stack="1" durability="337" />
 	<item name="elytra" minecraft="443" pocket="444" durability="432" />
 	<item name="spruce-boat" minecraft="444" pocket="333:1" stack="1" />

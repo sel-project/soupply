@@ -1056,10 +1056,12 @@ Data[] createItems(Item[] items, Options options) {
 		values["MINECRAFT"] = item.minecraft.exists.to!string;
 		values["MINECRAFT_ID"] = item.minecraft.id.to!string;
 		values["MINECRAFT_META"] = max(0, item.minecraft.meta).to!string;
+		values["MINECRAFT_NBT"] = item.minecraft.nbt.replace("\"", "\\\"");
 		values["HAS_MINECRAFT_META"] = to!string(item.minecraft.meta >= 0);
 		values["POCKET"] = item.pocket.exists.to!string;
 		values["POCKET_ID"] = item.pocket.id.to!string;
 		values["POCKET_META"] = max(0, item.pocket.meta).to!string;
+		values["POCKET_NBT"] = item.pocket.nbt.replace("\"", "\\\"");
 		values["HAS_POCKET_META"] = to!string(item.pocket.meta >= 0);
 		values["STACK"] = item.stack.to!string;
 		values["DURABILITY"] = item.durability.to!string;

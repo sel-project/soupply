@@ -26,10 +26,12 @@ public final class Items
 	{
 
 		public final int id, meta;
+		public final String nbt;
 
-		public ItemData(int id, int meta) {
+		public ItemData(int id, int meta, String nbt) {
 			this.id = id;
 			this.meta = meta;
+			this.nbt = nbt;
 		}
 
 	}
@@ -86,5 +88,5 @@ public final class Items
 public static final Items {{NAME:uppercase}};
 --- end ---
 --- start add_items ---
-add({{NAME:uppercase}} = new Items("{{NAME:spaced}}", {{MINECRAFT==true?new ItemData({{MINECRAFT_ID}}, {{MINECRAFT_META}})}}{{MINECRAFT==false?null}}, {{POCKET==true?new ItemData({{POCKET_ID}}, {{POCKET_META}})}}{{POCKET==false?null}}, (byte){{STACK}}, (short){{DURABILITY}}));
+add({{NAME:uppercase}} = new Items("{{NAME:spaced}}", {{MINECRAFT==true?new ItemData({{MINECRAFT_ID}}, {{MINECRAFT_META}}, "{{MINECRAFT_NBT}}")}}{{MINECRAFT==false?null}}, {{POCKET==true?new ItemData({{POCKET_ID}}, {{POCKET_META}}, "{{POCKET_NBT}}")}}{{POCKET==false?null}}, (byte){{STACK}}, (short){{DURABILITY}}));
 --- end ---

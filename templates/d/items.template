@@ -6,6 +6,7 @@ public struct ItemData
 	
 	bool exists;
 	ushort id, meta;
+	string nbt;
 
 	alias exists this;
 
@@ -33,5 +34,5 @@ public enum Items : Item
 
 --- end ---
 --- start items_values ---
-	{{NAME:camel_case}} = Item("{{NAME:spaced}}", {{INDEX}}, ItemData({{MINECRAFT}}{{MINECRAFT==true?, {{MINECRAFT_ID}}, {{MINECRAFT_META}}}}), ItemData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}, {{POCKET_META}}}}), {{STACK}}, {{DURABILITY}}),
+	{{NAME:camel_case}} = Item("{{NAME:spaced}}", {{INDEX}}, ItemData({{MINECRAFT}}{{MINECRAFT==true?, {{MINECRAFT_ID}}, {{MINECRAFT_META}}, "{{MINECRAFT_NBT}}"}}), ItemData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}, {{POCKET_META}}, "{{POCKET_NBT}}"}}), {{STACK}}, {{DURABILITY}}),
 --- end ---

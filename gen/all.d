@@ -110,7 +110,7 @@ alias BoundingBox = Tuple!(Point, "min", Point, "max");
 alias Block = Tuple!(string, "name", ushort, "id", BlockData, "minecraft", BlockData, "pocket", bool, "solid", double, "hardness", double, "blastResistance", ubyte, "opacity", ubyte, "luminance", ubyte, "encouragement", ubyte, "flammability", bool, "replaceable", BoundingBox, "boundingBox");
 
 
-alias ItemData = Tuple!(bool, "exists", ushort, "id", int, "meta");
+alias ItemData = Tuple!(bool, "exists", ushort, "id", int, "meta", string, "nbt");
 
 alias Item = Tuple!(string, "name", ItemData, "minecraft", ItemData, "pocket", ubyte, "stack", ushort, "durability");
 
@@ -493,11 +493,14 @@ void main(string[] args) {
 				item.name = attr["name"].replace("-", "_");
 				void setData(ref ItemData id, string str) {
 					auto s = str.split(":");
-					if(s.length == 1 || s.length == 2) {
+					if(s.length) {
 						id.exists = true;
 						id.id = to!ushort(s[0]);
-						if(s.length == 2) id.meta = to!ushort(s[1]);
-						else id.meta = -1;
+						id.meta = -1;
+						if(s.length >= 2) {
+							try id.meta = to!ushort(s[1]);
+							catch(Exception) id.nbt = s[1..$].join(":").replace("'", "\"");
+						}
 					}
 				}
 				auto data = "data" in attr;
