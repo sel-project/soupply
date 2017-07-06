@@ -790,6 +790,7 @@
 					<constant name="squid-ink-cloud" value="15" />
 					<constant name="ambient-sound" value="16" />
 					<constant name="respawn" value="17" />
+					<constant name="unleash" value="63" />
 				</field>
 				<field name="?" type="varint" />
 			</packet>
