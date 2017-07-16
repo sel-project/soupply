@@ -209,7 +209,7 @@
 
 		<type name="shulker-attachment" type="optional-position" id="13" />
 
-		<type name="shulker-shield-height" type="byte" id="14" />
+		<type name="shulker-shield-height" type="int" id="14" />
 
 		<type name="shulker-color" type="byte" id="15" />
 
