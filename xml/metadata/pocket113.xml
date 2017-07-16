@@ -179,6 +179,8 @@
 		<type name="area-effect-cloud-waiting" type="int" id="62" />
 
 		<type name="area-effect-cloud-particle" type="int" id="63" />
+		
+		<type name="shulker-peak-height" type="byte" id="64" />
 
 		<type name="shulker-direction" type="byte" id="65" />
 
