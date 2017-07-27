@@ -1024,8 +1024,9 @@
 				</field>
 			</packet>
 
-			<packet name="block-entity-data" id="56" clientbound="true" serverbound="false">
+			<packet name="block-entity-data" id="56" clientbound="true" serverbound="true">
 				Sets a block entity's nbt tag, block's additional data that cannot be indicated in the block's meta. More informations about block entities and their tag format can be found on [Minecraft Wiki](http://minecraft.gamepedia.com/Block_entity).
+				The client sends this packet when it writes a sign.
 				<field name="position" type="block-position">
 					Position of the block that will be associated with tag.
 				</field>

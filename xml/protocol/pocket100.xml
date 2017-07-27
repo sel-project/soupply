@@ -772,7 +772,7 @@
 				</field>
 			</packet>
 
-			<packet name="block-entity-data" id="56" clientbound="true" serverbound="false">
+			<packet name="block-entity-data" id="56" clientbound="true" serverbound="true">
 				<field name="position" type="block-position" />
 				<field name="nbt" type="bytes" />
 			</packet>
