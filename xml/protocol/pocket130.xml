@@ -4,16 +4,14 @@
 
 	<software>Minecraft: Pocket Edition</software>
 
-	<protocol>113</protocol>
-
-	<released>2017/6/1</released>
+	<protocol>130</protocol>
 	
-	<from>1.1.0</from>
-
-	<to>1.1.4</to>
+	<from>1.2.0</from>
 
 	<description>
 		Protocol used in Minecraft: Pocket Edition and variants. The network part of the protocol is managed by [RakNet](../raknet/8.html).
+
+		⚠ Every packet is encoded as id (byte), padding (2 bytes) and body ⚠
 
 		### Login sequence
 		+ The client sends a [Login](#play_login) packet with the details of its game and its account
@@ -187,8 +185,6 @@
 			<field name="storage-version" type="ubyte" default="0" />
 			<field name="block-ids" type="ubyte[4096]" />
 			<field name="block-metas" type="ubyte[2048]" />
-			<field name="sky-light" type="ubyte[2048]" />
-			<field name="block-light" type="ubyte[2048]" />
 		</type>
 
 		<type name="extra-data">
@@ -248,6 +244,25 @@
 
 		<array name="rules" base="rule" length="uint" />
 
+		<type name="command">
+			<field name="name" type="string" />
+			<field name="description" type="string" />
+			<field name="?" type="ubyte" />
+			<field name="permission-level" type="ubyte" />
+			<field name="aliases-id" type="int" endianness="little-endian" default="-1" />
+			<field name="overloads" type="overload[]" />
+		</type>
+
+		<type name="overload">
+			<field name="parameters" type="parameter[]" />
+		</type>
+
+		<type name="parameter">
+			<field name="name" type="string" />
+			<field name="type" type="uint" endianness="little-endian" />
+			<field name="optional" type="bool" />
+		</type>
+
 		<array name="uint-le-bytes" base="ubyte" length="uint" endianness="little-endian" />
 
 	</encoding>
@@ -260,13 +275,8 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint" default="113">
+				<field name="protocol" type="uint" default="130">
 					Version of the protocol used by the player.
-				</field>
-				<field name="version" type="ubyte">
-					Edition that the player is using to join the server. The different editions may have different features and servers may block the access from unaccepted editions of the game.
-					<constant name="vanilla" value="0" />
-					<constant name="education" value="1" />
 				</field>
 				<field name="body" type="login-body">
 					Payload that contains 2 JWTs (with each length indicated by an unsigned little-endian 32-bits integer) with more informations about the player and its account.
@@ -336,6 +346,7 @@
 			<packet name="text" id="9" clientbound="true" serverbound="true">
 				Sends or receives a message from the player. Every variant's field can contain Minecraft's formatting codes.
 				<field name="type" type="ubyte" />
+				<field name="?" type="ubyte" />
 				<variants field="type">
 					<variant name="raw" value="0">
 						Raw message that will be printed in the chat as it is.
@@ -448,11 +459,18 @@
 					Intensity of the rain or the snow. Any value lower than or equals to 0 means no rain.
 				</field>
 				<field name="lightning-level" type="float" />
+				<field name="multiplayer-game" type="bool" default="true" />
+				<field name="broadcast-to-lan" type="bool" />
+				<field name="broadcast-to-xbl" type="bool" />
 				<field name="commands-enabled" type="bool">
 					Indicates whether the cheats are enabled. If the cheats are disabled the player cannot send commands.
 				</field>
 				<field name="texture-required" type="bool" />
 				<field name="game-rules" type="rule[]" />
+				<field name="bonus-chest-enabled" type="bool" />
+				<field name="trust-players-enabled" type="bool" />
+				<field name="permission-level" type="varint" />
+				<field name="?" type="varint" />
 				<field name="level-id" type="string" />
 				<field name="world-name" type="string">
 					World's name that will be displayed in the game's world settings. It can contain formatting codes.
@@ -559,12 +577,7 @@
 				<field name="rider" type="entity-id" />
 			</packet>
 
-			<packet name="remove-block" id="21" clientbound="false" serverbound="true">
-				Instantly removes a block, either because the player is in creative mode or because the target block's hardness is 0 or lower (after all enchantments are applied).
-				<field name="position" type="block-position" />
-			</packet>
-
-			<packet name="update-block" id="22" clientbound="true" serverbound="false">
+			<packet name="update-block" id="21" clientbound="true" serverbound="false">
 				<field name="position" type="block-position" />
 				<field name="block" type="varuint" />
 				<field name="flags-and-meta" type="varuint">
@@ -575,7 +588,7 @@
 				</field>
 			</packet>
 
-			<packet name="add-painting" id="23" clientbound="true" serverbound="false">
+			<packet name="add-painting" id="22" clientbound="true" serverbound="false">
 				Spawns a painting entity in the world.
 				<field name="entity-id" type="entity-id" />
 				<field name="runtime-id" type="runtime-id" />
@@ -584,13 +597,13 @@
 				<field name="title" type="string" />
 			</packet>
 
-			<packet name="explode" id="24" clientbound="true" serverbound="false">
+			<packet name="explode" id="23" clientbound="true" serverbound="false">
 				<field name="position" type="entity-position" />
 				<field name="radius" type="float" />
 				<field name="destroyed-blocks" type="block-position[]" />
 			</packet>
 
-			<packet name="level-sound-event" id="25" clientbound="true" serverbound="true">
+			<packet name="level-sound-event" id="24" clientbound="true" serverbound="true">
 				Plays a sound at a certain position.
 				<field name="sound" type="ubyte">
 					<constant name="item-use-on" value="0" />
@@ -710,7 +723,7 @@
 				<field name="?" type="bool" />
 			</packet>
 			
-			<packet name="level-event" id="26" clientbound="true" serverbound="false">
+			<packet name="level-event" id="25" clientbound="true" serverbound="false">
 				<field name="event-id" type="varint">
 					<constant name="start-rain" value="3001" />
 					<constant name="start-thunder" value="3002" />
@@ -770,12 +783,12 @@
 				<field name="data" type="varint" />
 			</packet>
 
-			<packet name="block-event" id="27" clientbound="true" serverbound="false">
+			<packet name="block-event" id="26" clientbound="true" serverbound="false">
 				<field name="position" type="block-position" />
 				<field name="data" type="varint[2]" />
 			</packet>
 
-			<packet name="entity-event" id="28" clientbound="true" serverbound="true">
+			<packet name="entity-event" id="27" clientbound="true" serverbound="true">
 				<field name="entity-id" type="entity-id" />
 				<field name="event-id" type="ubyte">
 					<constant name="hurt-animation" value="2" />
@@ -797,7 +810,7 @@
 				<field name="?" type="varint" />
 			</packet>
 
-			<packet name="mob-effect" id="29" clientbound="true" serverbound="false">
+			<packet name="mob-effect" id="28" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="event-id" type="ubyte">
 					<constant name="add" value="1" />
@@ -810,11 +823,13 @@
 				<field name="duration" type="varint" />
 			</packet>
 
-			<packet name="update-attributes" id="30" clientbound="true" serverbound="false">
+			<packet name="update-attributes" id="29" clientbound="true" serverbound="false">
 				Updates an entity's attributes. This packet should be used when a value must be modified but it cannot be done using another packet (for example controlling the player's experience and level).
 				<field name="entity-id" type="entity-id" />
 				<field name="attributes" type="attribute[]" />
 			</packet>
+
+			<packet name="inventory-transaction" id="30" clientbound="false" serverbound="true" />
 
 			<packet name="mob-equipment" id="31" clientbound="true" serverbound="true">
 				Sent when the client puts an item in its hotbar or selects a new hotbar slot.
@@ -849,7 +864,7 @@
 				<field name="slot" type="ubyte" />
 			</packet>
 
-			<packet name="use-item" id="35" clientbound="false" serverbound="true">
+			<packet name="entity-pick-request" id="35" clientbound="false" serverbound="true">
 				<field name="block-position" type="block-position" />
 				<field name="hotbar-slot" type="varuint" />
 				<field name="face" type="varint" />
@@ -865,17 +880,17 @@
 					<constant name="start-break" value="0" />
 					<constant name="abort-break" value="1" />
 					<constant name="stop-break" value="2" />
-					<constant name="release-item" value="5" />
-					<constant name="stop-sleeping" value="6" />
-					<constant name="respawn" value="7" />
-					<constant name="jump" value="8" />
-					<constant name="start-sprint" value="9" />
-					<constant name="stop-sprint" value="10" />
-					<constant name="start-sneak" value="11" />
-					<constant name="stop-sneak" value="12" />
-					<constant name="start-gliding" value="15" />
-					<constant name="stop-gliding" value="16" />
-					<constant name="continue-break" value="18" />
+					<constant name="release-item" value="4" />
+					<constant name="stop-sleeping" value="5" />
+					<constant name="respawn" value="6" />
+					<constant name="jump" value="7" />
+					<constant name="start-sprint" value="8" />
+					<constant name="stop-sprint" value="9" />
+					<constant name="start-sneak" value="10" />
+					<constant name="stop-sneak" value="11" />
+					<constant name="start-gliding" value="14" />
+					<constant name="stop-gliding" value="15" />
+					<constant name="continue-break" value="17" />
 				</field>
 				<field name="position" type="block-position" />
 				<field name="face" type="varint" />
@@ -945,37 +960,29 @@
 				<field name="position" type="entity-position" />
 			</packet>
 
-			<packet name="drop-item" id="46" clientbound="false" serverbound="true">
-				<field name="action" type="ubyte">
-					<constant name="drop" value="0" />
-				</field>
-				<field name="item" type="slot" />
-			</packet>
-
-			<packet name="inventory-action" id="47" clientbound="false" serverbound="true">
-				<field name="action" type="varint" />
-				<field name="item" type="slot" />
-				<field name="?" type="varint" />
-				<field name="?" type="varint" />
-			</packet>
-
-			<packet name="container-open" id="48" clientbound="true" serverbound="false">
+			<packet name="container-open" id="46" clientbound="true" serverbound="false">
 				<field name="window" type="ubyte" />
 				<field name="type" type="ubyte" />
 				<field name="position" type="block-position" />
 				<field name="entity-id" type="entity-id" />
 			</packet>
 
-			<packet name="container-close" id="49" clientbound="true" serverbound="true">
+			<packet name="container-close" id="47" clientbound="true" serverbound="true">
 				<field name="window" type="ubyte" />
 			</packet>
 
-			<packet name="container-set-slot" id="50" clientbound="true" serverbound="true">
-				<field name="window" type="ubyte" />
-				<field name="slot" type="varint" />
+			<packet name="player-hotbar" id="48" clientbound="false" serverbound="false" />
+
+			<packet name="inventory-content" id="49" clientbound="true" serverbound="false">
+				<field name="window" type="varuint" />
+				<field name="slots" type="slot[]" />
+			</packet>
+
+			<packet name="inventory-slot" id="50" clientbound="true" serverbound="false" />
+				<field name="container-id" type="varuint" />
+				<field name="slot" type="varuint" />
 				<field name="hotbar-slot" type="varint" />
 				<field name="item" type="slot" />
-				<field name="?" type="ubyte" />
 			</packet>
 
 			<packet name="container-set-data" id="51" clientbound="true" serverbound="false">
@@ -984,24 +991,19 @@
 				<field name="value" type="varint" />
 			</packet>
 
-			<packet name="container-set-content" id="52" clientbound="true" serverbound="false">
-				<field name="window" type="varuint" />
-				<field name="entity-id" type="entity-id" />
-				<field name="slots" type="slot[]" />
-				<field name="hotbar" type="varint[]" />
-			</packet>
-
-			<packet name="crafting-data" id="53" clientbound="true" serverbound="false">
+			<packet name="crafting-data" id="52" clientbound="true" serverbound="false">
 				<field name="recipes" type="recipe[]" />
 			</packet>
 
-			<packet name="crafting-event" id="54" clientbound="false" serverbound="true">
+			<packet name="crafting-event" id="53" clientbound="false" serverbound="true">
 				<field name="window" type="ubyte" />
 				<field name="type" type="varint" />
 				<field name="uuid" type="mcpe-uuid" />
 				<field name="input" type="slot[]" />
 				<field name="output" type="slot[]" />
 			</packet>
+
+			<packet name="gui-data-pick-item" id="54" clientbound="false" serverbound="true" />
 
 			<packet name="adventure-settings" id="55" clientbound="true" serverbound="true">
 				Updates the world's settings and client's permissions.
@@ -1017,13 +1019,24 @@
 					<constant name="flying" value="512" />
 					<constant name="muted" value="1024" />
 				</field>
+				<field name="?" type="varuint" />
 				<field name="permissions" type="varuint">
+					<constant name="build-and-mine" value="1" />
+					<constant name="doors-and-switches" value="2" />
+					<constant name="open-containers" value="4" />
+					<constant name="attack-players" value="8" />
+					<constant name="attack-mobs" value="16" />
+					<constant name="op" value="32" />
+					<constant name="teleport" value="64" />
+				</field>
+				<field name="permission-level" type="varuint">
 					<constant name="user" value="0" />
 					<constant name="operator" value="1" />
 					<constant name="host" value="2" />
 					<constant name="automation" value="3" />
 					<constant name="admin" value="4" />
 				</field>
+				<field name="entity-id" type="entity-id" />
 			</packet>
 
 			<packet name="block-entity-data" id="56" clientbound="true" serverbound="true">
@@ -1157,25 +1170,17 @@
 				<field name="item" type="slot" />
 			</packet>
 
-			<packet name="replace-item-in-slot" id="72" clientbound="false" serverbound="true">
-				<field name="item" type="slot" />
-			</packet>
-
-			<packet name="game-rules-changed" id="73" clientbound="true" serverbound="false">
+			<packet name="game-rules-changed" id="72" clientbound="true" serverbound="false">
 				Updates client's game rules. This packet is ignored if the game is not launched as Education Edition and should be avoid in favour of [AdventureSettings](#play_adventure-settings), with which the same result can be obtained with less data.
 				<field name="rules" type="rules" />
 			</packet>
 
-			<packet name="camera" id="74" clientbound="true" serverbound="false">
+			<packet name="camera" id="73" clientbound="true" serverbound="false">
 				<field name="?" type="entity-id" />
 				<field name="?" type="entity-id" />
 			</packet>
 
-			<packet name="add-item" id="75" clientbound="true" serverbound="false">
-				<field name="item" type="slot" />
-			</packet>
-
-			<packet name="boss-event" id="76" clientbound="true" serverbound="false">
+			<packet name="boss-event" id="74" clientbound="true" serverbound="false">
 				Adds, removes or modifies an entity's boss bar. The percentage of the bar is calculated using the entity's attributes for the health and the max health, updated with [UpdateAttributes](play_update-attributes).
 				<field name="entity-id" type="entity-id" />
 				<field name="event-id" type="varuint">
@@ -1185,7 +1190,7 @@
 				</field>
 			</packet>
 
-			<packet name="show-credits" id="77" clientbound="true" serverbound="true">
+			<packet name="show-credits" id="75" clientbound="true" serverbound="true">
 				<field name="entity-id" type="entity-id" />
 				<field name="status" type="varint">
 					<constant name="start" value="0" />
@@ -1193,26 +1198,26 @@
 				</field>
 			</packet>
 
-			<packet name="available-commands" id="78" clientbound="true" serverbound="false">
+			<packet name="available-commands" id="76" clientbound="true" serverbound="false">
 				Sends a list of the commands that the player can use through the [CommandStep](#play_command-step) packet.
-				<field name="commands" type="json">
-					JSON object with the commands.
-				</field>
-				<field name="?" type="json" />
-			</packet>
-
-			<packet name="command-step" id="79" clientbound="false" serverbound="true">
-				<field name="command" type="string" />
-				<field name="overload" type="string" />
+				<field name="enum-values" type="string[]" />
 				<field name="?" type="varuint" />
-				<field name="current-step" type="varuint" />
-				<field name="done" type="bool" />
-				<field name="client-id" type="varulong" />
-				<field name="input" type="json" />
-				<field name="output" type="json" />
+				<field name="commands" type="command[]" />
 			</packet>
 
-			<packet name="command-block-update" id="80" clientbound="true" serverbound="true">
+			<packet name="command-request" id="77" clientbound="false" serverbound="true">
+				<field name="command" type="string" />
+				<field name="type" type="varuint">
+					<constant name="player" value="0" />
+					<constant name="command-block" value="1" />
+					<constant name="minecart-command-block" value="2" />
+					<constant name="dev-console" value="3" />
+				</field>
+				<field name="request-id" type="string" />
+				<field name="player-id" type="varint" when="type==3" />
+			</packet>
+
+			<packet name="command-block-update" id="78" clientbound="true" serverbound="true">
 				<field name="update-block" type="bool" />
 				<field name="position" type="block-position" when="update-block==true" />
 				<field name="mode" type="varuint" when="update-block==true" />
@@ -1225,7 +1230,7 @@
 				<field name="track-output" type="bool" />
 			</packet>
 
-			<packet name="update-trade" id="81" clientbound="true" serverbound="false">
+			<packet name="update-trade" id="80" clientbound="true" serverbound="false">
 				<field name="window" type="ubyte" />
 				<field name="window-type" type="ubyte" default="15" />
 				<field name="?" type="varint" />
@@ -1237,11 +1242,9 @@
 				<field name="offers" type="bytes" />
 			</packet>
 
-			<packet name="update-equip" id="82" clientbound="true" serverbound="false">
+			<packet name="update-equip" id="81" clientbound="true" serverbound="false" />
 
-			</packet>
-
-			<packet name="resource-pack-data-info" id="83" clientbound="true" serverbound="false">
+			<packet name="resource-pack-data-info" id="82" clientbound="true" serverbound="false">
 				<field name="id" type="string" />
 				<field name="max-chunk-size" type="uint" endianness="little-endian" />
 				<field name="chunk-count" type="uint" endianness="little-endian" />
@@ -1249,19 +1252,19 @@
 				<field name="sha256" type="string" />
 			</packet>
 
-			<packet name="resource-pack-chunk-data" id="84" clientbound="true" serverbound="false">
+			<packet name="resource-pack-chunk-data" id="83" clientbound="true" serverbound="false">
 				<field name="id" type="string" />
 				<field name="chunk-index" type="uint" endianness="little-endian" />
 				<field name="progress" type="ulong" endianness="little-endian" />
 				<field name="data" type="uint-le-bytes" />
 			</packet>
 
-			<packet name="resource-pack-chunk-request" id="85" clientbound="false" serverbound="true">
+			<packet name="resource-pack-chunk-request" id="84" clientbound="false" serverbound="true">
 				<field name="id" type="string" />
 				<field name="chunk-index" type="uint" endianness="little-endian" />
 			</packet>
 
-			<packet name="transfer" id="86" clientbound="true" serverbound="false">
+			<packet name="transfer" id="85" clientbound="true" serverbound="false">
 				Transfers the player to another server. Once transferred the player will immediately close the connection with the transferring server, try to resolve the ip and join the new server starting a new raknet session.
 				<field name="ip" type="string">
 					Address of the new server. It can be an dotted ip (for example `127.0.0.1`) or an URI (for example `localhost` or `play.example.com`). Only IP of version 4 are currently allowed.
@@ -1271,19 +1274,19 @@
 				</field>
 			</packet>
 
-			<packet name="play-sound" id="87" clientbound="true" serverbound="false">
+			<packet name="play-sound" id="86" clientbound="true" serverbound="false">
 				<field name="name" type="string" />
 				<field name="position" type="block-position" />
 				<field name="volume" type="float" />
 				<field name="pitch" type="float" />
 			</packet>
 
-			<packet name="stop-sound" id="88" clientbound="true" serverbound="false">
+			<packet name="stop-sound" id="87" clientbound="true" serverbound="false">
 				<field name="name" type="string" />
 				<field name="stop-all" type="bool" />
 			</packet>
 
-			<packet name="set-title" id="89" clientbound="true" serverbound="false">
+			<packet name="set-title" id="88" clientbound="true" serverbound="false">
 				Displays titles on the client's screen.
 				<field name="action" type="varint">
 					<constant name="hide" value="0">
@@ -1313,20 +1316,43 @@
 				<field name="fade-out" type="varint" />
 			</packet>
 
-			<packet name="add-behavior-tree" id="90" clientbound="true" serverbound="false">
+			<packet name="add-behavior-tree" id="89" clientbound="true" serverbound="false" />
 
+			<packet name="structure-block-update" id="90" clientbound="true" serverbound="false" />
+
+			<packet name="show-store-offer" id="91" clientbound="true" serverbound="false" />
+
+			<packet name="purchase-receipt" id="92" clientbound="false" serverbound="true" />
+
+			<packet name="player-skin" id="93" clientbound="true" serverbound="false" />
+
+			<packet name="sub-client-login" id="94" clientbound="true" serverbound="false" />
+
+			<packet name="initiate-web-socket-connection" id="95" clientbound="false" serverbound="false" />
+
+			<packet name="set-last-hurt" id="96" clientbound="true" serverbound="false" />
+
+			<packet name="book-edit" id="97" clientbound="true" serverbound="true" />
+
+			<packet name="npc-request" id="98" clientbound="false" serverbound="true" />
+
+			<packet name="photo-transfer" id="99" clientbound="false" serverbound="true" />
+
+			<packet name="modal-form-request" id="100" clientbound="true" serverbound="false">
+				<field name="form-id" type="varuint" />
+				<field name="data" type="json" />
 			</packet>
 
-			<packet name="structure-block-update" id="91" clientbound="true" serverbound="false">
-
+			<packet name="modal-form-response" id="101" clientbound="true" serverbound="false">
+				<field name="form-id" type="varuint" />
+				<field name="data" type="json" />
 			</packet>
 
-			<packet name="show-store-offer" id="92" clientbound="true" serverbound="false">
+			<packet name="server-settings-request" id="102" clientbound="false" serverbound="true" />
 
-			</packet>
-
-			<packet name="purchase-receipt" id="93" clientbound="false" serverbound="true">
-
+			<packet name="server-settings-response" id="103" clientbound="true" serverbound="false">
+				<field name="form-id" type="varuint" />
+				<field name="data" type="json" />
 			</packet>
 
 		</section>

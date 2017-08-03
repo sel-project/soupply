@@ -56,7 +56,7 @@ git submodule add -b utils git://github.com/sel-utils/php utils/sul
 
 **Jump to**: [C#](#csharp), [D](#d), [Java](#java), [PHP](#php)
 
-256&#8239;094 lines of code in 1&#8239;173 files
+274&#8239;225 lines of code in 1&#8239;284 files
 
 ### [C#](https://github.com/sel-utils/csharp)
 
