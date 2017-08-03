@@ -65,7 +65,11 @@
 			<flag name="idling" bit="39" />
 			<flag name="evoker-spell" bit="40" />
 			<flag name="charge-attack" bit="41" />
+			<flag name="isWASDcontrolled" bit="42" />
 			<flag name="linger" bit="45" />
+			<flag name="gravity" bit="46" />
+			<flag name="dancing" bit="48" />
+			Note that gravity tag is now necessary for players to move properly.
 		</type>
 
 		<type name="health" type="int" id="1" />
