@@ -4,13 +4,11 @@
 
 	<software>Minecraft</software>
 
-	<protocol>335</protocol>
+	<protocol>338</protocol>
 
-	<released>2017/6/7</released>
+	<released>2017/8/3</released>
 
-	<from>1.12</from>
-
-	<to>1.12</to>
+	<from>1.12.1</from>
 
 	<encoding id="varuint" arraylength="varuint">
 
@@ -150,7 +148,7 @@
 		<section name="status">
 
 			<packet name="handshake" id="0" clientbound="false" serverbound="true">
-				<field name="protocol" type="varuint" default="335" />
+				<field name="protocol" type="varuint" default="338" />
 				<field name="server-address" type="string" />
 				<field name="server-port" type="ushort" />
 				<field name="next" type="varuint">
@@ -787,7 +785,12 @@
 				<field name="position" type="block-position" />
 			</packet>
 
-			<packet name="player-abilities" id="43" clientbound="true" serverbound="false">
+			<packet name="craft-recipe-response" id="43" clientbound="true" serverbound="false">
+				<field name="window" type="ubyte" />
+				<field name="recipe" type="varuint" />
+			</packet>
+
+			<packet name="player-abilities" id="44" clientbound="true" serverbound="false">
 				<field name="flags" type="ubyte">
 					<constant name="invulnerable" value="1" />
 					<constant name="flying" value="2" />
@@ -798,7 +801,7 @@
 				<field name="fov-modifier" type="float" />
 			</packet>
 
-			<packet name="combat-event" id="44" clientbound="true" serverbound="false">
+			<packet name="combat-event" id="45" clientbound="true" serverbound="false">
 				<field name="event-id" type="ubyte" />
 				<variants field="event-id">
 					<variant name="enter-combat" value="0" />
@@ -814,7 +817,7 @@
 				</variants>
 			</packet>
 
-			<packet name="player-list-item" id="45" clientbound="true" serverbound="false">
+			<packet name="player-list-item" id="46" clientbound="true" serverbound="false">
 				<field name="action" type="varuint" />
 				<variants field="action">
 					<variant name="add-player" value="0">
@@ -835,7 +838,7 @@
 				</variants>
 			</packet>
 
-			<packet name="player-position-and-look" id="46" clientbound="true" serverbound="false">
+			<packet name="player-position-and-look" id="47" clientbound="true" serverbound="false">
 				<field name="position" type="entity-position" />
 				<field name="yaw" type="float" />
 				<field name="pitch" type="float" />
@@ -849,12 +852,12 @@
 				<field name="teleport-id" type="varuint" />
 			</packet>
 
-			<packet name="use-bed" id="47" clientbound="true" serverbound="false">
+			<packet name="use-bed" id="48" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="position" type="block-position" />
 			</packet>
 
-			<packet name="unlock-recipes" id="48" clientbound="true" serverbound="false">
+			<packet name="unlock-recipes" id="49" clientbound="true" serverbound="false">
 				<field name="action" type="varuint">
 					<constant name="add" value="1" />
 					<constant name="remove" value="2" />
@@ -866,21 +869,21 @@
 				<field name="book-recipes" type="varuint[]" when="action==1||action==3" />
 			</packet>
 
-			<packet name="destroy-entities" id="49" clientbound="true" serverbound="false">
+			<packet name="destroy-entities" id="50" clientbound="true" serverbound="false">
 				<field name="entity-ids" type="entity-id[]" />
 			</packet>
 
-			<packet name="remove-entity-effect" id="50" clientbound="true" serverbound="false">
+			<packet name="remove-entity-effect" id="51" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="effect-id" type="ubyte" />
 			</packet>
 
-			<packet name="resource-pack-send" id="51" clientbound="true" serverbound="false">
+			<packet name="resource-pack-send" id="52" clientbound="true" serverbound="false">
 				<field name="url" type="string" />
 				<field name="hash" type="string" />
 			</packet>
 
-			<packet name="respawn" id="52" clientbound="true" serverbound="false">
+			<packet name="respawn" id="53" clientbound="true" serverbound="false">
 				<field name="dimension" type="int">
 					<constant name="nether" value="-1" />
 					<constant name="overworld" value="0" />
@@ -906,17 +909,17 @@
 				</field>
 			</packet>
 
-			<packet name="entity-head-look" id="53" clientbound="true" serverbound="false">
+			<packet name="entity-head-look" id="54" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="head-yaw" type="angle" />
 			</packet>
 
-			<packet name="advancement-progress" id="54" clientbound="true" serverbound="false">
+			<packet name="advancement-progress" id="55" clientbound="true" serverbound="false">
 				<field name="not-empty" type="bool" />
 				<field name="identifier" type="string" when="not-empty==true" />
 			</packet>
 
-			<packet name="world-border" id="55" clientbound="true" serverbound="false">
+			<packet name="world-border" id="56" clientbound="true" serverbound="false">
 				<field name="action" type="varuint" />
 				<variants field="action">
 					<variant name="set-size" value="0">
@@ -948,15 +951,15 @@
 				</variants>
 			</packet>
 
-			<packet name="camera" id="56" clientbound="true" serverbound="false">
+			<packet name="camera" id="57" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 			</packet>
 
-			<packet name="held-item-change" id="57" clientbound="true" serverbound="false">
+			<packet name="held-item-change" id="58" clientbound="true" serverbound="false">
 				<field name="slot" type="ubyte" />
 			</packet>
 
-			<packet name="display-scoreboard" id="58" clientbound="true" serverbound="false">
+			<packet name="display-scoreboard" id="59" clientbound="true" serverbound="false">
 				<field name="position" type="ubyte">
 					<constant name="list" value="0" />
 					<constant name="sidebar" value="1" />
@@ -965,40 +968,40 @@
 				<field name="score-name" type="string" />
 			</packet>
 
-			<packet name="entity-metadata" id="59" clientbound="true" serverbound="false">
+			<packet name="entity-metadata" id="60" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="metadata" type="metadata" />
 			</packet>
 
-			<packet name="attach-entity" id="60" clientbound="true" serverbound="false">
+			<packet name="attach-entity" id="61" clientbound="true" serverbound="false">
 				<field name="target" type="uint" />
 				<field name="holder" type="uint" />
 			</packet>
 
-			<packet name="entity-velocity" id="61" clientbound="true" serverbound="false">
+			<packet name="entity-velocity" id="62" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="velocity" type="entity-velocity" />
 			</packet>
 
-			<packet name="entity-equipment" id="62" clientbound="true" serverbound="false">
+			<packet name="entity-equipment" id="63" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="slot" type="varuint" />
 				<field name="item" type="slot" />
 			</packet>
 
-			<packet name="set-experience" id="63" clientbound="true" serverbound="false">
+			<packet name="set-experience" id="64" clientbound="true" serverbound="false">
 				<field name="experience" type="float" />
 				<field name="level" type="varuint" />
 				<field name="total-experience" type="varuint" />
 			</packet>
 
-			<packet name="update-health" id="64" clientbound="true" serverbound="false">
+			<packet name="update-health" id="65" clientbound="true" serverbound="false">
 				<field name="health" type="float" />
 				<field name="hunger" type="varuint" />
 				<field name="saturation" type="float" />
 			</packet>
 
-			<packet name="scoreboard-objective" id="65" clientbound="true" serverbound="false">
+			<packet name="scoreboard-objective" id="66" clientbound="true" serverbound="false">
 				<field name="name" type="string" />
 				<field name="mode" type="ubyte">
 					<constant name="create" value="0" />
@@ -1012,12 +1015,12 @@
 				</field>
 			</packet>
 
-			<packet name="set-passengers" id="66" clientbound="true" serverbound="false">
+			<packet name="set-passengers" id="67" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="passengers" type="entity-id[]" />
 			</packet>
 
-			<packet name="teams" id="67" clientbound="true" serverbound="false">
+			<packet name="teams" id="68" clientbound="true" serverbound="false">
 				<field name="name" type="string" />
 				<field name="mode" type="ubyte" />
 				<variants field="mode">
@@ -1076,7 +1079,7 @@
 				</variants>
 			</packet>
 
-			<packet name="update-score" id="68" clientbound="true" serverbound="false">
+			<packet name="update-score" id="69" clientbound="true" serverbound="false">
 				<field name="score-name" type="string" />
 				<field name="action" type="ubyte">
 					<constant name="update" value="0" />
@@ -1086,16 +1089,16 @@
 				<field name="value" type="varuint" when="action==0" />
 			</packet>
 
-			<packet name="spawn-position" id="69" clientbound="true" serverbound="false">
+			<packet name="spawn-position" id="70" clientbound="true" serverbound="false">
 				<field name="position" type="block-position" />
 			</packet>
 
-			<packet name="time-update" id="70" clientbound="true" serverbound="false">
+			<packet name="time-update" id="71" clientbound="true" serverbound="false">
 				<field name="world-age" type="ulong" />
 				<field name="time" type="long" />
 			</packet>
 
-			<packet name="title" id="71" clientbound="true" serverbound="false">
+			<packet name="title" id="72" clientbound="true" serverbound="false">
 				<field name="action" type="varuint" />
 				<variants field="action">
 					<variant name="set-title" value="0">
@@ -1117,7 +1120,7 @@
 				</variants>
 			</packet>
 
-			<packet name="sound-effect" id="72" clientbound="true" serverbound="false">
+			<packet name="sound-effect" id="73" clientbound="true" serverbound="false">
 				<field name="sound-id" type="varuint" />
 				<field name="category" type="varuint" />
 				<field name="position" type="int<xyz>" />
@@ -1125,18 +1128,18 @@
 				<field name="pitch" type="float" />
 			</packet>
 
-			<packet name="player-list-header-and-footer" id="73" clientbound="true" serverbound="false">
+			<packet name="player-list-header-and-footer" id="74" clientbound="true" serverbound="false">
 				<field name="header" type="string" />
 				<field name="footer" type="string" />
 			</packet>
 
-			<packet name="collect-item" id="74" clientbound="true" serverbound="false">
+			<packet name="collect-item" id="75" clientbound="true" serverbound="false">
 				<field name="collected" type="entity-id" />
 				<field name="collector" type="entity-id" />
 				<field name="count" type="varuint" />
 			</packet>
 
-			<packet name="entity-teleport" id="75" clientbound="true" serverbound="false">
+			<packet name="entity-teleport" id="76" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="position" type="double<xyz>" />
 				<field name="yaw" type="angle" />
@@ -1144,16 +1147,16 @@
 				<field name="on-ground" type="bool" />
 			</packet>
 
-			<packet name="advencements" id="76" clientbound="true" serverbound="false">
+			<packet name="advencements" id="77" clientbound="true" serverbound="false">
 				<!--- TODO -->
 			</packet>
 
-			<packet name="entity-properties" id="77" clientbound="true" serverbound="false">
+			<packet name="entity-properties" id="78" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="attributes" type="attributes" />
 			</packet>
 
-			<packet name="entity-effect" id="78" clientbound="true" serverbound="false">
+			<packet name="entity-effect" id="79" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="effect-id" type="ubyte" />
 				<field name="amplifier" type="ubyte" />
@@ -1172,32 +1175,25 @@
 				<field name="teleport-id" type="varuint" />
 			</packet>
 
-			<packet name="crafting-grid" id="1" clientbound="false" serverbound="true">
-				<field name="window" type="ubyte" />
-				<field name="action" type="ushort" />
-				<field name="return-entry" type="entries-array" />
-				<field name="prepare-entry" type="entries-array" />
-			</packet>
-
-			<packet name="tab-complete" id="2" clientbound="false" serverbound="true">
+			<packet name="tab-complete" id="1" clientbound="false" serverbound="true">
 				<field name="text" type="string" />
 				<field name="command" type="bool" />
 				<field name="has-position" type="bool" />
 				<field name="block" type="block-position" when="has-position==true" />
 			</packet>
 
-			<packet name="chat-message" id="3" clientbound="false" serverbound="true">
+			<packet name="chat-message" id="2" clientbound="false" serverbound="true">
 				<field name="text" type="string" />
 			</packet>
 
-			<packet name="client-status" id="4" clientbound="false" serverbound="true">
+			<packet name="client-status" id="3" clientbound="false" serverbound="true">
 				<field name="action" type="varuint">
 					<constant name="respawn" value="0" />
 					<constant name="request-stats" value="1" />
 				</field>
 			</packet>
 
-			<packet name="client-settings" id="5" clientbound="false" serverbound="true">
+			<packet name="client-settings" id="4" clientbound="false" serverbound="true">
 				<field name="language" type="string" />
 				<field name="view-distance" type="ubyte" />
 				<field name="chat-mode" type="varuint">
@@ -1221,18 +1217,18 @@
 				</field>
 			</packet>
 
-			<packet name="confirm-transaction" id="6" clientbound="false" serverbound="true">
+			<packet name="confirm-transaction" id="5" clientbound="false" serverbound="true">
 				<field name="window" type="ubyte" />
 				<field name="action" type="ushort" />
 				<field name="accepted" type="bool" />
 			</packet>
 
-			<packet name="enchant-item" id="7" clientbound="false" serverbound="true">
+			<packet name="enchant-item" id="6" clientbound="false" serverbound="true">
 				<field name="window" type="ubyte" />
 				<field name="enchantment" type="ubyte" />
 			</packet>
 
-			<packet name="click-window" id="8" clientbound="false" serverbound="true">
+			<packet name="click-window" id="7" clientbound="false" serverbound="true">
 				<field name="window" type="ubyte" />
 				<field name="slot" type="ushort" />
 				<field name="button" type="ubyte" />
@@ -1241,16 +1237,16 @@
 				<field name="clicked-item" type="slot" />
 			</packet>
 
-			<packet name="close-window" id="9" clientbound="false" serverbound="true">
+			<packet name="close-window" id="8" clientbound="false" serverbound="true">
 				<field name="window" type="ubyte" />
 			</packet>
 
-			<packet name="plugin-message" id="10" clientbound="false" serverbound="true">
+			<packet name="plugin-message" id="9" clientbound="false" serverbound="true">
 				<field name="channel" type="string" />
 				<field name="data" type="bytes" />
 			</packet>
 
-			<packet name="use-entity" id="11" clientbound="false" serverbound="true">
+			<packet name="use-entity" id="10" clientbound="false" serverbound="true">
 				<field name="target" type="entity-id" />
 				<field name="type" type="varuint">
 					<constant name="interact" value="0" />
@@ -1264,41 +1260,47 @@
 				</field>
 			</packet>
 
-			<packet name="keep-alive" id="12" clientbound="false" serverbound="true">
+			<packet name="keep-alive" id="11" clientbound="false" serverbound="true">
 				<field name="id" type="varuint" />
 			</packet>
 
-			<packet name="player" id="13" clientbound="false" serverbound="true">
+			<packet name="player" id="12" clientbound="false" serverbound="true">
 				<field name="on-ground" type="bool" />
 			</packet>
 
-			<packet name="player-position" id="14" clientbound="false" serverbound="true">
+			<packet name="player-position" id="13" clientbound="false" serverbound="true">
 				<field name="position" type="entity-position" />
 				<field name="on-ground" type="bool" />
 			</packet>
 
-			<packet name="player-position-and-look" id="15" clientbound="false" serverbound="true">
+			<packet name="player-position-and-look" id="14" clientbound="false" serverbound="true">
 				<field name="position" type="entity-position" />
+				<field name="yaw" type="float" />
+				<field name="pitch" type="float" />
+				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="player-look" id="15" clientbound="false" serverbound="true">
 				<field name="yaw" type="float" />
 				<field name="pitch" type="float" />
 				<field name="on-ground" type="bool" />
 			</packet>
 
-			<packet name="player-look" id="16" clientbound="false" serverbound="true">
-				<field name="yaw" type="float" />
-				<field name="pitch" type="float" />
-				<field name="on-ground" type="bool" />
-			</packet>
-
-			<packet name="vehicle-move" id="17" clientbound="false" serverbound="true">
+			<packet name="vehicle-move" id="16" clientbound="false" serverbound="true">
 				<field name="position" type="entity-position" />
 				<field name="yaw" type="float" />
 				<field name="pitch" type="float" />
 			</packet>
 
-			<packet name="steer-boat" id="18" clientbound="false" serverbound="true">
+			<packet name="steer-boat" id="17" clientbound="false" serverbound="true">
 				<field name="right-paddle-turning" type="bool" />
 				<field name="left-paddle-turning" type="bool" />
+			</packet>
+
+			<packet name="craft-recipe-request" id="18" clientbound="false" serverbound="true">
+				<field name="window" type="ubyte" />
+				<field name="recipe" type="varuint" />
+				<field name="make-all" type="bool" />
 			</packet>
 
 			<packet name="player-abilities" id="19" clientbound="false" serverbound="true">
