@@ -4,7 +4,7 @@
 
 	<software>Minecraft: Pocket Edition</software>
 
-	<protocol>130</protocol>
+	<protocol>131</protocol>
 	
 	<from>1.2.0</from>
 
@@ -119,6 +119,9 @@
 			<field name="data" type="ubyte[]">
 				Bytes of the skin in format RGBA. The length should be 8192 or 16382.
 			</field>
+			<field name="cape-data" type="ubyte[]" />
+			<field name="geometry-name" type="string" />
+			<field name="geometry-data" type="ubyte[]" />
 		</type>
 
 		<type name="player-list">
@@ -135,6 +138,7 @@
 			<field name="skin" type="skin">
 				Player's skin usually given in the [Login](#play_login)'s packet body.
 			</field>
+			<field name="xuid" type="string" />
 		</type>
 
 		<type name="link">
@@ -275,7 +279,7 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint" default="130">
+				<field name="protocol" type="uint" default="131">
 					Version of the protocol used by the player.
 				</field>
 				<field name="body" type="login-body">

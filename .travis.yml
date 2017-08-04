@@ -5,7 +5,7 @@ d:
 
 notifications:
  - email: false
- 
+
 script:
  - cd gen && echo $(( TRAVIS_BUILD_NUMBER - 88 )) > version.txt
  - rdmd all.d
