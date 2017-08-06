@@ -2015,27 +2015,27 @@
 	<!-- banners -->
 	<group hardness="1" blastresistance="5" opacity="0" boundingbox="none">
 
-		<block name="banner-facing-south" id="1308" minecraft="176:0" />
-		<block name="banner-facing-south-southwest" id="1309" minecraft="176:1" />
-		<block name="banner-facing-southwest" id="1310" minecraft="176:2" />
-		<block name="banner-facing-west-westsouth" id="1311" minecraft="176:3" />
-		<block name="banner-facing-west" id="1312" minecraft="176:4" />
-		<block name="banner-facing-west-northwest" id="1313" minecraft="176:5" />
-		<block name="banner-facing-northwest" id="1314" minecraft="176:6" />
-		<block name="banner-facing-north-northwest" id="1315" minecraft="176:7" />
-		<block name="banner-facing-north" id="1316" minecraft="176:8" />
-		<block name="banner-facing-north-northeast" id="1317" minecraft="176:9" />
-		<block name="banner-facing-northeast" id="1318" minecraft="176:10" />
-		<block name="banner-facing-east-northeast" id="1319" minecraft="176:11" />
-		<block name="banner-facing-east" id="1320" minecraft="176:12" />
-		<block name="banner-facing-east-southeast" id="1321" minecraft="176:13" />
-		<block name="banner-facing-southeast" id="1322" minecraft="176:14" />
-		<block name="banner-facing-south-southeast" id="1323" minecraft="176:15" />
+		<block name="banner-facing-south" id="1308" minecraft="176:0" pocket="176:0" />
+		<block name="banner-facing-south-southwest" id="1309" minecraft="176:1" pocket="176:1" />
+		<block name="banner-facing-southwest" id="1310" minecraft="176:2" pocket="176:2" />
+		<block name="banner-facing-west-westsouth" id="1311" minecraft="176:3" pocket="176:3" />
+		<block name="banner-facing-west" id="1312" minecraft="176:4" pocket="176:4" />
+		<block name="banner-facing-west-northwest" id="1313" minecraft="176:5" pocket="176:5" />
+		<block name="banner-facing-northwest" id="1314" minecraft="176:6" pocket="176:6" />
+		<block name="banner-facing-north-northwest" id="1315" minecraft="176:7" pocket="176:7" />
+		<block name="banner-facing-north" id="1316" minecraft="176:8" pocket="176:8" />
+		<block name="banner-facing-north-northeast" id="1317" minecraft="176:9" pocket="176:9" />
+		<block name="banner-facing-northeast" id="1318" minecraft="176:10" pocket="176:10" />
+		<block name="banner-facing-east-northeast" id="1319" minecraft="176:11" pocket="176:11" />
+		<block name="banner-facing-east" id="1320" minecraft="176:12" pocket="176:12" />
+		<block name="banner-facing-east-southeast" id="1321" minecraft="176:13" pocket="176:13" />
+		<block name="banner-facing-southeast" id="1322" minecraft="176:14" pocket="176:14" />
+		<block name="banner-facing-south-southeast" id="1323" minecraft="176:15" pocket="176:15" />
 
-		<block name="wall-banner-facing-north" id="1324" minecraft="177:2" />
-		<block name="wall-banner-facing-south" id="1325" minecraft="177:3" />
-		<block name="wall-banner-facing-west" id="1326" minecraft="177:4" />
-		<block name="wall-banner-facing-east" id="1327" minecraft="177:5" />
+		<block name="wall-banner-facing-north" id="1324" minecraft="177:2" pocket="177:2" />
+		<block name="wall-banner-facing-south" id="1325" minecraft="177:3" pocket="177:3" />
+		<block name="wall-banner-facing-west" id="1326" minecraft="177:4" pocket="177:4" />
+		<block name="wall-banner-facing-east" id="1327" minecraft="177:5" pocket="177:5" />
 
 	</group>
 
@@ -2178,10 +2178,10 @@
 	<!-- structure -->
 	<group hardness="-1" blastresistance="18000000">
 
-		<block name="structure-block-save" id="1373" minecraft="255:0" />
-		<block name="structure-block-load" id="1374" minecraft="255:1" />
-		<block name="structure-block-corner" id="1375" minecraft="255:2" />
-		<block name="structure-block-data" id="1376" minecraft="255:3" />
+		<block name="structure-block-save" id="1373" minecraft="255:0" pocket="252:0" />
+		<block name="structure-block-load" id="1374" minecraft="255:1" pocket="252:1" />
+		<block name="structure-block-corner" id="1375" minecraft="255:2" pocket="252:2" />
+		<block name="structure-block-data" id="1376" minecraft="255:3" pocket="252:3" />
 
 	</group>
 

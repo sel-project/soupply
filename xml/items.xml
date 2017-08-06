@@ -450,10 +450,10 @@
 	<item name="nether-reactor-core" pocket="247" />
 	<item name="update-block" pocket="248" />
 	<item name="ateupd-block" pocket="249" />
-	<item name="structure-save" minecraft="255:0" />
-	<item name="structure-load" minecraft="255:1" />
-	<item name="structure-corner" minecraft="255:2" />
-	<item name="structure-data" minecraft="255:3" />
+	<item name="structure-save" minecraft="255:0" pocket="252:0" />
+	<item name="structure-load" minecraft="255:1" pocket="252:1" />
+	<item name="structure-corner" minecraft="255:2" pocket="252:2" />
+	<item name="structure-data" minecraft="255:3" pocket="252:3" />
 
 	<item name="iron-shovel" data="256" stack="1" durability="251" />
 	<item name="iron-pickaxe" data="257" stack="1" durability="251" />
@@ -701,8 +701,8 @@
 	<item name="spawn-npc" pocket="383:51" />
 	<item name="bottle-o-enchanting" data="384" />
 	<item name="fire-charge" data="385" />
-	<item name="book-and-quill" minecraft="386" stack="1" />
-	<item name="written-book" minecraft="387" stack="1" />
+	<item name="book-and-quill" data="386" stack="1" />
+	<item name="written-book" data="387" stack="1" />
 	<item name="emerald" data="388" />
 	<item name="item-frame" data="389" />
 	<item name="flower-pot" data="390" />
@@ -722,8 +722,8 @@
 	<item name="carrot-on-a-stick" data="398" stack="1" durability="26" />
 	<item name="nether-star" data="399" />
 	<item name="pumpkin-pie" data="400" />
-	<item name="firework-rocket" minecraft="401" />
-	<item name="firework-star" minecraft="402" />
+	<item name="firework-rocket" data="401" />
+	<item name="firework-star" data="402" />
 	<item name="enchanted-book" data="403" stack="1" />
 	<item name="redstone-comparator" data="404" />
 	<item name="nether-brick" data="405" />
@@ -737,7 +737,7 @@
 	<item name="rabbit-stew" data="413" stack="1" />
 	<item name="rabbit-foot" data="414" />
 	<item name="rabbit-hide" data="415" />
-	<item name="armor-stand" minecraft="416" stack="16" />
+	<item name="armor-stand" minecraft="416" pocket="425" stack="16" />
 	<item name="leather-horse-armor" pocket="416" stack="1" />
 	<item name="iron-horse-armor" data="417" stack="1" />
 	<item name="golden-horse-armor" data="418" stack="1" />
@@ -747,7 +747,7 @@
 	<item name="minecart-with-command-block" minecraft="422" pocket="443" stack="1" />
 	<item name="raw-mutton" data="423" />
 	<item name="cooked-mutton" data="424" />
-	<item name="banner" minecraft="425" />
+	<item name="banner" minecraft="425" pocket="446" />
 	<item name="end-crystal" data="426" />
 	<item name="spruce-door" data="427" />
 	<item name="birch-door" data="428" />
@@ -886,17 +886,17 @@
 	<item name="shulker-shell" minecraft="450" pocket="445" />
 	<item name="iron-nugget" data="452" />
 	<item name="knowledge-book" minecraft="453" stack="1" />
-	<item name="disc-13" minecraft="2256" stack="1" />
-	<item name="disc-cat" minecraft="2257" stack="1" />
-	<item name="disc-blocks" minecraft="2258" stack="1" />
-	<item name="disc-chirp" minecraft="2259" stack="1" />
-	<item name="disc-far" minecraft="2260" stack="1" />
-	<item name="disc-mall" minecraft="2261" stack="1" />
-	<item name="disc-mellohi" minecraft="2262" stack="1" />
-	<item name="disc-stal" minecraft="2263" stack="1" />
-	<item name="disc-strad" minecraft="2264" stack="1" />
-	<item name="disc-ward" minecraft="2265" stack="1" />
-	<item name="disc-11" minecraft="2266" stack="1" />
-	<item name="disc-wait" minecraft="2267" stack="1" />
+	<item name="disc-13" minecraft="2256" pocket="500" stack="1" />
+	<item name="disc-cat" minecraft="2257" pocket="501" stack="1" />
+	<item name="disc-blocks" minecraft="2258" pocket="502" stack="1" />
+	<item name="disc-chirp" minecraft="2259" pocket="503" stack="1" />
+	<item name="disc-far" minecraft="2260" pocket="504" stack="1" />
+	<item name="disc-mall" minecraft="2261" pocket="505" stack="1" />
+	<item name="disc-mellohi" minecraft="2262" pocket="506" stack="1" />
+	<item name="disc-stal" minecraft="2263" pocket="507" stack="1" />
+	<item name="disc-strad" minecraft="2264" pocket="508" stack="1" />
+	<item name="disc-ward" minecraft="2265" pocket="509" stack="1" />
+	<item name="disc-11" minecraft="2266" pocket="510" stack="1" />
+	<item name="disc-wait" minecraft="2267" pocket="511" stack="1" />
 
 </items>
