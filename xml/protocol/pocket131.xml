@@ -173,12 +173,6 @@
 			<field name="new-item" type="slot" />
 		</type>
 
-		<type name="inventory-source">
-			<field name="type" type="varuint">
-
-			</field>
-		</type>
-
 		<type name="chunk-data" length="">
 			Chunk's blocks, lights and other immutable data.
 			<field name="sections" type="section[]">
@@ -799,7 +793,7 @@
 				<field name="volume" type="varuint" />
 				<field name="pitch" type="varint" />
 				<field name="?" type="bool" />
-				<field name="disable-relative-volume" value="bool" />
+				<field name="disable-relative-volume" type="bool" />
 			</packet>
 			
 			<packet name="level-event" id="25" clientbound="true" serverbound="false">
