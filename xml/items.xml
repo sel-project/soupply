@@ -372,9 +372,12 @@
 	<item name="beetroot-block" minecraft="207" pocket="244" />
 	<item name="grass-path" minecraft="208" pocket="198" />
 	<item name="end-gateway" data="209" />
-	<item name="repeating-command-block" minecraft="210" />
-	<item name="chain-command-block" minecraft="211" />
+	<item name="repeating-command-block" minecraft="210" pocket="188" />
+	<item name="chain-command-block" minecraft="211" pocket="189" />
 	<item name="frosted-ice" minecraft="212" pocket="207" />
+	<item name="allow" pocket="210" />
+	<item name="deny" pocket="211" />
+	<item name="border-block" pocket="212" />
 	<item name="magma-block" data="213" />
 	<item name="nether-wart-block" data="214" />
 	<item name="red-nether-brick" data="215" />
@@ -445,6 +448,8 @@
 	<item name="green-concrete-powder" minecraft="252:13" pocket="237:13" />
 	<item name="red-concrete-powder" minecraft="252:14" pocket="237:14" />
 	<item name="black-concrete-powder" minecraft="252:15" pocket="237:15" />
+	<item name="chalkboard" pocket="230" />
+	<item name="camera" pocket="242" />
 	<item name="stonecutter" pocket="245" />
 	<item name="glowing-obsidian" pocket="246" />
 	<item name="nether-reactor-core" pocket="247" />
