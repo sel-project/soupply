@@ -16,22 +16,14 @@
 --- end ---
 --- start items_values ---
 		{
-			"id": {{ID}}{{META!=0?{{meta}}}}{{HAS_ENCHANTMENTS==true?{{enchantments}}}}
+			"id": {{ID}}{{META!=0?{{meta}}}}{{HAS_NBT==true?{{nbt}}}}
 		}{{LAST==false?,}}
 --- end ---
 --- start meta ---
 ,
 			"meta": {{META}}
 --- end ---
---- start enchantments ---
+--- start nbt ---
 ,
-			"enchantments": [
-				{{enchantments_values@ENCHANTMENTS}}
-			]
---- end ---
---- start enchantments_values ---
-{
-					"id": {{ID}},
-					"level": {{LEVEL}}
-				}{{LAST==false?,}}
+			"nbt": "{{NBT}}"
 --- end ---

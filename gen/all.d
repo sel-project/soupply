@@ -64,9 +64,7 @@ alias Attribute = Tuple!(string, "name", string, "id", float, "min", float, "max
 alias Attributes = File!(Attribute[]);
 
 
-alias EnchantmentC = Tuple!(ubyte, "id", ubyte, "level");
-
-alias ItemC = Tuple!(ushort, "id", ushort, "meta", EnchantmentC[], "enchantments");
+alias ItemC = Tuple!(ushort, "id", ushort, "meta", string, "nbt");
 
 alias Creative = File!(ItemC[]);
 
@@ -188,11 +186,7 @@ void main(string[] args) {
 								ItemC item;
 								item.id = i.tag.attr["id"].to!ushort;
 								if("meta" in i.tag.attr) item.meta = i.tag.attr["meta"].to!ushort;
-								foreach(e ; i.elements) {
-									if(e.tag.name == "enchantment") {
-										with(e.tag) item.enchantments ~= EnchantmentC(attr["id"].to!ubyte, attr["level"].to!ubyte);
-									}
-								}
+								if("nbt" in i.tag.attr) item.nbt = i.tag.attr["nbt"];
 								c.data ~= item;
 							}
 						}

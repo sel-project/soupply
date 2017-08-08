@@ -494,14 +494,8 @@ Data[] createCreative(Creative[string] creative, Options options) {
 			Data[string] values;
 			values["ID"] = item.id.to!string;
 			values["META"] = item.meta.to!string;
-			values["HAS_ENCHANTMENTS"] = to!string(item.enchantments.length != 0);
-			values["ENCHANTMENTS"] = new Data[0];
-			foreach(j, ench; item.enchantments) {
-				Data[string] e;
-				e["ID"] = ench.id.to!string;
-				e["LEVEL"] = ench.level.to!string;
-				values["ENCHANTMENTS"].array ~= Data(e);
-			}
+			values["HAS_NBT"] = to!string(item.nbt.length != 0);
+			values["NBT"] = item.nbt;
 			g["ITEMS"].array ~= Data(values);
 		}
 		ret ~= Data(g);
