@@ -529,7 +529,7 @@ public class MetadataException extends RuntimeException {
 				if(field.constants.length) {
 					data ~= space ~ "// " ~ field.name.replace("_", " ") ~ "\n";
 					foreach(constant ; field.constants) {
-						data ~= space ~ "public static final " ~ convert(field.type) ~ " " ~ toUpper(constant.name) ~ " = " ~ (field.type == "string" ? JSONValue(constant.value).toString() : constant.value) ~ ";\n";
+						data ~= space ~ "public static final " ~ convert(field.type) ~ " " ~ toUpper(constant.name) ~ " = " ~ (field.type == "string" ? JSONValue(constant.value).toString() : "(" ~ convert(field.type) ~ ")" ~ constant.value) ~ ";\n";
 					}
 					data ~= "\n";
 				}

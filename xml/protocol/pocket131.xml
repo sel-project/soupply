@@ -57,7 +57,7 @@
 			<field name="size" type="ulong" />
 		</type>
 
-		<array name="pack-with-size-array" base="pack-with-size" length="ushort" />
+		<array name="pack-with-size-array" base="pack-with-size" length="ushort" endianness="big-endian" />
 
 		<type name="pack">
 			<field name="id" type="string" />
@@ -1134,11 +1134,11 @@
 					<constant name="muted" value="1024" />
 				</field>
 				<field name="permission-level" type="varuint">
-					<constant name="user" value="0" />
-					<constant name="operator" value="1" />
-					<constant name="host" value="2" />
-					<constant name="automation" value="3" />
-					<constant name="admin" value="4" />
+					<constant name="level-user" value="0" />
+					<constant name="level-operator" value="1" />
+					<constant name="level-host" value="2" />
+					<constant name="level-automation" value="3" />
+					<constant name="level-admin" value="4" />
 				</field>
 				<field name="abilities" type="varuint">
 					<constant name="build-and-mine" value="1" />
