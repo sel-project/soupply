@@ -4,7 +4,7 @@
 
 	<software>Minecraft: Pocket Edition</software>
 
-	<protocol>131</protocol>
+	<protocol>132</protocol>
 
 	<encoding length="varuint" types="varuint" ids="varuint">
 

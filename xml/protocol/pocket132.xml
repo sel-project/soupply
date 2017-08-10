@@ -4,7 +4,7 @@
 
 	<software>Minecraft: Pocket Edition</software>
 
-	<protocol>131</protocol>
+	<protocol>132</protocol>
 	
 	<from>1.2.0</from>
 
@@ -109,19 +109,6 @@
 			<field name="least-significant-bits" type="long" />
 		</type>
 
-		<type name="skin">
-			Player's [skin](http://minecraft.gamepedia.com/Skin).
-			<field name="name" type="string">
-				Name of the skin. It's used to render the shape of the skin correctly.
-			</field>
-			<field name="data" type="ubyte[]">
-				Bytes of the skin in format RGBA. The length should be 8192 or 16382.
-			</field>
-			<field name="cape-data" type="ubyte[]" />
-			<field name="geometry-name" type="string" />
-			<field name="geometry-data" type="ubyte[]" />
-		</type>
-
 		<type name="player-list">
 			Informations about a player that will be added to the player's list in the pause menu.
 			<field name="uuid" type="mcpe-uuid">
@@ -136,7 +123,20 @@
 			<field name="skin" type="skin">
 				Player's skin usually given in the [Login](#play_login)'s packet body.
 			</field>
-			<field name="xuid" type="string" />
+			<field name="?" type="string" />
+		</type>
+
+		<type name="skin">
+			Player's [skin](http://minecraft.gamepedia.com/Skin).
+			<field name="name" type="string">
+				Name of the skin. It's used to render the shape of the skin correctly.
+			</field>
+			<field name="data" type="ubyte[]">
+				Bytes of the skin in format RGBA. The length should be 8192 or 16382.
+			</field>
+			<field name="cape-data" type="ubyte[]" />
+			<field name="geometry-name" type="string" />
+			<field name="geometry-data" type="ubyte[]" />
 		</type>
 
 		<type name="link">
@@ -147,6 +147,7 @@
 				<constant name="ride" value="1" />
 				<constant name="remove" value="2" />
 			</field>
+			<field name="?" type="ubyte" />
 		</type>
 
 		<type name="recipe">
@@ -288,7 +289,7 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint" endianness="big-endian" default="131">
+				<field name="protocol" type="uint" endianness="big-endian" default="132">
 					Version of the protocol used by the player.
 				</field>
 				<field name="body" type="login-body">
@@ -481,6 +482,7 @@
 				<field name="texture-required" type="bool" />
 				<field name="game-rules" type="rule[]" />
 				<field name="bonus-chest-enabled" type="bool" />
+				<field name="start-with-map-enabled" type="bool" />
 				<field name="trust-players-enabled" type="bool" />
 				<field name="permission-level" type="varint" />
 				<field name="?" type="varint" />
@@ -517,6 +519,7 @@
 				<field name="?" type="varuint" />
 				<field name="?" type="varuint" />
 				<field name="?" type="long" />
+				<field name="links" type="link[]" />
 			</packet>
 
 			<packet name="add-entity" id="13" clientbound="true" serverbound="false">
@@ -1442,6 +1445,8 @@
 			<packet name="structure-block-update" id="90" clientbound="true" serverbound="false" />
 
 			<packet name="show-store-offer" id="91" clientbound="true" serverbound="false">
+				<field name="?" type="string" />
+				<field name="?" type="bool" />
 				<field name="?" type="string" />
 			</packet>
 
