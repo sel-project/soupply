@@ -7,7 +7,7 @@ notifications:
  - email: false
 
 script:
- - cd gen && echo $(( TRAVIS_BUILD_NUMBER - 88 )) > version.txt
+ - cd gen && echo $(( TRAVIS_BUILD_NUMBER - 175 )) > version.txt
  - rdmd all.d
  - cd .. && rdmd --build-only push.d
 

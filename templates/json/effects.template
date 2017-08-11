@@ -12,7 +12,7 @@
 --- end ---
 --- start effects_values ---
 		"{{NAME}}": {
-			{{HAS_MINECRAFT==true?"minecraft": {{MINECRAFT}},
+			{{HAS_JAVA==true?"java": {{JAVA}},
 			}}{{HAS_POCKET==true?"pocket": {{POCKET}},
 			}}"particles": "#{{COLOR_16}}"
 		}{{LAST==false?,}}

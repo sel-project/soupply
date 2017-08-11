@@ -2,9 +2,9 @@
 
 <metadata>
 
-	<software>Minecraft</software>
+	<software>Minecraft: Java Edition</software>
 
-	<protocol>316</protocol>
+	<protocol>338</protocol>
 
 	<encoding suffix="255" types="ubyte" ids="ubyte">
 
@@ -21,6 +21,7 @@
 		<type name="direction" type="varuint" id="10" />
 		<type name="uuid" type="optional-uuid" id="11" />
 		<type name="block" type="varuint" id="12" />
+		<type name="nbt" type="bytes" id="13" /> <!-- will not work when decoding -->
 
 	</encoding>
 
@@ -120,6 +121,10 @@
 
 		<type name="main-hand" type="byte" id="14" default="1" />
 
+		<type name="left-shoulder" type="nbt" id="15" />
+
+		<type name="right-shoulder" type="nbt" id="16" />
+
 		<type name="armor-stand-flags" type="byte" id="11">
 			<flag name="is-small" bit="0" />
 			<flag name="has-arms" bit="2" />
@@ -190,6 +195,8 @@
 		</type>
 
 		<type name="ocelot-variant" type="int" id="15" />
+
+		<type name="parrot-color" type="int" id="15" />
 
 		<type name="wolf-health" type="float" id="15" />
 

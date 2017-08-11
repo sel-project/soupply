@@ -2,9 +2,9 @@
 
 <attributes>
 
-	<software>Minecraft</software>
+	<software>Minecraft: Java Edition</software>
 
-	<protocol>316</protocol>
+	<protocol>210</protocol>
 
 	<attribute
 		name="max-health"

@@ -8,13 +8,13 @@ class Items
 {
 
 	private static $needInit = true;
-	private static $minecraftList, $pocketList;
+	private static $javaList, $pocketList;
 	
 	public static function init()
 	{
 
 		self::$needInit = false;
-		self::$minecraftList = [];
+		self::$javaList = [];
 		self::$pocketList = [];
 
 {{items_values@ITEMS}}
@@ -23,7 +23,7 @@ class Items
 
 	private static function add(Item $item)
 	{
-		if($item->minecraft instanceof ItemData) self::$minecraftList[$item->minecraft->id][$item->minecraft->meta] = $item;
+		if($item->java instanceof ItemData) self::$minecraftList[$item->java->id][$item->java->meta] = $item;
 		if($item->pocket instanceof ItemData) self::$pocketList[$item->pocket->id][$item->pocket->meta] = $item;
 	}
 
@@ -33,10 +33,10 @@ class Items
 	 *
 	 * @return Item
 	 */
-	public static function getMinecraftItem($id, $meta=0)
+	public static function getJavaItem($id, $meta=0)
 	{
 		if(self::$needInit) self::init();
-		return self::$minecraftList[$id][$meta];
+		return self::$javaList[$id][$meta];
 	}
 
 	/**

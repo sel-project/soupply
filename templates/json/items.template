@@ -13,17 +13,17 @@
 --- end ---
 --- start items_values ---
 		"{{NAME}}": {
-			{{MINECRAFT==true?{{minecraft}},
+			{{JAVA==true?{{java}},
 			}}{{POCKET==true?{{pocket}},
 			}}"stack": {{STACK}}{{DURABILITY!=0?,
 			"durability": {{DURABILITY}}}}
 		}{{LAST==false?,}}
 
 --- end ---
---- start minecraft ---
-"minecraft": {{HAS_MINECRAFT_META==false?{{MINECRAFT_ID}}}}{{HAS_MINECRAFT_META==true?{
-				"id": {{MINECRAFT_ID}},
-				"meta": {{MINECRAFT_META}}
+--- start java ---
+"java": {{HAS_JAVA_META==false?{{JAVA_ID}}}}{{HAS_JAVA_META==true?{
+				"id": {{JAVA_ID}},
+				"meta": {{JAVA_META}}
 			\}}}
 --- end ---
 --- start pocket ---

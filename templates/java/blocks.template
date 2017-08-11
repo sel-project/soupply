@@ -10,17 +10,17 @@ public final class Blocks
 
 	public final String name;
 	public final short id;
-	public final BlockData minecraft, pocket;
+	public final BlockData java, pocket;
 	public final boolean solid;
 	public final double hardness, blastResistance;
 	public final byte opacity, luminance;
 	public final boolean replaceable;
 
-	private Blocks(String name, short id, BlockData minecraft, BlockData pocket, boolean solid, double hardness, double blastResistance, byte opacity, byte luminance, boolean replaceable)
+	private Blocks(String name, short id, BlockData java, BlockData pocket, boolean solid, double hardness, double blastResistance, byte opacity, byte luminance, boolean replaceable)
 	{
 		this.name = name;
 		this.id = id;
-		this.minecraft = minecraft;
+		this.java = java;
 		this.pocket = pocket;
 		this.solid = solid;
 		this.hardness = hardness;
@@ -43,14 +43,14 @@ public final class Blocks
 	}
 
 	private static Map<Short, Blocks> selBlocks;
-	private static Map<Integer, Map<Integer, Blocks>> minecraftBlocks, pocketBlocks;
+	private static Map<Integer, Map<Integer, Blocks>> javaBlocks, pocketBlocks;
 
 	static
 	{
 	
 		selBlocks = new HashMap<Short, Blocks>();
 
-		minecraftBlocks = new HashMap<Integer, Map<Integer, Blocks>>();
+		javaBlocks = new HashMap<Integer, Map<Integer, Blocks>>();
 		pocketBlocks = new HashMap<Integer, Map<Integer, Blocks>>();
 
 		init1();
@@ -71,9 +71,9 @@ public final class Blocks
 	private static void add(Blocks block)
 	{
 		selBlocks.put(block.id, block);
-		if(block.minecraft != null) {
-			if(!minecraftBlocks.containsKey(block.minecraft.id)) minecraftBlocks.put(block.minecraft.id, new HashMap<Integer, Blocks>());
-			minecraftBlocks.get(block.minecraft.id).put(block.minecraft.meta, block);
+		if(block.java != null) {
+			if(!minecraftBlocks.containsKey(block.java.id)) javaBlocks.put(block.java.id, new HashMap<Integer, Blocks>());
+			javaBlocks.get(block.java.id).put(block.java.meta, block);
 		}
 		if(block.pocket != null) {
 			if(!pocketBlocks.containsKey(block.pocket.id)) pocketBlocks.put(block.pocket.id, new HashMap<Integer, Blocks>());
@@ -86,9 +86,9 @@ public final class Blocks
 		return selBlocks.get(id);
 	}
 
-	public static Blocks getMinecraftBlock(int id, int meta)
+	public static Blocks getJavaBlock(int id, int meta)
 	{
-		Map<Integer, Blocks> b = minecraftBlocks.get(id);
+		Map<Integer, Blocks> b = javaBlocks.get(id);
 		return b != null ? b.get(meta) : null;
 	}
 
@@ -106,5 +106,5 @@ public final class Blocks
 public static Blocks {{NAME:uppercase}};
 --- end ---
 --- start add_blocks ---
-add({{NAME:uppercase}} = new Blocks("{{NAME:spaced}}", (short){{ID}}, {{MINECRAFT==true?new BlockData({{MINECRAFT_ID}}, {{MINECRAFT_META}})}}{{MINECRAFT==false?null}}, {{POCKET==true?new BlockData({{POCKET_ID}}, {{POCKET_META}})}}{{POCKET==false?null}}, {{SOLID}}, (double){{HARDNESS}}, (double){{BLAST_RESISTANCE}}, (byte){{OPACITY}}, (byte){{LUMINANCE}}, {{REPLACEABLE}}));
+add({{NAME:uppercase}} = new Blocks("{{NAME:spaced}}", (short){{ID}}, {{JAVA==true?new BlockData({{JAVA_ID}}, {{JAVA_META}})}}{{JAVA==false?null}}, {{POCKET==true?new BlockData({{POCKET_ID}}, {{POCKET_META}})}}{{POCKET==false?null}}, {{SOLID}}, (double){{HARDNESS}}, (double){{BLAST_RESISTANCE}}, (byte){{OPACITY}}, (byte){{LUMINANCE}}, {{REPLACEABLE}}));
 --- end ---

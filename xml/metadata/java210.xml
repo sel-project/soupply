@@ -2,9 +2,9 @@
 
 <metadata>
 
-	<software>Minecraft</software>
+	<software>Minecraft: Java Edition</software>
 
-	<protocol>338</protocol>
+	<protocol>210</protocol>
 
 	<encoding suffix="255" types="ubyte" ids="ubyte">
 
@@ -21,7 +21,6 @@
 		<type name="direction" type="varuint" id="10" />
 		<type name="uuid" type="optional-uuid" id="11" />
 		<type name="block" type="varuint" id="12" />
-		<type name="nbt" type="bytes" id="13" /> <!-- will not work when decoding -->
 
 	</encoding>
 
@@ -52,7 +51,7 @@
 
 		<type name="radius" type="float" id="6" default="0.5" />
 
-		<type name="color" type="int" id="7" default="-1" />
+		<type name="color" type="int" id="7" />
 
 		<type name="is-single-point" type="bool" id="8" />
 
@@ -86,8 +85,6 @@
 
 		<type name="firework" type="slot" id="6" />
 
-		<type name="firework-thrower" type="int" id="7" />
-
 		<type name="item" type="slot" id="6" />
 
 		<type name="rotation" type="int" id="7" />
@@ -120,10 +117,6 @@
 		</type>
 
 		<type name="main-hand" type="byte" id="14" default="1" />
-
-		<type name="left-shoulder" type="nbt" id="15" />
-
-		<type name="right-shoulder" type="nbt" id="16" />
 
 		<type name="armor-stand-flags" type="byte" id="11">
 			<flag name="is-small" bit="0" />
@@ -162,23 +155,15 @@
 			<flag name="mouth-open" bit="7" />
 		</type>
 
-		<type name="owner-uuid" type="uuid" id="14" />
+		<type name="horse-type" type="int" id="14" />
 
 		<type name="horse-variant" type="int" id="15" />
 
-		<type name="horse-armor" type="int" id="16" />
+		<type name="owner-uuid" type="uuid" id="16" />
 
-		<type name="chested" type="bool" id="15" />
-
-		<type name="llama-strength" type="int" id="16" />
-
-		<type name="carpet-color" type="int" id="17" default="-1" />
-
-		<type name="llama-variant" type="int" id="18" />
+		<type name="horse-armor" type="int" id="17" />
 
 		<type name="pig-saddled" type="bool" id="13" />
-
-		<type name="carrot-boost" type="int" id="14" />
 
 		<type name="rabbit-variant" type="int" id="13" />
 
@@ -195,8 +180,6 @@
 		</type>
 
 		<type name="ocelot-variant" type="int" id="15" />
-
-		<type name="parrot-color" type="int" id="15" />
 
 		<type name="wolf-health" type="float" id="15" />
 
@@ -218,8 +201,6 @@
 
 		<type name="shulker-shield-height" type="byte" id="14" />
 
-		<type name="shulker-color" type="byte" id="15" />
-
 		<type name="blaze-on-fire" type="byte" id="12" />
 
 		<type name="creeper-state" type="int" id="12" default="-1" />
@@ -228,15 +209,16 @@
 
 		<type name="ignited" type="bool" id="14" />
 
-		<type name="rectracting-spikes" type="bool" id="12" />
+		<type name="guardian-flags" type="byte" id="12">
+			<flag name="retracting-spikes" bit="1" />
+			<flag name="elder" bit="2" />
+		</type>
 
 		<type name="guardian-target" type="int" id="13" />
 
-		<type name="spell" type="byte" id="12" />
+		<type name="skeleton-type" type="int" id="12" />
 
-		<type name="attack-mode" type="byte" id="12" />
-
-		<type name="swinging-arms" type="bool" id="12" />
+		<type name="swinging-arms" type="bool" id="13" />
 
 		<type name="climbing" type="byte" id="12" />
 
@@ -248,11 +230,11 @@
 
 		<type name="invulnerable-time" type="int" id="15" />
 
-		<type name="hands-held-up" type="bool" id="14" />
+		<type name="zombie-type" type="int" id="13" />
 
-		<type name="converting" type="bool" id="15" />
+		<type name="converting" type="bool" id="14" />
 
-		<type name="zombie-villager-profession" type="int" id="16" />
+		<type name="hands-held-up" type="bool" id="15" />
 
 		<type name="carried-block" type="block" id="12" />
 

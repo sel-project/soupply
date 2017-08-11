@@ -10,31 +10,31 @@ public enum Entities
 
 	public final String name;
 	public final boolean object;
-	public final int minecraft, pocket;
+	public final int java, pocket;
 	public final double width, height;
 
-	private Entities(String name, boolean object, int minecraft, int pocket, double width, double height)
+	private Entities(String name, boolean object, int java, int pocket, double width, double height)
 	{
 		this.name = name;
 		this.object = object;
-		this.minecraft = minecraft;
+		this.java = java;
 		this.pocket = pocket;
 		this.width = width;
 		this.height = height;
 	}
 
-	private Entities(String name, boolean object, int minecraft, int pocket)
+	private Entities(String name, boolean object, int java, int pocket)
 	{
-		this(name, object, minecraft, pocket, Double.NaN, Double.NaN);
+		this(name, object, java, pocket, Double.NaN, Double.NaN);
 	}
 
-	private static Map<Integer, Entities> minecraftEntities, minecraftObjects, pocketEntities, pocketObjects;
+	private static Map<Integer, Entities> javaEntities, javaObjects, pocketEntities, pocketObjects;
 
 	static
 	{
 
-		minecraftEntities = new HashMap<Integer, Entities>();
-		minecraftObjects = new HashMap<Integer, Entities>();
+		javaEntities = new HashMap<Integer, Entities>();
+		javaObjects = new HashMap<Integer, Entities>();
 		pocketEntities = new HashMap<Integer, Entities>();
 		pocketObjects = new HashMap<Integer, Entities>();
 
@@ -44,10 +44,10 @@ public enum Entities
 
 	private static void add(Entities entity)
 	{
-		if(entity.minecraft > 0)
+		if(entity.java > 0)
 		{
-			if(entity.object) minecraftObjects.put(entity.minecraft, entity);
-			if(!entity.object || !minecraftEntities.containsKey(entity.minecraft)) minecraftEntities.put(entity.minecraft, entity);
+			if(entity.object) javaObjects.put(entity.java, entity);
+			if(!entity.object || !javaEntities.containsKey(entity.java)) javaEntities.put(entity.java, entity);
 		}
 		if(entity.pocket > 0)
 		{
@@ -56,20 +56,20 @@ public enum Entities
 		}
 	}
 
-	public static Entities getMinecraftEntity(int id, boolean object)
+	public static Entities getJavaEntity(int id, boolean object)
 	{
-		if(object && minecraftObjects.containsKey(id)) return minecraftObjects.get(id);
-		else return minecraftEntities.get(id);
+		if(object && javaObjects.containsKey(id)) return javaObjects.get(id);
+		else return javaEntities.get(id);
 	}
 
-	public static Entities getMinecraftEntity(int id)
+	public static Entities getJavaEntity(int id)
 	{
-		return getMinecraftEntity(id, false);
+		return getJavaEntity(id, false);
 	}
 
-	public static Entities getMinecraftObject(int id)
+	public static Entities getJavaObject(int id)
 	{
-		return getMinecraftEntity(id, true);
+		return getJavaEntity(id, true);
 	}
 
 	public static Entities getPocketEntity(int id, boolean object)
@@ -91,7 +91,7 @@ public enum Entities
 }
 --- end ---
 --- start entities_values ---
-^{{NAME:uppercase}}("{{NAME:spaced}}", {{OBJECT}}, {{MINECRAFT_ID}}, {{POCKET_ID}}{{HAS_SIZE==true?, {{WIDTH}}, {{HEIGHT}}}}){{LAST==true?;}}{{LAST==false?,}}
+^{{NAME:uppercase}}("{{NAME:spaced}}", {{OBJECT}}, {{JAVA_ID}}, {{POCKET_ID}}{{HAS_SIZE==true?, {{WIDTH}}, {{HEIGHT}}}}){{LAST==true?;}}{{LAST==false?,}}
 --- end ---
 --- start add_entities ---
 add({{NAME:uppercase}});

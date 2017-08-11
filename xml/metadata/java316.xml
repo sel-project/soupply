@@ -2,9 +2,9 @@
 
 <metadata>
 
-	<software>Minecraft</software>
+	<software>Minecraft: Java Edition</software>
 
-	<protocol>210</protocol>
+	<protocol>316</protocol>
 
 	<encoding suffix="255" types="ubyte" ids="ubyte">
 
@@ -51,7 +51,7 @@
 
 		<type name="radius" type="float" id="6" default="0.5" />
 
-		<type name="color" type="int" id="7" />
+		<type name="color" type="int" id="7" default="-1" />
 
 		<type name="is-single-point" type="bool" id="8" />
 
@@ -84,6 +84,8 @@
 		<type name="show-bottom" type="bool" id="7" />
 
 		<type name="firework" type="slot" id="6" />
+
+		<type name="firework-thrower" type="int" id="7" />
 
 		<type name="item" type="slot" id="6" />
 
@@ -155,15 +157,23 @@
 			<flag name="mouth-open" bit="7" />
 		</type>
 
-		<type name="horse-type" type="int" id="14" />
+		<type name="owner-uuid" type="uuid" id="14" />
 
 		<type name="horse-variant" type="int" id="15" />
 
-		<type name="owner-uuid" type="uuid" id="16" />
+		<type name="horse-armor" type="int" id="16" />
 
-		<type name="horse-armor" type="int" id="17" />
+		<type name="chested" type="bool" id="15" />
+
+		<type name="llama-strength" type="int" id="16" />
+
+		<type name="carpet-color" type="int" id="17" default="-1" />
+
+		<type name="llama-variant" type="int" id="18" />
 
 		<type name="pig-saddled" type="bool" id="13" />
+
+		<type name="carrot-boost" type="int" id="14" />
 
 		<type name="rabbit-variant" type="int" id="13" />
 
@@ -201,6 +211,8 @@
 
 		<type name="shulker-shield-height" type="byte" id="14" />
 
+		<type name="shulker-color" type="byte" id="15" />
+
 		<type name="blaze-on-fire" type="byte" id="12" />
 
 		<type name="creeper-state" type="int" id="12" default="-1" />
@@ -209,16 +221,15 @@
 
 		<type name="ignited" type="bool" id="14" />
 
-		<type name="guardian-flags" type="byte" id="12">
-			<flag name="retracting-spikes" bit="1" />
-			<flag name="elder" bit="2" />
-		</type>
+		<type name="rectracting-spikes" type="bool" id="12" />
 
 		<type name="guardian-target" type="int" id="13" />
 
-		<type name="skeleton-type" type="int" id="12" />
+		<type name="spell" type="byte" id="12" />
 
-		<type name="swinging-arms" type="bool" id="13" />
+		<type name="attack-mode" type="byte" id="12" />
+
+		<type name="swinging-arms" type="bool" id="12" />
 
 		<type name="climbing" type="byte" id="12" />
 
@@ -230,11 +241,11 @@
 
 		<type name="invulnerable-time" type="int" id="15" />
 
-		<type name="zombie-type" type="int" id="13" />
+		<type name="hands-held-up" type="bool" id="14" />
 
-		<type name="converting" type="bool" id="14" />
+		<type name="converting" type="bool" id="15" />
 
-		<type name="hands-held-up" type="bool" id="15" />
+		<type name="zombie-villager-profession" type="int" id="16" />
 
 		<type name="carried-block" type="block" id="12" />
 

@@ -1013,10 +1013,10 @@ Data[] createBlocks(Block[] blocks, Options options) {
 		Data[string] values;
 		values["NAME"] = block.name;
 		values["ID"] = block.id.to!string;
-		values["MINECRAFT"] = to!string(block.minecraft.hash >= 0);
-		values["MINECRAFT_ID"] = max(0, block.minecraft.id).to!string;
-		values["HAS_MINECRAFT_META"] = to!string(block.minecraft.meta >= 0);
-		values["MINECRAFT_META"] = max(0, block.minecraft.meta).to!string;
+		values["JAVA"] = to!string(block.java.hash >= 0);
+		values["JAVA_ID"] = max(0, block.java.id).to!string;
+		values["HAS_MINECRAFT_META"] = to!string(block.java.meta >= 0);
+		values["MINECRAFT_META"] = max(0, block.java.meta).to!string;
 		values["POCKET"] = to!string(block.pocket.hash >= 0);
 		values["POCKET_ID"] = max(0, block.pocket.id).to!string;
 		values["HAS_POCKET_META"] = to!string(block.pocket.meta >= 0);
@@ -1047,11 +1047,11 @@ Data[] createItems(Item[] items, Options options) {
 		Data[string] values;
 		values["NAME"] = item.name;
 		values["INDEX"] = i.to!string;
-		values["MINECRAFT"] = item.minecraft.exists.to!string;
-		values["MINECRAFT_ID"] = item.minecraft.id.to!string;
-		values["MINECRAFT_META"] = max(0, item.minecraft.meta).to!string;
-		values["MINECRAFT_NBT"] = item.minecraft.nbt.replace("\"", "\\\"");
-		values["HAS_MINECRAFT_META"] = to!string(item.minecraft.meta >= 0);
+		values["JAVA"] = item.java.exists.to!string;
+		values["JAVA_ID"] = item.java.id.to!string;
+		values["JAVA_META"] = max(0, item.java.meta).to!string;
+		values["JAVA_NBT"] = item.java.nbt.replace("\"", "\\\"");
+		values["HAS_JAVA_META"] = to!string(item.java.meta >= 0);
 		values["POCKET"] = item.pocket.exists.to!string;
 		values["POCKET_ID"] = item.pocket.id.to!string;
 		values["POCKET_META"] = max(0, item.pocket.meta).to!string;
@@ -1070,8 +1070,8 @@ Data[] createEntities(Entity[] entities, Options options) {
 		Data[string] values;
 		values["NAME"] = entity.name;
 		values["OBJECT"] = entity.object.to!string;
-		values["MINECRAFT"] = to!string(entity.minecraft != 0);
-		values["MINECRAFT_ID"] = entity.minecraft.to!string;
+		values["JAVA"] = to!string(entity.java != 0);
+		values["JAVA_ID"] = entity.java.to!string;
 		values["POCKET"] = to!string(entity.pocket != 0);
 		values["POCKET_ID"] = entity.pocket.to!string;
 		values["HAS_SIZE"] = to!string(!entity.width.isNaN);
@@ -1087,8 +1087,8 @@ Data[] createEnchantments(Enchantment[] enchantments, Options options) {
 	foreach(i, enchantment; enchantments) {
 		Data[string] values;
 		values["NAME"] = enchantment.name;
-		values["MINECRAFT"] = to!string(enchantment.minecraft >= 0);
-		values["MINECRAFT_ID"] = max(0, enchantment.minecraft).to!string;
+		values["JAVA"] = to!string(enchantment.java >= 0);
+		values["JAVA_ID"] = max(0, enchantment.java).to!string;
 		values["POCKET"] = to!string(enchantment.pocket >= 0);
 		values["POCKET_ID"] = max(0, enchantment.pocket).to!string;
 		values["MAX"] = enchantment.max.to!string;
@@ -1102,8 +1102,8 @@ Data[] createEffects(Effect[] effects, Options options) {
 	foreach(effect ; effects) {
 		Data[string] values;
 		values["NAME"] = effect.name;
-		values["HAS_MINECRAFT"] = to!string(effect.minecraft >= 0);
-		values["MINECRAFT"] = effect.minecraft.to!string;
+		values["HAS_JAVA"] = to!string(effect.java >= 0);
+		values["JAVA"] = effect.java.to!string;
 		values["HAS_POCKET"] = to!string(effect.pocket >= 0);
 		values["POCKET"] = effect.pocket.to!string;
 		values["COLOR"] = effect.particles.to!string;

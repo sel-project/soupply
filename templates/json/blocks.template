@@ -13,10 +13,10 @@
 --- start blocks_values ---
 		"{{NAME}}": {
 			"id": {{ID}},
-			{{MINECRAFT==true?"minecraft": {{HAS_MINECRAFT_META==true?{
-				"id": {{MINECRAFT_ID}},
-				"meta": {{MINECRAFT_META}}
-			\}}}{{HAS_MINECRAFT_META==false?{{MINECRAFT_ID}}}},
+			{{JAVA==true?"java": {{HAS_JAVA_META==true?{
+				"id": {{JAVA_ID}},
+				"meta": {{JAVA_META}}
+			\}}}{{HAS_JAVA_META==false?{{JAVA_ID}}}},
 			}}{{POCKET==true?"pocket": {{HAS_POCKET_META==true?{
 				"id": {{POCKET_ID}},
 				"meta": {{POCKET_META}}

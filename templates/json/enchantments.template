@@ -12,7 +12,7 @@
 --- end ---
 --- start enchantments_values ---
 		"{{NAME}}": {
-			{{MINECRAFT==true?"minecraft": {{MINECRAFT_ID}},
+			{{JAVA==true?"java": {{JAVA_ID}},
 			}}{{POCKET==true?"pocket": {{POCKET_ID}},
 			}}"max": {{MAX}}
 		}{{LAST==false?,}}

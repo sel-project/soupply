@@ -2,32 +2,32 @@
 
 <effects>
 
-	<effect name="speed" minecraft="1" pocket="1" particles="7cafc6" />
-	<effect name="slowness" minecraft="2" pocket="2" particles="5a6c81" />
-	<effect name="haste" minecraft="3" pocket="3" particles="d9c043" />
-	<effect name="mining-fatigue" minecraft="4" pocket="4" particles="4a4217" />
-	<effect name="strength" minecraft="5" pocket="5" particles="932423" />
-	<effect name="instant-health" minecraft="6" pocket="6" particles="f82423" />
-	<effect name="instant-damage" minecraft="7" pocket="7" particles="430a09" />
-	<effect name="jump-boost" minecraft="8" pocket="8" particles="786297" />
-	<effect name="nausea" minecraft="9" pocket="9" particles="551d4a" />
-	<effect name="regeneration" minecraft="10" pocket="10" particles="cd5cab" />
-	<effect name="resistance" minecraft="11" pocket="11" particles="99453a" />
-	<effect name="fire-resistance" minecraft="12" pocket="12" particles="e49a3a" />
-	<effect name="water-breathing" minecraft="13" pocket="13" particles="2e5299" />
-	<effect name="invisibility" minecraft="14" pocket="14" particles="7f8392" />
-	<effect name="blindness" minecraft="15" pocket="15" particles="1f1f23" />
-	<effect name="night-vision" minecraft="16" pocket="16" particles="1f1fa1" />
-	<effect name="hunger" minecraft="17" pocket="17" particles="587653" />
-	<effect name="weakness" minecraft="18" pocket="18" particles="484d48" />
-	<effect name="poison" minecraft="19" pocket="19" particles="4e9331" />
-	<effect name="wither" minecraft="20" pocket="20" particles="352a27" />
-	<effect name="health-boost" minecraft="21" pocket="21" particles="f87d23" />
-	<effect name="absorption" minecraft="22" pocket="22" particles="2552a5" />
-	<effect name="saturation" minecraft="23" pocket="23" particles="f82423" />
-	<effect name="glowing" minecraft="24" particles="94a061" />
-	<effect name="levitation" minecraft="25" pocket="24" particles="ceffff" />
-	<effect name="luck" minecraft="26" particles="339900" />
-	<effect name="bad-luck" minecraft="27" particles="c0a44d" />
+	<effect name="speed" java="1" pocket="1" particles="7cafc6" />
+	<effect name="slowness" java="2" pocket="2" particles="5a6c81" />
+	<effect name="haste" java="3" pocket="3" particles="d9c043" />
+	<effect name="mining-fatigue" java="4" pocket="4" particles="4a4217" />
+	<effect name="strength" java="5" pocket="5" particles="932423" />
+	<effect name="instant-health" java="6" pocket="6" particles="f82423" />
+	<effect name="instant-damage" java="7" pocket="7" particles="430a09" />
+	<effect name="jump-boost" java="8" pocket="8" particles="786297" />
+	<effect name="nausea" java="9" pocket="9" particles="551d4a" />
+	<effect name="regeneration" java="10" pocket="10" particles="cd5cab" />
+	<effect name="resistance" java="11" pocket="11" particles="99453a" />
+	<effect name="fire-resistance" java="12" pocket="12" particles="e49a3a" />
+	<effect name="water-breathing" java="13" pocket="13" particles="2e5299" />
+	<effect name="invisibility" java="14" pocket="14" particles="7f8392" />
+	<effect name="blindness" java="15" pocket="15" particles="1f1f23" />
+	<effect name="night-vision" java="16" pocket="16" particles="1f1fa1" />
+	<effect name="hunger" java="17" pocket="17" particles="587653" />
+	<effect name="weakness" java="18" pocket="18" particles="484d48" />
+	<effect name="poison" java="19" pocket="19" particles="4e9331" />
+	<effect name="wither" java="20" pocket="20" particles="352a27" />
+	<effect name="health-boost" java="21" pocket="21" particles="f87d23" />
+	<effect name="absorption" java="22" pocket="22" particles="2552a5" />
+	<effect name="saturation" java="23" pocket="23" particles="f82423" />
+	<effect name="glowing" java="24" particles="94a061" />
+	<effect name="levitation" java="25" pocket="24" particles="ceffff" />
+	<effect name="luck" java="26" particles="339900" />
+	<effect name="bad-luck" java="27" particles="c0a44d" />
 
 </effects>

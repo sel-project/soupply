@@ -1,8 +1,6 @@
 ![SEL Logo](https://i.imgur.com/cTu1FE5.png)
 
-__Automatically generated libraries and documentation for Minecraft, Minecraft: Pocket Edition and SEL__
-
-[![Join chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sel-project/Lobby)
+__Automatically generated libraries and documentation for Minecraft (Bedrock Engine) and Minecraft: Java Edition__
 
 Automatically generated documentation is available at the [project's website](https://sel-utils.github.io/).
 
@@ -22,7 +20,7 @@ The following data is provided through [XML files](https://github.com/sel-projec
 | Biomes | Ids and temperature | ✓
 | Windows | Ids | 
 | Recipes | | 
-| Creative Inventory | Minecraft: Pocket Edition's items in the creative inventory | ✓
+| Creative Inventory | Minecraft (Bedrock Engine)'s items in the creative inventory | ✓
 
 The provided data can be used with the language's package manager (see the badges) or as git submodule.
 
@@ -30,9 +28,9 @@ You can choose a specific protocol using the combination `software` + `protocol`
 
 ```
 git init .
-git submodule add -b minecraft316 git://github.com/sel-utils/java minecraft316/sul
+git submodule add -b java316 git://github.com/sel-utils/java java316/sul
 ```
-And add `minecraft316` to your source paths
+And add `java316` to your source paths
 
 ```
 git init .

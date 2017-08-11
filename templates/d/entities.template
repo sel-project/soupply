@@ -13,7 +13,7 @@ public struct Entity
 {
 	
 	string name;
-	EntityData minecraft, pocket;
+	EntityData java, pocket;
 	bool object;
 	double width, height;
 
@@ -27,5 +27,5 @@ public enum Entities : Entity
 }
 --- end ---
 --- start entities_values ---
-	{{NAME:camel_case}} = Entity("{{NAME:spaced}}", EntityData({{MINECRAFT}}{{MINECRAFT==true?, {{MINECRAFT_ID}}}}), EntityData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}}}), {{OBJECT}}{{HAS_SIZE==true?, {{WIDTH}}, {{HEIGHT}}}}),
+	{{NAME:camel_case}} = Entity("{{NAME:spaced}}", EntityData({{JAVA}}{{JAVA==true?, {{JAVA_ID}}}}), EntityData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}}}), {{OBJECT}}{{HAS_SIZE==true?, {{WIDTH}}, {{HEIGHT}}}}),
 --- end ---

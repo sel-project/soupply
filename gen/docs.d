@@ -515,7 +515,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 	}
 	string data = head("Index", false);
 	data ~= "\t\t<div style=\"padding-top:84px\"></div>\n";
-	foreach(string name ; ["Minecraft", "Minecraft: Pocket Edition", "Raknet", "Hub-Node Communication", "External Console"]) {
+	foreach(string name ; ["Minecraft: Java Edition", "Minecraft (Bedrock Engine)", "Minecraft: Pocket Edition", "Raknet"]) {
 		size_t date(string str) {
 			auto spl = str.split("/");
 			if(spl.length == 3) return (to!size_t(spl[0]) * 366 + to!size_t(spl[1])) * 31 + to!size_t(spl[2]);
@@ -552,7 +552,7 @@ void docs(Attributes[string] attributes, Protocols[string] protocols, Metadatas[
 			if(_to) data ~= "\t\t\t\t<td class=\"center\">" ~ cp[0].to ~ "</td>\n";
 			data ~= "\t\t\t</tr>\n";
 		}
-		size_t latest;
+		size_t latest = sorted[0][1];
 		foreach_reverse(cp ; sorted) {
 			if(cp[0].released) latest = cp[1];
 		}

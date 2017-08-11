@@ -2,15 +2,15 @@
 
 <protocol>
 
-	<software>Minecraft</software>
+	<software>Minecraft: Java Edition</software>
 
-	<protocol>315</protocol>
+	<protocol>316</protocol>
 
-	<released>2016/11/14</released>
+	<released>2016/12/20</released>
 
-	<from>1.11</from>
+	<from>1.11.1</from>
 
-	<to>1.11</to>
+	<to>1.11.2</to>
 
 	<encoding id="varuint" arraylength="varuint">
 
