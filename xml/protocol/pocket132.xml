@@ -258,12 +258,17 @@
 			<field name="floating-value" type="float" when="type==3" />
 		</type>
 
+		<type name="enum">
+			<field name="name" type="string" />
+			<field name="values-indexes" type="ushort[]" />
+		</type>
+
 		<type name="command">
 			<field name="name" type="string" />
 			<field name="description" type="string" />
 			<field name="?" type="ubyte" />
 			<field name="permission-level" type="ubyte" />
-			<field name="aliases-id" type="int" default="-1" />
+			<field name="aliases-enum" type="int" default="-1" />
 			<field name="overloads" type="overload[]" />
 		</type>
 
@@ -273,7 +278,21 @@
 
 		<type name="parameter">
 			<field name="name" type="string" />
-			<field name="type" type="uint" />
+			<field name="type" type="uint">
+				<constant name="valid" value="1048576" />
+				<constant name="int" value="1" />
+				<constant name="float" value="2" />
+				<constant name="mixed" value="3" />
+				<constant name="target" value="4" />
+				<constant name="string" value="12" />
+				<constant name="position" value="13" />
+				<constant name="rawtext" value="16" />
+				<constant name="text" value="18" />
+				<constant name="json" value="21" />
+				<constant name="command" value="28" />
+				<constant name="enum" value="2097152" />
+				<constant name="template" value="16777216" />
+			</field>
 			<field name="optional" type="bool" />
 		</type>
 
@@ -1323,7 +1342,8 @@
 			<packet name="available-commands" id="76" clientbound="true" serverbound="false">
 				Sends a list of the commands that the player can use through the [CommandStep](#play_command-step) packet.
 				<field name="enum-values" type="string[]" />
-				<field name="?" type="varuint" />
+				<field name="?" type="string[]" />
+				<field name="enums" type="enum[]" />
 				<field name="commands" type="command[]" />
 			</packet>
 
