@@ -4,7 +4,7 @@
 
 	<software>Minecraft (Bedrock Engine)</software>
 
-	<protocol>132</protocol>
+	<protocol>133</protocol>
 	
 	<from>1.2.0</from>
 
@@ -36,7 +36,7 @@
 
 		<alias name="entity-id" type="varlong" />
 
-		<alias name="runtime-id" type="varlong" />
+		<alias name="runtime-id" type="varulong" />
 
 		<alias name="entity-position" type="float<xyz>" />
 
@@ -308,7 +308,7 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint" endianness="big-endian" default="132">
+				<field name="protocol" type="uint" endianness="big-endian" default="133">
 					Version of the protocol used by the player.
 				</field>
 				<field name="body" type="login-body">
@@ -408,19 +408,23 @@
 						<field name="title" type="string" />
 						<field name="subtitle" type="string" />
 					</variant>
-					<variant name="tip" value="4">
+					<variant name="jukebox-popup" value="4">
+						<field name="message" type="string" />
+						<field name="parameters" type="string[]" />
+					</variant>
+					<variant name="tip" value="5">
 						Displays a tip message for one tick before fading out. The tip message is displayed on top of the inventory bar and can contain multiple lines separated with `\n`.
 						<field name="message" type="string" />
 					</variant>
-					<variant name="system" value="5">
+					<variant name="system" value="6">
 						<field name="message" type="string" />
 					</variant>
-					<variant name="whisper" value="6">
+					<variant name="whisper" value="7">
 						Sends a whisper message to the client that will be displayed in the format `&lt;i&gt;sender has whispered to you:&lt;/i&gt; message`.
 						<field name="sender" type="string" />
 						<field name="message" type="string" />
 					</variant>
-					<variant name="announcement" value="7">
+					<variant name="announcement" value="8">
 						<field name="announcer" type="string" />
 						<field name="message" type="string" />
 					</variant>
@@ -533,6 +537,7 @@
 				<field name="yaw" type="float" />
 				<field name="held-item" type="slot" />
 				<field name="metadata" type="metadata" />
+				<field name="?" type="varuint" />
 				<field name="?" type="varuint" />
 				<field name="?" type="varuint" />
 				<field name="?" type="varuint" />
@@ -1177,7 +1182,8 @@
 					<constant name="operator" value="2" />
 					<constant name="custom" value="3" />
 				</field>
-				<field name="?" type="long" />
+				<field name="custom-permissions" type="varuint" />
+				<field name="entity-id" type="long" />
 			</packet>
 
 			<packet name="block-entity-data" id="56" clientbound="true" serverbound="true">
@@ -1554,6 +1560,14 @@
 			</packet>
 
 			<packet name="show-profile" id="104" clientbound="true" serverbound="false" />
+
+			<packet name="set-default-game-type" id="105" clientbound="true" serverbound="false">
+				<field name="game-type" type="varuint">
+					<constant name="survival" value="0" />
+					<constant name="creative" value="1" />
+					<constant name="adventure" value="2" />
+				</field>
+			</packet>
 
 		</section>
 

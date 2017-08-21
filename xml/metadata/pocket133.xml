@@ -4,7 +4,7 @@
 
 	<software>Minecraft (Bedrock Engine)</software>
 
-	<protocol>132</protocol>
+	<protocol>133</protocol>
 
 	<encoding length="varuint" types="varuint" ids="varuint">
 
