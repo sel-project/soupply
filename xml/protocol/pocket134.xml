@@ -4,7 +4,7 @@
 
 	<software>Minecraft (Bedrock Engine)</software>
 
-	<protocol>133</protocol>
+	<protocol>134</protocol>
 	
 	<from>1.2.0</from>
 
@@ -308,7 +308,7 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint" endianness="big-endian" default="133">
+				<field name="protocol" type="uint" endianness="big-endian" default="134">
 					Version of the protocol used by the player.
 				</field>
 				<field name="body" type="login-body">
@@ -379,11 +379,12 @@
 			<packet name="text" id="9" clientbound="true" serverbound="true">
 				Sends or receives a message from the player. Every variant's field can contain Minecraft's formatting codes.
 				<field name="type" type="ubyte" />
-				<field name="?" type="ubyte" />
+				<field name="?" type="bool" />
 				<variants field="type">
 					<variant name="raw" value="0">
 						Raw message that will be printed in the chat as it is.
 						<field name="message" type="string" />
+						<field name="xuid" type="string" />
 					</variant>
 					<variant name="chat" value="1">
 						Chat message sent by the player to the server. If sent from the server it will display as `&amp;lt;sender&amp;gt; message`.
@@ -393,6 +394,7 @@
 						<field name="message" type="string">
 							Message sent by the player. It should be unformatted (regular expression: `§[a-fA-F0-9k-or]`) before being processed as chat message by the server.
 						</field>
+						<field name="xuid" type="string" />
 					</variant>
 					<variant name="translation" value="2">
 						Sends a message that will be translated client-side using the player's language.
@@ -1018,18 +1020,19 @@
 					<constant name="stop-break" value="2" />
 					<constant name="get-updated-block" value="3" />
 					<constant name="drop-item" value="4" />
-					<constant name="stop-sleeping" value="5" />
-					<constant name="respawn" value="6" />
-					<constant name="jump" value="7" />
-					<constant name="start-sprint" value="8" />
-					<constant name="stop-sprint" value="9" />
-					<constant name="start-sneak" value="10" />
-					<constant name="stop-sneak" value="11" />
-					<constant name="start-gliding" value="14" />
-					<constant name="stop-gliding" value="15" />
-					<constant name="build-denied" value="16" />
-					<constant name="continue-break" value="17" />
-					<constant name="set-enchantment-seed" value="18" />
+					<constant name="start-sleeping" value="5" />
+					<constant name="stop-sleeping" value="6" />
+					<constant name="respawn" value="7" />
+					<constant name="jump" value="8" />
+					<constant name="start-sprint" value="9" />
+					<constant name="stop-sprint" value="10" />
+					<constant name="start-sneak" value="11" />
+					<constant name="stop-sneak" value="12" />
+					<constant name="start-gliding" value="15" />
+					<constant name="stop-gliding" value="16" />
+					<constant name="build-denied" value="17" />
+					<constant name="continue-break" value="18" />
+					<constant name="change-skin" value="19" />
 				</field>
 				<field name="position" type="block-position" />
 				<field name="face" type="varint" />
