@@ -4,7 +4,7 @@
 
 	<software>Minecraft (Bedrock Engine)</software>
 
-	<protocol>134</protocol>
+	<protocol>137</protocol>
 
 	<attribute
 		name="health"

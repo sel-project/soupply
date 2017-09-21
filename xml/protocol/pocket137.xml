@@ -4,7 +4,9 @@
 
 	<software>Minecraft (Bedrock Engine)</software>
 
-	<protocol>134</protocol>
+	<protocol>137</protocol>
+	
+	<released>2017/9/20</released>
 	
 	<from>1.2.0</from>
 
@@ -284,12 +286,12 @@
 				<constant name="float" value="2" />
 				<constant name="mixed" value="3" />
 				<constant name="target" value="4" />
-				<constant name="string" value="12" />
-				<constant name="position" value="13" />
-				<constant name="rawtext" value="16" />
-				<constant name="text" value="18" />
-				<constant name="json" value="21" />
-				<constant name="command" value="28" />
+				<constant name="string" value="13" />
+				<constant name="position" value="14" />
+				<constant name="rawtext" value="17" />
+				<constant name="text" value="19" />
+				<constant name="json" value="22" />
+				<constant name="command" value="29" />
 				<constant name="enum" value="2097152" />
 				<constant name="template" value="16777216" />
 			</field>
@@ -308,7 +310,7 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint" endianness="big-endian" default="134">
+				<field name="protocol" type="uint" endianness="big-endian" default="137">
 					Version of the protocol used by the player.
 				</field>
 				<field name="body" type="login-body">
