@@ -1017,10 +1017,10 @@ Data[] createBlocks(Block[] blocks, Options options) {
 		values["JAVA_ID"] = max(0, block.java.id).to!string;
 		values["HAS_MINECRAFT_META"] = to!string(block.java.meta >= 0);
 		values["MINECRAFT_META"] = max(0, block.java.meta).to!string;
-		values["POCKET"] = to!string(block.pocket.hash >= 0);
-		values["POCKET_ID"] = max(0, block.pocket.id).to!string;
-		values["HAS_POCKET_META"] = to!string(block.pocket.meta >= 0);
-		values["POCKET_META"] = max(0, block.pocket.meta).to!string;
+		values["BEDROCK"] = to!string(block.bedrock.hash >= 0);
+		values["BEDROCK_ID"] = max(0, block.bedrock.id).to!string;
+		values["HAS_BEDROCK_META"] = to!string(block.bedrock.meta >= 0);
+		values["BEDROCK_META"] = max(0, block.bedrock.meta).to!string;
 		values["SOLID"] = block.solid.to!string;
 		values["HARDNESS"] = block.hardness.to!string;
 		values["BLAST_RESISTANCE"] = block.blastResistance.to!string;
@@ -1052,11 +1052,11 @@ Data[] createItems(Item[] items, Options options) {
 		values["JAVA_META"] = max(0, item.java.meta).to!string;
 		values["JAVA_NBT"] = item.java.nbt.replace("\"", "\\\"");
 		values["HAS_JAVA_META"] = to!string(item.java.meta >= 0);
-		values["POCKET"] = item.pocket.exists.to!string;
-		values["POCKET_ID"] = item.pocket.id.to!string;
-		values["POCKET_META"] = max(0, item.pocket.meta).to!string;
-		values["POCKET_NBT"] = item.pocket.nbt.replace("\"", "\\\"");
-		values["HAS_POCKET_META"] = to!string(item.pocket.meta >= 0);
+		values["BEDROCK"] = item.bedrock.exists.to!string;
+		values["BEDROCK_ID"] = item.bedrock.id.to!string;
+		values["BEDROCK_META"] = max(0, item.bedrock.meta).to!string;
+		values["BEDROCK_NBT"] = item.bedrock.nbt.replace("\"", "\\\"");
+		values["HAS_BEDROCK_META"] = to!string(item.bedrock.meta >= 0);
 		values["STACK"] = item.stack.to!string;
 		values["DURABILITY"] = item.durability.to!string;
 		ret ~= Data(values);
@@ -1072,8 +1072,8 @@ Data[] createEntities(Entity[] entities, Options options) {
 		values["OBJECT"] = entity.object.to!string;
 		values["JAVA"] = to!string(entity.java != 0);
 		values["JAVA_ID"] = entity.java.to!string;
-		values["POCKET"] = to!string(entity.pocket != 0);
-		values["POCKET_ID"] = entity.pocket.to!string;
+		values["BEDROCK"] = to!string(entity.bedrock != 0);
+		values["BEDROCK_ID"] = entity.bedrock.to!string;
 		values["HAS_SIZE"] = to!string(!entity.width.isNaN);
 		values["WIDTH"] = entity.width.to!string;
 		values["HEIGHT"] = entity.height.to!string;
@@ -1089,8 +1089,8 @@ Data[] createEnchantments(Enchantment[] enchantments, Options options) {
 		values["NAME"] = enchantment.name;
 		values["JAVA"] = to!string(enchantment.java >= 0);
 		values["JAVA_ID"] = max(0, enchantment.java).to!string;
-		values["POCKET"] = to!string(enchantment.pocket >= 0);
-		values["POCKET_ID"] = max(0, enchantment.pocket).to!string;
+		values["BEDROCK"] = to!string(enchantment.bedrock >= 0);
+		values["BEDROCK_ID"] = max(0, enchantment.bedrock).to!string;
 		values["MAX"] = enchantment.max.to!string;
 		ret ~= Data(values);
 	}
@@ -1104,8 +1104,8 @@ Data[] createEffects(Effect[] effects, Options options) {
 		values["NAME"] = effect.name;
 		values["HAS_JAVA"] = to!string(effect.java >= 0);
 		values["JAVA"] = effect.java.to!string;
-		values["HAS_POCKET"] = to!string(effect.pocket >= 0);
-		values["POCKET"] = effect.pocket.to!string;
+		values["HAS_BEDROCK"] = to!string(effect.bedrock >= 0);
+		values["BEDROCK"] = effect.bedrock.to!string;
 		values["COLOR"] = effect.particles.to!string;
 		values["COLOR_16"] = (effect.particles.to!string(16) ~ "000000")[0..6];
 		ret ~= Data(values);

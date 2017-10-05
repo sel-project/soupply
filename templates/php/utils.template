@@ -14,22 +14,22 @@ class Item
 	public $name;
 
 	/** @var ItemData|null */
-	public $minecraft, $pocket;
+	public $java, $bedrock;
 
 	/** @var int */
 	public $stack;
 
 	/**
 	 * @param string $name
-	 * @param ItemData|null $minecraft
-	 * @param ItemData|null $pocket
+	 * @param ItemData|null $java
+	 * @param ItemData|null $bedrock
 	 * @param int $stack
 	 */
-	public function __construct(string $name, $minecraft, $pocket, $stack)
+	public function __construct(string $name, $java, $bedrock, $stack)
 	{
 		$this->name = $name;
-		$this->minecraft = $minecraft;
-		$this->pocket = $pocket;
+		$this->java = $java;
+		$this->bedrock = $bedrock;
 		$this->stack = $stack;
 	}
 

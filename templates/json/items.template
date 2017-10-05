@@ -14,7 +14,7 @@
 --- start items_values ---
 		"{{NAME}}": {
 			{{JAVA==true?{{java}},
-			}}{{POCKET==true?{{pocket}},
+			}}{{BEDROCK==true?{{bedrock}},
 			}}"stack": {{STACK}}{{DURABILITY!=0?,
 			"durability": {{DURABILITY}}}}
 		}{{LAST==false?,}}
@@ -26,9 +26,9 @@
 				"meta": {{JAVA_META}}
 			\}}}
 --- end ---
---- start pocket ---
-"pocket": {{HAS_POCKET_META==false?{{POCKET_ID}}}}{{HAS_POCKET_META==true?{
-				"id": {{POCKET_ID}},
-				"meta": {{POCKET_META}}
+--- start bedrock ---
+"bedrock": {{HAS_BEDROCK_META==false?{{BEDROCK_ID}}}}{{HAS_BEDROCK_META==true?{
+				"id": {{BEDROCK_ID}},
+				"meta": {{BEDROCK_META}}
 			\}}}
 --- end ---

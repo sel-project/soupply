@@ -2,40 +2,40 @@
 
 <enchantments>
 
-	<enchantment name="protection" java="0" pocket="0" max="4" />
-	<enchantment name="fire-protection" java="1" pocket="1" max="4" />
-	<enchantment name="feather-falling" java="2" pocket="2" max="4" />
-	<enchantment name="blast-protection" java="3" pocket="3" max="4" />
-	<enchantment name="projectile-protection" java="4" pocket="4" max="4" />
-	<enchantment name="respiration" java="5" pocket="6" max="3" />
-	<enchantment name="aqua-affinity" java="6" pocket="8" max="1" />
-	<enchantment name="thorns" java="7" pocket="5" max="3" />
-	<enchantment name="depth-strider" java="8" pocket="7" max="3" />
-	<enchantment name="frost-walker" java="9" pocket="25" max="2" />
+	<enchantment name="protection" java="0" bedrock="0" max="4" />
+	<enchantment name="fire-protection" java="1" bedrock="1" max="4" />
+	<enchantment name="feather-falling" java="2" bedrock="2" max="4" />
+	<enchantment name="blast-protection" java="3" bedrock="3" max="4" />
+	<enchantment name="projectile-protection" java="4" bedrock="4" max="4" />
+	<enchantment name="respiration" java="5" bedrock="6" max="3" />
+	<enchantment name="aqua-affinity" java="6" bedrock="8" max="1" />
+	<enchantment name="thorns" java="7" bedrock="5" max="3" />
+	<enchantment name="depth-strider" java="8" bedrock="7" max="3" />
+	<enchantment name="frost-walker" java="9" bedrock="25" max="2" />
 	<enchantment name="curse-of-binding" java="10" max="1" />
 
-	<enchantment name="sharpness" java="16" pocket="9" max="5" />
-	<enchantment name="smite" java="17" pocket="10" max="5" />
-	<enchantment name="bane-of-arthropods" java="18" pocket="11" max="5" />
-	<enchantment name="knockback" java="19" pocket="12" max="2" />
-	<enchantment name="fire-aspect" java="20" pocket="13" max="2" />
-	<enchantment name="looting" java="21" pocket="14" max="3" />
+	<enchantment name="sharpness" java="16" bedrock="9" max="5" />
+	<enchantment name="smite" java="17" bedrock="10" max="5" />
+	<enchantment name="bane-of-arthropods" java="18" bedrock="11" max="5" />
+	<enchantment name="knockback" java="19" bedrock="12" max="2" />
+	<enchantment name="fire-aspect" java="20" bedrock="13" max="2" />
+	<enchantment name="looting" java="21" bedrock="14" max="3" />
 	<enchantment name="sweeping-edge" java="22" max="3" />
 
-	<enchantment name="efficiency" java="32" pocket="15" max="5" />
-	<enchantment name="silk-touch" java="33" pocket="16" max="1" />
-	<enchantment name="unbreaking" java="34" pocket="17" max="3" />
-	<enchantment name="fortune" java="35" pocket="18" max="3" />
+	<enchantment name="efficiency" java="32" bedrock="15" max="5" />
+	<enchantment name="silk-touch" java="33" bedrock="16" max="1" />
+	<enchantment name="unbreaking" java="34" bedrock="17" max="3" />
+	<enchantment name="fortune" java="35" bedrock="18" max="3" />
 
-	<enchantment name="power" java="48" pocket="19" max="5" />
-	<enchantment name="punch" java="49" pocket="20" max="2" />
-	<enchantment name="flame" java="50" pocket="21" max="1" />
-	<enchantment name="infinity" java="51" pocket="22" max="1" />
+	<enchantment name="power" java="48" bedrock="19" max="5" />
+	<enchantment name="punch" java="49" bedrock="20" max="2" />
+	<enchantment name="flame" java="50" bedrock="21" max="1" />
+	<enchantment name="infinity" java="51" bedrock="22" max="1" />
 
-	<enchantment name="luck-of-the-sea" java="61" pocket="23" max="3" />
-	<enchantment name="lure" java="62" pocket="24" max="3" />
+	<enchantment name="luck-of-the-sea" java="61" bedrock="23" max="3" />
+	<enchantment name="lure" java="62" bedrock="24" max="3" />
 
-	<enchantment name="mending" java="70" pocket="26" max="1" />
+	<enchantment name="mending" java="70" bedrock="26" max="1" />
 	<enchantment name="curse-of-vanishing" java="71" max="1" />
 
 </enchantments>

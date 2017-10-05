@@ -17,10 +17,10 @@
 				"id": {{JAVA_ID}},
 				"meta": {{JAVA_META}}
 			\}}}{{HAS_JAVA_META==false?{{JAVA_ID}}}},
-			}}{{POCKET==true?"pocket": {{HAS_POCKET_META==true?{
-				"id": {{POCKET_ID}},
-				"meta": {{POCKET_META}}
-			\}}}{{HAS_POCKET_META==false?{{POCKET_ID}}}},
+			}}{{BEDROCK==true?"bedrock": {{HAS_BEDROCK_META==true?{
+				"id": {{BEDROCK_ID}},
+				"meta": {{BEDROCK_META}}
+			\}}}{{HAS_BEDROCK_META==false?{{BEDROCK_ID}}}},
 			}}"solid": {{SOLID}},
 			"hardness": {{HARDNESS}},
 			"blast_resistance": {{BLAST_RESISTANCE}},

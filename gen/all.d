@@ -105,21 +105,21 @@ alias Point = Tuple!(ubyte, "x", ubyte, "y", ubyte, "z");
 
 alias BoundingBox = Tuple!(Point, "min", Point, "max");
 
-alias Block = Tuple!(string, "name", ushort, "id", BlockData, "java", BlockData, "pocket", bool, "solid", double, "hardness", double, "blastResistance", ubyte, "opacity", ubyte, "luminance", ubyte, "encouragement", ubyte, "flammability", bool, "replaceable", BoundingBox, "boundingBox");
+alias Block = Tuple!(string, "name", ushort, "id", BlockData, "java", BlockData, "bedrock", bool, "solid", double, "hardness", double, "blastResistance", ubyte, "opacity", ubyte, "luminance", ubyte, "encouragement", ubyte, "flammability", bool, "replaceable", BoundingBox, "boundingBox");
 
 
 alias ItemData = Tuple!(bool, "exists", ushort, "id", int, "meta", string, "nbt");
 
-alias Item = Tuple!(string, "name", ItemData, "java", ItemData, "pocket", ubyte, "stack", ushort, "durability");
+alias Item = Tuple!(string, "name", ItemData, "java", ItemData, "bedrock", ubyte, "stack", ushort, "durability");
 
 
-alias Entity = Tuple!(string, "name", ubyte, "java", ubyte, "pocket", bool, "object", double, "width", double, "height");
+alias Entity = Tuple!(string, "name", ubyte, "java", ubyte, "bedrock", bool, "object", double, "width", double, "height");
 
 
-alias Enchantment = Tuple!(string, "name", byte, "java", byte, "pocket", ubyte, "max");
+alias Enchantment = Tuple!(string, "name", byte, "java", byte, "bedrock", ubyte, "max");
 
 
-alias Effect = Tuple!(string, "name", byte, "java", byte, "pocket", uint, "particles");
+alias Effect = Tuple!(string, "name", byte, "java", byte, "bedrock", uint, "particles");
 
 
 alias Biome = Tuple!(string, "name", ubyte, "id", float, "temperature");
@@ -432,7 +432,7 @@ void main(string[] args) {
 			auto name = "name" in element.tag.attr;
 			auto id = "id" in element.tag.attr;
 			auto java = "java" in element.tag.attr;
-			auto pocket = "pocket" in element.tag.attr;
+			auto bedrock = "bedrock" in element.tag.attr;
 			auto solid = "solid" in element.tag.attr;
 			auto hardness = "hardness" in element.tag.attr;
 			auto blastResistance = "blastresistance" in element.tag.attr;
@@ -445,7 +445,7 @@ void main(string[] args) {
 			if(name) block.name = replace(*name, "-", "_");
 			if(id) block.id = to!ushort(*id);
 			if(java) block.java = blockData(*java);
-			if(pocket) block.pocket = blockData(*pocket);
+			if(bedrock) block.bedrock = blockData(*bedrock);
 			if(solid) block.solid = to!bool(*solid);
 			if(bb && *bb == "none") block.solid = false;
 			if(hardness) block.hardness = to!double(*hardness);
@@ -499,15 +499,15 @@ void main(string[] args) {
 				}
 				auto data = "data" in attr;
 				auto java = "java" in attr;
-				auto pocket = "pocket" in attr;
+				auto bedrock = "bedrock" in attr;
 				auto stack = "stack" in attr;
 				auto durability = "durability" in attr;
 				if(data) {
 					setData(item.java, *data);
-					setData(item.pocket, *data);
+					setData(item.bedrock, *data);
 				} else {
 					if(java) setData(item.java, *java);
-					if(pocket) setData(item.pocket, *pocket);
+					if(bedrock) setData(item.bedrock, *bedrock);
 				}
 				item.stack = stack ? to!ubyte(*stack) : 64;
 				item.durability = durability ? to!ushort(*durability) : 0;
@@ -525,11 +525,11 @@ void main(string[] args) {
 				entity.name = attr["name"].replace("-", "_");
 				entity.object = name == "object";
 				auto java = "java" in attr;
-				auto pocket = "pocket" in attr;
+				auto bedrock = "bedrock" in attr;
 				auto width = "width" in attr;
 				auto height = "height" in attr;
 				if(java) entity.java = to!ubyte(*java);
-				if(pocket) entity.pocket = to!ubyte(*pocket);
+				if(bedrock) entity.bedrock = to!ubyte(*bedrock);
 				if(width) entity.width = to!double(*width);
 				if(height) entity.height = to!double(*height);
 				entities ~= entity;
@@ -543,8 +543,8 @@ void main(string[] args) {
 		with(element.tag) {
 			if(name == "enchantment") {
 				auto java = "java" in attr;
-				auto pocket = "pocket" in attr;
-				enchantments ~= Enchantment(attr["name"].replace("-", "_"), java ? to!ubyte(*java) : -1, pocket ? to!ubyte(*pocket) : -1, to!ubyte(attr["max"]));
+				auto bedrock = "bedrock" in attr;
+				enchantments ~= Enchantment(attr["name"].replace("-", "_"), java ? to!ubyte(*java) : -1, bedrock ? to!ubyte(*bedrock) : -1, to!ubyte(attr["max"]));
 			}
 		}
 	}
@@ -555,8 +555,8 @@ void main(string[] args) {
 		with(element.tag) {
 			if(name == "effect") {
 				auto java = "java" in attr;
-				auto pocket = "pocket" in attr;
-				effects ~= Effect(attr["name"].replace("-", "_"), java ? to!ubyte(*java) : -1, pocket ? to!ubyte(*pocket) : -1, to!uint(attr["particles"], 16));
+				auto bedrock = "bedrock" in attr;
+				effects ~= Effect(attr["name"].replace("-", "_"), java ? to!ubyte(*java) : -1, bedrock ? to!ubyte(*bedrock) : -1, to!uint(attr["particles"], 16));
 			}
 		}
 	}

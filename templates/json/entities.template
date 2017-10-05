@@ -15,7 +15,7 @@
 		"{{NAME}}": {
 			"object": {{OBJECT}},
 			{{JAVA==true?"java": {{JAVA_ID}},
-			}}{{POCKET==true?"pocket": {{POCKET_ID}},
+			}}{{BEDROCK==true?"bedrock": {{BEDROCK_ID}},
 			}}"size": {{HAS_SIZE==false?null}}{{HAS_SIZE==true?{
 				"width": {{WIDTH}},
 				"height": {{HEIGHT}}

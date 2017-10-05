@@ -13,7 +13,7 @@
 --- start enchantments_values ---
 		"{{NAME}}": {
 			{{JAVA==true?"java": {{JAVA_ID}},
-			}}{{POCKET==true?"pocket": {{POCKET_ID}},
+			}}{{BEDROCK==true?"bedrock": {{BEDROCK_ID}},
 			}}"max": {{MAX}}
 		}{{LAST==false?,}}
 

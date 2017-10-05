@@ -15,7 +15,7 @@ public struct Enchantment
 {
 	
 	string name;
-	EnchantmentData java, pocket;
+	EnchantmentData java, bedrock;
 	ubyte max;
 
 }
@@ -29,5 +29,5 @@ public enum Enchantments : Enchantment
 
 --- end ---
 --- start enchantments_values ---
-	{{NAME:camel_case}} = Enchantment("{{NAME:spaced}}", EnchantmentData({{JAVA}}, {{JAVA_ID}}), EnchantmentData({{POCKET}}, {{POCKET_ID}}), {{MAX}}),
+	{{NAME:camel_case}} = Enchantment("{{NAME:spaced}}", EnchantmentData({{JAVA}}, {{JAVA_ID}}), EnchantmentData({{BEDROCK}}, {{BEDROCK_ID}}), {{MAX}}),
 --- end ---

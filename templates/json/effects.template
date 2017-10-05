@@ -13,7 +13,7 @@
 --- start effects_values ---
 		"{{NAME}}": {
 			{{HAS_JAVA==true?"java": {{JAVA}},
-			}}{{HAS_POCKET==true?"pocket": {{POCKET}},
+			}}{{HAS_BEDROCK==true?"bedrock": {{BEDROCK}},
 			}}"particles": "#{{COLOR_16}}"
 		}{{LAST==false?,}}
 

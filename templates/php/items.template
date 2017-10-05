@@ -24,7 +24,7 @@ class Items
 	private static function add(Item $item)
 	{
 		if($item->java instanceof ItemData) self::$minecraftList[$item->java->id][$item->java->meta] = $item;
-		if($item->pocket instanceof ItemData) self::$pocketList[$item->pocket->id][$item->pocket->meta] = $item;
+		if($item->bedrock instanceof ItemData) self::$pocketList[$item->bedrock->id][$item->bedrock->meta] = $item;
 	}
 
 	/**
@@ -54,5 +54,5 @@ class Items
 }
 --- end ---
 --- start items_values ---
-		self::add(new Item("{{NAME:spaced}}", {{MINECRAFT==true?new ItemData({{MINECRAFT_ID}}, {{MINECRAFT_META}})}}{{MINECRAFT==false?null}}, {{POCKET==true?new ItemData({{POCKET_ID}}, {{POCKET_META}})}}{{POCKET==false?null}}, {{STACK}}));
+		self::add(new Item("{{NAME:spaced}}", {{JAVA==true?new ItemData({{JAVA_ID}}, {{JAVA_META}})}}{{JAVA==false?null}}, {{BEDROCK==true?new ItemData({{BEDROCK_ID}}, {{BEDROCK_META}})}}{{BEDROCK==false?null}}, {{STACK}}));
 --- end ---

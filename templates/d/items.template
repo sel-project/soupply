@@ -17,7 +17,7 @@ public struct Item
 	
 	string name;
 	size_t index;
-	ItemData java, pocket;
+	ItemData java, bedrock;
 	ubyte stack;
 	ushort durability;
 	
@@ -34,5 +34,5 @@ public enum Items : Item
 
 --- end ---
 --- start items_values ---
-	{{NAME:camel_case}} = Item("{{NAME:spaced}}", {{INDEX}}, ItemData({{JAVA}}{{JAVA==true?, {{JAVA_ID}}, {{JAVA_META}}, "{{JAVA_NBT}}"}}), ItemData({{POCKET}}{{POCKET==true?, {{POCKET_ID}}, {{POCKET_META}}, "{{POCKET_NBT}}"}}), {{STACK}}, {{DURABILITY}}),
+	{{NAME:camel_case}} = Item("{{NAME:spaced}}", {{INDEX}}, ItemData({{JAVA}}{{JAVA==true?, {{JAVA_ID}}, {{JAVA_META}}, "{{JAVA_NBT}}"}}), ItemData({{BEDROCK}}{{BEDROCK==true?, {{BEDROCK_ID}}, {{BEDROCK_META}}, "{{BEDROCK_NBT}}"}}), {{STACK}}, {{DURABILITY}}),
 --- end ---
