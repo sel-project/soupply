@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<metadata>
+
+	<software>Minecraft (Bedrock Engine)</software>
+
+	<protocol>141</protocol>
+
+	<encoding length="varuint" types="varuint" ids="varuint">
+
+		<!-- shorts and floats are little endian! -->
+
+		<type name="byte" type="byte" id="0" />
+		<type name="short" type="short" id="1" />
+		<type name="int" type="varint" id="2" />
+		<type name="float" type="float" id="3" />
+		<type name="string" type="string" id="4" />
+		<type name="slot" type="slot" id="5" />
+		<type name="block-position" type="varint<xyz>" id="6" />
+		<type name="long" type="varlong" id="7" />
+		<type name="entity-position" type="float<xyz>" id="8" />
+
+	</encoding>
+
+	<metadatas>
+
+		<type name="entity-flags" type="long" id="0" default="0" required="true">
+			<flag name="on-fire" bit="0" />
+			<flag name="sneaking" bit="1" />
+			<flag name="riding" bit="2" />
+			<flag name="sprinting" bit="3" />
+			<flag name="using-item" bit="4" />
+			<flag name="invisible" bit="5" />
+			<flag name="tempted" bit="6" />
+			<flag name="in-love" bit="7" />
+			<flag name="saddled" bit="8" />
+			<flag name="powered" bit="9" />
+			<flag name="ignited" bit="10" />
+			<flag name="baby" bit="11" />
+			<flag name="converting" bit="12" />
+			<flag name="critical" bit="13" />
+			<flag name="show-nametag" bit="14" />
+			<flag name="always-show-nametag" bit="15" />
+			<flag name="no-ai" bit="16" />
+			<flag name="silent" bit="17" />
+			<flag name="climbing" bit="18" />
+			<flag name="can-climb" bit="19" />
+			<flag name="can-swim" bit="20" />
+			<flag name="can-fly" bit="21" />
+			<flag name="resting" bit="22" />
+			<flag name="sitting" bit="23" />
+			<flag name="angry" bit="24" />
+			<flag name="interested" bit="25" />
+			<flag name="charged" bit="26" />
+			<flag name="tamed" bit="27" />
+			<flag name="leashed" bit="28" />
+			<flag name="sheared" bit="29" />
+			<flag name="gliding" bit="30" />
+			<flag name="elder" bit="31" />
+			<flag name="moving" bit="32" />
+			<flag name="breathing" bit="33" />
+			<flag name="chested" bit="34" />
+			<flag name="stackable" bit="35" />
+			<flag name="showbase" bit="36" />
+			<flag name="rearing" bit="37" />
+			<flag name="vibrating" bit="38" />
+			<flag name="idling" bit="39" />
+			<flag name="evoker-spell" bit="40" />
+			<flag name="charge-attack" bit="41" />
+			<flag name="is-wasd-controlled" bit="42" />
+			<flag name="linger" bit="44" />
+			<flag name="collide" bit="45" />
+			<flag name="gravity" bit="46" />
+			<flag name="dancing" bit="48" />
+			Note that gravity tag is now necessary for players to move properly.
+		</type>
+
+		<type name="health" type="int" id="1" />
+
+		<type name="variant" type="int" id="2" />
+
+		<type name="color" type="byte" id="3" />
+
+		<type name="nametag" type="string" id="4" />
+
+		<type name="owner" type="long" id="5" default="-1" />
+
+		<type name="target" type="long" id="6" />
+
+		<type name="air" type="short" id="7" default="0" required="true">
+			Indicates the percentage of the air for the entity (and shows the right amount of bubbles). 0 means out of water or drowning (no bubbles) and 300 means underwater with full air.
+		</type>
+
+		<type name="potion-color" type="int" id="8" />
+
+		<type name="potion-ambient" type="byte" id="9" />
+
+		<type name="hurt-time" type="int" id="11" />
+
+		<type name="hurt-direction" type="int" id="12" />
+
+		<type name="paddle-time-left" type="float" id="13" />
+
+		<type name="paddle-time-right" type="float" id="14" />
+
+		<type name="experience-count" type="int" id="15" />
+
+		<type name="minecart-block" type="int" id="16" />
+
+		<type name="minecart-offset" type="int" id="17" />
+
+		<type name="minecart-has-block" type="byte" id="18" />
+
+		<type name="enderman-item-id" type="short" id="23" />
+
+		<type name="enderman-item-damage" type="short" id="24" />
+
+		<type name="age" type="short" id="25" />
+
+		<type name="player-flags" type="byte" id="27">
+			<flag name="asleep" bit="1" />
+		</type>
+
+		<type name="player-index" type="int" id="28" />
+
+		<type name="bed-position" type="block-position" id="29" />
+
+		<type name="fireball-power-x" type="float" id="30" />
+
+		<type name="fireball-power-y" type="float" id="31" />
+
+		<type name="fireball-power-z" type="float" id="32" />
+
+		<type name="potion-aux-value" type="short" id="37" />
+
+		<type name="lead-holder" type="long" id="38" default="-1" required="true" />
+
+		<type name="scale" type="float" id="39" default="1" />
+
+		<type name="interactive-tag" type="string" id="40" />
+
+		<type name="npc-id" type="string" id="41" />
+
+		<type name="interactive-tag-url" type="string" id="42">
+			NPC's tag with external link.
+		</type>
+
+		<type name="max-air" type="short" id="43" />
+
+		<type name="mark-variant" type="int" id="44" />
+
+		<type name="block-target" type="block-position" id="48" />
+
+		<type name="invulnerable-time" type="int" id="49">
+			Wither's invulnerable time.
+		</type>
+
+		<type name="center-head-target" type="long" id="50">
+			Wither's central head.
+		</type>
+		
+		<type name="left-head-target" type="long" id="51">
+			Wither's left (or right?) head.
+		</type>
+
+		<type name="right-head-target" type="long" id="52">
+			Wither's right (or left?) head.
+		</type>
+
+		<type name="bounding-box-width" type="float" id="54" />
+
+		<type name="bounding-box-height" type="float" id="55" />
+
+		<type name="fuse-length" type="int" id="56" />
+
+		<type name="rider-seat-position" type="entity-position" id="57" />
+
+		<type name="rider-rotation-locked" type="byte" id="58" />
+
+		<type name="rider-max-rotation" type="float" id="59" />
+
+		<type name="rider-min-rotation" type="float" id="60" />
+
+		<type name="area-effect-cloud-radius" type="float" id="61" default="0.5" />
+
+		<type name="area-effect-cloud-waiting" type="int" id="62" />
+
+		<type name="area-effect-cloud-particle" type="int" id="63" />
+		
+		<type name="shulker-peak-height" type="int" id="64" />
+
+		<type name="shulker-direction" type="byte" id="65" />
+
+		<type name="shulker-attachment" type="block-position" id="67" />
+
+		<type name="trading-player" type="long" id="68" />
+
+		<type name="command-block-command" type="string" id="71" />
+
+		<type name="command-block-last-output" type="string" id="72" />
+
+		<type name="command-block-track-output" type="string" id="73" />
+
+		<type name="controlling-rider-seat-number" type="byte" id="74" />
+
+		<type name="strength" type="int" id="75" />
+
+		<type name="max-strength" type="int" id="76" />
+
+	</metadatas>
+
+</metadata>
