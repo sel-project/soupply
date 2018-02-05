@@ -380,10 +380,6 @@ alias varulong = var!ulong;
 			data ~= space ~ "public enum string[] FIELDS = " ~ to!string(fn) ~ ";\n\n";
 			// fields
 			foreach(i, field; fields) {
-				if(field.description.length) {
-					if(i != 0) data ~= "\n";
-					data ~= ddoc(space, field.description);
-				}
 				data ~= space ~ "public " ~ convertType(field.type) ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ (field.def.length ? " = " ~ constOf(field.def) : "") ~ ";\n";
 				if(i == fields.length - 1) data ~= "\n";
 			}
@@ -422,7 +418,6 @@ alias varulong = var!ulong;
 		t ~= "static if(__traits(compiles, { import sul.metadata." ~ game ~ "; })) import sul.metadata." ~ game ~ ";\n\n";
 		foreach(type ; prts.data.types) {
 			immutable has_length = type.length.length != 0;
-			if(type.description.length) t ~= ddoc("", type.description);
 			t ~= "struct " ~ toPascalCase(type.name) ~ " {\n\n";
 			writeFields(t, "\t", type.fields, false);
 			// encoding
@@ -455,12 +450,10 @@ alias varulong = var!ulong;
 
 		// sections
 		string s;
-		if(prts.data.description.length) s ~= ddoc("", prts.data.description);
 		s ~= "module sul.protocol." ~ game ~ ";\n\npublic import sul.protocol." ~ game ~ ".types;\n\n";
 		foreach(section ; prts.data.sections) {
 			s ~= "public import sul.protocol." ~ game ~ "." ~ section.name ~ ";\n";
 			string data;
-			if(section.description.length) data ~= ddoc("", section.description);
 			data ~= "module sul.protocol." ~ game ~ "." ~ section.name ~ ";\n\n";
 			data ~= "import std.bitmanip : write, peek;\nstatic import std.conv;\nimport std.system : Endian;\nimport std.typetuple : TypeTuple;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\n";
 			data ~= "import sul.utils.buffer;\nimport sul.utils.var;\n\nstatic import sul.protocol." ~ game ~ ".types;\n\n";
@@ -469,7 +462,6 @@ alias varulong = var!ulong;
 			foreach(packet ; section.packets) names ~= toPascalCase(packet.name);
 			data ~= "alias Packets = TypeTuple!(" ~ names.join(", ") ~ ");\n\n";
 			foreach(packet ; section.packets) {
-				if(packet.description.length) data ~= ddoc("", packet.description);
 				data ~= "class " ~ toPascalCase(packet.name) ~ " : Buffer {\n\n";
 				data ~= "\tpublic enum " ~ id ~ " ID = " ~ to!string(packet.id) ~ ";\n\n";
 				data ~= "\tpublic enum bool CLIENTBOUND = " ~ to!string(packet.clientbound) ~ ";\n";
@@ -505,7 +497,6 @@ alias varulong = var!ulong;
 					}
 					data ~= "\talias Variants = TypeTuple!(" ~ v.join(", ") ~ ");\n\n";
 					foreach(variant ; packet.variants) {
-						if(variant.description.length) data ~= ddoc("\t", variant.description);
 						data ~= "\tpublic class " ~ toPascalCase(variant.name) ~ " {\n\n";
 						data ~= "\t\tpublic enum typeof(" ~ convertName(packet.variantField) ~ ") " ~ toUpper(packet.variantField) ~ " = " ~ variant.value ~ ";\n\n";
 						writeFields(data, "\t\t", variant.fields, true);
@@ -733,40 +724,4 @@ alias varulong = var!ulong;
 		}
 
 	}
-}
-
-
-string ddoc(string space, string description) {
-	bool search = true;
-	while(search) {
-		auto m = matchFirst(description, ctRegex!`\[[a-zA-Z0-9 \.]{2,30}\]\([a-zA-Z0-9_\#\.:\/-]{2,64}\)`);
-		if(m) {
-			description = m.pre ~ m.hit[1..m.hit.indexOf("]")] ~ m.post;
-		} else {
-			search = false;
-		}
-	}
-	string ret;
-	foreach(s ; description.split("\n")) {
-		string h = "######";
-		while((h = h[1..$]).length) {
-			if(s.startsWith(h)) {
-				ret ~= space ~ " * <h" ~ to!string(h.length) ~ ">" ~ s[h.length..$].strip ~ "</h" ~ to!string(h.length) ~ ">\n";
-				break;
-			}
-		}
-		if(!h.length) ret ~= ddocImpl(space, s.split(" "));
-	}
-	return space ~ "/**\n" ~ ret ~ space ~ " */\n";
-}
-
-string ddocImpl(string space, string[] words) {
-	size_t length;
-	string[] ret;
-	while(length < 80 && words.length) {
-		ret ~= words[0].replaceAll(ctRegex!"```[a-z]{0,16}", "---");
-		length += words[0].length + 1;
-		words = words[1..$];
-	}
-	return space ~ " * " ~ ret.join(" ") ~ "\n" ~ (words.length ? ddocImpl(space, words) : "");
 }

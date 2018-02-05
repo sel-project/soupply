@@ -536,10 +536,6 @@ public class MetadataException extends RuntimeException {
 			}
 			// fields
 			foreach(i, field; fields) {
-				if(field.description.length) {
-					if(i != 0) data ~= "\n";
-					data ~= javadoc(space, field.description);
-				}
 				immutable c = convert(field.type);
 				immutable oa = field.type.indexOf("[");
 				immutable ca = field.type.indexOf("]");
@@ -686,7 +682,6 @@ public class MetadataException extends RuntimeException {
 		
 		foreach(type ; prs.data.types) {
 			string data = "package sul.protocol." ~ game ~ ".types;\n\n" ~ imports(type.fields) ~ "import sul.utils.*;\n\n";
-			if(type.description.length) data ~= javadoc("", type.description);
 			data ~= "public class " ~ toPascalCase(type.name) ~ " extends Stream {\n\n";
 			writeFields(data, "\t", toPascalCase(type.name), type.fields, -1, false, false, type.length);
 			createToString(data, "\t", toPascalCase(type.name), type.fields);
@@ -696,15 +691,9 @@ public class MetadataException extends RuntimeException {
 		string sections = "package sul.protocol." ~ game ~ ";\n\n";
 		sections ~= "import java.util.Collections;\nimport java.util.Map;\nimport java.util.HashMap;\n\n";
 		sections ~= "import sul.utils.Packet;\n\n";
-		if(prs.data.description.length) {
-			sections ~= javadoc("", prs.data.description);
-		}
 		sections ~= "public final class Packets {\n\n";
 		sections ~= "\tprivate Packets() {}\n\n";
 		foreach(section ; prs.data.sections) {
-			if(section.description.length) {
-				sections ~= javadoc("\t", section.description);
-			}
 			sections ~= "\tpublic static final Map<Integer, Class<? extends Packet>> " ~ section.name.toUpper ~ ";\n\n";
 		}
 		sections ~= "\tstatic {\n\n";
@@ -715,9 +704,6 @@ public class MetadataException extends RuntimeException {
 			foreach(packet ; section.packets) {
 				sections ~= "\t\t" ~ sectionName ~ ".put(" ~ packet.id.to!string ~ ", sul.protocol." ~ game ~ "." ~ sectionName ~ "." ~ toPascalCase(packet.name) ~ ".class);\n";
 				string data = "package sul.protocol." ~ game ~ "." ~ sectionName ~ ";\n\n" ~ imports(packet.fields ~ (){ Field[] fields;foreach(v;packet.variants){fields~=v.fields;}return fields;}()) ~ "import sul.utils.*;\n\n";
-				if(packet.description.length) {
-					data ~= javadoc("", packet.description);
-				}
 				data ~= "public class " ~ toPascalCase(packet.name) ~ " extends Packet {\n\n";
 				data ~= "\tpublic static final " ~ id ~ " ID = (" ~ id ~ ")" ~ to!string(packet.id) ~ ";\n\n";
 				data ~= "\tpublic static final boolean CLIENTBOUND = " ~ to!string(packet.clientbound) ~ ";\n";
@@ -742,7 +728,6 @@ public class MetadataException extends RuntimeException {
 						}
 					}
 					foreach(variant ; packet.variants) {
-						if(variant.description.length) data ~= javadoc("\t", variant.description);
 						data ~= "\tpublic class " ~ toPascalCase(variant.name) ~ " extends Packet {\n\n";
 						data ~= "\t\tpublic static final " ~ vt ~ " " ~ toUpper(packet.variantField) ~ " = (" ~ vt ~ ")" ~ variant.value ~ ";\n\n";
 						data ~= "\t\t@Override\n";
@@ -841,7 +826,7 @@ public class MetadataException extends RuntimeException {
 	
 }
 
-string javadoc(string space, string description) {
+deprecated string javadoc(string space, string description) {
 	bool search = true;
 	while(search) {
 		auto m = matchFirst(description, ctRegex!`\[[a-zA-Z0-9 \.]{2,30}\]\([a-zA-Z0-9_\#\.:\/-]{2,64}\)`);

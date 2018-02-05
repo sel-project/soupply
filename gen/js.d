@@ -33,7 +33,6 @@ import std.string;
 import std.typecons;
 
 import all;
-import java : javadoc;
 
 void js(Attributes[string] attributes, Protocols[string] protocols, Metadatas[string] metadatas, Creative[string] creative, Block[] blocks, Item[] items, Entity[] entity) {
 	
@@ -419,9 +418,6 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Metadatas[st
 			string data = "/** @module sul/protocol/" ~ game ~ "/types */\n\n";
 			data ~= "const Types = {\n\n";
 			foreach(i, type; prs.data.types) {
-				if(type.description.length) {
-
-				}
 				data ~= "\t" ~ toPascalCase(type.name) ~ ": class extends Buffer {\n\n";
 				writeFields(data, "\t\t", toPascalCase(type.name), type.fields, "Types", -1, "", [], type.length);
 				data ~= "\t}" ~ (i != prs.data.types.length - 1 ? "," : "") ~ "\n\n";
@@ -435,14 +431,8 @@ void js(Attributes[string] attributes, Protocols[string] protocols, Metadatas[st
 		foreach(section ; prs.data.sections) {
 			string data = "/** @module sul/protocol/" ~ game ~ "/" ~ section.name ~ " */\n\n";
 			data ~= "//import Types from 'types';\n\n";
-			if(section.description.length) {
-				data ~= javadoc("", section.description);
-			}
 			data ~= "const " ~ toPascalCase(section.name) ~ " = {\n\n";
 			foreach(i, packet; section.packets) {
-				if(packet.description.length) {
-					data ~= javadoc("\t", packet.description);
-				}
 				data ~= "\t" ~ toPascalCase(packet.name) ~ ": class extends Buffer {\n\n";
 				data ~= "\t\tstatic get ID(){ return " ~ packet.id.to!string ~ "; }\n\n";
 				data ~= "\t\tstatic get CLIENTBOUND(){ return " ~ packet.clientbound.to!string ~ "; }\n";
