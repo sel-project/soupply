@@ -22,10 +22,9 @@
  */
 module soupply.main;
 
-import std.algorithm : canFind, min, sort;
-import std.base64 : Base64URL;
+import std.algorithm : canFind, min;
 import std.conv : to;
-import std.file : dirEntries, SpanMode, read, isFile, _write = write, exists;
+import std.file : dirEntries, SpanMode, read, isFile, _write = write;
 import std.json;
 import std.path : dirSeparator;
 import std.process : environment;
@@ -39,6 +38,11 @@ import soupply.generator;
 void main(string[] args) {
 
 	args = args[1..$];
+
+	if(args.canFind("-h") || args.canFind("--help")) {
+		//TODO write help
+		return;
+	}
 
 	immutable version_ = environment.get("BUILD_VERSION", "1");
 
@@ -248,7 +252,7 @@ void main(string[] args) {
 		}
 	}
 
-	Generator.generateAll(Data("description", "MIT", "2.0." ~ version_, protocols, metadatas));
+	Generator.generateAll(Data("Automatically generated libraries for encoding and decoding Minecraft protocols", "MIT", "2.0." ~ version_, protocols, metadatas));
 
 	// minify json
 /+	if(!args.length || args.canFind("json")) {
@@ -291,55 +295,6 @@ void main(string[] args) {
 	}()), "\n");
 	foreach(ref str ; ret) str = decode(str.replaceAll(ctRegex!"[\r\t]", ""));
 	return ret.join("\n");
-}
-
-@property string toCamelCase(string str) {
-	string ret = "";
-	bool next_up = false;
-	foreach(c ; str.dup) {
-		if(c == '_' || c == '-') {
-			next_up = true;
-		} else if(next_up) {
-			ret ~= toUpper(c);
-			next_up = false;
-		} else {
-			ret ~= c;
-		}
-	}
-	return ret;
-}
-
-@property string toPascalCase(string str) {
-	string camel = toCamelCase(str);
-	return camel.length > 0 ? toUpper(camel[0..1]) ~ camel[1..$] : "";
-}
-
-@property string toSnakeCase(string str) {
-	string snaked;
-	foreach(c ; str.dup) {
-		if(c >= 'A' && c <= 'Z') snaked ~= '_';
-		snaked ~= c;
-	}
-	return snaked.toLower;
-}
-
-string hash(string name) {
-	string ret;
-	foreach(i, c; Base64URL.encode(cast(ubyte[])name).toLower.replaceAll(ctRegex!`[_\-=]`, "")) {
-		if((i & 1) == 0) ret ~= c;
-	}
-	while("0123456789".canFind(ret[0])) ret = ret[1..$];
-	return ret.toLower[0..min($, 8)];
-}
-
-string constOf(string value) {
-	if(value == "true" || value == "false") return value;
-	try {
-		to!real(value);
-		return value;
-	} catch(Exception) {
-		return JSONValue(value).toString();
-	}
 }
 
 void write(string file, string data, string from="", string open="/*", string line=" * ", string close=" */") {

@@ -32,6 +32,9 @@ import std.typecons : Tuple, tuple;
 
 import soupply.data;
 import soupply.generator;
+import soupply.util;
+
+version(Docs):
 
 class DocsGenerator : Generator {
 

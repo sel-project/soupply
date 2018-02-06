@@ -23,7 +23,6 @@
 module soupply.gen.d;
 
 import std.algorithm : canFind, max;
-import std.array : Appender;
 import std.ascii : newline;
 import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
@@ -37,13 +36,12 @@ import std.typetuple;
 
 import soupply.data;
 import soupply.generator;
-
-Source source() { return Source("\t"); }
+import soupply.util;
 
 class DGenerator : Generator {
 
 	static this() {
-		Generator.register!DGenerator("d", "src/" ~ SOFTWARE);
+		Generator.register!DGenerator("d", "src/" ~ SOFTWARE, ["/*", " *", " */"]);
 	}
 
 	protected override void generateImpl(Data data) {
@@ -62,25 +60,36 @@ class DGenerator : Generator {
 			"varulong": "ulong"
 		];
 
+		size_t lengthOf(string type) {
+			switch(type) {
+				case "bool": return 1;
+				case "byte": return 1;
+				case "short": return 2;
+				case "int": return 4;
+				case "long": return 8;
+				case "float": return 4;
+				case "double": return 8;
+				default: return 0;
+			}
+		}
+
 		// io utils
-		auto io = source(); //TODO move to generator and read from public/name/.editorconfig
-		io.line("module " ~ SOFTWARE ~ ".util.buffer;").br.line("import std.bitmanip;").line("import std.system : Endian;").br;
-		io.line("class Buffer {").br.i;
+		auto io = new DSource("util/buffer");
+		io.line("module " ~ SOFTWARE ~ ".util.buffer;").nl.line("import std.bitmanip;").line("import std.system : Endian;").nl;
+		io.line("class Buffer").ob.nl;
 		io.line("public ubyte[] _buffer;");
-		io.line("public size_t _index;").br;
-		io.line("public pure nothrow @property @safe @nogc Buffer bufferInstance() {").i.line("return this;").d.line("}").br;
-		io.line("public pure nothrow @safe void writeBytes(ubyte[] bytes) {").i;
-		io.line("this._buffer ~= bytes;").d;
-		io.line("}").br;
-		io ~= "\tpublic pure nothrow @trusted void writeString(string str) {\n\t\tthis.writeBytes(cast(ubyte[])str);\n\t}\n\n";
-		io ~= "\tpublic pure nothrow @safe ubyte[] readBytes(size_t length) {\n";
-		io ~= "\t\timmutable end = this._index + length;\n";
-		io ~= "\t\tif(this._buffer.length < end) return (ubyte[]).init;\n";
-		io ~= "\t\tauto ret = this._buffer[this._index..end].dup;\n";
-		io ~= "\t\tthis._index = end;\n";
-		io ~= "\t\treturn ret;\n";
-		io ~= "\t}\n\n";
-		io ~= "\tpublic pure nothrow @trusted string readString(size_t length) {\n\t\treturn cast(string)this.readBytes(length);\n\t}\n\n";
+		io.line("public size_t _index;").nl;
+		io.line("public pure nothrow @property @safe @nogc Buffer bufferInstance()").ob.line("return this;").cb.nl;
+		io.line("public pure nothrow @safe void writeBytes(ubyte[] bytes)").ob;
+		io.line("this._buffer ~= bytes;").cb.nl;
+		io.line("public pure nothrow @trusted void writeString(string str)").ob.line("this.writeBytes(cast(ubyte[])str);").cb.nl;
+		io.line("public pure nothrow @safe ubyte[] readBytes(size_t length)").ob;
+		io.line("immutable end = this._index + length;");
+		io.line("if (this._buffer.length < end) return (ubyte[]).init;");
+		io.line("auto ret = this._buffer[this._index..end].dup;");
+		io.line("this._index = end;");
+		io.line("return ret;").cb.nl;
+		io.line("public pure nothrow @trusted string readString(size_t length)").ob.line("return cast(string) this.readBytes(length);").cb.nl;
 		foreach(type ; [tuple("bool", 1, "bool"), tuple("byte", 1, "byte"), tuple("short", 2, "short"), tuple("triad", 3, "int"), tuple("int", 4, "int"), tuple("long", 8, "long"), tuple("float", 4, "float"), tuple("double", 8, "double")]) {
 			immutable l = lengthOf(type[2]);
 			string[] types = [""];
@@ -88,28 +97,28 @@ class DGenerator : Generator {
 			foreach(p ; types) {
 				foreach(e ; ["BigEndian", "LittleEndian"]) {
 					// write
-					io ~= "\tpublic pure nothrow @safe void write" ~ e ~ capitalize(p ~ type[0]) ~ "(" ~ p ~ type[2] ~ " a) {\n";
-					if(type[1] == 1) io ~= "\t\tthis._buffer ~= a;\n";
-					else if(e == "BigEndian") io ~= "\t\tthis._buffer ~= nativeTo" ~ e ~ "!" ~ p ~ type[2] ~ "(a)" ~ (l == type[1] ? "" : "[$-" ~ to!string(type[1]) ~ "..$]") ~ ";\n";
-					else io ~= "\t\tthis._buffer ~= nativeTo" ~ e ~ "!" ~ p ~ type[2] ~ "(a)" ~ (l == type[1] ? "" : "[0..$-" ~ to!string(l - type[1]) ~ "]") ~ ";\n";
-					io ~= "\t}\n\n";
+					io.line("public pure nothrow @safe void write" ~ e ~ capitalize(p ~ type[0]) ~ "(" ~ p ~ type[2] ~ " a)").ob;
+					if(type[1] == 1) io.line("this._buffer ~= a;");
+					else if(e == "BigEndian") io.line("this._buffer ~= nativeTo" ~ e ~ "!" ~ p ~ type[2] ~ "(a)" ~ (l == type[1] ? "" : "[$-" ~ to!string(type[1]) ~ "..$]") ~ ";");
+					else io.line("this._buffer ~= nativeTo" ~ e ~ "!" ~ p ~ type[2] ~ "(a)" ~ (l == type[1] ? "" : "[0..$-" ~ to!string(l - type[1]) ~ "]") ~ ";");
+					io.cb.nl;
 					// read
-					io ~= "\tpublic pure nothrow @safe " ~ p ~ type[2] ~ " read" ~ e ~ capitalize(p ~ type[0]) ~ "() {\n";
-					io ~= "\t\timmutable end = this._index + " ~ to!string(type[1]) ~ ";\n";
-					io ~= "\t\tif(this._buffer.length < end) return " ~ type[2] ~ ".init;\n";
-					io ~= "\t\tubyte[" ~ to!string(l) ~ "] bytes = ";
-					if(type[1] == l) io ~= "this._buffer[this._index..end];\n";
-					else if(e == "BigEndian") io ~= "new ubyte[" ~ to!string(l - type[1]) ~ "] ~ this._buffer[this._index..end];\n";
-					else io ~= "this._buffer[this._index..end] ~ new ubyte[" ~ to!string(l - type[1]) ~ "];\n";
-					io ~= "\t\tthis._index = end;\n";
-					if(type[1] == 1) io ~= "\t\treturn " ~ (type[2] == "ubyte" ? "" : ("cast(" ~ type[2] ~ ")")) ~ "bytes[0];\n";
-					else io ~= "\t\treturn " ~ toLower(e[0..1]) ~ e[1..$] ~ "ToNative!" ~ type[2] ~ "(bytes);\n";
-					io ~= "\t}\n\n";
+					io.line("public pure nothrow @safe " ~ p ~ type[2] ~ " read" ~ e ~ capitalize(p ~ type[0]) ~ "()").ob;
+					io.line("immutable end = this._index + " ~ to!string(type[1]) ~ ";");
+					io.line("if (this._buffer.length < end) return " ~ type[2] ~ ".init;");
+					io.inline("ubyte[" ~ to!string(l) ~ "] bytes = ");
+					if(type[1] == l) io.put("this._buffer[this._index..end];");
+					else if(e == "BigEndian") io.put("new ubyte[" ~ to!string(l - type[1]) ~ "] ~ this._buffer[this._index..end];");
+					else io.put("this._buffer[this._index..end] ~ new ubyte[" ~ to!string(l - type[1]) ~ "];");
+					io.nl.line("this._index = end;");
+					if(type[1] == 1) io.line("return " ~ (type[2] == "ubyte" ? "" : ("cast(" ~ type[2] ~ ") ")) ~ "bytes[0];");
+					else io.line("return " ~ toLower(e[0..1]) ~ e[1..$] ~ "ToNative!" ~ type[2] ~ "(bytes);");
+					io.cb.nl;
 				}
 			}
 		}
-		io ~= "}";
-		write("util/buffer.d", io);
+		io.cb;
+		write(io);
 
 		// protocol
 		foreach(string game, Protocols prts; data.protocols) {
@@ -124,12 +133,13 @@ class DGenerator : Generator {
 				}
 				auto vector = type.indexOf("<");
 				if(vector >= 0) {
-					string tt = convertType(type[0..vector]);
+					/*string tt = convertType(type[0..vector]);
 					t = "Tuple!(";
 					foreach(char c ; type[vector+1..type.indexOf(">")]) {
 						t ~= tt ~ `, "` ~ c ~ `", `;
 					}
-					ret = t[0..$-2] ~ ")";
+					ret = t[0..$-2] ~ ")";*/
+					ret = "Tuple!(" ~ convertType(type[0..vector]) ~ ",\"" ~ type[vector+1..type.indexOf(">")] ~ "\")";
 				} else if(t in defaultAliases) {
 					return convertType(defaultAliases[t] ~ (array >= 0 ? type[array..$] : ""));
 				} else if(defaultTypes.canFind(t)) {
@@ -141,14 +151,14 @@ class DGenerator : Generator {
 					auto a = t in prts.data.arrays;
 					if(a) return convertType(a.base ~ "[]" ~ (array >= 0 ? type[array..$] : ""));
 				}
-				if(ret == "") ret = "sul.protocol." ~ game ~ ".types." ~ toPascalCase(t);
+				if(ret == "") ret = "soupply.protocol." ~ game ~ ".types." ~ toPascalCase(t);
 				return ret ~ (array >= 0 ? type[array..$] : "");
 			}
 			
 			@property string convertName(string name) {
 				if(name == "version") return "vers";
-				else if(name == "body") return "body_";
-				else if(name == "default") return "def";
+				//else if(name == "body") return "body_";
+				else if(name == "default") return "default_";
 				else return toCamelCase(name);
 			}
 
@@ -164,10 +174,11 @@ class DGenerator : Generator {
 				else return defaultEndianness;
 			}
 
-			string createEncoding(string type, string name, string e="") {
+			void createEncoding(Source source, string type, string name, string e="") {
 				auto conv = type in prts.data.arrays ? prts.data.arrays[type].base ~ "[]" : type;
 				auto lo = conv.lastIndexOf("[");
 				if(lo > 0) {
+					// array
 					string ret = "";
 					auto lc = conv.lastIndexOf("]");
 					string nt = conv[0..lo];
@@ -175,35 +186,42 @@ class DGenerator : Generator {
 						auto ca = type in prts.data.arrays;
 						if(ca) {
 							auto c = *ca;
-							ret ~= createEncoding(c.length, "cast(" ~ convertType(c.length) ~ ")" ~ name ~ ".length", c.endianness);
+							createEncoding(source, c.length, "cast(" ~ convertType(c.length) ~ ") " ~ name ~ ".length", c.endianness);
 						} else {
-							ret ~= createEncoding(prts.data.arrayLength, "cast(" ~ arrayLength ~ ")" ~ name ~ ".length");
+							createEncoding(source, prts.data.arrayLength, "cast(" ~ arrayLength ~ ") " ~ name ~ ".length");
 						}
 						ret ~= " ";
 					}
-					if(nt == "ubyte") return ret ~= "writeBytes(" ~ name ~ ");";
-					else return ret ~ "foreach(" ~ hash(name) ~ ";" ~ name ~ "){ " ~ createEncoding(nt, hash(name)) ~ " }";
-				}
-				auto ts = conv.lastIndexOf("<");
-				if(ts > 0) {
-					auto te = conv.lastIndexOf(">");
-					string nt = conv[0..ts];
-					string[] ret;
-					foreach(i ; conv[ts+1..te]) {
-						ret ~= createEncoding(nt, name ~ "." ~ i);
+					if(nt == "ubyte") source.line("writeBytes(" ~ name ~ ");");
+					else {
+						// complex array that cannot be encoded with a single function
+						source.line("foreach (" ~ hash(name) ~ " ; " ~ name ~ ")").ob;
+						createEncoding(source, nt, hash(name));
+						source.cb;
 					}
-					return ret.join(" ");
+				} else {
+					auto ts = conv.lastIndexOf("<");
+					if(ts > 0) {
+						// tuple
+						//TODO this can be optimised by calling an `encode` method on the tuple or encoding it as it was an array
+						auto te = conv.lastIndexOf(">");
+						string nt = conv[0..ts];
+						foreach(i ; conv[ts+1..te]) {
+							createEncoding(source, nt, name ~ "." ~ i);
+						}
+					} else {
+						type = conv;
+						if(type.startsWith("var")) source.line("writeBytes(" ~ type ~ ".encode(" ~ name ~ "));");
+						else if(type == "string"){ createEncoding(source, prts.data.arrayLength, "cast(" ~ arrayLength ~")" ~ name ~ ".length"); source.line("writeString(" ~ name ~ ");"); }
+						else if(type == "uuid") source.line("writeBytes(" ~ name ~ ".data);");
+						else if(type == "bytes") source.line("writeBytes(" ~ name ~ ");");
+						else if(defaultTypes.canFind(type) || type == "triad") source.line("write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ");");
+						else source.line(name ~ ".encode(bufferInstance);");
+					}
 				}
-				type = conv;
-				if(type.startsWith("var")) return "writeBytes(" ~ type ~ ".encode(" ~ name ~ "));";
-				else if(type == "string") return createEncoding(prts.data.arrayLength, "cast(" ~ arrayLength ~")" ~ name ~ ".length") ~ " writeString(" ~ name ~ ");";
-				else if(type == "uuid") return "writeBytes(" ~ name ~ ".data);";
-				else if(type == "bytes") return "writeBytes(" ~ name ~ ");";
-				else if(defaultTypes.canFind(type) || type == "triad") return "write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ");";
-				else return name ~ ".encode(bufferInstance);";
 			}
 
-			string createDecoding(string type, string name, string e="") {
+			void createDecoding(Source source, string type, string name, string e="") {
 				auto conv = type in prts.data.arrays ? prts.data.arrays[type].base ~ "[]" : type;
 				auto lo = conv.lastIndexOf("[");
 				if(lo > 0) {
@@ -213,208 +231,233 @@ class DGenerator : Generator {
 						auto ca = type in prts.data.arrays;
 						if(ca) {
 							auto c = *ca;
-							ret ~= createDecoding(c.length, name ~ ".length", c.endianness);
+							createDecoding(source, c.length, name ~ ".length", c.endianness);
 						} else {
-							ret ~= createDecoding(prts.data.arrayLength, name ~ ".length");
+							createDecoding(source, prts.data.arrayLength, name ~ ".length");
 						}
-						ret ~= " ";
 					}
 					string nt = conv[0..lo];
-					if(nt == "ubyte") return ret ~= "if(_buffer.length>=_index+" ~ name ~ ".length){ " ~ name ~ "=_buffer[_index.._index+" ~ name ~ ".length].dup; _index+=" ~ name ~ ".length; }";
-					else return ret ~ "foreach(ref " ~ hash(name) ~ ";" ~ name ~ "){ " ~ createDecoding(nt, hash(name)) ~ " }";
-				}
-				auto ts = conv.lastIndexOf("<");
-				if(ts > 0) {
-					auto te = conv.lastIndexOf(">");
-					string nt = conv[0..ts];
-					string[] ret;
-					foreach(i ; conv[ts+1..te]) {
-						ret ~= createDecoding(nt, name ~ "." ~ i);
+					if(nt == "ubyte") {
+						source.line("if (_buffer.length >= _index+" ~ name ~ ".length)").ob;
+						source.line(name ~ " = _buffer[_index .. _index+" ~ name ~ ".length].dup;");
+						source.line("_index += " ~ name ~ ".length;").cb;
+					} else {
+						source.line("foreach (ref " ~ hash(name) ~ " ; " ~ name ~ ")").ob;
+						createDecoding(source, nt, hash(name));
+						source.cb;
 					}
-					return ret.join(" ");
+				} else {
+					auto ts = conv.lastIndexOf("<");
+					if(ts > 0) {
+						//TODO optimise encoding it as array
+						auto te = conv.lastIndexOf(">");
+						string nt = conv[0..ts];
+						foreach(i ; conv[ts+1..te]) {
+							createDecoding(source, nt, name ~ "." ~ i);
+						}
+					} else {
+						//TODO optmise uuid and bytes moving it to buffer
+						type = conv;
+						if(type.startsWith("var")) source.line(name ~ " = " ~ type ~ ".decode(_buffer, &_index);");
+						else if(type == "string"){ createDecoding(source, prts.data.arrayLength, arrayLength ~ " " ~ hash(name)); source.line(name ~ " = readString(" ~ hash(name) ~ ");"); }
+						else if(type == "uuid") source.line("if (_buffer.length >= _index + 16)").ob.line("ubyte[16] " ~ hash(name) ~ " = _buffer[_index .. _index+16].dup;").line("_index += 16;").line(name ~ " = UUID(" ~ hash(name) ~ ");").cb;
+						else if(type == "bytes") source.line(name ~ " = _buffer[_index .. $].dup;").line("_index = _buffer.length;");
+						else if(defaultTypes.canFind(type) || type == "triad") source.line(name ~ " = read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "();");
+						else if(type == "metadata") source.line(name ~ " = Metadata.decode(bufferInstance);");
+						else source.line(name ~ ".decode(bufferInstance);");
+					}
 				}
-				type = conv;
-				if(type.startsWith("var")) return name ~ "=" ~ type ~ ".decode(_buffer, &_index);";
-				else if(type == "string") return createDecoding(prts.data.arrayLength, arrayLength ~ " " ~ hash(name)) ~ " " ~ name ~ "=readString(" ~ hash(name) ~ ");";
-				else if(type == "uuid") return "if(_buffer.length>=_index+16){ ubyte[16] " ~ hash(name) ~ "=_buffer[_index.._index+16].dup; _index+=16; " ~ name ~ "=UUID(" ~ hash(name) ~ "); }";
-				else if(type == "bytes") return name ~ "=_buffer[_index..$].dup; _index=_buffer.length;";
-				else if(defaultTypes.canFind(type) || type == "triad") return name ~ "=read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "();";
-				else if(type == "metadata") return name ~ "=Metadata.decode(bufferInstance);";
-				else return name ~ ".decode(bufferInstance);";
 			}
 			
-			void createEncodings(string space, ref string data, Field[] fields) {
+			void createEncodings(Source source, Protocol.Field[] fields) {
 				foreach(i, field; fields) {
 					bool c = field.condition.length != 0;
-					data ~= space ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createEncoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
+					if(c) source.line("if (" ~ toCamelCase(field.condition) ~ ")").ob;
+					createEncoding(source, field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness);
+					if(c) source.cb;
 				}
 			}
 			
-			void createDecodings(string space, ref string data, Field[] fields) {
+			void createDecodings(Source source, Protocol.Field[] fields) {
 				foreach(i, field; fields) {
 					bool c = field.condition.length != 0;
-					data ~= space ~ (c ? "if(" ~ toCamelCase(field.condition) ~ "){ " : "") ~ createDecoding(field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness) ~ (c ? " }" : "") ~ "\n";
+					if(c) source.line("if(" ~ toCamelCase(field.condition) ~ ")").ob;
+					createDecoding(source, field.type, field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.endianness);
+					if(c) source.cb;
 				}
 			}
 
-			void writeFields(ref string data, string space, Field[] fields, bool isClass) {
+			void writeFields(Source source, Protocol.Field[] fields, bool isClass) {
 				// constants
 				foreach(field ; fields) {
 					if(field.constants.length) {
-						data ~= space ~ "// " ~ field.name.replace("_", " ") ~ "\n";
+						source.line("// " ~ field.name.replace("_", " "));
 						foreach(constant ; field.constants) {
-							data ~= space ~ "public enum " ~ convertType(field.type) ~ " " ~ toUpper(constant.name) ~ " = " ~ (field.type == "string" ? JSONValue(constant.value).toString() : constant.value) ~ ";\n";
+							source.line("public enum " ~ convertType(field.type) ~ " " ~ toUpper(constant.name) ~ " = " ~ (field.type == "string" ? JSONValue(constant.value).toString() : constant.value) ~ ";");
 						}
-						data ~= "\n";
+						source.nl;
 					}
 				}
 				// fields' names
 				string[] fn;
 				foreach(i, field; fields) fn ~= field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
-				data ~= space ~ "public enum string[] FIELDS = " ~ to!string(fn) ~ ";\n\n";
+				source.line("public enum string[] FIELDS = " ~ to!string(fn) ~ ";").nl;
 				// fields
 				foreach(i, field; fields) {
-					data ~= space ~ "public " ~ convertType(field.type) ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ (field.def.length ? " = " ~ constOf(field.def) : "") ~ ";\n";
-					if(i == fields.length - 1) data ~= "\n";
+					source.line("public " ~ convertType(field.type) ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ (field.default_.length ? " = " ~ constOf(field.default_) : "") ~ ";");
+					if(i == fields.length - 1) source.nl;
 				}
 				// constructors
 				if(isClass && fields.length) {
-					data ~= space ~ "public pure nothrow @safe @nogc this() {}\n\n";
+					source.line("public pure nothrow @safe @nogc this() {}").nl;
 					string[] args;
 					foreach(i, field; fields) {
 						immutable type = convertType(field.type);
 						immutable p = type.canFind('[');
-						args ~= type ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ (i ? "=" ~ (field.def.length ? constOf(field.def) : (p ? "(" : "") ~ type ~ (p ? ")" : "") ~ ".init") : "");
+						args ~= type ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ (i ? "=" ~ (field.default_.length ? constOf(field.default_) : (p ? "(" : "") ~ type ~ (p ? ")" : "") ~ ".init") : "");
 					}
-					data ~= space ~ "public pure nothrow @safe @nogc this(" ~ args.join(", ") ~ ") {\n";
+					source.line("public pure nothrow @safe @nogc this(" ~ args.join(", ") ~ ")").ob;
 					foreach(i, field; fields) {
 						immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
-						data ~= space ~ "\tthis." ~ name ~ " = " ~ name ~ ";\n";
+						source.line("this." ~ name ~ " = " ~ name ~ ";");
 					}
-					data ~= space ~ "}\n\n";
+					source.cb.nl;
 				}
 			}
 
-			void createToString(ref string data, string space, string name, Field[] fields, bool over=true) {
-				data ~= space ~ "public " ~ (over ? "override ": "") ~ "string toString() {\n";
+			void createToString(Source source, string name, Protocol.Field[] fields, bool override_=true) {
+				source.line("public " ~ (override_ ? "override ": "") ~ "string toString()").ob;
 				string[] f;
 				foreach(i, field; fields) {
 					immutable n = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 					f ~= n ~ ": \" ~ std.conv.to!string(this." ~ n ~ ")";
 				}
-				data ~= space ~ "\treturn \"" ~ name ~ "(" ~ (f.length ? (f.join(" ~ \", ") ~ " ~ \"") : "") ~ ")\";\n";
-				data ~= space ~ "}\n\n";
+				source.line("return \"" ~ name ~ "(" ~ (f.length ? (f.join(" ~ \", ") ~ " ~ \"") : "") ~ ")\";");
+				source.cb.nl;
 			}
 
 			// types
-			string t = "module sul.protocol." ~ game ~ ".types;\n\n";
-			t ~= "import std.bitmanip : write, peek;\nstatic import std.conv;\nimport std.system : Endian;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\nimport sul.utils.buffer;\nimport sul.utils.var;\n\n";
-			t ~= "static if(__traits(compiles, { import sul.metadata." ~ game ~ "; })) import sul.metadata." ~ game ~ ";\n\n";
+			auto t = new DSource("protocol/" ~ game ~ "/types");
+			t.line("module soupply.protocol." ~ game ~ ".types;").nl;
+			t.line("import std.bitmanip : write, peek;").line("static import std.conv;").line("import std.system : Endian;").line("import std.uuid : UUID;").nl;
+			t.line("import soupply.util.buffer;").line("import soupply.util.tuple : Tuple;").line("import soupply.util.var;").nl;
+			t.line("static if (__traits(compiles, { import soupply.metadata." ~ game ~ "; })) import soupply.metadata." ~ game ~ ";").nl;
 			foreach(type ; prts.data.types) {
 				immutable has_length = type.length.length != 0;
-				t ~= "struct " ~ toPascalCase(type.name) ~ " {\n\n";
-				writeFields(t, "\t", type.fields, false);
+				// declaration
+				t.line("struct " ~ toPascalCase(type.name)).ob.nl;
+				writeFields(t, type.fields, false);
 				// encoding
-				t ~= "\tpublic pure nothrow @safe void encode(Buffer " ~ (has_length ? "o_" : "") ~ "buffer) {\n";
-				if(has_length) t ~= "\t\tBuffer buffer = new Buffer();\n";
-				t ~= "\t\twith(buffer) {\n";
-				createEncodings("\t\t\t", t, type.fields);
-				t ~= "\t\t}\n";
+				t.line("public pure nothrow @safe void encode(Buffer " ~ (has_length ? "o_" : "") ~ "buffer)").ob;
+				if(has_length) t.line("Buffer buffer = new Buffer();");
+				t.line("with(buffer)").ob;
+				createEncodings(t, type.fields);
+				t.cb;
 				if(type.length.length) {
-					t ~= "\t\twith(o_buffer){ " ~ createEncoding(type.length, "cast(" ~ convertType(type.length) ~ ")buffer._buffer.length") ~ " }\n";
-					t ~= "\t\to_buffer.writeBytes(buffer._buffer);\n";
+					t.line("with(o_buffer)").ob;
+					createEncoding(t, type.length, "cast(" ~ convertType(type.length) ~ ") buffer._buffer.length");
+					t.cb;
+					t.line("o_buffer.writeBytes(buffer._buffer);");
 				}
-				t ~= "\t}\n\n";
+				t.cb.nl;
 				// decoding
-				t ~= "\tpublic pure nothrow @safe void decode(Buffer " ~ (has_length ? "o_" : "") ~ "buffer) {\n";
+				t.line("public pure nothrow @safe void decode(Buffer " ~ (has_length ? "o_" : "") ~ "buffer)").ob;
 				if(has_length) {
-					t ~= "\t\tBuffer buffer = new Buffer();\n";
-					t ~= "\t\twith(o_buffer) {\n";
-					t ~= "\t\t\t" ~ createDecoding(type.length, "immutable _length") ~ "\n";
-					t ~= "\t\t\tbuffer._buffer = readBytes(_length);\n";
-					t ~= "\t\t}\n";
+					t.line("Buffer buffer = new Buffer();");
+					t.line("with(o_buffer)").ob;
+					createDecoding(t, type.length, "immutable _length");
+					t.line("buffer._buffer = readBytes(_length);");
+					t.cb.nl;
 				}
-				t ~= "\t\twith(buffer) {\n";
-				createDecodings("\t\t\t", t, type.fields);
-				t ~= "\t\t}\n\t}\n\n";
-				createToString(t, "\t", toPascalCase(type.name), type.fields, false);
-				t ~= "}\n\n";
+				t.line("with(buffer)").ob;
+				createDecodings(t, type.fields);
+				t.cb.cb.nl;
+				createToString(t, toPascalCase(type.name), type.fields, false);
+				t.cb.nl;
 			}
-			write("../src/d/sul/protocol/" ~ game ~ "/types.d", t, "protocol/" ~ game);
+			write(t, "protocol/" ~ game);
 
 			// sections
-			string s;
-			s ~= "module sul.protocol." ~ game ~ ";\n\npublic import sul.protocol." ~ game ~ ".types;\n\n";
+			auto s = new DSource("protocol/" ~ game ~ "/package");
+			s.line("module soupply.protocol." ~ game ~ ";").nl.line("public import soupply.protocol." ~ game ~ ".types;").nl;
 			foreach(section ; prts.data.sections) {
-				s ~= "public import sul.protocol." ~ game ~ "." ~ section.name ~ ";\n";
-				string data;
-				data ~= "module sul.protocol." ~ game ~ "." ~ section.name ~ ";\n\n";
-				data ~= "import std.bitmanip : write, peek;\nstatic import std.conv;\nimport std.system : Endian;\nimport std.typetuple : TypeTuple;\nimport std.typecons : Tuple;\nimport std.uuid : UUID;\n\n";
-				data ~= "import sul.utils.buffer;\nimport sul.utils.var;\n\nstatic import sul.protocol." ~ game ~ ".types;\n\n";
-				data ~= "static if(__traits(compiles, { import sul.metadata." ~ game ~ "; })) import sul.metadata." ~ game ~ ";\n\n";
+				s.line("public import soupply.protocol." ~ game ~ "." ~ section.name ~ ";");
+				auto data = new DSource("protocol/" ~ game ~ "/" ~ section.name);
+				data.line("module soupply.protocol." ~ game ~ "." ~ section.name ~ ";").nl;
+				data.line("import std.bitmanip : write, peek;").line("static import std.conv;").line("import std.system : Endian;")
+					.line("import std.typetuple : TypeTuple;").line("import std.uuid : UUID;").nl;
+				data.line("import soupply.util.buffer;").line("import soupply.util.tuple : Tuple;").line("import soupply.util.var;").nl.line("static import soupply.protocol." ~ game ~ ".types;").nl;
+				data.line("static if(__traits(compiles, { import soupply.metadata." ~ game ~ "; })) import soupply.metadata." ~ game ~ ";").nl;
 				string[] names;
 				foreach(packet ; section.packets) names ~= toPascalCase(packet.name);
-				data ~= "alias Packets = TypeTuple!(" ~ names.join(", ") ~ ");\n\n";
+				data.line("alias Packets = TypeTuple!(" ~ names.join(", ") ~ ");").nl;
 				foreach(packet ; section.packets) {
-					data ~= "class " ~ toPascalCase(packet.name) ~ " : Buffer {\n\n";
-					data ~= "\tpublic enum " ~ id ~ " ID = " ~ to!string(packet.id) ~ ";\n\n";
-					data ~= "\tpublic enum bool CLIENTBOUND = " ~ to!string(packet.clientbound) ~ ";\n";
-					data ~= "\tpublic enum bool SERVERBOUND = " ~ to!string(packet.serverbound) ~ ";\n\n";
-					writeFields(data, "\t", packet.fields, true);
+					data.line("class " ~ toPascalCase(packet.name) ~ " : Buffer").ob.nl;
+					data.line("public enum " ~ id ~ " ID = " ~ to!string(packet.id) ~ ";").nl;
+					data.line("public enum bool CLIENTBOUND = " ~ to!string(packet.clientbound) ~ ";");
+					data.line("public enum bool SERVERBOUND = " ~ to!string(packet.serverbound) ~ ";").nl;
+					writeFields(data, packet.fields, true);
 					// encoding
-					data ~= "\tpublic pure nothrow @safe ubyte[] encode(bool writeId=true)() {\n";
-					data ~= "\t\t_buffer.length = 0;\n";
-					data ~= "\t\tstatic if(writeId){ " ~ createEncoding(prts.data.id, "ID") ~ " }\n";
-					createEncodings("\t\t", data, packet.fields);
-					data ~= "\t\treturn _buffer;\n";
-					data ~= "\t}\n\n";
+					data.line("public pure nothrow @safe ubyte[] encode(bool writeId=true)()").ob;
+					data.line("_buffer.length = 0;");
+					data.line("static if (writeId)").ob;
+					createEncoding(data, prts.data.id, "ID");
+					data.cb;
+					createEncodings(data, packet.fields);
+					data.line("return _buffer;");
+					data.cb.nl;
 					// decoding
-					data ~= "\tpublic pure nothrow @safe void decode(bool readId=true)() {\n";
-					data ~= "\t\tstatic if(readId){ " ~ id ~ " _id; " ~ createDecoding(prts.data.id, "_id") ~ " }\n";
-					createDecodings("\t\t", data, packet.fields);
-					data ~= "\t}\n\n";
+					data.line("public pure nothrow @safe void decode(bool readId=true)()").ob;
+					data.line("static if(readId)").ob.line(id ~ " _id;");
+					createDecoding(data, prts.data.id, "_id");
+					data.cb;
+					createDecodings(data, packet.fields);
+					data.cb.nl;
 					// static decoding
-					data ~= "\tpublic static pure nothrow @safe " ~ toPascalCase(packet.name) ~ " fromBuffer(bool readId=true)(ubyte[] buffer) {\n";
-					data ~= "\t\t" ~ toPascalCase(packet.name) ~ " ret = new " ~ toPascalCase(packet.name) ~ "();\n";
-					data ~= "\t\tret._buffer = buffer;\n";
-					data ~= "\t\tret.decode!readId();\n";
-					data ~= "\t\treturn ret;\n";
-					data ~= "\t}\n\n";
-					createToString(data, "\t", toPascalCase(packet.name), packet.fields);
+					data.line("public static pure nothrow @safe " ~ toPascalCase(packet.name) ~ " fromBuffer(bool readId=true)(ubyte[] buffer)").ob;
+					data.line(toPascalCase(packet.name) ~ " ret = new " ~ toPascalCase(packet.name) ~ "();");
+					data.line("ret._buffer = buffer;");
+					data.line("ret.decode!readId();");
+					data.line("return ret;");
+					data.cb.nl;
+					createToString(data, toPascalCase(packet.name), packet.fields);
 					// variants
 					if(packet.variants.length) {
-						data ~= "\talias _encode = encode;\n\n";
-						data ~= "\tenum string variantField = \"" ~ convertName(packet.variantField) ~ "\";\n\n";
+						data.line("alias _encode = encode;").nl;
+						data.line("enum string variantField = \"" ~ convertName(packet.variantField) ~ "\";").nl;
 						string[] v;
 						foreach(variant ; packet.variants) {
 							v ~= toPascalCase(variant.name);
 						}
-						data ~= "\talias Variants = TypeTuple!(" ~ v.join(", ") ~ ");\n\n";
+						data.line("alias Variants = TypeTuple!(" ~ v.join(", ") ~ ");").nl;
 						foreach(variant ; packet.variants) {
-							data ~= "\tpublic class " ~ toPascalCase(variant.name) ~ " {\n\n";
-							data ~= "\t\tpublic enum typeof(" ~ convertName(packet.variantField) ~ ") " ~ toUpper(packet.variantField) ~ " = " ~ variant.value ~ ";\n\n";
-							writeFields(data, "\t\t", variant.fields, true);
+							data.line("public class " ~ toPascalCase(variant.name)).ob.nl;
+							data.line("public enum typeof(" ~ convertName(packet.variantField) ~ ") " ~ toUpper(packet.variantField) ~ " = " ~ variant.value ~ ";").nl;
+							writeFields(data, variant.fields, true);
 							// encode
-							data ~= "\t\tpublic pure nothrow @safe ubyte[] encode(bool writeId=true)() {\n";
-							data ~= "\t\t\t" ~ convertName(packet.variantField) ~ " = " ~ variant.value ~ ";\n\t\t\t_encode!writeId();\n";
-							createEncodings("\t\t\t", data, variant.fields);
-							data ~= "\t\t\treturn _buffer;\n\t\t}\n\n";
+							data.line("public pure nothrow @safe ubyte[] encode(bool writeId=true)()").ob;
+							data.line(convertName(packet.variantField) ~ " = " ~ variant.value ~ ";");
+							data.line("_encode!writeId();");
+							createEncodings(data, variant.fields);
+							data.line("return _buffer;");
+							data.cb.nl;
 							// decode
-							data ~= "\t\tpublic pure nothrow @safe void decode() {\n";
-							createDecodings("\t\t\t", data, variant.fields);
-							data ~= "\t\t}\n\n";
-							createToString(data, "\t\t", toPascalCase(packet.name) ~ "." ~ toPascalCase(variant.name), variant.fields);
-							data ~= "\t}\n\n";
+							data.line("public pure nothrow @safe void decode()").ob.nl;
+							createDecodings(data, variant.fields);
+							data.cb.nl;
+							// toString
+							createToString(data, toPascalCase(packet.name) ~ "." ~ toPascalCase(variant.name), variant.fields);
+							data.cb.nl;
 						}
 					}
-					data ~= "}\n\n";
+					data.cb.nl;
 				}
-				write("protocol/" ~ game ~ "/" ~ section.name ~ ".d", data, "protocol/" ~ game);
+				write(data, "protocol/" ~ game);
 			}
-			write("protocol/" ~ game ~ "/package.d", s, "protocol/" ~ game);
+			write(s, "protocol/" ~ game);
 
 			// metadata
-			auto m = game in metadatas;
+			/+auto m = game in data.metadatas;
 			if(m) {
 				string data = "module sul.metadata." ~ game ~ ";\n\n";
 				data ~= "import std.typecons : Tuple, tuple;\n\n";
@@ -615,9 +658,21 @@ class DGenerator : Generator {
 				data ~= "\tpublic static pure nothrow @safe Metadata decode(Buffer buffer) {\n\t\treturn new Metadata();\n\t}\n\n";
 				data ~= "}";
 				write("../src/d/sul/metadata/" ~ game ~ ".d", data);
-			}
+			}+/
 
 		}
+	}
+
+	private @property Generator generator() {
+		return this;
+	}
+
+	class DSource : Source {
+
+		public this(string path) {
+			super(generator, path, "d");
+		}
+
 	}
 
 }

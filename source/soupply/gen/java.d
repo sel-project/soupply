@@ -37,6 +37,9 @@ import std.typetuple : TypeTuple;
 
 import soupply.data;
 import soupply.generator;
+import soupply.util;
+
+version(Java):
 
 class JavaGenerator : Generator {
 

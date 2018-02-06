@@ -34,6 +34,9 @@ import std.typecons;
 
 import soupply.data;
 import soupply.generator;
+import soupply.util;
+
+version(JavaScript):
 
 class JavascriptGeneratorImpl(bool node) : Generator {
 

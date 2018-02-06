@@ -24,7 +24,8 @@ module soupply.util.var;
 
 import std.traits : isNumeric, isIntegral, isSigned, isUnsigned, Unsigned;
 
-struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
+struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1)
+{
 	
 	alias U = Unsigned!T;
 	
@@ -32,19 +33,23 @@ struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
 	public static immutable size_t MAX_BYTES = T.sizeof * 8 / 7 + (T.sizeof * 8 % 7 == 0 ? 0 : 1);
 	public static immutable size_t RIGHT_SHIFT = (T.sizeof * 8) - 1;
 	
-	public static pure nothrow @safe ubyte[] encode(T value) {
+	public static pure nothrow @safe ubyte[] encode(T value)
+	{
 		ubyte[] buffer;
-		static if(isUnsigned!T) {
+		static if (isUnsigned!T)
+		{
 			U unsigned = value;
-		} else {
-			U unsigned;
-			if(value >= 0) {
-				unsigned = cast(U)(value << 1);
-			} else if(value < 0) {
-				unsigned = cast(U)((-value << 1) - 1);
-			}
 		}
-		while((unsigned & MASK) != 0) {
+		else
+		{
+			U unsigned;
+			if (value >= 0)
+				unsigned = cast(U)(value << 1);
+			else if (value < 0)
+				unsigned = cast(U)((-value << 1) - 1);
+		}
+		while ((unsigned & MASK) != 0)
+		{
 			buffer ~= unsigned & 0x7F | 0x80;
 			unsigned >>>= 7;
 		}
@@ -52,32 +57,42 @@ struct var(T) if(isNumeric!T && isIntegral!T && T.sizeof > 1) {
 		return buffer;
 	}
 
-	public static pure nothrow @trusted T decode(ubyte[] buffer, size_t index=0) {
+	public static pure nothrow @trusted T decode(ubyte[] buffer, size_t index=0)
+	{
 		return decode(buffer, &index);
 	}
 	
-	public static pure nothrow @safe T decode(ubyte[] buffer, size_t* index) {
-		if(buffer.length <= *index) return T.init;
+	public static pure nothrow @safe T decode(ubyte[] buffer, size_t* index)
+	{
+		if (buffer.length <= *index) return T.init;
 		U unsigned = 0;
 		size_t j, k;
-		do {
+		do
+		{
 			k = buffer[*index];
 			unsigned |= cast(U)(k & 0x7F) << (j++ * 7);
-		} while(++*index < buffer.length && j < MAX_BYTES && (k & 0x80) != 0);
-		static if(isUnsigned!T) {
+		} while (++*index < buffer.length && j < MAX_BYTES && (k & 0x80) != 0);
+		static if (isUnsigned!T)
+		{
 			return unsigned;
-		} else {
+		}
+		else
+		{
 			T value = unsigned >> 1;
-			if(unsigned & 1) {
+			if (unsigned & 1)
+			{
 				value++;
 				return -value;
-			} else {
+			}
+			else
+			{
 				return value;
 			}
 		}
 	}
 
-	public static pure nothrow @trusted T fromBuffer(ref ubyte[] buffer) {
+	public static pure nothrow @trusted T fromBuffer(ref ubyte[] buffer)
+	{
 		size_t index = 0;
 		auto ret = decode(buffer, &index);
 		buffer = buffer[index..$];
