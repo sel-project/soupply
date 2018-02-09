@@ -116,6 +116,7 @@ abstract class Generator {
 								import std.net.curl : get;
 								filedata = get(filedata).idup;
 							} else {
+								import std.process : executeShell;
 								filedata = executeShell("curl -sL " ~ filedata).output;
 							}
 						}
