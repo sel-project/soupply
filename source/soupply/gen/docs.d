@@ -66,7 +66,7 @@ class DocsGenerator : Generator {
 				}
 				ret.line(links.join("  /  ")).nl;
 				// add title
-				ret.line("# " ~ pretty(toCamelCase(location[$-1]))).nl;
+				ret.line("# " ~ pretty(location[$-1].replace("-", " "))).nl;
 				return ret;
 			}
 
@@ -240,7 +240,7 @@ class DocsGenerator : Generator {
 											break;
 										}
 									}
-									data.line("**Constants**:");
+									data.line("**Constants**:").nl;
 									data.line("Name | Value" ~ (notes ? " |  |" : ""));
 									data.line("---|:---:" ~ (notes ? "|---" : ""));
 									foreach(constant ; field.constants) {
@@ -265,7 +265,7 @@ class DocsGenerator : Generator {
 				data.line("Packet | Id | Clientbound | Serverbound");
 				data.line("---|:---:|:---:|:---:");
 				foreach(packet ; section.packets) {
-					data.put("[" ~ pretty(toCamelCase(packet.name)) ~ "](" ~ section.name ~ packet.name.replace("_", "-") ~ ") | " ~ to!string(packet.id) ~ " | ");
+					data.put("[" ~ pretty(toCamelCase(packet.name)) ~ "](" ~ section.name ~ "/" ~ packet.name.replace("_", "-") ~ ") | " ~ to!string(packet.id) ~ " | ");
 					data.put((packet.clientbound ? "✓" : " ") ~ " | " ~ (packet.serverbound ? "✓" : " "));
 					data.nl;
 				}
@@ -428,24 +428,24 @@ class DocsGenerator : Generator {
 				_from |= pr[0].from.length != 0;
 				_to |= pr[0].to.length != 0;
 			}
-			data.line("## [" ~ name ~ "](protocol/" ~ namespace ~ ")").nl;
+			uint latest = sorted[0][1];
+			foreach_reverse(cp ; sorted) {
+				if(cp[0].released) latest = cp[1];
+			}
+			data.line("## [" ~ name ~ "](protocol/" ~ namespace ~ to!string(latest) ~ ")").nl;
 			data.line("Protocol | Packets | Released | From | To");
 			data.line(":---:|:---:|:---:|:---:|:---:");
 			foreach(cp ; sorted) {
 				immutable ps = to!string(cp[1]);
 				size_t packets = 0;
 				foreach(section ; cp[0].sections) packets += section.packets.length;
-				data.put("[" ~ ps ~ "](" ~ cp[2][0..$-ps.length] ~ ps ~ ") | " ~ to!string(packets));
+				data.put("[" ~ ps ~ "](protocol/" ~ cp[2][0..$-ps.length] ~ ps ~ ") | " ~ to!string(packets));
 				if(_released) data.put(" | " ~ cp[0].released);
 				if(_from) data.put(" | " ~ cp[0].from);
 				if(_to) data.put(" | " ~ cp[0].to);
 				data.nl;
 			}
 			data.nl;
-			size_t latest = sorted[0][1];
-			foreach_reverse(cp ; sorted) {
-				if(cp[0].released) latest = cp[1];
-			}
 			//TODO copy latest (released) into game/index.html using `latest`
 			//std.file.write("../pages/" ~ namespace ~ ".html", std.file.read("../pages/" ~ namespace ~ to!string(latest) ~ ".html")); //TODO replace canonical?
 		}
