@@ -5,5 +5,3 @@
 *.selections.json
 .dub
 /gen
-/push_info.json
-/utils

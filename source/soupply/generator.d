@@ -27,7 +27,7 @@ import std.ascii : newline;
 import std.conv : to;
 import std.file : _read = read, _write = write, exists, isFile, remove, mkdirRecurse, dirEntries, SpanMode;
 import std.path : buildPath, buildNormalizedPath, dirSeparator;
-import std.string : indexOf, lastIndexOf, replace, split, strip, startsWith, endsWith;
+import std.string : indexOf, lastIndexOf, replace, split, join, strip, startsWith, endsWith;
 
 import soupply.data;
 
@@ -42,7 +42,7 @@ abstract class Generator {
 	 * Generator.register!MyGenerator("myg", "src/my", "//");
 	 * ---
 	 */
-	public static void register(T:Generator)(string name, string source, string[3] comment) {
+	public static void register(T:Generator)(string name, string source, string[] comment=null) {
 		generators[name] = (Data data){ new T().generate(name, source, comment, data); };
 	}
 
@@ -56,11 +56,15 @@ abstract class Generator {
 	protected Data data;
 
 	private string path;
-	private string[3] comment; // open, continue, close
+	private string[] comment; // open, continue, close
 
 	private string[2][string] editorconfig; // editorconfig["*"] = ["\r\n", "\t"]
+	
+	protected final @property Generator generator() {
+		return this;
+	}
 
-	public final void generate(string name, string source, string[3] comment, Data data) {
+	public final void generate(string name, string source, string[] comment, Data data) {
 
 		// save/init variables
 		this.data = data;
@@ -74,17 +78,20 @@ abstract class Generator {
 		if(exists(gen)) {
 			// remove every file that has been previously generated
 			foreach(file ; dirEntries(gen, SpanMode.depth)) {
-				if(file.isFile) remove(file);
+				if(file.isFile && file.indexOf(dirSeparator ~ ".git" ~ dirSeparator) == -1) remove(file);
 			}
 		} else {
 			// create the directory
 			mkdirRecurse(gen);
 		}
+		
+		// generate data
+		this.generateImpl(data);
 
 		// copy licence
 		_write(gen ~ "LICENSE", _read("LICENSE"));
 
-		// copy content of public into gen/name
+		// copy and convert content of public into gen/name
 		string[string] rep = [
 			"name": SOFTWARE,
 			"description": data.description,
@@ -92,84 +99,95 @@ abstract class Generator {
 			"version": data.version_,
 		];
 		immutable public_ = buildPath("public", name) ~ dirSeparator;
-		foreach(file ; dirEntries(public_, SpanMode.breadth)) {
-			immutable path = file[public_.length..$];
-			if(file.isFile) {
-				string filedata = cast(string)_read(file);
-				foreach(key, value; rep) {
-					filedata = filedata.replace("{{" ~ key ~ "}}", value);
-				}
-				_write(gen ~ path, filedata);
-				if(path == ".editorconfig") {
-					string[] current;
-					bool spaces = false;
-					void add(string[] exts...) {
-						foreach(ext ; exts) this.editorconfig[ext] = [newline, "\t"];
-						current = exts;
+		if(exists(public_)) {
+			foreach(string file ; dirEntries(public_, SpanMode.breadth)) {
+				string path = file[public_.length..$];
+				if(file.isFile) {
+					string filedata = cast(string)_read(file);
+					foreach(key, value; rep) {
+						filedata = filedata.replace("{{" ~ key ~ "}}", value);
 					}
-					foreach(line ; split(filedata, "\n")) {
-						line = line.strip;
-						if(line.startsWith("[*") && line.endsWith("]")) {
-							line = line[2..$-1];
-							if(line.length) {
-								if(line.startsWith(".")) {
-									line = line[1..$];
-									if(line.startsWith("{") && line.endsWith("}")) add(split(line[1..$-1], ","));
-									else add(line);
+					if(file.endsWith(".download")) {
+						// download the link in the file (must have an extension)
+						immutable ext = filedata.lastIndexOf(".");
+						if(ext != -1) {
+							import std.net.curl : get;
+							path = path[0..$-8] ~ filedata[ext+1..$].idup;
+							filedata = get(filedata).idup;
+						}
+					}
+					_write(gen ~ path, filedata);
+					if(path == ".editorconfig") {
+						string[] current;
+						bool spaces = false;
+						void add(string[] exts...) {
+							foreach(ext ; exts) this.editorconfig[ext] = [newline, "\t"];
+							current = exts;
+						}
+						foreach(line ; split(filedata, "\n")) {
+							line = line.strip;
+							if(line.startsWith("[*") && line.endsWith("]")) {
+								line = line[2..$-1];
+								if(line.length) {
+									if(line.startsWith(".")) {
+										line = line[1..$];
+										if(line.startsWith("{") && line.endsWith("}")) add(split(line[1..$-1], ","));
+										else add(line);
+									}
+								} else {
+									add("*");
 								}
-							} else {
-								add("*");
-							}
-						} else if(current.length) {
-							immutable eq = line.indexOf("=");
-							if(eq != -1) {
-								string value = line[eq+1..$].strip;
-								switch(line[0..eq].strip) {
-									case "end_of_line":
-										value = value.replace("cr", "\r");
-										value = value.replace("lf", "\n");
-										foreach(c ; current) this.editorconfig[c][0] = value;
-										break;
-									case "indent_style":
-										spaces = value == "space";
-										if(!spaces) foreach(c ; current) this.editorconfig[c][1] = "\t";
-										break;
-									case "indent_size":
-										if(spaces) {
-											char[] indent = new char[to!size_t(value)];
-											foreach(ref i ; indent) i = ' ';
-											foreach(c ; current) this.editorconfig[c][1] = indent.idup;
-										}
-										break;
-									case "insert_final_newline":
-										//TODO
-										break;
-									default:
-										break;
+							} else if(current.length) {
+								immutable eq = line.indexOf("=");
+								if(eq != -1) {
+									string value = line[eq+1..$].strip;
+									switch(line[0..eq].strip) {
+										case "end_of_line":
+											value = value.replace("cr", "\r");
+											value = value.replace("lf", "\n");
+											foreach(c ; current) this.editorconfig[c][0] = value;
+											break;
+										case "indent_style":
+											spaces = value == "space";
+											if(!spaces) foreach(c ; current) this.editorconfig[c][1] = "\t";
+											break;
+										case "indent_size":
+											if(spaces) {
+												char[] indent = new char[to!size_t(value)];
+												foreach(ref i ; indent) i = ' ';
+												foreach(c ; current) this.editorconfig[c][1] = indent.idup;
+											}
+											break;
+										case "insert_final_newline":
+											//TODO
+											break;
+										default:
+											break;
+									}
 								}
 							}
 						}
 					}
+				} else {
+					// dirs should be spanned first
+					mkdirRecurse(gen ~ path);
 				}
-			} else {
-				// dirs should be spanned first
-				mkdirRecurse(gen ~ path);
 			}
 		}
-
-		// generate data
-		this.generateImpl(data);
 
 	}
 
 	protected abstract void generateImpl(Data);
 
 	protected void write(Source source, string generatorFile=null) {
-		immutable path = buildNormalizedPath(buildPath(this.path, source.file));
+		this.write(source.data, source.file, generatorFile);
+	}
+
+	protected void write(string data, string file, string generatorFile=null) {
+		immutable path = buildNormalizedPath(buildPath(this.path, file));
 		immutable dir = path[0..path.lastIndexOf(dirSeparator)];
 		mkdirRecurse(dir);
-		string data = source.data;
-		if(this.comment.length) {
+		if(this.comment !is null) {
 			//TODO use right newline
 			auto header = Header(this.comment);
 			header.open();
@@ -186,9 +204,9 @@ abstract class Generator {
 private struct Header {
 
 	Appender!string appender;
-	private string[3] _comment;
+	private string[] _comment;
 
-	this(string[3] comment) {
+	this(string[] comment) {
 		_comment = comment;
 	}
 
@@ -215,14 +233,15 @@ private struct Header {
 
 class Source {
 
-	private immutable string _newline;
-	private immutable string _indent;
-	private immutable string _final_newline;
+	protected immutable string _newline;
+	protected immutable string _indent;
+	protected immutable string _final_newline;
 
+	private Generator generator;
 	public immutable string file;
 
-	Appender!string appender;
-	private size_t indentSize = 0;
+	public Appender!string appender;
+	protected size_t indentSize = 0;
 
 	public this(Generator generator, string path, string extension) {
 		auto e = extension in generator.editorconfig;
@@ -230,24 +249,28 @@ class Source {
 		_newline = (*e)[0];
 		_indent = (*e)[1];
 		_final_newline = "";
+		this.generator = generator;
 		this.file = path ~ "." ~ extension;
 	}
 
 	/**
-	 * Adds text to the appender.
+	 * Saves the file calling the `write` method on the generator.
 	 */
-	typeof(this) put(string data) {
-		appender.put(data);
-		return this;
+	void save(string generatorFile=null) {
+		generator.write(this, generatorFile);
 	}
 
 	/**
 	 * Puts a newline string as specified in the constructor.
 	 */
 	@property typeof(this) nl() {
-		return put(_newline);
+		put(_newline);
+		return this;
 	}
-	
+
+	/**
+	 * Puts the amount of newlines as specified in the first parameter.
+	 */
 	@property typeof(this) nl(size_t amount) {
 		foreach(i ; 0..amount) nl();
 		return this;
@@ -256,12 +279,13 @@ class Source {
 	/**
 	 * Puts an indentation string as specified in the constructor.
 	 */
-	@property typeof(this) t() {
-		return put(_indent);
+	@property typeof(this) indent() {
+		put(_indent);
+		return this;
 	}
 	
-	@property typeof(this) t(size_t amount) {
-		foreach(i ; 0..amount) t();
+	@property typeof(this) indent(size_t amount) {
+		foreach(i ; 0..amount) indent();
 		return this;
 	}
 
@@ -270,7 +294,8 @@ class Source {
 	 * The line is indentated and a newline is added at the end.
 	 */
 	typeof(this) line(string data) {
-		return t(indentSize).put(data).nl;
+		indent(indentSize).put(data);
+		return nl;
 	}
 
 	/**
@@ -278,13 +303,14 @@ class Source {
 	 * the newline at the end.
 	 */
 	typeof(this) inline(string data) {
-		return t(indentSize).put(data);
+		indent(indentSize).put(data);
+		return this;
 	}
 
 	/**
 	 * Adds a level of indentation.
 	 */
-	typeof(this) i() {
+	typeof(this) add_indent() {
 		indentSize++;
 		return this;
 	}
@@ -292,29 +318,168 @@ class Source {
 	/**
 	 * Removes a level of indentation.
 	 */
-	typeof(this) d() {
+	typeof(this) remove_indent() {
 		indentSize--;
 		return this;
 	}
 
 	/**
-	 * Puts an opening bracket, a new line and adds a level
+	 * Puts an opening brace, a new line and adds a level
 	 * of indentation.
 	 */
 	typeof(this) ob() {
-		return line("{").i;
+		return line("{").add_indent();
 	}
 
 	/**
-	 * Removes a level of indentation, puts a closing bracket
+	 * Removes a level of indentation, puts a closing brace
 	 * and a new line.
 	 */
 	typeof(this) cb() {
-		return d.line("}");
+		return remove_indent().line("}");
 	}
 
-	@property string data() {
-		return appender.data;
+	alias appender this;
+
+}
+
+class SourceCode : Source {
+
+	static struct Settings {
+
+		bool semicolons = true;
+		bool braces = true;
+		bool inlineBraces = true;
+
+		string moduleSeparator = ".";
+
+		string baseModule = SOFTWARE;
+		string standardLibrary;
+
+		string comment = "//";
+
+	}
+
+	protected const Settings settings;
+
+	private immutable string _semicolon;
+
+	public this(inout Settings settings, Generator generator, string path, string extension) {
+		super(generator, path, extension);
+		this.settings = settings;
+		_semicolon = settings.semicolons ? ";" : "";
+	}
+
+	// ----------
+	// conversion
+	// ----------
+
+	/**
+	 * Converts a variable name.
+	 */
+	string convertName(string name) {
+		return name;
+	}
+
+	/**
+	 * Converts a variable type.
+	 */
+	string convertType(string type) {
+		return type;
+	}
+
+	// ------
+	// inline
+	// ------
+
+	/**
+	 * Adds a comment.
+	 */
+	typeof(this) comment(string comment) {
+		line(settings.comment ~ comment);
+		return this;
+	}
+	
+	/**
+	 * Adds a statement appending a semicolon at the end of it.
+	 */
+	typeof(this) stat(string stat) {
+		line(stat ~ _semicolon);
+		return this;
+	}
+	
+	/**
+	 * Adds a module. `soupply.` is always prepended.
+	 */
+	typeof(this) mod(string module_) {
+		return stat("module " ~ settings.baseModule ~ settings.moduleSeparator ~ module_);
+	}
+	
+	/**
+	 * Adds an import.
+	 */
+	typeof(this) imp(string module_, string[] selective...) {
+		return stat("import " ~ module_ ~ (selective.length ? " : " ~ selective.join(", ") : ""));
+	}
+	
+	typeof(this) import_std(string module_, string[] selective...) {
+		return imp(settings.standardLibrary ~ settings.moduleSeparator ~ module_, selective);
+	}
+	
+	typeof(this) import_this(string module_, string[] selective...) {
+		return imp(settings.baseModule ~ settings.moduleSeparator ~ module_, selective);
+	}
+
+	/**
+	 * Adds a variable declaration.
+	 */
+	typeof(this) var(string type, string name) {
+		return stat(convertType(type) ~ " " ~ convertName(name));
+	}
+
+	/// ditto
+	typeof(this) var(string modifiers, string type, string name) {
+		return stat(modifiers ~ " " ~ convertType(type) ~ " " ~ convertName(name));
+	}
+
+	/// ditto
+	typeof(this) var_assign(string type, string name, string value) {
+		return stat(convertType(type) ~ " " ~ convertName(name) ~ " = " ~ value);
+	}
+
+	/// ditto
+	typeof(this) var_assign(string modifiers, string type, string name, string value) {
+		return stat(modifiers ~ " " ~ convertType(type) ~ " " ~ convertName(name) ~ " = " ~ value);
+	}
+	
+	/**
+	 * Performs an operation.
+	 */
+	typeof(this) op(string name0, string op, string name1) {
+		return stat(name0 ~ " " ~ op ~ " " ~ name1);
+	}
+
+	/**
+	 * Assigns a variable.
+	 */
+	typeof(this) assign(string name, string value) {
+		return op(name, "=", value);
+	}
+
+	// ------
+	// scopes
+	// ------
+	
+	/**
+	 * Adds a declaration and calls `ob` to open a brace.
+	 */
+	typeof(this) block(string data) {
+		line(data).ob;
+		return this;
+	}
+
+	typeof(this) class_stat(string class_) {
+		return block("class " ~ class_);
 	}
 
 }

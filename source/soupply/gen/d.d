@@ -38,6 +38,8 @@ import soupply.data;
 import soupply.generator;
 import soupply.util;
 
+version(D):
+
 class DGenerator : Generator {
 
 	static this() {
@@ -45,20 +47,6 @@ class DGenerator : Generator {
 	}
 
 	protected override void generateImpl(Data data) {
-
-		enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "char", "string", "varint", "varuint", "varlong", "varulong", "UUID"];
-		
-		enum string[string] defaultAliases = [
-			"uuid": "UUID",
-			"bytes": "ubyte[]",
-			"triad": "int",
-			"varshort": "short",
-			"varushort": "ushort",
-			"varint": "int",
-			"varuint": "uint",
-			"varlong": "long",
-			"varulong": "ulong"
-		];
 
 		size_t lengthOf(string type) {
 			switch(type) {
@@ -74,86 +62,65 @@ class DGenerator : Generator {
 		}
 
 		// io utils
-		auto io = new DSource("util/buffer");
-		io.line("module " ~ SOFTWARE ~ ".util.buffer;").nl.line("import std.bitmanip;").line("import std.system : Endian;").nl;
-		io.line("class Buffer").ob.nl;
-		io.line("public ubyte[] _buffer;");
-		io.line("public size_t _index;").nl;
-		io.line("public pure nothrow @property @safe @nogc Buffer bufferInstance()").ob.line("return this;").cb.nl;
-		io.line("public pure nothrow @safe void writeBytes(ubyte[] bytes)").ob;
-		io.line("this._buffer ~= bytes;").cb.nl;
-		io.line("public pure nothrow @trusted void writeString(string str)").ob.line("this.writeBytes(cast(ubyte[])str);").cb.nl;
-		io.line("public pure nothrow @safe ubyte[] readBytes(size_t length)").ob;
-		io.line("immutable end = this._index + length;");
-		io.line("if (this._buffer.length < end) return (ubyte[]).init;");
-		io.line("auto ret = this._buffer[this._index..end].dup;");
-		io.line("this._index = end;");
-		io.line("return ret;").cb.nl;
-		io.line("public pure nothrow @trusted string readString(size_t length)").ob.line("return cast(string) this.readBytes(length);").cb.nl;
-		foreach(type ; [tuple("bool", 1, "bool"), tuple("byte", 1, "byte"), tuple("short", 2, "short"), tuple("triad", 3, "int"), tuple("int", 4, "int"), tuple("long", 8, "long"), tuple("float", 4, "float"), tuple("double", 8, "double")]) {
-			immutable l = lengthOf(type[2]);
-			string[] types = [""];
-			if(["byte", "short", "int", "long"].canFind(type[0])) types ~= "u";
-			foreach(p ; types) {
-				foreach(e ; ["BigEndian", "LittleEndian"]) {
-					// write
-					io.line("public pure nothrow @safe void write" ~ e ~ capitalize(p ~ type[0]) ~ "(" ~ p ~ type[2] ~ " a)").ob;
-					if(type[1] == 1) io.line("this._buffer ~= a;");
-					else if(e == "BigEndian") io.line("this._buffer ~= nativeTo" ~ e ~ "!" ~ p ~ type[2] ~ "(a)" ~ (l == type[1] ? "" : "[$-" ~ to!string(type[1]) ~ "..$]") ~ ";");
-					else io.line("this._buffer ~= nativeTo" ~ e ~ "!" ~ p ~ type[2] ~ "(a)" ~ (l == type[1] ? "" : "[0..$-" ~ to!string(l - type[1]) ~ "]") ~ ";");
-					io.cb.nl;
-					// read
-					io.line("public pure nothrow @safe " ~ p ~ type[2] ~ " read" ~ e ~ capitalize(p ~ type[0]) ~ "()").ob;
-					io.line("immutable end = this._index + " ~ to!string(type[1]) ~ ";");
-					io.line("if (this._buffer.length < end) return " ~ type[2] ~ ".init;");
-					io.inline("ubyte[" ~ to!string(l) ~ "] bytes = ");
-					if(type[1] == l) io.put("this._buffer[this._index..end];");
-					else if(e == "BigEndian") io.put("new ubyte[" ~ to!string(l - type[1]) ~ "] ~ this._buffer[this._index..end];");
-					else io.put("this._buffer[this._index..end] ~ new ubyte[" ~ to!string(l - type[1]) ~ "];");
-					io.nl.line("this._index = end;");
-					if(type[1] == 1) io.line("return " ~ (type[2] == "ubyte" ? "" : ("cast(" ~ type[2] ~ ") ")) ~ "bytes[0];");
-					else io.line("return " ~ toLower(e[0..1]) ~ e[1..$] ~ "ToNative!" ~ type[2] ~ "(bytes);");
-					io.cb.nl;
+		with(new DSource("util/buffer")) {
+			mod("util.buffer").nl;
+			import_std("bitmanip").import_std("system", "Endian").nl;
+			class_stat("Buffer").nl;
+			var("ubyte[]", "_buffer");
+			var("size_t", "_index");
+			nl();
+			block("public pure nothrow @property @safe @nogc Buffer bufferInstance()").stat("return this").cb.nl;
+			block("public pure nothrow @safe void writeBytes(ubyte[] bytes)").op("this._buffer", "~=", "bytes").cb.nl;
+			block("public pure nothrow @trusted void writeString(string str)").stat("this.writeBytes(cast(ubyte[]) str)").cb.nl;
+			block("public pure nothrow @safe ubyte[] readBytes(size_t length)");
+			var_assign("immutable", "size_t", "end", "this._index + length");
+			stat("if (this._buffer.length < end) return (ubyte[]).init");
+			var_assign("ubyte[]", "ret", "this._buffer[this._index..end].dup");
+			assign("this._index", "end");
+			stat("return ret").cb.nl;
+			block("public pure nothrow @trusted string readString(size_t length)").stat("return cast(string) this.readBytes(length)").cb.nl;
+			foreach(type ; [tuple("bool", 1, "bool"), tuple("byte", 1, "byte"), tuple("short", 2, "short"), tuple("triad", 3, "int"), tuple("int", 4, "int"), tuple("long", 8, "long"), tuple("float", 4, "float"), tuple("double", 8, "double")]) {
+				immutable l = lengthOf(type[2]);
+				string[] types = [""];
+				if(["byte", "short", "int", "long"].canFind(type[0])) types ~= "u";
+				foreach(p ; types) {
+					foreach(e ; ["BigEndian", "LittleEndian"]) {
+						// write
+						block("public pure nothrow @safe void write" ~ e ~ capitalize(p ~ type[0]) ~ "(" ~ p ~ type[2] ~ " a)");
+						op("this._buffer", "~=", (){
+							if(type[1] == 1) return "a";
+							else if(e == "BigEndian") return "nativeTo" ~ e ~ "!" ~ p ~ type[2] ~ "(a)" ~ (l == type[1] ? "" : "[$-" ~ to!string(type[1]) ~ "..$]");
+							else return "nativeTo" ~ e ~ "!" ~ p ~ type[2] ~ "(a)" ~ (l == type[1] ? "" : "[0..$-" ~ to!string(l - type[1]) ~ "]");
+						}());
+						cb.nl;
+						// read
+						block("public pure nothrow @safe " ~ p ~ type[2] ~ " read" ~ e ~ capitalize(p ~ type[0]) ~ "()");
+						var_assign("immutable", "size_t", "end", "this._index + " ~ to!string(type[1]));
+						stat("if (this._buffer.length < end) return " ~ type[2] ~ ".init");
+						var_assign("ubyte[" ~ to!string(l) ~ "]", "bytes", (){
+							if(type[1] == l) return "this._buffer[this._index..end]";
+							else if(e == "BigEndian") return "new ubyte[" ~ to!string(l - type[1]) ~ "] ~ this._buffer[this._index..end]";
+							else return "this._buffer[this._index..end] ~ new ubyte[" ~ to!string(l - type[1]) ~ "]";
+						}());
+						assign("this._index", "end");
+						if(type[1] == 1) stat("return " ~ (type[2] == "ubyte" ? "" : ("cast(" ~ type[2] ~ ") ")) ~ "bytes[0]");
+						else stat("return " ~ toLower(e[0..1]) ~ e[1..$] ~ "ToNative!" ~ type[2] ~ "(bytes)");
+						cb.nl;
+					}
 				}
 			}
+			cb;
+			save();
 		}
-		io.cb;
-		write(io);
 
 		// protocol
 		foreach(string game, Protocols prts; data.protocols) {
 
-			bool usesMetadata = false;
-			
-			@property string convertType(string type) {
-				string ret, t = type;
-				auto array = type.indexOf("[");
-				if(array >= 0) {
-					t = type[0..array];
-				}
-				auto vector = type.indexOf("<");
-				if(vector >= 0) {
-					/*string tt = convertType(type[0..vector]);
-					t = "Tuple!(";
-					foreach(char c ; type[vector+1..type.indexOf(">")]) {
-						t ~= tt ~ `, "` ~ c ~ `", `;
-					}
-					ret = t[0..$-2] ~ ")";*/
-					ret = "Tuple!(" ~ convertType(type[0..vector]) ~ ",\"" ~ type[vector+1..type.indexOf(">")] ~ "\")";
-				} else if(t in defaultAliases) {
-					return convertType(defaultAliases[t] ~ (array >= 0 ? type[array..$] : ""));
-				} else if(defaultTypes.canFind(t)) {
-					ret = t;
-				} else if(t == "metadata") {
-					usesMetadata = true;
-					ret = "Metadata";
-				} else {
-					auto a = t in prts.data.arrays;
-					if(a) return convertType(a.base ~ "[]" ~ (array >= 0 ? type[array..$] : ""));
-				}
-				if(ret == "") ret = "soupply.protocol." ~ game ~ ".types." ~ toPascalCase(t);
-				return ret ~ (array >= 0 ? type[array..$] : "");
+			DSource source(string path) {
+				return new DSource(path, game, prts.data.arrays);
 			}
+
+			bool usesMetadata = false;
 			
 			@property string convertName(string name) {
 				if(name == "version") return "vers";
@@ -162,8 +129,10 @@ class DGenerator : Generator {
 				else return toCamelCase(name);
 			}
 
-			immutable id = convertType(prts.data.id);
-			immutable arrayLength = convertType(prts.data.arrayLength);
+			auto conv = source("");
+
+			immutable id = conv.convertType(prts.data.id);
+			immutable arrayLength = conv.convertType(prts.data.arrayLength);
 
 			immutable defaultEndianness = toPascalCase(prts.data.endianness["*"]);
 
@@ -174,54 +143,56 @@ class DGenerator : Generator {
 				else return defaultEndianness;
 			}
 
-			void createEncoding(Source source, string type, string name, string e="") {
-				auto conv = type in prts.data.arrays ? prts.data.arrays[type].base ~ "[]" : type;
-				auto lo = conv.lastIndexOf("[");
-				if(lo > 0) {
-					// array
-					string ret = "";
-					auto lc = conv.lastIndexOf("]");
-					string nt = conv[0..lo];
-					if(lo == lc - 1) {
-						auto ca = type in prts.data.arrays;
-						if(ca) {
-							auto c = *ca;
-							createEncoding(source, c.length, "cast(" ~ convertType(c.length) ~ ") " ~ name ~ ".length", c.endianness);
-						} else {
-							createEncoding(source, prts.data.arrayLength, "cast(" ~ arrayLength ~ ") " ~ name ~ ".length");
+			void createEncoding(DSource source, string type, string name, string e="") {
+				with(source) {
+					auto conv = type in prts.data.arrays ? prts.data.arrays[type].base ~ "[]" : type;
+					auto lo = conv.lastIndexOf("[");
+					if(lo > 0) {
+						// array
+						string ret = "";
+						auto lc = conv.lastIndexOf("]");
+						string nt = conv[0..lo];
+						if(lo == lc - 1) {
+							auto ca = type in prts.data.arrays;
+							if(ca) {
+								auto c = *ca;
+								createEncoding(source, c.length, "cast(" ~ convertType(c.length) ~ ") " ~ name ~ ".length", c.endianness);
+							} else {
+								createEncoding(source, prts.data.arrayLength, "cast(" ~ arrayLength ~ ") " ~ name ~ ".length");
+							}
+							ret ~= " ";
 						}
-						ret ~= " ";
-					}
-					if(nt == "ubyte") source.line("writeBytes(" ~ name ~ ");");
-					else {
-						// complex array that cannot be encoded with a single function
-						source.line("foreach (" ~ hash(name) ~ " ; " ~ name ~ ")").ob;
-						createEncoding(source, nt, hash(name));
-						source.cb;
-					}
-				} else {
-					auto ts = conv.lastIndexOf("<");
-					if(ts > 0) {
-						// tuple
-						//TODO this can be optimised by calling an `encode` method on the tuple or encoding it as it was an array
-						auto te = conv.lastIndexOf(">");
-						string nt = conv[0..ts];
-						foreach(i ; conv[ts+1..te]) {
-							createEncoding(source, nt, name ~ "." ~ i);
+						if(nt == "ubyte") stat("writeBytes(" ~ name ~ ")");
+						else {
+							// complex array that cannot be encoded with a single function
+							block("foreach (" ~ hash(name) ~ " ; " ~ name ~ ")");
+							createEncoding(source, nt, hash(name));
+							cb;
 						}
 					} else {
-						type = conv;
-						if(type.startsWith("var")) source.line("writeBytes(" ~ type ~ ".encode(" ~ name ~ "));");
-						else if(type == "string"){ createEncoding(source, prts.data.arrayLength, "cast(" ~ arrayLength ~")" ~ name ~ ".length"); source.line("writeString(" ~ name ~ ");"); }
-						else if(type == "uuid") source.line("writeBytes(" ~ name ~ ".data);");
-						else if(type == "bytes") source.line("writeBytes(" ~ name ~ ");");
-						else if(defaultTypes.canFind(type) || type == "triad") source.line("write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ");");
-						else source.line(name ~ ".encode(bufferInstance);");
+						auto ts = conv.lastIndexOf("<");
+						if(ts > 0) {
+							// tuple
+							//TODO this can be optimised by calling an `encode` method on the tuple or encoding it as it was an array
+							auto te = conv.lastIndexOf(">");
+							string nt = conv[0..ts];
+							foreach(i ; conv[ts+1..te]) {
+								createEncoding(source, nt, name ~ "." ~ i);
+							}
+						} else {
+							type = conv;
+							if(type.startsWith("var")) stat("writeBytes(" ~ type ~ ".encode(" ~ name ~ "))");
+							else if(type == "string"){ createEncoding(source, prts.data.arrayLength, "cast(" ~ arrayLength ~")" ~ name ~ ".length"); stat("writeString(" ~ name ~ ")"); }
+							else if(type == "uuid") stat("writeBytes(" ~ name ~ ".data)");
+							else if(type == "bytes") stat("writeBytes(" ~ name ~ ")");
+							else if(defaultTypes.canFind(type) || type == "triad") stat("write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ")");
+							else stat(name ~ ".encode(bufferInstance)");
+						}
 					}
 				}
 			}
 
-			void createDecoding(Source source, string type, string name, string e="") {
+			void createDecoding(DSource source, string type, string name, string e="") {
 				auto conv = type in prts.data.arrays ? prts.data.arrays[type].base ~ "[]" : type;
 				auto lo = conv.lastIndexOf("[");
 				if(lo > 0) {
@@ -262,14 +233,14 @@ class DGenerator : Generator {
 						else if(type == "string"){ createDecoding(source, prts.data.arrayLength, arrayLength ~ " " ~ hash(name)); source.line(name ~ " = readString(" ~ hash(name) ~ ");"); }
 						else if(type == "uuid") source.line("if (_buffer.length >= _index + 16)").ob.line("ubyte[16] " ~ hash(name) ~ " = _buffer[_index .. _index+16].dup;").line("_index += 16;").line(name ~ " = UUID(" ~ hash(name) ~ ");").cb;
 						else if(type == "bytes") source.line(name ~ " = _buffer[_index .. $].dup;").line("_index = _buffer.length;");
-						else if(defaultTypes.canFind(type) || type == "triad") source.line(name ~ " = read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "();");
+						else if(defaultTypes.canFind(type) || type == "triad") stat(name ~ " = read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "()");
 						else if(type == "metadata") source.line(name ~ " = Metadata.decode(bufferInstance);");
 						else source.line(name ~ ".decode(bufferInstance);");
 					}
 				}
 			}
 			
-			void createEncodings(Source source, Protocol.Field[] fields) {
+			void createEncodings(DSource source, Protocol.Field[] fields) {
 				foreach(i, field; fields) {
 					bool c = field.condition.length != 0;
 					if(c) source.line("if (" ~ toCamelCase(field.condition) ~ ")").ob;
@@ -278,7 +249,7 @@ class DGenerator : Generator {
 				}
 			}
 			
-			void createDecodings(Source source, Protocol.Field[] fields) {
+			void createDecodings(DSource source, Protocol.Field[] fields) {
 				foreach(i, field; fields) {
 					bool c = field.condition.length != 0;
 					if(c) source.line("if(" ~ toCamelCase(field.condition) ~ ")").ob;
@@ -287,7 +258,7 @@ class DGenerator : Generator {
 				}
 			}
 
-			void writeFields(Source source, Protocol.Field[] fields, bool isClass) {
+			void writeFields(DSource source, Protocol.Field[] fields, bool isClass) {
 				// constants
 				foreach(field ; fields) {
 					if(field.constants.length) {
@@ -325,7 +296,7 @@ class DGenerator : Generator {
 				}
 			}
 
-			void createToString(Source source, string name, Protocol.Field[] fields, bool override_=true) {
+			void createToString(DSource source, string name, Protocol.Field[] fields, bool override_=true) {
 				source.line("public " ~ (override_ ? "override ": "") ~ "string toString()").ob;
 				string[] f;
 				foreach(i, field; fields) {
@@ -337,52 +308,53 @@ class DGenerator : Generator {
 			}
 
 			// types
-			auto t = new DSource("protocol/" ~ game ~ "/types");
-			t.line("module soupply.protocol." ~ game ~ ".types;").nl;
-			t.line("import std.bitmanip : write, peek;").line("static import std.conv;").line("import std.system : Endian;").line("import std.uuid : UUID;").nl;
-			t.line("import soupply.util.buffer;").line("import soupply.util.tuple : Tuple;").line("import soupply.util.var;").nl;
-			t.line("static if (__traits(compiles, { import soupply.metadata." ~ game ~ "; })) import soupply.metadata." ~ game ~ ";").nl;
-			foreach(type ; prts.data.types) {
-				immutable has_length = type.length.length != 0;
-				// declaration
-				t.line("struct " ~ toPascalCase(type.name)).ob.nl;
-				writeFields(t, type.fields, false);
-				// encoding
-				t.line("public pure nothrow @safe void encode(Buffer " ~ (has_length ? "o_" : "") ~ "buffer)").ob;
-				if(has_length) t.line("Buffer buffer = new Buffer();");
-				t.line("with(buffer)").ob;
-				createEncodings(t, type.fields);
-				t.cb;
-				if(type.length.length) {
-					t.line("with(o_buffer)").ob;
-					createEncoding(t, type.length, "cast(" ~ convertType(type.length) ~ ") buffer._buffer.length");
-					t.cb;
-					t.line("o_buffer.writeBytes(buffer._buffer);");
+			with(source("protocol/" ~ game ~ "/types")) {
+				mod("protocol." ~ game ~ ".types").nl;
+				import_std("bitmanip", "write", "peek").stat("static import std.conv").import_std("system", "Endian").import_std("uuid", "UUID").nl;
+				import_this("util.buffer").import_this("util.tuple", "Tuple").import_this("util.var").nl;
+				line("static if (__traits(compiles, { import soupply.metadata." ~ game ~ "; })) import soupply.metadata." ~ game ~ ";").nl; //TODO remove when raknet is unsupported
+				foreach(type ; prts.data.types) {
+					immutable has_length = type.length.length != 0;
+					// declaration
+					block("struct " ~ toPascalCase(type.name)).nl;
+					writeFields(t, type.fields, false);
+					// encoding
+					block("public pure nothrow @safe void encode(Buffer " ~ (has_length ? "o_" : "") ~ "buffer)");
+					if(has_length) stat("Buffer buffer = new Buffer()");
+					block("with(buffer)");
+					createEncodings(t, type.fields);
+					cb;
+					if(type.length.length) {
+						block("with(o_buffer)");
+						createEncoding(t, type.length, "cast(" ~ convertType(type.length) ~ ") buffer._buffer.length");
+						cb;
+						stat("o_buffer.writeBytes(buffer._buffer)");
+					}
+					cb.nl;
+					// decoding
+					block("public pure nothrow @safe void decode(Buffer " ~ (has_length ? "o_" : "") ~ "buffer)");
+					if(has_length) {
+						stat("Buffer buffer = new Buffer()");
+						block("with(o_buffer)");
+						createDecoding(t, type.length, "immutable _length");
+						stat("buffer._buffer = readBytes(_length)");
+						cb.nl;
+					}
+					block("with(buffer)");
+					createDecodings(t, type.fields);
+					cb.cb.nl;
+					createToString(t, toPascalCase(type.name), type.fields, false);
+					cb.nl;
 				}
-				t.cb.nl;
-				// decoding
-				t.line("public pure nothrow @safe void decode(Buffer " ~ (has_length ? "o_" : "") ~ "buffer)").ob;
-				if(has_length) {
-					t.line("Buffer buffer = new Buffer();");
-					t.line("with(o_buffer)").ob;
-					createDecoding(t, type.length, "immutable _length");
-					t.line("buffer._buffer = readBytes(_length);");
-					t.cb.nl;
-				}
-				t.line("with(buffer)").ob;
-				createDecodings(t, type.fields);
-				t.cb.cb.nl;
-				createToString(t, toPascalCase(type.name), type.fields, false);
-				t.cb.nl;
+				save("protocol/" ~ game);
 			}
-			write(t, "protocol/" ~ game);
 
 			// sections
-			auto s = new DSource("protocol/" ~ game ~ "/package");
+			auto s = source("protocol/" ~ game ~ "/package");
 			s.line("module soupply.protocol." ~ game ~ ";").nl.line("public import soupply.protocol." ~ game ~ ".types;").nl;
 			foreach(section ; prts.data.sections) {
 				s.line("public import soupply.protocol." ~ game ~ "." ~ section.name ~ ";");
-				auto data = new DSource("protocol/" ~ game ~ "/" ~ section.name);
+				auto data = source("protocol/" ~ game ~ "/" ~ section.name);
 				data.line("module soupply.protocol." ~ game ~ "." ~ section.name ~ ";").nl;
 				data.line("import std.bitmanip : write, peek;").line("static import std.conv;").line("import std.system : Endian;")
 					.line("import std.typetuple : TypeTuple;").line("import std.uuid : UUID;").nl;
@@ -667,11 +639,74 @@ class DGenerator : Generator {
 		return this;
 	}
 
-	class DSource : Source {
+	class DSource : SourceCode {
 
-		public this(string path) {
-			super(generator, path, "d");
+		enum settings = initSettings();
+
+		static auto initSettings() {
+			Settings settings;
+			with(settings) {
+				settings.semicolons = true;
+				settings.inlineBraces = false;
+				settings.baseModule = SOFTWARE;
+				settings.standardLibrary = "std";
+				settings.comment = "// ";
+			}
+			return settings;
 		}
+
+		private immutable string game;
+		private Protocol.Array[string] arrays;
+
+		public this(string path, string game="", Protocol.Array[string] arrays=(Protocol.Array[string]).init) {
+			super(settings, generator, path, "d");
+			this.game = game;
+			this.arrays = arrays;
+		}
+
+		enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "char", "string", "varint", "varuint", "varlong", "varulong", "UUID", "size_t", "ptrdiff_t"];
+
+		enum string[string] defaultAliases = [
+			"uuid": "UUID",
+			"bytes": "ubyte[]",
+			"triad": "int",
+			"varshort": "short",
+			"varushort": "ushort",
+			"varint": "int",
+			"varuint": "uint",
+			"varlong": "long",
+			"varulong": "ulong"
+		];
+
+		override string convertType(string type) {
+			string ret, t = type;
+			auto array = type.indexOf("[");
+			if(array >= 0) {
+				t = type[0..array];
+			}
+			auto vector = type.indexOf("<");
+			if(vector >= 0) {
+				ret = "Tuple!(" ~ convertType(type[0..vector]) ~ ", \"" ~ type[vector+1..type.indexOf(">")] ~ "\")";
+			} else if(t in defaultAliases) {
+				return convertType(defaultAliases[t] ~ (array >= 0 ? type[array..$] : ""));
+			} else if(defaultTypes.canFind(t)) {
+				ret = t;
+			} else if(t == "metadata") {
+				ret = "Metadata";
+			} else {
+				auto a = t in this.arrays;
+				if(a) return convertType((*a).base ~ "[]" ~ (array >= 0 ? type[array..$] : ""));
+			}
+			if(ret == "") ret = "soupply.protocol." ~ this.game ~ ".types." ~ toPascalCase(t);
+			return ret ~ (array >= 0 ? type[array..$] : "");
+		}
+
+		enum keywords = ["body", "default", "version"];
+
+		override string convertName(string name) {
+			return keywords.canFind(name) ? name ~ "_" : toCamelCase(name);
+		}
+
 
 	}
 
