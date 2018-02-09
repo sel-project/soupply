@@ -111,9 +111,13 @@ abstract class Generator {
 						// download the link in the file (must have an extension)
 						immutable ext = filedata.lastIndexOf(".");
 						if(ext != -1) {
-							import std.net.curl : get;
 							path = path[0..$-8] ~ filedata[ext+1..$].idup;
-							filedata = get(filedata).idup;
+							version(Windows) {
+								import std.net.curl : get;
+								filedata = get(filedata).idup;
+							} else {
+								filedata = executeShell("curl -sL " ~ filedata).output;
+							}
 						}
 					}
 					_write(gen ~ path, filedata);

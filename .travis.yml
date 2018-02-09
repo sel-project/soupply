@@ -9,7 +9,7 @@ before_script:
   - cd ..
 
 script:
-  - SOUPPLY_VERSION=1.1.$(( TRAVIS_BUILD_NUMBER - 184 ))
+  - SOUPPLY_VERSION=1.1.$(( TRAVIS_BUILD_NUMBER - 185 ))
   - dub run
 
 after_success:
