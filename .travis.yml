@@ -1,36 +1,32 @@
 language: d
 
 d:
- - dmd-2.073.2
+  - dmd
 
-notifications:
- - email: false
+before_script:
+  - cd public
+  - for repo in */ ; do git clone https://github.com/soupply/${repo////}.git ../gen/$repo ; done
+  - cd ..
 
 script:
- - cd gen && echo $(( TRAVIS_BUILD_NUMBER - 181 )) > version.txt
- - rdmd all.d
- - cd .. && rdmd --build-only push.d
+  - SOUPPLY_VERSION=1.1.$(( TRAVIS_BUILD_NUMBER - 183 ))
+  - dub run
 
 after_success:
- - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
- - DESC="Automatically committed from https://github.com/sel-project/sel-utils/commit/${TRAVIS_COMMIT}"
- - echo "${MESSAGE}" > message.txt
- - echo "${DESC}" > desc.txt
- - git config --global user.email ${EMAIL}
- - git config --global user.name ${USER}
- - git clone git://${REPO_GP} gp
- - rm -r gp/protocol
- - rm -r gp/api
- - cp -r -f pages/. gp/protocol
- - mkdir gp/api
- - cp -r -f src/json/sul/. gp/api/json
- - cp -r -f src/js/sul/. gp/api/js
- - cd gp
- - git add --all .
- - git commit -m "${MESSAGE}" -m "${DESC}"
- - git push "https://${TOKEN}@${REPO_GP}" master
- - cd ..
- - ./push php true src eyJleGNsdWRlIjpbInN1bFwvdXRpbHNcL0Fib3V0LnBocCJdLCJpbmNsdWRlIjpbXX0=
- - ./push java true src/main/java eyJleGNsdWRlIjpbInN1bFwvdXRpbHNcL0Fib3V0LmphdmEiXSwiaW5jbHVkZSI6W119
- - ./push d true src eyJleGNsdWRlIjpbInN1bFwvdXRpbHNcL2Fib3V0LmQiXSwiaW5jbHVkZSI6W119
- - ./push csharp true src eyJleGNsdWRlIjpbInN1bFwvVXRpbHNcL0Fib3V0LmNzIiwiUHJvcGVydGllc1wvQXNzZW1ibHlJbmZvLmNzIl0sImluY2x1ZGUiOlsic2VsLXV0aWxzLmNzcHJvaiIsIlByb3BlcnRpZXNcL0Fzc2VtYmx5SW5mby5jcyJdfQ==
+  - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
+  - DESC="Automatically committed from https://github.com/sel-project/soupply/commit/${TRAVIS_COMMIT}"
+  - git config --global user.email ${EMAIL}
+  - git config --global user.name ${USER}
+  - |
+    cd gen
+    for repo in */ ; do
+      cd $repo
+      git add --all .
+      git commit -m "${MESSAGE}" -m "${DESC}"
+      git tag -a "v${SOUPPLY_VERSION}" -m "${MESSAGE}"
+      git push -u --follow-tags "https://${TOKEN}@github.com/soupply/${repo////}.git" master
+      cd ..
+    done
+
+notifications:
+  - email: false

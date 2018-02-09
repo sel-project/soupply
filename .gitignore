@@ -2,10 +2,6 @@
 *.sln
 *.dproj
 *.userprefs
-/src
-/pages
-/readme
-/push_info.json
-/xml/protocol/panel1.xml
-/templates/snail
-/utils
+*.selections.json
+.dub
+/gen

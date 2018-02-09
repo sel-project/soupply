@@ -1,0 +1,16 @@
+language: d
+
+d:
+  - dmd
+  - ldc
+ 
+os:
+  - linux
+  - osx
+
+env:
+  - CONFIG=debug
+  - CONFIG=release
+ 
+script:
+  - dub build --build=$CONFIG

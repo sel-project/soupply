@@ -1,0 +1,6 @@
+name "soupply"
+authors "sel-project"
+license "MIT"
+targetType "executable"
+mainSourceFile "source/soupply/main.d"
+dependency "string-transform-d" version="~>1.0.0"
