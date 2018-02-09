@@ -24,8 +24,7 @@ module soupply.main;
 
 import std.algorithm : canFind, min;
 import std.conv : to;
-import std.file : dirEntries, SpanMode, read, isFile, _write = write;
-import std.json;
+import std.file : dirEntries, SpanMode, exists, read, isFile, _write = write;
 import std.path : dirSeparator;
 import std.process : environment;
 import std.regex : ctRegex, replaceAll;
@@ -250,7 +249,7 @@ void main(string[] args) {
 		}
 	}
 	
-	Generator.generateAll(Data("Automatically generated libraries for encoding and decoding Minecraft protocols", "MIT", environment.get("SOUPPLY_VERSION", "0.0.0"), protocols, metadatas));
+	Generator.generateAll(Data("Automatically generated libraries for encoding and decoding Minecraft protocols", "MIT", exists("version.txt") ? strip(cast(string)read("version.txt")) : "0.0.0", protocols, metadatas));
 	
 }
 

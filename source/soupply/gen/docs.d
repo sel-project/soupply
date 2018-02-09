@@ -64,7 +64,7 @@ class DocsGenerator : Generator {
 					if(i < location.length - 1) links ~= "[" ~ nav ~ "](/protocol/" ~ join(location[0..i+1], "/") ~ ")";
 					else links ~= nav;
 				}
-				ret.line(links.join(" ➡ ")).nl;
+				ret.line(links.join("  /  ")).nl;
 				// add title
 				ret.line("# " ~ pretty(toCamelCase(location[$-1]))).nl;
 				return ret;
@@ -98,10 +98,10 @@ class DocsGenerator : Generator {
 					str ~= "[" ~ o.to!string ~ "](./" ~ game ~ ")";
 				}
 				//data ~= "\t\t<p><strong>Compare</strong>: " ~ str.join(", ") ~ "</p>\n";
-				data.line("Other protocols: " ~ str.join(", ")).nl;
+				data.line("**Other protocols**: " ~ str.join(", ")).nl;
 			}
 			string[] jumps = ["[Encoding](#encoding)", "[Packets](#packets)"];
-			//if(ptrs.data.types.length) jumps ~= "<a href=\"" ~ game ~ "/types\">Types</a>"; // has no dedicated page yet
+			if(ptrs.data.types.length) jumps ~= "[Types](" ~ game ~ "/types)";
 			if(ptrs.data.arrays.length) jumps ~= "[Arrays](" ~ game ~ "/arrays)";
 			if(metadata) jumps ~= "[Metadata](" ~ game ~ "/metadata)";
 			data.line("**Jump to**: " ~ jumps.join(", ")).nl;
@@ -130,9 +130,68 @@ class DocsGenerator : Generator {
 				}
 				data.nl;
 			}
-			if(ptrs.data.description.length) data.line(ptrs.data.description).nl;
+			if(ptrs.data.description.length) {
+				data.line("-----");
+				data.line(ptrs.data.description).nl;
+				data.line("-----");
+			}
+
+			// endianness
+			data.line("## Encoding").nl;
+			data.line("**Endianness**:").nl;
+			string def = "big_endian";
+			string[string] change;
+			foreach(string type, string end; ptrs.data.endianness) {
+				if(type != "*") change[type] = end;
+			}
+			string[] be, le;
+			string[] used;
+			foreach(string type ; ["short", "ushort", "int", "uint", "long", "ulong", "float", "double"]) {
+				(){
+					bool checkImpl(string ft) {
+						auto t = ft in ptrs.data.arrays;
+						if(t ? (*t).base.startsWith(type) || (*t).length.startsWith(type) : ft.startsWith(type)) {
+							auto e = type in change ? change[type] : def;
+							if(e == "big_endian") be ~= type;
+							else le ~= type;
+							return true;
+						}
+						return false;
+					}
+					bool check(Protocol.Field field) {
+						return checkImpl(field.type);
+					}
+					if(checkImpl(ptrs.data.id)) return;
+					if(checkImpl(ptrs.data.arrayLength)) return;
+					foreach(type ; ptrs.data.types) {
+						foreach(field ; type.fields) if(check(field)) return;
+					}
+					foreach(section ; ptrs.data.sections) {
+						foreach(packet ; section.packets) {
+							foreach(field ; packet.fields) if(check(field)) return;
+							foreach(variant ; packet.variants) {
+								foreach(field ; variant.fields) if(check(field)) return;
+							}
+						}
+					}
+				}();
+			}
+			data.line("big endian | little endian");
+			data.line("---|---");
+			data.line(be.join(", ") ~ " | " ~ le.join(", ")).nl;
+			data.line("**Ids**: " ~ ptrs.data.id).nl;
+			data.line("**Array's length**: " ~ ptrs.data.arrayLength).nl;
 			data.line("-----");
 
+			// sections (legend)
+			data.line("## Packets").nl;
+			data.line("Section | Packets");
+			data.line("---|:---:");
+			foreach(section ; ptrs.data.sections) {
+				data.line("[" ~ pretty(toCamelCase(section.name)) ~ "](" ~ game ~ "/" ~ section.name.replace("_", "-") ~ ") | " ~ to!string(section.packets.length));
+			}
+			data.save();
+			
 			// field (generic)
 			void writeFields(string[] namespace, Protocol.Field[] fields, string fieldsDesc="## Fields") {
 				if(fields.length) {
@@ -198,62 +257,6 @@ class DocsGenerator : Generator {
 				}
 			}
 
-			// endianness
-			data.line("## Encoding").nl;
-			data.line("**Endianness**:").nl;
-			string def = "big_endian";
-			string[string] change;
-			foreach(string type, string end; ptrs.data.endianness) {
-				if(type != "*") change[type] = end;
-			}
-			string[] be, le;
-			string[] used;
-			foreach(string type ; ["short", "ushort", "int", "uint", "long", "ulong", "float", "double"]) {
-				(){
-					bool checkImpl(string ft) {
-						auto t = ft in ptrs.data.arrays;
-						if(t ? (*t).base.startsWith(type) || (*t).length.startsWith(type) : ft.startsWith(type)) {
-							auto e = type in change ? change[type] : def;
-							if(e == "big_endian") be ~= type;
-							else le ~= type;
-							return true;
-						}
-						return false;
-					}
-					bool check(Protocol.Field field) {
-						return checkImpl(field.type);
-					}
-					if(checkImpl(ptrs.data.id)) return;
-					if(checkImpl(ptrs.data.arrayLength)) return;
-					foreach(type ; ptrs.data.types) {
-						foreach(field ; type.fields) if(check(field)) return;
-					}
-					foreach(section ; ptrs.data.sections) {
-						foreach(packet ; section.packets) {
-							foreach(field ; packet.fields) if(check(field)) return;
-							foreach(variant ; packet.variants) {
-								foreach(field ; variant.fields) if(check(field)) return;
-							}
-						}
-					}
-				}();
-			}
-			data.line("big endian | little endian");
-			data.line("---|---");
-			data.line(be.join(", ") ~ " | " ~ le.join(", "));
-			data.line("**Ids**: " ~ ptrs.data.id);
-			data.line("**Array's length**: " ~ ptrs.data.arrayLength);
-			data.line("-----");
-
-			// sections (legend)
-			data.line("## Packets").nl;
-			data.line("Section | Packets");
-			data.line("---|:---:");
-			foreach(section ; ptrs.data.sections) {
-				data.line("[" ~ pretty(toCamelCase(section.name)) ~ "](" ~ game ~ "/" ~ section.name.replace("_", "-") ~ ") | " ~ to!string(section.packets.length));
-			}
-			data.save();
-
 			// sections
 			foreach(section ; ptrs.data.sections) {
 
@@ -276,8 +279,8 @@ class DocsGenerator : Generator {
 					data.line("**Id**: " ~ packet.id.to!string).nl;
 					data.line("**Id** (hex): " ~ ("00" ~ packet.id.to!string(16))[$-2..$]).nl;
 					data.line("**Id** (bin): " ~ ("00000000" ~ packet.id.to!string(2))[$-8..$]).nl;
-					data.line("**Clientbound**: " ~ packet.clientbound ? "✔️" : "✖️").nl;
-					data.line("**Serverbound**: " ~ packet.serverbound ? "✔️" : "✖️").nl;
+					data.line("**Clientbound**: " ~ (packet.clientbound ? "✔️" : "✖️")).nl;
+					data.line("**Serverbound**: " ~ (packet.serverbound ? "✔️" : "✖️")).nl;
 					if(packet.description.length) data.line(packet.description).nl;
 					writeFields([], packet.fields);
 					if(packet.variants.length) {
@@ -363,6 +366,7 @@ class DocsGenerator : Generator {
 				foreach(type ; (*metadata).data.types) {
 					data.line(toCamelCase(type.name) ~ " | " ~ convert(type.type) ~ " | " ~ to!string(type.id) ~ (e ? " | " ~ type.endianness.replace("_", " ") : ""));
 				}
+				data.nl;
 
 				// data
 				data.line("## Data");
@@ -375,6 +379,7 @@ class DocsGenerator : Generator {
 					data.put(" | " ~ convert(meta.type) ~ " | " ~ to!string(meta.id) ~ " | " ~ meta.default_ ~ " | " ~ (meta.required ? "✓" : " "));
 					data.nl;
 				}
+				data.nl;
 
 				// data's description and flags
 				foreach(meta ; (*metadata).data.data) {
@@ -408,7 +413,7 @@ class DocsGenerator : Generator {
 			p[prts.software] ~= tuple(prts.data, prts.protocol, game);
 		}
 		auto data = source("index");
-		data.line(_data.description).nl;
+		//TODO description
 		foreach(string name ; ["Minecraft: Java Edition", "Minecraft (Bedrock Engine)", "Minecraft: Pocket Edition", "Raknet"]) {
 			size_t date(string str) {
 				auto spl = str.split("/");
@@ -423,7 +428,7 @@ class DocsGenerator : Generator {
 				_from |= pr[0].from.length != 0;
 				_to |= pr[0].to.length != 0;
 			}
-			data.line("## [" ~ name ~ "](" ~ namespace ~ ")").nl;
+			data.line("## [" ~ name ~ "](protocol/" ~ namespace ~ ")").nl;
 			data.line("Protocol | Packets | Released | From | To");
 			data.line(":---:|:---:|:---:|:---:|:---:");
 			foreach(cp ; sorted) {

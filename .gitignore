@@ -5,3 +5,4 @@
 *.selections.json
 .dub
 /gen
+version.txt

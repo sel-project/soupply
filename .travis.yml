@@ -9,7 +9,8 @@ before_script:
   - cd ..
 
 script:
-  - SOUPPLY_VERSION=1.1.$(( TRAVIS_BUILD_NUMBER - 187 ))
+  - VERSION=1.0.$(( TRAVIS_BUILD_NUMBER - 188 ))
+  - echo $VERSION > version.txt
   - dub run
 
 after_success:
@@ -23,7 +24,7 @@ after_success:
       cd $repo
       git add --all .
       git commit -m "${MESSAGE}" -m "${DESC}"
-      git tag -a "v${SOUPPLY_VERSION}" -m "${MESSAGE}"
+      git tag -a "v${VERSION}" -m "${MESSAGE}"
       git push -u --follow-tags "https://${TOKEN}@github.com/soupply/${repo////}.git" master
       cd ..
     done
