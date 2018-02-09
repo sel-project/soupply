@@ -403,7 +403,7 @@ class DocsGenerator : Generator {
 		}
 		
 		// index
-		Tuple!(Protocol, size_t, string)[][string] p;
+		Tuple!(Protocol, uint, string)[][string] p;
 		foreach(game, prts; _data.protocols) {
 			p[prts.software] ~= tuple(prts.data, prts.protocol, game);
 		}

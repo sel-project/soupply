@@ -36,14 +36,14 @@ import soupply.data;
 import soupply.generator;
 
 void main(string[] args) {
-
+	
 	args = args[1..$];
-
+	
 	if(args.canFind("-h") || args.canFind("--help")) {
 		//TODO write help
 		return;
 	}
-
+	
 	// metadata
 	Metadatas[string] metadatas;
 	foreach(string file ; dirEntries("data/metadata", SpanMode.breadth)) {
@@ -55,7 +55,7 @@ void main(string[] args) {
 						m.software = element.text.strip;
 						break;
 					case "protocol":
-						m.protocol = element.text.strip.to!size_t;
+						m.protocol = element.text.strip.to!uint;
 						break;
 					case "encoding":
 						if("prefix" in element.tag.attr) m.data.prefix = element.tag.attr["prefix"];
@@ -82,8 +82,8 @@ void main(string[] args) {
 								if("required" in md.tag.attr) data.required = md.tag.attr["required"].to!bool;
 								foreach(f ; md.elements) {
 									if(f.tag.name == "flag") {
-										data.flags ~= Metadata.Flag(f.tag.attr["name"].replace("-", "_"), text(f), to!size_t(f.tag.attr["bit"]));
-
+										data.flags ~= Metadata.Flag(f.tag.attr["name"].replace("-", "_"), text(f), to!uint(f.tag.attr["bit"]));
+										
 									}
 								}
 								m.data.data ~= data;
@@ -97,7 +97,7 @@ void main(string[] args) {
 			metadatas[file.name!"xml"] = m;
 		}
 	}
-
+	
 	// protocol
 	Protocols[string] protocols;
 	foreach(string file ; dirEntries("data/protocol", SpanMode.breadth)) {
@@ -117,7 +117,7 @@ void main(string[] args) {
 						protocol.software = text(element);
 						break;
 					case "protocol":
-						protocol.protocol = to!size_t(text(element));
+						protocol.protocol = to!uint(text(element));
 						break;
 					case "released":
 						protocol.data.released = text(element);
@@ -186,7 +186,7 @@ void main(string[] args) {
 									if(pk.tag.name == "packet") {
 										Protocol.Packet packet;
 										packet.name = pk.tag.attr["name"].replace("-", "_");
-										packet.id = pk.tag.attr["id"].to!size_t;
+										packet.id = pk.tag.attr["id"].to!uint;
 										packet.clientbound = pk.tag.attr["clientbound"].to!bool;
 										packet.serverbound = pk.tag.attr["serverbound"].to!bool;
 										packet.description = text(pk);
@@ -249,9 +249,9 @@ void main(string[] args) {
 			protocols[file.name!"xml"] = protocol;
 		}
 	}
-
+	
 	Generator.generateAll(Data("Automatically generated libraries for encoding and decoding Minecraft protocols", "MIT", environment.get("SOUPPLY_VERSION", "0.0.0"), protocols, metadatas));
-
+	
 }
 
 @property string name(string ext)(string file) {
@@ -260,16 +260,16 @@ void main(string[] args) {
 
 @property string text(Element element) {
 	auto ret = split(strip((){
-		if(element.texts.length) {
-			return element.texts[0].to!string;
-		} else {
-			try {
-				return element.text;
-			} catch(DecodeException) {
-				return "";
-			}
-		}
-	}()), "\n");
+				if(element.texts.length) {
+					return element.texts[0].to!string;
+				} else {
+					try {
+						return element.text;
+					} catch(DecodeException) {
+						return "";
+					}
+				}
+			}()), "\n");
 	foreach(ref str ; ret) str = decode(str.replaceAll(ctRegex!"[\r\t]", ""));
 	return ret.join("\n");
 }

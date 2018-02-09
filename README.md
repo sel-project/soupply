@@ -9,5 +9,5 @@ Documentation for the provided protocols is available at the [project's website]
 
 ### Generated code
 
-- [D](https://github.com/soupply/d) [![Build Status](https://travis-ci.org/sel-utils/d.svg?branch=master)](https://travis-ci.org/sel-utils/d) [![DUB Package](https://img.shields.io/dub/v/sel-utils.svg)](https://code.dlang.org/packages/sel-utils)
+- [D](https://github.com/soupply/d)
 - [Java](https://github.com/soupply/java)
