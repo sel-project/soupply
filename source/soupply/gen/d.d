@@ -267,7 +267,7 @@ class DGenerator : CodeGenerator {
 					}
 					endBlock().nl;
 				}
-				save();
+				save("protocol/" ~ game);
 			}
 		}
 
@@ -282,7 +282,7 @@ class DGenerator : CodeGenerator {
 			block("struct Metadata");
 			endBlock();
 
-			save();
+			save("metadata/" ~ game);
 
 		}
 
@@ -507,7 +507,6 @@ class DGenerator : CodeGenerator {
 	enum string[string] defaultAliases = [
 		"uuid": "UUID",
 		"bytes": "ubyte[]",
-		"triad": "int",
 		"varshort": "short",
 		"varushort": "ushort",
 		"varint": "int",
