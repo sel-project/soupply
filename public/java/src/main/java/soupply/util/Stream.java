@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2016-2018 sel-project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,44 +20,21 @@
  * SOFTWARE.
  *
  */
-module soupply.util;
+package soupply.util;
 
-import std.algorithm : canFind, min;
-import std.base64 : Base64URL;
-import std.conv : to;
-import std.json : JSONValue;
-import std.regex : ctRegex, replaceAll;
-import std.string : toLower;
+public abstract class Stream extends Buffer
+{
 
-import transforms : snakeCase, camelCaseLower, camelCaseUpper;
-
-deprecated @property string toSnakeCase(const string input) {
-	return input.snakeCase;
-}
-
-deprecated @property string toCamelCase(const string input) {
-	return input.camelCaseLower;
-}
-
-deprecated @property string toPascalCase(const string input) {
-	return input.camelCaseUpper;
-}
-
-string hash(string name) {
-	string ret;
-	foreach(i, c; Base64URL.encode(cast(ubyte[])name).toLower.replaceAll(ctRegex!`[_\-=]`, "")) {
-		if((i & 1) == 0) ret ~= c;
+	public final void reset()
+	{
+		this._buffer = new byte[0];
+		this._index = 0;
 	}
-	while("0123456789".canFind(ret[0])) ret = ret[1..$];
-	return ret.toLower[0..min($, 8)];
-}
+	
+	public abstract int length();
+	
+	public abstract byte[] encode();
+	
+	public abstract void decode(byte[] buffer);
 
-string constOf(string value) {
-	if(value == "true" || value == "false") return value;
-	try {
-		to!real(value);
-		return value;
-	} catch(Exception) {
-		return JSONValue(value).toString();
-	}
 }

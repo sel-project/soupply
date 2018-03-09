@@ -20,7 +20,7 @@
  * SOFTWARE.
  *
  */
-module soupply.main;
+module app;
 
 import std.algorithm : canFind, min;
 import std.conv : to;

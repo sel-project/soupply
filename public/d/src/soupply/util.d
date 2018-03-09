@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2016-2018 sel-project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,42 +22,46 @@
  */
 module soupply.util;
 
-import std.algorithm : canFind, min;
-import std.base64 : Base64URL;
-import std.conv : to;
-import std.json : JSONValue;
-import std.regex : ctRegex, replaceAll;
-import std.string : toLower;
+import std.string : split, join;
+import std.uuid : _UUID = UUID;
 
-import transforms : snakeCase, camelCaseLower, camelCaseUpper;
+import packetmaker.buffer : InputBuffer, OutputBuffer;
+import packetmaker.maker : Exclude;
 
-deprecated @property string toSnakeCase(const string input) {
-	return input.snakeCase;
-}
+struct Tuple(T, string variables) if(variables.length)
+{
 
-deprecated @property string toCamelCase(const string input) {
-	return input.camelCaseLower;
-}
-
-deprecated @property string toPascalCase(const string input) {
-	return input.camelCaseUpper;
-}
-
-string hash(string name) {
-	string ret;
-	foreach(i, c; Base64URL.encode(cast(ubyte[])name).toLower.replaceAll(ctRegex!`[_\-=]`, "")) {
-		if((i & 1) == 0) ret ~= c;
+	union
+	{
+	
+		T[variables.length] array;
+		struct
+		{
+			mixin("@Exclude T " ~ variables.split("").join(";@Exclude T ") ~ ";");
+		}
+	
 	}
-	while("0123456789".canFind(ret[0])) ret = ret[1..$];
-	return ret.toLower[0..min($, 8)];
+	
+	this(T[] values...)
+	{
+		this.array = values;
+	}
+
 }
 
-string constOf(string value) {
-	if(value == "true" || value == "false") return value;
-	try {
-		to!real(value);
-		return value;
-	} catch(Exception) {
-		return JSONValue(value).toString();
+struct UUID {
+
+	_UUID uuid;
+	
+	void encodeBody(InputBuffer buffer) {
+		buffer.writeBytes(uuid.data);
 	}
+	
+	void decodeBody(OutputBuffer buffer) {
+		ubyte[16] data = buffer.readBytes(16);
+		uuid = _UUID(data);
+	}
+	
+	alias uuid this;
+
 }

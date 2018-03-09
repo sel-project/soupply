@@ -20,27 +20,11 @@
  * SOFTWARE.
  *
  */
-module soupply.util.tuple;
+package soupply.util;
 
-import std.string : split, join;
-
-struct Tuple(T, string variables) if(variables.length)
+public abstract class Packet extends Stream
 {
 
-	union
-	{
-	
-		T[variables.length] array;
-		struct
-		{
-			mixin("T " ~ variables.split("").join(";T ") ~ ";");
-		}
-	
-	}
-	
-	this(T[] values...)
-	{
-		this.array = values;
-	}
+	public abstract int getId();
 
 }

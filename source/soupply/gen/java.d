@@ -44,7 +44,7 @@ version(Java):
 class JavaGenerator : Generator {
 
 	static this() {
-		Generator.register!JavaGenerator("java", "src/java/" ~ SOFTWARE);
+		Generator.register!JavaGenerator("java", "src/java/main/" ~ SOFTWARE);
 	}
 
 	protected override void generateImpl(Data data) {

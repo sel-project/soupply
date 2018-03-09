@@ -40,6 +40,17 @@ version(JavaScript):
 
 class JavascriptGeneratorImpl(bool node) : Generator {
 
+	public this() {
+		CodeMaker.Settings settings;
+
+		settings.moduleStat = "const %s =";
+		settings.importStat = "import %s from '%s'";
+		settings.classStat = "%s: class extends Buffer";
+		settings.enumStat = "static get %s(){ return %d; }";
+
+		super(settings, "js");
+	}
+
 	protected override void generateImpl(Data data) {
 		
 		mkdirRecurse("../src/js/sul");

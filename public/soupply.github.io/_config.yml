@@ -1,4 +1,4 @@
-title: Soupply
+title: {{name.capital}}
 description: {{description}}
 theme: jekyll-theme-slate
 show_downloads: false

@@ -44,8 +44,8 @@ class DocsGenerator : Generator {
 		
 		enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "string", "varshort", "varushort", "varint", "varuint", "varlong", "varulong", "triad", "uuid", "bytes"];
 
-		Source source(string path) {
-			auto ret = new Source(this, path, "md");
+		Maker make(string path) {
+			auto ret = new Maker(this, path, "md");
 			ret.line("---").line("layout: default").line("---").nl;
 			return ret;
 		}
@@ -54,10 +54,10 @@ class DocsGenerator : Generator {
 
 			immutable gameName = game[0..$-ptrs.protocol.to!string.length];
 
-			Source head(string[] location...) {
+			Maker head(string[] location...) {
 				foreach(ref l ; location) l = l.replace("_", "-");
 				location = game ~ location;
-				auto ret = source("protocol/" ~ join(location, "/"));
+				auto ret = make("protocol/" ~ join(location, "/"));
 				// add navigation
 				string[] links = ["[home](/)"];
 				foreach(i, nav; location) {
@@ -83,7 +83,7 @@ class DocsGenerator : Generator {
 
 			auto metadata = game in _data.metadatas;
 
-			auto data = source("protocol/" ~ game);
+			auto data = make("protocol/" ~ game);
 			data.line("# " ~ ptrs.software ~ " " ~ ptrs.protocol.to!string).nl; // title
 			uint[] others;
 			foreach(otherGame, op; _data.protocols) {
@@ -412,9 +412,9 @@ class DocsGenerator : Generator {
 		foreach(game, prts; _data.protocols) {
 			p[prts.software] ~= tuple(prts.data, prts.protocol, game);
 		}
-		auto data = source("index");
+		auto data = make("index");
 		//TODO description
-		foreach(string name ; ["Minecraft: Java Edition", "Minecraft (Bedrock Engine)", "Minecraft: Pocket Edition", "Raknet"]) {
+		foreach(string name ; ["Minecraft: Java Edition", "Minecraft (Bedrock Engine)", "Minecraft: Pocket Edition"]) {
 			size_t date(string str) {
 				auto spl = str.split("/");
 				if(spl.length == 3) return (to!size_t(spl[0]) * 366 + to!size_t(spl[1])) * 31 + to!size_t(spl[2]);

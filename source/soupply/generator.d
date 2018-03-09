@@ -27,7 +27,7 @@ import std.ascii : newline;
 import std.conv : to;
 import std.file : _read = read, _write = write, exists, isFile, remove, mkdirRecurse, dirEntries, SpanMode;
 import std.path : buildPath, buildNormalizedPath, dirSeparator;
-import std.string : indexOf, lastIndexOf, replace, split, join, strip, startsWith, endsWith;
+import std.string : indexOf, lastIndexOf, toLower, replace, split, join, strip, startsWith, endsWith, capitalize;
 
 import soupply.data;
 
@@ -93,7 +93,8 @@ abstract class Generator {
 
 		// copy and convert content of public into gen/name
 		string[string] rep = [
-			"name": SOFTWARE,
+			"name": SOFTWARE.toLower,
+			"name.capital": SOFTWARE.capitalize,
 			"description": data.description,
 			"license": data.license,
 			"version": data.version_,
@@ -184,8 +185,8 @@ abstract class Generator {
 
 	protected abstract void generateImpl(Data);
 
-	protected void write(Source source, string generatorFile=null) {
-		this.write(source.data, source.file, generatorFile);
+	protected void write(Maker maker, string generatorFile=null) {
+		this.write(maker.data, maker.file, generatorFile);
 	}
 
 	protected void write(string data, string file, string generatorFile=null) {
@@ -236,7 +237,7 @@ private struct Header {
 
 }
 
-class Source {
+class Maker {
 
 	protected immutable string _newline;
 	protected immutable string _indent;
@@ -345,146 +346,5 @@ class Source {
 	}
 
 	alias appender this;
-
-}
-
-class SourceCode : Source {
-
-	static struct Settings {
-
-		bool semicolons = true;
-		bool braces = true;
-		bool inlineBraces = true;
-
-		string moduleSeparator = ".";
-
-		string baseModule = SOFTWARE;
-		string standardLibrary;
-
-		string comment = "//";
-
-	}
-
-	protected const Settings settings;
-
-	private immutable string _semicolon;
-
-	public this(inout Settings settings, Generator generator, string path, string extension) {
-		super(generator, path, extension);
-		this.settings = settings;
-		_semicolon = settings.semicolons ? ";" : "";
-	}
-
-	// ----------
-	// conversion
-	// ----------
-
-	/**
-	 * Converts a variable name.
-	 */
-	string convertName(string name) {
-		return name;
-	}
-
-	/**
-	 * Converts a variable type.
-	 */
-	string convertType(string type) {
-		return type;
-	}
-
-	// ------
-	// inline
-	// ------
-
-	/**
-	 * Adds a comment.
-	 */
-	typeof(this) comment(string comment) {
-		line(settings.comment ~ comment);
-		return this;
-	}
-	
-	/**
-	 * Adds a statement appending a semicolon at the end of it.
-	 */
-	typeof(this) stat(string stat) {
-		line(stat ~ _semicolon);
-		return this;
-	}
-	
-	/**
-	 * Adds a module. `soupply.` is always prepended.
-	 */
-	typeof(this) mod(string module_) {
-		return stat("module " ~ settings.baseModule ~ settings.moduleSeparator ~ module_);
-	}
-	
-	/**
-	 * Adds an import.
-	 */
-	typeof(this) imp(string module_, string[] selective...) {
-		return stat("import " ~ module_ ~ (selective.length ? " : " ~ selective.join(", ") : ""));
-	}
-	
-	typeof(this) import_std(string module_, string[] selective...) {
-		return imp(settings.standardLibrary ~ settings.moduleSeparator ~ module_, selective);
-	}
-	
-	typeof(this) import_this(string module_, string[] selective...) {
-		return imp(settings.baseModule ~ settings.moduleSeparator ~ module_, selective);
-	}
-
-	/**
-	 * Adds a variable declaration.
-	 */
-	typeof(this) var(string type, string name) {
-		return stat(convertType(type) ~ " " ~ convertName(name));
-	}
-
-	/// ditto
-	typeof(this) var(string modifiers, string type, string name) {
-		return stat(modifiers ~ " " ~ convertType(type) ~ " " ~ convertName(name));
-	}
-
-	/// ditto
-	typeof(this) var_assign(string type, string name, string value) {
-		return stat(convertType(type) ~ " " ~ convertName(name) ~ " = " ~ value);
-	}
-
-	/// ditto
-	typeof(this) var_assign(string modifiers, string type, string name, string value) {
-		return stat(modifiers ~ " " ~ convertType(type) ~ " " ~ convertName(name) ~ " = " ~ value);
-	}
-	
-	/**
-	 * Performs an operation.
-	 */
-	typeof(this) op(string name0, string op, string name1) {
-		return stat(name0 ~ " " ~ op ~ " " ~ name1);
-	}
-
-	/**
-	 * Assigns a variable.
-	 */
-	typeof(this) assign(string name, string value) {
-		return op(name, "=", value);
-	}
-
-	// ------
-	// scopes
-	// ------
-	
-	/**
-	 * Adds a declaration and calls `ob` to open a brace.
-	 */
-	typeof(this) block(string data) {
-		line(data).ob;
-		return this;
-	}
-
-	typeof(this) class_stat(string class_) {
-		return block("class " ~ class_);
-	}
 
 }

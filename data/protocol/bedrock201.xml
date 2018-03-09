@@ -312,7 +312,7 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint" endianness="big-endian" default="160">
+				<field name="protocol" type="uint" endianness="big-endian" default="201">
 					Version of the protocol used by the player.
 				</field>
 				<field name="body" type="login-body">
