@@ -90,8 +90,15 @@ class DGenerator : CodeGenerator {
 
 		with(make("protocol", game, "packet")) {
 
+			immutable extends = "PacketImpl!(Endian." ~ endiannessOf("*") ~ ", " ~ info.data.id ~ ", " ~ info.data.arrayLength ~ ")";
+
 			addImport("packetmaker").nl;
-			stat("alias " ~ base ~ " = PacketImpl!(Endian." ~ endiannessOf("*") ~ ", " ~ info.data.id ~ ", " ~ info.data.arrayLength ~ ")");
+			if(info.data.padding) {
+				addImportLib("util", "Pad").nl;
+				stat("alias " ~ base ~ " = Pad!(" ~ info.data.padding.to!string ~ ", " ~ extends ~ ")");
+			} else {
+				stat("alias " ~ base ~ " = " ~ extends);
+			}
 			save();
 
 		}
@@ -199,7 +206,7 @@ class DGenerator : CodeGenerator {
 			foreach(type ; info.data.types) {
 				immutable hasLength = type.length.length != 0;
 				// declaration
-				block("struct " ~ toPascalCase(type.name)).nl;
+				block("struct " ~ camelCaseUpper(type.name)).nl;
 				writeFields(types, type.fields, false);
 				if(hasLength) {
 					// encoding
@@ -210,7 +217,7 @@ class DGenerator : CodeGenerator {
 					block("void decodeBody(OutputBuffer buffer)");
 					endBlock().nl;
 				}
-				createToString(types, toPascalCase(type.name), type.fields, false);
+				createToString(types, camelCaseUpper(type.name), type.fields, false);
 				endBlock();
 				nl;
 			}
@@ -261,7 +268,7 @@ class DGenerator : CodeGenerator {
 							writeFields(s, variant.fields, true);
 							stat("mixin MakeNested").nl;
 							// to string
-							createToString(s, toPascalCase(packet.name) ~ "." ~ toPascalCase(variant.name), variant.fields);
+							createToString(s, camelCaseUpper(packet.name) ~ "." ~ camelCaseUpper(variant.name), variant.fields);
 							endBlock().nl;
 						}
 					}
@@ -439,7 +446,7 @@ class DGenerator : CodeGenerator {
 				data ~= "\t\t\t\t\tcase " ~ type.id.to!string ~ ":\n";
 				data ~= "\t\t\t\t\t\t" ~ convertType(type.type) ~ " _" ~ type.id.to!string ~ ";\n";
 				data ~= "\t\t\t\t\t\t" ~ createDecoding(type.type, "_" ~ type.id.to!string, type.endianness) ~ "\n";
-				data ~= "\t\t\t\t\t\tmetadata.decoded ~= DecodedMetadata.from" ~ toPascalCase(type.name) ~ "(id, _" ~ type.id.to!string ~ ");\n";
+				data ~= "\t\t\t\t\t\tmetadata.decoded ~= DecodedMetadata.from" ~ camelCaseUpper(type.name) ~ "(id, _" ~ type.id.to!string ~ ");\n";
 				data ~= "\t\t\t\t\t\tbreak;\n";
 			}
 			data ~= "\t\t\t\t\tdefault:\n";
@@ -472,7 +479,7 @@ class DGenerator : CodeGenerator {
 			data ~= "\t}\n\n";
 			// constructors
 			foreach(type ; m.data.types) {
-				data ~= "\tpublic static pure nothrow @trusted DecodedMetadata from" ~ toPascalCase(type.name) ~ "(" ~ convertType(m.data.id) ~ " id, " ~ convertType(type.type) ~ " value) {\n";
+				data ~= "\tpublic static pure nothrow @trusted DecodedMetadata from" ~ camelCaseUpper(type.name) ~ "(" ~ convertType(m.data.id) ~ " id, " ~ convertType(type.type) ~ " value) {\n";
 				data ~= "\t\tauto ret = new DecodedMetadata(id, " ~ type.id.to!string ~ ");\n";
 				data ~= "\t\tret." ~ convertDecoded(type.name) ~ " = value;\n";
 				data ~= "\t\treturn ret;\n";

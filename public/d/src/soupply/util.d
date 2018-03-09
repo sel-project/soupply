@@ -27,6 +27,33 @@ import std.uuid : _UUID = UUID;
 
 import packetmaker.buffer : InputBuffer, OutputBuffer;
 import packetmaker.maker : Exclude;
+import packetmaker.packet : Packet;
+
+template Pad(size_t padding, T:Packet) {
+
+	enum ubyte[] __padding = new ubyte[padding];
+
+	class Pad : T {
+	
+		override void encode(InputBuffer buffer) {
+			encodeId(buffer);
+			buffer.writeBytes(__padding);
+			encodeBody(buffer);
+		}
+		
+		override void decode(OutputBuffer buffer) {
+			decodeId(buffer);
+			buffer.readBytes(padding);
+			decodeBody(buffer);
+		}
+		
+		override void decode(ubyte[] buffer) {
+			super.decode(buffer);
+		}
+	
+	}
+
+}
 
 struct Tuple(T, string variables) if(variables.length)
 {

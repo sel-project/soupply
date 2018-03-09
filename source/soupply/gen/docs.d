@@ -34,6 +34,8 @@ import soupply.data;
 import soupply.generator;
 import soupply.util;
 
+import transforms;
+
 class DocsGenerator : Generator {
 
 	static this() {
@@ -77,8 +79,8 @@ class DocsGenerator : Generator {
 				else if(tup >= 0) return convert(type[0..tup]) ~ type[tup..$].replace("<", "&lt;").replace(">", "&gt;");
 				else if(type == "metadata") return "[metadata](/protocol/" ~ game ~ "/metadata)";
 				else if(defaultTypes.canFind(type)) return type;
-				else if(type in ptrs.data.arrays) return "[" ~ toCamelCase(type) ~ "](/protocol/" ~ game ~ "/arrays)";
-				else return "[" ~ toCamelCase(type) ~ "](/protocol/" ~ game ~ "/types/" ~ type.replace("_", "-") ~ ")";
+				else if(type in ptrs.data.arrays) return "[" ~ camelCaseLower(type) ~ "](/protocol/" ~ game ~ "/arrays)";
+				else return "[" ~ camelCaseLower(type) ~ "](/protocol/" ~ game ~ "/types/" ~ type.replace("_", "-") ~ ")";
 			}
 
 			auto metadata = game in _data.metadatas;
@@ -138,6 +140,7 @@ class DocsGenerator : Generator {
 
 			// endianness
 			data.line("## Encoding").nl;
+			//TODO encoding format (id, body) or (id, padding, body)
 			data.line("**Endianness**:").nl;
 			string def = "big_endian";
 			string[string] change;
@@ -188,7 +191,7 @@ class DocsGenerator : Generator {
 			data.line("Section | Packets");
 			data.line("---|:---:");
 			foreach(section ; ptrs.data.sections) {
-				data.line("[" ~ pretty(toCamelCase(section.name)) ~ "](" ~ game ~ "/" ~ section.name.replace("_", "-") ~ ") | " ~ to!string(section.packets.length));
+				data.line("[" ~ pretty(camelCaseLower(section.name)) ~ "](" ~ game ~ "/" ~ section.name.replace("_", "-") ~ ") | " ~ to!string(section.packets.length));
 			}
 			data.save();
 			
@@ -265,7 +268,7 @@ class DocsGenerator : Generator {
 				data.line("Packet | Id | Clientbound | Serverbound");
 				data.line("---|:---:|:---:|:---:");
 				foreach(packet ; section.packets) {
-					data.put("[" ~ pretty(toCamelCase(packet.name)) ~ "](" ~ section.name ~ "/" ~ packet.name.replace("_", "-") ~ ") | " ~ to!string(packet.id) ~ " | ");
+					data.put("[" ~ pretty(camelCaseLower(packet.name)) ~ "](" ~ section.name ~ "/" ~ packet.name.replace("_", "-") ~ ") | " ~ to!string(packet.id) ~ " | ");
 					data.put((packet.clientbound ? "✓" : " ") ~ " | " ~ (packet.serverbound ? "✓" : " "));
 					data.nl;
 				}
@@ -288,11 +291,11 @@ class DocsGenerator : Generator {
 						data.line("Variant | Field | Value");
 						data.line("---|---|:---:");
 						foreach(variant ; packet.variants) {
-							data.line("[" ~ pretty(toCamelCase(variant.name)) ~ "](#" ~ variant.name ~ ") | " ~ toCamelCase(packet.variantField) ~ " | " ~ variant.value);
+							data.line("[" ~ pretty(camelCaseLower(variant.name)) ~ "](#" ~ variant.name ~ ") | " ~ camelCaseLower(packet.variantField) ~ " | " ~ variant.value);
 						}
 						data.nl;
 						foreach(variant ; packet.variants) {
-							data.line("### " ~ pretty(toCamelCase(variant.name))).nl;
+							data.line("### " ~ pretty(camelCaseLower(variant.name))).nl;
 							if(variant.description.length) data.line(variant.description).nl;
 							writeFields([variant.name], variant.fields, "### Additional Fields");
 						}
@@ -333,7 +336,7 @@ class DocsGenerator : Generator {
 				if(e) data.put("|---");
 				data.nl;
 				foreach(name, a ; ptrs.data.arrays) {
-					data.line(toCamelCase(name) ~ " | " ~ convert(a.base) ~ " | " ~ convert(a.length) ~ (e ? " | " ~ a.endianness.replace("_", " ") : ""));
+					data.line(camelCaseLower(name) ~ " | " ~ convert(a.base) ~ " | " ~ convert(a.length) ~ (e ? " | " ~ a.endianness.replace("_", " ") : ""));
 				}
 				data.save();
 
@@ -364,7 +367,7 @@ class DocsGenerator : Generator {
 				data.line("Name | Type | Id" ~ (e ? " | Endianness" : ""));
 				data.line("---|---|:---:" ~ (e ? "|---" : ""));
 				foreach(type ; (*metadata).data.types) {
-					data.line(toCamelCase(type.name) ~ " | " ~ convert(type.type) ~ " | " ~ to!string(type.id) ~ (e ? " | " ~ type.endianness.replace("_", " ") : ""));
+					data.line(camelCaseLower(type.name) ~ " | " ~ convert(type.type) ~ " | " ~ to!string(type.id) ~ (e ? " | " ~ type.endianness.replace("_", " ") : ""));
 				}
 				data.nl;
 
@@ -373,7 +376,7 @@ class DocsGenerator : Generator {
 				data.line("Name | Type | Id | Default | Required");
 				data.line("---|---|---|---|---");
 				foreach(meta ; (*metadata).data.data) {
-					immutable name = pretty(toCamelCase(meta.name));
+					immutable name = pretty(camelCaseLower(meta.name));
 					if(meta.description.length || meta.flags.length) data.put("[" ~ name ~ "](#" ~ name.toLower.replace(" ", "-") ~ ")");
 					else data.put(name);
 					data.put(" | " ~ convert(meta.type) ~ " | " ~ to!string(meta.id) ~ " | " ~ meta.default_ ~ " | " ~ (meta.required ? "✓" : " "));
@@ -384,7 +387,7 @@ class DocsGenerator : Generator {
 				// data's description and flags
 				foreach(meta ; (*metadata).data.data) {
 					if(meta.description.length || meta.flags.length) {
-						data.line("### " ~ pretty(toCamelCase(meta.name))).nl;
+						data.line("### " ~ pretty(camelCaseLower(meta.name))).nl;
 						if(meta.description.length) data.line(meta.description).nl;
 						if(meta.flags.length) {
 							bool description;

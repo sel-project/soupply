@@ -34,7 +34,7 @@
 		Everything written in the documentation has been tested on [sel-server](https://github.com/sel-project/sel-server). The types and the packets without documentation haven't been tested yet or it's not clear what their real purpose in the game is.
 	</description>
 
-	<encoding id="varuint" arraylength="varuint">
+	<encoding id="varuint" arraylength="varuint" padding="2">
 
 		<endianness type="*" value="little-endian" />
 

@@ -58,9 +58,11 @@ struct Protocol {
 
 	string released;
 	string from, to;
+	bool latest = false;
 	string description;
 	string id;
 	string arrayLength;
+	size_t padding = 0;
 	string[string] endianness;
 	Section[] sections;
 	Type[] types;

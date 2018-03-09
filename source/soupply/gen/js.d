@@ -40,6 +40,10 @@ version(JavaScript):
 
 class JavascriptGeneratorImpl(bool node) : Generator {
 
+	static this() {
+		Generator.register!(JavascriptGeneratorImpl!node)(node ? "node-js" : "j", "src/" ~ SOFTWARE, ["/*", " *", " */"]);
+	}
+
 	public this() {
 		CodeMaker.Settings settings;
 
@@ -600,10 +604,4 @@ class JavascriptGeneratorImpl(bool node) : Generator {
 
 }
 
-class JavascriptGenerator : JavascriptGeneratorImpl!false {
-
-	static this() {
-		Generator.register!JavascriptGenerator("js", "");
-	}
-
-}
+//alias JavascriptGenerator : JavascriptGeneratorImpl!false;

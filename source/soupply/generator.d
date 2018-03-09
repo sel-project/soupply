@@ -50,6 +50,11 @@ abstract class Generator {
 		generators[name] = (Data data){ new T().generate(name, source, comment, data); };
 	}
 
+	/// ditto
+	public static void register(T:Generator)(string name, string source, string comment) {
+		register!T(name, source, [comment, comment, comment]);
+	}
+
 	/**
 	 * Generates code from every registered generator.
 	 */
@@ -131,8 +136,10 @@ abstract class Generator {
 					foreach(key, value; rep) {
 						filedata = filedata.replace("{{" ~ key ~ "}}", value);
 					}
-					// add to download queue
+					// add to download queue or copy
 					if(file.endsWith(".download")) downloads[gen ~ path[0..$-9]] = filedata;
+					else _write(gen ~ path, filedata);
+					// parse editorconfig
 					if(path == ".editorconfig") {
 						string[] current;
 						bool spaces = false;

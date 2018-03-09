@@ -133,6 +133,7 @@ void main(string[] args) {
 					case "encoding":
 						protocol.data.id = element.tag.attr["id"];
 						protocol.data.arrayLength = element.tag.attr["arraylength"];
+						if("padding" in element.tag.attr) protocol.data.padding = to!size_t(element.tag.attr["padding"]);
 						foreach(e ; element.elements) {
 							switch(e.tag.name) {
 								case "endianness":
@@ -248,6 +249,22 @@ void main(string[] args) {
 			protocols[file.name!"xml"] = protocol;
 		}
 	}
+
+	// set latest protocols
+	/+uint date(string str) {
+		auto spl = str.split("/");
+		if(spl.length == 3) return (to!uint(spl[0]) * 366 + to!uint(spl[1])) * 31 + to!uint(spl[2]);
+		else return uint.max;
+	}
+	uint[][string] latest;
+	foreach(ref protocol ; protocols) {
+		immutable released = date(protocol.data.released);
+		auto l = protocol.software in latest;
+		if(l is null || released < (*l)[0]) latest[protocol.software] = [released, protocol.protocol];
+	}
+	foreach(game, v; latest) {
+		protocols[game ~ to!string(v[1])].data.latest = true;
+	}+/
 	
 	Generator.generateAll(Data("Automatically generated libraries for encoding and decoding Minecraft protocols", "MIT", exists("version.txt") ? strip(cast(string)read("version.txt")) : "0.0.0", protocols, metadatas));
 	
