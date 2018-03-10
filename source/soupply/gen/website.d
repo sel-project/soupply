@@ -20,7 +20,7 @@
  * SOFTWARE.
  *
  */
-module soupply.docs;
+module soupply.website;
 
 import std.algorithm : min, max, canFind, sort;
 import std.conv : to;
@@ -426,6 +426,7 @@ class DocsGenerator : Generator {
 				data.put(" | " ~ ci.to);
 				data.nl;
 			}
+			data.nl;
 		}
 		data.save();
 
@@ -433,7 +434,7 @@ class DocsGenerator : Generator {
 
 }
 
-string head(string title, bool back, string game="", string protocol="", string section="") {
+/+string head(string title, bool back, string game="", string protocol="", string section="") {
 	return "<!DOCTYPE html>\n<html lang=\"en\">\n" ~
 			"\t<head>\n\t\t<meta charset=\"UTF-8\" />\n" ~
 			"\t\t<title>" ~ title ~ "</title>\n" ~
@@ -460,7 +461,7 @@ string head(string title, bool back, string game="", string protocol="", string 
 			"<a href=\"https://github.com/sel-project/sel-utils\">Github</a></div></div>\n" ~
 			"\t\t</div>\n" ~
 			"\t\t<div class=\"logo\" onclick=\"if(document.body.classList.contains('dark')){document.body.classList.remove('dark');}else{document.body.classList.add('dark');}\"></div>\n"; //TODO remember theme
-}
+}+/
 
 @property string pretty(string name) {
 	string ret;
@@ -492,4 +493,38 @@ string cond(string c) {
 		.replace(">", "$+/code$- is greater than $+code$-")
 		.replace("<", "$+/code$- is less than $+code$-") ~ "$+/code$-";
 	return c.replace("$+", "<").replace("$-", ">");
+}
+
+class SandboxGenerator : Generator {
+
+	static this() {
+		Generator.register!SandboxGenerator("soupply.github.io", "sandbox");
+	}
+
+	protected override void generateImpl(Data data) {
+
+		foreach(game, info; data.info) {
+
+			with(new Maker(this, game, "html")) {
+
+				line("<!DOCTYPE html>");
+				line("<head>").add_indent();
+				line("<title>Soupply's sandbox</title>");
+				line("<script src='sandbox.js'></script>");
+				string[] sections = ["types"];
+				foreach(section ; info.protocol.sections) sections ~= section.name;
+				foreach(section ; sections) {
+					line("<script src='src/" ~ game ~ "/" ~ section ~ ".js'></script>");
+				}
+				remove_indent();
+				line("</head>");
+
+				save();
+
+			}
+
+		}
+
+	}
+
 }

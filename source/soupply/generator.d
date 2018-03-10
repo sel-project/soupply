@@ -22,22 +22,41 @@
  */
 module soupply.generator;
 
+import std.algorithm : canFind;
 import std.array : Appender;
 import std.ascii : newline;
 import std.concurrency : spawnLinked, receiveOnly, LinkTerminated;
 import std.conv : to;
 import std.datetime.stopwatch : StopWatch;
 import std.file : _read = read, _write = write, exists, isFile, remove, mkdirRecurse, dirEntries, SpanMode;
-import std.parallelism : parallel;
+import std.parallelism : TaskPool, task;
 import std.path : buildPath, buildNormalizedPath, dirSeparator;
 import std.stdio : writeln;
 import std.string : indexOf, lastIndexOf, toLower, replace, split, join, strip, stripRight, startsWith, endsWith, capitalize;
 
 import soupply.data;
 
+struct GeneratorInfo {
+
+	string name;
+	string source;
+	string[] comment;
+	Generator generator;
+
+}
+
+struct Editorconfig {
+
+	string newline;
+	string indentation;
+	bool finalNewline;
+
+}
+
 abstract class Generator {
 
-	private static void delegate(Data)[string] generators;
+	private static string[] names;
+	private static GeneratorInfo[] generators;
 
 	/**
 	 * Registers a new generator.
@@ -47,7 +66,8 @@ abstract class Generator {
 	 * ---
 	 */
 	public static void register(T:Generator)(string name, string source, string[] comment=null) {
-		generators[name] = (Data data){ new T().generate(name, source, comment, data); };
+		if(!names.canFind(name)) names ~= name;
+		generators ~= GeneratorInfo(name, source, comment, new T());
 	}
 
 	/// ditto
@@ -60,66 +80,12 @@ abstract class Generator {
 	 */
 	public static void generateAll(Data data) {
 
-		string[] keys;
-		void delegate(Data)[] values;
-
-		foreach(key, value; generators) {
-			keys ~= key;
-			values ~= value;
-		}
-
-		foreach(i, ref generator ; parallel(values)) {
-					
-			StopWatch timer;
-			timer.start();
-
-			generator(data);
-		
-			timer.stop();
-			writeln("Generated data for ", keys[i], " in ", timer.peek);
-
-		}
-
-	}
-
-	protected Data data;
-
-	private string path;
-	private string[] comment; // open, continue, close
-
-	private string[3][string] editorconfig; // editorconfig["*"] = ["\r\n", "\t"]
-	
-	protected final @property Generator generator() {
-		return this;
-	}
-
-	public final void generate(string name, string source, string[] comment, Data data) {
-
+		Editorconfig[string][string] editorconfig;
 		string[string] downloads;
 
-		// save/init variables
-		this.data = data;
-		this.comment = comment;
-		this.editorconfig["*"] = [newline, "\t", ""];
+		StopWatch total;
+		total.start();
 
-		// create paths
-		this.path = buildPath("gen", name, source) ~ dirSeparator;
-		immutable gen = buildPath("gen", name) ~ dirSeparator;
-
-		if(exists(gen)) {
-			// remove every file that has been previously generated
-			foreach(file ; dirEntries(gen, SpanMode.depth)) {
-				if(file.isFile && file.indexOf(dirSeparator ~ ".git" ~ dirSeparator) == -1) remove(file);
-			}
-		} else {
-			// create the directory
-			mkdirRecurse(gen);
-		}
-
-		// copy licence
-		_write(gen ~ "LICENSE", _read("LICENSE"));
-
-		// copy and convert content of public into gen/name
 		string[string] rep = [
 			"name": SOFTWARE.toLower,
 			"name.capital": SOFTWARE.capitalize,
@@ -127,6 +93,73 @@ abstract class Generator {
 			"license": data.license,
 			"version": data.version_,
 		];
+
+		// copy files, init editorconfig, get downloads
+		foreach(name ; names) {
+			editorconfig[name] = (Editorconfig[string]).init;
+			init(name, rep, editorconfig[name], downloads);
+		}
+
+		static void generate(GeneratorInfo info, Editorconfig[string] editorconfig, Data data) {
+
+			synchronized writeln("Generating data for ", info.name, " in path gen/", info.source);
+
+			StopWatch timer;
+			timer.start();
+			
+			with(info) generator.generate(name, source, comment, editorconfig, data);
+			
+			timer.stop();
+			synchronized writeln("Generated data for ", info.name, " in ", timer.peek);
+
+		}
+
+		static void download(string path, string url) {
+
+			synchronized writeln("Downloading ", url);
+
+			version(Windows) {
+				import std.net.curl : get;
+				char[] data = get(url);
+			} else {
+				import std.process : executeShell;
+				string data = executeShell("curl -sL " ~ url).output.strip;
+			}
+			_write(path, data);
+
+			synchronized writeln("Downloaded ", url, " into ", path);
+
+		}
+
+		TaskPool pool = new TaskPool();
+
+		writeln("Generating data from ", generators.length, " generators using ", pool.size, " workers");
+
+		foreach(info ; generators) pool.put(task!generate(info, editorconfig[info.name], data));
+
+		foreach(path, url; downloads) pool.put(task!download(path, url));
+
+		pool.finish(true);
+
+		total.stop();
+		writeln("Done. Generation took ", total.peek);
+
+	}
+
+	private static void init(string name, string[string] rep, ref Editorconfig[string] editorconfig, ref string[string] downloads) {
+		
+		// create paths
+		immutable gen = buildPath("gen", name) ~ dirSeparator;
+		
+		if(!exists(gen)) {
+			// create the directory
+			mkdirRecurse(gen);
+		}
+		
+		// copy licence
+		_write(gen ~ "LICENSE", _read("LICENSE"));
+		
+		// copy and convert content of public into gen/name
 		immutable public_ = buildPath("public", name) ~ dirSeparator;
 		if(exists(public_)) {
 			foreach(string file ; dirEntries(public_, SpanMode.breadth)) {
@@ -144,7 +177,7 @@ abstract class Generator {
 						string[] current;
 						bool spaces = false;
 						void add(string[] exts...) {
-							foreach(ext ; exts) this.editorconfig[ext] = [newline, "\t", ""];
+							foreach(ext ; exts) editorconfig[ext] = Editorconfig(newline, "\t", false);
 							current = exts;
 						}
 						foreach(line ; split(filedata, "\n")) {
@@ -168,21 +201,21 @@ abstract class Generator {
 										case "end_of_line":
 											value = value.replace("cr", "\r");
 											value = value.replace("lf", "\n");
-											foreach(c ; current) this.editorconfig[c][0] = value;
+											foreach(c ; current) editorconfig[c].newline = value;
 											break;
 										case "indent_style":
 											spaces = value == "space";
-											if(!spaces) foreach(c ; current) this.editorconfig[c][1] = "\t";
+											if(!spaces) foreach(c ; current) editorconfig[c].indentation = "\t";
 											break;
 										case "indent_size":
 											if(spaces) {
 												char[] indent = new char[to!size_t(value)];
 												foreach(ref i ; indent) i = ' ';
-												foreach(c ; current) this.editorconfig[c][1] = indent.idup;
+												foreach(c ; current) editorconfig[c].indentation = indent.idup;
 											}
 											break;
 										case "insert_final_newline":
-											foreach(c ; current) this.editorconfig[c][2] = "yes";
+											foreach(c ; current) editorconfig[c].finalNewline = true;
 											break;
 										default:
 											break;
@@ -198,20 +231,29 @@ abstract class Generator {
 			}
 		}
 
-		// start downloads
-		size_t spawned = 0;
-		if(downloads.length) {
-			foreach(path, url; downloads) {
-				spawned++;
-				spawnLinked(&download, path, url);
-			}
-		}
+	}
+
+	protected Data data;
+
+	private string path;
+	private string[] comment; // open, continue, close
+
+	private Editorconfig[string] editorconfig;
+	
+	protected final @property Generator generator() {
+		return this;
+	}
+
+	public final void generate(string name, string source, string[] comment, Editorconfig[string] editorconfig, Data data) {
+
+		// save/init variables
+		this.data = data;
+		this.path = buildPath("gen", name, source) ~ dirSeparator;
+		this.comment = comment;
+		this.editorconfig = editorconfig;
 		
 		// generate data
 		this.generateImpl(data);
-
-		// join threads
-		while(spawned--) receiveOnly!LinkTerminated();
 
 	}
 	
@@ -237,17 +279,6 @@ abstract class Generator {
 		_write(path, data);
 	}
 
-}
-
-private void download(string path, string url) {
-	version(Windows) {
-		import std.net.curl : get;
-		char[] data = get(url);
-	} else {
-		import std.process : executeShell;
-		string data = executeShell("curl -sL " ~ url).output.strip;
-	}
-	_write(path, data);
 }
 
 private struct Header {
@@ -284,7 +315,7 @@ class Maker {
 
 	protected immutable string _newline;
 	protected immutable string _indent;
-	protected immutable string _final_newline;
+	protected immutable bool _final_newline;
 
 	private Generator generator;
 	public immutable string file;
@@ -295,16 +326,16 @@ class Maker {
 	public this(Generator generator, string path, string extension) {
 		auto e = extension in generator.editorconfig;
 		if(e is null) e = "*" in generator.editorconfig;
-		_newline = (*e)[0];
-		_indent = (*e)[1];
-		_final_newline = (*e)[2];
+		_newline = (*e).newline;
+		_indent = (*e).indentation;
+		_final_newline = (*e).finalNewline;
 		this.generator = generator;
 		this.file = path ~ "." ~ extension;
 	}
 
 	@property string data() {
 		string ret = appender.data.stripRight;
-		if(_final_newline.length) ret ~= _newline;
+		if(_final_newline) ret ~= _newline;
 		return ret;
 	}
 

@@ -47,7 +47,7 @@ void main(string[] args) {
 	Info[string] data;
 	foreach(string file ; dirEntries("data/", SpanMode.breadth)) {
 		if(file.isFile && file.endsWith(".xml")) {
-			Info info;
+			Info info = Info(file);
 			string[string] aliases;
 			@property string convert(string type) {
 				auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
@@ -63,7 +63,7 @@ void main(string[] args) {
 						break;
 					case "protocol":
 						immutable protocol = text(element);
-						info.game = file.name!"xml"[0..$-protocol.length];
+						info.game = file[5..$-protocol.length-4];
 						info.version_ = protocol.to!uint;
 						break;
 					case "released":
@@ -235,7 +235,7 @@ void main(string[] args) {
 						break;
 				}
 			}
-			data[file.name!"xml"] = info;
+			data[info.game ~ info.version_.to!string] = info;
 		}
 	}
 
@@ -257,10 +257,6 @@ void main(string[] args) {
 	
 	Generator.generateAll(Data("Automatically generated libraries for encoding and decoding Minecraft protocols", "MIT", exists("version.txt") ? strip(cast(string)read("version.txt")) : "0.0.0", data));
 	
-}
-
-@property string name(string ext)(string file) {
-	return file[file.lastIndexOf(dirSeparator)+1..$-ext.length-1];
 }
 
 @property string text(Element element) {

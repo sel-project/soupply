@@ -2,3 +2,6 @@ title: {{name.capital}}
 description: {{description}}
 theme: jekyll-theme-slate
 show_downloads: false
+google_analytics: UA-115503228-1
+github:
+  repository_url: https://github.com/sel-project/soupply

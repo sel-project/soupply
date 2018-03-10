@@ -39,6 +39,7 @@ struct Data {
 
 struct Info {
 
+	string file;
 	string software;
 	string game;
 	uint version_;
