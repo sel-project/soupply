@@ -175,6 +175,13 @@ class CodeMaker : Maker {
 	typeof(this) addImportLib(string module_, string[] selective...) {
 		return addImport(settings.baseModule ~ settings.moduleSeparator ~ module_, selective);
 	}
+
+	/**
+	 * Adds a constant.
+	 */
+	typeof(this) addConst(string key, string value) {
+		return stat(format(settings.constStat, key, value));
+	}
 	
 	/**
 	 * Adds a variable declaration.

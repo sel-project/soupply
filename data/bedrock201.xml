@@ -10,7 +10,7 @@
 	
 	<from>1.2.10</from>
 
-	<to>1.2.10</to>
+	<to>1.2.11</to>
 
 	<description>
 		Protocol used in Minecraft: Pocket Edition and variants. The network part of the protocol is managed by [RakNet](../raknet/8.html).

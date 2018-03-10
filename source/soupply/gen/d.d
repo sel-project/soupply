@@ -50,6 +50,7 @@ class DGenerator : CodeGenerator {
 	private Protocol.Array[string] arrays;
 
 	public this() {
+
 		CodeMaker.Settings settings;
 		settings.inlineBraces = false;
 		settings.moduleSeparator = ".";
@@ -61,7 +62,7 @@ class DGenerator : CodeGenerator {
 		settings.constStat = "enum %s = %d";
 
 		super(settings, "d");
-		this.oneClassPerModule = true;
+
 	}
 
 	protected override string convertModule(string name) {
@@ -102,10 +103,6 @@ class DGenerator : CodeGenerator {
 			save();
 
 		}
-
-		// int -> []
-		// varint -> [Var]
-		// 
 
 		string[] attributes(Protocol.Field field) {
 
@@ -184,7 +181,7 @@ class DGenerator : CodeGenerator {
 		}
 
 		void createToString(CodeMaker source, string name, Protocol.Field[] fields, bool override_=true) {
-			source.block("public " ~ (override_ ? "override ": "") ~ "string toString()");
+			source.block((override_ ? "override ": "") ~ "string toString()");
 			string[] f;
 			foreach(i, field; fields) {
 				immutable n = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
@@ -221,7 +218,7 @@ class DGenerator : CodeGenerator {
 				endBlock();
 				nl;
 			}
-			save(game);
+			save(info.file);
 		}
 
 		// sections
@@ -274,7 +271,7 @@ class DGenerator : CodeGenerator {
 					}
 					endBlock().nl;
 				}
-				save(game);
+				save(info.file);
 			}
 		}
 

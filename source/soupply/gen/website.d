@@ -34,7 +34,7 @@ import soupply.data;
 import soupply.generator;
 import soupply.util;
 
-import transforms;
+import transforms : snakeCase, camelCaseLower, camelCaseUpper;
 
 class DocsGenerator : Generator {
 
@@ -510,12 +510,13 @@ class SandboxGenerator : Generator {
 				line("<!DOCTYPE html>");
 				line("<head>").add_indent();
 				line("<title>Soupply's sandbox</title>");
-				line("<script src='sandbox.js'></script>");
+				line("<script src='buffer.js'></script>");
 				string[] sections = ["types"];
 				foreach(section ; info.protocol.sections) sections ~= section.name;
 				foreach(section ; sections) {
 					line("<script src='src/" ~ game ~ "/" ~ section ~ ".js'></script>");
 				}
+				line("<script src='sandbox.js'></script>");
 				remove_indent();
 				line("</head>");
 

@@ -22,19 +22,23 @@
  */
 module soupply.generator;
 
-import std.algorithm : canFind;
+import core.atomic : atomicOp;
+
+import std.algorithm : canFind, count;
 import std.array : Appender;
 import std.ascii : newline;
 import std.concurrency : spawnLinked, receiveOnly, LinkTerminated;
 import std.conv : to;
 import std.datetime.stopwatch : StopWatch;
-import std.file : _read = read, _write = write, exists, isFile, remove, mkdirRecurse, dirEntries, SpanMode;
+import std.file : _read = read, _write = write, exists, isFile, isDir, remove, mkdirRecurse, rmdir, dirEntries, SpanMode;
 import std.parallelism : TaskPool, task;
 import std.path : buildPath, buildNormalizedPath, dirSeparator;
 import std.stdio : writeln;
 import std.string : indexOf, lastIndexOf, toLower, replace, split, join, strip, stripRight, startsWith, endsWith, capitalize;
 
 import soupply.data;
+
+private shared size_t __files, __lines;
 
 struct GeneratorInfo {
 
@@ -47,9 +51,9 @@ struct GeneratorInfo {
 
 struct Editorconfig {
 
-	string newline;
-	string indentation;
-	bool finalNewline;
+	string newline = "\n";
+	string indentation = "\t";
+	bool finalNewline = false;
 
 }
 
@@ -102,12 +106,20 @@ abstract class Generator {
 
 		static void generate(GeneratorInfo info, Editorconfig[string] editorconfig, Data data) {
 
-			synchronized writeln("Generating data for ", info.name, " in path gen/", info.source);
+			synchronized writeln("Generating data for ", info.name, " in path ", buildNormalizedPath(buildPath("gen", info.name, info.source)));
 
 			StopWatch timer;
 			timer.start();
+
+			try {
 			
-			with(info) generator.generate(name, source, comment, editorconfig, data);
+					with(info) generator.generate(name, source, comment, editorconfig, data);
+
+			} catch(Throwable e) {
+
+				writeln(e);
+
+			}
 			
 			timer.stop();
 			synchronized writeln("Generated data for ", info.name, " in ", timer.peek);
@@ -141,8 +153,25 @@ abstract class Generator {
 
 		pool.finish(true);
 
+		// delete empty directories or copy licence
+		void[] license = _read("LICENSE");
+		foreach(string dir ; dirEntries("gen/", SpanMode.shallow)) {
+			if(dir.isDir) {
+				bool empty = true;
+				foreach(_ ; dirEntries(dir, SpanMode.breadth)) {
+					empty = false;
+					break;
+				}
+				if(empty) {
+					rmdir(dir);
+				} else {
+					_write(dir ~ "/LICENSE", license);
+				}
+			}
+		}
+
 		total.stop();
-		writeln("Done. Generation took ", total.peek);
+		writeln("Done. Generated ", __lines, " lines in ", __files, " files in ", total.peek);
 
 	}
 
@@ -155,9 +184,6 @@ abstract class Generator {
 			// create the directory
 			mkdirRecurse(gen);
 		}
-		
-		// copy licence
-		_write(gen ~ "LICENSE", _read("LICENSE"));
 		
 		// copy and convert content of public into gen/name
 		immutable public_ = buildPath("public", name) ~ dirSeparator;
@@ -177,7 +203,7 @@ abstract class Generator {
 						string[] current;
 						bool spaces = false;
 						void add(string[] exts...) {
-							foreach(ext ; exts) editorconfig[ext] = Editorconfig(newline, "\t", false);
+							foreach(ext ; exts) editorconfig[ext] = Editorconfig.init;
 							current = exts;
 						}
 						foreach(line ; split(filedata, "\n")) {
@@ -246,6 +272,8 @@ abstract class Generator {
 
 	public final void generate(string name, string source, string[] comment, Editorconfig[string] editorconfig, Data data) {
 
+		if("*" !in editorconfig) editorconfig["*"] = Editorconfig.init;
+
 		// save/init variables
 		this.data = data;
 		this.path = buildPath("gen", name, source) ~ dirSeparator;
@@ -276,6 +304,8 @@ abstract class Generator {
 			header.close();
 			data = header.data ~ data;
 		}
+		atomicOp!"+="(__lines, data.count('\n'));
+		atomicOp!"+="(__files, 1);
 		_write(path, data);
 	}
 

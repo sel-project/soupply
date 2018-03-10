@@ -20,13 +20,9 @@
  * SOFTWARE.
  *
  */
-window.onload = function(){
-	
-	var hash = location.hash;
-	if(hash.startsWith("#")) {
-		
-		//TODO load right packet
-		
-	}
-	
-};
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: AssemblyTitle ("{{name.capital}}")]
+[assembly: AssemblyDescription ("{{description}}")]
+[assembly: AssemblyVersion ("{{version}}")]
