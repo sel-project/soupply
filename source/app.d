@@ -42,66 +42,12 @@ void main(string[] args) {
 		//TODO write help
 		return;
 	}
-	
-	// metadata
-	Metadatas[string] metadatas;
-	foreach(string file ; dirEntries("data/metadata", SpanMode.breadth)) {
+
+	// parse xml files in data/
+	Info[string] data;
+	foreach(string file ; dirEntries("data/", SpanMode.breadth)) {
 		if(file.isFile && file.endsWith(".xml")) {
-			Metadatas m;
-			foreach(element ; new Document(cast(string)read(file)).elements) {
-				switch(element.tag.name) {
-					case "software":
-						m.software = element.text.strip;
-						break;
-					case "protocol":
-						m.protocol = element.text.strip.to!uint;
-						break;
-					case "encoding":
-						if("prefix" in element.tag.attr) m.data.prefix = element.tag.attr["prefix"];
-						if("length" in element.tag.attr) m.data.length = element.tag.attr["length"];
-						if("suffix" in element.tag.attr) m.data.suffix = element.tag.attr["suffix"];
-						m.data.type = element.tag.attr["types"];
-						m.data.id = element.tag.attr["ids"];
-						foreach(t ; element.elements) {
-							if(t.tag.name == "type") {
-								auto e = "endianness" in t.tag.attr;
-								m.data.types ~= Metadata.Type(t.tag.attr["name"].replace("-", "_"), t.tag.attr["type"].replace("-", "_"), t.tag.attr["id"].to!ubyte, e ? replace(*e, "-", "_") : "");
-							}
-						}
-						break;
-					case "metadatas":
-						foreach(md ; element.elements) {
-							if(md.tag.name == "type") {
-								Metadata.Data data;
-								data.name = md.tag.attr["name"].replace("-", "_");
-								data.description = text(md);
-								data.type = md.tag.attr["type"].replace("-", "_");
-								data.id = md.tag.attr["id"].to!ubyte;
-								if("default" in md.tag.attr) data.default_ = md.tag.attr["default"];
-								if("required" in md.tag.attr) data.required = md.tag.attr["required"].to!bool;
-								foreach(f ; md.elements) {
-									if(f.tag.name == "flag") {
-										data.flags ~= Metadata.Flag(f.tag.attr["name"].replace("-", "_"), text(f), to!uint(f.tag.attr["bit"]));
-										
-									}
-								}
-								m.data.data ~= data;
-							}
-						}
-						break;
-					default:
-						break;
-				}
-			}
-			metadatas[file.name!"xml"] = m;
-		}
-	}
-	
-	// protocol
-	Protocols[string] protocols;
-	foreach(string file ; dirEntries("data/protocol", SpanMode.breadth)) {
-		if(file.isFile && file.endsWith(".xml")) {
-			Protocols protocol;
+			Info info;
 			string[string] aliases;
 			@property string convert(string type) {
 				auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
@@ -113,31 +59,33 @@ void main(string[] args) {
 			foreach(element ; new Document(cast(string)read(file)).elements) {
 				switch(element.tag.name) {
 					case "software":
-						protocol.software = text(element);
+						info.software = text(element);
 						break;
 					case "protocol":
-						protocol.protocol = to!uint(text(element));
+						immutable protocol = text(element);
+						info.game = file.name!"xml"[0..$-protocol.length];
+						info.version_ = protocol.to!uint;
 						break;
 					case "released":
-						protocol.data.released = text(element);
+						info.released = text(element);
 						break;
 					case "from":
-						protocol.data.from = text(element);
+						info.from = text(element);
 						break;
 					case "to":
-						protocol.data.to = text(element);
+						info.to = text(element);
 						break;
 					case "description":
-						protocol.data.description = text(element);
+						info.description = text(element);
 						break;
 					case "encoding":
-						protocol.data.id = element.tag.attr["id"];
-						protocol.data.arrayLength = element.tag.attr["arraylength"];
-						if("padding" in element.tag.attr) protocol.data.padding = to!size_t(element.tag.attr["padding"]);
+						info.protocol.id = element.tag.attr["id"];
+						info.protocol.arrayLength = element.tag.attr["arraylength"];
+						if("padding" in element.tag.attr) info.protocol.padding = to!size_t(element.tag.attr["padding"]);
 						foreach(e ; element.elements) {
 							switch(e.tag.name) {
 								case "endianness":
-									with(e.tag) protocol.data.endianness[attr["type"].replace("-", "_")] = attr["value"].replace("-", "_");
+									with(e.tag) info.protocol.endianness[attr["type"].replace("-", "_")] = attr["value"].replace("-", "_");
 									break;
 								case "alias":
 									with(e.tag) aliases[attr["name"].replace("-", "_")] = attr["type"].replace("-", "_");
@@ -146,7 +94,7 @@ void main(string[] args) {
 									Protocol.Type type;
 									type.name = e.tag.attr["name"].replace("-", "_");
 									type.description = text(e);
-									if("length" in e.tag.attr) type.length = e.tag.attr["length"].length ? convert(e.tag.attr["length"].replace("-", "_")) : protocol.data.arrayLength;
+									if("length" in e.tag.attr) type.length = e.tag.attr["length"].length ? convert(e.tag.attr["length"].replace("-", "_")) : info.protocol.arrayLength;
 									foreach(f ; e.elements) {
 										if(f.tag.name == "field") {
 											Protocol.Field field;
@@ -166,10 +114,10 @@ void main(string[] args) {
 											type.fields ~= field;
 										}
 									}
-									protocol.data.types ~= type;
+									info.protocol.types ~= type;
 									break;
 								case "array":
-									with(e.tag) protocol.data.arrays[attr["name"].replace("-", "_")] = Protocol.Array(convert(attr["base"].replace("-", "_")), convert(attr["length"].replace("-", "_")), ("endianness" in attr ? attr["endianness"].replace("-", "_") : ""));
+									with(e.tag) info.protocol.arrays[attr["name"].replace("-", "_")] = Protocol.Array(convert(attr["base"].replace("-", "_")), convert(attr["length"].replace("-", "_")), ("endianness" in attr ? attr["endianness"].replace("-", "_") : ""));
 									break;
 								default:
 									break;
@@ -238,7 +186,48 @@ void main(string[] args) {
 										section.packets ~= packet;
 									}
 								}
-								protocol.data.sections ~= section;
+								info.protocol.sections ~= section;
+							}
+						}
+						break;
+					case "metadata":
+						foreach(e ; element.elements) {
+							switch(e.tag.name) {
+								case "encoding":
+									if("prefix" in e.tag.attr) info.metadata.prefix = e.tag.attr["prefix"];
+									if("length" in e.tag.attr) info.metadata.length = e.tag.attr["length"];
+									if("suffix" in e.tag.attr) info.metadata.suffix = e.tag.attr["suffix"];
+									info.metadata.type = e.tag.attr["types"];
+									info.metadata.id = e.tag.attr["ids"];
+									foreach(t ; e.elements) {
+										if(t.tag.name == "type") {
+											auto end = "endianness" in t.tag.attr;
+											info.metadata.types ~= Metadata.Type(t.tag.attr["name"].replace("-", "_"), t.tag.attr["type"].replace("-", "_"), t.tag.attr["id"].to!ubyte, end ? replace(*end, "-", "_") : "");
+										}
+									}
+									break;
+								case "metadatas":
+									foreach(md ; e.elements) {
+										if(md.tag.name == "type") {
+											Metadata.Data meta;
+											meta.name = md.tag.attr["name"].replace("-", "_");
+											meta.description = text(md);
+											meta.type = md.tag.attr["type"].replace("-", "_");
+											meta.id = md.tag.attr["id"].to!ubyte;
+											if("default" in md.tag.attr) meta.default_ = md.tag.attr["default"];
+											if("required" in md.tag.attr) meta.required = md.tag.attr["required"].to!bool;
+											foreach(f ; md.elements) {
+												if(f.tag.name == "flag") {
+													meta.flags ~= Metadata.Flag(f.tag.attr["name"].replace("-", "_"), text(f), to!uint(f.tag.attr["bit"]));
+													
+												}
+											}
+											info.metadata.data ~= meta;
+										}
+									}
+									break;
+								default:
+									break;
 							}
 						}
 						break;
@@ -246,27 +235,27 @@ void main(string[] args) {
 						break;
 				}
 			}
-			protocols[file.name!"xml"] = protocol;
+			data[file.name!"xml"] = info;
 		}
 	}
 
 	// set latest protocols
-	/+uint date(string str) {
+	uint date(string str) {
 		auto spl = str.split("/");
 		if(spl.length == 3) return (to!uint(spl[0]) * 366 + to!uint(spl[1])) * 31 + to!uint(spl[2]);
 		else return uint.max;
 	}
 	uint[][string] latest;
-	foreach(ref protocol ; protocols) {
-		immutable released = date(protocol.data.released);
-		auto l = protocol.software in latest;
-		if(l is null || released < (*l)[0]) latest[protocol.software] = [released, protocol.protocol];
+	foreach(ref info ; data) {
+		immutable released = date(info.released);
+		auto l = info.game in latest;
+		if(l is null || released < (*l)[0]) latest[info.game] = [released, info.version_];
 	}
 	foreach(game, v; latest) {
-		protocols[game ~ to!string(v[1])].data.latest = true;
-	}+/
+		data[game ~ to!string(v[1])].latest = true;
+	}
 	
-	Generator.generateAll(Data("Automatically generated libraries for encoding and decoding Minecraft protocols", "MIT", exists("version.txt") ? strip(cast(string)read("version.txt")) : "0.0.0", protocols, metadatas));
+	Generator.generateAll(Data("Automatically generated libraries for encoding and decoding Minecraft protocols", "MIT", exists("version.txt") ? strip(cast(string)read("version.txt")) : "0.0.0", data));
 	
 }
 

@@ -52,9 +52,9 @@ class DocsGenerator : Generator {
 			return ret;
 		}
 
-		foreach(string game, Protocols ptrs; _data.protocols) {
+		foreach(string game, info; _data.info) {
 
-			immutable gameName = game[0..$-ptrs.protocol.to!string.length];
+			immutable gameName = info.game;
 
 			Maker head(string[] location...) {
 				foreach(ref l ; location) l = l.replace("_", "-");
@@ -79,18 +79,16 @@ class DocsGenerator : Generator {
 				else if(tup >= 0) return convert(type[0..tup]) ~ type[tup..$].replace("<", "&lt;").replace(">", "&gt;");
 				else if(type == "metadata") return "[metadata](/protocol/" ~ game ~ "/metadata)";
 				else if(defaultTypes.canFind(type)) return type;
-				else if(type in ptrs.data.arrays) return "[" ~ camelCaseLower(type) ~ "](/protocol/" ~ game ~ "/arrays)";
+				else if(type in info.protocol.arrays) return "[" ~ camelCaseLower(type) ~ "](/protocol/" ~ game ~ "/arrays)";
 				else return "[" ~ camelCaseLower(type) ~ "](/protocol/" ~ game ~ "/types/" ~ type.replace("_", "-") ~ ")";
 			}
 
-			auto metadata = game in _data.metadatas;
-
 			auto data = make("protocol/" ~ game);
-			data.line("# " ~ ptrs.software ~ " " ~ ptrs.protocol.to!string).nl; // title
+			data.line("# " ~ info.software ~ " " ~ info.version_.to!string).nl; // title
 			uint[] others;
-			foreach(otherGame, op; _data.protocols) {
-				if(otherGame != game && otherGame.startsWith(gameName)) {
-					others ~= to!uint(otherGame[gameName.length..$]);
+			foreach(otherGame, oi; _data.info) {
+				if(otherGame != game && oi.game == info.game) {
+					others ~= oi.version_;
 				}
 			}
 			if(others.length) {
@@ -103,12 +101,12 @@ class DocsGenerator : Generator {
 				data.line("**Other protocols**: " ~ str.join(", ")).nl;
 			}
 			string[] jumps = ["[Encoding](#encoding)", "[Packets](#packets)"];
-			if(ptrs.data.types.length) jumps ~= "[Types](" ~ game ~ "/types)";
-			if(ptrs.data.arrays.length) jumps ~= "[Arrays](" ~ game ~ "/arrays)";
-			if(metadata) jumps ~= "[Metadata](" ~ game ~ "/metadata)";
+			if(info.protocol.types.length) jumps ~= "[Types](" ~ game ~ "/types)";
+			if(info.protocol.arrays.length) jumps ~= "[Arrays](" ~ game ~ "/arrays)";
+			jumps ~= "[Metadata](" ~ game ~ "/metadata)";
 			data.line("**Jump to**: " ~ jumps.join(", ")).nl;
-			if(ptrs.data.released.length) {
-				auto spl = ptrs.data.released.split("/");
+			if(info.released.length) {
+				auto spl = info.released.split("/");
 				if(spl.length == 3) {
 					immutable day = spl[2] ~ (){
 						auto ret = spl[2];
@@ -123,18 +121,18 @@ class DocsGenerator : Generator {
 					data.line("**Released**: " ~ month ~ " " ~ day ~ ", " ~ spl[0]).nl;
 				}
 			}
-			if(ptrs.data.from.length) {
-				if(ptrs.data.to.length) {
-					if(ptrs.data.from == ptrs.data.to) data.line("Used in version **" ~ ptrs.data.from ~ "**");
-					else data.line("Used from version **" ~ ptrs.data.from ~ "** to **" ~ ptrs.data.to ~ "**");
+			if(info.from.length) {
+				if(info.to.length) {
+					if(info.from == info.to) data.line("Used in version **" ~ info.from ~ "**");
+					else data.line("Used from version **" ~ info.from ~ "** to **" ~ info.to ~ "**");
 				} else {
-					data.line("In use since version **" ~ ptrs.data.from ~ "**");
+					data.line("In use since version **" ~ info.from ~ "**");
 				}
 				data.nl;
 			}
-			if(ptrs.data.description.length) {
+			if(info.description.length) {
 				data.line("-----");
-				data.line(ptrs.data.description).nl;
+				data.line(info.description).nl;
 				data.line("-----");
 			}
 
@@ -144,7 +142,7 @@ class DocsGenerator : Generator {
 			data.line("**Endianness**:").nl;
 			string def = "big_endian";
 			string[string] change;
-			foreach(string type, string end; ptrs.data.endianness) {
+			foreach(string type, string end; info.protocol.endianness) {
 				if(type != "*") change[type] = end;
 			}
 			string[] be, le;
@@ -152,7 +150,7 @@ class DocsGenerator : Generator {
 			foreach(string type ; ["short", "ushort", "int", "uint", "long", "ulong", "float", "double"]) {
 				(){
 					bool checkImpl(string ft) {
-						auto t = ft in ptrs.data.arrays;
+						auto t = ft in info.protocol.arrays;
 						if(t ? (*t).base.startsWith(type) || (*t).length.startsWith(type) : ft.startsWith(type)) {
 							auto e = type in change ? change[type] : def;
 							if(e == "big_endian") be ~= type;
@@ -164,12 +162,12 @@ class DocsGenerator : Generator {
 					bool check(Protocol.Field field) {
 						return checkImpl(field.type);
 					}
-					if(checkImpl(ptrs.data.id)) return;
-					if(checkImpl(ptrs.data.arrayLength)) return;
-					foreach(type ; ptrs.data.types) {
+					if(checkImpl(info.protocol.id)) return;
+					if(checkImpl(info.protocol.arrayLength)) return;
+					foreach(type ; info.protocol.types) {
 						foreach(field ; type.fields) if(check(field)) return;
 					}
-					foreach(section ; ptrs.data.sections) {
+					foreach(section ; info.protocol.sections) {
 						foreach(packet ; section.packets) {
 							foreach(field ; packet.fields) if(check(field)) return;
 							foreach(variant ; packet.variants) {
@@ -182,15 +180,16 @@ class DocsGenerator : Generator {
 			data.line("big endian | little endian");
 			data.line("---|---");
 			data.line(be.join(", ") ~ " | " ~ le.join(", ")).nl;
-			data.line("**Ids**: " ~ ptrs.data.id).nl;
-			data.line("**Array's length**: " ~ ptrs.data.arrayLength).nl;
+			data.line("**Ids**: " ~ info.protocol.id).nl;
+			data.line("**Array's length**: " ~ info.protocol.arrayLength).nl;
+			if(info.protocol.padding) data.line("**Padding**: " ~ info.protocol.padding.to!string ~ " bytes").nl;
 			data.line("-----");
 
 			// sections (legend)
 			data.line("## Packets").nl;
 			data.line("Section | Packets");
 			data.line("---|:---:");
-			foreach(section ; ptrs.data.sections) {
+			foreach(section ; info.protocol.sections) {
 				data.line("[" ~ pretty(camelCaseLower(section.name)) ~ "](" ~ game ~ "/" ~ section.name.replace("_", "-") ~ ") | " ~ to!string(section.packets.length));
 			}
 			data.save();
@@ -261,7 +260,7 @@ class DocsGenerator : Generator {
 			}
 
 			// sections
-			foreach(section ; ptrs.data.sections) {
+			foreach(section ; info.protocol.sections) {
 
 				data = head(section.name);
 				if(section.description.length) data.line(section.description).nl;
@@ -305,13 +304,13 @@ class DocsGenerator : Generator {
 			}
 
 			// types
-			if(ptrs.data.types.length) {
+			if(info.protocol.types.length) {
 
 				data = head("types");
 				//TODO
 				data.save();
 
-				foreach(type ; ptrs.data.types) {
+				foreach(type ; info.protocol.types) {
 					data = head("types", type.name);
 					if(type.length.length) data.line("⚠️️ This type is prefixed with its length encoded as **" ~ type.length ~ "** ⚠️️").nl;
 					if(type.description.length) data.line(type.description).nl;
@@ -322,11 +321,11 @@ class DocsGenerator : Generator {
 			}
 
 			// arrays
-			if(ptrs.data.arrays.length) {
+			if(info.protocol.arrays.length) {
 
 				data = head("arrays");
 				bool e = false;
-				foreach(a ; ptrs.data.arrays) {
+				foreach(a ; info.protocol.arrays) {
 					e |= a.endianness.length != 0;
 				}
 				data.put("Name | Base | Length");
@@ -335,7 +334,7 @@ class DocsGenerator : Generator {
 				data.put("---|---|---");
 				if(e) data.put("|---");
 				data.nl;
-				foreach(name, a ; ptrs.data.arrays) {
+				foreach(name, a ; info.protocol.arrays) {
 					data.line(camelCaseLower(name) ~ " | " ~ convert(a.base) ~ " | " ~ convert(a.length) ~ (e ? " | " ~ a.endianness.replace("_", " ") : ""));
 				}
 				data.save();
@@ -343,114 +342,90 @@ class DocsGenerator : Generator {
 			}
 
 			// metadata
-			if(metadata) {
+			data = head("metadata");
 
-				data = head("metadata");
+			// encoding
+			data.line("## Encoding").nl;
+			if(info.metadata.prefix.length) data.line("**Prefix**: " ~ info.metadata.prefix).nl;
+			if(info.metadata.length.length) data.line("**Length**: " ~ info.metadata.length).nl;
+			/*data ~= "[\n\n";
+			data ~= "   Value's type (" ~ (*metadata).data.type ~ "\n\n";
+			data ~= "   Value's id (" ~ (*metadata).data.id ~ "\n\n";
+			data ~= "   Value (type varies)\n\n";
+			data ~= "]\n\n";*/
+			if(info.metadata.suffix.length) data.line("**Suffix**: " ~ info.metadata.suffix).nl;
 
-				// encoding
-				data.line("## Encoding").nl;
-				if((*metadata).data.prefix.length) data.line("**Prefix**: " ~ (*metadata).data.prefix).nl;
-				if((*metadata).data.length.length) data.line("**Length**: " ~ (*metadata).data.length).nl;
-				/*data ~= "[\n\n";
-				data ~= "   Value's type (" ~ (*metadata).data.type ~ "\n\n";
-				data ~= "   Value's id (" ~ (*metadata).data.id ~ "\n\n";
-				data ~= "   Value (type varies)\n\n";
-				data ~= "]\n\n";*/
-				if((*metadata).data.suffix.length) data.line("**Suffix**: " ~ (*metadata).data.suffix).nl;
+			// types
+			bool e = false;
+			foreach(type ; info.metadata.types) {
+				if(type.endianness.length) e = true;
+			}
+			data.line("## Types").nl;
+			data.line("Name | Type | Id" ~ (e ? " | Endianness" : ""));
+			data.line("---|---|:---:" ~ (e ? "|---" : ""));
+			foreach(type ; info.metadata.types) {
+				data.line(camelCaseLower(type.name) ~ " | " ~ convert(type.type) ~ " | " ~ to!string(type.id) ~ (e ? " | " ~ type.endianness.replace("_", " ") : ""));
+			}
+			data.nl;
 
-				// types
-				bool e = false;
-				foreach(type ; (*metadata).data.types) {
-					if(type.endianness.length) e = true;
-				}
-				data.line("## Types").nl;
-				data.line("Name | Type | Id" ~ (e ? " | Endianness" : ""));
-				data.line("---|---|:---:" ~ (e ? "|---" : ""));
-				foreach(type ; (*metadata).data.types) {
-					data.line(camelCaseLower(type.name) ~ " | " ~ convert(type.type) ~ " | " ~ to!string(type.id) ~ (e ? " | " ~ type.endianness.replace("_", " ") : ""));
-				}
+			// data
+			data.line("## Data");
+			data.line("Name | Type | Id | Default | Required");
+			data.line("---|---|---|---|---");
+			foreach(meta ; info.metadata.data) {
+				immutable name = pretty(camelCaseLower(meta.name));
+				if(meta.description.length || meta.flags.length) data.put("[" ~ name ~ "](#" ~ name.toLower.replace(" ", "-") ~ ")");
+				else data.put(name);
+				data.put(" | " ~ convert(meta.type) ~ " | " ~ to!string(meta.id) ~ " | " ~ meta.default_ ~ " | " ~ (meta.required ? "✓" : " "));
 				data.nl;
+			}
+			data.nl;
 
-				// data
-				data.line("## Data");
-				data.line("Name | Type | Id | Default | Required");
-				data.line("---|---|---|---|---");
-				foreach(meta ; (*metadata).data.data) {
-					immutable name = pretty(camelCaseLower(meta.name));
-					if(meta.description.length || meta.flags.length) data.put("[" ~ name ~ "](#" ~ name.toLower.replace(" ", "-") ~ ")");
-					else data.put(name);
-					data.put(" | " ~ convert(meta.type) ~ " | " ~ to!string(meta.id) ~ " | " ~ meta.default_ ~ " | " ~ (meta.required ? "✓" : " "));
-					data.nl;
-				}
-				data.nl;
-
-				// data's description and flags
-				foreach(meta ; (*metadata).data.data) {
-					if(meta.description.length || meta.flags.length) {
-						data.line("### " ~ pretty(camelCaseLower(meta.name))).nl;
-						if(meta.description.length) data.line(meta.description).nl;
-						if(meta.flags.length) {
-							bool description;
-							foreach(flag ; meta.flags) {
-								if(flag.description.length) {
-									description = true;
-									break;
-								}
+			// data's description and flags
+			foreach(meta ; info.metadata.data) {
+				if(meta.description.length || meta.flags.length) {
+					data.line("### " ~ pretty(camelCaseLower(meta.name))).nl;
+					if(meta.description.length) data.line(meta.description).nl;
+					if(meta.flags.length) {
+						bool description;
+						foreach(flag ; meta.flags) {
+							if(flag.description.length) {
+								description = true;
+								break;
 							}
-							data.line("Flag | Bit" ~ (description ? " | Description" : ""));
-							data.line("---|---" ~ (description ? " | Description" : ""));
-							foreach(flag ; meta.flags) {
-								data.line(flag.name.replace("_", " ") ~ " | " ~ flag.bit.to!string ~ (description ? " | " ~ flag.description.replace("\n", " ") : ""));
-							}
+						}
+						data.line("Flag | Bit" ~ (description ? " | Description" : ""));
+						data.line("---|---" ~ (description ? " | Description" : ""));
+						foreach(flag ; meta.flags) {
+							data.line(flag.name.replace("_", " ") ~ " | " ~ flag.bit.to!string ~ (description ? " | " ~ flag.description.replace("\n", " ") : ""));
 						}
 					}
 				}
-				data.save();
 			}
+			data.save();
 
 		}
 		
 		// index
-		Tuple!(Protocol, uint, string)[][string] p;
-		foreach(game, prts; _data.protocols) {
-			p[prts.software] ~= tuple(prts.data, prts.protocol, game);
-		}
 		auto data = make("index");
-		//TODO description
-		foreach(string name ; ["Minecraft: Java Edition", "Minecraft (Bedrock Engine)", "Minecraft: Pocket Edition"]) {
-			size_t date(string str) {
-				auto spl = str.split("/");
-				if(spl.length == 3) return (to!size_t(spl[0]) * 366 + to!size_t(spl[1])) * 31 + to!size_t(spl[2]);
-				else return size_t.max;
-			}
-			string namespace = p[name][0][2][0..$-(p[name][0][1].to!string.length)];
-			auto sorted = sort!((a, b) => date(a[0].released) > date(b[0].released))(p[name]).release();
-			bool _released, _from, _to;
-			foreach(pr ; sorted) {
-				_released |= pr[0].released.length != 0;
-				_from |= pr[0].from.length != 0;
-				_to |= pr[0].to.length != 0;
-			}
-			uint latest = sorted[0][1];
-			foreach_reverse(cp ; sorted) {
-				if(cp[0].released) latest = cp[1];
-			}
-			data.line("## [" ~ name ~ "](protocol/" ~ namespace ~ to!string(latest) ~ ")").nl;
+		Info[][string] games;
+		foreach(game, info; _data.info) {
+			games[info.game] ~= info;
+		}
+		foreach(game, info; games) {
+			sort!((a, b) => a.version_ > b.version_)(info);
+			data.line("## [" ~ info[0].software ~ "](protocol/" ~ game ~ to!string(info[0].version_) ~ ")").nl;
 			data.line("Protocol | Packets | Released | From | To");
 			data.line(":---:|:---:|:---:|:---:|:---:");
-			foreach(cp ; sorted) {
-				immutable ps = to!string(cp[1]);
+			foreach(ci ; info) {
 				size_t packets = 0;
-				foreach(section ; cp[0].sections) packets += section.packets.length;
-				data.put("[" ~ ps ~ "](protocol/" ~ cp[2][0..$-ps.length] ~ ps ~ ") | " ~ to!string(packets));
-				if(_released) data.put(" | " ~ cp[0].released);
-				if(_from) data.put(" | " ~ cp[0].from);
-				if(_to) data.put(" | " ~ cp[0].to);
+				foreach(section ; ci.protocol.sections) packets += section.packets.length;
+				data.put("[" ~ to!string(ci.version_) ~ "](protocol/" ~ ci.game ~ to!string(ci.version_) ~ ") | " ~ to!string(packets));
+				data.put(" | " ~ ci.released);
+				data.put(" | " ~ ci.from);
+				data.put(" | " ~ ci.to);
 				data.nl;
 			}
-			data.nl;
-			//TODO copy latest (released) into game/index.html using `latest`
-			//std.file.write("../pages/" ~ namespace ~ ".html", std.file.read("../pages/" ~ namespace ~ to!string(latest) ~ ".html")); //TODO replace canonical?
 		}
 		data.save();
 

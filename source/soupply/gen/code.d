@@ -49,17 +49,13 @@ abstract class CodeGenerator : Generator {
 	}
 
 	protected override void generateImpl(Data data) {
-		foreach(game, info; data.protocols) {
+		foreach(game, info; data.info) {
 			this.game = game;
-			this.generateProtocol(game, info);
-		}
-		foreach(game, info; data.metadatas) {
-			this.game = game;
-			this.generateMetadata(game, info);
+			this.generateGame(game, info);
 		}
 	}
 
-	protected void generateProtocol(string game, Protocols info) {
+	protected void generateGame(string game, Info info) {
 
 		/+immutable id = this.convertType(game, protocolInfo.data.id);
 		immutable arrayLength = this.convertType(game, protocolInfo.data.arrayLength);
@@ -80,8 +76,6 @@ abstract class CodeGenerator : Generator {
 		}+/
 
 	}
-
-	protected void generateMetadata(string game, Metadatas info) {}
 
 	protected string convertModule(string name) {
 		return name;

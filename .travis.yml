@@ -8,7 +8,7 @@ before_script:
     cd public
     for repo in */ ; do
       git clone https://github.com/soupply/${repo////}.git ../gen/$repo
-      git rm -rf ../gen/$repo/.
+      git rm -rf "../gen/${repo}."
     done
     cd ..
 

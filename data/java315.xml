@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<protocol>
+<game>
 
 	<software>Minecraft: Java Edition</software>
 
-	<protocol>338</protocol>
+	<protocol>315</protocol>
 
-	<released>2017/8/3</released>
+	<released>2016/11/14</released>
 
-	<from>1.12.1</from>
+	<from>1.11</from>
 
-	<to>1.12.1</to>
+	<to>1.11</to>
 
 	<encoding id="varuint" arraylength="varuint">
 
@@ -125,14 +125,6 @@
 
 		<array name="attributes" base="attribute" length="uint" />
 
-		<type name="entry">
-			<field name="item" type="slot" />
-			<field name="crafting-slot" type="ubyte" />
-			<field name="player-slot" type="ubyte" />
-		</type>
-
-		<array name="entries-array" base="entry" length="ushort" />
-
 		<type name="optional-position">
 			<field name="has-position" type="bool" />
 			<field name="position" type="block-position" when="has-position==true" />
@@ -150,7 +142,7 @@
 		<section name="status">
 
 			<packet name="handshake" id="0" clientbound="false" serverbound="true">
-				<field name="protocol" type="varuint" default="338" />
+				<field name="protocol" type="varuint" />
 				<field name="server-address" type="string" />
 				<field name="server-port" type="ushort" />
 				<field name="next" type="varuint">
@@ -301,7 +293,6 @@
 					<constant name="end-gateway-destination" value="8" />
 					<constant name="sign-text" value="9" />
 					<constant name="shulker-box-declaration" value="10" />
-					<constant name="bed-color" value="11" />
 				</field>
 				<field name="nbt" type="bytes" />
 			</packet>
@@ -752,17 +743,13 @@
 				<field name="data" type="ubyte[]" />
 			</packet>
 
-			<packet name="entity" id="37" clientbound="true" serverbound="false">
-				<field name="entity-id" type="entity-id" />
-			</packet>
-
-			<packet name="entity-relative-move" id="38" clientbound="true" serverbound="false">
+			<packet name="entity-relative-move" id="37" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="delta" type="short<xyz>" />
 				<field name="on-ground" type="bool" />
 			</packet>
 
-			<packet name="entity-look-and-relative-move" id="39" clientbound="true" serverbound="false">
+			<packet name="entity-look-and-relative-move" id="38" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="delta" type="short<xyz>" />
 				<field name="yaw" type="angle" />
@@ -770,11 +757,15 @@
 				<field name="on-ground" type="bool" />
 			</packet>
 
-			<packet name="entity-look" id="40" clientbound="true" serverbound="false">
+			<packet name="entity-look" id="39" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="yaw" type="angle" />
 				<field name="pitch" type="angle" />
 				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="entity" id="40" clientbound="true" serverbound="false">
+				<field name="entity-id" type="entity-id" />
 			</packet>
 
 			<packet name="vehicle-move" id="41" clientbound="true" serverbound="false">
@@ -787,12 +778,7 @@
 				<field name="position" type="block-position" />
 			</packet>
 
-			<packet name="craft-recipe-response" id="43" clientbound="true" serverbound="false">
-				<field name="window" type="ubyte" />
-				<field name="recipe" type="varuint" />
-			</packet>
-
-			<packet name="player-abilities" id="44" clientbound="true" serverbound="false">
+			<packet name="player-abilities" id="43" clientbound="true" serverbound="false">
 				<field name="flags" type="ubyte">
 					<constant name="invulnerable" value="1" />
 					<constant name="flying" value="2" />
@@ -803,7 +789,7 @@
 				<field name="fov-modifier" type="float" />
 			</packet>
 
-			<packet name="combat-event" id="45" clientbound="true" serverbound="false">
+			<packet name="combat-event" id="44" clientbound="true" serverbound="false">
 				<field name="event-id" type="ubyte" />
 				<variants field="event-id">
 					<variant name="enter-combat" value="0" />
@@ -819,7 +805,7 @@
 				</variants>
 			</packet>
 
-			<packet name="player-list-item" id="46" clientbound="true" serverbound="false">
+			<packet name="player-list-item" id="45" clientbound="true" serverbound="false">
 				<field name="action" type="varuint" />
 				<variants field="action">
 					<variant name="add-player" value="0">
@@ -840,7 +826,7 @@
 				</variants>
 			</packet>
 
-			<packet name="player-position-and-look" id="47" clientbound="true" serverbound="false">
+			<packet name="player-position-and-look" id="46" clientbound="true" serverbound="false">
 				<field name="position" type="entity-position" />
 				<field name="yaw" type="float" />
 				<field name="pitch" type="float" />
@@ -854,38 +840,26 @@
 				<field name="teleport-id" type="varuint" />
 			</packet>
 
-			<packet name="use-bed" id="48" clientbound="true" serverbound="false">
+			<packet name="use-bed" id="47" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="position" type="block-position" />
 			</packet>
 
-			<packet name="unlock-recipes" id="49" clientbound="true" serverbound="false">
-				<field name="action" type="varuint">
-					<constant name="add" value="1" />
-					<constant name="remove" value="2" />
-					<constant name="add-without-notification" value="3" />
-				</field>
-				<field name="open-book" type="bool" />
-				<field name="filtering" type="bool" />
-				<field name="recipes" type="varuint[]" />
-				<field name="book-recipes" type="varuint[]" when="action==1||action==3" />
-			</packet>
-
-			<packet name="destroy-entities" id="50" clientbound="true" serverbound="false">
+			<packet name="destroy-entities" id="48" clientbound="true" serverbound="false">
 				<field name="entity-ids" type="entity-id[]" />
 			</packet>
 
-			<packet name="remove-entity-effect" id="51" clientbound="true" serverbound="false">
+			<packet name="remove-entity-effect" id="49" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="effect-id" type="ubyte" />
 			</packet>
 
-			<packet name="resource-pack-send" id="52" clientbound="true" serverbound="false">
+			<packet name="resource-pack-send" id="50" clientbound="true" serverbound="false">
 				<field name="url" type="string" />
 				<field name="hash" type="string" />
 			</packet>
 
-			<packet name="respawn" id="53" clientbound="true" serverbound="false">
+			<packet name="respawn" id="51" clientbound="true" serverbound="false">
 				<field name="dimension" type="int">
 					<constant name="nether" value="-1" />
 					<constant name="overworld" value="0" />
@@ -911,17 +885,12 @@
 				</field>
 			</packet>
 
-			<packet name="entity-head-look" id="54" clientbound="true" serverbound="false">
+			<packet name="entity-head-look" id="52" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="head-yaw" type="angle" />
 			</packet>
 
-			<packet name="advancement-progress" id="55" clientbound="true" serverbound="false">
-				<field name="not-empty" type="bool" />
-				<field name="identifier" type="string" when="not-empty==true" />
-			</packet>
-
-			<packet name="world-border" id="56" clientbound="true" serverbound="false">
+			<packet name="world-border" id="53" clientbound="true" serverbound="false">
 				<field name="action" type="varuint" />
 				<variants field="action">
 					<variant name="set-size" value="0">
@@ -953,15 +922,15 @@
 				</variants>
 			</packet>
 
-			<packet name="camera" id="57" clientbound="true" serverbound="false">
+			<packet name="camera" id="54" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 			</packet>
 
-			<packet name="held-item-change" id="58" clientbound="true" serverbound="false">
+			<packet name="held-item-change" id="55" clientbound="true" serverbound="false">
 				<field name="slot" type="ubyte" />
 			</packet>
 
-			<packet name="display-scoreboard" id="59" clientbound="true" serverbound="false">
+			<packet name="display-scoreboard" id="56" clientbound="true" serverbound="false">
 				<field name="position" type="ubyte">
 					<constant name="list" value="0" />
 					<constant name="sidebar" value="1" />
@@ -970,40 +939,40 @@
 				<field name="score-name" type="string" />
 			</packet>
 
-			<packet name="entity-metadata" id="60" clientbound="true" serverbound="false">
+			<packet name="entity-metadata" id="57" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="metadata" type="metadata" />
 			</packet>
 
-			<packet name="attach-entity" id="61" clientbound="true" serverbound="false">
+			<packet name="attach-entity" id="58" clientbound="true" serverbound="false">
 				<field name="target" type="uint" />
 				<field name="holder" type="uint" />
 			</packet>
 
-			<packet name="entity-velocity" id="62" clientbound="true" serverbound="false">
+			<packet name="entity-velocity" id="59" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="velocity" type="entity-velocity" />
 			</packet>
 
-			<packet name="entity-equipment" id="63" clientbound="true" serverbound="false">
+			<packet name="entity-equipment" id="60" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="slot" type="varuint" />
 				<field name="item" type="slot" />
 			</packet>
 
-			<packet name="set-experience" id="64" clientbound="true" serverbound="false">
+			<packet name="set-experience" id="61" clientbound="true" serverbound="false">
 				<field name="experience" type="float" />
 				<field name="level" type="varuint" />
 				<field name="total-experience" type="varuint" />
 			</packet>
 
-			<packet name="update-health" id="65" clientbound="true" serverbound="false">
+			<packet name="update-health" id="62" clientbound="true" serverbound="false">
 				<field name="health" type="float" />
 				<field name="hunger" type="varuint" />
 				<field name="saturation" type="float" />
 			</packet>
 
-			<packet name="scoreboard-objective" id="66" clientbound="true" serverbound="false">
+			<packet name="scoreboard-objective" id="63" clientbound="true" serverbound="false">
 				<field name="name" type="string" />
 				<field name="mode" type="ubyte">
 					<constant name="create" value="0" />
@@ -1017,12 +986,12 @@
 				</field>
 			</packet>
 
-			<packet name="set-passengers" id="67" clientbound="true" serverbound="false">
+			<packet name="set-passengers" id="64" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="passengers" type="entity-id[]" />
 			</packet>
 
-			<packet name="teams" id="68" clientbound="true" serverbound="false">
+			<packet name="teams" id="65" clientbound="true" serverbound="false">
 				<field name="name" type="string" />
 				<field name="mode" type="ubyte" />
 				<variants field="mode">
@@ -1081,7 +1050,7 @@
 				</variants>
 			</packet>
 
-			<packet name="update-score" id="69" clientbound="true" serverbound="false">
+			<packet name="update-score" id="66" clientbound="true" serverbound="false">
 				<field name="score-name" type="string" />
 				<field name="action" type="ubyte">
 					<constant name="update" value="0" />
@@ -1091,16 +1060,16 @@
 				<field name="value" type="varuint" when="action==0" />
 			</packet>
 
-			<packet name="spawn-position" id="70" clientbound="true" serverbound="false">
+			<packet name="spawn-position" id="67" clientbound="true" serverbound="false">
 				<field name="position" type="block-position" />
 			</packet>
 
-			<packet name="time-update" id="71" clientbound="true" serverbound="false">
+			<packet name="time-update" id="68" clientbound="true" serverbound="false">
 				<field name="world-age" type="ulong" />
 				<field name="time" type="long" />
 			</packet>
 
-			<packet name="title" id="72" clientbound="true" serverbound="false">
+			<packet name="title" id="69" clientbound="true" serverbound="false">
 				<field name="action" type="varuint" />
 				<variants field="action">
 					<variant name="set-title" value="0">
@@ -1122,7 +1091,7 @@
 				</variants>
 			</packet>
 
-			<packet name="sound-effect" id="73" clientbound="true" serverbound="false">
+			<packet name="sound-effect" id="70" clientbound="true" serverbound="false">
 				<field name="sound-id" type="varuint" />
 				<field name="category" type="varuint" />
 				<field name="position" type="int<xyz>" />
@@ -1130,18 +1099,18 @@
 				<field name="pitch" type="float" />
 			</packet>
 
-			<packet name="player-list-header-and-footer" id="74" clientbound="true" serverbound="false">
+			<packet name="player-list-header-and-footer" id="71" clientbound="true" serverbound="false">
 				<field name="header" type="string" />
 				<field name="footer" type="string" />
 			</packet>
 
-			<packet name="collect-item" id="75" clientbound="true" serverbound="false">
+			<packet name="collect-item" id="72" clientbound="true" serverbound="false">
 				<field name="collected" type="entity-id" />
 				<field name="collector" type="entity-id" />
 				<field name="count" type="varuint" />
 			</packet>
 
-			<packet name="entity-teleport" id="76" clientbound="true" serverbound="false">
+			<packet name="entity-teleport" id="73" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="position" type="double<xyz>" />
 				<field name="yaw" type="angle" />
@@ -1149,16 +1118,12 @@
 				<field name="on-ground" type="bool" />
 			</packet>
 
-			<packet name="advencements" id="77" clientbound="true" serverbound="false">
-				<!--- TODO -->
-			</packet>
-
-			<packet name="entity-properties" id="78" clientbound="true" serverbound="false">
+			<packet name="entity-properties" id="74" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="attributes" type="attributes" />
 			</packet>
 
-			<packet name="entity-effect" id="79" clientbound="true" serverbound="false">
+			<packet name="entity-effect" id="75" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="effect-id" type="ubyte" />
 				<field name="amplifier" type="ubyte" />
@@ -1192,6 +1157,7 @@
 				<field name="action" type="varuint">
 					<constant name="respawn" value="0" />
 					<constant name="request-stats" value="1" />
+					<constant name="open-inventory" value="2" />
 				</field>
 			</packet>
 
@@ -1266,25 +1232,25 @@
 				<field name="id" type="varuint" />
 			</packet>
 
-			<packet name="player" id="12" clientbound="false" serverbound="true">
-				<field name="on-ground" type="bool" />
-			</packet>
-
-			<packet name="player-position" id="13" clientbound="false" serverbound="true">
+			<packet name="player-position" id="12" clientbound="false" serverbound="true">
 				<field name="position" type="entity-position" />
 				<field name="on-ground" type="bool" />
 			</packet>
 
-			<packet name="player-position-and-look" id="14" clientbound="false" serverbound="true">
+			<packet name="player-position-and-look" id="13" clientbound="false" serverbound="true">
 				<field name="position" type="entity-position" />
 				<field name="yaw" type="float" />
 				<field name="pitch" type="float" />
 				<field name="on-ground" type="bool" />
 			</packet>
 
-			<packet name="player-look" id="15" clientbound="false" serverbound="true">
+			<packet name="player-look" id="14" clientbound="false" serverbound="true">
 				<field name="yaw" type="float" />
 				<field name="pitch" type="float" />
+				<field name="on-ground" type="bool" />
+			</packet>
+
+			<packet name="player" id="15" clientbound="false" serverbound="true">
 				<field name="on-ground" type="bool" />
 			</packet>
 
@@ -1299,13 +1265,7 @@
 				<field name="left-paddle-turning" type="bool" />
 			</packet>
 
-			<packet name="craft-recipe-request" id="18" clientbound="false" serverbound="true">
-				<field name="window" type="ubyte" />
-				<field name="recipe" type="varuint" />
-				<field name="make-all" type="bool" />
-			</packet>
-
-			<packet name="player-abilities" id="19" clientbound="false" serverbound="true">
+			<packet name="player-abilities" id="18" clientbound="false" serverbound="true">
 				<field name="flags" type="ubyte">
 					<constant name="creative-mode" value="1" />
 					<constant name="flying" value="2" />
@@ -1316,7 +1276,7 @@
 				<field name="walking-speed" type="float" />
 			</packet>
 
-			<packet name="player-digging" id="20" clientbound="false" serverbound="true">
+			<packet name="player-digging" id="19" clientbound="false" serverbound="true">
 				<field name="status" type="varuint">
 					<constant name="start-digging" value="0" />
 					<constant name="cancel-digging" value="1" />
@@ -1331,7 +1291,7 @@
 				<field name="face" type="ubyte" />
 			</packet>
 
-			<packet name="entity-action" id="21" clientbound="false" serverbound="true">
+			<packet name="entity-action" id="20" clientbound="false" serverbound="true">
 				<field name="entity-id" type="entity-id" />
 				<field name="action" type="varuint">
 					<constant name="start-sneaking" value="0" />
@@ -1347,7 +1307,7 @@
 				<field name="jump-boost" type="varuint" />
 			</packet>
 
-			<packet name="steer-vehicle" id="22" clientbound="false" serverbound="true">
+			<packet name="steer-vehicle" id="21" clientbound="false" serverbound="true">
 				<field name="sideways" type="float" />
 				<field name="forward" type="float" />
 				<field name="flags" type="ubyte">
@@ -1356,20 +1316,7 @@
 				</field>
 			</packet>
 
-			<packet name="crafting-book-data" id="23" clientbound="false" serverbound="true">
-				<field name="type" type="varuint" />
-				<variants field="type">
-					<variant name="displayed-recipe" value="1">
-						<field name="id" type="uint" />
-					</variant>
-					<variant name="crafting-book-status" value="2">
-						<field name="book-opened" type="bool" />
-						<field name="filtering" type="bool" />
-					</variant>
-				</variants>
-			</packet>
-
-			<packet name="resource-pack-status" id="24" clientbound="false" serverbound="true">
+			<packet name="resource-pack-status" id="22" clientbound="false" serverbound="true">
 				<field name="result" type="varuint">
 					<constant name="loaded" value="0" />
 					<constant name="declined" value="1" />
@@ -1378,40 +1325,32 @@
 				</field>
 			</packet>
 
-			<packet name="advencement-tab" id="25" clientbound="false" serverbound="true">
-				<field name="action" type="varuint">
-					<constant name="open-tab" value="0" />
-					<constant name="close-screen" value="1" />
-				</field>
-				<field name="tab" type="string" when="action==0" />
-			</packet>
-
-			<packet name="held-item-change" id="26" clientbound="false" serverbound="true">
+			<packet name="held-item-change" id="23" clientbound="false" serverbound="true">
 				<field name="slot" type="ushort" />
 			</packet>
 
-			<packet name="creative-inventory-action" id="27" clientbound="false" serverbound="true">
+			<packet name="creative-inventory-action" id="24" clientbound="false" serverbound="true">
 				<field name="slot" type="ushort" />
 				<field name="clicked-item" type="slot" />
 			</packet>
 
-			<packet name="update-sign" id="28" clientbound="false" serverbound="true">
+			<packet name="update-sign" id="25" clientbound="false" serverbound="true">
 				<field name="position" type="block-position" />
 				<field name="lines" type="string[4]" />
 			</packet>
 
-			<packet name="animation" id="29" clientbound="false" serverbound="true">
+			<packet name="animation" id="26" clientbound="false" serverbound="true">
 				<field name="hand" type="varuint">
 					<constant name="main-hand" value="0" />
 					<constant name="off-hand" value="1" />
 				</field>
 			</packet>
 
-			<packet name="spectate" id="30" clientbound="false" serverbound="true">
+			<packet name="spectate" id="27" clientbound="false" serverbound="true">
 				<field name="player" type="uuid" />
 			</packet>
 
-			<packet name="player-block-placement" id="31" clientbound="false" serverbound="true">
+			<packet name="player-block-placement" id="28" clientbound="false" serverbound="true">
 				<field name="position" type="block-position" />
 				<field name="face" type="varuint" />
 				<field name="hand" type="varuint">
@@ -1421,7 +1360,7 @@
 				<field name="cursor-position" type="float<xyz>" />
 			</packet>
 
-			<packet name="use-item" id="32" clientbound="false" serverbound="true">
+			<packet name="use-item" id="29" clientbound="false" serverbound="true">
 				<field name="hand" type="varuint">
 					<constant name="main-hand" value="0" />
 					<constant name="off-hand" value="1" />
@@ -1432,4 +1371,277 @@
 
 	</packets>
 
-</protocol>
+	<metadata>
+
+		<encoding suffix="255" types="ubyte" ids="ubyte">
+
+			<type name="byte" type="byte" id="0" />
+			<type name="int" type="varuint" id="1" />
+			<type name="float" type="float" id="2" />
+			<type name="string" type="string" id="3" />
+			<type name="chat" type="string" id="4" />
+			<type name="slot" type="slot" id="5" />
+			<type name="bool" type="bool" id="6" />
+			<type name="rotation" type="float<xyz>" id="7" />
+			<type name="position" type="ulong" id="8" />
+			<type name="optional-position" type="optional-position" id="9" />
+			<type name="direction" type="varuint" id="10" />
+			<type name="uuid" type="optional-uuid" id="11" />
+			<type name="block" type="varuint" id="12" />
+
+		</encoding>
+
+		<metadatas>
+
+			<type name="entity-flags" type="byte" id="0" required="true">
+				<flag name="on-fire" bit="0" />
+				<flag name="sneaking" bit="1" />
+				<flag name="sprinting" bit="3" />
+				<flag name="invisible" bit="5" />
+				<flag name="glowing" bit="6" />
+				<flag name="gliding" bit="7" />
+			</type>
+
+			<type name="air" type="int" id="1" default="300" />
+
+			<type name="nametag" type="string" id="2" />
+
+			<type name="show-nametag" type="bool" id="3" />
+
+			<type name="silent" type="bool" id="4" />
+
+			<type name="no-gravity" type="bool" id="5" />
+
+			<type name="potion" type="slot" id="6" />
+
+			<type name="spawn-position" type="position" id="6" />
+
+			<type name="radius" type="float" id="6" default="0.5" />
+
+			<type name="color" type="int" id="7" />
+
+			<type name="is-single-point" type="bool" id="8" />
+
+			<type name="particle-id" type="int" id="9" />
+
+			<type name="particle-parameter-1" type="int" id="10" />
+
+			<type name="particle-parameter-2" type="int" id="11" />
+
+			<type name="hooked-entity" type="int" id="6" />
+
+			<type name="arrow-flags" type="byte" id="6">
+				<flag name="critical" bit="0" />
+			</type>
+
+			<type name="time-since-last-hit" type="int" id="6" />
+
+			<type name="forward-direction" type="int" id="7" default="1" />
+
+			<type name="damage-taken" type="float" id="8" default="0" />
+
+			<type name="boat-variant" type="int" id="9" />
+
+			<type name="right-paddle-turning" type="bool" id="10" />
+
+			<type name="left-paddle-turning" type="bool" id="11" />
+
+			<type name="beam-target" type="optional-position" id="6" />
+
+			<type name="show-bottom" type="bool" id="7" />
+
+			<type name="firework" type="slot" id="6" />
+
+			<type name="item" type="slot" id="6" />
+
+			<type name="rotation" type="int" id="7" />
+
+			<type name="living-flags" type="byte" id="6">
+				<flag name="hand-active" bit="0" />
+				<flag name="offhand" bit="1" />
+			</type>
+
+			<type name="health" type="float" id="7" default="1" />
+
+			<type name="potion-color" type="int" id="8" />
+
+			<type name="potion-ambient" type="bool" id="9" />
+
+			<type name="arrows" type="int" id="10" />
+
+			<type name="additional-hearts" type="float" id="11" default="0" />
+
+			<type name="score" type="int" id="12" />
+
+			<type name="skin-parts" type="byte" id="13" default="0">
+				<flag name="cape" bit="0" />
+				<flag name="jacket" bit="1" />
+				<flag name="left-sleeve" bit="2" />
+				<flag name="right-sleeve" bit="3" />
+				<flag name="left-pants" bit="4" />
+				<flag name="right-pants" bit="5" />
+				<flag name="hat" bit="6" />
+			</type>
+
+			<type name="main-hand" type="byte" id="14" default="1" />
+
+			<type name="armor-stand-flags" type="byte" id="11">
+				<flag name="is-small" bit="0" />
+				<flag name="has-arms" bit="2" />
+				<flag name="no-base-plate" bit="3" />
+				<flag name="set-marker" bit="4" />
+			</type>
+
+			<type name="head-rotation" type="rotation" id="12" />
+
+			<type name="body-rotation" type="rotation" id="13" />
+
+			<type name="left-arm-rotation" type="rotation" id="14" />
+
+			<type name="right-arm-rotation" type="rotation" id="15" />
+
+			<type name="left-leg-rotation" type="rotation" id="16" />
+
+			<type name="right-leg-rotation" type="rotation" id="17" />
+
+			<type name="instentient-flags" type="byte" id="11">
+				<flag name="no-ai" bit="0" />
+				<flag name="left-handed" bit="1" />
+			</type>
+
+			<type name="hanging" type="byte" id="12" />
+
+			<type name="baby" type="bool" id="12" />
+
+			<type name="horse-flags" type="byte" id="13">
+				<flag name="horse-tamed" bit="1" />
+				<flag name="horse-saddled" bit="2" />
+				<flag name="horse-chested" bit="3" />
+				<flag name="horse-eating" bit="5" />
+				<flag name="horse-rearing" bit="6" />
+				<flag name="mouth-open" bit="7" />
+			</type>
+
+			<type name="owner-uuid" type="uuid" id="14" />
+
+			<type name="horse-variant" type="int" id="15" />
+
+			<type name="horse-armor" type="int" id="16" />
+
+			<type name="chested" type="bool" id="15" />
+
+			<type name="llama-strength" type="int" id="16" />
+
+			<type name="carpet-color" type="int" id="17" default="-1" />
+
+			<type name="llama-variant" type="int" id="18" />
+
+			<type name="pig-saddled" type="bool" id="13" />
+
+			<type name="rabbit-variant" type="int" id="13" />
+
+			<type name="standing-up" type="bool" id="13" />
+
+			<type name="sheep-flags-and-color" type="byte" id="13">
+				<flag name="sheared" bit="7" />
+			</type>
+
+			<type name="tameable-flags" type="byte" id="13">
+				<flag name="sitting" bit="0" />
+				<flag name="angry" bit="1" />
+				<flag name="tamed" bit="2" />
+			</type>
+
+			<type name="ocelot-variant" type="int" id="15" />
+
+			<type name="wolf-health" type="float" id="15" />
+
+			<type name="begging" type="bool" id="16" />
+
+			<type name="collar-color" type="int" id="17" default="14" />
+
+			<type name="profession" type="int" id="13" />
+
+			<type name="created-by-player" type="byte" id="12" />
+
+			<type name="snowman-flags" type="byte" id="12">
+				<flag name="pumpkinless" bit="4" />
+			</type>
+
+			<type name="shulker-direction" type="direction" id="12" />
+
+			<type name="shulker-attachment" type="optional-position" id="13" />
+
+			<type name="shulker-shield-height" type="byte" id="14" />
+
+			<type name="shulker-color" type="byte" id="15" />
+
+			<type name="blaze-on-fire" type="byte" id="12" />
+
+			<type name="creeper-state" type="int" id="12" default="-1" />
+
+			<type name="charged" type="bool" id="13" />
+
+			<type name="ignited" type="bool" id="14" />
+
+			<type name="rectracting-spikes" type="bool" id="12" />
+
+			<type name="guardian-target" type="int" id="13" />
+
+			<type name="spell" type="byte" id="12" />
+
+			<type name="attack-mode" type="byte" id="12" />
+
+			<type name="swinging-arms" type="bool" id="12" />
+
+			<type name="climbing" type="byte" id="12" />
+
+			<type name="center-head-target" type="int" id="12" />
+
+			<type name="left-head-target" type="int" id="13" />
+
+			<type name="right-head-target" type="int" id="14" />
+
+			<type name="invulnerable-time" type="int" id="15" />
+
+			<type name="hands-held-up" type="bool" id="14" />
+
+			<type name="converting" type="bool" id="15" />
+
+			<type name="zombie-villager-profession" type="int" id="16" />
+
+			<type name="carried-block" type="block" id="12" />
+
+			<type name="screaming" type="bool" id="13" />
+
+			<type name="dragon-phase" type="int" id="12" />
+
+			<type name="ghast-attacking" type="bool" id="12" />
+
+			<type name="slime-size" type="int" id="12" default="1" />
+
+			<type name="shaking-power" type="int" id="6" />
+
+			<type name="shaking-direction" type="int" id="7" />
+
+			<type name="shaking-multiplier" type="float" id="8" default="0" />
+
+			<type name="minecart-block" type="int" id="9" />
+
+			<type name="minecart-block-position" type="int" id="10" default="6" />
+
+			<type name="minecart-custom-block" type="bool" id="11" />
+
+			<type name="furnace-powered" type="bool" id="12" />
+
+			<type name="command" type="string" id="12" />
+
+			<type name="last-output" type="chat" id="13" />
+
+			<type name="fuse-time" type="int" id="6" />
+
+		</metadatas>
+
+	</metadata>
+
+</game>

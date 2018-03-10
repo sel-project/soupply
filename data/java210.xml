@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<protocol>
+<game>
 
 	<software>Minecraft: Java Edition</software>
 
-	<protocol>315</protocol>
+	<protocol>210</protocol>
 
-	<released>2016/11/14</released>
+	<released>2016/6/8</released>
 
-	<from>1.11</from>
+	<from>1.10</from>
 
-	<to>1.11</to>
+	<to>1.10.2</to>
 
 	<encoding id="varuint" arraylength="varuint">
 
@@ -57,9 +57,6 @@
 				<constant name="white-cross" value="4" />
 				<constant name="red-pointer" value="5" />
 				<constant name="white-circle" value="6" />
-				<constant name="small-white-circle" value="7" />
-				<constant name="mansion" value="8" />
-				<constant name="temple" value="9" />
 			</field>
 			<field name="position" type="ubyte<xz>" />
 		</type>
@@ -227,7 +224,7 @@
 			<packet name="spawn-mob" id="3" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
 				<field name="uuid" type="uuid" />
-				<field name="type" type="varuint" />
+				<field name="type" type="ubyte" />
 				<field name="position" type="entity-position" />
 				<field name="yaw" type="angle" />
 				<field name="pitch" type="angle" />
@@ -292,7 +289,6 @@
 					<constant name="structure-data" value="7" />
 					<constant name="end-gateway-destination" value="8" />
 					<constant name="sign-text" value="9" />
-					<constant name="shulker-box-declaration" value="10" />
 				</field>
 				<field name="nbt" type="bytes" />
 			</packet>
@@ -1078,16 +1074,13 @@
 					<variant name="set-subtitle" value="1">
 						<field name="text" type="string" />
 					</variant>
-					<variant name="set-action-bar" value="2">
-						<field name="text" type="string" />
-					</variant>
-					<variant name="set-timings" value="3">
+					<variant name="set-timings" value="2">
 						<field name="fade-in" type="uint" />
 						<field name="stay" type="uint" />
 						<field name="fade-out" type="uint" />
 					</variant>
-					<variant name="hide" value="4" />
-					<variant name="reset" value="5" />
+					<variant name="hide" value="3" />
+					<variant name="reset" value="4" />
 				</variants>
 			</packet>
 
@@ -1107,7 +1100,6 @@
 			<packet name="collect-item" id="72" clientbound="true" serverbound="false">
 				<field name="collected" type="entity-id" />
 				<field name="collector" type="entity-id" />
-				<field name="count" type="varuint" />
 			</packet>
 
 			<packet name="entity-teleport" id="73" clientbound="true" serverbound="false">
@@ -1357,7 +1349,7 @@
 					<constant name="main-hand" value="0" />
 					<constant name="off-hand" value="1" />
 				</field>
-				<field name="cursor-position" type="float<xyz>" />
+				<field name="cursor-position" type="ubyte<xyz>" />
 			</packet>
 
 			<packet name="use-item" id="29" clientbound="false" serverbound="true">
@@ -1371,4 +1363,270 @@
 
 	</packets>
 
-</protocol>
+	<metadata>
+
+		<encoding suffix="255" types="ubyte" ids="ubyte">
+
+			<type name="byte" type="byte" id="0" />
+			<type name="int" type="varuint" id="1" />
+			<type name="float" type="float" id="2" />
+			<type name="string" type="string" id="3" />
+			<type name="chat" type="string" id="4" />
+			<type name="slot" type="slot" id="5" />
+			<type name="bool" type="bool" id="6" />
+			<type name="rotation" type="float<xyz>" id="7" />
+			<type name="position" type="ulong" id="8" />
+			<type name="optional-position" type="optional-position" id="9" />
+			<type name="direction" type="varuint" id="10" />
+			<type name="uuid" type="optional-uuid" id="11" />
+			<type name="block" type="varuint" id="12" />
+
+		</encoding>
+
+		<metadatas>
+
+			<type name="entity-flags" type="byte" id="0" required="true">
+				<flag name="on-fire" bit="0" />
+				<flag name="sneaking" bit="1" />
+				<flag name="sprinting" bit="3" />
+				<flag name="invisible" bit="5" />
+				<flag name="glowing" bit="6" />
+				<flag name="gliding" bit="7" />
+			</type>
+
+			<type name="air" type="int" id="1" default="300" />
+
+			<type name="nametag" type="string" id="2" />
+
+			<type name="show-nametag" type="bool" id="3" />
+
+			<type name="silent" type="bool" id="4" />
+
+			<type name="no-gravity" type="bool" id="5" />
+
+			<type name="potion" type="slot" id="6" />
+
+			<type name="spawn-position" type="position" id="6" />
+
+			<type name="radius" type="float" id="6" default="0.5" />
+
+			<type name="color" type="int" id="7" />
+
+			<type name="is-single-point" type="bool" id="8" />
+
+			<type name="particle-id" type="int" id="9" />
+
+			<type name="particle-parameter-1" type="int" id="10" />
+
+			<type name="particle-parameter-2" type="int" id="11" />
+
+			<type name="hooked-entity" type="int" id="6" />
+
+			<type name="arrow-flags" type="byte" id="6">
+				<flag name="critical" bit="0" />
+			</type>
+
+			<type name="time-since-last-hit" type="int" id="6" />
+
+			<type name="forward-direction" type="int" id="7" default="1" />
+
+			<type name="damage-taken" type="float" id="8" default="0" />
+
+			<type name="boat-variant" type="int" id="9" />
+
+			<type name="right-paddle-turning" type="bool" id="10" />
+
+			<type name="left-paddle-turning" type="bool" id="11" />
+
+			<type name="beam-target" type="optional-position" id="6" />
+
+			<type name="show-bottom" type="bool" id="7" />
+
+			<type name="firework" type="slot" id="6" />
+
+			<type name="item" type="slot" id="6" />
+
+			<type name="rotation" type="int" id="7" />
+
+			<type name="living-flags" type="byte" id="6">
+				<flag name="hand-active" bit="0" />
+				<flag name="offhand" bit="1" />
+			</type>
+
+			<type name="health" type="float" id="7" default="1" />
+
+			<type name="potion-color" type="int" id="8" />
+
+			<type name="potion-ambient" type="bool" id="9" />
+
+			<type name="arrows" type="int" id="10" />
+
+			<type name="additional-hearts" type="float" id="11" default="0" />
+
+			<type name="score" type="int" id="12" />
+
+			<type name="skin-parts" type="byte" id="13" default="0">
+				<flag name="cape" bit="0" />
+				<flag name="jacket" bit="1" />
+				<flag name="left-sleeve" bit="2" />
+				<flag name="right-sleeve" bit="3" />
+				<flag name="left-pants" bit="4" />
+				<flag name="right-pants" bit="5" />
+				<flag name="hat" bit="6" />
+			</type>
+
+			<type name="main-hand" type="byte" id="14" default="1" />
+
+			<type name="armor-stand-flags" type="byte" id="11">
+				<flag name="is-small" bit="0" />
+				<flag name="has-arms" bit="2" />
+				<flag name="no-base-plate" bit="3" />
+				<flag name="set-marker" bit="4" />
+			</type>
+
+			<type name="head-rotation" type="rotation" id="12" />
+
+			<type name="body-rotation" type="rotation" id="13" />
+
+			<type name="left-arm-rotation" type="rotation" id="14" />
+
+			<type name="right-arm-rotation" type="rotation" id="15" />
+
+			<type name="left-leg-rotation" type="rotation" id="16" />
+
+			<type name="right-leg-rotation" type="rotation" id="17" />
+
+			<type name="instentient-flags" type="byte" id="11">
+				<flag name="no-ai" bit="0" />
+				<flag name="left-handed" bit="1" />
+			</type>
+
+			<type name="hanging" type="byte" id="12" />
+
+			<type name="baby" type="bool" id="12" />
+
+			<type name="horse-flags" type="byte" id="13">
+				<flag name="horse-tamed" bit="1" />
+				<flag name="horse-saddled" bit="2" />
+				<flag name="horse-chested" bit="3" />
+				<flag name="horse-eating" bit="5" />
+				<flag name="horse-rearing" bit="6" />
+				<flag name="mouth-open" bit="7" />
+			</type>
+
+			<type name="horse-type" type="int" id="14" />
+
+			<type name="horse-variant" type="int" id="15" />
+
+			<type name="owner-uuid" type="uuid" id="16" />
+
+			<type name="horse-armor" type="int" id="17" />
+
+			<type name="pig-saddled" type="bool" id="13" />
+
+			<type name="rabbit-variant" type="int" id="13" />
+
+			<type name="standing-up" type="bool" id="13" />
+
+			<type name="sheep-flags-and-color" type="byte" id="13">
+				<flag name="sheared" bit="7" />
+			</type>
+
+			<type name="tameable-flags" type="byte" id="13">
+				<flag name="sitting" bit="0" />
+				<flag name="angry" bit="1" />
+				<flag name="tamed" bit="2" />
+			</type>
+
+			<type name="ocelot-variant" type="int" id="15" />
+
+			<type name="wolf-health" type="float" id="15" />
+
+			<type name="begging" type="bool" id="16" />
+
+			<type name="collar-color" type="int" id="17" default="14" />
+
+			<type name="profession" type="int" id="13" />
+
+			<type name="created-by-player" type="byte" id="12" />
+
+			<type name="snowman-flags" type="byte" id="12">
+				<flag name="pumpkinless" bit="4" />
+			</type>
+
+			<type name="shulker-direction" type="direction" id="12" />
+
+			<type name="shulker-attachment" type="optional-position" id="13" />
+
+			<type name="shulker-shield-height" type="byte" id="14" />
+
+			<type name="blaze-on-fire" type="byte" id="12" />
+
+			<type name="creeper-state" type="int" id="12" default="-1" />
+
+			<type name="charged" type="bool" id="13" />
+
+			<type name="ignited" type="bool" id="14" />
+
+			<type name="guardian-flags" type="byte" id="12">
+				<flag name="retracting-spikes" bit="1" />
+				<flag name="elder" bit="2" />
+			</type>
+
+			<type name="guardian-target" type="int" id="13" />
+
+			<type name="skeleton-type" type="int" id="12" />
+
+			<type name="swinging-arms" type="bool" id="13" />
+
+			<type name="climbing" type="byte" id="12" />
+
+			<type name="center-head-target" type="int" id="12" />
+
+			<type name="left-head-target" type="int" id="13" />
+
+			<type name="right-head-target" type="int" id="14" />
+
+			<type name="invulnerable-time" type="int" id="15" />
+
+			<type name="zombie-type" type="int" id="13" />
+
+			<type name="converting" type="bool" id="14" />
+
+			<type name="hands-held-up" type="bool" id="15" />
+
+			<type name="carried-block" type="block" id="12" />
+
+			<type name="screaming" type="bool" id="13" />
+
+			<type name="dragon-phase" type="int" id="12" />
+
+			<type name="ghast-attacking" type="bool" id="12" />
+
+			<type name="slime-size" type="int" id="12" default="1" />
+
+			<type name="shaking-power" type="int" id="6" />
+
+			<type name="shaking-direction" type="int" id="7" />
+
+			<type name="shaking-multiplier" type="float" id="8" default="0" />
+
+			<type name="minecart-block" type="int" id="9" />
+
+			<type name="minecart-block-position" type="int" id="10" default="6" />
+
+			<type name="minecart-custom-block" type="bool" id="11" />
+
+			<type name="furnace-powered" type="bool" id="12" />
+
+			<type name="command" type="string" id="12" />
+
+			<type name="last-output" type="chat" id="13" />
+
+			<type name="fuse-time" type="int" id="6" />
+
+		</metadatas>
+
+	</metadata>
+
+</game>

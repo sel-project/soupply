@@ -68,14 +68,14 @@ class DGenerator : CodeGenerator {
 		return name.replace("_", "");
 	}
 
-	protected override void generateProtocol(string game, Protocols info) {
+	protected override void generateGame(string game, Info info) {
 
-		this.arrays = info.data.arrays;
+		this.arrays = info.protocol.arrays;
 
 		//immutable id = conv.convertType(prts.data.id);
 		//immutable arrayLength = conv.convertType(prts.data.arrayLength);
 
-		immutable defaultEndianness = camelCaseUpper(info.data.endianness["*"]);
+		immutable defaultEndianness = camelCaseUpper(info.protocol.endianness["*"]);
 
 		// create generic packet
 
@@ -83,19 +83,19 @@ class DGenerator : CodeGenerator {
 		
 		string endiannessOf(string type, string over="") {
 			if(over.length) return camelCaseLower(over);
-			auto e = type in info.data.endianness;
+			auto e = type in info.protocol.endianness;
 			if(e) return camelCaseLower(*e);
 			else return endiannessOf("*");
 		}
 
 		with(make("protocol", game, "packet")) {
 
-			immutable extends = "PacketImpl!(Endian." ~ endiannessOf("*") ~ ", " ~ info.data.id ~ ", " ~ info.data.arrayLength ~ ")";
+			immutable extends = "PacketImpl!(Endian." ~ endiannessOf("*") ~ ", " ~ info.protocol.id ~ ", " ~ info.protocol.arrayLength ~ ")";
 
 			addImport("packetmaker").nl;
-			if(info.data.padding) {
+			if(info.protocol.padding) {
 				addImportLib("util", "Pad").nl;
-				stat("alias " ~ base ~ " = Pad!(" ~ info.data.padding.to!string ~ ", " ~ extends ~ ")");
+				stat("alias " ~ base ~ " = Pad!(" ~ info.protocol.padding.to!string ~ ", " ~ extends ~ ")");
 			} else {
 				stat("alias " ~ base ~ " = " ~ extends);
 			}
@@ -129,7 +129,7 @@ class DGenerator : CodeGenerator {
 			}
 
 			// custom array
-			auto array = field.type in info.data.arrays;
+			auto array = field.type in info.protocol.arrays;
 			if(array) {
 				if(array.endianness.length) ret ~= "@EndianLength!" ~ array.length ~ "(Endian." ~ camelCaseLower(array.endianness) ~ ")";
 				else ret ~= "@Length!" ~ array.length;
@@ -203,7 +203,7 @@ class DGenerator : CodeGenerator {
 			addImport("packetmaker").nl;
 			addImportLib("util", "Tuple", "UUID");
 			addImportLib("metadata." ~ game).nl;
-			foreach(type ; info.data.types) {
+			foreach(type ; info.protocol.types) {
 				immutable hasLength = type.length.length != 0;
 				// declaration
 				block("struct " ~ camelCaseUpper(type.name)).nl;
@@ -221,11 +221,11 @@ class DGenerator : CodeGenerator {
 				endBlock();
 				nl;
 			}
-			save("protocol/" ~ game);
+			save(game);
 		}
 
 		// sections
-		foreach(section ; info.data.sections) {
+		foreach(section ; info.protocol.sections) {
 			auto s = make("protocol", game, section.name);
 			with(s) {
 				stat("static import std.conv");
@@ -241,7 +241,7 @@ class DGenerator : CodeGenerator {
 				stat("alias Packets = TypeTuple!(" ~ names.join(", ") ~ ")").nl;
 				foreach(packet ; section.packets) {
 					addClass(camelCaseUpper(packet.name) ~ " : " ~ base).nl;
-					stat("enum " ~ convertType(info.data.id) ~ " ID = " ~ to!string(packet.id)).nl;
+					stat("enum " ~ convertType(info.protocol.id) ~ " ID = " ~ to!string(packet.id)).nl;
 					stat("enum bool CLIENTBOUND = " ~ to!string(packet.clientbound));
 					stat("enum bool SERVERBOUND = " ~ to!string(packet.serverbound)).nl;
 					writeFields(s, packet.fields, true);
@@ -274,13 +274,9 @@ class DGenerator : CodeGenerator {
 					}
 					endBlock().nl;
 				}
-				save("protocol/" ~ game);
+				save(game);
 			}
 		}
-
-	}
-
-	override void generateMetadata(string game, Metadatas info) {
 
 		//TODO
 
@@ -289,7 +285,7 @@ class DGenerator : CodeGenerator {
 			block("struct Metadata");
 			endBlock();
 
-			save("metadata/" ~ game);
+			save(game);
 
 		}
 

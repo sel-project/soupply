@@ -33,12 +33,25 @@ struct Data {
 	string license;
 	string version_;
 	
-	Protocols[string] protocols;
-	Metadatas[string] metadatas;
+	Info[string] info;
 	
 }
 
-struct File(T) { string software; uint protocol; T data; }
+struct Info {
+
+	string software;
+	string game;
+	uint version_;
+	
+	string released;
+	string from, to;
+	bool latest = false;
+	string description;
+
+	Protocol protocol;
+	Metadata metadata;
+
+}
 
 struct Protocol {
 
@@ -56,10 +69,6 @@ struct Protocol {
 
 	struct Array { string base; string length; string endianness; }
 
-	string released;
-	string from, to;
-	bool latest = false;
-	string description;
 	string id;
 	string arrayLength;
 	size_t padding = 0;
@@ -69,8 +78,6 @@ struct Protocol {
 	Array[string] arrays;
 
 }
-
-alias Protocols = File!Protocol;
 
 struct Metadata {
 
@@ -89,5 +96,3 @@ struct Metadata {
 	Data[] data;
 
 }
-
-alias Metadatas = File!Metadata;
