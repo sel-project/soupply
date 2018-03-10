@@ -39,19 +39,24 @@ import soupply.util;
 
 import transforms : snakeCase, camelCaseLower, camelCaseUpper;
 
-class JavascriptGeneratorImpl(bool node) : CodeGenerator {
+class JavascriptGenerator : CodeGenerator {
 
-	public this() {
+	immutable bool node;
+
+	public this(bool node, string extension) {
+
+		this.node = node;
 
 		CodeMaker.Settings settings;
 		settings.inlineBraces = true;
+		settings.spaceAfterBlock = node;
 
-		settings.moduleStat = node ? "const %s =" : "// module %s";
-		settings.importStat = node ? "import %s from '%s'" : "// import %s";
+		settings.moduleStat = "const %s =";
+		settings.importStat = "import %s from '%s'";
 		settings.classStat = "%s: class extends Buffer";
-		settings.constStat = "static get %s(){ return %s; }";
+		settings.constStat = node ? "static get %s(){ return %s; }" : "static get %s(){return %s;}";
 
-		super(settings, "js");
+		super(settings, extension);
 
 	}
 
@@ -71,11 +76,6 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 			else if(defaultTypes.canFind(t)) return t ~ e;
 			else if(t == "metadata") return "Metadata";
 			else return "Types." ~ toPascalCase(t) ~ e;
-		}
-
-		@property string convertName(string name) {
-			if(name == "default") return "def";
-			else return toCamelCase(name);
 		}
 
 		immutable id = convert(info.protocol.id);
@@ -133,7 +133,7 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 					else if(type == "bool") maker.stat("this.writeBool(" ~ name ~ ")");
 					else if(type == "byte" || type == "ubyte") maker.stat("this.writeByte(" ~ name ~ ")");
 					else if(defaultTypes.canFind(type)) maker.stat("this.write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ")");
-					else maker.stat("this.writeBytes(" ~ name ~ ".encode())");
+					else maker.stat("this.writeBytes(" ~ name ~ ".encodeBody(true))");
 				}
 			}
 		}
@@ -184,25 +184,27 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 					else if(type == "bool") maker.stat(name ~ "=this.readBool()");
 					else if(type == "byte" || type == "ubyte") maker.stat(name ~ "=this.readByte()");
 					else if(defaultTypes.canFind(type)) maker.stat(name ~ "=this.read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "()");
-					else maker.stat(name ~ "=" ~ convert(type) ~ ".fromBuffer(this._buffer)").stat("this._buffer=" ~ name ~ "._buffer");
+					else maker.stat(name ~ "=new " ~ convert(type) ~ "().decodeBody(this._buffer)").stat("this._buffer=" ~ name ~ "._buffer");
 				}
 			}
 		}
 
 		void writeFields(CodeMaker maker, string className, Protocol.Field[] fields, string cont, ptrdiff_t id=-1, string variantField="", Protocol.Variant[] variants=[], string length="") {
 			// constants
-			foreach(field ; fields) {
-				if(field.constants.length) {
-					maker.line("// " ~ field.name.replace("_", " "));
-					foreach(con ; field.constants) {
-						maker.addConst(con.name.toUpper(), con.value); //FIXME string constants
+			if(node) {
+				foreach(field ; fields) {
+					if(field.constants.length) {
+						if(node) maker.line("// " ~ field.name.replace("_", " "));
+						foreach(con ; field.constants) {
+							maker.addConst(con.name.toUpper(), con.value); //FIXME string constants
+						}
+						maker.nl;
 					}
-					maker.nl;
 				}
 			}
 			// variant's values
 			if(variantField.length) {
-				maker.line("// " ~ variantField.replace("_", " ") ~ " (variant)");
+				if(node) maker.line("// " ~ variantField.replace("_", " ") ~ " (variant)");
 				foreach(variant ; variants) {
 					maker.addConst(variant.name.toUpper(), variant.value);
 				}
@@ -213,7 +215,7 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 				immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 				f ~= name ~ "=" ~ (field.default_.length ? constOf(field.default_) : defaultValue(field.type));
 			}
-			maker.block("constructor(" ~ f.join(", ") ~ ")");
+			maker.block("constructor(" ~ f.join(node ? ", " : ",") ~ ")");
 			maker.stat("super()");
 			foreach(i, field; fields) {
 				immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
@@ -224,12 +226,21 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 				//TODO constructor for variants
 
 			}
+			maker.block("reset()").stat("this._buffer=[]").endBlock().nl;
 			// encode
 			with(maker) {
-				line("/** @return {Uint8Array} */");
-				block("encode()");
-				stat("this._buffer = []");
-				if(id >= 0) createEncoding(maker, info.protocol.id, to!string(id));
+				if(id >= 0) {
+					if(node) line("/** @return {Uint8Array} */");
+					block("encode()");
+					stat("this.reset()");
+					createEncoding(maker, info.protocol.id, to!string(id));
+					if(info.protocol.padding) stat("this.writeBytes(new Uint8Array(" ~ info.protocol.padding.to!string ~ "))");
+					stat("return this.encodeBody(false)");
+					endBlock().nl;
+				}
+				if(node) line("/** @return {Uint8Array} */");
+				block("encodeBody(reset)");
+				block("if(reset)").stat("this.reset()").endBlock();
 				foreach(i, field; fields) {
 					bool c = field.condition != "";
 					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
@@ -238,7 +249,7 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 					if(c) endBlock();
 				}
 				if(variantField.length) {
-					block("switch(this." ~ camelCaseLower(variantField) ~ ")");
+					block("switch(this." ~ convertName(variantField) ~ ")");
 					foreach(variant ; variants) {
 						line("case " ~ variant.value ~ ":").add_indent();
 						foreach(i, field; fields) {
@@ -254,26 +265,33 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 					endBlock();
 				}
 				if(length.length) {
-					stat("var _length = this._buffer.length");
-					createEncoding(maker, length, "_length");
-					stat("var _length_array = []");
-					block("while(this._buffer.length > _length)").stat("_length_array.push(this._buffer.pop())").endBlock();
-					block("while(_length_array.length > 0)").stat("this._buffer.unshift(_length_array.shift())").endBlock();
+					stat("var _buffer=this._buffer");
+					stat("this.reset()");
+					createEncoding(maker, length, "_buffer.length");
+					stat("this.writeBytes(_buffer)");
 				}
 				stat("return new Uint8Array(this._buffer)");
 				endBlock().nl;
 			}
 			// decode
 			with(maker) {
-				line("/** @param {(Uint8Array|Array)} buffer */");
-				block("decode(_buffer)");
-				stat("this._buffer = Array.from(_buffer)");
+				if(id >= 0) {
+					if(node) line("/** @param {(Uint8Array|Array)} buffer */");
+					block("decode(_buffer)");
+					stat("this._buffer=Array.from(_buffer)");
+					createDecoding(maker, info.protocol.id, "var _id");
+					if(info.protocol.padding) stat("this.readBytes(" ~ info.protocol.padding.to!string ~ ")");
+					stat("return this.decodeBody(this._buffer)");
+					endBlock().nl;
+				}
+				if(node) line("/** @param {(Uint8Array|Array)} buffer */");
+				block("decodeBody(_buffer)");
+				stat("this._buffer=Array.from(_buffer)");
 				if(length.length) {
 					createDecoding(maker, length, "var _length");
-					stat("_buffer = this._buffer.slice(_length)");
-					block("if(this._buffer.length > _length)").stat("this._buffer.length = _length").endBlock();
+					stat("_buffer=this._buffer.slice(_length)");
+					block("if(this._buffer.length>_length)").stat("this._buffer.length=_length").endBlock();
 				}
-				if(id >= 0) createDecoding(maker, info.protocol.id, "var _id");
 				foreach(i, field; fields) {
 					bool c = field.condition != "";
 					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
@@ -288,7 +306,7 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 						foreach(i, field; variant.fields) {
 							bool c = field.condition != "";
 							immutable name = field.name == "?" ? "unknown" ~ to!string(i + fields.length) : convertName(field.name);
-							if(c) block("if(" ~ toCamelCase(field.condition) ~ ")");
+							if(c) block("if(" ~ camelCaseLower(field.condition) ~ ")");
 							createDecoding(maker, field.type, "this." ~ name, field.endianness);
 							if(c) endBlock();
 						}
@@ -298,17 +316,17 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 					endBlock();
 				}
 				if(length.length) {
-					stat("this._buffer = _buffer");
+					stat("this._buffer=_buffer");
 				}
 				stat("return this");
 				endBlock().nl;
 				// from buffer
-				line("/** @param {(Uint8Array|Array)} buffer */");
+				/+if(node) line("/** @param {(Uint8Array|Array)} buffer */");
 				block("static fromBuffer(buffer)");
 				stat("return new " ~ cont ~ "." ~ className ~ "().decode(buffer)");
-				endBlock().nl;
+				endBlock().nl;+/
 			}
-			with(maker) {
+			if(node) with(maker) {
 				line("/** @return {string} */");
 				block("toString()");
 				string[] s;
@@ -323,6 +341,7 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 
 		// types
 		auto types = make(game, "types");
+		types.clear();
 		with(types) {
 			block("const Types =").nl;
 			foreach(i, type; info.protocol.types) {
@@ -340,6 +359,7 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 		// sections
 		foreach(section ; info.protocol.sections) {
 			auto mod = make(game, section.name);
+			mod.clear();
 			with(mod) {
 				if(node) stat("import Types from 'types'").nl;
 				block("const " ~ camelCaseUpper(section.name) ~ " =").nl;
@@ -467,6 +487,11 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 		
 	}
 
+	override @property string convertName(string name) {
+		if(name == "default") return "default_";
+		else return camelCaseLower(name);
+	}
+	
 	string defaultValue(string type) {
 		if(type == "float" || type == "double") return ".0";
 		else if(type == "bool") return "false";
@@ -495,18 +520,26 @@ class JavascriptGeneratorImpl(bool node) : CodeGenerator {
 
 }
 
-class JavascriptGenerator : JavascriptGeneratorImpl!false {
+class SandboxGenerator : JavascriptGenerator {
 	
 	static this() {
-		Generator.register!JavascriptGenerator("js-sandbox", "../soupply.github.io/sandbox/src", ["/*", " *", " */"]);
+		Generator.register!SandboxGenerator("js-sandbox", "../soupply.github.io/sandbox/src");
+	}
+
+	this() {
+		super(false, "min.js");
 	}
 
 }
 
-class NodeJSGenerator : JavascriptGeneratorImpl!true {
+class NodeJSGenerator : JavascriptGenerator {
 
 	static this() {
 		//Generator.register!NodeJSGenerator("node-js", "src/" ~ SOFTWARE, ["/*", " *", " */"]);
+	}
+
+	this() {
+		super(true, "js");
 	}
 
 }

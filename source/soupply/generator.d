@@ -24,7 +24,7 @@ module soupply.generator;
 
 import core.atomic : atomicOp;
 
-import std.algorithm : canFind, count;
+import std.algorithm : canFind;
 import std.array : Appender;
 import std.ascii : newline;
 import std.concurrency : spawnLinked, receiveOnly, LinkTerminated;
@@ -38,7 +38,7 @@ import std.string : indexOf, lastIndexOf, toLower, replace, split, join, strip, 
 
 import soupply.data;
 
-private shared size_t __files, __lines;
+private shared size_t __files, __bytes;
 
 struct GeneratorInfo {
 
@@ -171,7 +171,7 @@ abstract class Generator {
 		}
 
 		total.stop();
-		writeln("Done. Generated ", __lines, " lines in ", __files, " files in ", total.peek);
+		writeln("Done. Generated ", __bytes / 1000, " kB in ", __files, " files in ", total.peek);
 
 	}
 
@@ -304,7 +304,7 @@ abstract class Generator {
 			header.close();
 			data = header.data ~ data;
 		}
-		atomicOp!"+="(__lines, data.count('\n'));
+		atomicOp!"+="(__bytes, data.length);
 		atomicOp!"+="(__files, 1);
 		_write(path, data);
 	}
@@ -354,11 +354,18 @@ class Maker {
 	protected size_t indentSize = 0;
 
 	public this(Generator generator, string path, string extension) {
-		auto e = extension in generator.editorconfig;
-		if(e is null) e = "*" in generator.editorconfig;
-		_newline = (*e).newline;
-		_indent = (*e).indentation;
-		_final_newline = (*e).finalNewline;
+		if(extension.startsWith("min.")) {
+			extension = extension[4..$];
+			_newline = "";
+			_indent = "";
+			_final_newline = false;
+		} else {
+			auto e = extension in generator.editorconfig;
+			if(e is null) e = "*" in generator.editorconfig;
+			_newline = (*e).newline;
+			_indent = (*e).indentation;
+			_final_newline = (*e).finalNewline;
+		}
 		this.generator = generator;
 		this.file = path ~ "." ~ extension;
 	}
@@ -367,6 +374,10 @@ class Maker {
 		string ret = appender.data.stripRight;
 		if(_final_newline) ret ~= _newline;
 		return ret;
+	}
+
+	void clear() {
+		this.appender = Appender!string.init;
 	}
 
 	/**

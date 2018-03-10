@@ -93,12 +93,13 @@ class DocsGenerator : Generator {
 			}
 			if(others.length) {
 				sort(others);
-				string[] str;
+				string[] str, cmp;
 				foreach(o ; others) {
 					str ~= "[" ~ o.to!string ~ "](./" ~ game ~ ")";
+					cmp ~= "[" ~ o.to!string ~ "](../diff/" ~ info.game ~ "/" ~ to!string(min(info.version_, o)) ~ "-" ~ to!string(max(info.version_, o)) ~ ")";
 				}
-				//data ~= "\t\t<p><strong>Compare</strong>: " ~ str.join(", ") ~ "</p>\n";
 				data.line("**Other protocols**: " ~ str.join(", ")).nl;
+				data.line("**Compare changes**: " ~ cmp.join(", ")).nl;
 			}
 			string[] jumps = ["[Encoding](#encoding)", "[Packets](#packets)"];
 			if(info.protocol.types.length) jumps ~= "[Types](" ~ game ~ "/types)";
@@ -493,6 +494,50 @@ string cond(string c) {
 		.replace(">", "$+/code$- is greater than $+code$-")
 		.replace("<", "$+/code$- is less than $+code$-") ~ "$+/code$-";
 	return c.replace("$+", "<").replace("$-", ">");
+}
+
+class DiffGenerator : Generator {
+
+	static this() {
+		Generator.register!DiffGenerator("soupply.github.io", "diff");
+	}
+
+	protected override void generateImpl(Data data) {
+
+		Info[][string] games;
+
+		foreach(info ; data.info) {
+			games[info.game] ~= info;
+		}
+
+		foreach(game, others; games) {
+
+			while(others.length > 1) {
+
+				Info a = others[0];
+				others = others[1..$];
+
+				foreach(b ; others) {
+
+					immutable newer = to!string(min(a.version_, b.version_));
+					immutable older = to!string(max(a.version_, b.version_));
+
+					with(new Maker(this, game ~ "/" ~ newer ~ "-" ~ older, "md")) {
+
+						line("# " ~ a.software).nl;
+						line("Changes from protocol **" ~ newer ~ "** to **" ~ older ~ "**");
+						save();
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
 }
 
 class SandboxGenerator : Generator {

@@ -98,6 +98,7 @@ class CodeMaker : Maker {
 		bool semicolons = true;
 		bool braces = true;
 		bool inlineBraces = true;
+		bool spaceAfterBlock = true;
 
 		string moduleDeclaration;
 		string moduleSeparator = ".";
@@ -121,6 +122,7 @@ class CodeMaker : Maker {
 	private const string _game;
 	
 	private immutable string _semicolon;
+	private immutable string _open_brace;
 	
 	public this(CodeGenerator generator, string[] module_, string extension, inout Settings settings, string game) {
 		super(generator, join(module_, "/"), extension);
@@ -128,6 +130,7 @@ class CodeMaker : Maker {
 		this.settings = settings;
 		_game = game;
 		_semicolon = settings.semicolons ? ";" : "";
+		_open_brace = settings.spaceAfterBlock ? " {" : "{";
 		// add module declaration
 		this.stat(format(settings.moduleStat, join(settings.baseModule ~ module_, settings.moduleSeparator))).nl;
 	}
@@ -228,7 +231,7 @@ class CodeMaker : Maker {
 	 */
 	typeof(this) block(string data) {
 		inline(data);
-		if(settings.inlineBraces) appender.put(" {");
+		if(settings.inlineBraces) appender.put(_open_brace);
 		else nl.inline("{");
 		add_indent();
 		nl;
