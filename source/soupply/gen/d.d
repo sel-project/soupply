@@ -190,6 +190,11 @@ class DGenerator : CodeGenerator {
 
 		}
 
+		string convertEndian(string type) {
+			if(type.startsWith("var")) return "EndianType.var, " ~ type[3..$];
+			else return "Endian." ~ defaultEndianness ~ ", " ~ type;
+		}
+
 		string[] attributes(Protocol.Field field) {
 
 			string[] ret;
@@ -224,6 +229,12 @@ class DGenerator : CodeGenerator {
 			ret ~= "";
 
 			return ret;
+
+		}
+
+		string[] attributes2(string type, string endianness="") {
+
+			return attributes(Protocol.Field("", type, "", endianness))[0..$-1];
 
 		}
 
@@ -281,21 +292,35 @@ class DGenerator : CodeGenerator {
 		auto types = make(game, "types");
 		with(types) {
 			stat("static import std.conv");
-			addImport("packetmaker").nl;
-			addImportLib("util", "Tuple", "UUID");
+			addImport("packetmaker");
+			addImport("packetmaker.maker", "EndianType", "writeLength", "readLength").nl;
+			addImportLib("util", "Vector", "UUID");
 			addImportLib(game ~ ".metadata").nl;
 			foreach(type ; info.protocol.types) {
 				immutable hasLength = type.length.length != 0;
 				// declaration
 				block("struct " ~ camelCaseUpper(type.name)).nl;
+				if(hasLength) {
+					// create a container struct
+					block("private struct Container").nl;
+				}
 				writeFields(types, type.fields, false);
 				if(hasLength) {
+					stat("mixin Make!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ")").nl;
+					endBlock().nl;
+					stat("enum string[] __fields = Container.__fields").nl;
+					stat("Container _container").nl;
+					stat("alias _container this").nl;
 					// encoding
 					block("void encodeBody(InputBuffer buffer)");
-					//TODO
+					stat("InputBuffer _buffer = new InputBuffer()");
+					stat("_container.encodeBody(_buffer)");
+					stat("writeLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer, _buffer.data.length)");
+					stat("buffer.writeBytes(_buffer.data)");
 					endBlock().nl;
 					// decoding
 					block("void decodeBody(OutputBuffer buffer)");
+					stat("_container.decodeBody(new OutputBuffer(buffer.readBytes(readLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer))))");
 					endBlock().nl;
 				} else {
 					stat("mixin Make!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ")");
@@ -316,7 +341,7 @@ class DGenerator : CodeGenerator {
 				stat("static import std.conv");
 				addImportStd("typetuple", "TypeTuple");
 				addImport("packetmaker").nl;
-				addImportLib("util", "Tuple", "UUID");
+				addImportLib("util", "Vector", "UUID");
 				addImportLib(game ~ ".metadata", "Metadata");
 				addImportLib(game ~ ".packet", base).nl;
 				stat("static import " ~ SOFTWARE ~ "." ~ game ~ ".types").nl;
@@ -367,63 +392,107 @@ class DGenerator : CodeGenerator {
 			save();
 		}
 
-		//TODO
+		// metadata
+		auto metadata = make(game, "metadata");
+		with(metadata) {
 
-		with(make(game, "metadata")) {
+			addImport("packetmaker").addImport("packetmaker.maker", "EndianType", "writeLength").nl;
+			addImportLib("util", "Vector").nl;
+			addImportLib(game ~ ".packet", base);
+			stat("static import " ~ SOFTWARE ~ "." ~ game ~ ".types").nl;
 
-			block("struct Metadata");
+			// types
+			block("enum MetadataType : " ~ convertType(info.metadata.type));
+			string[string] ctable, etable;
+			ubyte[string] idtable;
+			foreach(type ; info.metadata.types) {
+				ctable[type.name] = type.type;
+				etable[type.name] = type.endianness;
+				idtable[type.name] = type.id;
+				line(toUpper(type.name) ~ " = " ~ type.id.to!string ~ ",");
+			}
+			endBlock().nl;
+
+			// ids
+			/+block("struct MetadataId");
+			foreach(d ; info.metadata.data) {
+				immutable tp = convertType(ctable[d.type]);
+				if(d.flags.length) {
+					block("enum " ~ toUpper(d.name) ~ " : " ~ id);
+					foreach(flag ; d.flags) {
+						line(toUpper(flag.name) ~ " = " ~ flag.bit.to!string ~ ",");
+					}
+					endBlock();
+				} else {
+					stat("enum " ~ id ~ " " ~ toUpper(d.name) ~ " = " ~ d.id.to!string);
+				}
+			}
+			endBlock().nl;+/
+
+			// metadata value
+			block("class MetadataValue : " ~ base).nl;
+			immutable _id = convertType(info.metadata.id);
+			immutable _type = convertType(info.metadata.type);
+			stat(join(attributes2(info.metadata.id) ~ _id, " ") ~ " id");
+			stat(join(attributes2(info.metadata.type) ~ _type, " ") ~ " type").nl;
+			block("this(" ~ _id ~ " id, " ~ _type ~ " type) pure nothrow @safe @nogc");
+			stat("this.id = id");
+			stat("this.type = type");
+			endBlock().nl;
+			stat("mixin Make").nl;
+			endBlock().nl;
+
+			// value of
+			foreach(type ; info.metadata.types) {
+				immutable _value = convertType(type.type);
+				block("class MetadataValue" ~ type.id.to!string ~ " : MetadataValue").nl;
+				stat(join(attributes2(type.type, type.endianness) ~ _value, " ") ~ " value").nl;
+				block("this(" ~ _id ~ " id, " ~ _value ~ " value) pure nothrow @safe @nogc");
+				stat("super(id, " ~ type.id.to!string ~ ")");
+				stat("this.value = value");
+				endBlock().nl;
+				stat("mixin Make").nl;
+				endBlock().nl;
+			}
+
+			// metadata
+			immutable _length = info.metadata.length != "";
+			immutable _length_e = info.metadata.length.startsWith("var") ? "var" : defaultEndianness;
+			block("struct Metadata").nl;
+			stat("private MetadataValue[" ~ _id ~ "] _store");
+			stat("private bool _cached = false");
+			stat("private ubyte[] _cache").nl;
+
+			// get and set
+			//TODO
+
+			// encode
+			block("void encodeBody(InputBuffer buffer)");
+			block("if(!_cached)");
+			stat("InputBuffer _buffer = new InputBuffer()");
+			if(_length) stat("writeLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(_buffer, _store.length)");
+			stat("foreach(value ; _store) value.encodeBody(_buffer)");
+			if(info.metadata.suffix.length) stat("_buffer.writeUnsignedByte(ubyte(" ~ info.metadata.suffix ~ "))");
+			stat("_cached = true");
+			stat("_cache = _buffer.data");
 			endBlock();
+			stat("buffer.writeBytes(_cache)");
+			endBlock().nl;
+
+			// decode
+			block("void decodeBody(OutputBuffer buffer)");
+			stat("assert(0, `Cannot decode Metadata`)");
+			endBlock().nl;
+
+			endBlock().nl;
 
 			save(game);
 
 		}
 
-		// metadata
-		/+auto m = game in data.metadatas;
-		if(m) {
-			string data = "module sul.metadata." ~ game ~ ";\n\n";
-			data ~= "import std.typecons : Tuple, tuple;\n\n";
-			data ~= "import sul.utils.buffer : Buffer;\nimport sul.utils.metadataflags;\nimport sul.utils.var;\n\n";
-			data ~= "static import sul.protocol." ~ game ~ ".types;\n\n";
-			data ~= "alias Changed(T) = Tuple!(T, \"value\", bool, \"changed\");\n\n";
-			// types
-			data ~= "enum MetadataType : " ~ convertType(m.data.type) ~ " {\n\n";
-			string[string] ctable, etable;
-			ubyte[string] idtable;
-			foreach(type ; m.data.types) {
-				ctable[type.name] = type.type;
-				etable[type.name] = type.endianness;
-				idtable[type.name] = type.id;
-				data ~= "\t" ~ toUpper(type.name) ~ " = " ~ type.id.to!string ~ ",\n";
-			}
-			data ~= "}\n\n";
-			// metadata
-			data ~= "class Metadata {\n\n";
-			foreach(d ; m.data.data) {
-				immutable tp = convertType(ctable[d.type]);
-				if(d.flags.length) {
-					data ~= "\tpublic enum " ~ toUpper(d.name) ~ " : size_t {\n";
-					foreach(flag ; d.flags) {
-						data ~= "\t\t" ~ toUpper(flag.name) ~ " = " ~ flag.bit.to!string ~ ",\n";
-					}
-					data ~= "\t}\n";
-				} else {
-					data ~= "\tpublic enum " ~ convertType(m.data.id) ~ " " ~ toUpper(d.name) ~ " = " ~ d.id.to!string ~ ";\n";
-				}
-			}
-			data ~= "\n";
-			data ~= "\tpublic DecodedMetadata[] decoded;\n\n";
-			data ~= "\tprivate bool _cached = false;\n";
-			data ~= "\tprivate ubyte[] _cache;\n\n";
-			data ~= "\tprivate void delegate(Buffer) pure nothrow @safe[] _changed;\n\n";
-			foreach(d ; m.data.data) {
-				immutable tp = convertType(ctable[d.type]);
-				immutable ctp = d.flags.length ? "MetadataFlags!(" ~ tp ~ ")" : tp;
-				if(d.required) data ~= "\tprivate " ~ ctp ~ " _" ~ convertName(d.name) ~ (d.def.length ? " = cast(" ~ ctp ~ ")" ~ d.def : "") ~ ";\n";
-				else data ~= "\tprivate Changed!(" ~ ctp ~ ") _" ~ convertName(d.name) ~ (d.def.length ? " = tuple(cast(" ~ ctp ~ ")" ~ d.def ~ ", false)" : "") ~ ";\n";
-			}
-			data ~= "\n";
-			data ~= "\tpublic pure nothrow @safe this() {\n";
+			
+			
+			/+data ~= "\tpublic pure nothrow @safe this() {\n";
 			data ~= "\t\tthis.reset();\n";
 			data ~= "\t}\n\n";
 			data ~= "\tpublic pure nothrow @safe void reset() {\n";
@@ -623,7 +692,7 @@ class DGenerator : CodeGenerator {
 		}
 		auto vector = type.indexOf("<");
 		if(vector >= 0) {
-			ret = "Tuple!(" ~ convertType(game, type[0..vector]) ~ ", \"" ~ type[vector+1..type.indexOf(">")] ~ "\")";
+			ret = "Vector!(" ~ convertType(game, type[0..vector]) ~ ", \"" ~ type[vector+1..type.indexOf(">")] ~ "\")";
 		} else if(t in defaultAliases) {
 			return convertType(game, defaultAliases[t] ~ (array >= 0 ? type[array..$] : ""));
 		} else if(defaultTypes.canFind(t)) {

@@ -279,7 +279,7 @@ class DocsGenerator : Generator {
 				foreach(packet ; section.packets) {
 				
 					data = head(section.name, packet.name);
-					data.line("Encode/decode this packet in [Sandbox](../../../sandbox/" ~ game ~ "#" ~ section.name ~ "." ~ packet.name ~ ")").nl;
+					data.line("Encode/decode this packet in [Sandbox](../../../sandbox/" ~ game ~ "#" ~ camelCaseUpper(section.name) ~ "." ~ camelCaseUpper(packet.name) ~ ")").nl;
 					data.line("**Id**: " ~ packet.id.to!string).nl;
 					data.line("**Id** (hex): " ~ ("00" ~ packet.id.to!string(16))[$-2..$]).nl;
 					data.line("**Id** (bin): " ~ ("00000000" ~ packet.id.to!string(2))[$-8..$]).nl;

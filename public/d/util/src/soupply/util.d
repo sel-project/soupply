@@ -55,7 +55,7 @@ template Pad(size_t padding, T:Packet) {
 
 }
 
-struct Tuple(T, string variables) if(variables.length)
+struct Vector(T, string variables) if(variables.length)
 {
 
 	union
