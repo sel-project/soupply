@@ -13,4 +13,4 @@ env:
   - CONFIG=release
  
 script:
-  - dub build --build=$CONFIG
+  - dub test --build=$CONFIG

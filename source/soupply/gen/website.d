@@ -247,7 +247,7 @@ class DocsGenerator : Generator {
 									data.line("Name | Value" ~ (notes ? " |  |" : ""));
 									data.line("---|:---:" ~ (notes ? "|---" : ""));
 									foreach(constant ; field.constants) {
-										data.put("[" ~ constant.name.replace("_", " ") ~ "](" ~ link(namespace ~ field.name ~ constant.name) ~ ")");
+										data.put(constant.name.replace("_", " "));
 										data.put(" | " ~ constant.value);
 										if(notes) data.put(" | " ~ constant.description);
 										data.nl;
@@ -279,6 +279,7 @@ class DocsGenerator : Generator {
 				foreach(packet ; section.packets) {
 				
 					data = head(section.name, packet.name);
+					data.line("Encode/decode this packet in [Sandbox](../../../sandbox/" ~ game ~ "#" ~ section.name ~ "." ~ packet.name ~ ")").nl;
 					data.line("**Id**: " ~ packet.id.to!string).nl;
 					data.line("**Id** (hex): " ~ ("00" ~ packet.id.to!string(16))[$-2..$]).nl;
 					data.line("**Id** (bin): " ~ ("00000000" ~ packet.id.to!string(2))[$-8..$]).nl;
@@ -525,7 +526,8 @@ class DiffGenerator : Generator {
 					with(new Maker(this, game ~ "/" ~ newer ~ "-" ~ older, "md")) {
 
 						line("# " ~ a.software).nl;
-						line("Changes from protocol **" ~ newer ~ "** to **" ~ older ~ "**");
+						line("Changes from protocol **" ~ newer ~ "** to **" ~ older ~ "**").nl;
+						line("__This page is still under construction__");
 						save();
 
 					}
@@ -556,12 +558,12 @@ class SandboxGenerator : Generator {
 				line("<head>").add_indent();
 				line("<title>Soupply's sandbox</title>");
 				line("<script src='buffer.js'></script>");
+				line("<script src='sandbox.js'></script>");
 				string[] sections = ["types"];
 				foreach(section ; info.protocol.sections) sections ~= section.name;
 				foreach(section ; sections) {
 					line("<script src='src/" ~ game ~ "/" ~ section ~ ".js'></script>");
 				}
-				line("<script src='sandbox.js'></script>");
 				remove_indent();
 				line("</head>");
 

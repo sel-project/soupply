@@ -20,12 +20,49 @@
  * SOFTWARE.
  *
  */
+
+var decodeInfo;
+
+function initDecode(buffer) {
+	decodeInfo = {
+		buffer: buffer,
+		length: buffer._buffer.length,
+		index: buffer._buffer.length,
+		data: []
+	};
+}
+
+function traceDecode(variable) {
+	decodeInfo.data.push({
+		variable: variable,
+		from: decodeInfo.length - decodeInfo.index,
+		to: decodeInfo.length - decodeInfo.buffer._buffer.length
+	});
+	decodeInfo.index = decodeInfo.buffer._buffer.length;
+}
+
 window.onload = function(){
 	
 	var hash = location.hash;
 	if(hash.startsWith("#")) {
 		
-		//TODO load right packet
+		var packetName;
+		var data = [];
+		
+		var s = hash.indexOf(":");
+		if(s == -1) {
+			packetName = hash.substr(1);
+		} else {
+			packetName = hash.substr(1, s - 1);
+			data = eval("[" + hash.substr(s + 1) + "]");
+		}
+		
+		var packet = eval("new " + packetName + "()");
+		if(data.length) packet.decodeBody(data);
+		
+		console.log(data);
+		console.log(packet);
+		console.log(decodeInfo);
 		
 	}
 	

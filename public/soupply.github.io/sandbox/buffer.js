@@ -43,7 +43,7 @@ class Buffer {
 		this._buffer.push(a ? 1 : 0);
 	}
 	
-	readByte() {
+	readBool() {
 		return this._buffer.shift() != 0;
 	}
 

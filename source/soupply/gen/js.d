@@ -213,7 +213,7 @@ class JavascriptGenerator : CodeGenerator {
 			string[] f;
 			foreach(i, field; fields) {
 				immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
-				f ~= name ~ "=" ~ (field.default_.length ? constOf(field.default_) : defaultValue(field.type));
+				f ~= name ~ "=" ~ (field.default_.length ? constOf(field.default_) : defaultValue(field.type, info.protocol.arrays));
 			}
 			maker.block("constructor(" ~ f.join(node ? ", " : ",") ~ ")");
 			maker.stat("super()");
@@ -241,10 +241,12 @@ class JavascriptGenerator : CodeGenerator {
 				if(node) line("/** @return {Uint8Array} */");
 				block("encodeBody(reset)");
 				block("if(reset)").stat("this.reset()").endBlock();
+				//stat("encodeReset()");
 				foreach(i, field; fields) {
 					bool c = field.condition != "";
 					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 					if(c) block("if(" ~ camelCaseLower(field.condition) ~ ")");
+					//stat("encodeState(this, '" ~ name ~ "')");
 					createEncoding(maker, field.type, "this." ~ name, field.endianness);
 					if(c) endBlock();
 				}
@@ -287,6 +289,7 @@ class JavascriptGenerator : CodeGenerator {
 				if(node) line("/** @param {(Uint8Array|Array)} buffer */");
 				block("decodeBody(_buffer)");
 				stat("this._buffer=Array.from(_buffer)");
+				stat("initDecode(this)");
 				if(length.length) {
 					createDecoding(maker, length, "var _length");
 					stat("_buffer=this._buffer.slice(_length)");
@@ -297,6 +300,7 @@ class JavascriptGenerator : CodeGenerator {
 					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 					if(c) block("if(" ~ camelCaseLower(field.condition) ~ ")");
 					createDecoding(maker, field.type, "this." ~ name, field.endianness);
+					stat("traceDecode('" ~ name ~ "')");
 					if(c) endBlock();
 				}
 				if(variantField.length) {
@@ -492,30 +496,34 @@ class JavascriptGenerator : CodeGenerator {
 		else return camelCaseLower(name);
 	}
 	
-	string defaultValue(string type) {
+	string defaultValue(string type, Protocol.Array[string] arrays) {
+		auto a = type in arrays;
 		if(type == "float" || type == "double") return ".0";
 		else if(type == "bool") return "false";
-		else if(type == "string") return "\"\"";
+		else if(type == "string") return `""`;
 		else if(type == "uuid") return "new Uint8Array(16)";
 		else if(type == "metadata") return "new Metadata()";
-		else if(type.endsWith("]")) {
-			if(type[$-2] == '[') return "[]";
-			else {
-				immutable size = type[type.lastIndexOf("[")+1..$-1];
+		else if(a || type.endsWith("]")) {
+			string size = "0";
+			if(a) {
+				type = a.base;
+			} else {
+				if(type[$-2] != '[') size = type[type.lastIndexOf("[")+1..$-1];
 				type = type[0..type.lastIndexOf("[")];
-				if(type == "byte") return "new Int8Array(" ~ size ~ ")";
-				else if(type == "ubyte") return "new Uint8Array(" ~ size ~ ")";
-				else if(type == "short" || type == "varshort") return "new Int16Array(" ~ size ~ ")";
-				else if(type == "ushort" || type == "varushort") return "new Uint16Array(" ~ size ~ ")";
-				else if(type == "int" || type == "varint" || type == "triad") return "new Int32Array(" ~ size ~ ")";
-				else if(type == "uint" || type == "varuint") return "new Uint32Array(" ~ size ~ ")";
-				else if(type == "float") return "new Float32Array(" ~ size ~ ")";
-				else if(type == "double") return "new Float64Array(" ~ size ~ ")";
-				else return "[]";
 			}
+			if(type == "byte") return "new Int8Array(" ~ size ~ ")";
+			else if(type == "ubyte") return "new Uint8Array(" ~ size ~ ")";
+			else if(type == "short" || type == "varshort") return "new Int16Array(" ~ size ~ ")";
+			else if(type == "ushort" || type == "varushort") return "new Uint16Array(" ~ size ~ ")";
+			else if(type == "int" || type == "varint" || type == "triad") return "new Int32Array(" ~ size ~ ")";
+			else if(type == "uint" || type == "varuint") return "new Uint32Array(" ~ size ~ ")";
+			else if(type == "float") return "new Float32Array(" ~ size ~ ")";
+			else if(type == "double") return "new Float64Array(" ~ size ~ ")";
+			else return "[]";
 		} else if(type.indexOf("<") != -1) return "{" ~ type.matchFirst(ctRegex!`<[a-z]+>`).hit[1..$-1].split("").join(":0,") ~ ":0}";
 		else if(["byte", "ubyte", "short", "ushort", "triad", "int", "uint", "long", "ulong"].canFind(type) || type.startsWith("var")) return "0";
-		else return "null";
+		else return "new Types." ~ camelCaseUpper(type) ~ "()";
+		//else return "null";
 	}
 
 }
@@ -527,7 +535,7 @@ class SandboxGenerator : JavascriptGenerator {
 	}
 
 	this() {
-		super(false, "min.js");
+		super(false, "js");
 	}
 
 }

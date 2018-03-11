@@ -13,25 +13,14 @@
 	<to>1.2.11</to>
 
 	<description>
-		Protocol used in Minecraft: Pocket Edition and variants. The network part of the protocol is managed by [RakNet](../raknet/8.html).
-
-		⚠ Every packet is encoded as id (byte), padding (2 bytes) and body ⚠
+		Protocol used in Minecraft: Pocket Edition and variants. The network part of the protocol is managed by RakNet.
 
 		### Login sequence
-		+ The client sends a [Login](#play_login) packet with the details of its game and its account
-		+ The server always replies with a [PlayerStatus](#play_play-status)
-		+ If [status](#play_play-status_status) field in the packet sent was different from [ok](#play_play-status_status_ok) the connection is closed
+		+ The client sends a [Login](play/login) packet with the details of its game and its account
+		+ The server always replies with a [PlayerStatus](play/play-status)
+		+ If [status](play/play-status#status) field in the packet sent was different from [ok](#play/play-status#status) the connection is closed
 
-		### Spawning sequence
-		+ The server sends a [StartGame](#play_start-game) packet with the world's informations
-		+ The server sends zero or more [FullChunkData](#play_full-chunk-data) with the chunk's blocks and tiles
-		+ The server sends the player's inventory using [ContainerSetContent](#play_container-set-content)
-		+ The server sends the world's textures through [ResourcePacksInfo](#play_resource-packs-info) (the textures may be empty)
-		+ The client replies with [ResourcePackClientResponse](#play_resource-pack-client-response) telling the server that the textures have been loaded
-		+ The server sends a [PlayStatus](#play_play-status) packet set to [spawned](#play_play-status_status_spawned)
-		+ The client spawns
-
-		Everything written in the documentation has been tested on [sel-server](https://github.com/sel-project/sel-server). The types and the packets without documentation haven't been tested yet or it's not clear what their real purpose in the game is.
+		Everything written in the documentation has been tested on [selery](https://github.com/sel-project/selery). The types and the packets without documentation haven't been tested yet or it's not clear what their purpose in the game is.
 	</description>
 
 	<encoding id="varuint" arraylength="varuint" padding="2">
@@ -48,12 +37,12 @@
 
 		<alias name="json" type="string" />
 
+		<array name="login-payload" base="ubyte" length="uint" />
+
 		<type name="login-body" length="">
 			<field name="chain" type="login-payload" />
 			<field name="client-data" type="login-payload" />
 		</type>
-
-		<array name="login-payload" base="ubyte" length="uint" />
 
 		<type name="pack-with-size">
 			<field name="id" type="string" />
@@ -195,7 +184,7 @@
 			</field>
 			<field name="extra-data" type="extra-data[]" />
 			<field name="block-entities" type="bytes">
-				Additional data for the chunk's block entities (tiles), encoded in the same way as [BlockEntityData.nbt](#play_block-entity-data_nbt) is. The position is given by the `Int` tags `x`, `y`, `z` which are added to the block's compound tag together with the `String` tag `id` that contains the name of the tile in pascal case.
+				Additional data for the chunk's block entities (tiles), encoded in the same way as [BlockEntityData.nbt](play/block-entity-data#nbt) is. The position is given by the `Int` tags `x`, `y`, `z` which are added to the block's compound tag together with the `String` tag `id` that contains the name of the tile in pascal case.
 				Wrong encoding or missing tags may result in the block becoming invisible.
 			</field>
 		</type>
@@ -308,7 +297,7 @@
 
 		<section name="play">
 
-			Packets related to the gameplay. Network-related packets (encapsulation, acks, nacks) are managed by [RakNet](../raknet/8.html) and every packet in this section is encapsualted in an [Encapsualted](../raknet/8.html#control_encapsulated) packet.
+			Packets related to the gameplay. Network-related packets (encapsulation, acks, nacks) are managed by RakNet and every packet in this section is encapsualted in an encapsulated packet.
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
@@ -321,7 +310,7 @@
 			</packet>
 
 			<packet name="play-status" id="2" clientbound="true" serverbound="false">
-				Packet sent as response to [Login](#play_login) to indicate whether the connection has been accepted and when the player is ready to spawn in the world.
+				Packet sent as response to [Login](play/login) to indicate whether the connection has been accepted and when the player is ready to spawn in the world.
 				<field name="status" type="uint" endianness="big-endian">
 					<constant name="ok" value="0">
 						Keep the connection alive

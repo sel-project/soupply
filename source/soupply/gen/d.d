@@ -22,7 +22,7 @@
  */
 module soupply.gen.d;
 
-import std.algorithm : canFind, max;
+import std.algorithm : canFind, max, sort;
 import std.ascii : newline;
 import std.conv : to;
 import std.file : mkdir, mkdirRecurse, exists;
@@ -44,7 +44,7 @@ import transforms : snakeCase, camelCaseLower, camelCaseUpper;
 class DGenerator : CodeGenerator {
 
 	static this() {
-		Generator.register!DGenerator("d", "src/" ~ SOFTWARE, ["/*", " *", " */"]);
+		Generator.register!DGenerator("d", "", ["/*", " *", " */"]);
 	}
 
 	private Protocol.Array[string] arrays;
@@ -65,20 +65,104 @@ class DGenerator : CodeGenerator {
 
 	}
 
+	protected override CodeMaker make(string[] module_...) {
+		auto ret = super.make([module_[0], "src", SOFTWARE] ~ module_);
+		ret.clear();
+		if(module_[$-1] == "package") module_ = module_[0..$-1];
+		ret.stat("module " ~ join([SOFTWARE] ~ module_, ".")).nl;
+		return ret;
+	}
+
 	protected override string convertModule(string name) {
 		return name.replace("_", "");
 	}
 
+	protected override void generateImpl(Data d) {
+
+		super.generateImpl(d);
+
+		// create latest modules
+		foreach(game, info; d.info) {
+			if(info.latest) {
+
+				// dub.sdl
+				with(new Maker(this, info.game ~ "/dub", "sdl")) {
+					line(`name "` ~ info.game ~ `"`);
+					line(`description "Libraries for the latest ` ~ info.software ~ ` protocol"`);
+					line(`targetType "library"`);
+					line(`dependency "` ~ SOFTWARE ~ `:` ~ game ~ `" version="*"`);
+					save();
+				}
+
+				// src
+				Maker m(string[] mod...) {
+					auto ret = new Maker(this, join([info.game, "src", SOFTWARE, info.game] ~ mod, "/"), "d");
+					if(mod[$-1] == "package") mod = mod[0..$-1];
+					ret.line("module " ~ join([SOFTWARE, info.game] ~ mod, ".") ~ ";").nl;
+					ret.line("public import " ~ join([SOFTWARE, game] ~ mod, ".") ~ ";").nl;
+					return ret;
+				}
+
+				m("packet").line("alias " ~ camelCaseUpper(info.game) ~ "Packet = " ~ camelCaseUpper(game) ~ "Packet;").save();
+				m("types").save();
+				foreach(section ; info.protocol.sections) m("protocol", section.name).save();
+				m("metadata").save();
+
+				m("package").save();
+				m("protocol", "package").save();
+
+			}
+		}
+		
+		string[] all = data.info.keys;
+		all ~= "util";
+		sort(all);
+
+		// src
+		with(new Maker(this, "src/" ~ SOFTWARE ~ "/package", "d")) {
+			line("module " ~ SOFTWARE ~ ";").nl;
+			foreach(imp ; all) {
+				line("public import " ~ SOFTWARE ~ "." ~ imp ~ ";");
+			}
+			save();
+		}
+
+		foreach(info ; data.info) {
+			if(info.latest) all ~= info.game;
+		}
+		sort(all);
+		
+		// create main dub.sdl
+		with(new Maker(this, "dub", "sdl")) {
+			void add(string dep) {
+				line(`subPackage "` ~ dep ~ `"`);
+				line(`dependency "` ~ SOFTWARE ~ `:` ~ dep ~ `" version="*"`);
+			}
+			line(`name "` ~ SOFTWARE ~ `"`);
+			line(`description "` ~ d.description ~ `"`);
+			line(`license "` ~ d.license ~ `"`);
+			line(`targetType "library"`);
+			nl();
+			foreach(pkg ; all) line(`subPackage "` ~ pkg ~ `"`);
+			nl();
+			foreach(dep ; all) line(`dependency "` ~ SOFTWARE ~ `:` ~ dep ~ `" version="*"`);
+			save();
+		}
+
+	}
+
 	protected override void generateGame(string game, Info info) {
 
+		// create dub.sdl for current game
+		with(new Maker(this, game ~ "/dub", "sdl")) {
+			line(`name "` ~ game ~ `"`);
+			line(`description "Libraries for ` ~ info.software ~ ` protocol ` ~ info.version_.to!string ~ `"`);
+			line(`targetType "library"`);
+			line(`dependency "` ~ SOFTWARE ~ `:util" version="*"`);
+			save();
+		}
+
 		this.arrays = info.protocol.arrays;
-
-		//immutable id = conv.convertType(prts.data.id);
-		//immutable arrayLength = conv.convertType(prts.data.arrayLength);
-
-		immutable defaultEndianness = camelCaseUpper(info.protocol.endianness["*"]);
-
-		// create generic packet
 
 		immutable base = camelCaseUpper(game) ~ "Packet";
 		
@@ -89,9 +173,11 @@ class DGenerator : CodeGenerator {
 			else return endiannessOf("*");
 		}
 
-		with(make("protocol", game, "packet")) {
+		immutable defaultEndianness = endiannessOf("*");
 
-			immutable extends = "PacketImpl!(Endian." ~ endiannessOf("*") ~ ", " ~ info.protocol.id ~ ", " ~ info.protocol.arrayLength ~ ")";
+		with(make(game, "packet")) {
+
+			immutable extends = "PacketImpl!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ", " ~ info.protocol.arrayLength ~ ")";
 
 			addImport("packetmaker").nl;
 			if(info.protocol.padding) {
@@ -192,14 +278,12 @@ class DGenerator : CodeGenerator {
 		}
 
 		// types
-		auto types = make("protocol", game, "types");
+		auto types = make(game, "types");
 		with(types) {
-			addImportStd("bitmanip", "write", "peek");
 			stat("static import std.conv");
-			addImportStd("system", "Endian");
 			addImport("packetmaker").nl;
 			addImportLib("util", "Tuple", "UUID");
-			addImportLib("metadata." ~ game).nl;
+			addImportLib(game ~ ".metadata").nl;
 			foreach(type ; info.protocol.types) {
 				immutable hasLength = type.length.length != 0;
 				// declaration
@@ -213,6 +297,8 @@ class DGenerator : CodeGenerator {
 					// decoding
 					block("void decodeBody(OutputBuffer buffer)");
 					endBlock().nl;
+				} else {
+					stat("mixin Make!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ")");
 				}
 				createToString(types, camelCaseUpper(type.name), type.fields, false);
 				endBlock();
@@ -222,17 +308,18 @@ class DGenerator : CodeGenerator {
 		}
 
 		// sections
+		string[] sections;
 		foreach(section ; info.protocol.sections) {
-			auto s = make("protocol", game, section.name);
+			sections ~= section.name;
+			auto s = make(game, "protocol", section.name);
 			with(s) {
 				stat("static import std.conv");
-				addImportStd("system", "Endian");
 				addImportStd("typetuple", "TypeTuple");
 				addImport("packetmaker").nl;
 				addImportLib("util", "Tuple", "UUID");
-				addImportLib("metadata." ~ game);
-				addImportLib("protocol." ~ game ~ ".packet", base).nl;
-				stat("static import soupply.protocol." ~ game ~ ".types").nl;
+				addImportLib(game ~ ".metadata", "Metadata");
+				addImportLib(game ~ ".packet", base).nl;
+				stat("static import " ~ SOFTWARE ~ "." ~ game ~ ".types").nl;
 				string[] names;
 				foreach(packet ; section.packets) names ~= camelCaseUpper(packet.name);
 				stat("alias Packets = TypeTuple!(" ~ names.join(", ") ~ ")").nl;
@@ -263,7 +350,7 @@ class DGenerator : CodeGenerator {
 							addClass(camelCaseUpper(variant.name) ~ " : " ~ base).nl;
 							stat("enum typeof(" ~ convertName(packet.variantField) ~ ") " ~ toUpper(packet.variantField) ~ " = " ~ variant.value).nl;
 							writeFields(s, variant.fields, true);
-							stat("mixin MakeNested").nl;
+							stat("mixin Make").nl;
 							// to string
 							createToString(s, camelCaseUpper(packet.name) ~ "." ~ camelCaseUpper(variant.name), variant.fields);
 							endBlock().nl;
@@ -274,10 +361,15 @@ class DGenerator : CodeGenerator {
 				save(info.file);
 			}
 		}
+		sort(sections);
+		with(make(game, "protocol", "package")) {
+			foreach(section ; sections) stat("public import " ~ SOFTWARE ~ "." ~ game ~ ".protocol." ~ section);
+			save();
+		}
 
 		//TODO
 
-		with(make("metadata", game)) {
+		with(make(game, "metadata")) {
 
 			block("struct Metadata");
 			endBlock();
@@ -490,6 +582,14 @@ class DGenerator : CodeGenerator {
 			write("../src/d/sul/metadata/" ~ game ~ ".d", data);
 		}+/
 
+		// package to import everything
+		with(make(game, "package")) {
+			foreach(mod ; ["packet", "types", "protocol", "metadata"]) {
+				stat("public import " ~ SOFTWARE ~ "." ~ game ~ "." ~ mod);
+			}
+			save();
+		}
+
 	}
 
 	// name conversion
@@ -534,7 +634,7 @@ class DGenerator : CodeGenerator {
 			auto a = t in this.arrays;
 			if(a) return convertType(game, (*a).base ~ "[]" ~ (array >= 0 ? type[array..$] : ""));
 		}
-		if(ret == "") ret = "soupply.protocol." ~ game ~ ".types." ~ t.camelCaseUpper;
+		if(ret == "") ret = SOFTWARE ~ "." ~ game ~ ".types." ~ t.camelCaseUpper;
 		return ret ~ (array >= 0 ? type[array..$] : "");
 	}
 
