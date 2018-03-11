@@ -13,4 +13,5 @@ env:
   - CONFIG=release
  
 script:
-  - dub test --build=$CONFIG
+  - dub test --compiler=$DC --build=$CONFIG
+  - bash test.sh

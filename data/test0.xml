@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<game>
+
+	<software>Test</software>
+
+	<protocol>0</protocol>
+
+	<encoding id="ubyte" arraylength="varuint" endianness="big-endian">
+
+	</encoding>
+
+	<packets>
+
+		<section name="test">
+
+			<packet name="test-0" id="0">
+				Test integers and varints.
+				<field name="a" type="byte" />
+				<field name="b" type="ushort" />
+				<field name="c" type="long" endianness="little-endian" />
+				<field name="d" type="varshort" />
+				<field name="e" type="varuint" />
+				<test>
+					{
+						"fields": {
+							"a": -10,
+							"b": 300,
+							"c": 1,
+							"d": 10,
+							"e": 500
+						},
+						"result": [0, 246, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 20, 244, 3]
+					}
+				</test>
+			</packet>
+
+		</section>
+
+	</packets>
+
+	<metadata>
+
+		<encoding length="varuint" types="varuint" ids="varuint">
+
+			<type name="byte" type="byte" id="0" />
+
+		</encoding>
+
+		<metadatas>
+
+		</metadatas>
+
+	</metadata>
+
+</game>

@@ -22,6 +22,8 @@
  */
 module soupply.data;
 
+import std.json : JSONValue;
+
 /**
  * Name of the software.
  */
@@ -62,7 +64,7 @@ struct Protocol {
 
 	struct Variant { string name; string value; string description; Field[] fields; }
 
-	struct Packet { string name; uint id; bool clientbound; bool serverbound; string description; Field[] fields; string variantField; Variant[] variants; }
+	struct Packet { string name; uint id; bool clientbound; bool serverbound; string description; Field[] fields; string variantField; Variant[] variants; JSONValue[] tests; }
 
 	struct Type { string name; string description; Field[] fields; string length; }
 

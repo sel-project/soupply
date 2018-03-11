@@ -295,7 +295,7 @@ abstract class Generator {
 		immutable path = buildNormalizedPath(buildPath(this.path, file));
 		immutable dir = path[0..path.lastIndexOf(dirSeparator)];
 		mkdirRecurse(dir);
-		if(this.comment !is null && !["json", "xml", "sdl"].canFind(file.split(".")[$-1])) {
+		if(this.comment !is null && !["json", "yml", "sh", "xml", "sdl"].canFind(file.split(".")[$-1])) {
 			//TODO use right newline
 			auto header = Header(this.comment);
 			header.open();

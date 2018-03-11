@@ -25,6 +25,7 @@ module app;
 import std.algorithm : canFind, min;
 import std.conv : to;
 import std.file : dirEntries, SpanMode, exists, read, isFile, _write = write;
+import std.json : parseJSON;
 import std.path : dirSeparator;
 import std.process : environment;
 import std.regex : ctRegex, replaceAll;
@@ -49,6 +50,7 @@ void main(string[] args) {
 		if(file.isFile && file.endsWith(".xml")) {
 			Info info = Info(file);
 			string[string] aliases;
+			size_t arrays = 1;
 			@property string convert(string type) {
 				auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
 				auto t = type[0..end];
@@ -81,6 +83,7 @@ void main(string[] args) {
 					case "encoding":
 						info.protocol.id = element.tag.attr["id"];
 						info.protocol.arrayLength = element.tag.attr["arraylength"];
+						if("endianness" in element.tag.attr) info.protocol.endianness["*"] = element.tag.attr["endianness"].replace("-", "_");
 						if("padding" in element.tag.attr) info.protocol.padding = to!size_t(element.tag.attr["padding"]);
 						foreach(e ; element.elements) {
 							switch(e.tag.name) {
@@ -100,7 +103,14 @@ void main(string[] args) {
 											Protocol.Field field;
 											with(f.tag) {
 												field.name = attr["name"].replace("-", "_");
-												field.type = convert(attr["type"].replace("-", "_"));
+												if("length" in attr) {
+													assert(attr["type"].endsWith("[]"));
+													immutable name = "array" ~ to!string(arrays++);
+													info.protocol.arrays[name] = Protocol.Array(attr["type"][0..$-2].replace("-", "_"), attr["length"].replace("-", "_"), attr.get("lengthendianness", ""));
+													field.type = name;
+												} else {
+													field.type = convert(attr["type"].replace("-", "_"));
+												}
 												field.description = text(f);
 												if("endianness" in attr) field.endianness = attr["endianness"].replace("-", "_");
 												if("when" in attr) field.condition = attr["when"].replace("-", "_");
@@ -135,14 +145,21 @@ void main(string[] args) {
 										Protocol.Packet packet;
 										packet.name = pk.tag.attr["name"].replace("-", "_");
 										packet.id = pk.tag.attr["id"].to!uint;
-										packet.clientbound = pk.tag.attr["clientbound"].to!bool;
-										packet.serverbound = pk.tag.attr["serverbound"].to!bool;
+										packet.clientbound = to!bool(pk.tag.attr.get("clientbound", "false"));
+										packet.serverbound = to!bool(pk.tag.attr.get("serverbound", "false"));
 										packet.description = text(pk);
 										foreach(fv ; pk.elements) {
 											if(fv.tag.name == "field") {
 												Protocol.Field field;
 												field.name = fv.tag.attr["name"].replace("-", "_");
-												field.type = convert(fv.tag.attr["type"].replace("-", "_"));
+												if("length" in fv.tag.attr) {
+													assert(fv.tag.attr["type"].endsWith("[]"));
+													immutable name = "array" ~ to!string(arrays++);
+													info.protocol.arrays[name] = Protocol.Array(fv.tag.attr["type"][0..$-2].replace("-", "_"), fv.tag.attr["length"].replace("-", "_"), fv.tag.attr.get("lengthendianness", ""));
+													field.type = name;
+												} else {
+													field.type = convert(fv.tag.attr["type"].replace("-", "_"));
+												}
 												field.description = text(fv);
 												if("endianness" in fv.tag.attr) field.endianness = fv.tag.attr["endianness"].replace("-", "_");
 												if("when" in fv.tag.attr) field.condition = fv.tag.attr["when"].replace("-", "_");
@@ -181,6 +198,8 @@ void main(string[] args) {
 														packet.variants ~= variant;
 													}
 												}
+											} else if(fv.tag.name == "test") {
+												packet.tests ~= parseJSON(text(fv));
 											}
 										}
 										section.packets ~= packet;
@@ -247,9 +266,11 @@ void main(string[] args) {
 	}
 	uint[][string] latest;
 	foreach(ref info ; data) {
-		immutable released = date(info.released);
-		auto l = info.game in latest;
-		if(l is null || released < (*l)[0]) latest[info.game] = [released, info.version_];
+		if(info.released.length) {
+			immutable released = date(info.released);
+			auto l = info.game in latest;
+			if(l is null || released < (*l)[0]) latest[info.game] = [released, info.version_];
+		}
 	}
 	foreach(game, v; latest) {
 		data[game ~ to!string(v[1])].latest = true;

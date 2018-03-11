@@ -56,6 +56,8 @@ class DocsGenerator : Generator {
 
 			immutable gameName = info.game;
 
+			if(gameName == "test") continue;
+
 			Maker head(string[] location...) {
 				foreach(ref l ; location) l = l.replace("_", "-");
 				location = game ~ location;
@@ -412,7 +414,7 @@ class DocsGenerator : Generator {
 		auto data = make("index");
 		Info[][string] games;
 		foreach(game, info; _data.info) {
-			games[info.game] ~= info;
+			if(info.game != "test") games[info.game] ~= info;
 		}
 		foreach(game, info; games) {
 			sort!((a, b) => a.version_ > b.version_)(info);

@@ -81,6 +81,8 @@ class DGenerator : CodeGenerator {
 
 		super.generateImpl(d);
 
+		string[] tests;
+
 		// create latest modules
 		foreach(game, info; d.info) {
 			if(info.latest) {
@@ -112,6 +114,20 @@ class DGenerator : CodeGenerator {
 				m("protocol", "package").save();
 
 			}
+			if(info.game == "test") tests ~= game;
+		}
+
+		// create test.sh
+		sort(tests);
+		with(new Maker(this, "test", "sh")) {
+			line("#!/bin/bash").nl;
+			foreach(test ; tests) line("dub test :" ~ test ~ " --compiler=$DC --build=$CONFIG");
+			save();
+		}
+		with(new Maker(this, "test/src/soupply/test", "d")) {
+			line("module soupply.test;");
+			foreach(test ; tests) line("import soupply." ~ test ~ ";");
+			save();
 		}
 		
 		string[] all = data.info.keys;
@@ -122,7 +138,7 @@ class DGenerator : CodeGenerator {
 		with(new Maker(this, "src/" ~ SOFTWARE ~ "/package", "d")) {
 			line("module " ~ SOFTWARE ~ ";").nl;
 			foreach(imp ; all) {
-				line("public import " ~ SOFTWARE ~ "." ~ imp ~ ";");
+				if(!imp.startsWith("test")) line("public import " ~ SOFTWARE ~ "." ~ imp ~ ";");
 			}
 			save();
 		}
@@ -143,9 +159,13 @@ class DGenerator : CodeGenerator {
 			line(`license "` ~ d.license ~ `"`);
 			line(`targetType "library"`);
 			nl();
-			foreach(pkg ; all) line(`subPackage "` ~ pkg ~ `"`);
+			foreach(pkg ; all) {
+				line(`subPackage "` ~ pkg ~ `"`);
+			}
 			nl();
-			foreach(dep ; all) line(`dependency "` ~ SOFTWARE ~ `:` ~ dep ~ `" version="*"`);
+			foreach(dep ; all) {
+				if(!dep.startsWith("test")) line(`dependency "` ~ SOFTWARE ~ `:` ~ dep ~ `" version="*"`);
+			}
 			save();
 		}
 
@@ -323,7 +343,7 @@ class DGenerator : CodeGenerator {
 					stat("_container.decodeBody(new OutputBuffer(buffer.readBytes(readLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer))))");
 					endBlock().nl;
 				} else {
-					stat("mixin Make!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ")");
+					stat("mixin Make!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ")").nl;
 				}
 				createToString(types, camelCaseUpper(type.name), type.fields, false);
 				endBlock();
@@ -380,6 +400,24 @@ class DGenerator : CodeGenerator {
 							createToString(s, camelCaseUpper(packet.name) ~ "." ~ camelCaseUpper(variant.name), variant.fields);
 							endBlock().nl;
 						}
+					}
+					foreach(test ; packet.tests) {
+						immutable loc = game ~ "." ~ section.name ~ "." ~ packet.name.replace("_", "-");
+						immutable result = test["result"].toString().replace(",", ", ");
+						block("unittest").nl;
+						addImportStd("conv", "to").nl;
+						stat(camelCaseUpper(packet.name) ~ " packet = new " ~ camelCaseUpper(packet.name) ~ "()").nl;
+						foreach(field, value; test["fields"].object) {
+							stat("packet." ~ convertName(field) ~ " = " ~ value.toString());
+						}
+						stat("auto result = packet.autoEncode()");
+						stat("assert(result == " ~ result ~ ", \"" ~ loc ~ " expected " ~ result ~ " but got \" ~ result.to!string)").nl;
+						stat("packet.decode(" ~ result ~ ")"); //TODO replace with autoDecode
+						foreach(field, value; test["fields"].object) {
+							stat("assert(packet." ~ convertName(field) ~ " == " ~ value.toString() ~ ", \"" ~ loc ~ "." ~ field.replace("_", "-") ~ " expected " ~ value.toString() ~ " but got \" ~ packet." ~ convertName(field) ~ ".to!string)");
+						}
+						nl;
+						endBlock().nl;
 					}
 					endBlock().nl;
 				}
