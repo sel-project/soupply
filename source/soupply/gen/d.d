@@ -122,11 +122,7 @@ class DGenerator : CodeGenerator {
 		with(new Maker(this, "test", "sh")) {
 			line("#!/bin/bash").nl;
 			foreach(test ; tests) line("dub test :" ~ test ~ " --compiler=$DC --build=$CONFIG");
-			save();
-		}
-		with(new Maker(this, "test/src/soupply/test", "d")) {
-			line("module soupply.test;");
-			foreach(test ; tests) line("import soupply." ~ test ~ ";");
+			nl;
 			save();
 		}
 		
@@ -313,7 +309,8 @@ class DGenerator : CodeGenerator {
 		with(types) {
 			stat("static import std.conv");
 			addImport("packetmaker");
-			addImport("packetmaker.maker", "EndianType", "writeLength", "readLength").nl;
+			addImport("packetmaker.maker", "EndianType", "writeLength", "readLength");
+			addImport("packetmaker.memory", "alloc", "free").nl;
 			addImportLib("util", "Vector", "UUID");
 			addImportLib(game ~ ".metadata").nl;
 			foreach(type ; info.protocol.types) {
@@ -332,15 +329,18 @@ class DGenerator : CodeGenerator {
 					stat("Container _container").nl;
 					stat("alias _container this").nl;
 					// encoding
-					block("void encodeBody(InputBuffer buffer)");
-					stat("InputBuffer _buffer = new InputBuffer()");
+					block("void encodeBody(InputBuffer buffer) @nogc");
+					stat("InputBuffer _buffer = alloc!InputBuffer()");
+					stat("scope(exit) free(_buffer)");
 					stat("_container.encodeBody(_buffer)");
 					stat("writeLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer, _buffer.data.length)");
 					stat("buffer.writeBytes(_buffer.data)");
 					endBlock().nl;
 					// decoding
 					block("void decodeBody(OutputBuffer buffer)");
-					stat("_container.decodeBody(new OutputBuffer(buffer.readBytes(readLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer))))");
+					stat("OutputBuffer _buffer = alloc!OutputBuffer(buffer.readBytes(readLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer)))");
+					stat("scope(exit) free(_buffer)");
+					stat("_container.decodeBody(_buffer)");
 					endBlock().nl;
 				} else {
 					stat("mixin Make!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ")").nl;
@@ -378,7 +378,7 @@ class DGenerator : CodeGenerator {
 					// static decoding
 					block("public static typeof(this) fromBuffer(ubyte[] buffer)");
 					stat(camelCaseUpper(packet.name) ~ " ret = new " ~ camelCaseUpper(packet.name) ~ "()");
-					stat("ret.decode(buffer)");
+					stat("ret.autoDecode(buffer)");
 					stat("return ret");
 					endBlock().nl;
 					// to string
@@ -404,17 +404,28 @@ class DGenerator : CodeGenerator {
 					foreach(test ; packet.tests) {
 						immutable loc = game ~ "." ~ section.name ~ "." ~ packet.name.replace("_", "-");
 						immutable result = test["result"].toString().replace(",", ", ");
+						string convertValue(JSONValue value) {
+							if(value.type == JSON_TYPE.OBJECT) {
+								return "";
+							} else if(value.type == JSON_TYPE.ARRAY) {
+								string[] ret;
+								foreach(element ; value.array) ret ~= convertValue(element);
+								return "[" ~ ret.join(", ") ~ "]";
+							} else {
+								return value.toString();
+							}
+						}
 						block("unittest").nl;
 						addImportStd("conv", "to").nl;
 						stat(camelCaseUpper(packet.name) ~ " packet = new " ~ camelCaseUpper(packet.name) ~ "()").nl;
 						foreach(field, value; test["fields"].object) {
-							stat("packet." ~ convertName(field) ~ " = " ~ value.toString());
+							stat("packet." ~ convertName(field) ~ " = " ~ convertValue(value));
 						}
 						stat("auto result = packet.autoEncode()");
-						stat("assert(result == " ~ result ~ ", \"" ~ loc ~ " expected " ~ result ~ " but got \" ~ result.to!string)").nl;
-						stat("packet.decode(" ~ result ~ ")"); //TODO replace with autoDecode
+						stat("assert(result == " ~ result ~ ", `" ~ loc ~ " expected " ~ result ~ " but got ` ~ result.to!string)").nl;
+						stat("packet.autoDecode(" ~ result ~ ")");
 						foreach(field, value; test["fields"].object) {
-							stat("assert(packet." ~ convertName(field) ~ " == " ~ value.toString() ~ ", \"" ~ loc ~ "." ~ field.replace("_", "-") ~ " expected " ~ value.toString() ~ " but got \" ~ packet." ~ convertName(field) ~ ".to!string)");
+							stat("assert(packet." ~ convertName(field) ~ " == " ~ convertValue(value) ~ ", `" ~ loc ~ "." ~ field.replace("_", "-") ~ " expected " ~ value.toString() ~ " but got ` ~ packet." ~ convertName(field) ~ ".to!string)");
 						}
 						nl;
 						endBlock().nl;
@@ -434,7 +445,9 @@ class DGenerator : CodeGenerator {
 		auto metadata = make(game, "metadata");
 		with(metadata) {
 
-			addImport("packetmaker").addImport("packetmaker.maker", "EndianType", "writeLength").nl;
+			addImport("packetmaker");
+			addImport("packetmaker.maker", "EndianType", "writeLength");
+			addImport("packetmaker.memory", "malloc", "realloc", "alloc", "free").nl;
 			addImportLib("util", "Vector").nl;
 			addImportLib(game ~ ".packet", base);
 			stat("static import " ~ SOFTWARE ~ "." ~ game ~ ".types").nl;
@@ -498,23 +511,18 @@ class DGenerator : CodeGenerator {
 			immutable _length_e = info.metadata.length.startsWith("var") ? "var" : defaultEndianness;
 			block("struct Metadata").nl;
 			stat("private MetadataValue[" ~ _id ~ "] _store");
-			stat("private bool _cached = false");
-			stat("private ubyte[] _cache").nl;
 
 			// get and set
 			//TODO
 
 			// encode
-			block("void encodeBody(InputBuffer buffer)");
-			block("if(!_cached)");
-			stat("InputBuffer _buffer = new InputBuffer()");
+			block("void encodeBody(InputBuffer buffer) @nogc");
+			stat("InputBuffer _buffer = alloc!InputBuffer()");
+			stat("scope(exit) free(_buffer)");
 			if(_length) stat("writeLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(_buffer, _store.length)");
 			stat("foreach(value ; _store) value.encodeBody(_buffer)");
 			if(info.metadata.suffix.length) stat("_buffer.writeUnsignedByte(ubyte(" ~ info.metadata.suffix ~ "))");
-			stat("_cached = true");
-			stat("_cache = _buffer.data");
-			endBlock();
-			stat("buffer.writeBytes(_cache)");
+			stat("buffer.writeBytes(_buffer.data)");
 			endBlock().nl;
 
 			// decode

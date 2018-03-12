@@ -31,11 +31,11 @@ import packetmaker.packet : Packet;
 
 template Pad(size_t padding, T:Packet) {
 
-	enum ubyte[] __padding = new ubyte[padding];
+	private ubyte[] __padding = new ubyte[padding];
 
 	class Pad : T {
 	
-		override void encode(InputBuffer buffer) {
+		override void encode(InputBuffer buffer) @nogc {
 			encodeId(buffer);
 			buffer.writeBytes(__padding);
 			encodeBody(buffer);
@@ -45,10 +45,6 @@ template Pad(size_t padding, T:Packet) {
 			decodeId(buffer);
 			buffer.readBytes(padding);
 			decodeBody(buffer);
-		}
-		
-		override void decode(ubyte[] buffer) {
-			super.decode(buffer);
 		}
 	
 	}
@@ -80,7 +76,7 @@ struct UUID {
 
 	_UUID uuid;
 	
-	void encodeBody(InputBuffer buffer) {
+	void encodeBody(InputBuffer buffer) @nogc {
 		buffer.writeBytes(uuid.data);
 	}
 	

@@ -14,8 +14,7 @@
 
 		<section name="test">
 
-			<packet name="test-0" id="0">
-				Test integers and varints.
+			<packet name="test-int" id="0">
 				<field name="a" type="byte" />
 				<field name="b" type="ushort" />
 				<field name="c" type="long" endianness="little-endian" />
@@ -31,6 +30,40 @@
 							"e": 500
 						},
 						"result": [0, 246, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 20, 244, 3]
+					}
+				</test>
+			</packet>
+
+			<packet name="test-float" id="1">
+				<field name="a" type="float" />
+				<field name="b" type="double" />
+				<field name="c" type="float" endianness="little-endian" />
+				<test>
+					{
+						"fields": {
+							"a": 1,
+							"b": 312,
+							"c": -44
+						},
+						"result": [1, 63, 128, 0, 0, 64, 115, 128, 0, 0, 0, 0, 0, 0, 0, 48, 194]
+					}
+				</test>
+			</packet>
+
+			<packet name="test-array" id="2">
+				<field name="a" type="ubyte[]" />
+				<field name="b" type="string" />
+				<field name="c" type="short[]" length="int" />
+				<field name="d" type="varuint[]" />
+				<test>
+					{
+						"fields": {
+							"a": [3, 2],
+							"b": "test",
+							"c": [-1, 0, 1],
+							"d": [0, 400]
+						},
+						"result": [2, 2, 3, 2, 4, 116, 101, 115, 116, 0, 3, 255, 255, 0, 0, 0, 1, 2, 0, 144, 3]
 					}
 				</test>
 			</packet>

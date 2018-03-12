@@ -56,8 +56,6 @@ class DocsGenerator : Generator {
 
 			immutable gameName = info.game;
 
-			if(gameName == "test") continue;
-
 			Maker head(string[] location...) {
 				foreach(ref l ; location) l = l.replace("_", "-");
 				location = game ~ location;
@@ -510,7 +508,7 @@ class DiffGenerator : Generator {
 		Info[][string] games;
 
 		foreach(info ; data.info) {
-			games[info.game] ~= info;
+			if(info.game != "test") games[info.game] ~= info;
 		}
 
 		foreach(game, others; games) {
