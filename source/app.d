@@ -261,15 +261,14 @@ void main(string[] args) {
 	// set latest protocols
 	uint date(string str) {
 		auto spl = str.split("/");
-		if(spl.length == 3) return (to!uint(spl[0]) * 366 + to!uint(spl[1])) * 31 + to!uint(spl[2]);
-		else return uint.max;
+		return (to!uint(spl[0]) * 366 + to!uint(spl[1])) * 31 + to!uint(spl[2]);
 	}
 	uint[][string] latest;
 	foreach(ref info ; data) {
 		if(info.released.length) {
 			immutable released = date(info.released);
 			auto l = info.game in latest;
-			if(l is null || released < (*l)[0]) latest[info.game] = [released, info.version_];
+			if(l is null || released > (*l)[0]) latest[info.game] = [released, info.version_];
 		}
 	}
 	foreach(game, v; latest) {

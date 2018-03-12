@@ -416,7 +416,12 @@ class DocsGenerator : Generator {
 		}
 		foreach(game, info; games) {
 			sort!((a, b) => a.version_ > b.version_)(info);
-			data.line("## [" ~ info[0].software ~ "](protocol/" ~ game ~ to!string(info[0].version_) ~ ")").nl;
+			foreach(i ; info) {
+				if(i.latest) {
+					data.line("## [" ~ info[0].software ~ "](protocol/" ~ game ~ to!string(info[0].version_) ~ ")").nl;
+					break;
+				}
+			}
 			data.line("Protocol | Packets | Released | From | To");
 			data.line(":---:|:---:|:---:|:---:|:---:");
 			foreach(ci ; info) {
