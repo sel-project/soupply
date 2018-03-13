@@ -1,13 +1,13 @@
 language: java
 
 jdk:
- - oraclejdk7
+  - oraclejdk7
  
 deploy:
- provider: releases
- api_key: "${TOKEN}"
- file: "target/{{name}}.jar"
- skip_cleanup: true
- overwrite: true
- on:
-  tags: true
+  provider: releases
+  api_key: "${TOKEN}"
+  file: "target/*.jar"
+  skip_cleanup: true
+  overwrite: true
+  on:
+    tags: true

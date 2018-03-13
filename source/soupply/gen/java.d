@@ -39,17 +39,15 @@ import soupply.data;
 import soupply.generator;
 import soupply.util;
 
-version(Java):
-
 class JavaGenerator : Generator {
 
 	static this() {
-		Generator.register!JavaGenerator("java", "src/java/main/" ~ SOFTWARE);
+		Generator.register!JavaGenerator("Java", "java", "src/java/main/" ~ SOFTWARE);
 	}
 
 	protected override void generateImpl(Data data) {
 		
-		mkdirRecurse("../src/java/sul/utils");
+		/+mkdirRecurse("../src/java/sul/utils");
 		
 		enum defaultTypes = ["boolean", "byte", "short", "int", "long", "float", "double", "String", "UUID"];
 		
@@ -832,7 +830,7 @@ class JavaGenerator : Generator {
 			tp ~= "\t\t}\n\n";
 			tp ~= "\t}\n\n";
 		}
-		write("../src/java/sul/utils/Tuples.java", tp ~ "}");
+		write("../src/java/sul/utils/Tuples.java", tp ~ "}");+/
 		
 	}
 

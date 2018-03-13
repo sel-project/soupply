@@ -78,7 +78,7 @@ abstract class Generator {
 
 	/// ditto
 	public static void register(T:Generator)(string name, string repo, string source, string comment) {
-		register!T(name, repo, source, [comment, comment, comment]);
+		register!T(name, repo, source, [comment, comment,  comment]);
 	}
 
 	/**

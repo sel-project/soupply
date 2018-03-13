@@ -44,7 +44,7 @@ import transforms : snakeCase, camelCaseLower, camelCaseUpper;
 class DGenerator : CodeGenerator {
 
 	static this() {
-		Generator.register!DGenerator("d", "d", "", ["/*", " *", " */"]);
+		Generator.register!DGenerator("D", "d", "", ["/*", " *", " */"]);
 	}
 
 	private Protocol.Array[string] arrays;
@@ -66,7 +66,7 @@ class DGenerator : CodeGenerator {
 	}
 
 	protected override CodeMaker make(string[] module_...) {
-		auto ret = super.make([module_[0], "src", SOFTWARE] ~ module_);
+		auto ret = super.make(["packages", module_[0], SOFTWARE] ~ module_);
 		ret.clear();
 		if(module_[$-1] == "package") module_ = module_[0..$-1];
 		ret.stat("module " ~ join([SOFTWARE] ~ module_, ".")).nl;
@@ -139,28 +139,41 @@ class DGenerator : CodeGenerator {
 			save();
 		}
 
-		foreach(info ; data.info) {
-			if(info.latest) all ~= info.game;
+		string[] ded, loc;
+		ded = ["util"];
+		foreach(game, info; data.info) {
+			loc ~= game;
+			if(info.latest) ded ~= info.game;
 		}
-		sort(all);
+		sort(ded);
+		sort(loc);
 		
 		// create main dub.sdl
 		with(new Maker(this, "dub", "sdl")) {
-			void add(string dep) {
-				line(`subPackage "` ~ dep ~ `"`);
-				line(`dependency "` ~ SOFTWARE ~ `:` ~ dep ~ `" version="*"`);
-			}
 			line(`name "` ~ SOFTWARE ~ `"`);
 			line(`description "` ~ d.description ~ `"`);
 			line(`license "` ~ d.license ~ `"`);
 			line(`targetType "library"`);
 			nl();
-			foreach(pkg ; all) {
+			foreach(dep ; all) {
+				if(!dep.startsWith("test")) line(`dependency "` ~ SOFTWARE ~ `:` ~ dep ~ `" version="*"`);
+			}
+			nl();
+			foreach(pkg ; ded) {
 				line(`subPackage "` ~ pkg ~ `"`);
 			}
 			nl();
-			foreach(dep ; all) {
-				if(!dep.startsWith("test")) line(`dependency "` ~ SOFTWARE ~ `:` ~ dep ~ `" version="*"`);
+			foreach(pkg ; loc) {
+				Info info = d.info[pkg];
+				line(`subPackage {`).add_indent();
+				line(`name "` ~ pkg ~ `"`);
+				line(`description "Libraries for ` ~ info.software ~ ` protocol ` ~ info.version_.to!string ~ `"`);
+				line(`targetType "library"`);
+				line(`sourcePaths "packages/` ~ pkg ~ `"`);
+				line(`importPaths "packages/` ~ pkg ~ `"`);
+				line(`dependency "` ~ SOFTWARE ~ `:util" version="*"`);
+				remove_indent();
+				line(`}`).nl;
 			}
 			save();
 		}
@@ -168,15 +181,6 @@ class DGenerator : CodeGenerator {
 	}
 
 	protected override void generateGame(string game, Info info) {
-
-		// create dub.sdl for current game
-		with(new Maker(this, game ~ "/dub", "sdl")) {
-			line(`name "` ~ game ~ `"`);
-			if(info.game != "test") line(`description "Libraries for ` ~ info.software ~ ` protocol ` ~ info.version_.to!string ~ `"`);
-			line(`targetType "library"`);
-			line(`dependency "` ~ SOFTWARE ~ `:util" version="*"`);
-			save();
-		}
 
 		this.arrays = info.protocol.arrays;
 
