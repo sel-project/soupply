@@ -25,6 +25,10 @@ class Buffer {
 	constructor() {
 		this._buffer = [];
 	}
+	
+	reset() {
+		this._buffer = [];
+	}
 
 	writeBytes(a) {
 		for(var i in a) {

@@ -226,18 +226,8 @@ class JavascriptGenerator : CodeGenerator {
 				//TODO constructor for variants
 
 			}
-			maker.block("reset()").stat("this._buffer=[]").endBlock().nl;
 			// encode
 			with(maker) {
-				if(id >= 0) {
-					if(node) line("/** @return {Uint8Array} */");
-					block("encode()");
-					stat("this.reset()");
-					createEncoding(maker, info.protocol.id, to!string(id));
-					if(info.protocol.padding) stat("this.writeBytes(new Uint8Array(" ~ info.protocol.padding.to!string ~ "))");
-					stat("return this.encodeBody(false)");
-					endBlock().nl;
-				}
 				if(node) line("/** @return {Uint8Array} */");
 				block("encodeBody(reset)");
 				block("if(reset)").stat("this.reset()").endBlock();
@@ -277,15 +267,6 @@ class JavascriptGenerator : CodeGenerator {
 			}
 			// decode
 			with(maker) {
-				if(id >= 0) {
-					if(node) line("/** @param {(Uint8Array|Array)} buffer */");
-					block("decode(_buffer)");
-					stat("this._buffer=Array.from(_buffer)");
-					createDecoding(maker, info.protocol.id, "var _id");
-					if(info.protocol.padding) stat("this.readBytes(" ~ info.protocol.padding.to!string ~ ")");
-					stat("return this.decodeBody(this._buffer)");
-					endBlock().nl;
-				}
 				if(node) line("/** @param {(Uint8Array|Array)} buffer */");
 				block("decodeBody(_buffer)");
 				stat("this._buffer=Array.from(_buffer)");
@@ -343,6 +324,34 @@ class JavascriptGenerator : CodeGenerator {
 			}
 		}
 
+		// packet
+		auto pk = make(game, "packet");
+		pk.clear();
+		with(pk) {
+			block("class Packet extends Buffer").nl;
+			block("encode()");
+			stat("this.reset()");
+			stat("this.encodeId()");
+			if(info.protocol.padding) stat("this.writeBytes(new Uint8Array(" ~ info.protocol.padding.to!string ~ "))");
+			stat("this.encodeBody(false)");
+			stat("return this._buffer");
+			endBlock().nl;
+			block("encodeId()");
+			createEncoding(pk, info.protocol.id, "this.getId()");
+			endBlock().nl;
+			block("decode(buffer)");
+			stat("this._buffer = Array.from(buffer)");
+			stat("this.decodeId()");
+			if(info.protocol.padding) stat("this.readBytes(" ~ info.protocol.padding.to!string ~ ")");
+			stat("this.decodeBody()");
+			endBlock().nl;
+			block("decodeId()");
+			createDecoding(pk, info.protocol.id, "var id");
+			endBlock().nl;
+			endBlock();
+			save();
+		}
+
 		// types
 		auto types = make(game, "types");
 		types.clear();
@@ -365,13 +374,14 @@ class JavascriptGenerator : CodeGenerator {
 			auto mod = make(game, section.name);
 			mod.clear();
 			with(mod) {
-				if(node) stat("import Types from 'types'").nl;
+				if(node) stat("import Packet from 'packet'").stat("import Types from 'types'").nl;
 				block("const " ~ camelCaseUpper(section.name) ~ " =").nl;
 				foreach(i, packet; section.packets) {
-					block(camelCaseUpper(packet.name) ~ ": class extends Buffer").nl;
+					block(camelCaseUpper(packet.name) ~ ": class extends Packet").nl;
 					addConst("ID", packet.id.to!string).nl;
 					addConst("CLIENTBOUND", packet.clientbound.to!string);
 					addConst("SERVERBOUND", packet.serverbound.to!string).nl;
+					block("getId()").stat("return " ~ packet.id.to!string).endBlock().nl;
 					writeFields(mod, camelCaseUpper(packet.name), packet.fields, camelCaseUpper(section.name), packet.id, packet.variantField, packet.variants);
 					endBlock();
 					if(i != section.packets.length - 1) line(",");

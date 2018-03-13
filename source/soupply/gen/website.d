@@ -564,7 +564,7 @@ class SandboxGenerator : Generator {
 				line("<title>Soupply's sandbox</title>");
 				line("<script src='buffer.js'></script>");
 				line("<script src='sandbox.js'></script>");
-				string[] sections = ["types"];
+				string[] sections = ["packet", "types"];
 				foreach(section ; info.protocol.sections) sections ~= section.name;
 				foreach(section ; sections) {
 					line("<script src='src/" ~ game ~ "/" ~ section ~ ".js'></script>");
