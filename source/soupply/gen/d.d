@@ -208,7 +208,7 @@ class DGenerator : CodeGenerator {
 
 		string convertEndian(string type) {
 			if(type.startsWith("var")) return "EndianType.var, " ~ type[3..$];
-			else return "Endian." ~ defaultEndianness ~ ", " ~ type;
+			else return "EndianType." ~ defaultEndianness ~ ", " ~ type;
 		}
 
 		string[] attributes(Protocol.Field field) {
@@ -446,10 +446,10 @@ class DGenerator : CodeGenerator {
 		with(metadata) {
 
 			addImport("packetmaker");
-			addImport("packetmaker.maker", "EndianType", "writeLength");
+			addImport("packetmaker.maker", "EndianType", "writeLength", "writeImpl", "readLength", "readImpl");
 			addImport("packetmaker.memory", "malloc", "realloc", "alloc", "free").nl;
-			addImportLib("util", "Vector").nl;
-			addImportLib(game ~ ".packet", base);
+			addImportLib("util", "Vector");
+			addImportLib(game ~ ".packet", base).nl;
 			stat("static import " ~ SOFTWARE ~ "." ~ game ~ ".types").nl;
 
 			// types
@@ -484,10 +484,8 @@ class DGenerator : CodeGenerator {
 			block("class MetadataValue : " ~ base).nl;
 			immutable _id = convertType(info.metadata.id);
 			immutable _type = convertType(info.metadata.type);
-			stat(join(attributes2(info.metadata.id) ~ _id, " ") ~ " id");
-			stat(join(attributes2(info.metadata.type) ~ _type, " ") ~ " type").nl;
-			block("this(" ~ _id ~ " id, " ~ _type ~ " type) pure nothrow @safe @nogc");
-			stat("this.id = id");
+			stat(join(attributes2(info.metadata.type) ~ ["@EncodeOnly", _type, "type"], " ")).nl;
+			block("this(" ~ _type ~ " type) pure nothrow @safe @nogc");
 			stat("this.type = type");
 			endBlock().nl;
 			stat("mixin Make").nl;
@@ -498,8 +496,11 @@ class DGenerator : CodeGenerator {
 				immutable _value = convertType(type.type);
 				block("class MetadataValue" ~ type.id.to!string ~ " : MetadataValue").nl;
 				stat(join(attributes2(type.type, type.endianness) ~ _value, " ") ~ " value").nl;
-				block("this(" ~ _id ~ " id, " ~ _value ~ " value) pure nothrow @safe @nogc");
-				stat("super(id, " ~ type.id.to!string ~ ")");
+				block("this() pure nothrow @safe @nogc");
+				stat("super(" ~ type.id.to!string ~ ")");
+				endBlock().nl;
+				block("this(" ~ _value ~ " value) pure nothrow @safe @nogc");
+				stat("this()");
 				stat("this.value = value");
 				endBlock().nl;
 				stat("mixin Make").nl;
@@ -510,24 +511,41 @@ class DGenerator : CodeGenerator {
 			immutable _length = info.metadata.length != "";
 			immutable _length_e = info.metadata.length.startsWith("var") ? "var" : defaultEndianness;
 			block("struct Metadata").nl;
-			stat("private MetadataValue[" ~ _id ~ "] _store");
+			stat("MetadataValue[" ~ _id ~ "] values").nl;
 
 			// get and set
 			//TODO
 
 			// encode
 			block("void encodeBody(InputBuffer buffer) @nogc");
-			stat("InputBuffer _buffer = alloc!InputBuffer()");
-			stat("scope(exit) free(_buffer)");
-			if(_length) stat("writeLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(_buffer, _store.length)");
-			stat("foreach(value ; _store) value.encodeBody(_buffer)");
-			if(info.metadata.suffix.length) stat("_buffer.writeUnsignedByte(ubyte(" ~ info.metadata.suffix ~ "))");
-			stat("buffer.writeBytes(_buffer.data)");
+			if(_length) stat("writeLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(buffer, values.length)");
+			block("foreach(id, value; values)");
+			stat("writeImpl!(" ~ convertEndian(info.metadata.id) ~ ")(buffer, id)");
+			stat("value.encodeBody(buffer)");
+			endBlock();
+			if(!_length) stat("buffer.writeUnsignedByte(ubyte(" ~ info.metadata.suffix ~ "))");
 			endBlock().nl;
 
 			// decode
 			block("void decodeBody(OutputBuffer buffer)");
-			stat("assert(0, `Cannot decode Metadata`)");
+			if(_length) {
+				block("foreach(i ; 0..readLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(buffer))");
+				stat(_id ~ " id = readImpl!(" ~ convertEndian(info.metadata.id) ~ ")(buffer)");
+			} else {
+				stat(_id ~ " id");
+				block("while((id = readImpl!(" ~ convertEndian(info.metadata.id) ~ ")(buffer)) != " ~ info.metadata.suffix ~ ")");
+			}
+			block("switch(readImpl!(" ~ convertEndian(info.metadata.type) ~ ")(buffer))");
+			foreach(type ; info.metadata.types) {
+				line("case " ~ type.id.to!string ~ ":").add_indent();
+				stat("auto value = new MetadataValue" ~ type.id.to!string ~ "()");
+				stat("value.decodeBody(buffer)");
+				stat("this.values[id] = value");
+				stat("break").remove_indent();
+			}
+			stat("default: throw new Exception(\"Unknown metadata type\")");
+			endBlock();
+			endBlock();
 			endBlock().nl;
 
 			endBlock().nl;
@@ -535,167 +553,6 @@ class DGenerator : CodeGenerator {
 			save(game);
 
 		}
-
-			
-			
-			/+data ~= "\tpublic pure nothrow @safe this() {\n";
-			data ~= "\t\tthis.reset();\n";
-			data ~= "\t}\n\n";
-			data ~= "\tpublic pure nothrow @safe void reset() {\n";
-			data ~= "\t\tthis._changed = [\n";
-			foreach(d ; m.data.data) {
-				if(d.required) {
-					immutable name = convertName(d.name);
-					immutable tp = convertType(ctable[d.type]);
-					data ~= "\t\t\t&this.encode" ~ name[0..1].toUpper ~ name[1..$] ~ ",\n";
-				}
-			}
-			data ~= "\t\t];\n";
-			data ~= "\t}\n\n";
-			/*data ~= "\tprivate pure nothrow @safe void setImpl(void delegate(Buffer) pure nothrow @safe del) {\n";
-			data ~= "\t\tthis._cached = false;\n";
-			data ~= "\t\tthis._changed ~= del;\n";
-			data ~= "\t}\n\n";
-			// can be used for custom metadata
-			string[] defined;
-			foreach(d ; m.data.types) {
-				immutable type = convertType(d.type);
-				if(!defined.canFind(type)) {
-					defined ~= type;
-					data ~= "\tpublic void opIndexAssign(" ~ convertType(m.data.id) ~ " id, " ~ convertType(m.data.type) ~ " type, " ~ type ~ " value) {\n";
-					data ~= "\t\tthis.setImpl(delegate(Buffer buffer){\n";
-					data ~= "\t\t\twith(buffer) {\n";
-					data ~= "\t\t\t\t" ~ createEncoding(m.data.id, "id") ~ "\n";
-					data ~= "\t\t\t\t" ~ createEncoding(m.data.type, "type") ~ "\n";
-					data ~= "\t\t\t\t" ~ createEncoding(d.type, "value") ~ "\n";
-					data ~= "\t\t\t}\n";
-					data ~= "\t\t});\n";
-					data ~= "\t}\n\n";
-				}
-			}*/
-			foreach(d ; m.data.data) {
-				immutable name = convertName(d.name);
-				immutable tp = convertType(ctable[d.type]);
-				immutable value = "_" ~ name ~ (d.required ? "" : ".value");
-				// get
-				data ~= "\tpublic pure nothrow @property @safe @nogc " ~ tp ~ " " ~ name ~ "() {\n\t\treturn " ~ value ~ ";\n\t}\n\n";
-				// set
-				data ~= "\tpublic pure nothrow @property @safe " ~ tp ~ " " ~ name ~ "(" ~ tp ~ " value) {\n";
-				data ~= "\t\tthis._cached = false;\n";
-				data ~= "\t\tthis." ~ value ~ " = value;\n";
-				if(!d.required) {
-					data ~= "\t\tif(!this._" ~ name ~ ".changed) {\n";
-					data ~= "\t\t\tthis._" ~ name ~ ".changed = true;\n";
-					data ~= "\t\t\tthis._changed ~= &this.encode" ~ name[0..1].toUpper ~ name[1..$] ~ ";\n";
-					data ~= "\t\t}\n";
-				}
-				data ~= "\t\treturn value;\n";
-				data ~= "\t}\n\n";
-				// encode
-				data ~= "\tpublic pure nothrow @safe encode" ~ name[0..1].toUpper ~ name[1..$] ~ "(Buffer buffer) {\n";
-				data ~= "\t\twith(buffer) {\n";
-				data ~= "\t\t\t" ~ createEncoding(m.data.id, d.id.to!string) ~ "\n";
-				data ~= "\t\t\t" ~ createEncoding(m.data.type, idtable[d.type].to!string) ~ "\n";
-				data ~= "\t\t\t" ~ createEncoding(ctable[d.type], "this." ~ value, etable[d.type]) ~ "\n";
-				data ~= "\t\t}\n";
-				data ~= "\t}\n\n";
-				foreach(flag ; d.flags) {
-					immutable fname = convertName(flag.name);
-					data ~= "\tpublic pure nothrow @property @safe bool " ~ fname ~ "() {\n";
-					//data ~= "\t\treturn (" ~ value ~ " >>> " ~ to!string(flag.bit) ~ ") & 1;\n";
-					data ~= "\t\treturn " ~ value ~ "._" ~ to!string(flag.bit) ~ ";\n";
-					data ~= "\t}\n\n";
-					data ~= "\tpublic pure nothrow @property @safe bool " ~ fname ~ "(bool value) {\n";
-					//data ~= "\t\tif(value) " ~ name ~ " = cast(" ~ tp ~ ")(" ~ value ~ " | (1Lu << " ~ to!string(flag.bit) ~ "));\n";
-					//data ~= "\t\telse " ~ name ~ " = cast(" ~ tp ~ ")(" ~ value ~ " & (ulong.max ^ (1Lu << " ~ to!string(flag.bit) ~ ")));\n";
-					data ~= "\t\t" ~ value ~ "._" ~ to!string(flag.bit) ~ " = value;\n";
-					data ~= "\t\treturn value;\n";
-					data ~= "\t}\n\n";
-				}
-			}
-			// encode function
-			data ~= "\tpublic pure nothrow @safe encode(Buffer buffer) {\n";
-			data ~= "\t\twith(buffer) {\n";
-			data ~= "\t\t\tif(this._cached) {\n";
-			data ~= "\t\t\t\tbuffer.writeBytes(this._cache);\n";
-			data ~= "\t\t\t} else {\n";
-			data ~= "\t\t\t\timmutable start = buffer._buffer.length;\n";
-			if(m.data.prefix.length) data ~= "\t\t\t\t" ~ createEncoding("ubyte", m.data.prefix) ~ "\n";
-			if(m.data.length.length) data ~= "\t\t\t\t" ~ createEncoding(m.data.length, "cast(" ~ convertType(m.data.length) ~ ")this._changed.length") ~ "\n";
-			data ~= "\t\t\t\tforeach(del ; this._changed) del(buffer);\n";
-			if(m.data.suffix.length) data ~= "\t\t\t\t" ~ createEncoding("ubyte", m.data.suffix) ~ "\n";
-			data ~= "\t\t\t\tthis._cached = true;\n";
-			data ~= "\t\t\t\tthis._cache = buffer._buffer[start..$];\n";
-			data ~= "\t\t\t}\n";
-			data ~= "\t\t}\n";
-			data ~= "\t}\n\n";
-			// decode function
-			data ~= "\tpublic static pure nothrow @safe Metadata decode(Buffer buffer) {\n";
-			data ~= "\t\tauto metadata = new Metadata();\n";
-			data ~= "\t\twith(buffer) {\n";
-			data ~= "\t\t\t" ~ convertType(m.data.id) ~ " id;\n";
-			if(m.data.length.length) {
-				data ~= "\t\t\t" ~ createDecoding(m.data.length, "size_t length") ~ "\n";
-				data ~= "\t\t\twhile(length-- > 0) {\n";
-				data ~= "\t\t\t\t" ~ createDecoding(m.data.id, "id") ~ "\n";
-			} else if(m.data.suffix.length) {
-				data ~= "\t\t\twhile(_index < _buffer.length && (" ~ createDecoding(m.data.id, "id")[0..$-1] ~ ") != " ~ m.data.suffix ~ ") {\n";
-			}
-			data ~= "\t\t\t\tswitch(" ~ createDecoding(m.data.type, "")[1..$-1] ~ ") {\n";
-			foreach(type ; m.data.types) {
-				data ~= "\t\t\t\t\tcase " ~ type.id.to!string ~ ":\n";
-				data ~= "\t\t\t\t\t\t" ~ convertType(type.type) ~ " _" ~ type.id.to!string ~ ";\n";
-				data ~= "\t\t\t\t\t\t" ~ createDecoding(type.type, "_" ~ type.id.to!string, type.endianness) ~ "\n";
-				data ~= "\t\t\t\t\t\tmetadata.decoded ~= DecodedMetadata.from" ~ camelCaseUpper(type.name) ~ "(id, _" ~ type.id.to!string ~ ");\n";
-				data ~= "\t\t\t\t\t\tbreak;\n";
-			}
-			data ~= "\t\t\t\t\tdefault:\n";
-			data ~= "\t\t\t\t\t\tbreak;\n";
-			data ~= "\t\t\t\t}\n";
-			data ~= "\t\t\t}\n";
-			data ~= "\t\t}\n";
-			data ~= "\t\treturn metadata;\n";
-			data ~= "\t}\n\n";
-			data ~= "}\n\n";
-			// decoded data
-			string convertDecoded(string name) {
-				if(["bool", "byte", "ubyte", "short", "uhsort", "int", "uint", "long", "ulong", "float", "double", "string"].canFind(name)) {
-					return name ~ "_";
-				} else {
-					return name.replace("<", "_").replace(">", "");
-				}
-			}
-			data ~= "class DecodedMetadata {\n\n";
-			data ~= "\tpublic immutable " ~ convertType(m.data.id) ~ " id;\n";
-			data ~= "\tpublic immutable " ~ convertType(m.data.type) ~ " type;\n\n";
-			data ~= "\tunion {\n";
-			foreach(type ; m.data.types) {
-				data ~= "\t\t" ~ convertType(type.type) ~ " " ~ convertDecoded(type.name) ~ ";\n";
-			}
-			data ~= "\t}\n\n";
-			data ~= "\tprivate pure nothrow @safe @nogc this(" ~ convertType(m.data.id) ~ " id, " ~ convertType(m.data.type) ~ " type) {\n";
-			data ~= "\t\tthis.id = id;\n";
-			data ~= "\t\tthis.type = type;\n";
-			data ~= "\t}\n\n";
-			// constructors
-			foreach(type ; m.data.types) {
-				data ~= "\tpublic static pure nothrow @trusted DecodedMetadata from" ~ camelCaseUpper(type.name) ~ "(" ~ convertType(m.data.id) ~ " id, " ~ convertType(type.type) ~ " value) {\n";
-				data ~= "\t\tauto ret = new DecodedMetadata(id, " ~ type.id.to!string ~ ");\n";
-				data ~= "\t\tret." ~ convertDecoded(type.name) ~ " = value;\n";
-				data ~= "\t\treturn ret;\n";
-				data ~= "\t}\n\n";
-			}
-			data ~= "}";
-			write("../src/d/sul/metadata/" ~ game ~ ".d", data, "metadata/" ~ game);
-		} else if(usesMetadata) {
-			// dummy
-			string data = "module sul.metadata." ~ game ~ ";\n\nimport sul.utils.buffer : Buffer;\n\n";
-			data ~= "class Metadata {\n\n";
-			data ~= "\tpublic pure nothrow @safe @nogc ubyte[] encode() {\n\t\treturn (ubyte[]).init;\n\t}\n\n";
-			data ~= "\tpublic static pure nothrow @safe Metadata decode(Buffer buffer) {\n\t\treturn new Metadata();\n\t}\n\n";
-			data ~= "}";
-			write("../src/d/sul/metadata/" ~ game ~ ".d", data);
-		}+/
 
 		// package to import everything
 		with(make(game, "package")) {

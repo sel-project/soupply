@@ -75,7 +75,7 @@ class JavascriptGenerator : CodeGenerator {
 			if(e.length && e[0] == '<') return ""; //TODO
 			else if(defaultTypes.canFind(t)) return t ~ e;
 			else if(t == "metadata") return "Metadata";
-			else return "Types." ~ toPascalCase(t) ~ e;
+			else return "Types." ~ camelCaseUpper(t) ~ e;
 		}
 
 		immutable id = convert(info.protocol.id);
@@ -88,7 +88,7 @@ class JavascriptGenerator : CodeGenerator {
 				if(e) over = *e;
 				else over = info.protocol.endianness["*"];
 			}
-			return toPascalCase(over);
+			return camelCaseUpper(over);
 		}
 
 		// encoding expression
