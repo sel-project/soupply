@@ -28,10 +28,12 @@ after_success:
     cd gen
     for repo in */ ; do
       cd $repo
-      git add --all .
-      git commit -m "${MESSAGE}" -m "${DESC}"
-      git tag -a "v${VERSION}" -m "${MESSAGE}"
-      git push -u --follow-tags "https://${TOKEN}@github.com/soupply/${repo////}.git" master
+      if [[ $(git ls-files -m) != "" ]] ; then
+        git add --all .
+        git commit -m "${MESSAGE}" -m "${DESC}"
+        git tag -a "v${VERSION}" -m "${MESSAGE}"
+        git push -u --follow-tags "https://${TOKEN}@github.com/soupply/${repo////}.git" master
+      fi
       cd ..
     done
 
