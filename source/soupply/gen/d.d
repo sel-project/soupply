@@ -44,7 +44,7 @@ import transforms : snakeCase, camelCaseLower, camelCaseUpper;
 class DGenerator : CodeGenerator {
 
 	static this() {
-		Generator.register!DGenerator("d", "", ["/*", " *", " */"]);
+		Generator.register!DGenerator("d", "d", "", ["/*", " *", " */"]);
 	}
 
 	private Protocol.Array[string] arrays;
@@ -172,7 +172,7 @@ class DGenerator : CodeGenerator {
 		// create dub.sdl for current game
 		with(new Maker(this, game ~ "/dub", "sdl")) {
 			line(`name "` ~ game ~ `"`);
-			line(`description "Libraries for ` ~ info.software ~ ` protocol ` ~ info.version_.to!string ~ `"`);
+			if(info.game != "test") line(`description "Libraries for ` ~ info.software ~ ` protocol ` ~ info.version_.to!string ~ `"`);
 			line(`targetType "library"`);
 			line(`dependency "` ~ SOFTWARE ~ `:util" version="*"`);
 			save();

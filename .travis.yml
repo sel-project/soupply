@@ -17,7 +17,7 @@ before_script:
 script:
   - VERSION=1.0.$(( TRAVIS_BUILD_NUMBER - 188 ))
   - echo $VERSION > version.txt
-  - dub run
+  - dub run -- --diff
 
 after_success:
   - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
@@ -28,7 +28,7 @@ after_success:
     cd gen
     for repo in */ ; do
       cd $repo
-      if [[ $(git ls-files -m) != "" ]] ; then
+      if [ ! -f ".nopush" ] ; then
         git add --all .
         git commit -m "${MESSAGE}" -m "${DESC}"
         git tag -a "v${VERSION}" -m "${MESSAGE}"

@@ -30,6 +30,7 @@ import std.ascii : newline;
 import std.concurrency : spawnLinked, receiveOnly, LinkTerminated;
 import std.conv : to;
 import std.datetime.stopwatch : StopWatch;
+import std.digest.md : md5Of;
 import std.file : _read = read, _write = write, exists, isFile, isDir, remove, mkdirRecurse, rmdir, dirEntries, SpanMode;
 import std.parallelism : TaskPool, task;
 import std.path : buildPath, buildNormalizedPath, dirSeparator;
@@ -43,6 +44,7 @@ private shared size_t __files, __bytes;
 struct GeneratorInfo {
 
 	string name;
+	string repo;
 	string source;
 	string[] comment;
 	Generator generator;
@@ -59,7 +61,7 @@ struct Editorconfig {
 
 abstract class Generator {
 
-	private static string[] names;
+	private static string[] repos;
 	private static GeneratorInfo[] generators;
 
 	/**
@@ -69,20 +71,35 @@ abstract class Generator {
 	 * Generator.register!MyGenerator("myg", "src/my", "//");
 	 * ---
 	 */
-	public static void register(T:Generator)(string name, string source, string[] comment=null) {
-		if(!names.canFind(name)) names ~= name;
-		generators ~= GeneratorInfo(name, source, comment, new T());
+	public static void register(T:Generator)(string name, string repo, string source, string[] comment=null) {
+		if(!repos.canFind(repo)) repos ~= repo;
+		generators ~= GeneratorInfo(name, repo, source, comment, new T());
 	}
 
 	/// ditto
-	public static void register(T:Generator)(string name, string source, string comment) {
-		register!T(name, source, [comment, comment, comment]);
+	public static void register(T:Generator)(string name, string repo, string source, string comment) {
+		register!T(name, repo, source, [comment, comment, comment]);
 	}
 
 	/**
 	 * Generates code from every registered generator.
 	 */
-	public static void generateAll(Data data) {
+	public static void generateAll(Data data, bool nopush) {
+
+		static ubyte[16][string] diff(string path) {
+			ubyte[16][string] ret;
+			if(exists("gen/" ~ path)) {
+				if(exists("gen/" ~ path ~ "/.nopush")) remove("gen/" ~ path ~ "/.nopush");
+				foreach(file ; dirEntries("gen/" ~ path, SpanMode.breadth)) {
+					if(file.isFile && file.indexOf("/.git/") == -1) {
+						ret[file[path.length + 5..$]] = md5Of(_read(file));
+					}
+				}
+			}
+			return ret;
+		}
+
+		ubyte[16][string][string] files;
 
 		Editorconfig[string][string] editorconfig;
 		string[string] downloads;
@@ -99,9 +116,10 @@ abstract class Generator {
 		];
 
 		// copy files, init editorconfig, get downloads
-		foreach(name ; names) {
-			editorconfig[name] = (Editorconfig[string]).init;
-			init(name, rep, editorconfig[name], downloads);
+		foreach(repo ; repos) {
+			if(nopush) files[repo] = diff(repo);
+			editorconfig[repo] = (Editorconfig[string]).init;
+			init(repo, rep, editorconfig[repo], downloads);
 		}
 
 		static void generate(GeneratorInfo info, Editorconfig[string] editorconfig, Data data) {
@@ -113,7 +131,7 @@ abstract class Generator {
 
 			try {
 			
-					with(info) generator.generate(name, source, comment, editorconfig, data);
+					with(info) generator.generate(repo, source, comment, editorconfig, data);
 
 			} catch(Throwable e) {
 
@@ -147,7 +165,7 @@ abstract class Generator {
 
 		writeln("Generating data from ", generators.length, " generators using ", pool.size, " workers");
 
-		foreach(info ; generators) pool.put(task!generate(info, editorconfig[info.name], data));
+		foreach(info ; generators) pool.put(task!generate(info, editorconfig[info.repo], data));
 
 		foreach(path, url; downloads) pool.put(task!download(path, url));
 
@@ -173,12 +191,18 @@ abstract class Generator {
 		total.stop();
 		writeln("Done. Generated ", __bytes / 1000, " kB in ", __files, " files in ", total.peek);
 
+		if(nopush) {
+			foreach(repo ; repos) {
+				if(files[repo] == diff(repo)) _write("gen/" ~ repo ~ "/.nopush", "");
+			}
+		}
+
 	}
 
-	private static void init(string name, string[string] rep, ref Editorconfig[string] editorconfig, ref string[string] downloads) {
+	private static void init(string repo, string[string] rep, ref Editorconfig[string] editorconfig, ref string[string] downloads) {
 		
 		// create paths
-		immutable gen = buildPath("gen", name) ~ dirSeparator;
+		immutable gen = buildPath("gen", repo) ~ dirSeparator;
 		
 		if(!exists(gen)) {
 			// create the directory
@@ -186,7 +210,7 @@ abstract class Generator {
 		}
 		
 		// copy and convert content of public into gen/name
-		immutable public_ = buildPath("public", name) ~ dirSeparator;
+		immutable public_ = buildPath("public", repo) ~ dirSeparator;
 		if(exists(public_)) {
 			foreach(string file ; dirEntries(public_, SpanMode.breadth)) {
 				string path = file[public_.length..$];
@@ -270,13 +294,13 @@ abstract class Generator {
 		return this;
 	}
 
-	public final void generate(string name, string source, string[] comment, Editorconfig[string] editorconfig, Data data) {
+	public final void generate(string repo, string source, string[] comment, Editorconfig[string] editorconfig, Data data) {
 
 		if("*" !in editorconfig) editorconfig["*"] = Editorconfig.init;
 
 		// save/init variables
 		this.data = data;
-		this.path = buildPath("gen", name, source) ~ dirSeparator;
+		this.path = buildPath("gen", repo, source) ~ dirSeparator;
 		this.comment = comment;
 		this.editorconfig = editorconfig;
 		

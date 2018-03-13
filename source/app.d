@@ -275,7 +275,7 @@ void main(string[] args) {
 		data[game ~ to!string(v[1])].latest = true;
 	}
 	
-	Generator.generateAll(Data("Automatically generated libraries for encoding and decoding Minecraft protocols", "MIT", exists("version.txt") ? strip(cast(string)read("version.txt")) : "0.0.0", data));
+	Generator.generateAll(Data("Automatically generated libraries for encoding and decoding Minecraft protocols", "MIT", exists("version.txt") ? strip(cast(string)read("version.txt")) : "0.0.0", data), args.canFind("--diff"));
 	
 }
 

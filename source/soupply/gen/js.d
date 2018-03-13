@@ -541,7 +541,7 @@ class JavascriptGenerator : CodeGenerator {
 class SandboxGenerator : JavascriptGenerator {
 	
 	static this() {
-		Generator.register!SandboxGenerator("js-sandbox", "../soupply.github.io/sandbox/src");
+		Generator.register!SandboxGenerator("js", "soupply.github.io", "sandbox/src");
 	}
 
 	this() {
@@ -553,7 +553,7 @@ class SandboxGenerator : JavascriptGenerator {
 class NodeJSGenerator : JavascriptGenerator {
 
 	static this() {
-		//Generator.register!NodeJSGenerator("node-js", "src/" ~ SOFTWARE, ["/*", " *", " */"]);
+		Generator.register!NodeJSGenerator("node-js", "node-js", "src/" ~ SOFTWARE, ["/*", " *", " */"]);
 	}
 
 	this() {

@@ -39,7 +39,7 @@ import transforms : snakeCase, camelCaseLower, camelCaseUpper;
 class DocsGenerator : Generator {
 
 	static this() {
-		Generator.register!DocsGenerator("soupply.github.io", "");
+		Generator.register!DocsGenerator("docs", "soupply.github.io", "");
 	}
 
 	protected override void generateImpl(Data _data) {
@@ -505,7 +505,7 @@ string cond(string c) {
 class DiffGenerator : Generator {
 
 	static this() {
-		Generator.register!DiffGenerator("soupply.github.io", "diff");
+		Generator.register!DiffGenerator("diff", "soupply.github.io", "diff");
 	}
 
 	protected override void generateImpl(Data data) {
@@ -550,7 +550,7 @@ class DiffGenerator : Generator {
 class SandboxGenerator : Generator {
 
 	static this() {
-		Generator.register!SandboxGenerator("soupply.github.io", "sandbox");
+		Generator.register!SandboxGenerator("sandbox", "soupply.github.io", "sandbox");
 	}
 
 	protected override void generateImpl(Data data) {
