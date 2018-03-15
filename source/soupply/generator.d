@@ -102,6 +102,14 @@ abstract class Generator {
 			return ret;
 		}
 
+		static void del(string repo) {
+			if(exists("gen/" ~ repo)) {
+				foreach(file ; dirEntries("gen/" ~ repo, SpanMode.breadth)) {
+					if(file.isFile && file.indexOf("/.git/") == -1) remove(file);
+				}
+			}
+		}
+
 		ubyte[16][string][string] files;
 
 		Editorconfig[string][string] editorconfig;
@@ -118,9 +126,10 @@ abstract class Generator {
 			"version": data.version_,
 		];
 
-		// copy files, init editorconfig, get downloads
+		// delete old files, copy files, init editorconfig, get downloads
 		foreach(repo ; repos) {
 			if(nopush) files[repo] = diff(repo);
+			del(repo);
 			editorconfig[repo] = (Editorconfig[string]).init;
 			init(repo, rep, editorconfig[repo], downloads);
 		}
@@ -196,27 +205,6 @@ abstract class Generator {
 
 		if(nopush) {
 			foreach(repo ; repos) {
-				writeln("Checking diff for ", repo);
-				import std.algorithm : sort;
-				import std.digest.md : toHexString;
-				auto d = diff(repo);
-				string[] a = files[repo].keys;
-				string[] b = d.keys;
-				sort(a);
-				sort(b);
-				if(a != b) writeln(a, " != ", b);
-				else {
-					bool changed = false;
-					foreach(file, hash; d) {
-						if(hash != files[repo][file]) {
-							changed = true;
-							writeln("File ", file, " has changed: ", toHexString(files[repo][file]), " to ", toHexString(hash));
-						}
-					}
-					if(!changed) _write("gen/" ~ repo ~ "/.nopush", "💩");
-				}
-				writeln();
-				//
 				if(files[repo] == diff(repo)) _write("gen/" ~ repo ~ "/.nopush", "💩");
 			}
 		}

@@ -9,7 +9,6 @@ before_script:
     for repo in */ ; do
       git clone https://github.com/soupply/${repo////}.git ../gen/$repo
       cd ../gen/$repo
-      git rm -rf .
       cd ../../public
     done
     cd ..
@@ -28,7 +27,6 @@ after_success:
     cd gen
     for repo in */ ; do
       cd $repo
-      ls -la
       if [ ! -f .nopush ] ; then
         git add --all .
         git commit -m "${MESSAGE}" -m "${DESC}"
