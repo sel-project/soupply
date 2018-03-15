@@ -12,9 +12,7 @@
 
 	<to>1.10.2</to>
 
-	<encoding id="varuint" arraylength="varuint">
-
-		<endianness type="*" value="big-endian" />
+	<encoding id="varuint" arraylength="varuint" endianness="big-endian">
 
 		<alias name="entity-id" type="varuint" />
 
@@ -43,10 +41,6 @@
 			<field name="damage" type="ushort" when="id>0" />
 			<field name="nbt" type="bytes" when="id>0" />
 		</type>
-
-		<array name="slots" base="slot" length="ushort" />
-
-		<array name="explosion-records" base="byte<xyz>" length="uint" />
 
 		<type name="icon">
 			<field name="direction-and-type" type="ubyte">
@@ -119,8 +113,6 @@
 			<field name="value" type="double" />
 			<field name="modifiers" type="modifier[]" />
 		</type>
-
-		<array name="attributes" base="attribute" length="uint" />
 
 		<type name="optional-position">
 			<field name="has-position" type="bool" />
@@ -433,7 +425,7 @@
 
 			<packet name="window-items" id="20" clientbound="true" serverbound="false">
 				<field name="window" type="ubyte" />
-				<field name="slots" type="slots" />
+				<field name="slots" type="slot[]" length="ushort" />
 			</packet>
 
 			<packet name="window-property" id="21" clientbound="true" serverbound="false">
@@ -536,7 +528,7 @@
 			<packet name="explosion" id="28" clientbound="true" serverbound="false">
 				<field name="position" type="float<xyz>" />
 				<field name="radius" type="float" />
-				<field name="records" type="explosion-records" />
+				<field name="records" type="byte<xyz>[]" length="uint" />
 				<field name="motion" type="float<xyz>" />
 			</packet>
 
@@ -1112,7 +1104,7 @@
 
 			<packet name="entity-properties" id="74" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
-				<field name="attributes" type="attributes" />
+				<field name="attributes" type="attribute[]" length="uint" />
 			</packet>
 
 			<packet name="entity-effect" id="75" clientbound="true" serverbound="false">

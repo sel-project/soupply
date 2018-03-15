@@ -44,7 +44,7 @@ class DocsGenerator : Generator {
 
 	protected override void generateImpl(Data _data) {
 		
-		enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "string", "varshort", "varushort", "varint", "varuint", "varlong", "varulong", "triad", "uuid", "bytes"];
+		enum defaultTypes = ["bool", "byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "string", "varshort", "varushort", "varint", "varuint", "varlong", "varulong", "uuid", "bytes"];
 
 		Maker make(string path) {
 			auto ret = new Maker(this, path, "md");
@@ -79,7 +79,6 @@ class DocsGenerator : Generator {
 				else if(tup >= 0) return convert(type[0..tup]) ~ type[tup..$].replace("<", "&lt;").replace(">", "&gt;");
 				else if(type == "metadata") return "[metadata](/protocol/" ~ game ~ "/metadata)";
 				else if(defaultTypes.canFind(type)) return type;
-				else if(type in info.protocol.arrays) return "[" ~ camelCaseLower(type) ~ "](/protocol/" ~ game ~ "/arrays)";
 				else return "[" ~ camelCaseLower(type) ~ "](/protocol/" ~ game ~ "/types/" ~ type.replace("_", "-") ~ ")";
 			}
 
@@ -103,7 +102,6 @@ class DocsGenerator : Generator {
 			}
 			string[] jumps = ["[Encoding](#encoding)", "[Packets](#packets)"];
 			if(info.protocol.types.length) jumps ~= "[Types](" ~ game ~ "/types)";
-			if(info.protocol.arrays.length) jumps ~= "[Arrays](" ~ game ~ "/arrays)";
 			jumps ~= "[Metadata](" ~ game ~ "/metadata)";
 			data.line("**Jump to**: " ~ jumps.join(", ")).nl;
 			if(info.released.length) {
@@ -140,47 +138,7 @@ class DocsGenerator : Generator {
 			// endianness
 			data.line("## Encoding").nl;
 			//TODO encoding format (id, body) or (id, padding, body)
-			data.line("**Endianness**:").nl;
-			string def = "big_endian";
-			string[string] change;
-			foreach(string type, string end; info.protocol.endianness) {
-				if(type != "*") change[type] = end;
-			}
-			string[] be, le;
-			string[] used;
-			foreach(string type ; ["short", "ushort", "int", "uint", "long", "ulong", "float", "double"]) {
-				(){
-					bool checkImpl(string ft) {
-						auto t = ft in info.protocol.arrays;
-						if(t ? (*t).base.startsWith(type) || (*t).length.startsWith(type) : ft.startsWith(type)) {
-							auto e = type in change ? change[type] : def;
-							if(e == "big_endian") be ~= type;
-							else le ~= type;
-							return true;
-						}
-						return false;
-					}
-					bool check(Protocol.Field field) {
-						return checkImpl(field.type);
-					}
-					if(checkImpl(info.protocol.id)) return;
-					if(checkImpl(info.protocol.arrayLength)) return;
-					foreach(type ; info.protocol.types) {
-						foreach(field ; type.fields) if(check(field)) return;
-					}
-					foreach(section ; info.protocol.sections) {
-						foreach(packet ; section.packets) {
-							foreach(field ; packet.fields) if(check(field)) return;
-							foreach(variant ; packet.variants) {
-								foreach(field ; variant.fields) if(check(field)) return;
-							}
-						}
-					}
-				}();
-			}
-			data.line("big endian | little endian");
-			data.line("---|---");
-			data.line(be.join(", ") ~ " | " ~ le.join(", ")).nl;
+			data.line("**Endianness**: " ~ info.protocol.endianness).nl;
 			data.line("**Ids**: " ~ info.protocol.id).nl;
 			data.line("**Array's length**: " ~ info.protocol.arrayLength).nl;
 			if(info.protocol.padding) data.line("**Padding**: " ~ info.protocol.padding.to!string ~ " bytes").nl;
@@ -199,19 +157,25 @@ class DocsGenerator : Generator {
 			void writeFields(string[] namespace, Protocol.Field[] fields, string fieldsDesc="## Fields") {
 				if(fields.length) {
 					data.line(fieldsDesc).nl;
-					bool endianness, condition, default_;
+					bool endianness, length, lengthEndianness, condition, default_;
 					foreach(field ; fields) {
 						endianness |= field.endianness.length != 0;
+						length |= field.length.length != 0;
+						lengthEndianness |= field.lengthEndianness.length != 0;
 						condition |= field.condition.length != 0;
 						default_ |= field.default_.length != 0;
 					}
 					data.put("Name | Type");
 					if(endianness) data.put(" | Endianness");
+					if(length) data.put(" | Length");
+					if(lengthEndianness) data.put(" | Length's endianness");
 					if(condition) data.put(" | When");
 					if(default_) data.put(" | Default");
 					data.nl;
 					data.put("---|---");
 					if(endianness) data.put("|:---:");
+					if(length) data.put("|:---:");
+					if(lengthEndianness) data.put("|:---:");
 					if(condition) data.put("|:---:");
 					if(default_) data.put("|:---:");
 					data.nl;
@@ -225,6 +189,8 @@ class DocsGenerator : Generator {
 						}
 						data.put(" | " ~ convert(field.type));
 						if(endianness) data.put(" | " ~ field.endianness.replace("_", " "));
+						if(length) data.put(" | " ~ convert(field.length));
+						if(lengthEndianness) data.put(" | " ~ field.lengthEndianness.replace("_", " "));
 						if(condition) data.put(" | " ~ (field.condition.length ? cond(field.condition.replace("_", " ")) : ""));
 						if(default_) data.put(" | " ~ field.default_);
 						data.nl;
@@ -319,27 +285,6 @@ class DocsGenerator : Generator {
 					writeFields([], type.fields);
 					data.save();
 				}
-
-			}
-
-			// arrays
-			if(info.protocol.arrays.length) {
-
-				data = head("arrays");
-				bool e = false;
-				foreach(a ; info.protocol.arrays) {
-					e |= a.endianness.length != 0;
-				}
-				data.put("Name | Base | Length");
-				if(e) data.put(" | Length's endianness");
-				data.nl;
-				data.put("---|---|---");
-				if(e) data.put("|---");
-				data.nl;
-				foreach(name, a ; info.protocol.arrays) {
-					data.line(camelCaseLower(name) ~ " | " ~ convert(a.base) ~ " | " ~ convert(a.length) ~ (e ? " | " ~ a.endianness.replace("_", " ") : ""));
-				}
-				data.save();
 
 			}
 
@@ -557,20 +502,19 @@ class SandboxGenerator : Generator {
 
 		foreach(game, info; data.info) {
 
-			with(new Maker(this, game, "html")) {
+			with(new XmlMaker(this, game, "html")) {
 
 				line("<!DOCTYPE html>");
-				line("<head>").add_indent();
-				line("<title>Soupply's sandbox</title>");
-				line("<script src='buffer.js'></script>");
-				line("<script src='sandbox.js'></script>");
+				openTag("head");
+				openCloseTag("title", "Soupply's sandbox");
+				openCloseTag("script", ["src": "buffer.js"]);
+				openCloseTag("script", ["src": "sandbox.js"]);
 				string[] sections = ["packet", "types"];
 				foreach(section ; info.protocol.sections) sections ~= section.name;
 				foreach(section ; sections) {
-					line("<script src='src/" ~ game ~ "/" ~ section ~ ".js'></script>");
+					openCloseTag("script", ["src": "src/" ~ game ~ "/" ~ section ~ ".js"]);
 				}
-				remove_indent();
-				line("</head>");
+				closeTag();
 
 				save();
 

@@ -58,6 +58,25 @@ void main(string[] args) {
 				if(a) t = *a;
 				return t ~ type[end..$];
 			}
+			Protocol.Field parseField(Element element) {
+				Protocol.Field field;
+				with(element.tag) {
+					field.name = attr["name"].rename();
+					field.type = convert(attr["type"].rename());
+					if("endianness" in attr) field.endianness = attr["endianness"].rename();
+					if("length" in attr) field.length = convert(attr["length"].rename());
+					if("lengthendianness" in attr) field.lengthEndianness = attr["lengthendianness"].rename();
+					if("when" in attr) field.condition = attr["when"].rename();
+					if("default" in attr) field.default_ = attr["default"];
+					field.description = text(element);
+				}
+				foreach(c ; element.elements) {
+					if(c.tag.name == "constant") {
+						field.constants ~= Protocol.Constant(c.tag.attr["name"].rename(), text(c), c.tag.attr["value"]);
+					}
+				}
+				return field;
+			}
 			foreach(element ; new Document(cast(string)read(file)).elements) {
 				switch(element.tag.name) {
 					case "software":
@@ -83,13 +102,10 @@ void main(string[] args) {
 					case "encoding":
 						info.protocol.id = element.tag.attr["id"];
 						info.protocol.arrayLength = element.tag.attr["arraylength"];
-						if("endianness" in element.tag.attr) info.protocol.endianness["*"] = element.tag.attr["endianness"].replace("-", "_");
+						info.protocol.endianness = element.tag.attr["endianness"].rename();
 						if("padding" in element.tag.attr) info.protocol.padding = to!size_t(element.tag.attr["padding"]);
 						foreach(e ; element.elements) {
 							switch(e.tag.name) {
-								case "endianness":
-									with(e.tag) info.protocol.endianness[attr["type"].replace("-", "_")] = attr["value"].replace("-", "_");
-									break;
 								case "alias":
 									with(e.tag) aliases[attr["name"].replace("-", "_")] = attr["type"].replace("-", "_");
 									break;
@@ -100,35 +116,13 @@ void main(string[] args) {
 									if("length" in e.tag.attr) type.length = e.tag.attr["length"].length ? convert(e.tag.attr["length"].replace("-", "_")) : info.protocol.arrayLength;
 									foreach(f ; e.elements) {
 										if(f.tag.name == "field") {
-											Protocol.Field field;
-											with(f.tag) {
-												field.name = attr["name"].replace("-", "_");
-												if("length" in attr) {
-													assert(attr["type"].endsWith("[]"));
-													immutable name = "array" ~ to!string(arrays++);
-													info.protocol.arrays[name] = Protocol.Array(attr["type"][0..$-2].replace("-", "_"), attr["length"].replace("-", "_"), attr.get("lengthendianness", ""));
-													field.type = name;
-												} else {
-													field.type = convert(attr["type"].replace("-", "_"));
-												}
-												field.description = text(f);
-												if("endianness" in attr) field.endianness = attr["endianness"].replace("-", "_");
-												if("when" in attr) field.condition = attr["when"].replace("-", "_");
-												if("default" in attr) field.default_ = attr["default"];
-											}
-											foreach(c ; f.elements) {
-												if(c.tag.name == "constant") {
-													field.constants ~= Protocol.Constant(c.tag.attr["name"].replace("-", "_"), text(c), c.tag.attr["value"]);
-												}
-											}
-											type.fields ~= field;
+											type.fields ~= parseField(f);
 										}
 									}
 									info.protocol.types ~= type;
 									break;
 								case "array":
-									with(e.tag) info.protocol.arrays[attr["name"].replace("-", "_")] = Protocol.Array(convert(attr["base"].replace("-", "_")), convert(attr["length"].replace("-", "_")), ("endianness" in attr ? attr["endianness"].replace("-", "_") : ""));
-									break;
+									assert(0, file);
 								default:
 									break;
 							}
@@ -150,26 +144,7 @@ void main(string[] args) {
 										packet.description = text(pk);
 										foreach(fv ; pk.elements) {
 											if(fv.tag.name == "field") {
-												Protocol.Field field;
-												field.name = fv.tag.attr["name"].replace("-", "_");
-												if("length" in fv.tag.attr) {
-													assert(fv.tag.attr["type"].endsWith("[]"));
-													immutable name = "array" ~ to!string(arrays++);
-													info.protocol.arrays[name] = Protocol.Array(fv.tag.attr["type"][0..$-2].replace("-", "_"), fv.tag.attr["length"].replace("-", "_"), fv.tag.attr.get("lengthendianness", ""));
-													field.type = name;
-												} else {
-													field.type = convert(fv.tag.attr["type"].replace("-", "_"));
-												}
-												field.description = text(fv);
-												if("endianness" in fv.tag.attr) field.endianness = fv.tag.attr["endianness"].replace("-", "_");
-												if("when" in fv.tag.attr) field.condition = fv.tag.attr["when"].replace("-", "_");
-												if("default" in fv.tag.attr) field.default_ = fv.tag.attr["default"];
-												foreach(c ; fv.elements) {
-													if(c.tag.name == "constant") {
-														field.constants ~= Protocol.Constant(c.tag.attr["name"].replace("-", "_"), text(c), c.tag.attr["value"]);
-													}
-												}
-												packet.fields ~= field;
+												packet.fields ~= parseField(fv);
 											} else if(fv.tag.name == "variants") {
 												packet.variantField = fv.tag.attr["field"].replace("-", "_");
 												foreach(v ; fv.elements) {
@@ -277,6 +252,10 @@ void main(string[] args) {
 	
 	Generator.generateAll(Data("Automatically generated libraries for encoding and decoding Minecraft protocols", "MIT", exists("version.txt") ? strip(cast(string)read("version.txt")) : "0.0.0", data), args.canFind("--diff"));
 	
+}
+
+@property string rename(string str) {
+	return str.replace("-", "_");
 }
 
 @property string text(Element element) {

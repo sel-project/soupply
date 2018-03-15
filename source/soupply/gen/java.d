@@ -37,15 +37,34 @@ import std.typetuple : TypeTuple;
 
 import soupply.data;
 import soupply.generator;
+import soupply.gen.code;
 import soupply.util;
 
-class JavaGenerator : Generator {
+class JavaGenerator : CodeGenerator {
 
 	static this() {
 		Generator.register!JavaGenerator("Java", "java", "src/java/main/" ~ SOFTWARE);
 	}
 
+	public this() {
+		
+		CodeMaker.Settings settings;
+		settings.inlineBraces = false;
+		settings.moduleSeparator = ".";
+		settings.standardLibrary = "std";
+		
+		settings.moduleStat = "package %s";
+		settings.importStat = "import %s";
+		settings.classStat = "class %s";
+		settings.constStat = "enum %s = %d";
+		
+		super(settings, "java");
+		
+	}
+
 	protected override void generateImpl(Data data) {
+
+		super.generateImpl(data);
 		
 		/+mkdirRecurse("../src/java/sul/utils");
 		

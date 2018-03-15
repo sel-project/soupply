@@ -68,10 +68,6 @@ class JavascriptGenerator : CodeGenerator {
 			auto end = min(cast(size_t)type.lastIndexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
 			auto t = type[0..end];
 			auto e = type[end..$].replaceAll(ctRegex!`\[[0-9]{1,3}\]`, "[]");
-			/*auto a = t in defaultAliases;
-			if(a) return convert(*a ~ e);*/
-			auto b = t in info.protocol.arrays;
-			if(b) return convert((*b).base ~ "[]" ~ e);
 			if(e.length && e[0] == '<') return ""; //TODO
 			else if(defaultTypes.canFind(t)) return t ~ e;
 			else if(t == "metadata") return "Metadata";
@@ -83,28 +79,20 @@ class JavascriptGenerator : CodeGenerator {
 
 		// returns the endianness for a type
 		string endiannessOf(string type, string over="") {
-			if(!over.length) {
-				auto e = type in info.protocol.endianness;
-				if(e) over = *e;
-				else over = info.protocol.endianness["*"];
-			}
-			return camelCaseUpper(over);
+			return camelCaseUpper(over.length ? over : info.protocol.endianness);
 		}
 
 		// encoding expression
-		void createEncoding(CodeMaker maker, string type, string name, string e="") {
+		void createEncoding(CodeMaker maker, string type, string name, string e="", string length="", string lengthEndianness="") {
 			if(type[0] == 'u' && defaultTypes.canFind(type[1..$])) type = type[1..$];
-			auto conv = type in info.protocol.arrays ? info.protocol.arrays[type].base ~ "[]" : type;
-			auto lo = conv.lastIndexOf("[");
+			auto lo = type.lastIndexOf("[");
 			if(lo > 0) {
-				auto lc = conv.lastIndexOf("]");
-				immutable nt = conv[0..lo];
+				auto lc = type.lastIndexOf("]");
+				immutable nt = type[0..lo];
 				immutable cnt = convert(nt);
 				if(lo == lc - 1) {
-					auto ca = type in info.protocol.arrays;
-					if(ca) {
-						auto c = *ca;
-						createEncoding(maker, c.length, name ~ ".length", c.endianness);
+					if(length.length) {
+						createEncoding(maker, length, name ~ ".length", lengthEndianness);
 					} else {
 						createEncoding(maker, info.protocol.arrayLength, name ~ ".length");
 					}
@@ -117,15 +105,14 @@ class JavascriptGenerator : CodeGenerator {
 					maker.endBlock();
 				}
 			} else {
-				auto ts = conv.lastIndexOf("<");
+				auto ts = type.lastIndexOf("<");
 				if(ts > 0) {
-					auto te = conv.lastIndexOf(">");
-					string nt = conv[0..ts];
-					foreach(i ; conv[ts+1..te]) {
+					auto te = type.lastIndexOf(">");
+					string nt = type[0..ts];
+					foreach(i ; type[ts+1..te]) {
 						createEncoding(maker, nt, name ~ "." ~ i);
 					}
 				} else {
-					type = conv;
 					if(type.startsWith("var")) maker.stat("this.write" ~ capitalize(type) ~ "(" ~ name ~ ")");
 					else if(type == "string"){ maker.stat("var " ~ hash(name) ~"=this.encodeString(" ~ name ~")"); createEncoding(maker, info.protocol.arrayLength, hash(name) ~ ".length"); maker.stat("this.writeBytes(" ~ hash(name) ~ ")"); }
 					else if(type == "uuid" || type == "bytes") maker.stat("this.writeBytes(" ~ name ~ ")");
@@ -139,24 +126,21 @@ class JavascriptGenerator : CodeGenerator {
 		}
 
 		// decoding expressions
-		void createDecoding(CodeMaker maker, string type, string name, string e="") {
+		void createDecoding(CodeMaker maker, string type, string name, string e="", string length="", string lengthEndianness="") {
 			if(type[0] == 'u' && defaultTypes.canFind(type[1..$])) type = type[1..$];
-			auto conv = type in info.protocol.arrays ? info.protocol.arrays[type].base ~ "[]" : type;
-			auto lo = conv.lastIndexOf("[");
+			auto lo = type.lastIndexOf("[");
 			if(lo > 0) {
-				auto lc = conv.lastIndexOf("]");
-				immutable nt = conv[0..lo];
+				auto lc = type.lastIndexOf("]");
+				immutable nt = type[0..lo];
 				immutable cnt = convert(nt);
 				if(lo == lc - 1) {
-					auto ca = type in info.protocol.arrays;
-					if(ca) {
-						auto c = *ca;
-						createDecoding(maker, c.length, "var " ~ hash("\0" ~ name), c.endianness);
+					if(length.length) {
+						createDecoding(maker, length, "var " ~ hash("\0" ~ name), lengthEndianness);
 					} else {
 						createDecoding(maker, info.protocol.arrayLength, "var " ~ hash("\0" ~ name));
 					}
 				} else {
-					maker.stat("var " ~ hash("\0" ~ name) ~ "=" ~ conv[lo+1..lc]);
+					maker.stat("var " ~ hash("\0" ~ name) ~ "=" ~ type[lo+1..lc]);
 				}
 				if(cnt == "ubyte") {
 					maker.stat(name ~ "=this.readBytes(" ~ hash("\0" ~ name) ~ ")");
@@ -167,16 +151,15 @@ class JavascriptGenerator : CodeGenerator {
 					maker.endBlock();
 				}
 			} else {
-				auto ts = conv.lastIndexOf("<");
+				auto ts = type.lastIndexOf("<");
 				if(ts > 0) {
-					auto te = conv.lastIndexOf(">");
-					string nt = conv[0..ts];
+					auto te = type.lastIndexOf(">");
+					string nt = type[0..ts];
 					maker.stat(name ~ "={}");
-					foreach(i ; conv[ts+1..te]) {
+					foreach(i ; type[ts+1..te]) {
 						createDecoding(maker, nt, name ~ "." ~ i);
 					}
 				} else {
-					type = conv;
 					if(type.startsWith("var")) maker.stat(name ~ "=this.read" ~ capitalize(type) ~ "()");
 					else if(type == "string"){ createDecoding(maker, info.protocol.arrayLength, "var " ~ hash(name)); maker.stat(name ~ "=this.decodeString(this.readBytes(" ~ hash(name) ~ "))"); }
 					else if(type == "uuid") maker.stat(name ~ "=this.readBytes(16)");
@@ -213,7 +196,7 @@ class JavascriptGenerator : CodeGenerator {
 			string[] f;
 			foreach(i, field; fields) {
 				immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
-				f ~= name ~ "=" ~ (field.default_.length ? constOf(field.default_) : defaultValue(field.type, info.protocol.arrays));
+				f ~= name ~ "=" ~ (field.default_.length ? constOf(field.default_) : defaultValue(field.type));
 			}
 			maker.block("constructor(" ~ f.join(node ? ", " : ",") ~ ")");
 			maker.stat("super()");
@@ -237,7 +220,7 @@ class JavascriptGenerator : CodeGenerator {
 					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 					if(c) block("if(" ~ camelCaseLower(field.condition) ~ ")");
 					//stat("encodeState(this, '" ~ name ~ "')");
-					createEncoding(maker, field.type, "this." ~ name, field.endianness);
+					createEncoding(maker, field.type, "this." ~ name, field.endianness, field.length, field.lengthEndianness);
 					if(c) endBlock();
 				}
 				if(variantField.length) {
@@ -248,7 +231,7 @@ class JavascriptGenerator : CodeGenerator {
 							bool c = field.condition != "";
 							immutable name = field.name == "?" ? "unknown" ~ to!string(i + fields.length) : convertName(field.name);
 							if(c) block("if(" ~ camelCaseLower(field.condition) ~ ")");
-							createEncoding(maker, field.type, "this." ~ name, field.endianness);
+							createEncoding(maker, field.type, "this." ~ name, field.endianness, field.length, field.lengthEndianness);
 							if(c) endBlock();
 						}
 						stat("break").remove_indent();
@@ -506,21 +489,16 @@ class JavascriptGenerator : CodeGenerator {
 		else return camelCaseLower(name);
 	}
 	
-	string defaultValue(string type, Protocol.Array[string] arrays) {
-		auto a = type in arrays;
+	string defaultValue(string type) {
 		if(type == "float" || type == "double") return ".0";
 		else if(type == "bool") return "false";
 		else if(type == "string") return `""`;
 		else if(type == "uuid") return "new Uint8Array(16)";
 		else if(type == "metadata") return "new Metadata()";
-		else if(a || type.endsWith("]")) {
+		else if(type.endsWith("]")) {
 			string size = "0";
-			if(a) {
-				type = a.base;
-			} else {
-				if(type[$-2] != '[') size = type[type.lastIndexOf("[")+1..$-1];
-				type = type[0..type.lastIndexOf("[")];
-			}
+			if(type[$-2] != '[') size = type[type.lastIndexOf("[")+1..$-1];
+			type = type[0..type.lastIndexOf("[")];
 			if(type == "byte") return "new Int8Array(" ~ size ~ ")";
 			else if(type == "ubyte") return "new Uint8Array(" ~ size ~ ")";
 			else if(type == "short" || type == "varshort") return "new Int16Array(" ~ size ~ ")";

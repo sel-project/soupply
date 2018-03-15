@@ -493,3 +493,49 @@ class Maker {
 	alias appender this;
 
 }
+
+class XmlMaker : Maker {
+
+	private string[] tags;
+
+	public this(Generator generator, string path, string extension="xml") {
+		super(generator, path, extension);
+	}
+
+	private string makeTag(string tag, string[string] attr) {
+		string ret = "<" ~ tag;
+		if(attr !is null) {
+			foreach(key, value; attr) ret ~= " " ~ key ~ "=\"" ~ value ~ "\"";
+		}
+		return ret;
+	}
+
+	typeof(this) openTag(string tag, string[string] attr=null) {
+		line(makeTag(tag, attr) ~ ">");
+		add_indent();
+		tags ~= tag;
+		return this;
+	}
+
+	typeof(this) inlineTag(string tag, string[string] attr=null) {
+		line(makeTag(tag, attr) ~ " />");
+		return this;
+	}
+
+	typeof(this) openCloseTag(string tag, string content, string[string] attr=null) {
+		line(makeTag(tag, attr) ~ ">" ~ content ~ "</" ~ tag ~ ">");
+		return this;
+	}
+
+	typeof(this) openCloseTag(string tag, string[string] attr=null) {
+		return this.openCloseTag(tag, "", attr);
+	}
+
+	typeof(this) closeTag() {
+		remove_indent();
+		line("</" ~ tags[$-1] ~ ">");
+		tags = tags[0..$-1];
+		return this;
+	}
+
+}

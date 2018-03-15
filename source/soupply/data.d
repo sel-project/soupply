@@ -60,7 +60,7 @@ struct Protocol {
 
 	struct Constant { string name; string description; string value; }
 
-	struct Field { string name; string type; string condition; string endianness; string default_; string description; Constant[] constants; }
+	struct Field { string name; string type; string condition; string endianness; string length; string lengthEndianness; string default_; string description; Constant[] constants; }
 
 	struct Variant { string name; string value; string description; Field[] fields; }
 
@@ -70,15 +70,12 @@ struct Protocol {
 
 	struct Section { string name; string description; Packet[] packets; }
 
-	struct Array { string base; string length; string endianness; }
-
 	string id;
 	string arrayLength;
+	string endianness;
 	size_t padding = 0;
-	string[string] endianness;
 	Section[] sections;
 	Type[] types;
-	Array[string] arrays;
 
 }
 

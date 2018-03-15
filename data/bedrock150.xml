@@ -34,9 +34,7 @@
 		Everything written in the documentation has been tested on [sel-server](https://github.com/sel-project/sel-server). The types and the packets without documentation haven't been tested yet or it's not clear what their real purpose in the game is.
 	</description>
 
-	<encoding id="varuint" arraylength="varuint" padding="2">
-
-		<endianness type="*" value="little-endian" />
+	<encoding id="varuint" arraylength="varuint" endianness="little-endian" padding="2">
 
 		<alias name="entity-id" type="varlong" />
 
@@ -49,11 +47,9 @@
 		<alias name="json" type="string" />
 
 		<type name="login-body" length="">
-			<field name="chain" type="login-payload" />
-			<field name="client-data" type="login-payload" />
+			<field name="chain" type="ubyte[]" length="uint" />
+			<field name="client-data" type="ubyte[]" length="uint" />
 		</type>
-
-		<array name="login-payload" base="ubyte" length="uint" />
 
 		<type name="pack-with-size">
 			<field name="id" type="string" />
@@ -61,14 +57,10 @@
 			<field name="size" type="ulong" />
 		</type>
 
-		<array name="pack-with-size-array" base="pack-with-size" length="ushort" endianness="big-endian" />
-
 		<type name="pack">
 			<field name="id" type="string" />
 			<field name="version" type="string" />
 		</type>
-
-		<array name="pack-ids" base="string" length="ushort" />
 
 		<type name="slot">
 			Informations about a slot, that, if not empty, contains an item id and meta, the count (0-255) and, optionally, an nbt tag for enchantments, custom name, colours and more.
@@ -84,14 +76,12 @@
 				var count = count &amp; 255
 				```
 			</field>
-			<field name="nbt" type="nbt" when="id>0">
+			<field name="nbt" type="ubyte[]" length="ushort" when="id>0">
 				Optional nbt data encoded as a nameless little-endian compound tag.
 			</field>
 			<field name="can-place-on" type="string[]" />
 			<field name="can-destroy" type="string[]" />
 		</type>
-
-		<array name="nbt" base="ubyte" length="ushort" />
 
 		<type name="attribute">
 			<field name="min" type="float" />
@@ -300,8 +290,6 @@
 			<field name="optional" type="bool" />
 		</type>
 
-		<array name="uint-le-bytes" base="ubyte" length="uint" endianness="little-endian" />
-
 	</encoding>
 
 	<packets>
@@ -360,8 +348,8 @@
 
 			<packet name="resource-packs-info" id="6" clientbound="true" serverbound="false">
 				<field name="must-accept" type="bool" />
-				<field name="behaviour-packs" type="pack-with-size-array" />
-				<field name="resource-packs" type="pack-with-size-array" />
+				<field name="behaviour-packs" type="pack-with-size[]" length="ushort" />
+				<field name="resource-packs" type="pack-with-size[]" length="ushort" />
 			</packet>
 
 			<packet name="resource-packs-stack-packet" id="7" clientbound="true" serverbound="false">
@@ -377,7 +365,7 @@
 					<constant name="have-all-packs" value="3" />
 					<constant name="completed" value="4" />
 				</field>
-				<field name="pack-ids" type="pack-ids" />
+				<field name="pack-ids" type="string[]" length="ushort" />
 			</packet>
 
 			<packet name="text" id="9" clientbound="true" serverbound="true">
@@ -1441,7 +1429,7 @@
 				<field name="id" type="string" />
 				<field name="chunk-index" type="uint" />
 				<field name="progress" type="ulong" />
-				<field name="data" type="uint-le-bytes" />
+				<field name="data" type="ubyte[]" length="uint" />
 			</packet>
 
 			<packet name="resource-pack-chunk-request" id="84" clientbound="false" serverbound="true">

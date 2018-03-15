@@ -47,8 +47,6 @@ class DGenerator : CodeGenerator {
 		Generator.register!DGenerator("D", "d", "", ["/*", " *", " */"]);
 	}
 
-	private Protocol.Array[string] arrays;
-
 	public this() {
 
 		CodeMaker.Settings settings;
@@ -167,7 +165,7 @@ class DGenerator : CodeGenerator {
 				Info info = d.info[pkg];
 				line(`subPackage {`).add_indent();
 				line(`name "` ~ pkg ~ `"`);
-				line(`description "Libraries for ` ~ info.software ~ ` protocol ` ~ info.version_.to!string ~ `"`);
+				if(info.game != "test") line(`description "Libraries for ` ~ info.software ~ ` protocol ` ~ info.version_.to!string ~ `"`);
 				line(`targetType "library"`);
 				line(`sourcePaths "packages/` ~ pkg ~ `"`);
 				line(`importPaths "packages/` ~ pkg ~ `"`);
@@ -182,18 +180,9 @@ class DGenerator : CodeGenerator {
 
 	protected override void generateGame(string game, Info info) {
 
-		this.arrays = info.protocol.arrays;
-
 		immutable base = camelCaseUpper(game) ~ "Packet";
-		
-		string endiannessOf(string type, string over="") {
-			if(over.length) return camelCaseLower(over);
-			auto e = type in info.protocol.endianness;
-			if(e) return camelCaseLower(*e);
-			else return endiannessOf("*");
-		}
 
-		immutable defaultEndianness = endiannessOf("*");
+		immutable defaultEndianness = camelCaseLower(info.protocol.endianness);
 
 		with(make(game, "packet")) {
 
@@ -237,10 +226,9 @@ class DGenerator : CodeGenerator {
 			}
 
 			// custom array
-			auto array = field.type in info.protocol.arrays;
-			if(array) {
-				if(array.endianness.length) ret ~= "@EndianLength!" ~ array.length ~ "(Endian." ~ camelCaseLower(array.endianness) ~ ")";
-				else ret ~= "@Length!" ~ array.length;
+			if(field.length.length) {
+				if(field.lengthEndianness.length) ret ~= "@EndianLength!" ~ field.length ~ "(Endian." ~ camelCaseLower(field.lengthEndianness) ~ ")";
+				else ret ~= "@Length!" ~ field.length;
 			}
 
 			// bytes
@@ -333,16 +321,16 @@ class DGenerator : CodeGenerator {
 					stat("Container _container").nl;
 					stat("alias _container this").nl;
 					// encoding
-					block("void encodeBody(InputBuffer buffer) @nogc");
-					stat("InputBuffer _buffer = alloc!InputBuffer()");
+					block("void encodeBody(Buffer buffer) @nogc");
+					stat("Buffer _buffer = alloc!Buffer(Container.sizeof + 4)");
 					stat("scope(exit) free(_buffer)");
 					stat("_container.encodeBody(_buffer)");
 					stat("writeLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer, _buffer.data.length)");
 					stat("buffer.writeBytes(_buffer.data)");
 					endBlock().nl;
 					// decoding
-					block("void decodeBody(OutputBuffer buffer)");
-					stat("OutputBuffer _buffer = alloc!OutputBuffer(buffer.readBytes(readLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer)))");
+					block("void decodeBody(Buffer buffer)");
+					stat("Buffer _buffer = alloc!Buffer(buffer.readBytes(readLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer)))");
 					stat("scope(exit) free(_buffer)");
 					stat("_container.decodeBody(_buffer)");
 					endBlock().nl;
@@ -521,7 +509,7 @@ class DGenerator : CodeGenerator {
 			//TODO
 
 			// encode
-			block("void encodeBody(InputBuffer buffer) @nogc");
+			block("void encodeBody(Buffer buffer) @nogc");
 			if(_length) stat("writeLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(buffer, values.length)");
 			block("foreach(id, value; values)");
 			stat("writeImpl!(" ~ convertEndian(info.metadata.id) ~ ")(buffer, id)");
@@ -531,7 +519,7 @@ class DGenerator : CodeGenerator {
 			endBlock().nl;
 
 			// decode
-			block("void decodeBody(OutputBuffer buffer)");
+			block("void decodeBody(Buffer buffer)");
 			if(_length) {
 				block("foreach(i ; 0..readLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(buffer))");
 				stat(_id ~ " id = readImpl!(" ~ convertEndian(info.metadata.id) ~ ")(buffer)");
@@ -606,9 +594,6 @@ class DGenerator : CodeGenerator {
 			ret = t;
 		} else if(t == "metadata") {
 			ret = "Metadata";
-		} else {
-			auto a = t in this.arrays;
-			if(a) return convertType(game, (*a).base ~ "[]" ~ (array >= 0 ? type[array..$] : ""));
 		}
 		if(ret == "") ret = SOFTWARE ~ "." ~ game ~ ".types." ~ t.camelCaseUpper;
 		return ret ~ (array >= 0 ? type[array..$] : "");
