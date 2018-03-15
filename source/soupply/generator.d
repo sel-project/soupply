@@ -127,7 +127,7 @@ abstract class Generator {
 
 		static void generate(GeneratorInfo info, Editorconfig[string] editorconfig, Data data) {
 
-			synchronized writeln("Generating data for ", info.name, " in path ", buildNormalizedPath(buildPath("gen", info.name, info.source)));
+			synchronized writeln("Generating data for ", info.name, " in path ", buildNormalizedPath(buildPath("gen", info.repo, info.source)));
 
 			StopWatch timer;
 			timer.start();
@@ -196,6 +196,27 @@ abstract class Generator {
 
 		if(nopush) {
 			foreach(repo ; repos) {
+				writeln("Checking diff for ", repo);
+				import std.algorithm : sort;
+				import std.digest.md : toHexString;
+				auto d = diff(repo);
+				string[] a = files[repo].keys;
+				string[] b = d.keys;
+				sort(a);
+				sort(b);
+				if(a != b) writeln(a, " != ", b);
+				else {
+					bool changed = false;
+					foreach(file, hash; d) {
+						if(hash != files[repo][file]) {
+							changed = true;
+							writeln("File ", file, " has changed: ", toHexString(files[repo][file]), " to ", toHexString(hash));
+						}
+					}
+					if(!changed) _write("gen/" ~ repo ~ "/.nopush", "💩");
+				}
+				writeln();
+				//
 				if(files[repo] == diff(repo)) _write("gen/" ~ repo ~ "/.nopush", "💩");
 			}
 		}
