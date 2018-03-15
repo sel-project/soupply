@@ -3,6 +3,7 @@
 *.dproj
 *.userprefs
 *.selections.json
-.dub
+/.dub
 /gen
-version.txt
+/version.txt
+/soupply
