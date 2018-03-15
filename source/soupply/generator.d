@@ -34,6 +34,7 @@ import std.digest.md : md5Of;
 import std.file : _read = read, _write = write, exists, isFile, isDir, remove, mkdirRecurse, rmdir, dirEntries, SpanMode;
 import std.parallelism : TaskPool, task;
 import std.path : buildPath, buildNormalizedPath, dirSeparator;
+import std.process : executeShell;
 import std.stdio : writeln;
 import std.string : indexOf, lastIndexOf, toLower, replace, split, join, strip, stripRight, startsWith, endsWith, capitalize;
 
@@ -102,14 +103,6 @@ abstract class Generator {
 			return ret;
 		}
 
-		static void del(string repo) {
-			if(exists("gen/" ~ repo)) {
-				foreach(file ; dirEntries("gen/" ~ repo, SpanMode.breadth)) {
-					if(file.isFile && file.indexOf("/.git/") == -1) remove(file);
-				}
-			}
-		}
-
 		ubyte[16][string][string] files;
 
 		Editorconfig[string][string] editorconfig;
@@ -128,8 +121,10 @@ abstract class Generator {
 
 		// delete old files, copy files, init editorconfig, get downloads
 		foreach(repo ; repos) {
-			if(nopush) files[repo] = diff(repo);
-			del(repo);
+			if(nopush) {
+				files[repo] = diff(repo);
+				executeShell("cd gen/" ~ repo ~ " && git rm -rf .");
+			}
 			editorconfig[repo] = (Editorconfig[string]).init;
 			init(repo, rep, editorconfig[repo], downloads);
 		}
