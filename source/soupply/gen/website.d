@@ -138,7 +138,7 @@ class DocsGenerator : Generator {
 			// endianness
 			data.line("## Encoding").nl;
 			//TODO encoding format (id, body) or (id, padding, body)
-			data.line("**Endianness**: " ~ info.protocol.endianness).nl;
+			data.line("**Endianness**: " ~ info.protocol.endianness.replace("_", " ")).nl;
 			data.line("**Ids**: " ~ info.protocol.id).nl;
 			data.line("**Array's length**: " ~ info.protocol.arrayLength).nl;
 			if(info.protocol.padding) data.line("**Padding**: " ~ info.protocol.padding.to!string ~ " bytes").nl;

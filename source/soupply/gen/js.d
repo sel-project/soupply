@@ -263,7 +263,7 @@ class JavascriptGenerator : CodeGenerator {
 					bool c = field.condition != "";
 					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
 					if(c) block("if(" ~ camelCaseLower(field.condition) ~ ")");
-					createDecoding(maker, field.type, "this." ~ name, field.endianness);
+					createDecoding(maker, field.type, "this." ~ name, field.endianness, field.length, field.lengthEndianness);
 					stat("traceDecode('" ~ name ~ "')");
 					if(c) endBlock();
 				}
@@ -275,7 +275,7 @@ class JavascriptGenerator : CodeGenerator {
 							bool c = field.condition != "";
 							immutable name = field.name == "?" ? "unknown" ~ to!string(i + fields.length) : convertName(field.name);
 							if(c) block("if(" ~ camelCaseLower(field.condition) ~ ")");
-							createDecoding(maker, field.type, "this." ~ name, field.endianness);
+							createDecoding(maker, field.type, "this." ~ name, field.endianness, field.length, field.lengthEndianness);
 							if(c) endBlock();
 						}
 						stat("break").remove_indent();

@@ -89,9 +89,12 @@ abstract class Generator {
 		static ubyte[16][string] diff(string path) {
 			ubyte[16][string] ret;
 			if(exists("gen/" ~ path)) {
+				string[] ignore;
 				if(exists("gen/" ~ path ~ "/.nopush")) remove("gen/" ~ path ~ "/.nopush");
+				if(exists("public/" ~ path ~ "/.diffignore")) ignore = split(cast(string)_read("public/" ~ path ~ "/.diffignore"), "\n");
+				foreach(ref ign ; ignore) ign = ign.strip;
 				foreach(file ; dirEntries("gen/" ~ path, SpanMode.breadth)) {
-					if(file.isFile && file.indexOf("/.git/") == -1) {
+					if(file.isFile && file.indexOf("/.git/") == -1 && !ignore.canFind(file[5 + path.length..$].replace(`\`, `/`))) {
 						ret[file[path.length + 5..$]] = md5Of(_read(file));
 					}
 				}
@@ -214,7 +217,7 @@ abstract class Generator {
 		if(exists(public_)) {
 			foreach(string file ; dirEntries(public_, SpanMode.breadth)) {
 				string path = file[public_.length..$];
-				if(file.isFile) {
+				if(file.isFile && !file.endsWith(".diffignore")) {
 					string filedata = cast(string)_read(file);
 					foreach(key, value; rep) {
 						filedata = filedata.replace("{{" ~ key ~ "}}", value);
@@ -274,7 +277,7 @@ abstract class Generator {
 							}
 						}
 					}
-				} else {
+				} else if(file.isDir) {
 					// dirs should be spanned first
 					mkdirRecurse(gen ~ path);
 				}
