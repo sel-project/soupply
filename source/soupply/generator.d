@@ -196,13 +196,7 @@ abstract class Generator {
 
 		if(nopush) {
 			foreach(repo ; repos) {
-				writeln("File changes for ", repo, ":");
-				auto d = diff(repo);
-				foreach(file, hash; files[repo]) {
-					auto dhash = d.get(file, (ubyte[16]).init);
-					if(hash != dhash) writeln(file, ": ", hash, " => ", dhash);
-				}
-				if(files[repo] == diff(repo)) _write("gen/" ~ repo ~ "/.nopush", "");
+				if(files[repo] == diff(repo)) _write("gen/" ~ repo ~ "/.nopush", "💩");
 			}
 		}
 

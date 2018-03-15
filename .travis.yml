@@ -28,7 +28,8 @@ after_success:
     cd gen
     for repo in */ ; do
       cd $repo
-      if [ ! -f ".nopush" ] ; then
+      ls -la
+      if [ ! -f .nopush ] ; then
         git add --all .
         git commit -m "${MESSAGE}" -m "${DESC}"
         git tag -a "v${VERSION}" -m "${MESSAGE}"
