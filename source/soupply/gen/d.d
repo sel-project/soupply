@@ -323,16 +323,16 @@ class DGenerator : CodeGenerator {
 					// encoding
 					block("void encodeBody(Buffer buffer) @nogc");
 					stat("Buffer _buffer = alloc!Buffer(Container.sizeof + 4)");
-					stat("scope(exit) free(_buffer)");
 					stat("_container.encodeBody(_buffer)");
-					stat("writeLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer, _buffer.data.length)");
-					stat("buffer.writeBytes(_buffer.data)");
+					stat("writeLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer, _buffer.data!ubyte.length)");
+					stat("buffer.writeData(_buffer.data!ubyte)");
+					stat("free(_buffer)");
 					endBlock().nl;
 					// decoding
 					block("void decodeBody(Buffer buffer)");
-					stat("Buffer _buffer = alloc!Buffer(buffer.readBytes(readLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer)))");
-					stat("scope(exit) free(_buffer)");
+					stat("Buffer _buffer = alloc!Buffer(cast(ubyte[])buffer.readData(readLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer)))");
 					stat("_container.decodeBody(_buffer)");
+					stat("free(_buffer)");
 					endBlock().nl;
 				} else {
 					stat("mixin Make!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ")").nl;
@@ -440,8 +440,7 @@ class DGenerator : CodeGenerator {
 			addImport("packetmaker");
 			addImport("packetmaker.maker", "EndianType", "writeLength", "writeImpl", "readLength", "readImpl");
 			addImport("packetmaker.memory", "malloc", "realloc", "alloc", "free").nl;
-			addImportLib("util", "Vector");
-			addImportLib(game ~ ".packet", base).nl;
+			addImportLib("util", "Vector").nl;
 			stat("static import " ~ SOFTWARE ~ "." ~ game ~ ".types").nl;
 
 			// types
@@ -473,7 +472,7 @@ class DGenerator : CodeGenerator {
 			endBlock().nl;+/
 
 			// metadata value
-			block("class MetadataValue : " ~ base).nl;
+			block("class MetadataValue : PacketImpl!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ", " ~ info.protocol.arrayLength ~ ")").nl;
 			immutable _id = convertType(info.metadata.id);
 			immutable _type = convertType(info.metadata.type);
 			stat(join(attributes2(info.metadata.type) ~ ["@EncodeOnly", _type, "type"], " ")).nl;
@@ -515,7 +514,7 @@ class DGenerator : CodeGenerator {
 			stat("writeImpl!(" ~ convertEndian(info.metadata.id) ~ ")(buffer, id)");
 			stat("value.encodeBody(buffer)");
 			endBlock();
-			if(!_length) stat("buffer.writeUnsignedByte(ubyte(" ~ info.metadata.suffix ~ "))");
+			if(!_length) stat("buffer.write(ubyte(" ~ info.metadata.suffix ~ "))");
 			endBlock().nl;
 
 			// decode
@@ -525,7 +524,7 @@ class DGenerator : CodeGenerator {
 				stat(_id ~ " id = readImpl!(" ~ convertEndian(info.metadata.id) ~ ")(buffer)");
 			} else {
 				stat(_id ~ " id");
-				block("while((id = readImpl!(" ~ convertEndian(info.metadata.id) ~ ")(buffer)) != " ~ info.metadata.suffix ~ ")");
+				block("while((id = buffer.read!ubyte()) != " ~ info.metadata.suffix ~ ")");
 			}
 			block("switch(readImpl!(" ~ convertEndian(info.metadata.type) ~ ")(buffer))");
 			foreach(type ; info.metadata.types) {
