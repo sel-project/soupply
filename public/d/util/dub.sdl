@@ -1,4 +1,5 @@
 name "util"
 description "Generic utilities package"
 targetType "library"
-dependency "packet-maker" version="~>0.3.0"
+dependency "packet-maker" version="~>0.4.0"
+dependency "xbuffer" version="~>0.1.0"

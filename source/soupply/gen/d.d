@@ -301,8 +301,8 @@ class DGenerator : CodeGenerator {
 		with(types) {
 			stat("static import std.conv");
 			addImport("packetmaker");
-			addImport("packetmaker.maker", "EndianType", "writeLength", "readLength");
-			addImport("packetmaker.memory", "alloc", "free").nl;
+			addImport("packetmaker.maker", "EndianType", "writeLength", "readLength").nl;
+			addImport("xbuffer.memory", "alloc", "free").nl;
 			addImportLib("util", "Vector", "UUID");
 			addImportLib(game ~ ".metadata").nl;
 			foreach(type ; info.protocol.types) {
@@ -438,8 +438,8 @@ class DGenerator : CodeGenerator {
 		with(metadata) {
 
 			addImport("packetmaker");
-			addImport("packetmaker.maker", "EndianType", "writeLength", "writeImpl", "readLength", "readImpl");
-			addImport("packetmaker.memory", "malloc", "realloc", "alloc", "free").nl;
+			addImport("packetmaker.maker", "EndianType", "writeLength", "writeImpl", "readLength", "readImpl").nl;
+			addImport("xbuffer.memory", "malloc", "realloc", "alloc", "free").nl;
 			addImportLib("util", "Vector").nl;
 			stat("static import " ~ SOFTWARE ~ "." ~ game ~ ".types").nl;
 

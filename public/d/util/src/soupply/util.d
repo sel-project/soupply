@@ -25,9 +25,10 @@ module soupply.util;
 import std.string : split, join;
 import std.uuid : _UUID = UUID;
 
-import packetmaker.buffer : Buffer;
-import packetmaker.maker : Exclude;
+import packetmaker.attributes : Exclude;
 import packetmaker.packet : Packet;
+
+import xbuffer.buffer : Buffer;
 
 template Pad(size_t padding, T:Packet) {
 
