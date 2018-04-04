@@ -124,15 +124,20 @@ class DGenerator : CodeGenerator {
 			save();
 		}
 		
-		string[] all = data.info.keys;
-		all ~= "util";
+		string[] all = ["util"];
+		foreach(game, info; d.info) {
+			if(info.software != "test") {
+				all ~= game;
+				if(info.latest) all ~= info.software;
+			}
+		}
 		sort(all);
 
 		// src
 		with(new Maker(this, "src/" ~ SOFTWARE ~ "/package", "d")) {
 			line("module " ~ SOFTWARE ~ ";").nl;
 			foreach(imp ; all) {
-				if(!imp.startsWith("test")) line("public import " ~ SOFTWARE ~ "." ~ imp ~ ";");
+				line("public import " ~ SOFTWARE ~ "." ~ imp ~ ";");
 			}
 			save();
 		}
@@ -154,7 +159,7 @@ class DGenerator : CodeGenerator {
 			line(`targetType "library"`);
 			nl();
 			foreach(dep ; all) {
-				if(!dep.startsWith("test")) line(`dependency "` ~ SOFTWARE ~ `:` ~ dep ~ `" version="*"`);
+				line(`dependency "` ~ SOFTWARE ~ `:` ~ dep ~ `" version="*"`);
 			}
 			nl();
 			foreach(pkg ; ded) {
