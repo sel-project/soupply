@@ -123,12 +123,12 @@ class DGenerator : CodeGenerator {
 			nl;
 			save();
 		}
-		
+
 		string[] all = ["util"];
 		foreach(game, info; d.info) {
-			if(info.software != "test") {
+			if(info.game != "test") {
 				all ~= game;
-				if(info.latest) all ~= info.software;
+				if(info.latest) all ~= info.game;
 			}
 		}
 		sort(all);
