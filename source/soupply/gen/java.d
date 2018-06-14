@@ -68,9 +68,18 @@ class JavaGenerator : CodeGenerator {
 
 		super.generateImpl(data);
 
+		// generate latest modules
+		foreach(game, info; data.info) {
+			if(info.latest) {
+				//TODO read files from src/main/java/{game} and copy to src/main/java/{info.software}
+			}
+		}
+
 		//TODO generate maven files
 
 		//TODO generate latest modules (software instead of software123)
+
+		// create main maven file
 
 	}
 
@@ -89,7 +98,7 @@ class JavaGenerator : CodeGenerator {
 			block("public byte[] encode()");
 			stat("Buffer buffer = new Buffer()");
 			stat("buffer.write" ~ capitalize(info.protocol.id) ~ "(this.getId())");
-			if(info.protocol.padding) stat("buffer.writeBytes(new byte[" ~ info.protocol.padding.to!string ~ ")");
+			if(info.protocol.padding) stat("buffer.writeBytes(new byte[" ~ info.protocol.padding.to!string ~ "])");
 			stat("this.encodeBody(buffer)");
 			endBlock().nl;
 
@@ -106,50 +115,94 @@ class JavaGenerator : CodeGenerator {
 			save();
 			
 		}
+
+		void writeFields(CodeMaker source, string className, Protocol.Field[] fields) {
+			// constants
+			foreach(field ; fields) {
+				if(field.constants.length) {
+					source.line("// " ~ field.name.replace("_", " "));
+					foreach(constant ; field.constants) {
+						source.stat("public static final " ~ source.convertType(field.type) ~ " " ~ toUpper(constant.name) ~ " = " ~ (field.type == "string" ? JSONValue(constant.value).toString() : constant.value));
+					}
+					source.nl;
+				}
+			}
+			// fields
+			foreach(i, field; fields) {
+				source.stat("public " ~ source.convertType(field.type) ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name)) ~ (field.default_.length ? " = " ~ constOf(field.default_) : ""));
+				if(i == fields.length - 1) source.nl;
+			}
+			// constructors
+			if(fields.length) {
+				source.block("public " ~ className ~ "()");
+				//TODO init static arrays and classes
+				source.endBlock().nl;
+				string[] args;
+				foreach(i, field; fields) {
+					immutable type = source.convertType(field.type);
+					immutable p = type.canFind('[');
+					args ~= type ~ " " ~ (field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name));
+				}
+				source.block("public " ~ className ~ "(" ~ args.join(", ") ~ ")");
+				foreach(i, field; fields) {
+					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
+					source.stat("this." ~ name ~ " = " ~ name);
+				}
+				source.endBlock().nl;
+			}
+		}
+
+		// types
+		foreach(type ; info.protocol.types) {
+			auto t = make(game, "type", camelCaseUpper(type.name));
+			with(t) {
+				clear();
+				stat("package " ~ SOFTWARE ~ "." ~ game ~ ".type").nl;
+				stat("import java.util.*");
+				stat("import " ~ SOFTWARE ~ ".util.*").nl;
+				block("class " ~ camelCaseUpper(type.name) ~ " extends Type").nl;
+				// fields
+				writeFields(t, camelCaseUpper(type.name), type.fields);
+				// encode
+				line("@Override");
+				block("public void encodeBody(Buffer buffer)");
+
+				endBlock().nl;
+				// decode
+				line("@Override");
+				block("public void decodeBody(Buffer buffer)");
+
+				endBlock().nl;
+				endBlock();
+				save();
+			}
+		}
+
+		// sections and packets
+		foreach(section ; info.protocol.sections) {
+			foreach(packet ; section.packets) {
+				auto p = make(game, section.name, camelCaseUpper(packet.name));
+				with(p) {
+					clear();
+					stat("package " ~ SOFTWARE ~ "." ~ game ~ "." ~ section.name).nl;
+					stat("import java.util.*");
+					stat("import " ~ SOFTWARE ~ ".util.*").nl;
+					block("class " ~ camelCaseUpper(packet.name) ~ " extends " ~ SOFTWARE ~ "." ~ game ~ ".Packet").nl;
+					// fields
+					writeFields(p, camelCaseUpper(packet.name), packet.fields);
+
+					//TODO variants
+					endBlock();
+					save();
+				}
+			}
+		}
 		
-		/+mkdirRecurse("../src/java/sul/utils");
-		
-		enum defaultTypes = ["boolean", "byte", "short", "int", "long", "float", "double", "String", "UUID"];
-		
-		enum string[string] defaultAliases = [
-			"bool": "boolean",
-			"ubyte": "byte",
-			"ushort": "short",
-			"uint": "int",
-			"ulong": "long",
-			"string": "String",
-			"uuid": "UUID",
-			"bytes": "byte[]",
-			"triad": "int",
-			"varshort": "short",
-			"varushort": "short",
-			"varint": "int",
-			"varuint": "int",
-			"varlong": "long",
-			"varulong": "long"
-		];
+		/+
 		
 		// protocols
 		string[] tuples;
 		foreach(string game, Protocols prs; protocols) {
-			
-			mkdirRecurse("../src/java/sul/protocol/" ~ game ~ "/types");
-
-			bool usesMetadata;
-			
-			@property string convert(string type) {
-				auto end = min(cast(size_t)type.indexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
-				auto t = type[0..end];
-				auto e = type[end..$].replaceAll(ctRegex!`\[[0-9]{1,}\]`, "[]");
-				auto a = t in defaultAliases;
-				if(a) return convert(*a ~ e);
-				auto b = t in prs.data.arrays;
-				if(b) return convert((*b).base ~ "[]" ~ e);
-				if(e.length && e[0] == '<') return "Tuples." ~ toPascalCase(t) ~ toUpper(e[1..e.indexOf(">")]) ~ e[e.indexOf(">")+1..$];
-				else if(defaultTypes.canFind(t)) return t ~ e;
-				else if(t == "metadata") { usesMetadata = true; return "sul.metadata." ~ capitalize(game) ~ e; }
-				else return "sul.protocol." ~ game ~ ".types." ~ toPascalCase(t) ~ e;
-			}
 			
 			@property string convertName(string name) {
 				if(name == "default") return "def";
@@ -158,123 +211,6 @@ class JavaGenerator : CodeGenerator {
 			
 			immutable id = convert(prs.data.id);
 			immutable arrayLength = convert(prs.data.arrayLength);
-			
-			void fieldsLengthImpl(string name, string type, ref size_t fixed, ref string[] exps, ref string[] seps) {
-				auto at = type in prs.data.arrays;
-				if(at) {
-					type = at.base ~ "[]";
-				}
-				auto array = type.lastIndexOf("[");
-				auto tup = type.indexOf("<");
-				if(array != -1) {
-					if(type.indexOf("]") == array + 1) fieldsLengthImpl(name ~ ".length", at ? at.length : prs.data.arrayLength, fixed, exps, seps);
-					size_t new_fixed = 0;
-					string[] new_exps;
-					fieldsLengthImpl(hash(name), type[0..array], new_fixed, new_exps, seps);
-					if(new_fixed != 0) {
-						if(type.indexOf("]") == array + 1) exps ~= name ~ ".length" ~ (new_fixed > 1 ? "*" ~ to!string(new_fixed) : "");
-						else fixed += to!size_t(type[array+1..type.indexOf("]")]) * new_fixed;
-					}
-					if(new_exps.length) {
-						seps ~= "for(" ~ convert(type[0..array]) ~ " " ~ hash(name) ~ ":" ~ name ~ "){ length+=" ~ new_exps.join("+") ~ "; }";
-					}
-				} else if(tup != -1) {
-					immutable vars = type[tup+1..type.indexOf(">")];
-					size_t new_fixed = 0;
-					string[] new_exps;
-					fieldsLengthImpl(hash(name), type[0..tup], new_fixed, new_exps, seps);
-					if(new_fixed != 0) {
-						fixed += new_fixed * vars.length;
-					} else {
-						foreach(c ; vars) {
-							fieldsLengthImpl(name ~ "." ~ c, type[0..tup], fixed, exps, seps);
-						}
-					}
-				} else {
-					auto a = type in prs.data.arrays;
-					if(a) {
-						fieldsLengthImpl(name ~ ".length", (*a).length, fixed, exps, seps);
-						fieldsLengthImpl(name, (*a).base ~ "[0]", fixed, exps, seps);
-					} else {
-						switch(type) {
-							case "bool":
-							case "byte":
-							case "ubyte":
-								fixed += 1;
-								break;
-							case "short":
-							case "ushort":
-								fixed += 2;
-								break;
-							case "triad":
-								fixed += 3;
-								break;
-							case "int":
-							case "uint":
-							case "float":
-								fixed += 4;
-								break;
-							case "long":
-							case "ulong":
-							case "double":
-								fixed += 8;
-								break;
-							case "uuid":
-								fixed += 16;
-								break;
-							case "string":
-								fieldsLengthImpl(name ~ ".getBytes(StandardCharsets.UTF_8).length", prs.data.arrayLength, fixed, exps, seps);
-								exps ~= name ~ ".getBytes(StandardCharsets.UTF_8).length";
-								break;
-							case "bytes":
-								exps ~= name ~ ".length";
-								break;
-							case "varshort":
-							case "varushort":
-							case "varint":
-							case "varuint":
-							case "varlong":
-							case "varulong":
-								exps ~= "Buffer." ~ type ~ "Length(" ~ name ~ ")";
-								break;
-							default:
-								exps ~= name ~ ".length()";
-								break;
-						}
-					}
-				}
-			}
-			
-			string fieldsLength(Field[] fields, string id_type="", ptrdiff_t id=-1, string length="") {
-				size_t fixed = 0;
-				string[] exps, seps;
-				if(id_type.length) {
-					if(id_type.startsWith("var")) {
-						if(id_type[3] == 'u') id *= 2; // only positive ids
-						while(id & 0x80) {
-							fixed++;
-							id >>>= 7;
-						}
-						fixed++;
-					} else {
-						fieldsLengthImpl("ID", id_type, fixed, exps, seps);
-					}
-				}
-				if(length.length) {
-					if(length.startsWith("var")) fixed += length.endsWith("short") ? 3 : (length.endsWith("int") ? 5 : 10);
-					else fieldsLengthImpl("", length, fixed, exps, seps);
-				}
-				foreach(i, field; fields) {
-					fieldsLengthImpl(field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name), field.type, fixed, exps, seps);
-				}
-				if(seps.length) {
-					if(fixed > 0 || exps.length == 0) exps ~= to!string(fixed);
-					return "int length=" ~ join(exps, " + ") ~ "; " ~ seps.join(";") ~ " return length";
-				} else {
-					if(fixed > 0 || exps.length == 0) exps ~= to!string(fixed);
-					return "return " ~ exps.join(" + ");
-				}
-			}
 			
 			// returns the endianness for a type
 			string endiannessOf(string type, string over="") {
@@ -678,6 +614,14 @@ class JavaGenerator : CodeGenerator {
 		write("../src/java/sul/utils/Tuples.java", tp ~ "}");+/
 		
 	}
+	
+	// name conversion
+	
+	enum keywords = ["default"];
+	
+	protected override string convertName(string name) {
+		return keywords.canFind(name) ? name ~ "_" : name.camelCaseLower;
+	}
 
 	// type conversion
 	
@@ -708,8 +652,8 @@ class JavaGenerator : CodeGenerator {
 		if(a) return convertType(game, *a ~ e);
 		if(e.length && e[0] == '<') return "Tuples." ~ toPascalCase(t) ~ toUpper(e[1..e.indexOf(">")]) ~ e[e.indexOf(">")+1..$];
 		else if(defaultTypes.canFind(t)) return t ~ e;
-		else if(t == "metadata") return "soupply." ~ game ~ ".Metadata." ~ e;
-		else return "soupply." ~ game ~ ".types." ~ toPascalCase(t) ~ e;
+		else if(t == "metadata") return "soupply." ~ game ~ ".Metadata";
+		else return "soupply." ~ game ~ ".type." ~ toPascalCase(t) ~ e;
 	}
 
 }

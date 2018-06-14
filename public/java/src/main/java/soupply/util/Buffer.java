@@ -37,15 +37,14 @@ class Buffer {
 		_buffer = buffer;
 	}
 	
-	private void requireLength(int required) {
-		if(_index + required > _buffer.length)
-		{
-			_buffer = Arrays.copyOf(_buffer, _buffer + 64);
-		}
+	private void requireLength(int required)
+	{
+		if(_index + required > _buffer.length) _buffer = Arrays.copyOf(_buffer, _buffer + 64);
 	}
 	
-	private void checkLength(int required) throws IOException {
-		
+	private void checkLength(int required) throws BufferOverflowException
+	{
+		if(_index + required > _buffer.length) throw new BufferOverflowException();
 	}
 
 	public byte[] toByteArray()
@@ -55,56 +54,50 @@ class Buffer {
 
 	public void writeBytes(byte[] a)
 	{
+		this.requireLength(a);
 		for(byte b : a) _buffer[_index++] = b;
 	}
 
-	public byte[] readBytes(int a)
+	public byte[] readBytes(int a) throws BufferOverflowException
 	{
-		byte[] _ret = new byte[a];
-		for(int i=0; i<a && _index<_buffer.length; i++) _ret[i] = _buffer[_index++];
-		return _ret;
+		this.checkLength(a);
+		_index += a;
+		return Arrays.copyOfRange(_buffer, _index - a, _index);
 	}
 
 	public void writeBool(boolean a)
 	{
+		this.requireLength(1);
 		_buffer[_index++] = (byte)(a ? 1 : 0);
 	}
 
-	public boolean readBool() {
-		return _index < _buffer.length && _buffer[_index++] != 0;
+	public boolean readBool() throws BufferOverflowException
+	{
+		return this.readByte() != 0;
 	}
 
-	public void writeBigEndianByte(byte a)
+	public void writeByte(byte a)
 	{
+		this.requireLength(1);
 		_buffer[_index++] = (byte)a;
 	}
 
-	public byte readBigEndianByte()
+	public byte readByte() throws BufferOverflowException
 	{
-		if(_buffer.length < _index + 1) return (byte)0;
-		return (byte)_buffer[_index++];
-	}
-
-	public void writeLittleEndianByte(byte a)
-	{
-		_buffer[_index++] = (byte)a;
-	}
-
-	public byte readLittleEndianByte()
-	{
-		if(_buffer.length < _index + 1) return (byte)0;
+		this.checkLength(1);
 		return (byte)_buffer[_index++];
 	}
 
 	public void writeBigEndianShort(short a)
 	{
+		this.requireLength(2);
 		_buffer[_index++] = (byte)(a >>> 8);
 		_buffer[_index++] = (byte)(a);
 	}
 
-	public short readBigEndianShort()
+	public short readBigEndianShort() throws BufferOverflowException
 	{
-		if(_buffer.length < _index + 2) return (short)0;
+		this.checkLength(2);
 		short _ret = 0;
 		_ret |= (short)_buffer[_index++] << 8;
 		_ret |= (short)_buffer[_index++];
@@ -113,13 +106,14 @@ class Buffer {
 
 	public void writeLittleEndianShort(short a)
 	{
+		this.requireLength(2);
 		_buffer[_index++] = (byte)(a);
 		_buffer[_index++] = (byte)(a >>> 8);
 	}
 
-	public short readLittleEndianShort()
+	public short readLittleEndianShort() throws BufferOverflowException
 	{
-		if(_buffer.length < _index + 2) return (short)0;
+		this.checkLength(2);
 		short _ret = 0;
 		_ret |= (short)_buffer[_index++];
 		_ret |= (short)_buffer[_index++] << 8;
@@ -128,15 +122,16 @@ class Buffer {
 
 	public void writeBigEndianInt(int a)
 	{
+		this.requireLength(4);
 		_buffer[_index++] = (byte)(a >>> 24);
 		_buffer[_index++] = (byte)(a >>> 16);
 		_buffer[_index++] = (byte)(a >>> 8);
 		_buffer[_index++] = (byte)(a);
 	}
 
-	public int readBigEndianInt()
+	public int readBigEndianInt() throws BufferOverflowException
 	{
-		if(_buffer.length < _index + 4) return (int)0;
+		this.checkLength(4);
 		int _ret = 0;
 		_ret |= (int)_buffer[_index++] << 24;
 		_ret |= (int)_buffer[_index++] << 16;
@@ -147,15 +142,16 @@ class Buffer {
 
 	public void writeLittleEndianInt(int a)
 	{
+		this.requireLength(4);
 		_buffer[_index++] = (byte)(a);
 		_buffer[_index++] = (byte)(a >>> 8);
 		_buffer[_index++] = (byte)(a >>> 16);
 		_buffer[_index++] = (byte)(a >>> 24);
 	}
 
-	public int readLittleEndianInt()
+	public int readLittleEndianInt() throws BufferOverflowException
 	{
-		if(_buffer.length < _index + 4) return (int)0;
+		this.checkLength(4);
 		int _ret = 0;
 		_ret |= (int)_buffer[_index++];
 		_ret |= (int)_buffer[_index++] << 8;
@@ -166,6 +162,7 @@ class Buffer {
 
 	public void writeBigEndianLong(long a)
 	{
+		this.requireLength(8);
 		_buffer[_index++] = (byte)(a >>> 56);
 		_buffer[_index++] = (byte)(a >>> 48);
 		_buffer[_index++] = (byte)(a >>> 40);
@@ -176,9 +173,9 @@ class Buffer {
 		_buffer[_index++] = (byte)(a);
 	}
 
-	public long readBigEndianLong()
+	public long readBigEndianLong() throws BufferOverflowException
 	{
-		if(_buffer.length < _index + 8) return (long)0;
+		this.checkLength(8);
 		long _ret = 0;
 		_ret |= (long)_buffer[_index++] << 56;
 		_ret |= (long)_buffer[_index++] << 48;
@@ -193,6 +190,7 @@ class Buffer {
 
 	public void writeLittleEndianLong(long a)
 	{
+		this.requireLength(8);
 		_buffer[_index++] = (byte)(a);
 		_buffer[_index++] = (byte)(a >>> 8);
 		_buffer[_index++] = (byte)(a >>> 16);
@@ -203,9 +201,9 @@ class Buffer {
 		_buffer[_index++] = (byte)(a >>> 56);
 	}
 
-	public long readLittleEndianLong()
+	public long readLittleEndianLong() throws BufferOverflowException
 	{
-		if(_buffer.length < _index + 8) return (long)0;
+		this.checkLength(8);
 		long _ret = 0;
 		_ret |= (long)_buffer[_index++];
 		_ret |= (long)_buffer[_index++] << 8;
@@ -223,7 +221,7 @@ class Buffer {
 		this.writeBigEndianInt(Float.floatToIntBits(a));
 	}
 
-	public float readBigEndianFloat()
+	public float readBigEndianFloat() throws BufferOverflowException
 	{
 		return Float.intBitsToFloat(this.readBigEndianInt());
 	}
@@ -233,7 +231,7 @@ class Buffer {
 		this.writeLittleEndianInt(Float.floatToIntBits(a));
 	}
 
-	public float readLittleEndianFloat()
+	public float readLittleEndianFloat() throws BufferOverflowException
 	{
 		return Float.intBitsToFloat(this.readLittleEndianInt());
 	}
@@ -243,7 +241,7 @@ class Buffer {
 		this.writeBigEndianLong(Double.doubleToLongBits(a));
 	}
 
-	public double readBigEndianDouble()
+	public double readBigEndianDouble() throws BufferOverflowException
 	{
 		return Double.longBitsToDouble(this.readBigEndianLong());
 	}
@@ -253,7 +251,7 @@ class Buffer {
 		this.writeLittleEndianLong(Double.doubleToLongBits(a));
 	}
 
-	public double readLittleEndianDouble()
+	public double readLittleEndianDouble() throws BufferOverflowException
 	{
 		return Double.longBitsToDouble(this.readLittleEndianLong());
 	}
@@ -263,52 +261,34 @@ class Buffer {
 		this.writeVarushort(a >= 0 ? a * 2  : a * -2 - 1);
 	}
 
-	public short readVarshort()
+	public short readVarshort() throws BufferOverflowException
 	{
 		short ret = this.readVarushort();
 		return (short)((ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2);
 	}
 
-	public static int varshortLength(short a)
-	{
-		int length = 1;
-		while((a & 128) != 0 && length < 3)
-	{
-			length++;
-			a >>>= 7;
-		}
-		return length;
-	}
-
 	public void writeVarushort(long a)
 	{
 		while(a > 127)
-	{
+		{
+			this.requireLength(1);
 			_buffer[_index++] = (byte)(a & 127 | 128);
 			a >>>= 7;
 		}
+		this.requireLength(1);
 		_buffer[_index++] = (byte)(a & 255);
 	}
 
-	public short readVarushort()
+	public short readVarushort() throws BufferOverflowException
 	{
 		int limit = 0;
 		short ret = 0;
-		do {
+		do
+		{
+			this.checkLength(1);
 			ret |= (short)(_buffer[_index] & 127) << (limit * 7);
 		} while(_buffer[_index++] < 0 && ++limit < 3 && _index < _buffer.length);
 		return ret;
-	}
-
-	public static int varushortLength(short a)
-	{
-		int length = 1;
-		while((a & 128) != 0 && length < 3)
-	{
-			length++;
-			a >>>= 7;
-		}
-		return length;
 	}
 
 	public void writeVarint(long a)
@@ -316,52 +296,34 @@ class Buffer {
 		this.writeVaruint(a >= 0 ? a * 2  : a * -2 - 1);
 	}
 
-	public int readVarint()
+	public int readVarint() throws BufferOverflowException
 	{
 		int ret = this.readVaruint();
 		return (int)((ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2);
 	}
 
-	public static int varintLength(int a)
-	{
-		int length = 1;
-		while((a & 128) != 0 && length < 5)
-	{
-			length++;
-			a >>>= 7;
-		}
-		return length;
-	}
-
 	public void writeVaruint(long a)
 	{
 		while(a > 127)
-	{
+		{
+			this.requireLength(1);
 			_buffer[_index++] = (byte)(a & 127 | 128);
 			a >>>= 7;
 		}
+		this.requireLength(1);
 		_buffer[_index++] = (byte)(a & 255);
 	}
 
-	public int readVaruint()
+	public int readVaruint() throws BufferOverflowException
 	{
 		int limit = 0;
 		int ret = 0;
-		do {
+		do
+		{
+			this.checkLength(1);
 			ret |= (int)(_buffer[_index] & 127) << (limit * 7);
 		} while(_buffer[_index++] < 0 && ++limit < 5 && _index < _buffer.length);
 		return ret;
-	}
-
-	public static int varuintLength(int a)
-	{
-		int length = 1;
-		while((a & 128) != 0 && length < 5)
-	{
-			length++;
-			a >>>= 7;
-		}
-		return length;
 	}
 
 	public void writeVarlong(long a)
@@ -369,57 +331,34 @@ class Buffer {
 		this.writeVarulong(a >= 0 ? a * 2  : a * -2 - 1);
 	}
 
-	public long readVarlong()
+	public long readVarlong() throws BufferOverflowException
 	{
 		long ret = this.readVarulong();
 		return (long)((ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2);
 	}
 
-	public static int varlongLength(long a)
-	{
-		int length = 1;
-		while((a & 128) != 0 && length < 10)
-	{
-			length++;
-			a >>>= 7;
-		}
-		return length;
-	}
-
 	public void writeVarulong(long a)
 	{
 		while(a > 127)
-	{
+		{
+			this.requireLength(1);
 			_buffer[_index++] = (byte)(a & 127 | 128);
 			a >>>= 7;
 		}
+		this.requireLength(1);
 		_buffer[_index++] = (byte)(a & 255);
 	}
 
-	public long readVarulong()
+	public long readVarulong() throws BufferOverflowException
 	{
 		int limit = 0;
 		long ret = 0;
-		do {
+		do
+		{
+			this.checkLength(1);
 			ret |= (long)(_buffer[_index] & 127) << (limit * 7);
 		} while(_buffer[_index++] < 0 && ++limit < 10 && _index < _buffer.length);
 		return ret;
-	}
-
-	public static int varulongLength(long a)
-	{
-		int length = 1;
-		while((a & 128) != 0 && length < 10)
-	{
-			length++;
-			a >>>= 7;
-		}
-		return length;
-	}
-
-	public boolean eof()
-	{
-		return _index >= _buffer.length;
 	}
 
 }
