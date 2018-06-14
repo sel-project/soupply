@@ -22,9 +22,11 @@
  */
 package soupply.util;
 
-public abstract class Packet extends Stream
+public abstract class Packet extends Type
 {
-
-	public abstract int getId();
+	
+	public abstract byte[] encode();
+	
+	public abstract void decode(byte[] buffer) throws IOException;
 
 }

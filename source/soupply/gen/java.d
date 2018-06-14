@@ -43,7 +43,7 @@ import soupply.util;
 class JavaGenerator : CodeGenerator {
 
 	static this() {
-		Generator.register!JavaGenerator("Java", "java", "src/java/main/" ~ SOFTWARE);
+		Generator.register!JavaGenerator("Java", "java", "src/main/java/" ~ SOFTWARE);
 	}
 
 	public this() {
@@ -62,9 +62,50 @@ class JavaGenerator : CodeGenerator {
 		
 	}
 
+	import std.stdio : writeln;
+
 	protected override void generateImpl(Data data) {
 
 		super.generateImpl(data);
+
+		//TODO generate maven files
+
+		//TODO generate latest modules (software instead of software123)
+
+	}
+
+	protected override void generateGame(string game, Info info) {
+
+		// generate packet class
+		with(make(game, "Packet")) {
+
+			clear(); // remove pre-generated package declaration
+			stat("package soupply." ~ game).nl;
+			block("class Packet extends soupply.util.Packet").nl;
+			stat("public abstract " ~ convertType(info.protocol.id) ~ " getId()").nl;
+
+			// encode
+			line("@Override");
+			block("public byte[] encode()");
+			stat("Buffer buffer = new Buffer()");
+			stat("buffer.write" ~ capitalize(info.protocol.id) ~ "(this.getId())");
+			if(info.protocol.padding) stat("buffer.writeBytes(new byte[" ~ info.protocol.padding.to!string ~ ")");
+			stat("this.encodeBody(buffer)");
+			endBlock().nl;
+
+			// decode
+			line("@Override");
+			block("public void decode(byte[] _buffer)");
+			stat("Buffer buffer = new Buffer(_buffer)");
+			stat("buffer.read" ~ capitalize(info.protocol.id) ~ "()");
+			if(info.protocol.padding) stat("buffer.readBytes(" ~ info.protocol.padding.to!string ~ ")");
+			stat("this.decodeBody(buffer)");
+			endBlock().nl;
+
+			endBlock();
+			save();
+			
+		}
 		
 		/+mkdirRecurse("../src/java/sul/utils");
 		
@@ -87,221 +128,6 @@ class JavaGenerator : CodeGenerator {
 			"varlong": "long",
 			"varulong": "long"
 		];
-
-		// about
-		write("../src/java/sul/utils/About.java", q{
-	package sul.utils;
-
-	public final class About {
-
-		private About() {}
-
-		public static final int VERSION = _;
-
-	}
-		}.replace("_", to!string(sulVersion)));
-		
-		string io = "package sul.utils;\n\nimport java.util.Arrays;\n\n";
-		io ~= "public class Buffer {\n\n";
-		io ~= "\tpublic byte[] _buffer;\n\n";
-		io ~= "\tpublic int _index;\n\n";
-		io ~= "\tpublic byte[] getBuffer() {\n";
-		io ~= "\t\treturn Arrays.copyOfRange(this._buffer, 0, this._index);\n";
-		io ~= "\t}\n\n";
-		io ~= "\tpublic void writeBytes(byte[] a) {\n";
-		io ~= "\t\tfor(byte b : a) this._buffer[this._index++] = b;\n";
-		io ~= "\t}\n\n";
-		io ~= "\tpublic byte[] readBytes(int a) {\n";
-		io ~= "\t\tbyte[] _ret = new byte[a];\n";
-		io ~= "\t\tfor(int i=0; i<a && this._index<this._buffer.length; i++) _ret[i] = this._buffer[this._index++];\n";
-		io ~= "\t\treturn _ret;\n";
-		io ~= "\t}\n\n";
-		io ~= "\tpublic void writeBool(boolean a) {\n";
-		io ~= "\t\tthis._buffer[this._index++] = (byte)(a ? 1 : 0);\n";
-		io ~= "\t}\n\n";
-		io ~= "\tpublic boolean readBool() {\n";
-		io ~= "\t\treturn this._index < this._buffer.length && this._buffer[this._index++] != 0;\n";
-		io ~= "\t}\n\n";
-		foreach(type ; [tuple("byte", 1, "byte"), tuple("short", 2, "short"), tuple("triad", 3, "int"), tuple("int", 4, "int"), tuple("long", 8, "long")]) {
-			foreach(e ; ["BigEndian", "LittleEndian"]) {
-				// write
-				io ~= "\tpublic void write" ~ e ~ capitalize(type[0]) ~ "(" ~ type[2] ~ " a) {\n";
-				if(type[1] == 1) io ~= "\t\tthis._buffer[this._index++] = (byte)a;\n";
-				else {
-					int[] shift;
-					foreach(i ; 0..type[1]) shift ~= i * 8;
-					if(e == "BigEndian") reverse(shift);
-					foreach(i ; shift) {
-						io ~= "\t\tthis._buffer[this._index++] = (byte)(a" ~ (i != 0 ? " >>> " ~ to!string(i) : "") ~ ");\n";
-					}
-				}
-				io ~= "\t}\n\n";
-				// read
-				io ~= "\tpublic " ~ type[2] ~ " read" ~ e ~ capitalize(type[0]) ~ "() {\n";
-				io ~= "\t\tif(this._buffer.length < this._index + " ~ to!string(type[1]) ~ ") return (" ~ type[2] ~ ")0;\n";
-				if(type[1] == 1) io ~= "\t\treturn (" ~ type[2] ~ ")this._buffer[this._index++];\n";
-				else {
-					io ~= "\t\t" ~ type[2] ~ " _ret = 0;\n";
-					int[] shift;
-					foreach(i ; 0..type[1]) shift ~= i * 8;
-					if(e == "BigEndian") reverse(shift);
-					foreach(i ; shift) {
-						io ~= "\t\t_ret |= (" ~ type[2] ~ ")this._buffer[this._index++]" ~ (i != 0 ? " << " ~ to!string(i) : "") ~ ";\n";
-					}
-					io ~= "\t\treturn _ret;\n";
-				}
-				io ~= "\t}\n\n";
-			}
-		}
-		foreach(type ; [tuple("float", "int"), tuple("double", "long")]) {
-			foreach(e ; ["BigEndian", "LittleEndian"]) {
-				io ~= "\tpublic void write" ~ e ~ capitalize(type[0]) ~ "(" ~ type[0] ~ " a) {\n";
-				io ~= "\t\tthis.write" ~ e ~ capitalize(type[1]) ~ "(" ~ capitalize(type[0]) ~ "." ~ type[0] ~ "To" ~ capitalize(type[1]) ~ "Bits(a));\n";
-				io ~= "\t}\n\n";
-				io ~= "\tpublic " ~ type[0] ~ " read" ~ e ~ capitalize(type[0]) ~ "() {\n";
-				io ~= "\t\treturn " ~ capitalize(type[0]) ~ "." ~ type[1] ~ "BitsTo" ~ capitalize(type[0]) ~ "(this.read" ~ e ~ capitalize(type[1]) ~ "());\n";
-				io ~= "\t}\n\n";
-			}
-		}
-		foreach(varint ; [tuple("short", 3, 15), tuple("int", 5, 31), tuple("long", 10, 63)]) {
-			foreach(sign ; ["", "u"]) {
-				// write
-				io ~= "\tpublic void writeVar" ~ sign ~ varint[0] ~ "(long a) {\n";
-				if(sign.length) {
-					io ~= "\t\twhile(a > 127) {\n";
-					io ~= "\t\t\tthis._buffer[this._index++] = (byte)(a & 127 | 128);\n";
-					io ~= "\t\t\ta >>>= 7;\n";
-					io ~= "\t\t}\n";
-					io ~= "\t\tthis._buffer[this._index++] = (byte)(a & 255);\n";
-				} else {
-					io ~= "\t\tthis.writeVaru" ~ varint[0] ~ "(a >= 0 ? a * 2  : a * -2 - 1);\n";
-				}
-				io ~= "\t}\n\n";
-				// read
-				io ~= "\tpublic " ~ varint[0] ~ " readVar" ~ sign ~ varint[0] ~ "() {\n";
-				if(sign.length) {
-					io ~= "\t\tint limit = 0;\n";
-					io ~= "\t\t" ~ varint[0] ~ " ret = 0;\n";
-					io ~= "\t\tdo {\n";
-					io ~= "\t\t\tret |= (" ~ varint[0] ~ ")(this._buffer[this._index] & 127) << (limit * 7);\n";
-					io ~= "\t\t} while(this._buffer[this._index++] < 0 && ++limit < " ~ to!string(varint[1]) ~ " && this._index < this._buffer.length);\n";
-					io ~= "\t\treturn ret;\n";
-				} else {
-					io ~= "\t\t" ~ varint[0] ~ " ret = this.readVaru" ~ varint[0] ~ "();\n";
-					io ~= "\t\treturn (" ~ varint[0] ~ ")((ret & 1) == 0 ? ret / 2 : (-ret - 1) / 2);\n";
-				}
-				io ~= "\t}\n\n";
-				// length
-				io ~= "\tpublic static int var" ~ sign ~ varint[0] ~ "Length(" ~ varint[0] ~ " a) {\n";
-				io ~= "\t\tint length = 1;\n";
-				io ~= "\t\twhile((a & 128) != 0 && length < " ~ to!string(varint[1]) ~ ") {\n";
-				io ~= "\t\t\tlength++;\n";
-				io ~= "\t\t\ta >>>= 7;\n";
-				io ~= "\t\t}\n";
-				io ~= "\t\treturn length;\n";
-				io ~= "\t}\n\n";
-			}
-		}
-		io ~= "\tpublic boolean eof() {\n";
-		io ~= "\t\treturn this._index >= this._buffer.length;\n";
-		io ~= "\t}\n\n";
-		io ~= "}";
-		write("../src/java/sul/utils/Buffer.java", io);
-
-		write("../src/java/sul/utils/Stream.java", q{
-	package sul.utils;
-
-	public abstract class Stream extends Buffer {
-
-		public final void reset() {
-			this._buffer = new byte[0];
-			this._index = 0;
-		}
-		
-		public abstract int length();
-		
-		public abstract byte[] encode();
-		
-		public abstract void decode(byte[] buffer);
-
-	}
-		});
-		
-		write("../src/java/sul/utils/Packet.java", q{
-	package sul.utils;
-
-	public abstract class Packet extends Stream {
-
-		public abstract int getId();
-
-	}
-		});
-		
-		write("../src/java/sul/utils/Item.java", q{
-	package sul.utils;
-
-	public class Item {
-
-		public final String name;
-		public final int id, meta;
-		public final Enchantment[] enchantments;
-
-		public Item(String name, int id, int meta, Enchantment[] enchantments) {
-			this.name = name;
-			this.id = id;
-			this.meta = meta;
-			this.enchantments = enchantments;
-		}
-
-	}
-		});
-		
-		write("../src/java/sul/utils/Enchantment.java", q{
-	package sul.utils;
-
-	public class Enchantment {
-
-		public final byte id;
-		public final short level;
-
-		public Enchantment(byte id, short level) {
-			this.id = id;
-			this.level = level;
-		}
-
-	}
-		});
-
-		write("../src/java/sul/utils/MetadataException.java", q{
-	package sul.utils;
-
-	public class MetadataException extends RuntimeException {
-
-		private static final long serialVersionUID = 0x5EL;
-
-		public MetadataException(String reason) {
-			super(reason);
-		}
-
-	}
-		});
-		
-		// attributes
-		foreach(string game, Attributes attrs; attributes) {
-			string data = "package sul.attributes;\n\npublic enum " ~ toPascalCase(game) ~ " {\n\n";
-			foreach(i, attr; attrs.data) {
-				data ~= "\t" ~ toUpper(attr.id) ~ "(\"" ~ attr.name ~ "\", " ~ attr.min.to!string ~ "f, " ~ attr.max.to!string ~ "f, " ~ attr.def.to!string ~ "f)" ~ (i == attrs.data.length - 1 ? ";" : ",") ~ "\n\n";
-			}
-			data ~= "\tpublic final String name;\n\tpublic final float min, max, def;\n\n";
-			data ~= "\t" ~ toPascalCase(game) ~ "(String name, float min, float max, float def) {\n";
-			data ~= "\t\tthis.name = name;\n";
-			data ~= "\t\tthis.min = min;\n";
-			data ~= "\t\tthis.max = max;\n";
-			data ~= "\t\tthis.def = def;\n";
-			data ~= "\t}\n\n}";
-			mkdirRecurse("../src/java/sul/attributes");
-			write("../src/java/sul/attributes/" ~ toPascalCase(game) ~ ".java", data, "attributes/" ~ game);
-		}
 		
 		// protocols
 		string[] tuples;
@@ -851,6 +677,39 @@ class JavaGenerator : CodeGenerator {
 		}
 		write("../src/java/sul/utils/Tuples.java", tp ~ "}");+/
 		
+	}
+
+	// type conversion
+	
+	enum defaultTypes = ["boolean", "byte", "short", "int", "long", "float", "double", "String", "UUID"];
+	
+	enum string[string] defaultAliases = [
+		"bool": "boolean",
+		"ubyte": "byte",
+		"ushort": "short",
+		"uint": "int",
+		"ulong": "long",
+		"string": "String",
+		"uuid": "UUID",
+		"bytes": "byte[]",
+		"varshort": "short",
+		"varushort": "short",
+		"varint": "int",
+		"varuint": "int",
+		"varlong": "long",
+		"varulong": "long"
+	];
+	
+	protected override string convertType(string game, string type) {
+		auto end = min(cast(size_t)type.indexOf("["), cast(size_t)type.lastIndexOf("<"), type.length);
+		auto t = type[0..end];
+		auto e = type[end..$].replaceAll(ctRegex!`\[[0-9]{1,}\]`, "[]");
+		auto a = t in defaultAliases;
+		if(a) return convertType(game, *a ~ e);
+		if(e.length && e[0] == '<') return "Tuples." ~ toPascalCase(t) ~ toUpper(e[1..e.indexOf(">")]) ~ e[e.indexOf(">")+1..$];
+		else if(defaultTypes.canFind(t)) return t ~ e;
+		else if(t == "metadata") return "soupply." ~ game ~ ".Metadata." ~ e;
+		else return "soupply." ~ game ~ ".types." ~ toPascalCase(t) ~ e;
 	}
 
 }

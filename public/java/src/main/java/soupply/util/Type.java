@@ -22,19 +22,11 @@
  */
 package soupply.util;
 
-public abstract class Stream extends Buffer
+class Type
 {
-
-	public final void reset()
-	{
-		this._buffer = new byte[0];
-		this._index = 0;
-	}
 	
-	public abstract int length();
+	public abstract void encodeBody(Buffer buffer);
 	
-	public abstract byte[] encode();
+	public abstract void decodeBody(Buffer buffer) throws IOException;
 	
-	public abstract void decode(byte[] buffer);
-
 }
