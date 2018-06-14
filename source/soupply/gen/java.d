@@ -181,16 +181,31 @@ class JavaGenerator : CodeGenerator {
 		// sections and packets
 		foreach(section ; info.protocol.sections) {
 			foreach(packet ; section.packets) {
-				auto p = make(game, section.name, camelCaseUpper(packet.name));
+				auto p = make(game, "protocol", section.name, camelCaseUpper(packet.name));
 				with(p) {
 					clear();
-					stat("package " ~ SOFTWARE ~ "." ~ game ~ "." ~ section.name).nl;
+					stat("package " ~ SOFTWARE ~ "." ~ game ~ ".protocol." ~ section.name).nl;
 					stat("import java.util.*");
 					stat("import " ~ SOFTWARE ~ ".util.*").nl;
 					block("class " ~ camelCaseUpper(packet.name) ~ " extends " ~ SOFTWARE ~ "." ~ game ~ ".Packet").nl;
+					stat("public static final " ~ convertType(info.protocol.id) ~ " ID = " ~ packet.id.to!string).nl;
 					// fields
 					writeFields(p, camelCaseUpper(packet.name), packet.fields);
-
+					// id
+					line("@Override");
+					block("public " ~ convertType(info.protocol.id) ~ " getId()");
+					stat("return ID");
+					endBlock().nl;
+					// encode
+					line("@Override");
+					block("public void encodeBody(Buffer buffer)");
+					
+					endBlock().nl;
+					// decode
+					line("@Override");
+					block("public void decodeBody(Buffer buffer)");
+					
+					endBlock().nl;
 					//TODO variants
 					endBlock();
 					save();
