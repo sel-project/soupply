@@ -269,7 +269,7 @@ class JavaGenerator : CodeGenerator {
 					immutable aclose = field.type.indexOf("]");
 					if(aopen != -1 && aclose > aopen + 1) {
 						source.stat("this." ~ name ~ " = new " ~ conv.replace("[]", field.type[aopen..aclose+1]));
-					} else if(field.type.indexOf("<") != -1 || conv.startsWith(SOFTWARE ~ ".") || field.type == "uuid" || field.type == "metadata") {
+					} else if(aopen == -1 && (field.type.indexOf("<") != -1 || conv.startsWith(SOFTWARE ~ ".") || field.type == "uuid" || field.type == "metadata")) {
 						source.stat("this." ~ name ~ " = new " ~ conv ~ "()");
 					}
 				}
