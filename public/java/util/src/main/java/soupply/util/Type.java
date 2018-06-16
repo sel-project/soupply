@@ -22,7 +22,7 @@
  */
 package soupply.util;
 
-class Type
+public abstract class Type
 {
 	
 	public abstract void encodeBody(Buffer buffer);

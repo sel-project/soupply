@@ -155,6 +155,57 @@ class JavaGenerator : CodeGenerator {
 			}
 		}
 
+		// generate tuples
+		string[] tuples;
+		void add(string type) {
+			immutable open = type.indexOf("<");
+			if(open != -1) {
+				immutable tuple = this.convertType("", type[0..open]) ~ "." ~ type[open+1..type.indexOf(">")];
+				if(!tuples.canFind(tuple)) tuples ~= tuple;
+			}
+		}
+		void fields(Protocol.Field[] fields) {
+			foreach(field ; fields) add(field.type);
+		}
+		foreach(info ; d.info) {
+			foreach(type ; info.protocol.types) fields(type.fields);
+			foreach(section ; info.protocol.sections) {
+				foreach(packet ; section.packets) {
+					fields(packet.fields);
+					foreach(variant ; packet.variants) fields(variant.fields);
+				}
+			}
+		}
+
+		foreach(tuple ; tuples) {
+			immutable p = tuple.indexOf(".");
+			immutable type = convertType("", tuple[0..p]);
+			immutable coords = tuple[p+1..$];
+			immutable name = capitalize(tuple[0..p]) ~ toUpper(coords);
+			with(make("util/src/main/java", SOFTWARE, "util", name)) {
+				clear();
+				stat("package " ~ SOFTWARE ~ ".util." ~ name).nl;
+				block("class " ~ name).nl;
+				// fields
+				string[] ctor;
+				foreach(coord ; coords) {
+					stat("public " ~ type ~ " " ~ coord);
+					ctor ~= (type ~ " " ~ coord);
+				}
+				nl();
+				// empty ctor
+				line("public " ~ name ~ "() {}").nl;
+				// ctor
+				block("public " ~ name ~ "(" ~ ctor.join(", ") ~ ")");
+				foreach(coord ; coords) {
+					stat("this." ~ coord ~ " = " ~ coord);
+				}
+				endBlock().nl;
+				endBlock();
+				save();
+			}
+		}
+
 	}
 
 	protected override void generateGame(string game, Info info) {
@@ -218,7 +269,7 @@ class JavaGenerator : CodeGenerator {
 					immutable aclose = field.type.indexOf("]");
 					if(aopen != -1 && aclose > aopen + 1) {
 						source.stat("this." ~ name ~ " = new " ~ conv.replace("[]", field.type[aopen..aclose+1]));
-					} else if(field.type.indexOf("<") != -1 || conv.startsWith(SOFTWARE ~ ".")) {
+					} else if(field.type.indexOf("<") != -1 || conv.startsWith(SOFTWARE ~ ".") || field.type == "uuid" || field.type == "metadata") {
 						source.stat("this." ~ name ~ " = new " ~ conv ~ "()");
 					}
 				}
@@ -297,6 +348,17 @@ class JavaGenerator : CodeGenerator {
 					save();
 				}
 			}
+		}
+
+		// metadata
+		with(make(game, "src/main/java", SOFTWARE, game, "Metadata")) {
+
+			clear();
+			stat("package " ~ SOFTWARE ~ "." ~ game);
+			block("class Metadata");
+
+			endBlock();
+
 		}
 		
 		/+
@@ -751,7 +813,7 @@ class JavaGenerator : CodeGenerator {
 		auto e = type[end..$].replaceAll(ctRegex!`\[[0-9]{1,}\]`, "[]");
 		auto a = t in defaultAliases;
 		if(a) return convertType(game, *a ~ e);
-		if(e.length && e[0] == '<') return "Tuples." ~ toPascalCase(t) ~ toUpper(e[1..e.indexOf(">")]) ~ e[e.indexOf(">")+1..$];
+		if(e.length && e[0] == '<') return toPascalCase(t) ~ toUpper(e[1..e.indexOf(">")]) ~ e[e.indexOf(">")+1..$];
 		else if(defaultTypes.canFind(t)) return t ~ e;
 		else if(t == "metadata") return "soupply." ~ game ~ ".Metadata";
 		else return "soupply." ~ game ~ ".type." ~ toPascalCase(t) ~ e;

@@ -22,9 +22,9 @@
  */
 package soupply.util;
 
-import java.nio.ByteBuffer;
+import java.util.Arrays;
 
-class Buffer {
+public class Buffer {
 
 	public byte[] _buffer;
 
@@ -39,12 +39,12 @@ class Buffer {
 	
 	private void requireLength(int required)
 	{
-		if(_index + required > _buffer.length) _buffer = Arrays.copyOf(_buffer, _buffer + 64);
+		if(_index + required > _buffer.length) _buffer = Arrays.copyOf(_buffer, _buffer.length + 64);
 	}
 	
 	private void checkLength(int required) throws BufferOverflowException
 	{
-		if(_index + required > _buffer.length) throw new BufferOverflowException();
+		if(_index + required > _buffer.length) throw new BufferOverflowException(_index + required, _buffer.length);
 	}
 
 	public byte[] toByteArray()
