@@ -352,13 +352,12 @@ class JavaGenerator : CodeGenerator {
 
 		// metadata
 		with(make(game, "src/main/java", SOFTWARE, game, "Metadata")) {
-
 			clear();
 			stat("package " ~ SOFTWARE ~ "." ~ game);
 			block("public class Metadata");
-
+			//TODO
 			endBlock();
-
+			save();
 		}
 		
 		/+
