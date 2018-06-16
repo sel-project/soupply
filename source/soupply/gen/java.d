@@ -22,7 +22,7 @@
  */
 module soupply.gen.java;
 
-import std.algorithm : canFind, min, max, reverse, count;
+import std.algorithm : sort, canFind, min, max, reverse, count;
 import std.array : replicate;
 import std.ascii : newline;
 import std.conv : to;
@@ -43,7 +43,7 @@ import soupply.util;
 class JavaGenerator : CodeGenerator {
 
 	static this() {
-		Generator.register!JavaGenerator("Java", "java", "src/main/java/" ~ SOFTWARE);
+		Generator.register!JavaGenerator("Java", "java", "");
 	}
 
 	public this() {
@@ -64,29 +64,103 @@ class JavaGenerator : CodeGenerator {
 
 	import std.stdio : writeln;
 
-	protected override void generateImpl(Data data) {
+	protected override void generateImpl(Data d) {
 
-		super.generateImpl(data);
+		super.generateImpl(d);
 
-		// generate latest modules
-		foreach(game, info; data.info) {
-			if(info.latest) {
-				//TODO read files from src/main/java/{game} and copy to src/main/java/{info.software}
+		// generate main maven file
+		with(new XmlMaker(this, "pom")) {
+
+			openTag("project", ["xmlns": "http://maven.apache.org/POM/4.0.0", "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation": "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"]).nl;
+			openCloseTag("modelVersion", "4.0.0").nl;
+
+			openCloseTag("groupId", SOFTWARE);
+			openCloseTag("artifactId", SOFTWARE);
+			openCloseTag("version", d.version_.to!string);
+			openCloseTag("packaging", "jar").nl;
+
+			openCloseTag("name", SOFTWARE);
+			openCloseTag("description", d.description.to!string).nl;
+
+			string[] modules = ["util"];
+			foreach(game, info; d.info) {
+				modules ~= game;
+				if(info.latest) modules ~= info.game;
 			}
+			sort(modules);
+			openTag("modules");
+			foreach(m ; modules) {
+				openCloseTag("module", m);
+			}
+			closeTag().nl;
+
+			openTag("build");
+			openCloseTag("finalName", SOFTWARE);
+			openCloseTag("directory", "${project.basedir}/target");
+			openTag("plugins");
+			openTag("plugin");
+			openCloseTag("groupId", "org.apache.maven.plugins");
+			openCloseTag("artifactId", "maven-jar-plugin");
+			openCloseTag("version", "2.3.1");
+			closeTag();
+			closeTag();
+			closeTag().nl;
+
+			closeTag();
+			save();
+
 		}
 
-		//TODO generate maven files
+		// generate maven files
+		foreach(game, info; d.info) {
+			with(new XmlMaker(this, game ~ "/pom")) {
 
-		//TODO generate latest modules (software instead of software123)
+				openTag("project", ["xmlns": "http://maven.apache.org/POM/4.0.0", "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation": "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"]).nl;
+				openCloseTag("modelVersion", "4.0.0").nl;
 
-		// create main maven file
+				openTag("parent");
+				openCloseTag("groupId", SOFTWARE);
+				openCloseTag("artifactId", SOFTWARE);
+				openCloseTag("version", d.version_.to!string);
+				closeTag().nl;
+
+				openCloseTag("artifactId", game).nl;
+
+				openTag("dependencies");
+				openTag("dependency");
+				openCloseTag("groupId", SOFTWARE);
+				openCloseTag("artifactId", "util");
+				openCloseTag("version", d.version_.to!string);
+				closeTag();
+				closeTag().nl;
+
+				closeTag();
+				save();
+
+			}
+		}
+		
+		// generate latest modules
+		foreach(game, info; d.info) {
+			if(info.latest) {
+				// read files from {game}/src/main/java/{game} and copy to {info.game}/src/main/java/{info.game}
+				import std.file;
+				foreach(string dir ; dirEntries("gen/java/" ~ game, SpanMode.breadth)) {
+					if(dir.isDir) mkdirRecurse(dir.replace(game, info.game));
+				}
+				foreach(string file ; dirEntries("gen/java/" ~ game, SpanMode.breadth)) {
+					if(file.isFile) std.file.write(file.replace(game, info.game), replace(cast(string)read(file), game, info.game));
+					//if(file.isFile) std.file.write(file.replace(game, info.game), read(file));
+				}
+			}
+		}
 
 	}
 
 	protected override void generateGame(string game, Info info) {
 
 		// generate packet class
-		with(make(game, "Packet")) {
+		with(make(game, "src/main/java", SOFTWARE, game, "Packet")) {
 
 			clear(); // remove pre-generated package declaration
 			stat("package soupply." ~ game).nl;
@@ -154,7 +228,7 @@ class JavaGenerator : CodeGenerator {
 
 		// types
 		foreach(type ; info.protocol.types) {
-			auto t = make(game, "type", camelCaseUpper(type.name));
+			auto t = make(game, "src/main/java", SOFTWARE, game, "type", camelCaseUpper(type.name));
 			with(t) {
 				clear();
 				stat("package " ~ SOFTWARE ~ "." ~ game ~ ".type").nl;
@@ -181,7 +255,7 @@ class JavaGenerator : CodeGenerator {
 		// sections and packets
 		foreach(section ; info.protocol.sections) {
 			foreach(packet ; section.packets) {
-				auto p = make(game, "protocol", section.name, camelCaseUpper(packet.name));
+				auto p = make(game, "src/main/java", SOFTWARE, game, "protocol", section.name, camelCaseUpper(packet.name));
 				with(p) {
 					clear();
 					stat("package " ~ SOFTWARE ~ "." ~ game ~ ".protocol." ~ section.name).nl;
