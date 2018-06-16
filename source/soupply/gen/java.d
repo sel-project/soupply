@@ -77,7 +77,7 @@ class JavaGenerator : CodeGenerator {
 			openCloseTag("groupId", SOFTWARE);
 			openCloseTag("artifactId", SOFTWARE);
 			openCloseTag("version", d.version_.to!string);
-			openCloseTag("packaging", "jar").nl;
+			openCloseTag("packaging", "pom").nl;
 
 			openCloseTag("name", SOFTWARE);
 			openCloseTag("description", d.description.to!string).nl;
@@ -209,7 +209,19 @@ class JavaGenerator : CodeGenerator {
 			// constructors
 			if(fields.length) {
 				source.block("public " ~ className ~ "()");
-				//TODO init static arrays and classes
+				// init static arrays and classes
+				foreach(i, field; fields) {
+					immutable name = field.name == "?" ? "unknown" ~ to!string(i) : convertName(field.name);
+					immutable conv = source.convertType(field.type);
+					// static arrays
+					immutable aopen = field.type.indexOf("[");
+					immutable aclose = field.type.indexOf("]");
+					if(aopen != -1 && aclose > aopen + 1) {
+						source.stat("this." ~ name ~ " = new " ~ conv.replace("[]", field.type[aopen..aclose+1]));
+					} else if(field.type.indexOf("<") != -1 || conv.startsWith(SOFTWARE ~ ".")) {
+						source.stat("this." ~ name ~ " = new " ~ conv ~ "()");
+					}
+				}
 				source.endBlock().nl;
 				string[] args;
 				foreach(i, field; fields) {
