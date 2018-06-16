@@ -54,7 +54,7 @@ public class Buffer {
 
 	public void writeBytes(byte[] a)
 	{
-		this.requireLength(a);
+		this.requireLength(a.length);
 		for(byte b : a) _buffer[_index++] = b;
 	}
 
