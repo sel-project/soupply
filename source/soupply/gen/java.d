@@ -214,8 +214,9 @@ class JavaGenerator : CodeGenerator {
 		with(make(game, "src/main/java", SOFTWARE, game, "Packet")) {
 
 			clear(); // remove pre-generated package declaration
-			stat("package soupply." ~ game).nl;
-			block("public abstract class Packet extends soupply.util.Packet").nl;
+			stat("package " ~ SOFTWARE ~ "." ~ game).nl;
+			stat("import " ~ SOFTWARE ~ ".util.Buffer").nl;
+			block("public abstract class Packet extends " ~ SOFTWARE ~ ".util.Packet").nl;
 			stat("public abstract " ~ convertType(info.protocol.id) ~ " getId()").nl;
 
 			// encode
@@ -247,7 +248,7 @@ class JavaGenerator : CodeGenerator {
 				if(field.constants.length) {
 					source.line("// " ~ field.name.replace("_", " "));
 					foreach(constant ; field.constants) {
-						source.stat("public static final " ~ source.convertType(field.type) ~ " " ~ toUpper(constant.name) ~ " = " ~ (field.type == "string" ? JSONValue(constant.value).toString() : constant.value));
+						source.stat("public static final " ~ source.convertType(field.type) ~ " " ~ toUpper(constant.name) ~ " = " ~ (field.type == "string" ? JSONValue(constant.value).toString() : "(" ~ source.convertType(field.type) ~ ")" ~ constant.value));
 					}
 					source.nl;
 				}
