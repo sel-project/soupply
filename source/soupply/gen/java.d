@@ -185,7 +185,7 @@ class JavaGenerator : CodeGenerator {
 			with(make("util/src/main/java", SOFTWARE, "util", name)) {
 				clear();
 				stat("package " ~ SOFTWARE ~ ".util").nl;
-				block("class " ~ name).nl;
+				block("public class " ~ name).nl;
 				// fields
 				string[] ctor;
 				foreach(coord ; coords) {
@@ -215,7 +215,7 @@ class JavaGenerator : CodeGenerator {
 
 			clear(); // remove pre-generated package declaration
 			stat("package soupply." ~ game).nl;
-			block("class Packet extends soupply.util.Packet").nl;
+			block("public abstract class Packet extends soupply.util.Packet").nl;
 			stat("public abstract " ~ convertType(info.protocol.id) ~ " getId()").nl;
 
 			// encode
@@ -297,7 +297,7 @@ class JavaGenerator : CodeGenerator {
 				stat("package " ~ SOFTWARE ~ "." ~ game ~ ".type").nl;
 				stat("import java.util.*");
 				stat("import " ~ SOFTWARE ~ ".util.*").nl;
-				block("class " ~ camelCaseUpper(type.name) ~ " extends Type").nl;
+				block("public class " ~ camelCaseUpper(type.name) ~ " extends Type").nl;
 				// fields
 				writeFields(t, camelCaseUpper(type.name), type.fields);
 				// encode
@@ -324,7 +324,7 @@ class JavaGenerator : CodeGenerator {
 					stat("package " ~ SOFTWARE ~ "." ~ game ~ ".protocol." ~ section.name).nl;
 					stat("import java.util.*");
 					stat("import " ~ SOFTWARE ~ ".util.*").nl;
-					block("class " ~ camelCaseUpper(packet.name) ~ " extends " ~ SOFTWARE ~ "." ~ game ~ ".Packet").nl;
+					block("public class " ~ camelCaseUpper(packet.name) ~ " extends " ~ SOFTWARE ~ "." ~ game ~ ".Packet").nl;
 					stat("public static final " ~ convertType(info.protocol.id) ~ " ID = " ~ packet.id.to!string).nl;
 					// fields
 					writeFields(p, camelCaseUpper(packet.name), packet.fields);
@@ -355,7 +355,7 @@ class JavaGenerator : CodeGenerator {
 
 			clear();
 			stat("package " ~ SOFTWARE ~ "." ~ game);
-			block("class Metadata");
+			block("public class Metadata");
 
 			endBlock();
 
