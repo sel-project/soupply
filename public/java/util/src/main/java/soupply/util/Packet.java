@@ -27,6 +27,6 @@ public abstract class Packet extends Type
 	
 	public abstract byte[] encode();
 	
-	public abstract void decode(byte[] buffer) throws IOException;
+	public abstract void decode(byte[] buffer) throws BufferOverflowException;
 
 }

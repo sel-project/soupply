@@ -27,6 +27,6 @@ public abstract class Type
 	
 	public abstract void encodeBody(Buffer buffer);
 	
-	public abstract void decodeBody(Buffer buffer) throws IOException;
+	public abstract void decodeBody(Buffer buffer) throws BufferOverflowException;
 	
 }

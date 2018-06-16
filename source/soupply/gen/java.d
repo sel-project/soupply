@@ -184,7 +184,7 @@ class JavaGenerator : CodeGenerator {
 			immutable name = capitalize(tuple[0..p]) ~ toUpper(coords);
 			with(make("util/src/main/java", SOFTWARE, "util", name)) {
 				clear();
-				stat("package " ~ SOFTWARE ~ ".util." ~ name).nl;
+				stat("package " ~ SOFTWARE ~ ".util").nl;
 				block("class " ~ name).nl;
 				// fields
 				string[] ctor;
