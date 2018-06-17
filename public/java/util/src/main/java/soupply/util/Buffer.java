@@ -22,12 +22,13 @@
  */
 package soupply.util;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.UUID;
 
 public class Buffer {
 
 	public byte[] _buffer;
-
 	public int _index;
 	
 	public Buffer() {}
@@ -63,6 +64,16 @@ public class Buffer {
 		this.checkLength(a);
 		_index += a;
 		return Arrays.copyOfRange(_buffer, _index - a, _index);
+	}
+	
+	public byte[] convertString(String string)
+	{
+		return string.getBytes(StandardCharsets.UTF_8);
+	}
+	
+	public String readString(int length) throws BufferOverflowException
+	{
+		return new String(_buffer.readBytes(length), StandardCharsets.UTF_8);
 	}
 
 	public void writeBool(boolean a)
@@ -359,6 +370,17 @@ public class Buffer {
 			ret |= (long)(_buffer[_index] & 127) << (limit * 7);
 		} while(_buffer[_index++] < 0 && ++limit < 10 && _index < _buffer.length);
 		return ret;
+	}
+	
+	public void writeUUID(UUID uuid)
+	{
+		this.writeBigEndianLong(uuid.getLeastSignificantBits());
+		this.writeBigEndianLong(uuid.getMostSignificantBits());
+	}
+	
+	public UUID readUUID() throws BufferOverflowException
+	{
+		return new UUID(this.readBigEndianLong(), this.readBigEndianLong());
 	}
 
 }

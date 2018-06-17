@@ -40,6 +40,8 @@ import soupply.generator;
 import soupply.gen.code;
 import soupply.util;
 
+import transforms : snakeCase, camelCaseLower, camelCaseUpper;
+
 class JavaGenerator : CodeGenerator {
 
 	static this() {
@@ -292,6 +294,108 @@ class JavaGenerator : CodeGenerator {
 			}
 		}
 
+		string endiannessOf(string type, string over="") {
+			if(over.length) return camelCaseUpper(over);
+			else return camelCaseUpper(info.protocol.endianness);
+		}
+
+		// encoding
+		void createEncoding(CodeMaker source, string type, string name, string e="", string arrayLength="", string lengthEndianness="") {
+			if(type[0] == 'u' && defaultTypes.canFind(type[1..$])) type = type[1..$];
+			auto lo = type.lastIndexOf("[");
+			if(lo > 0) {
+				auto lc = type.lastIndexOf("]");
+				immutable nt = type[0..lo];
+				immutable cnt = source.convertType(nt);
+				if(lo == lc - 1) {
+					// dynamic array, has length
+					if(arrayLength.length) {
+						// custom length
+						createEncoding(source, arrayLength, "(" ~ arrayLength ~ ")" ~ name ~ ".length", lengthEndianness);
+					} else {
+						// default length
+						createEncoding(source, info.protocol.arrayLength, "(" ~ source.convertType(info.protocol.arrayLength) ~ ")" ~ name ~ ".length");
+					}
+				}
+				if(cnt == "byte") source.stat("_buffer.writeBytes(" ~ name ~ ")");
+				else {
+					source.block("for(" ~ cnt ~ " " ~ hash(name) ~ ":" ~ name ~ ")");
+					createEncoding(source, nt, hash(name));
+					source.endBlock();
+				}
+			} else {
+				auto ts = type.lastIndexOf("<");
+				if(ts > 0) {
+					auto te = type.lastIndexOf(">");
+					string nt = type[0..ts];
+					string[] ret;
+					foreach(i ; type[ts+1..te]) {
+						createEncoding(source, nt, name ~ "." ~ i);
+					}
+				} else {
+					if(type.startsWith("var")) source.stat("_buffer.write" ~ capitalize(type) ~ "(" ~ name ~ ")");
+					else if(type == "string"){ source.stat("byte[] " ~ hash(name) ~ " = _buffer.convertString(" ~ name ~ ")"); createEncoding(source, "byte[]", hash(name)); }
+					else if(type == "uuid") source.stat("_buffer.writeUUID(" ~ name ~ ")");
+					else if(type == "bytes") source.stat("_buffer.writeBytes(" ~ name ~ ")");
+					else if(type == "bool") source.stat("_buffer.writeBool(" ~ name ~ ")");
+					else if(defaultTypes.canFind(type)) source.stat("_buffer.write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ")");
+					else source.stat(name ~ ".encodeBody(_buffer)");
+				}
+			}
+		}
+
+		void createEncodings(CodeMaker source, Protocol.Field[] fields) {
+			foreach(i, field; fields) createEncoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : camelCaseLower(field.name), field.endianness);
+		}
+
+		// decoding
+		void createDecoding(CodeMaker source, string type, string name, string e="", string arrayLength="", string lengthEndianness="") {
+			if(type[0] == 'u' && defaultTypes.canFind(type[1..$])) type = type[1..$];
+			auto lo = type.lastIndexOf("[");
+			if(lo > 0) {
+				auto lc = type.lastIndexOf("]");
+				immutable nt = type[0..lo];
+				immutable cnt = source.convertType(nt);
+				if(lo == lc - 1) {
+					if(arrayLength.length) {
+						createDecoding(source, arrayLength, "final int " ~ hash("l" ~ name), lengthEndianness);
+					} else {
+						createDecoding(source, info.protocol.arrayLength, "final int " ~ hash("l" ~ name));
+					}
+				}
+				if(cnt == "byte") {
+					source.stat(name ~ " = _buffer.readBytes(" ~ (lo == lc - 1 ? hash("l" ~ name) : name ~ ".length") ~ ")");
+				} else {
+					if(lo != lc - 1) source.stat(name ~ " = new " ~ (cnt.indexOf("[") >= 0 ? (cnt[0..cnt.indexOf("[")] ~ "[" ~ hash("l" ~ name) ~ "][]") : (cnt ~ "[" ~ hash("l" ~ name) ~ "]")));
+					source.block("for(int " ~ hash(name) ~ "=0;" ~ hash(name) ~ "<" ~ name ~ ".length;" ~ hash(name) ~ "++)");
+					createDecoding(source, nt, name ~ "[" ~ hash(name) ~ "]");
+					source.endBlock();
+				}
+			} else {
+				auto ts = type.lastIndexOf("<");
+				if(ts > 0) {
+					auto te = type.lastIndexOf(">");
+					string nt = type[0..ts];
+					string[] ret;
+					foreach(i ; type[ts+1..te]) {
+						createDecoding(source, nt, name ~ "." ~ i);
+					}
+				} else {
+					if(type.startsWith("var")) source.stat(name ~ " = _buffer.read" ~ capitalize(type) ~ "()");
+					else if(type == "string"){ createDecoding(source, info.protocol.arrayLength, "final int " ~ hash("len" ~ name)); source.stat(name ~ " = _buffer.readString(" ~ hash("len" ~ name) ~ ")"); }
+					else if(type == "uuid") source.stat(name ~ " = _buffer.readUUID()");
+					else if(type == "bytes") source.stat(name ~ " = _buffer.readBytes(_buffer._buffer.length-_buffer._index)");
+					else if(type == "bool") source.stat(name ~ " = _buffer.readBool()");
+					else if(defaultTypes.canFind(type)) source.stat(name ~ " = _buffer.read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "()");
+					else source.stat(name ~ ".decodeBody(_buffer)");
+				}
+			}
+		}
+
+		void createDecodings(CodeMaker source, Protocol.Field[] fields) {
+			foreach(i, field; fields) createDecoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : camelCaseLower(field.name), field.endianness);
+		}
+
 		// types
 		foreach(type ; info.protocol.types) {
 			auto t = make(game, "src/main/java", SOFTWARE, game, "type", camelCaseUpper(type.name));
@@ -305,13 +409,13 @@ class JavaGenerator : CodeGenerator {
 				writeFields(t, camelCaseUpper(type.name), type.fields);
 				// encode
 				line("@Override");
-				block("public void encodeBody(Buffer buffer)");
-
+				block("public void encodeBody(Buffer _buffer)");
+				createEncodings(t, type.fields);
 				endBlock().nl;
 				// decode
 				line("@Override");
-				block("public void decodeBody(Buffer buffer) throws BufferOverflowException");
-
+				block("public void decodeBody(Buffer _buffer) throws BufferOverflowException");
+				createDecodings(t, type.fields);
 				endBlock().nl;
 				endBlock();
 				save();
@@ -338,13 +442,19 @@ class JavaGenerator : CodeGenerator {
 					endBlock().nl;
 					// encode
 					line("@Override");
-					block("public void encodeBody(Buffer buffer)");
-					
+					block("public void encodeBody(Buffer _buffer)");
+					createEncodings(p, packet.fields);
 					endBlock().nl;
 					// decode
 					line("@Override");
-					block("public void decodeBody(Buffer buffer) throws BufferOverflowException");
-					
+					block("public void decodeBody(Buffer _buffer) throws BufferOverflowException");
+					createDecodings(p, packet.fields);
+					endBlock().nl;
+					// static decode
+					block("public static " ~ camelCaseUpper(packet.name) ~ " fromBuffer(byte[] buffer)");
+					stat(camelCaseUpper(packet.name) ~ " packet = new " ~ camelCaseUpper(packet.name) ~ "()");
+					stat("packet.safeDecode(new Buffer(buffer))");
+					stat("return packet");
 					endBlock().nl;
 					//TODO variants
 					endBlock();
@@ -357,8 +467,12 @@ class JavaGenerator : CodeGenerator {
 		with(make(game, "src/main/java", SOFTWARE, game, "Metadata")) {
 			clear();
 			stat("package " ~ SOFTWARE ~ "." ~ game);
-			block("public class Metadata");
+			block("public class Metadata").nl;
 			//TODO
+			block("public void encodeBody(Buffer _buffer)");
+			endBlock().nl;
+			block("public void decodeBody(Buffer _buffer)");
+			endBlock().nl;
 			endBlock();
 			save();
 		}

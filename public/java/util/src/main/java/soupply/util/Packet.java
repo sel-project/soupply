@@ -33,7 +33,7 @@ public abstract class Packet extends Type
 		try {
 			this.decode(buffer);
 			return true;
-		} catch(BufferOverflowException) {
+		} catch(BufferOverflowException e) {
 			return false;
 		}
 	}
