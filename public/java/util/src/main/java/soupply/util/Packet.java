@@ -28,5 +28,14 @@ public abstract class Packet extends Type
 	public abstract byte[] encode();
 	
 	public abstract void decode(byte[] buffer) throws BufferOverflowException;
+	
+	public final boolean safeDecode(byte[] buffer) {
+		try {
+			this.decode(buffer);
+			return true;
+		} catch(BufferOverflowException) {
+			return false;
+		}
+	}
 
 }

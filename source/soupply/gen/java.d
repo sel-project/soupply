@@ -215,7 +215,8 @@ class JavaGenerator : CodeGenerator {
 
 			clear(); // remove pre-generated package declaration
 			stat("package " ~ SOFTWARE ~ "." ~ game).nl;
-			stat("import " ~ SOFTWARE ~ ".util.Buffer").nl;
+			stat("import " ~ SOFTWARE ~ ".util.Buffer");
+			stat("import " ~ SOFTWARE ~ ".util.BufferOverflowException").nl;
 			block("public abstract class Packet extends " ~ SOFTWARE ~ ".util.Packet").nl;
 			stat("public abstract " ~ convertType(info.protocol.id) ~ " getId()").nl;
 
@@ -226,11 +227,12 @@ class JavaGenerator : CodeGenerator {
 			stat("buffer.write" ~ capitalize(info.protocol.id) ~ "(this.getId())");
 			if(info.protocol.padding) stat("buffer.writeBytes(new byte[" ~ info.protocol.padding.to!string ~ "])");
 			stat("this.encodeBody(buffer)");
+			stat("return buffer.toArray()");
 			endBlock().nl;
 
 			// decode
 			line("@Override");
-			block("public void decode(byte[] _buffer)");
+			block("public void decode(byte[] _buffer) throws BufferOverflowException");
 			stat("Buffer buffer = new Buffer(_buffer)");
 			stat("buffer.read" ~ capitalize(info.protocol.id) ~ "()");
 			if(info.protocol.padding) stat("buffer.readBytes(" ~ info.protocol.padding.to!string ~ ")");
@@ -308,7 +310,7 @@ class JavaGenerator : CodeGenerator {
 				endBlock().nl;
 				// decode
 				line("@Override");
-				block("public void decodeBody(Buffer buffer)");
+				block("public void decodeBody(Buffer buffer) throws BufferOverflowException");
 
 				endBlock().nl;
 				endBlock();
@@ -341,7 +343,7 @@ class JavaGenerator : CodeGenerator {
 					endBlock().nl;
 					// decode
 					line("@Override");
-					block("public void decodeBody(Buffer buffer)");
+					block("public void decodeBody(Buffer buffer) throws BufferOverflowException");
 					
 					endBlock().nl;
 					//TODO variants
