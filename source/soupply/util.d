@@ -44,6 +44,7 @@ deprecated @property string toPascalCase(const string input) {
 }
 
 string hash(string name) {
+	while(name.length < 4) name = name ~ name;
 	string ret;
 	foreach(i, c; Base64URL.encode(cast(ubyte[])name).toLower.replaceAll(ctRegex!`[_\-=]`, "")) {
 		if((i & 1) == 0) ret ~= c;
