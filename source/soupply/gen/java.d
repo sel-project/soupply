@@ -212,40 +212,6 @@ class JavaGenerator : CodeGenerator {
 
 	protected override void generateGame(string game, Info info) {
 
-		// generate packet class
-		with(make(game, "src/main/java", SOFTWARE, game, "Packet")) {
-
-			clear(); // remove pre-generated package declaration
-			stat("package " ~ SOFTWARE ~ "." ~ game).nl;
-			stat("import " ~ SOFTWARE ~ ".util.Buffer");
-			stat("import " ~ SOFTWARE ~ ".util.BufferOverflowException").nl;
-			block("public abstract class Packet extends " ~ SOFTWARE ~ ".util.Packet").nl;
-			stat("public abstract " ~ convertType(info.protocol.id) ~ " getId()").nl;
-
-			// encode
-			line("@Override");
-			block("public byte[] encode()");
-			stat("Buffer buffer = new Buffer()");
-			stat("buffer.write" ~ capitalize(info.protocol.id) ~ "(this.getId())");
-			if(info.protocol.padding) stat("buffer.writeBytes(new byte[" ~ info.protocol.padding.to!string ~ "])");
-			stat("this.encodeBody(buffer)");
-			stat("return buffer.toByteArray()");
-			endBlock().nl;
-
-			// decode
-			line("@Override");
-			block("public void decode(byte[] _buffer) throws BufferOverflowException");
-			stat("Buffer buffer = new Buffer(_buffer)");
-			stat("buffer.read" ~ capitalize(info.protocol.id) ~ "()");
-			if(info.protocol.padding) stat("buffer.readBytes(" ~ info.protocol.padding.to!string ~ ")");
-			stat("this.decodeBody(buffer)");
-			endBlock().nl;
-
-			endBlock();
-			save();
-			
-		}
-
 		void writeFields(CodeMaker source, string className, Protocol.Field[] fields) {
 			// constants
 			foreach(field ; fields) {
@@ -398,6 +364,41 @@ class JavaGenerator : CodeGenerator {
 
 		void createDecodings(CodeMaker source, Protocol.Field[] fields) {
 			foreach(i, field; fields) createDecoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : convertName(field.name), field.endianness);
+		}
+		
+		// generate packet class
+		auto pk = make(game, "src/main/java", SOFTWARE, game, "Packet");
+		with(pk) {
+			
+			clear(); // remove pre-generated package declaration
+			stat("package " ~ SOFTWARE ~ "." ~ game).nl;
+			stat("import " ~ SOFTWARE ~ ".util.Buffer");
+			stat("import " ~ SOFTWARE ~ ".util.BufferOverflowException").nl;
+			block("public abstract class Packet extends " ~ SOFTWARE ~ ".util.Packet").nl;
+			stat("public abstract " ~ convertType(info.protocol.id) ~ " getId()").nl;
+			
+			// encode
+			line("@Override");
+			block("public byte[] encode()");
+			stat("Buffer buffer = new Buffer()");
+			createEncoding(pk, info.protocol.id, "this.getId()");
+			if(info.protocol.padding) stat("buffer.writeBytes(new byte[" ~ info.protocol.padding.to!string ~ "])");
+			stat("this.encodeBody(buffer)");
+			stat("return buffer.toByteArray()");
+			endBlock().nl;
+			
+			// decode
+			line("@Override");
+			block("public void decode(byte[] _buffer) throws BufferOverflowException");
+			stat("Buffer buffer = new Buffer(_buffer)");
+			createDecoding(pk, info.protocol.id, "final int _id");
+			if(info.protocol.padding) stat("buffer.readBytes(" ~ info.protocol.padding.to!string ~ ")");
+			stat("this.decodeBody(buffer)");
+			endBlock().nl;
+			
+			endBlock();
+			save();
+			
 		}
 
 		// types
