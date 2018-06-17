@@ -380,20 +380,20 @@ class JavaGenerator : CodeGenerator {
 			// encode
 			line("@Override");
 			block("public byte[] encode()");
-			stat("Buffer buffer = new Buffer()");
+			stat("Buffer _buffer = new Buffer()");
 			createEncoding(pk, info.protocol.id, "this.getId()");
-			if(info.protocol.padding) stat("buffer.writeBytes(new byte[" ~ info.protocol.padding.to!string ~ "])");
-			stat("this.encodeBody(buffer)");
-			stat("return buffer.toByteArray()");
+			if(info.protocol.padding) stat("_buffer.writeBytes(new byte[" ~ info.protocol.padding.to!string ~ "])");
+			stat("this.encodeBody(_buffer)");
+			stat("return _buffer.toByteArray()");
 			endBlock().nl;
 			
 			// decode
 			line("@Override");
 			block("public void decode(byte[] _buffer) throws BufferOverflowException");
-			stat("Buffer buffer = new Buffer(_buffer)");
+			stat("Buffer _buffer = new Buffer(_buffer)");
 			createDecoding(pk, info.protocol.id, "final int _id");
-			if(info.protocol.padding) stat("buffer.readBytes(" ~ info.protocol.padding.to!string ~ ")");
-			stat("this.decodeBody(buffer)");
+			if(info.protocol.padding) stat("_buffer.readBytes(" ~ info.protocol.padding.to!string ~ ")");
+			stat("this.decodeBody(_buffer)");
 			endBlock().nl;
 			
 			endBlock();
