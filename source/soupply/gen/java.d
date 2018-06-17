@@ -366,7 +366,7 @@ class JavaGenerator : CodeGenerator {
 				if(cnt == "byte") {
 					source.stat(name ~ " = _buffer.readBytes(" ~ (lo == lc - 1 ? hash("l" ~ name) : name ~ ".length") ~ ")");
 				} else {
-					if(lo != lc - 1) source.stat(name ~ " = new " ~ (cnt.indexOf("[") >= 0 ? (cnt[0..cnt.indexOf("[")] ~ "[" ~ hash("l" ~ name) ~ "][]") : (cnt ~ "[" ~ hash("l" ~ name) ~ "]")));
+					if(lo == lc - 1) source.stat(name ~ " = new " ~ (cnt.indexOf("[") >= 0 ? (cnt[0..cnt.indexOf("[")] ~ "[" ~ hash("l" ~ name) ~ "][]") : (cnt ~ "[" ~ hash("l" ~ name) ~ "]")));
 					source.block("for(int " ~ hash(name) ~ "=0;" ~ hash(name) ~ "<" ~ name ~ ".length;" ~ hash(name) ~ "++)");
 					createDecoding(source, nt, name ~ "[" ~ hash(name) ~ "]");
 					source.endBlock();
