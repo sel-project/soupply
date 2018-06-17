@@ -73,7 +73,7 @@ public class Buffer {
 	
 	public String readString(int length) throws BufferOverflowException
 	{
-		return new String(_buffer.readBytes(length), StandardCharsets.UTF_8);
+		return new String(this.readBytes(length), StandardCharsets.UTF_8);
 	}
 
 	public void writeBool(boolean a)
