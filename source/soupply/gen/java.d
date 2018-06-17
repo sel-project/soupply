@@ -345,7 +345,7 @@ class JavaGenerator : CodeGenerator {
 		}
 
 		void createEncodings(CodeMaker source, Protocol.Field[] fields) {
-			foreach(i, field; fields) createEncoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : camelCaseLower(field.name), field.endianness);
+			foreach(i, field; fields) createEncoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : convertName(field.name), field.endianness);
 		}
 
 		// decoding
@@ -393,7 +393,7 @@ class JavaGenerator : CodeGenerator {
 		}
 
 		void createDecodings(CodeMaker source, Protocol.Field[] fields) {
-			foreach(i, field; fields) createDecoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : camelCaseLower(field.name), field.endianness);
+			foreach(i, field; fields) createDecoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : convertName(field.name), field.endianness);
 		}
 
 		// types
