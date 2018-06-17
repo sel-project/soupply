@@ -229,7 +229,7 @@ class JavaGenerator : CodeGenerator {
 			stat("buffer.write" ~ capitalize(info.protocol.id) ~ "(this.getId())");
 			if(info.protocol.padding) stat("buffer.writeBytes(new byte[" ~ info.protocol.padding.to!string ~ "])");
 			stat("this.encodeBody(buffer)");
-			stat("return buffer.toArray()");
+			stat("return buffer.toByteArray()");
 			endBlock().nl;
 
 			// decode
@@ -337,7 +337,7 @@ class JavaGenerator : CodeGenerator {
 					else if(type == "string"){ source.stat("byte[] " ~ hash(name) ~ " = _buffer.convertString(" ~ name ~ ")"); createEncoding(source, "byte[]", hash(name)); }
 					else if(type == "uuid") source.stat("_buffer.writeUUID(" ~ name ~ ")");
 					else if(type == "bytes") source.stat("_buffer.writeBytes(" ~ name ~ ")");
-					else if(type == "bool") source.stat("_buffer.writeBool(" ~ name ~ ")");
+					else if(type == "bool" || type == "byte") source.stat("_buffer.write" ~ capitalize(type) ~ "(" ~ name ~ ")");
 					else if(defaultTypes.canFind(type)) source.stat("_buffer.write" ~ endiannessOf(type, e) ~ capitalize(type) ~ "(" ~ name ~ ")");
 					else source.stat(name ~ ".encodeBody(_buffer)");
 				}
@@ -385,7 +385,7 @@ class JavaGenerator : CodeGenerator {
 					else if(type == "string"){ createDecoding(source, info.protocol.arrayLength, "final int " ~ hash("len" ~ name)); source.stat(name ~ " = _buffer.readString(" ~ hash("len" ~ name) ~ ")"); }
 					else if(type == "uuid") source.stat(name ~ " = _buffer.readUUID()");
 					else if(type == "bytes") source.stat(name ~ " = _buffer.readBytes(_buffer._buffer.length-_buffer._index)");
-					else if(type == "bool") source.stat(name ~ " = _buffer.readBool()");
+					else if(type == "bool" || type == "byte") source.stat(name ~ " = _buffer.read" ~ capitalize(type) ~ "()");
 					else if(defaultTypes.canFind(type)) source.stat(name ~ " = _buffer.read" ~ endiannessOf(type, e) ~ capitalize(type) ~ "()");
 					else source.stat(name ~ ".decodeBody(_buffer)");
 				}
@@ -453,7 +453,7 @@ class JavaGenerator : CodeGenerator {
 					// static decode
 					block("public static " ~ camelCaseUpper(packet.name) ~ " fromBuffer(byte[] buffer)");
 					stat(camelCaseUpper(packet.name) ~ " packet = new " ~ camelCaseUpper(packet.name) ~ "()");
-					stat("packet.safeDecode(new Buffer(buffer))");
+					stat("packet.safeDecode(buffer)");
 					stat("return packet");
 					endBlock().nl;
 					//TODO variants
@@ -466,7 +466,8 @@ class JavaGenerator : CodeGenerator {
 		// metadata
 		with(make(game, "src/main/java", SOFTWARE, game, "Metadata")) {
 			clear();
-			stat("package " ~ SOFTWARE ~ "." ~ game);
+			stat("package " ~ SOFTWARE ~ "." ~ game).nl;
+			stat("import " ~ SOFTWARE ~ ".util.*").nl;
 			block("public class Metadata").nl;
 			//TODO
 			block("public void encodeBody(Buffer _buffer)");
