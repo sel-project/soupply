@@ -389,8 +389,8 @@ class JavaGenerator : CodeGenerator {
 			
 			// decode
 			line("@Override");
-			block("public void decode(byte[] _buffer) throws BufferOverflowException");
-			stat("Buffer _buffer = new Buffer(_buffer)");
+			block("public void decode(byte[] data) throws BufferOverflowException");
+			stat("Buffer _buffer = new Buffer(data)");
 			createDecoding(pk, info.protocol.id, "final int _id");
 			if(info.protocol.padding) stat("_buffer.readBytes(" ~ info.protocol.padding.to!string ~ ")");
 			stat("this.decodeBody(_buffer)");
