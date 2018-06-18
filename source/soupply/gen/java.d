@@ -501,7 +501,29 @@ class JavaGenerator : CodeGenerator {
 					stat("packet.safeDecode(buffer)");
 					stat("return packet");
 					endBlock().nl;
-					//TODO variants
+					if(packet.variantField.length) {
+						block("private void encodeMainBody(Buffer _buffer)");
+						stat("this.encodeBody(_buffer)");
+						endBlock().nl;
+						// variants
+						foreach(variant ; packet.variants) {
+							block("public class " ~ camelCaseUpper(variant.name) ~ " extends " ~ SOFTWARE ~ "." ~ game ~ ".Packet").nl;
+							writeFields(p, camelCaseUpper(variant.name), variant.fields);
+							// encode
+							line("@Override");
+							block("public void encodeBody(Buffer _buffer)");
+							stat(convertName(packet.variantField) ~ " = " ~ variant.value);
+							stat("encodeMainBody(_buffer)");
+							createEncodings(p, variant.fields);
+							endBlock().nl;
+							// decode
+							line("@Override");
+							block("public void decodeBody(Buffer _buffer)");
+							createDecodings(p, variant.fields);
+							endBlock().nl;
+							endBlock().nl;
+						}
+					}
 					endBlock();
 					save();
 				}
