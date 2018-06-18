@@ -416,6 +416,7 @@ class JavaGenerator : CodeGenerator {
 
 		// types
 		foreach(type ; info.protocol.types) {
+			immutable clength = type.length.length != 0;
 			auto t = make(game, "src/main/java", SOFTWARE, game, "type", camelCaseUpper(type.name));
 			with(t) {
 				clear();
@@ -428,11 +429,25 @@ class JavaGenerator : CodeGenerator {
 				// encode
 				line("@Override");
 				block("public void encodeBody(Buffer _buffer)");
+				if(clength) {
+					stat("Buffer _nbuffer = new Buffer()");
+					stat("this.encodeBodyImpl(_nbuffer)");
+					createEncoding(t, type.length, "_nbuffer.length");
+					stat("_buffer.writeBytes(_nbuffer.toByteArray())");
+					endBlock().nl;
+					block("private void encodeBodyImpl(Buffer _buffer)");
+				}
 				createEncodings(t, type.fields);
 				endBlock().nl;
 				// decode
 				line("@Override");
 				block("public void decodeBody(Buffer _buffer) throws BufferOverflowException");
+				if(clength) {
+					createDecoding(t, type.length, "final int _length");
+					stat("this.decodeBodyImpl(new Buffer(_buffer.readBytes(_length)))");
+					endBlock().nl;
+					block("private void decodeBodyImpl(Buffer _buffer) throws BufferOverflowException");
+				}
 				createDecodings(t, type.fields);
 				endBlock().nl;
 				endBlock();
