@@ -11,3 +11,5 @@ deploy:
   overwrite: true
   on:
     tags: true
+
+script: mvn install

@@ -507,7 +507,7 @@ class JavaGenerator : CodeGenerator {
 						endBlock().nl;
 						// variants
 						foreach(variant ; packet.variants) {
-							block("public class " ~ camelCaseUpper(variant.name) ~ " extends " ~ SOFTWARE ~ ".util.Packet").nl;
+							block("public class " ~ camelCaseUpper(variant.name) ~ " extends Type").nl;
 							writeFields(p, camelCaseUpper(variant.name), variant.fields);
 							// encode
 							line("@Override");
