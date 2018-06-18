@@ -6,7 +6,7 @@ jdk:
 deploy:
   provider: releases
   api_key: "${TOKEN}"
-  file: "target/*.jar"
+  file: "*/target/*.jar"
   skip_cleanup: true
   overwrite: true
   on:
