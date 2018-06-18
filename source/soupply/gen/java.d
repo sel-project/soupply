@@ -124,10 +124,10 @@ class JavaGenerator : CodeGenerator {
 				openCloseTag("groupId", SOFTWARE);
 				openCloseTag("artifactId", SOFTWARE);
 				openCloseTag("version", d.version_.to!string);
-				openCloseTag("packaging", "jar");
 				closeTag().nl;
 
-				openCloseTag("artifactId", game).nl;
+				openCloseTag("artifactId", game);
+				openCloseTag("packaging", "jar").nl;
 
 				openTag("dependencies");
 				openTag("dependency");
@@ -294,7 +294,7 @@ class JavaGenerator : CodeGenerator {
 					// dynamic array, has length
 					if(arrayLength.length) {
 						// custom length
-						createEncoding(source, arrayLength, "(" ~ arrayLength ~ ")" ~ name ~ ".length", lengthEndianness);
+						createEncoding(source, arrayLength, "(" ~ source.convertType(arrayLength) ~ ")" ~ name ~ ".length", lengthEndianness);
 					} else {
 						// default length
 						createEncoding(source, info.protocol.arrayLength, "(" ~ source.convertType(info.protocol.arrayLength) ~ ")" ~ name ~ ".length");
@@ -328,7 +328,7 @@ class JavaGenerator : CodeGenerator {
 		}
 
 		void createEncodings(CodeMaker source, Protocol.Field[] fields) {
-			foreach(i, field; fields) createEncoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : convertName(field.name), field.endianness);
+			foreach(i, field; fields) createEncoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : convertName(field.name), field.endianness, field.length, field.lengthEndianness);
 		}
 
 		// decoding
@@ -376,7 +376,7 @@ class JavaGenerator : CodeGenerator {
 		}
 
 		void createDecodings(CodeMaker source, Protocol.Field[] fields) {
-			foreach(i, field; fields) createDecoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : convertName(field.name), field.endianness);
+			foreach(i, field; fields) createDecoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : convertName(field.name), field.endianness, field.length, field.lengthEndianness);
 		}
 		
 		// generate packet class
