@@ -124,6 +124,7 @@ class JavaGenerator : CodeGenerator {
 				openCloseTag("groupId", SOFTWARE);
 				openCloseTag("artifactId", SOFTWARE);
 				openCloseTag("version", d.version_.to!string);
+				openCloseTag("packaging", "jar");
 				closeTag().nl;
 
 				openCloseTag("artifactId", game).nl;
@@ -133,6 +134,18 @@ class JavaGenerator : CodeGenerator {
 				openCloseTag("groupId", SOFTWARE);
 				openCloseTag("artifactId", "util");
 				openCloseTag("version", d.version_.to!string);
+				closeTag();
+				closeTag().nl;
+				
+				openTag("build");
+				openCloseTag("finalName", game);
+				openCloseTag("directory", "${project.basedir}/target");
+				openTag("plugins");
+				openTag("plugin");
+				openCloseTag("groupId", "org.apache.maven.plugins");
+				openCloseTag("artifactId", "maven-jar-plugin");
+				openCloseTag("version", "2.3.1");
+				closeTag();
 				closeTag();
 				closeTag().nl;
 
