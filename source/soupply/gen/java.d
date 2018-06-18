@@ -518,7 +518,7 @@ class JavaGenerator : CodeGenerator {
 							endBlock().nl;
 							// decode
 							line("@Override");
-							block("public void decodeBody(Buffer _buffer)");
+							block("public void decodeBody(Buffer _buffer) throws BufferOverflowException");
 							createDecodings(p, variant.fields);
 							endBlock().nl;
 							endBlock().nl;
