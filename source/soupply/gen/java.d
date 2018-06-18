@@ -328,7 +328,13 @@ class JavaGenerator : CodeGenerator {
 		}
 
 		void createEncodings(CodeMaker source, Protocol.Field[] fields) {
-			foreach(i, field; fields) createEncoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : convertName(field.name), field.endianness, field.length, field.lengthEndianness);
+			string nextc = "";
+			foreach(i, field; fields) {
+				if(field.condition.length && field.condition != nextc) source.block("if(" ~ camelCaseLower(field.condition) ~ ")");
+				createEncoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : convertName(field.name), field.endianness, field.length, field.lengthEndianness);
+				if(field.condition.length && (i >= fields.length - 1 || fields[i+1].condition != field.condition)) source.endBlock();
+				nextc = field.condition;
+			}
 		}
 
 		// decoding
@@ -376,7 +382,13 @@ class JavaGenerator : CodeGenerator {
 		}
 
 		void createDecodings(CodeMaker source, Protocol.Field[] fields) {
-			foreach(i, field; fields) createDecoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : convertName(field.name), field.endianness, field.length, field.lengthEndianness);
+			string nextc = "";
+			foreach(i, field; fields) {
+				if(field.condition.length && field.condition != nextc) source.block("if(" ~ camelCaseLower(field.condition) ~ ")");
+				createDecoding(source, field.type, field.name=="?" ? "unknown" ~ i.to!string : convertName(field.name), field.endianness, field.length, field.lengthEndianness);
+				if(field.condition.length && (i >= fields.length - 1 || fields[i+1].condition != field.condition)) source.endBlock();
+				nextc = field.condition;
+			}
 		}
 		
 		// generate packet class
