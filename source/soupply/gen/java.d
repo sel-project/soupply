@@ -576,7 +576,8 @@ class JavaGenerator : CodeGenerator {
 				endBlock().nl;
 				block("public Metadata" ~ name ~ "(" ~ id ~ " id)");
 				if(type.type.indexOf("<") != -1 || convertType(type.type).startsWith(SOFTWARE ~ ".")) stat("this(id, new " ~ convertType(type.type) ~ "())");
-				else stat("this(id, 0)");
+				else if(type.type == "string") stat("this(id, \"\")");
+				else stat("this(id, (" ~ convertType(type.type) ~ ")0)");
 				endBlock().nl;
 				// encode
 				line("@Override");
@@ -601,7 +602,7 @@ class JavaGenerator : CodeGenerator {
 			stat("package " ~ SOFTWARE ~ "." ~ game ~ ".metadata").nl;
 			stat("import java.util.HashMap");
 			stat("import " ~ SOFTWARE ~ ".util.*").nl;
-			block("public class Metadata extends HashMap<" ~ capitalize(ty) ~ ", MetadataValue>").nl;
+			block("public class Metadata extends HashMap<" ~ (ty=="int" ? "Integer" : capitalize(ty)) ~ ", MetadataValue>").nl;
 			// add
 			block("public void add(MetadataValue value)");
 			stat("this.put(value.id, value)");
