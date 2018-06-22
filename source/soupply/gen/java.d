@@ -563,19 +563,22 @@ class JavaGenerator : CodeGenerator {
 			immutable name = camelCaseUpper(type.name);
 			auto tt = make(game, "src/main/java", SOFTWARE, game, "metadata/Metadata" ~ name);
 			with(tt) {
+				immutable conv = convertType(type.type);
 				clear();
 				stat("package " ~ SOFTWARE ~ "." ~ game ~ ".metadata").nl;
 				stat("import java.util.*");
 				stat("import " ~ SOFTWARE ~ ".util.*").nl;
 				block("public class Metadata" ~ name ~ " extends MetadataValue").nl;
-				stat("public " ~ convertType(type.type) ~ " value").nl;
+				stat("public " ~ conv ~ " value").nl;
 				// ctor
 				block("public Metadata" ~ name ~ "(" ~ id ~ " id, " ~ convertType(type.type) ~ " value)");
 				stat("super(id, (" ~ ty ~ ")" ~ type.id.to!string ~ ")");
 				stat("this.value = value");
 				endBlock().nl;
 				block("public Metadata" ~ name ~ "(" ~ id ~ " id)");
-				if(type.type.indexOf("<") != -1 || convertType(type.type).startsWith(SOFTWARE ~ ".")) stat("this(id, new " ~ convertType(type.type) ~ "())");
+				if(type.type.indexOf("<") != -1 || conv.startsWith(SOFTWARE ~ ".")) stat("this(id, new " ~ convertType(type.type) ~ "())");
+				else if(conv.indexOf("[") != -1) stat("this(id, new " ~ conv ~ "{})");
+				else if(type.type == "bool") stat("this(id, false)");
 				else if(type.type == "string") stat("this(id, \"\")");
 				else stat("this(id, (" ~ convertType(type.type) ~ ")0)");
 				endBlock().nl;
