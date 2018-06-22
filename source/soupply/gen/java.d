@@ -398,7 +398,7 @@ class JavaGenerator : CodeGenerator {
 			clear(); // remove pre-generated package declaration
 			stat("package " ~ SOFTWARE ~ "." ~ game).nl;
 			stat("import " ~ SOFTWARE ~ ".util.Buffer");
-			stat("import " ~ SOFTWARE ~ ".util.BufferOverflowException").nl;
+			stat("import " ~ SOFTWARE ~ ".util.DecodeException").nl;
 			block("public abstract class Packet extends " ~ SOFTWARE ~ ".util.Packet").nl;
 			stat("public abstract " ~ convertType(info.protocol.id) ~ " getId()").nl;
 			
@@ -414,7 +414,7 @@ class JavaGenerator : CodeGenerator {
 			
 			// decode
 			line("@Override");
-			block("public void decode(byte[] data) throws BufferOverflowException");
+			block("public void decode(byte[] data) throws DecodeException");
 			stat("Buffer _buffer = new Buffer(data)");
 			createDecoding(pk, info.protocol.id, "final int _id");
 			if(info.protocol.padding) stat("_buffer.readBytes(" ~ info.protocol.padding.to!string ~ ")");
@@ -453,12 +453,12 @@ class JavaGenerator : CodeGenerator {
 				endBlock().nl;
 				// decode
 				line("@Override");
-				block("public void decodeBody(Buffer _buffer) throws BufferOverflowException");
+				block("public void decodeBody(Buffer _buffer) throws DecodeException");
 				if(clength) {
 					createDecoding(t, type.length, "final int _length");
 					stat("this.decodeBodyImpl(new Buffer(_buffer.readBytes(_length)))");
 					endBlock().nl;
-					block("private void decodeBodyImpl(Buffer _buffer) throws BufferOverflowException");
+					block("private void decodeBodyImpl(Buffer _buffer) throws DecodeException");
 				}
 				createDecodings(t, type.fields);
 				endBlock().nl;
@@ -492,7 +492,7 @@ class JavaGenerator : CodeGenerator {
 					endBlock().nl;
 					// decode
 					line("@Override");
-					block("public void decodeBody(Buffer _buffer) throws BufferOverflowException");
+					block("public void decodeBody(Buffer _buffer) throws DecodeException");
 					createDecodings(p, packet.fields);
 					endBlock().nl;
 					// static decode
@@ -518,7 +518,7 @@ class JavaGenerator : CodeGenerator {
 							endBlock().nl;
 							// decode
 							line("@Override");
-							block("public void decodeBody(Buffer _buffer) throws BufferOverflowException");
+							block("public void decodeBody(Buffer _buffer) throws DecodeException");
 							createDecodings(p, variant.fields);
 							endBlock().nl;
 							endBlock().nl;
@@ -555,7 +555,7 @@ class JavaGenerator : CodeGenerator {
 			createEncoding(m, info.metadata.type, "type");
 			endBlock().nl;
 			// decode
-			stat("public abstract void decodeBody(Buffer _buffer) throws BufferOverflowException");
+			stat("public abstract void decodeBody(Buffer _buffer) throws DecodeException");
 			endBlock();
 			save();
 		}
@@ -575,7 +575,8 @@ class JavaGenerator : CodeGenerator {
 				stat("this.value = value");
 				endBlock().nl;
 				block("public Metadata" ~ name ~ "(" ~ id ~ " id)");
-				//TODO ctor with default value (new class or 0)
+				if(type.type.indexOf("<") != -1 || convertType(type.type).startsWith(SOFTWARE ~ ".")) stat("this(id, new " ~ convertType(type.type) ~ "())");
+				else stat("this(id, 0)");
 				endBlock().nl;
 				// encode
 				line("@Override");
@@ -585,7 +586,7 @@ class JavaGenerator : CodeGenerator {
 				endBlock().nl;
 				// decode
 				line("@Override");
-				block("public void decodeBody(Buffer _buffer) throws BufferOverflowException");
+				block("public void decodeBody(Buffer _buffer) throws DecodeException");
 				createDecoding(tt, type.type, "value", type.endianness);
 				endBlock().nl;
 				endBlock();
@@ -598,7 +599,7 @@ class JavaGenerator : CodeGenerator {
 		with(mm) {
 			clear();
 			stat("package " ~ SOFTWARE ~ "." ~ game ~ ".metadata").nl;
-			stat("import java.util.*");
+			stat("import java.util.HashMap");
 			stat("import " ~ SOFTWARE ~ ".util.*").nl;
 			block("public class Metadata extends HashMap<" ~ capitalize(ty) ~ ", MetadataValue>").nl;
 			// add
@@ -614,7 +615,7 @@ class JavaGenerator : CodeGenerator {
 			if(info.metadata.suffix.length) createEncoding(mm, info.metadata.id, "(" ~ id ~ ")" ~ info.metadata.suffix);
 			endBlock().nl;
 			// decode
-			block("public void decodeBody(Buffer _buffer) throws BufferOverflowException");
+			block("public void decodeBody(Buffer _buffer) throws DecodeException");
 			if(info.metadata.length.length) {
 				createDecoding(mm, info.metadata.length, convertType(info.metadata.length) ~ " length");
 				block("while(length-- > 0)");
@@ -626,15 +627,15 @@ class JavaGenerator : CodeGenerator {
 				stat("if(id == " ~ info.metadata.suffix ~ ") break");
 			}
 			createDecoding(mm, info.metadata.type, "final " ~ ty ~ " type");
-			stat("MetadataValue value = getMetadataValue(id, type)"); //TODO may be null
+			stat("MetadataValue value = getMetadataValue(id, type)");
 			stat("value.decodeBody(_buffer)");
 			stat("this.add(value)");
 			endBlock();
 			endBlock().nl;
-			block("public static MetadataValue getMetadataValue(" ~ id ~ " id, " ~ ty ~ " type)");
+			block("public static MetadataValue getMetadataValue(" ~ id ~ " id, " ~ ty ~ " type) throws MetadataException");
 			block("switch(type)");
 			foreach(type ; info.metadata.types) stat("case " ~ type.id.to!string ~ ": return new Metadata" ~ camelCaseUpper(type.name) ~ "(id)");
-			stat("default: return null");
+			stat("default: throw new MetadataException(id, type)");
 			endBlock();
 			endBlock();
 			endBlock();

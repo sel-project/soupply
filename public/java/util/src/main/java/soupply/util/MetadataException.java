@@ -22,20 +22,10 @@
  */
 package soupply.util;
 
-public abstract class Packet extends Type
-{
+public class MetadataException extends DecodeException {
 	
-	public abstract byte[] encode();
-	
-	public abstract void decode(byte[] buffer) throws DecodeException;
-	
-	public final boolean safeDecode(byte[] buffer) {
-		try {
-			this.decode(buffer);
-			return true;
-		} catch(DecodeException e) {
-			return false;
-		}
+	public MetadataException(long id, long type) {
+		super("Unknown type " + type + " for id " + id);
 	}
-
+	
 }

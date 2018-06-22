@@ -22,9 +22,7 @@
  */
 package soupply.util;
 
-import java.io.IOException;
-
-public class BufferOverflowException extends IOException {
+public class BufferOverflowException extends DecodeException {
 	
 	public BufferOverflowException(int required, int length) {
 		super("The required length of " + required + " has exceeded the buffer length of " + length + " bytes");

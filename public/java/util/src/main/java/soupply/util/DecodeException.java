@@ -22,20 +22,12 @@
  */
 package soupply.util;
 
-public abstract class Packet extends Type
-{
-	
-	public abstract byte[] encode();
-	
-	public abstract void decode(byte[] buffer) throws DecodeException;
-	
-	public final boolean safeDecode(byte[] buffer) {
-		try {
-			this.decode(buffer);
-			return true;
-		} catch(DecodeException e) {
-			return false;
-		}
-	}
+import java.io.IOException;
 
+public class DecodeException extends IOException {
+	
+	public DecodeException(String reason) {
+		super(reason);
+	}
+	
 }
