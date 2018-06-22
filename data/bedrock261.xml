@@ -513,6 +513,7 @@
 					<constant name="vanilla" value="0" />
 					<constant name="education" value="1" />
 				</field>
+				<field name="edu-features-enabled" type="bool" />
 				<field name="rain-level" type="float">
 					Intensity of the rain or the snow. Any value lower than or equals to 0 means no rain.
 				</field>
@@ -525,19 +526,25 @@
 				</field>
 				<field name="texture-required" type="bool" />
 				<field name="game-rules" type="rule[]" />
-				<field name="bonus-chest-enabled" type="bool" />
-				<field name="start-with-map-enabled" type="bool" />
-				<field name="trust-players-enabled" type="bool" />
+				<field name="has-bonus-chest-enabled" type="bool" />
+				<field name="has-start-with-map-enabled" type="bool" />
+				<field name="has-trust-players-enabled" type="bool" />
 				<field name="default-permission-level" type="varint" />
 				<field name="xbox-live-broadcast-mode" type="varint" />
 				<field name="server-chunk-tick-radius" type="uint" />
+				<field name="has-platform-broadcast" type="bool" />
+				<field name="platform-broadcast-mode" type="varint" />
+				<field name="xbox-live-broadcast-intent" type="bool" />
+				<field name="has-locked-behavior-pack" type="bool" />
+				<field name="has-locked-resource-pack" type="bool" />
+				<field name="is-from-locked-world-template" type="bool" />
 				<field name="level-id" type="string" />
 				<field name="world-name" type="string">
 					World's name that will be displayed in the game's world settings. It can contain formatting codes.
 				</field>
 				<field name="premium-world-template" type="string" />
-				<field name="?" type="bool" />
-				<field name="world-ticks" type="ulong" />
+				<field name="is-trial" type="bool" />
+				<field name="current-tick" type="ulong" />
 				<field name="enchantment-seed" type="varint" />
 			</packet>
 
@@ -654,6 +661,10 @@
 					<constant name="no-graphic" value="4" />
 					<constant name="priority" value="8" />
 				</field>
+				<field name="data-layer-id" type="varuint">
+					<constant name="normal" value="0" />
+					<constant name="liquid" value="1" />
+				</field>
 			</packet>
 
 			<packet name="add-painting" id="22" clientbound="true" serverbound="false">
@@ -712,134 +723,177 @@
 					<constant name="land" value="35" />
 					<constant name="saddle" value="36" />
 					<constant name="armor" value="37" />
-					<constant name="add-chest" value="38" />
-					<constant name="throw" value="39" />
-					<constant name="attack" value="40" />
-					<constant name="attack-nodamage" value="41" />
-					<constant name="attack-strong" value="42" />
-					<constant name="warn" value="43" />
-					<constant name="shear" value="44" />
-					<constant name="milk" value="45" />
-					<constant name="thunder" value="46" />
-					<constant name="explode" value="47" />
-					<constant name="fire" value="48" />
-					<constant name="ignite" value="49" />
-					<constant name="fuse" value="50" />
-					<constant name="stare" value="51" />
-					<constant name="spawn" value="52" />
-					<constant name="shoot" value="53" />
-					<constant name="break-block" value="54" />
-					<constant name="launch" value="55" />
-					<constant name="blast" value="56" />
-					<constant name="large-blast" value="57" />
-					<constant name="twinkle" value="58" />
-					<constant name="remedy" value="59" />
-					<constant name="unfect" value="60" />
-					<constant name="levelup" value="61" />
-					<constant name="bow-hit" value="62" />
-					<constant name="bullet-hit" value="63" />
-					<constant name="extinguish-fire" value="64" />
-					<constant name="item-fizz" value="65" />
-					<constant name="chest-open" value="66" />
-					<constant name="chest-closed" value="67" />
-					<constant name="shulker-box-open" value="68" />
-					<constant name="shulker-box-close" value="69" />
-					<constant name="power-on" value="70" />
-					<constant name="power-off" value="71" />
-					<constant name="attach" value="72" />
-					<constant name="detach" value="73" />
-					<constant name="deny" value="74" />
-					<constant name="tripod" value="75" />
-					<constant name="pop" value="76" />
-					<constant name="drop-slot" value="77" />
-					<constant name="note" value="78" />
-					<constant name="thorns" value="79" />
-					<constant name="piston-in" value="80" />
-					<constant name="piston-out" value="81" />
-					<constant name="portal" value="82" />
-					<constant name="water" value="83" />
-					<constant name="lava-pop" value="84" />
-					<constant name="lava" value="85" />
-					<constant name="burp" value="86" />
-					<constant name="bucket-fill-water" value="87" />
-					<constant name="bucket-fill-lava" value="88" />
-					<constant name="bucket-empty-water" value="89" />
-					<constant name="bucket-empty-lava" value="90" />
-					<constant name="record-13" value="91" />
-					<constant name="record-cat" value="92" />
-					<constant name="record-blocks" value="93" />
-					<constant name="record-chirp" value="94" />
-					<constant name="record-far" value="95" />
-					<constant name="record-mall" value="96" />
-					<constant name="record-mellohi" value="97" />
-					<constant name="record-stal" value="98" />
-					<constant name="record-strad" value="99" />
-					<constant name="record-ward" value="100" />
-					<constant name="record-11" value="101" />
-					<constant name="record-wait" value="102" />
-					<constant name="guardian-flop" value="104" />
-					<constant name="elderguardian-curse" value="105" />
-					<constant name="mob-warning" value="106" />
-					<constant name="mob-warning-baby" value="107" />
-					<constant name="teleport" value="108" />
-					<constant name="shulker-open" value="109" />
-					<constant name="shulker-close" value="110" />
-					<constant name="haggle" value="111" />
-					<constant name="haggle-yes" value="112" />
-					<constant name="haggle-no" value="113" />
-					<constant name="haggle-idle" value="114" />
-					<constant name="chorus-grow" value="115" />
-					<constant name="chorus-death" value="116" />
-					<constant name="glass" value="117" />
-					<constant name="cast-spell" value="118" />
-					<constant name="prepare-attack" value="119" />
-					<constant name="prepare-summon" value="120" />
-					<constant name="prepare-wololo" value="121" />
-					<constant name="fang" value="122" />
-					<constant name="charge" value="123" />
-					<constant name="camera-take-picture" value="124" />
-					<constant name="leashknot-place" value="125" />
-					<constant name="leashknot-break" value="126" />
-					<constant name="growl" value="127" />
-					<constant name="whine" value="128" />
-					<constant name="pant" value="129" />
-					<constant name="purr" value="130" />
-					<constant name="purreow" value="131" />
-					<constant name="death-min-volume" value="132" />
-					<constant name="death-mid-volume" value="133" />
-					<constant name="initiate-blaze" value="134" />
-					<constant name="initiate-cave-spider" value="135" />
-					<constant name="initiate-creeper" value="136" />
-					<constant name="initiate-elder-guardian" value="137" />
-					<constant name="initiate-ender-dragon" value="138" />
-					<constant name="initiate-enderman" value="139" />
-					<constant name="initiate-evocation-illager" value="141" />
-					<constant name="initiate-ghast" value="142" />
-					<constant name="initiate-husk" value="143" />
-					<constant name="initiate-illusion-illager" value="144" />
-					<constant name="initiate-magma-cube" value="145" />
-					<constant name="initiate-polar-bear" value="146" />
-					<constant name="initiate-shulker" value="147" />
-					<constant name="initiate-silverfish" value="148" />
-					<constant name="initiate-skeleton" value="149" />
-					<constant name="initiate-slime" value="150" />
-					<constant name="initiate-spider" value="151" />
-					<constant name="initiate-stray" value="152" />
-					<constant name="initiate-vex" value="153" />
-					<constant name="initiate-vindication-illager" value="154" />
-					<constant name="initiate-witch" value="155" />
-					<constant name="initiate-wither" value="156" />
-					<constant name="initiate-wither-skeleton" value="157" />
-					<constant name="initiate-wolf" value="158" />
-					<constant name="initiate-zombie" value="159" />
-					<constant name="initiate-zombie-pigman" value="160" />
-					<constant name="initiate-zombie-villager" value="161" />
-					<constant name="block-end-portal-frame-fill" value="162" />
-					<constant name="block-end-portal-spawn" value="163" />
-					<constant name="random-anvil-use" value="164" />
-					<constant name="bottle-dragonbreath" value="165" />
-					<constant name="default" value="166" />
-					<constant name="undefined" value="167" />
+					<constant name="mob-armor-stand-place" value="38" />
+					<constant name="add-chest" value="39" />
+					<constant name="throw" value="40" />
+					<constant name="attack" value="41" />
+					<constant name="attack-nodamage" value="42" />
+					<constant name="attack-strong" value="43" />
+					<constant name="warn" value="44" />
+					<constant name="shear" value="45" />
+					<constant name="milk" value="46" />
+					<constant name="thunder" value="47" />
+					<constant name="explode" value="48" />
+					<constant name="fire" value="49" />
+					<constant name="ignite" value="50" />
+					<constant name="fuse" value="51" />
+					<constant name="stare" value="52" />
+					<constant name="spawn" value="53" />
+					<constant name="shoot" value="54" />
+					<constant name="break-block" value="55" />
+					<constant name="launch" value="56" />
+					<constant name="blast" value="57" />
+					<constant name="large-blast" value="58" />
+					<constant name="twinkle" value="59" />
+					<constant name="remedy" value="60" />
+					<constant name="unfect" value="61" />
+					<constant name="levelup" value="62" />
+					<constant name="bow-hit" value="63" />
+					<constant name="bullet-hit" value="64" />
+					<constant name="extinguish-fire" value="65" />
+					<constant name="item-fizz" value="66" />
+					<constant name="chest-open" value="67" />
+					<constant name="chest-closed" value="68" />
+					<constant name="shulkerbox-open" value="69" />
+					<constant name="shulkerbox-closed" value="70" />
+					<constant name="enderchest-open" value="71" />
+					<constant name="enderchest-closed" value="72" />
+					<constant name="power-on" value="73" />
+					<constant name="power-off" value="74" />
+					<constant name="attach" value="75" />
+					<constant name="detach" value="76" />
+					<constant name="deny" value="77" />
+					<constant name="tripod" value="78" />
+					<constant name="pop" value="79" />
+					<constant name="drop-slot" value="80" />
+					<constant name="note" value="81" />
+					<constant name="thorns" value="82" />
+					<constant name="piston-in" value="83" />
+					<constant name="piston-out" value="84" />
+					<constant name="portal" value="85" />
+					<constant name="water" value="86" />
+					<constant name="lava-pop" value="87" />
+					<constant name="lava" value="88" />
+					<constant name="burp" value="89" />
+					<constant name="bucket-fill-water" value="90" />
+					<constant name="bucket-fill-lava" value="91" />
+					<constant name="bucket-empty-water" value="92" />
+					<constant name="bucket-empty-lava" value="93" />
+					<constant name="armor-equip-chain" value="94" />
+					<constant name="armor-equip-diamond" value="95" />
+					<constant name="armor-equip-generic" value="96" />
+					<constant name="armor-equip-gold" value="97" />
+					<constant name="armor-equip-iron" value="98" />
+					<constant name="armor-equip-leather" value="99" />
+					<constant name="armor-equip-elytra" value="100" />
+					<constant name="record-13" value="101" />
+					<constant name="record-cat" value="102" />
+					<constant name="record-blocks" value="103" />
+					<constant name="record-chirp" value="104" />
+					<constant name="record-far" value="105" />
+					<constant name="record-mall" value="106" />
+					<constant name="record-mellohi" value="107" />
+					<constant name="record-stal" value="108" />
+					<constant name="record-strad" value="109" />
+					<constant name="record-ward" value="110" />
+					<constant name="record-11" value="111" />
+					<constant name="record-wait" value="112" />
+					<constant name="stop-record" value="113" />
+					<constant name="flop" value="114" />
+					<constant name="elderguardian-curse" value="115" />
+					<constant name="mob-warning" value="116" />
+					<constant name="mob-warning-baby" value="117" />
+					<constant name="teleport" value="118" />
+					<constant name="shulker-open" value="119" />
+					<constant name="shulker-close" value="120" />
+					<constant name="haggle" value="121" />
+					<constant name="haggle-yes" value="122" />
+					<constant name="haggle-no" value="123" />
+					<constant name="haggle-idle" value="124" />
+					<constant name="chorusgrow" value="125" />
+					<constant name="chorusdeath" value="126" />
+					<constant name="glass" value="127" />
+					<constant name="potion-brewed" value="128" />
+					<constant name="cast-spell" value="129" />
+					<constant name="prepare-attack" value="130" />
+					<constant name="prepare-summon" value="131" />
+					<constant name="prepare-wololo" value="132" />
+					<constant name="fang" value="133" />
+					<constant name="charge" value="134" />
+					<constant name="camera-take-picture" value="135" />
+					<constant name="leashknot-place" value="136" />
+					<constant name="leashknot-break" value="137" />
+					<constant name="growl" value="138" />
+					<constant name="whine" value="139" />
+					<constant name="pant" value="140" />
+					<constant name="purr" value="141" />
+					<constant name="purreow" value="142" />
+					<constant name="death-min-volume" value="143" />
+					<constant name="death-mid-volume" value="144" />
+					<constant name="imitate-blaze" value="145" />
+					<constant name="imitate-cave-spider" value="146" />
+					<constant name="imitate-creeper" value="147" />
+					<constant name="imitate-elder-guardian" value="148" />
+					<constant name="imitate-ender-dragon" value="149" />
+					<constant name="imitate-enderman" value="150" />
+					<constant name="imitate-evocation-illager" value="152" />
+					<constant name="imitate-ghast" value="153" />
+					<constant name="imitate-husk" value="154" />
+					<constant name="imitate-illusion-illager" value="155" />
+					<constant name="imitate-magma-cube" value="156" />
+					<constant name="imitate-polar-bear" value="157" />
+					<constant name="imitate-shulker" value="158" />
+					<constant name="imitate-silverfish" value="159" />
+					<constant name="imitate-skeleton" value="160" />
+					<constant name="imitate-slime" value="161" />
+					<constant name="imitate-spider" value="162" />
+					<constant name="imitate-stray" value="163" />
+					<constant name="imitate-vex" value="164" />
+					<constant name="imitate-vindication-illager" value="165" />
+					<constant name="imitate-witch" value="166" />
+					<constant name="imitate-wither" value="167" />
+					<constant name="imitate-wither-skeleton" value="168" />
+					<constant name="imitate-wolf" value="169" />
+					<constant name="imitate-zombie" value="170" />
+					<constant name="imitate-zombie-pigman" value="171" />
+					<constant name="imitate-zombie-villager" value="172" />
+					<constant name="block-end-portal-frame-fill" value="173" />
+					<constant name="block-end-portal-spawn" value="174" />
+					<constant name="random-anvil-use" value="175" />
+					<constant name="bottle-dragonbreath" value="176" />
+					<constant name="portal-travel" value="177" />
+					<constant name="item-trident-hit" value="178" />
+					<constant name="item-trident-return" value="179" />
+					<constant name="item-trident-riptide-1" value="180" />
+					<constant name="item-trident-riptide-2" value="181" />
+					<constant name="item-trident-riptide-3" value="182" />
+					<constant name="item-trident-throw" value="183" />
+					<constant name="item-trident-thunder" value="184" />
+					<constant name="item-trident-hit-ground" value="185" />
+					<constant name="default" value="186" />
+					<constant name="elemconstruct-open" value="188" />
+					<constant name="icebomb-hit" value="189" />
+					<constant name="balloonpop" value="190" />
+					<constant name="lt-reaction-icebomb" value="191" />
+					<constant name="lt-reaction-bleach" value="192" />
+					<constant name="lt-reaction-epaste" value="193" />
+					<constant name="lt-reaction-epaste2" value="194" />
+					<constant name="lt-reaction-fertilizer" value="199" />
+					<constant name="lt-reaction-fireball" value="200" />
+					<constant name="lt-reaction-mgsalt" value="201" />
+					<constant name="lt-reaction-miscfire" value="202" />
+					<constant name="lt-reaction-fire" value="203" />
+					<constant name="lt-reaction-miscexplosion" value="204" />
+					<constant name="lt-reaction-miscmystical" value="205" />
+					<constant name="lt-reaction-miscmystical2" value="206" />
+					<constant name="lt-reaction-product" value="207" />
+					<constant name="sparkler-use" value="208" />
+					<constant name="glowstick-use" value="209" />
+					<constant name="sparkler-active" value="210" />
+					<constant name="convert-to-drowned" value="211" />
+					<constant name="bucket-fill-fish" value="212" />
+					<constant name="bucket-empty-fish" value="213" />
+					<constant name="undefined" value="214" />
 				</field>
 				<field name="position" type="entity-position">
 					Position where the sound was generated. The closer to the player the more intense will be on the client.

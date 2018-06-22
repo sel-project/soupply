@@ -679,58 +679,6 @@ class JavaGenerator : CodeGenerator {
 				data ~= space ~ "\treturn \"" ~ className ~ "(" ~ (f.length ? (f.join(" + \", ") ~ " + \"") : "") ~ ")\";\n";
 				data ~= space ~ "}\n\n";
 			}
-
-			// metadata
-			auto m = game in metadatas;
-			string data = "package sul.metadata;\n\nimport java.nio.charset.StandardCharsets;\n\nimport sul.utils.*;\n\n";
-			data ~= "@SuppressWarnings(\"unused\")\n";
-			data ~= "public class " ~ toPascalCase(game) ~ " extends Stream {\n\n";
-			if(m) {
-				//TODO variables
-				//TODO length
-				data ~= "\t@Override\n\tpublic int length() {\n";
-				data ~= "\t\treturn 1;\n"; // just the length or the suffix
-				data ~= "\t}\n\n";
-				//TODO encode
-				data ~= "\t@Override\n\tpublic byte[] encode() {\n";
-				// only encoding as empty
-				if(m.data.length.length) data ~= "\t\t" ~ createEncoding(m.data.length, "0") ~ "\n";
-				else if(m.data.suffix.length) data ~= "\t\t" ~ createEncoding("ubyte", "(byte)" ~ m.data.suffix) ~ "\n";
-				data ~= "\t\treturn this.getBuffer();\n";
-				data ~= "\t}\n\n";
-				//TODO decode
-				data ~= "\t@Override\n\tpublic void decode(byte[] buffer) {\n";
-				// decoding but not saving
-				data ~= "\t\tbyte metadata;\n";
-				if(m.data.length.length) {
-					data ~= "\t\t" ~ createDecoding(m.data.length, "int length") ~ "\n";
-					data ~= "\t\twhile(length-- > 0) {\n";
-					data ~= "\t\t\t" ~ createDecoding("byte", "metadata") ~ "\n";
-				} else if(m.data.suffix.length) {
-					data ~= "\t\twhile(!this.eof() && (" ~ createDecoding("byte", "metadata")[0..$-1] ~ ") != (byte)" ~ m.data.suffix ~ ") {\n";
-				}
-				data ~= "\t\t\tswitch(" ~ createDecoding("byte", "")[1..$-1] ~ ") {\n";
-				foreach(type ; m.data.types) {
-					data ~= "\t\t\t\tcase " ~ type.id.to!string ~ ":\n";
-					data ~= "\t\t\t\t\t" ~ convert(type.type) ~ " _" ~ type.id.to!string ~ ";\n";
-					data ~= "\t\t\t\t\t" ~ createDecoding(type.type, "_" ~ type.id.to!string, type.endianness) ~ "\n";
-					data ~= "\t\t\t\t\tbreak;\n";
-				}
-				data ~= "\t\t\t\tdefault: break;\n";
-				data ~= "\t\t\t}\n";
-				data ~= "\t\t}\n";
-				data ~= "\t}\n\n";
-			} else {
-				// dummy class
-				data ~= "\t@Override\n\tpublic int length() {\n\t\treturn 0;\n\t}\n\n";
-				data ~= "\t@Override\n\tpublic byte[] encode() {\n\t\tthrow new MetadataException(\"Metadata for " ~ game ~ " is not supported\");\n\t}\n\n";
-				data ~= "\t@Override\n\tpublic void decode(byte[] buffer) {\n\t\tthrow new MetadataException(\"Metadata for " ~ game ~ " is not supported\");\n\t}\n\n";
-			}
-			data ~= "}";
-			mkdirRecurse("../src/java/sul/metadata");
-			if(usesMetadata) write("../src/java/sul/metadata/" ~ toPascalCase(game) ~ ".java", data, m ? "metadata/" ~ game : "");
-
-		}
 		
 		+/
 		
