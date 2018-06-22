@@ -571,7 +571,7 @@ class JavaGenerator : CodeGenerator {
 				stat("public " ~ convertType(type.type) ~ " value").nl;
 				// ctor
 				block("public Metadata" ~ name ~ "(" ~ id ~ " id, " ~ convertType(type.type) ~ " value)");
-				stat("super(id, " ~ type.id.to!string ~ ")");
+				stat("super(id, (" ~ ty ~ ")" ~ type.id.to!string ~ ")");
 				stat("this.value = value");
 				endBlock().nl;
 				block("public Metadata" ~ name ~ "(" ~ id ~ " id)");
