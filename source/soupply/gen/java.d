@@ -531,16 +531,112 @@ class JavaGenerator : CodeGenerator {
 		}
 
 		// metadata
-		with(make(game, "src/main/java", SOFTWARE, game, "Metadata")) {
+
+		// metadata values
+		auto m = make(game, "src/main/java", SOFTWARE, game, "metadata/MetadataValue");
+		immutable id = m.convertType(info.metadata.id);
+		immutable ty = m.convertType(info.metadata.type);
+		with(m) {
 			clear();
-			stat("package " ~ SOFTWARE ~ "." ~ game).nl;
+			stat("package " ~ SOFTWARE ~ "." ~ game ~ ".metadata").nl;
+			stat("import java.util.*");
 			stat("import " ~ SOFTWARE ~ ".util.*").nl;
-			block("public class Metadata").nl;
-			//TODO
+			block("public abstract class MetadataValue").nl;
+			stat("public " ~ id ~ " id");
+			stat("private " ~ ty ~ " type").nl;
+			// ctor
+			block("public MetadataValue(" ~ id ~ " id, " ~ ty ~ " type)");
+			stat("this.id = id");
+			stat("this.type = type");
+			endBlock().nl;
+			// encode
 			block("public void encodeBody(Buffer _buffer)");
+			createEncoding(m, info.metadata.id, "id");
+			createEncoding(m, info.metadata.type, "type");
 			endBlock().nl;
-			block("public void decodeBody(Buffer _buffer)");
+			// decode
+			stat("public abstract void decodeBody(Buffer _buffer) throws BufferOverflowException");
+			endBlock();
+			save();
+		}
+		foreach(type ; info.metadata.types) {
+			immutable name = camelCaseUpper(type.name);
+			auto tt = make(game, "src/main/java", SOFTWARE, game, "metadata/Metadata" ~ name);
+			with(tt) {
+				clear();
+				stat("package " ~ SOFTWARE ~ "." ~ game ~ ".metadata").nl;
+				stat("import java.util.*");
+				stat("import " ~ SOFTWARE ~ ".util.*").nl;
+				block("public class Metadata" ~ name ~ " extends MetadataValue").nl;
+				stat("public " ~ convertType(type.type) ~ " value").nl;
+				// ctor
+				block("public Metadata" ~ name ~ "(" ~ id ~ " id, " ~ convertType(type.type) ~ " value)");
+				stat("super(id, " ~ type.id.to!string ~ ")");
+				stat("this.value = value");
+				endBlock().nl;
+				block("public Metadata" ~ name ~ "(" ~ id ~ " id)");
+				//TODO ctor with default value (new class or 0)
+				endBlock().nl;
+				// encode
+				line("@Override");
+				block("public void encodeBody(Buffer _buffer)");
+				stat("super.encodeBody(_buffer)");
+				createEncoding(tt, type.type, "value", type.endianness);
+				endBlock().nl;
+				// decode
+				line("@Override");
+				block("public void decodeBody(Buffer _buffer) throws BufferOverflowException");
+				createDecoding(tt, type.type, "value", type.endianness);
+				endBlock().nl;
+				endBlock();
+				save();
+			}
+		}
+
+		// metadata
+		auto mm = make(game, "src/main/java", SOFTWARE, game, "metadata/Metadata");
+		with(mm) {
+			clear();
+			stat("package " ~ SOFTWARE ~ "." ~ game ~ ".metadata").nl;
+			stat("import java.util.*");
+			stat("import " ~ SOFTWARE ~ ".util.*").nl;
+			block("public class Metadata extends HashMap<" ~ capitalize(ty) ~ ", MetadataValue>").nl;
+			// add
+			block("public void add(MetadataValue value)");
+			stat("this.put(value.id, value)");
 			endBlock().nl;
+			// encode
+			block("public void encodeBody(Buffer _buffer)");
+			if(info.metadata.length.length) createEncoding(mm, info.metadata.length, "this.size()");
+			block("for(MetadataValue value : this.values())");
+			stat("value.encodeBody(_buffer)");
+			endBlock();
+			if(info.metadata.suffix.length) createEncoding(mm, info.metadata.id, "(" ~ id ~ ")" ~ info.metadata.suffix);
+			endBlock().nl;
+			// decode
+			block("public void decodeBody(Buffer _buffer) throws BufferOverflowException");
+			if(info.metadata.length.length) {
+				createDecoding(mm, info.metadata.length, convertType(info.metadata.length) ~ " length");
+				block("while(length-- > 0)");
+				createDecoding(mm, info.metadata.id, "final " ~ id ~ " id");
+			} else {
+				// suffix
+				block("while(true)");
+				createDecoding(mm, info.metadata.id, "final " ~ id ~ " id");
+				stat("if(id == " ~ info.metadata.suffix ~ ") break");
+			}
+			createDecoding(mm, info.metadata.type, "final " ~ ty ~ " type");
+			stat("MetadataValue value = getMetadataValue(id, type)"); //TODO may be null
+			stat("value.decodeBody(_buffer)");
+			stat("this.add(value)");
+			endBlock();
+			endBlock().nl;
+			block("public static MetadataValue getMetadataValue(" ~ id ~ " id, " ~ ty ~ " type)");
+			block("switch(type)");
+			foreach(type ; info.metadata.types) stat("case " ~ type.id.to!string ~ ": return new Metadata" ~ camelCaseUpper(type.name) ~ "(id)");
+			stat("default: return null");
+			endBlock();
+			endBlock();
 			endBlock();
 			save();
 		}
@@ -672,7 +768,7 @@ class JavaGenerator : CodeGenerator {
 		if(a) return convertType(game, *a ~ e);
 		if(e.length && e[0] == '<') return toPascalCase(t) ~ toUpper(e[1..e.indexOf(">")]) ~ e[e.indexOf(">")+1..$];
 		else if(defaultTypes.canFind(t)) return t ~ e;
-		else if(t == "metadata") return "soupply." ~ game ~ ".Metadata";
+		else if(t == "metadata") return "soupply." ~ game ~ ".metadata.Metadata";
 		else return "soupply." ~ game ~ ".type." ~ toPascalCase(t) ~ e;
 	}
 

@@ -1,4 +1,4 @@
-Soupply (sel-utils)
+Soupply
 ===================
 
 ![version](https://soupply.github.io/badges/version.svg)
@@ -9,5 +9,5 @@ Documentation for the provided protocols is available at the [project's website]
 
 ### Generated code
 
-- [D](https://github.com/soupply/d)
-- [Java](https://github.com/soupply/java)
+- [D (dub)](https://github.com/soupply/d)
+- [Java (maven)](https://github.com/soupply/java)
