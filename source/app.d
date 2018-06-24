@@ -69,6 +69,17 @@ void main(string[] args) {
 					if("when" in attr) field.condition = attr["when"].rename();
 					if("default" in attr) field.default_ = attr["default"];
 					field.description = text(element);
+					if("typename" in attr) {
+						Protocol.Type type;
+						type.name = convert(attr["typename"].rename());
+						if("prelength" in attr) type.length = attr["prelength"].length ? convert(attr["prelength"].replace("-", "_")) : info.protocol.arrayLength;
+						foreach(f ; element.elements) {
+							if(f.tag.name == "field") {
+								type.fields ~= parseField(f);
+							}
+						}
+						info.protocol.types ~= type;
+					}
 				}
 				foreach(c ; element.elements) {
 					if(c.tag.name == "constant") {
@@ -113,7 +124,8 @@ void main(string[] args) {
 									Protocol.Type type;
 									type.name = e.tag.attr["name"].replace("-", "_");
 									type.description = text(e);
-									if("length" in e.tag.attr) type.length = e.tag.attr["length"].length ? convert(e.tag.attr["length"].replace("-", "_")) : info.protocol.arrayLength;
+									if("prelength" in e.tag.attr) type.length = e.tag.attr["prelength"].length ? convert(e.tag.attr["prelength"].replace("-", "_")) : info.protocol.arrayLength;
+									else if("length" in e.tag.attr) type.length = e.tag.attr["length"].length ? convert(e.tag.attr["length"].replace("-", "_")) : info.protocol.arrayLength;
 									foreach(f ; e.elements) {
 										if(f.tag.name == "field") {
 											type.fields ~= parseField(f);
@@ -121,8 +133,6 @@ void main(string[] args) {
 									}
 									info.protocol.types ~= type;
 									break;
-								case "array":
-									assert(0, file);
 								default:
 									break;
 							}
@@ -155,19 +165,7 @@ void main(string[] args) {
 														variant.description = text(v);
 														foreach(f ; v.elements) {
 															if(f.tag.name == "field") {
-																Protocol.Field field;
-																field.name = f.tag.attr["name"].replace("-", "_");
-																field.type = convert(f.tag.attr["type"].replace("-", "_"));
-																field.description = text(f);
-																if("endianness" in f.tag.attr) field.endianness = f.tag.attr["endianness"].replace("-", "_");
-																if("when" in f.tag.attr) field.condition = f.tag.attr["when"].replace("-", "_");
-																if("default" in f.tag.attr) field.default_ = f.tag.attr["default"];
-																foreach(c ; f.elements) {
-																	if(c.tag.name == "constant") {
-																		field.constants ~= Protocol.Constant(c.tag.attr["name"].replace("-", "_"), text(c), c.tag.attr["value"]);
-																	}
-																}
-																variant.fields ~= field;
+																variant.fields ~= parseField(f);
 															}
 														}
 														packet.variants ~= variant;

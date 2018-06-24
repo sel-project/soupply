@@ -35,11 +35,6 @@
 
 		<alias name="json" type="string" />
 
-		<type name="login-body" length="">
-			<field name="chain" type="ubyte[]" length="uint" />
-			<field name="client-data" type="ubyte[]" length="uint" />
-		</type>
-
 		<type name="pack-with-size">
 			<field name="id" type="string" />
 			<field name="version" type="string" />
@@ -95,35 +90,7 @@
 			<field name="least-significant-bits" type="long" />
 		</type>
 
-		<type name="player-list">
-			Informations about a player that will be added to the player's list in the pause menu.
-			<field name="uuid" type="mcpe-uuid">
-				UUID of the player. If it's associated with an XBOX Live account the player's profile will also be available in pause menu.
-			</field>
-			<field name="entity-id" type="entity-id">
-				Player's id, used to associate the skin with the game's entity spawned with [AddPlayer](#play_add-player).
-			</field>
-			<field name="display-name" type="string">
-				Player's display name, that can contain Minecraft's formatting codes. It shouldn't contain suffixes nor prefixes.
-			</field>
-			<field name="skin" type="skin">
-				Player's skin usually given in the [Login](#play_login)'s packet body.
-			</field>
-			<field name="?" type="string" />
-		</type>
-
-		<type name="skin">
-			Player's [skin](http://minecraft.gamepedia.com/Skin).
-			<field name="name" type="string">
-				Name of the skin. It's used to render the shape of the skin correctly.
-			</field>
-			<field name="data" type="ubyte[]">
-				Bytes of the skin in format RGBA. The length should be 8192 or 16382.
-			</field>
-			<field name="cape-data" type="ubyte[]" />
-			<field name="geometry-name" type="string" />
-			<field name="geometry-data" type="ubyte[]" />
-		</type>
+		
 
 		<type name="link">
 			<field name="from" type="entity-id" />
@@ -145,62 +112,6 @@
 				<constant name="multi" value="4" />
 			</field>
 			<field name="data" type="bytes" />
-		</type>
-
-		<type name="inventory-action">
-			<field name="source" type="varuint">
-				<constant name="container" value="0" />
-				<constant name="world" value="2" />
-				<constant name="creative" value="3" />
-			</field>
-			<field name="container" type="varint" when="source==0" default="-1" />
-			<field name="?" type="varuint" when="source==2" />
-			<field name="slot" type="varuint" />
-			<field name="old-item" type="slot" />
-			<field name="new-item" type="slot" />
-		</type>
-
-		<type name="chunk-data" length="">
-			Chunk's blocks, lights and other immutable data.
-			<field name="sections" type="section[]">
-				16x16x16 section of the chunk. The array's keys also indicate the section's height (the 3rd element of the array will be the 3rd section from bottom, starting at `y=24`).
-				The amount of sections should be in a range from 0 (empty chunk) to 16.
-			</field>
-			<field name="heights" type="ushort[256]"> <!-- is this little endian? -->
-				Coordinates of the highest block in the column that receives sky light (order `xz`). It is used to increase the speed when calculating the block's light level.
-			</field>
-			<field name="biomes" type="ubyte[256]">
-				[Biomes](http://minecraft.gamepedia.com/Biome) in order `xz`.
-			</field>
-			<field name="borders" type="ubyte[]">
-				Colums where there are world borders (in format `xz`). This feature hasn't been implemented in the game yet and crashes the client.
-			</field>
-			<field name="extra-data" type="extra-data[]" />
-			<field name="block-entities" type="bytes">
-				Additional data for the chunk's block entities (tiles), encoded in the same way as [BlockEntityData.nbt](play/block-entity-data#nbt) is. The position is given by the `Int` tags `x`, `y`, `z` which are added to the block's compound tag together with the `String` tag `id` that contains the name of the tile in pascal case.
-				Wrong encoding or missing tags may result in the block becoming invisible.
-			</field>
-		</type>
-
-		<type name="section">
-			Section of a chunk with informations about blocks and lights. The array of bytes are always ordered `xzy`.
-			<field name="storage-version" type="ubyte" default="0" />
-			<field name="block-ids" type="ubyte[4096]" />
-			<field name="block-metas" type="ubyte[2048]" />
-		</type>
-
-		<type name="extra-data">
-			<field name="key" type="varuint" />
-			<field name="value" type="ushort" />
-		</type>
-
-		<type name="decoration">
-			<field name="rotation-and-icon" type="varint" />
-			<field name="position" type="ubyte<xz>" />
-			<field name="label" type="string" />
-			<field name="color" type="uint">
-				ARGB colour.
-			</field>
 		</type>
 
 		<type name="rule">
@@ -244,78 +155,6 @@
 			<field name="floating-value" type="float" when="type==3" />
 		</type>
 
-		<type name="enum">
-			<field name="name" type="string" />
-			<field name="values-indexes" type="ushort[]" />
-		</type>
-
-		<type name="command">
-			<field name="name" type="string" />
-			<field name="description" type="string" />
-			<field name="?" type="ubyte" />
-			<field name="permission-level" type="ubyte" />
-			<field name="aliases-enum" type="int" default="-1" />
-			<field name="overloads" type="overload[]" />
-		</type>
-
-		<type name="overload">
-			<field name="parameters" type="parameter[]" />
-		</type>
-
-		<type name="parameter">
-			<field name="name" type="string" />
-			<field name="type" type="uint">
-				<constant name="valid" value="1048576" />
-				<constant name="int" value="1" />
-				<constant name="float" value="2" />
-				<constant name="value" value="3" />
-				<constant name="wildcard-int" value="4" />
-				<constant name="target" value="5" />
-				<constant name="wildcard-target" value="6" />
-				<constant name="string" value="15" />
-				<constant name="position" value="16" />
-				<constant name="message" value="19" />
-				<constant name="rawtext" value="21" />
-				<constant name="json" value="24" />
-				<constant name="command" value="30" />
-				<constant name="enum" value="2097152" />
-				<constant name="template" value="16777216" />
-			</field>
-			<field name="optional" type="bool" />
-		</type>
-
-		<type name="command-origin-data">
-			<field name="type" type="varuint">
-				<constant name="player" value="0" />
-				<constant name="block" value="1" />
-				<constant name="minecart-block" value="2" />
-				<constant name="dev-console" value="3" />
-				<constant name="test" value="4" />
-				<constant name="automation-player" value="5" />
-				<constant name="client-automation" value="6" />
-				<constant name="dedicated-server" value="7" />
-				<constant name="entity" value="8" />
-				<constant name="virtual" value="9" />
-				<constant name="game-argument" value="10" />
-				<constant name="entity-server" value="11" />
-			</field>
-			<field name="uuid" type="uuid" />
-			<field name="request-id" type="string" />
-			<field name="?" type="varlong" when="type==3||type==4" />
-		</type>
-
-		<type name="command-message">
-			<field name="is-internal" type="bool" />
-			<field name="message-id" type="string" />
-			<field name="parameters" type="string[]" />
-		</type>
-
-		<type name="score">
-			<field name="uuid" type="uuid" />
-			<field name="objective-name" type="string" />
-			<field name="score" type="int" />
-		</type>
-
 	</encoding>
 
 	<packets>
@@ -329,8 +168,10 @@
 				<field name="protocol" type="uint" endianness="big-endian" default="261">
 					Version of the protocol used by the player.
 				</field>
-				<field name="body" type="login-body">
+				<field name="body" typename="login-body" type="login-body" prelength="">
 					Payload that contains 2 JWTs (with each length indicated by an unsigned little-endian 32-bits integer) with more informations about the player and its account.
+					<field name="chain" type="ubyte[]" length="uint" />
+					<field name="client-data" type="ubyte[]" length="uint" />
 				</field>
 			</packet>
 
@@ -1061,7 +902,18 @@
 
 			<packet name="inventory-transaction" id="30" clientbound="false" serverbound="true">
 				<field name="type" type="varuint" />
-				<field name="actions" type="inventory-action[]" />
+				<field name="actions" typename="inventory-action" type="inventory-action[]">
+					<field name="source" type="varuint">
+						<constant name="container" value="0" />
+						<constant name="world" value="2" />
+						<constant name="creative" value="3" />
+					</field>
+					<field name="container" type="varint" when="source==0" default="-1" />
+					<field name="?" type="varuint" when="source==2" />
+					<field name="slot" type="varuint" />
+					<field name="old-item" type="slot" />
+					<field name="new-item" type="slot" />
+				</field>
 				<variants field="type">
 					<variant name="normal-0" value="0" />
 					<variant name="normal-1" value="1" />
@@ -1267,7 +1119,16 @@
 			</packet>
 
 			<packet name="crafting-data" id="52" clientbound="true" serverbound="false">
-				<field name="recipes" type="recipe[]" />
+				<field name="recipes" typename="recipe" type="recipe[]">
+					<field name="type" type="varint">
+						<constant name="shapeless" value="0" />
+						<constant name="shaped" value="1" />
+						<constant name="furnace" value="2" />
+						<constant name="furnace-data" value="3" />
+						<constant name="multi" value="4" />
+					</field>
+					<field name="data" type="bytes" />
+				</field>
 			</packet>
 
 			<packet name="crafting-event" id="53" clientbound="false" serverbound="true">
@@ -1348,7 +1209,33 @@
 				<field name="position" type="varint<xz>">
 					Coordinates of the chunk.
 				</field>
-				<field name="data" type="chunk-data" />
+				<field name="data" typename="chunk-data" type="chunk-data" prelength="">
+					Chunk's blocks, lights and other immutable data.
+					<field name="sections" typename="section" type="section[]">
+						16x16x16 section of the chunk. The array's keys also indicate the section's height (the 3rd element of the array will be the 3rd section from bottom, starting at `y=24`).
+						The amount of sections should be in a range from 0 (empty chunk) to 16.
+						<field name="storage-version" type="ubyte" default="0" />
+						<field name="block-ids" type="ubyte[4096]" />
+						<field name="block-metas" type="ubyte[2048]" />
+					</field>
+					<field name="heights" type="ushort[256]"> <!-- is this little endian? -->
+						Coordinates of the highest block in the column that receives sky light (order `xz`). It is used to increase the speed when calculating the block's light level.
+					</field>
+					<field name="biomes" type="ubyte[256]">
+						[Biomes](http://minecraft.gamepedia.com/Biome) in order `xz`.
+					</field>
+					<field name="borders" type="ubyte[]">
+						Colums where there are world borders (in format `xz`). This feature hasn't been implemented in the game yet and crashes the client.
+					</field>
+					<field name="extra-data" typename="extra-data" type="extra-data[]">
+						<field name="key" type="varuint" />
+						<field name="value" type="ushort" />
+					</field>
+					<field name="block-entities" type="bytes">
+						Additional data for the chunk's block entities (tiles), encoded in the same way as [BlockEntityData.nbt](play/block-entity-data#nbt) is. The position is given by the `Int` tags `x`, `y`, `z` which are added to the block's compound tag together with the `String` tag `id` that contains the name of the tile in pascal case.
+						Wrong encoding or missing tags may result in the block becoming invisible.
+					</field>
+				</field>
 			</packet>
 
 			<packet name="set-commands-enabled" id="59" clientbound="true" serverbound="false">
@@ -1390,7 +1277,31 @@
 				<field name="action" type="ubyte" />
 				<variants field="action">
 					<variant name="add" value="0">
-						<field name="players" type="player-list[]" />
+						<field name="players" typename="player-list" type="player-list[]">
+							Informations about a player that will be added to the player's list in the pause menu.
+							<field name="uuid" type="mcpe-uuid">
+								UUID of the player. If it's associated with an XBOX Live account the player's profile will also be available in pause menu.
+							</field>
+							<field name="entity-id" type="entity-id">
+								Player's id, used to associate the skin with the game's entity spawned with [AddPlayer](#play_add-player).
+							</field>
+							<field name="display-name" type="string">
+								Player's display name, that can contain Minecraft's formatting codes. It shouldn't contain suffixes nor prefixes.
+							</field>
+							<field name="skin" typename="skin" type="skin">
+								Player's [skin](http://minecraft.gamepedia.com/Skin) usually given in the [Login](#play_login)'s packet body.
+								<field name="name" type="string">
+									Name of the skin. It's used to render the shape of the skin correctly.
+								</field>
+								<field name="data" type="ubyte[]">
+									Bytes of the skin in format RGBA. The length should be 8192 or 16382.
+								</field>
+								<field name="cape-data" type="ubyte[]" />
+								<field name="geometry-name" type="string" />
+								<field name="geometry-data" type="ubyte[]" />
+							</field>
+							<field name="?" type="string" />
+						</field>
 					</variant>
 					<variant name="remove" value="1">
 						<field name="players" type="mcpe-uuid[]" />
@@ -1427,7 +1338,14 @@
 				<field name="data" type="bytes" when="update==2">
 					ARGB colours encoded as unsigned varints.
 				</field>
-				<field name="decorations" type="decoration[]" when="update==4" />
+				<field name="decorations" typename="decoration" type="decoration[]" when="update==4">
+					<field name="rotation-and-icon" type="varint" />
+					<field name="position" type="ubyte<xz>" />
+					<field name="label" type="string" />
+					<field name="color" type="uint">
+						ARGB colour.
+					</field>
+				</field>
 			</packet>
 
 			<packet name="map-info-request" id="68" clientbound="false" serverbound="true">
@@ -1485,8 +1403,40 @@
 				Sends a list of the commands that the player can use through the [CommandStep](#play_command-step) packet.
 				<field name="enum-values" type="string[]" />
 				<field name="?" type="string[]" />
-				<field name="enums" type="enum[]" />
-				<field name="commands" type="command[]" />
+				<field name="enums" typename="enum" type="enum[]">
+					<field name="name" type="string" />
+					<field name="values-indexes" type="ushort[]" />
+				</field>
+				<field name="commands" typename="command" type="command[]">
+					<field name="name" type="string" />
+					<field name="description" type="string" />
+					<field name="?" type="ubyte" />
+					<field name="permission-level" type="ubyte" />
+					<field name="aliases-enum" type="int" default="-1" />
+					<field name="overloads" typename="overload" type="overload[]">
+						<field name="parameters" typename="parameter" type="parameter[]">
+							<field name="name" type="string" />
+							<field name="type" type="uint">
+								<constant name="valid" value="1048576" />
+								<constant name="int" value="1" />
+								<constant name="float" value="2" />
+								<constant name="value" value="3" />
+								<constant name="wildcard-int" value="4" />
+								<constant name="target" value="5" />
+								<constant name="wildcard-target" value="6" />
+								<constant name="string" value="15" />
+								<constant name="position" value="16" />
+								<constant name="message" value="19" />
+								<constant name="rawtext" value="21" />
+								<constant name="json" value="24" />
+								<constant name="command" value="30" />
+								<constant name="enum" value="2097152" />
+								<constant name="template" value="16777216" />
+							</field>
+							<field name="optional" type="bool" />
+						</field>
+					</field>
+				</field>
 			</packet>
 
 			<packet name="command-request" id="77" clientbound="false" serverbound="true">
@@ -1517,10 +1467,32 @@
 			</packet>
 
 			<packet name="command-output" id="79" clientbound="true" serverbound="false">
-				<field name="origin-data" type="command-origin-data" />
+				<field name="origin-data" typename="command-origin-data" type="command-origin-data">
+					<field name="type" type="varuint">
+						<constant name="player" value="0" />
+						<constant name="block" value="1" />
+						<constant name="minecart-block" value="2" />
+						<constant name="dev-console" value="3" />
+						<constant name="test" value="4" />
+						<constant name="automation-player" value="5" />
+						<constant name="client-automation" value="6" />
+						<constant name="dedicated-server" value="7" />
+						<constant name="entity" value="8" />
+						<constant name="virtual" value="9" />
+						<constant name="game-argument" value="10" />
+						<constant name="entity-server" value="11" />
+					</field>
+					<field name="uuid" type="uuid" />
+					<field name="request-id" type="string" />
+					<field name="?" type="varlong" when="type==3||type==4" />
+				</field>
 				<field name="output-type" type="ubyte" />
 				<field name="success-count" type="varuint" />
-				<field name="messages" type="command-message[]" />
+				<field name="messages" typename="command-message" type="command-message[]">
+					<field name="is-internal" type="bool" />
+					<field name="message-id" type="string" />
+					<field name="parameters" type="string[]" />
+				</field>
 				<field name="?" type="string" when="output-type==4" />
 			</packet>
 
@@ -1732,7 +1704,11 @@
 					<constant name="modify" value="0" />
 					<constant name="reset" value="1" />
 				</field>
-				<field name="scores" type="score[]" />
+				<field name="scores" typename="score" type="score[]">
+					<field name="uuid" type="uuid" />
+					<field name="objective-name" type="string" />
+					<field name="score" type="int" />
+				</field>
 			</packet>
 
 			<packet name="lab-table" id="109" clientbound="true" serverbound="false">
