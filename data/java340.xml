@@ -1150,7 +1150,35 @@
 
 			<packet name="entity-effect" id="79" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
-				<field name="effect-id" type="ubyte" />
+				<field name="effect-id" type="ubyte">
+					<constant name="speed" value="1" />
+					<constant name="slowness" value="2" />
+					<constant name="haste" value="3" />
+					<constant name="mining-fatigue" value="4" />
+					<constant name="strength" value="5" />
+					<constant name="instant-health" value="6" />
+					<constant name="instant-damage" value="7" />
+					<constant name="jump-boost" value="8" />
+					<constant name="nausea" value="9" />
+					<constant name="regeneration" value="10" />
+					<constant name="resistance" value="11" />
+					<constant name="fire-resistance" value="12" />
+					<constant name="water-breathing" value="13" />
+					<constant name="invisibility" value="14" />
+					<constant name="blindness" value="15" />
+					<constant name="night-vision" value="16" />
+					<constant name="hunger" value="17" />
+					<constant name="weakness" value="18" />
+					<constant name="poison" value="19" />
+					<constant name="wither" value="20" />
+					<constant name="health-boost" value="21" />
+					<constant name="absorption" value="22" />
+					<constant name="saturation" value="23" />
+					<constant name="glowing" value="24" />
+					<constant name="levitation" value="25" />
+					<constant name="luck" value="26" />
+					<constant name="bad-luck" value="27" />
+				</field>
 				<field name="amplifier" type="ubyte" />
 				<field name="duration" type="varuint" />
 				<field name="flags" type="ubyte">

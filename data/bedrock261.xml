@@ -1021,7 +1021,33 @@
 					<constant name="modify" value="2" />
 					<constant name="remove" value="3" />
 				</field>
-				<field name="effect" type="varint" />
+				<field name="effect" type="varint">
+					<constant name="speed" value="1" />
+					<constant name="slowness" value="2" />
+					<constant name="haste" value="3" />
+					<constant name="mining-fatigue" value="4" />
+					<constant name="strength" value="5" />
+					<constant name="instant-health" value="6" />
+					<constant name="instant-damage" value="7" />
+					<constant name="jump-boost" value="8" />
+					<constant name="nausea" value="9" />
+					<constant name="regeneration" value="10" />
+					<constant name="resistance" value="11" />
+					<constant name="fire-resistance" value="12" />
+					<constant name="water-breathing" value="13" />
+					<constant name="invisibility" value="14" />
+					<constant name="blindness" value="15" />
+					<constant name="night-vision" value="16" />
+					<constant name="hunger" value="17" />
+					<constant name="weakness" value="18" />
+					<constant name="poison" value="19" />
+					<constant name="wither" value="20" />
+					<constant name="health-boost" value="21" />
+					<constant name="absorption" value="22" />
+					<constant name="saturation" value="23" />
+					<constant name="levitation" value="24" />
+					<constant name="fatal-poison" value="25" />
+				</field>
 				<field name="amplifier" type="varint" />
 				<field name="particles" type="bool" />
 				<field name="duration" type="varint" />
