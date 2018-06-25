@@ -90,8 +90,6 @@
 			<field name="least-significant-bits" type="long" />
 		</type>
 
-		
-
 		<type name="link">
 			<field name="from" type="entity-id" />
 			<field name="to" type="entity-id" />
@@ -101,17 +99,6 @@
 				<constant name="remove" value="2" />
 			</field>
 			<field name="?" type="ubyte" />
-		</type>
-
-		<type name="recipe">
-			<field name="type" type="varint">
-				<constant name="shapeless" value="0" />
-				<constant name="shaped" value="1" />
-				<constant name="furnace" value="2" />
-				<constant name="furnace-data" value="3" />
-				<constant name="multi" value="4" />
-			</field>
-			<field name="data" type="bytes" />
 		</type>
 
 		<type name="rule">
