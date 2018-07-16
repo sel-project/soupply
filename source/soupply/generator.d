@@ -178,8 +178,9 @@ abstract class Generator {
 
 		pool.finish(true);
 
-		// delete empty directories or copy licence
+		// delete empty directories or copy licence and readme
 		void[] license = _read("LICENSE");
+		void[] readme = _read("public/README.md");
 		foreach(string dir ; dirEntries("gen/", SpanMode.shallow)) {
 			if(dir.isDir) {
 				bool empty = true;
@@ -191,6 +192,7 @@ abstract class Generator {
 					rmdir(dir);
 				} else {
 					_write(dir ~ "/LICENSE", license);
+					if(exists(dir ~ "/README.md")) _write(dir ~ "/README.md", readme ~ _read(dir ~ "/README.md"));
 				}
 			}
 		}

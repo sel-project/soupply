@@ -1,4 +1,5 @@
 Soupply
+<img align="right" alt="Logo" width="100" src="https://i.imgur.com/c5hmk19.png">
 ===================
 
 ![version](https://soupply.github.io/badges/version.svg)
