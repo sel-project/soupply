@@ -36,7 +36,7 @@ template Pad(size_t padding, T:Packet) {
 
 	class Pad : T {
 	
-		override void encode(Buffer buffer) @nogc {
+		override void encode(Buffer buffer) {
 			encodeId(buffer);
 			buffer.writeData(__padding);
 			encodeBody(buffer);
@@ -77,7 +77,7 @@ struct UUID {
 
 	_UUID uuid;
 	
-	void encodeBody(Buffer buffer) @nogc {
+	void encodeBody(Buffer buffer) {
 		buffer.writeData(uuid.data);
 	}
 	

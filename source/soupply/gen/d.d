@@ -239,6 +239,9 @@ class DGenerator : CodeGenerator {
 			// bytes
 			if(field.type == "bytes") ret ~= "@Bytes";
 
+			// uuid
+			//if(field.type == "uuid") ret ~= "@Custom!CustomUUID";
+
 			ret ~= "";
 
 			return ret;
@@ -307,8 +310,8 @@ class DGenerator : CodeGenerator {
 			stat("static import std.conv");
 			addImport("packetmaker");
 			addImport("packetmaker.maker", "EndianType", "writeLength", "readLength").nl;
-			addImport("xbuffer.memory", "alloc", "free").nl;
-			addImportLib("util", "Vector", "UUID");
+			addImport("xbuffer.memory", "xalloc", "xfree").nl;
+			addImportLib("util");
 			addImportLib(game ~ ".metadata").nl;
 			foreach(type ; info.protocol.types) {
 				immutable hasLength = type.length.length != 0;
@@ -326,18 +329,18 @@ class DGenerator : CodeGenerator {
 					stat("Container _container").nl;
 					stat("alias _container this").nl;
 					// encoding
-					block("void encodeBody(Buffer buffer) @nogc");
-					stat("Buffer _buffer = alloc!Buffer(Container.sizeof + 4)");
+					block("void encodeBody(Buffer buffer)");
+					stat("Buffer _buffer = xalloc!Buffer(Container.sizeof + 4)");
 					stat("_container.encodeBody(_buffer)");
 					stat("writeLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer, _buffer.data!ubyte.length)");
 					stat("buffer.writeData(_buffer.data!ubyte)");
-					stat("free(_buffer)");
+					stat("xfree(_buffer)");
 					endBlock().nl;
 					// decoding
 					block("void decodeBody(Buffer buffer)");
-					stat("Buffer _buffer = alloc!Buffer(cast(ubyte[])buffer.readData(readLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer)))");
+					stat("Buffer _buffer = xalloc!Buffer(cast(ubyte[])buffer.readData(readLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer)))");
 					stat("_container.decodeBody(_buffer)");
-					stat("free(_buffer)");
+					stat("xfree(_buffer)");
 					endBlock().nl;
 				} else {
 					stat("mixin Make!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ")").nl;
@@ -358,7 +361,7 @@ class DGenerator : CodeGenerator {
 				stat("static import std.conv");
 				addImportStd("typetuple", "TypeTuple");
 				addImport("packetmaker").nl;
-				addImportLib("util", "Vector", "UUID");
+				addImportLib("util");
 				addImportLib(game ~ ".metadata", "Metadata");
 				addImportLib(game ~ ".packet", base).nl;
 				stat("static import " ~ SOFTWARE ~ "." ~ game ~ ".types").nl;
@@ -444,8 +447,8 @@ class DGenerator : CodeGenerator {
 
 			addImport("packetmaker");
 			addImport("packetmaker.maker", "EndianType", "writeLength", "writeImpl", "readLength", "readImpl").nl;
-			addImport("xbuffer.memory", "malloc", "realloc", "alloc", "free").nl;
-			addImportLib("util", "Vector").nl;
+			//addImport("xbuffer.memory", "xmalloc", "xrealloc", "xalloc", "xfree").nl;
+			addImportLib("util").nl;
 			stat("static import " ~ SOFTWARE ~ "." ~ game ~ ".types").nl;
 
 			// types
@@ -490,7 +493,7 @@ class DGenerator : CodeGenerator {
 			// value of
 			foreach(type ; info.metadata.types) {
 				immutable _value = convertType(type.type);
-				block("class MetadataValue" ~ type.id.to!string ~ " : MetadataValue").nl;
+				block("class Metadata" ~ type.name.camelCaseUpper ~ " : MetadataValue").nl;
 				stat(join(attributes2(type.type, type.endianness) ~ _value, " ") ~ " value").nl;
 				block("this() pure nothrow @safe @nogc");
 				stat("super(" ~ type.id.to!string ~ ")");
@@ -513,7 +516,7 @@ class DGenerator : CodeGenerator {
 			//TODO
 
 			// encode
-			block("void encodeBody(Buffer buffer) @nogc");
+			block("void encodeBody(Buffer buffer)");
 			if(_length) stat("writeLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(buffer, values.length)");
 			block("foreach(id, value; values)");
 			stat("writeImpl!(" ~ convertEndian(info.metadata.id) ~ ")(buffer, id)");
@@ -534,7 +537,7 @@ class DGenerator : CodeGenerator {
 			block("switch(readImpl!(" ~ convertEndian(info.metadata.type) ~ ")(buffer))");
 			foreach(type ; info.metadata.types) {
 				line("case " ~ type.id.to!string ~ ":").add_indent();
-				stat("auto value = new MetadataValue" ~ type.id.to!string ~ "()");
+				stat("auto value = new Metadata" ~ type.name.camelCaseUpper ~ "()");
 				stat("value.decodeBody(buffer)");
 				stat("this.values[id] = value");
 				stat("break").remove_indent();
