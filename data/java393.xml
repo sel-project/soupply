@@ -294,7 +294,7 @@
 			</packet>
 
 			<packet name="statistics" id="7" clientbound="true" serverbound="false">
-				<field name="statistics" typename="statistic" type="statistic[]" />
+				<field name="statistics" typename="statistic" type="statistic[]">
 					<field name="category" type="varuint" />
 					<field name="statistic" type="varuint" />
 					<field name="value" type="varuint" />
