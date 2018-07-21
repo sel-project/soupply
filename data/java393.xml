@@ -1329,7 +1329,7 @@
 
 			<packet name="query-block-nbt" id="1" clientbound="false" serverbound="true">
 				<field name="transation-id" type="varuint" />
-				<field name="location" type="position" />
+				<field name="location" type="block-position" />
 			</packet>
 
 			<packet name="chat-message" id="2" clientbound="false" serverbound="true">
@@ -1573,7 +1573,7 @@
 			</packet>
 
 			<packet name="update-command-block" id="34" clientbound="false" serverbound="true">
-				<field name="location" type="position" />
+				<field name="location" type="block-position" />
 				<field name="command" type="string" />
 				<field name="mode" type="varuint">
 					<constant name="sequence" value="0" />
@@ -1599,7 +1599,7 @@
 			</packet>
 
 			<packet name="update-structure-block" id="37" clientbound="false" serverbound="true">
-				<field name="location" type="position" />
+				<field name="location" type="block-position" />
 				<field name="action" type="varuint">
 					<constant name="update-data" value="0" />
 					<constant name="save-structure" value="1" />
