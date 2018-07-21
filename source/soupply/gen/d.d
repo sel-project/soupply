@@ -71,10 +71,6 @@ class DGenerator : CodeGenerator {
 		return ret;
 	}
 
-	protected override string convertModule(string name) {
-		return name.replace("_", "");
-	}
-
 	protected override void generateImpl(Data d) {
 
 		super.generateImpl(d);

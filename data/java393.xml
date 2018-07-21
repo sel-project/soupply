@@ -1321,7 +1321,7 @@
 
 		</section>
 
-		<section name="serverbound">
+		<section name="play-serverbound">
 
 			<packet name="teleport-confirm" id="0" clientbound="false" serverbound="true">
 				<field name="teleport-id" type="varuint" />
