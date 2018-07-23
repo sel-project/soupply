@@ -4,13 +4,11 @@
 
 	<software>Minecraft (Bedrock Engine)</software>
 
-	<protocol>261</protocol>
+	<protocol>274</protocol>
 	
-	<released>2018/5/14</released>
+	<released>2018/7/10</released>
 	
-	<from>1.4.0</from>
-
-	<to>1.4.5</to>
+	<from>1.5.0</from>
 
 	<description>
 		Protocol used in Minecraft: Pocket Edition and variants. The network part of the protocol is managed by RakNet.
@@ -152,7 +150,7 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint" endianness="big-endian" default="261">
+				<field name="protocol" type="uint" endianness="big-endian" default="274">
 					Version of the protocol used by the player.
 				</field>
 				<field name="body" typename="login-body" type="login-body" prelength="">
@@ -411,6 +409,7 @@
 				<field name="motion" type="entity-position" />
 				<field name="pitch" type="float" />
 				<field name="yaw" type="float" />
+				<field name="head-yaw" type="float" />
 				<field name="attributes" type="attribute[]" />
 				<field name="metadata" type="metadata" />
 				<field name="links" type="link[]" />
@@ -448,14 +447,14 @@
 				</field>
 			</packet>
 
-			<packet name="move-entity" id="18" clientbound="true" serverbound="false">
+			<packet name="move-entity-absolute" id="18" clientbound="true" serverbound="false">
 				<field name="entity-id" type="entity-id" />
+				<field name="flags" type="ubyte">
+					<constant name="ground" value="1" />
+					<constant name="teleport" value="2" />
+				</field>
 				<field name="position" type="entity-position" />
-				<field name="pitch" type="angle" />
-				<field name="head-yaw" type="angle" />
-				<field name="yaw" type="angle" />
-				<field name="on-ground" type="bool" />
-				<field name="teleported" type="bool" />
+				<field name="rotation" type="byte<xyz>" />
 			</packet>
 
 			<packet name="move-player" id="19" clientbound="true" serverbound="true">
@@ -1715,6 +1714,27 @@
 				</field>
 				<field name="entity-id" type="entity-id" />
 				<field name="?" type="varulong" />
+			</packet>
+
+			<packet name="move-entity-delta" id="111" clientbound="true" serverbound="false">
+				<field name="flags" type="ubyte">
+					<constant name="has-diff-x" value="1" />
+					<constant name="has-diff-y" value="2" />
+					<constant name="has-diff-z" value="4" />
+					<constant name="has-rot-x" value="8" />
+					<constant name="has-rot-y" value="16" />
+					<constant name="has-rot-z" value="32" />
+				</field>
+				<field name="x-diff" type="varint" when="(flags&1)!=0" />
+				<field name="y-diff" type="varint" when="(flags&2)!=0" />
+				<field name="z-diff" type="varint" when="(flags&4)!=0" />
+				<field name="x-rot" type="byte" when="(flags&8)!=0" />
+				<field name="y-rot" type="byte" when="(flags&16)!=0" />
+				<field name="z-rot" type="byte" when="(flags&32)!=0" />
+			</packet>
+
+			<packet name="set-local-player-as-initialized" id="112" clientbound="true" serverbound="false">
+				<field name="entity-runtime-id" type="runtime-id" />
 			</packet>
 
 		</section>

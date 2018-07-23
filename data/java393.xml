@@ -1221,7 +1221,7 @@
 
 			<packet name="stop-sound" id="76" clientbound="true" serverbound="false">
 				<field name="flags" type="ubyte" />
-				<field name="source" type="varuint" when="flags&1">
+				<field name="source" type="varuint" when="(flags&1)!=0">
 					<constant name="master" value="0" />
 					<constant name="music" value="1" />
 					<constant name="record" value="2" />
@@ -1233,7 +1233,7 @@
 					<constant name="ambient" value="8" />
 					<constant name="voice" value="9" />
 				</field>
-				<field name="sound" type="string" when="flags&2" />
+				<field name="sound" type="string" when="(flags&2)!=0" />
 			</packet>
 
 			<packet name="sound-effect" id="77" clientbound="true" serverbound="false">
