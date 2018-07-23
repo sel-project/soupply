@@ -466,10 +466,10 @@
 				<field name="nodes" typename="node" type="node[]">
 					<field name="flags" type="ubyte" />
 					<field name="children" type="varuint[]" />
-					<field name="redirect-node" type="varuint" when="flags&8" />
+					<field name="redirect-node" type="varuint" when="(flags&8)!=0" />
 					<field name="name" type="string" when="(flags&1)!=0||(flags&2)!=0" />
-					<field name="parser" type="string" when="flags&2" />
-					<field name="properties" type="bytes" when="flags&2" /> <!-- not really bytes, but varies between each parser. Soupply cannot decode this packet. -->
+					<field name="parser" type="string" when="(flags&2)!=0" />
+					<field name="properties" type="bytes" when="(flags&2)!=0" /> <!-- not really bytes, but varies between each parser. Soupply cannot decode this packet. -->
 				</field>
 				<field name="root-index" type="varuint" />
 			</packet>
