@@ -100,6 +100,11 @@
 			<field name="player-slot" type="ubyte" />
 		</type>
 
+		<type name="optional-chat">
+			<field name="has-chat" type="bool" />
+			<field name="chat" type="string" when="has-chat==true" />
+		</type>
+
 		<type name="optional-position">
 			<field name="has-position" type="bool" />
 			<field name="position" type="block-position" when="has-position==true" />
@@ -107,7 +112,7 @@
 
 		<type name="optional-uuid">
 			<field name="has-uuid" type="bool" />
-			<field name="uuid" type="uuid" />
+			<field name="uuid" type="uuid" when="has-uuid==true" />
 		</type>
 
 		<type name="tag">
@@ -462,7 +467,7 @@
 					<field name="flags" type="ubyte" />
 					<field name="children" type="varuint[]" />
 					<field name="redirect-node" type="varuint" when="flags&8" />
-					<field name="name" type="string" when="flags&1!=0||flags&2!=0" />
+					<field name="name" type="string" when="(flags&1)!=0||(flags&2)!=0" />
 					<field name="parser" type="string" when="flags&2" />
 					<field name="properties" type="bytes" when="flags&2" /> <!-- not really bytes, but varies between each parser. Soupply cannot decode this packet. -->
 				</field>
@@ -1680,15 +1685,17 @@
 			<type name="float" type="float" id="2" />
 			<type name="string" type="string" id="3" />
 			<type name="chat" type="string" id="4" />
-			<type name="slot" type="slot" id="5" />
-			<type name="bool" type="bool" id="6" />
-			<type name="rotation" type="float<xyz>" id="7" />
-			<type name="position" type="ulong" id="8" />
-			<type name="optional-position" type="optional-position" id="9" />
-			<type name="direction" type="varuint" id="10" />
-			<type name="uuid" type="optional-uuid" id="11" />
-			<type name="block" type="varuint" id="12" />
-			<type name="nbt" type="bytes" id="13" /> <!-- will not work when decoding -->
+			<type name="optional-chat" type="optional-chat" id="5" />
+			<type name="slot" type="slot" id="6" />
+			<type name="bool" type="bool" id="7" />
+			<type name="rotation" type="float<xyz>" id="8" />
+			<type name="position" type="ulong" id="9" />
+			<type name="optional-position" type="optional-position" id="10" />
+			<type name="direction" type="varuint" id="11" />
+			<type name="optional-uuid" type="optional-uuid" id="12" />
+			<type name="block" type="varuint" id="13" />
+			<type name="nbt" type="bytes" id="14" /> <!-- will not work when decoding -->
+			<type name="particle" type="particle" id="15" />
 
 		</encoding>
 
@@ -1705,9 +1712,9 @@
 
 			<type name="air" type="int" id="1" default="300" />
 
-			<type name="nametag" type="string" id="2" />
+			<type name="custom-name" type="optional-chat" id="2" />
 
-			<type name="show-nametag" type="bool" id="3" />
+			<type name="custom-name-visible" type="bool" id="3" />
 
 			<type name="silent" type="bool" id="4" />
 
@@ -1719,15 +1726,11 @@
 
 			<type name="radius" type="float" id="6" default="0.5" />
 
-			<type name="color" type="int" id="7" default="-1" />
+			<type name="color" type="int" id="7" default="0" />
 
 			<type name="is-single-point" type="bool" id="8" />
 
-			<type name="particle-id" type="int" id="9" />
-
-			<type name="particle-parameter-1" type="int" id="10" />
-
-			<type name="particle-parameter-2" type="int" id="11" />
+			<type name="particle" type="particle" id="9" />
 
 			<type name="hooked-entity" type="int" id="6" />
 
@@ -1747,6 +1750,8 @@
 
 			<type name="left-paddle-turning" type="bool" id="11" />
 
+			<type name="splash-timer" type="int" id="12" />
+
 			<type name="beam-target" type="optional-position" id="6" />
 
 			<type name="show-bottom" type="bool" id="7" />
@@ -1758,6 +1763,8 @@
 			<type name="item" type="slot" id="6" />
 
 			<type name="rotation" type="int" id="7" />
+
+			<type name="loyalty-level" type="int" id="7" />
 
 			<type name="living-flags" type="byte" id="6">
 				<flag name="hand-active" bit="0" />
@@ -1950,6 +1957,28 @@
 			<type name="last-output" type="chat" id="13" />
 
 			<type name="fuse-time" type="int" id="6" />
+
+			<type name="phantom-size" type="int" id="12" />
+
+			<type name="from-bucket" type="bool" id="12" />
+
+			<type name="puff-state" type="int" id="13" />
+
+			<type name="tropical-fish-variant" type="int" id="13" />
+
+			<type name="home-position" type="position" id="13" />
+
+			<type name="has-egg" type="bool" id="14" />
+
+			<type name="laying-egg" type="bool" id="15" />
+
+			<type name="travel-pos" type="position" id="16" />
+
+			<type name="going-home" type="bool" id="17" />
+
+			<type name="traveling" type="bool" id="18" />
+
+			<type name="has-target" type="bool" id="15" />
 
 		</metadatas>
 
