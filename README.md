@@ -2,6 +2,7 @@ Soupply
 <img align="right" alt="Logo" width="100" src="https://i.imgur.com/c5hmk19.png">
 ===================
 
+[![Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/c9uwNMW)
 ![version](https://soupply.github.io/badges/version.svg)
 
 Automatically generated libraries and documentation for Minecraft (Bedrock Engine) and Minecraft: Java Edition
