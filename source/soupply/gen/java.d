@@ -616,7 +616,7 @@ class JavaGenerator : CodeGenerator {
 			block("public Metadata()");
 			foreach(d ; info.metadata.data) {
 				if(d.required) {
-					stat("this.values.put(" ~ d.id.to!string ~ ", new Metadata" ~ camelCaseUpper(d.type) ~ "(" ~ d.id.to!string ~ ", (" ~ convertType(typetable[d.type]) ~ ")" ~ (d.default_.length ? d.default_ : ".init") ~ "))");
+					stat("this.add(new Metadata" ~ camelCaseUpper(d.type) ~ "(" ~ d.id.to!string ~ ", (" ~ convertType(typetable[d.type]) ~ ")" ~ (d.default_.length ? d.default_ : ".init") ~ "))");
 				}
 			}
 			endBlock().nl;
@@ -661,17 +661,17 @@ class JavaGenerator : CodeGenerator {
 				immutable tp = convertType(typetable[d.type]);
 				// getter
 				block("public " ~ tp ~ " get" ~ camelCaseUpper(d.name) ~ "()");
-				stat("MetadataValue value = this.values.get(" ~ d.id.to!string ~ ")");
+				stat("MetadataValue value = this.get(" ~ d.id.to!string ~ ")");
 				stat("if(value != null && value instanceof Metadata" ~ camelCaseUpper(d.type) ~ ") return ((Metadata" ~ camelCaseUpper(d.type) ~ ")value).value");
-				if(d.default_.length) stat("return (" ~ tp ~ ")" ~ d.default_);
+				if(d.default_.length) stat("else return (" ~ tp ~ ")" ~ d.default_);
 				else if(defaultTypes[0..$-2].canFind(tp)) stat("else return 0");
 				else stat("else return null");
 				endBlock().nl;
 				// setter
 				block("public void set" ~ camelCaseUpper(d.name) ~ "(" ~ tp ~ " _value)");
-				stat("MetadataValue value = this.values.get(" ~ d.id.to!string ~ ")");
+				stat("MetadataValue value = this.get(" ~ d.id.to!string ~ ")");
 				stat("if(value != null && value instanceof Metadata" ~ camelCaseUpper(d.type) ~ ") ((Metadata" ~ camelCaseUpper(d.type) ~ ")value).value = _value");
-				stat("else this.values.put(" ~ d.id.to!string ~ ", new Metadata" ~ camelCaseUpper(d.type) ~ "(" ~ d.id.to!string ~ ", _value))");
+				stat("else this.add(new Metadata" ~ camelCaseUpper(d.type) ~ "(" ~ d.id.to!string ~ ", _value))");
 				endBlock().nl;
 			}
 			endBlock();
