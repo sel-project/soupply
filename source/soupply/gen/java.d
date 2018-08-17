@@ -598,6 +598,12 @@ class JavaGenerator : CodeGenerator {
 			}
 		}
 
+		// init types
+		string[string] typetable;
+		foreach(type ; info.metadata.types) {
+			typetable[type.name] = type.type;
+		}
+
 		// metadata
 		auto mm = make(game, "src/main/java", SOFTWARE, game, "metadata/Metadata");
 		with(mm) {
@@ -606,6 +612,14 @@ class JavaGenerator : CodeGenerator {
 			stat("import java.util.HashMap");
 			stat("import " ~ SOFTWARE ~ ".util.*").nl;
 			block("public class Metadata extends HashMap<" ~ (ty=="int" ? "Integer" : capitalize(ty)) ~ ", MetadataValue>").nl;
+			// ctor
+			block("public Metadata()");
+			foreach(d ; info.metadata.data) {
+				if(d.required) {
+					stat("this.values.put(" ~ d.id.to!string ~ ", new Metadata" ~ camelCaseUpper(d.type) ~ "(" ~ d.id.to!string ~ ", (" ~ convertType(typetable[d.type]) ~ ")" ~ (d.default_.length ? d.default_ : ".init") ~ ")");
+				}
+			}
+			endBlock().nl;
 			// add
 			block("public void add(MetadataValue value)");
 			stat("this.put(value.id, value)");
@@ -641,7 +655,25 @@ class JavaGenerator : CodeGenerator {
 			foreach(type ; info.metadata.types) stat("case " ~ type.id.to!string ~ ": return new Metadata" ~ camelCaseUpper(type.name) ~ "(id)");
 			stat("default: throw new MetadataException(id, type)");
 			endBlock();
-			endBlock();
+			endBlock().nl;
+			// getters and setters
+			foreach(d ; info.metadata.data) {
+				immutable tp = convertType(typetable[d.type]);
+				// getter
+				block("public " ~ tp ~ " get" ~ camelCaseUpper(d.name) ~ "()");
+				stat("MetadataValue value = this.values.get(" ~ d.id.to!string ~ ")");
+				stat("if(value != null && value instanceof Metadata" ~ camelCaseUpper(d.type) ~ ") return ((Metadata" ~ camelCaseUpper(d.type) ~ ")value).value");
+				if(d.default_.length) stat("return (" ~ tp ~ ")" ~ d.default_);
+				else if(defaultTypes[0..$-2].canFind(tp)) stat("else return 0");
+				else stat("else return null");
+				endBlock().nl;
+				// setter
+				block("public void set" ~ camelCaseUpper(d.name) ~ "(" ~ tp ~ " _value)");
+				stat("MetadataValue value = this.values.get(" ~ d.id.to!string ~ ")");
+				stat("if(value != null && value instanceof Metadata" ~ camelCaseUpper(d.type) ~ ") ((Metadata" ~ camelCaseUpper(d.type) ~ ")value).value = _value");
+				stat("else this.values.put(" ~ d.id.to!string ~ ", new Metadata" ~ camelCaseUpper(d.type) ~ "(" ~ d.id.to!string ~ ", _value)");
+				endBlock().nl;
+			}
 			endBlock();
 			save();
 		}

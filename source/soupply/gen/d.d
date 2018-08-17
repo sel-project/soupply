@@ -453,22 +453,6 @@ class DGenerator : CodeGenerator {
 				typetable[type.name] = type.type;
 			}
 
-			// ids
-			/+block("struct MetadataId");
-			foreach(d ; info.metadata.data) {
-				immutable tp = convertType(ctable[d.type]);
-				if(d.flags.length) {
-					block("enum " ~ toUpper(d.name) ~ " : " ~ id);
-					foreach(flag ; d.flags) {
-						line(toUpper(flag.name) ~ " = " ~ flag.bit.to!string ~ ",");
-					}
-					endBlock();
-				} else {
-					stat("enum " ~ id ~ " " ~ toUpper(d.name) ~ " = " ~ d.id.to!string);
-				}
-			}
-			endBlock().nl;+/
-
 			// metadata value
 			block("class MetadataValue : PacketImpl!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ", " ~ info.protocol.arrayLength ~ ")").nl;
 			immutable _id = convertType(info.metadata.id);
