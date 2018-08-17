@@ -502,6 +502,15 @@ class DGenerator : CodeGenerator {
 			block("struct Metadata").nl;
 			stat("MetadataValue[" ~ _id ~ "] values").nl;
 
+			// constructor (init required values)
+			block("this()");
+			foreach(d ; info.metadata.data) {
+				if(d.required) {
+					stat("this.values[" ~ d.id.to!string ~ "] = new Metadata" ~ camelCaseUpper(d.type) ~ "((" ~ convertType(typetable[d.type]) ~ ")" ~ (d.default_.length ? "(" ~ d.default_ ~ ")" : ".init") ~ ")");
+				}
+			}
+			endBlock().nl;
+
 			// encode
 			block("void encodeBody(Buffer buffer)");
 			if(_length) stat("writeLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(buffer, values.length)");
