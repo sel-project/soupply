@@ -1836,7 +1836,7 @@
 				<flag name="mouth-open" bit="7" />
 			</type>
 
-			<type name="owner-uuid" type="uuid" id="14" />
+			<type name="owner-uuid" type="optional-uuid" id="14" />
 
 			<type name="horse-variant" type="int" id="15" />
 

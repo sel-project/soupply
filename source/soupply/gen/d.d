@@ -447,17 +447,11 @@ class DGenerator : CodeGenerator {
 			addImportLib("util").nl;
 			stat("static import " ~ SOFTWARE ~ "." ~ game ~ ".types").nl;
 
-			// types
-			block("enum MetadataType : " ~ convertType(info.metadata.type));
-			string[string] ctable, etable;
-			ubyte[string] idtable;
+			// init types
+			string[string] typetable;
 			foreach(type ; info.metadata.types) {
-				ctable[type.name] = type.type;
-				etable[type.name] = type.endianness;
-				idtable[type.name] = type.id;
-				line(toUpper(type.name) ~ " = " ~ type.id.to!string ~ ",");
+				typetable[type.name] = type.type;
 			}
-			endBlock().nl;
 
 			// ids
 			/+block("struct MetadataId");
@@ -508,9 +502,6 @@ class DGenerator : CodeGenerator {
 			block("struct Metadata").nl;
 			stat("MetadataValue[" ~ _id ~ "] values").nl;
 
-			// get and set
-			//TODO
-
 			// encode
 			block("void encodeBody(Buffer buffer)");
 			if(_length) stat("writeLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(buffer, values.length)");
@@ -542,6 +533,25 @@ class DGenerator : CodeGenerator {
 			endBlock();
 			endBlock();
 			endBlock().nl;
+
+			// getters and setters
+			foreach(d ; info.metadata.data) {
+				immutable tp = convertType(typetable[d.type]);
+				// getter
+				block("@property " ~ tp ~ " " ~ camelCaseLower(d.name) ~ "()");
+				stat("auto ptr = " ~ d.id.to!string ~ " in this.values");
+				stat("if(ptr && cast(Metadata" ~ camelCaseUpper(d.type) ~ ")*ptr) return (cast(Metadata" ~ camelCaseUpper(d.type) ~ ")*ptr).value");
+				if(d.default_.length) stat("return " ~ tp ~ "(" ~ d.default_  ~ ")");
+				else stat("return (" ~ tp ~ ").init");
+				endBlock().nl;
+				// setter
+				block("@property " ~ tp ~ " " ~ camelCaseLower(d.name) ~ "(" ~ tp ~ " value)");
+				stat("auto ptr = " ~ d.id.to!string ~ " in this.values");
+				stat("if(ptr && cast(Metadata" ~ camelCaseUpper(d.type) ~ ")*ptr) (cast(Metadata" ~ camelCaseUpper(d.type) ~ ")*ptr).value = value");
+				stat("else this.values[" ~ d.id.to!string ~ "] = new Metadata" ~ camelCaseUpper(d.type) ~ "(value)");
+				stat("return value");
+				endBlock().nl;
+			}
 
 			endBlock().nl;
 

@@ -72,7 +72,7 @@ void main(string[] args) {
 					if("typename" in attr) {
 						Protocol.Type type;
 						type.name = convert(attr["typename"].rename());
-						if("prelength" in attr) type.length = attr["prelength"].length ? convert(attr["prelength"].replace("-", "_")) : info.protocol.arrayLength;
+						if("prelength" in attr) type.length = attr["prelength"].length ? convert(attr["prelength"].rename()) : info.protocol.arrayLength;
 						foreach(f ; element.elements) {
 							if(f.tag.name == "field") {
 								type.fields ~= parseField(f);
@@ -118,14 +118,14 @@ void main(string[] args) {
 						foreach(e ; element.elements) {
 							switch(e.tag.name) {
 								case "alias":
-									with(e.tag) aliases[attr["name"].replace("-", "_")] = attr["type"].replace("-", "_");
+									with(e.tag) aliases[attr["name"].rename()] = attr["type"].rename();
 									break;
 								case "type":
 									Protocol.Type type;
-									type.name = e.tag.attr["name"].replace("-", "_");
+									type.name = e.tag.attr["name"].rename();
 									type.description = text(e);
-									if("prelength" in e.tag.attr) type.length = e.tag.attr["prelength"].length ? convert(e.tag.attr["prelength"].replace("-", "_")) : info.protocol.arrayLength;
-									else if("length" in e.tag.attr) type.length = e.tag.attr["length"].length ? convert(e.tag.attr["length"].replace("-", "_")) : info.protocol.arrayLength;
+									if("prelength" in e.tag.attr) type.length = e.tag.attr["prelength"].length ? convert(e.tag.attr["prelength"].rename()) : info.protocol.arrayLength;
+									else if("length" in e.tag.attr) type.length = e.tag.attr["length"].length ? convert(e.tag.attr["length"].rename()) : info.protocol.arrayLength;
 									foreach(f ; e.elements) {
 										if(f.tag.name == "field") {
 											type.fields ~= parseField(f);
@@ -142,12 +142,12 @@ void main(string[] args) {
 						foreach(s ; element.elements) {
 							if(s.tag.name == "section") {
 								Protocol.Section section;
-								section.name = s.tag.attr["name"].replace("-", "_");
+								section.name = s.tag.attr["name"].rename();
 								section.description = text(s);
 								foreach(pk ; s.elements) {
 									if(pk.tag.name == "packet") {
 										Protocol.Packet packet;
-										packet.name = pk.tag.attr["name"].replace("-", "_");
+										packet.name = pk.tag.attr["name"].rename();
 										packet.id = pk.tag.attr["id"].to!uint;
 										packet.clientbound = to!bool(pk.tag.attr.get("clientbound", "false"));
 										packet.serverbound = to!bool(pk.tag.attr.get("serverbound", "false"));
@@ -156,12 +156,12 @@ void main(string[] args) {
 											if(fv.tag.name == "field") {
 												packet.fields ~= parseField(fv);
 											} else if(fv.tag.name == "variants") {
-												packet.variantField = fv.tag.attr["field"].replace("-", "_");
+												packet.variantField = fv.tag.attr["field"].rename();
 												foreach(v ; fv.elements) {
 													if(v.tag.name == "variant") {
 														Protocol.Variant variant;
-														variant.name = v.tag.attr["name"].replace("-", "_");
-														variant.value = v.tag.attr["value"].replace("-", "_");
+														variant.name = v.tag.attr["name"].rename();
+														variant.value = v.tag.attr["value"].rename();
 														variant.description = text(v);
 														foreach(f ; v.elements) {
 															if(f.tag.name == "field") {
@@ -194,7 +194,7 @@ void main(string[] args) {
 									foreach(t ; e.elements) {
 										if(t.tag.name == "type") {
 											auto end = "endianness" in t.tag.attr;
-											info.metadata.types ~= Metadata.Type(t.tag.attr["name"].replace("-", "_"), t.tag.attr["type"].replace("-", "_"), t.tag.attr["id"].to!ubyte, end ? replace(*end, "-", "_") : "");
+											info.metadata.types ~= Metadata.Type(t.tag.attr["name"].rename(), t.tag.attr["type"].rename(), t.tag.attr["id"].to!ubyte, end ? replace(*end, "-", "_") : "");
 										}
 									}
 									break;
@@ -202,15 +202,15 @@ void main(string[] args) {
 									foreach(md ; e.elements) {
 										if(md.tag.name == "type") {
 											Metadata.Data meta;
-											meta.name = md.tag.attr["name"].replace("-", "_");
+											meta.name = md.tag.attr["name"].rename();
 											meta.description = text(md);
-											meta.type = md.tag.attr["type"].replace("-", "_");
+											meta.type = md.tag.attr["type"].rename();
 											meta.id = md.tag.attr["id"].to!ubyte;
 											if("default" in md.tag.attr) meta.default_ = md.tag.attr["default"];
 											if("required" in md.tag.attr) meta.required = md.tag.attr["required"].to!bool;
 											foreach(f ; md.elements) {
 												if(f.tag.name == "flag") {
-													meta.flags ~= Metadata.Flag(f.tag.attr["name"].replace("-", "_"), text(f), to!uint(f.tag.attr["bit"]));
+													meta.flags ~= Metadata.Flag(f.tag.attr["name"].rename(), text(f), to!uint(f.tag.attr["bit"]));
 													
 												}
 											}
