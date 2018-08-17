@@ -616,7 +616,7 @@ class JavaGenerator : CodeGenerator {
 			block("public Metadata()");
 			foreach(d ; info.metadata.data) {
 				if(d.required) {
-					stat("this.values.put(" ~ d.id.to!string ~ ", new Metadata" ~ camelCaseUpper(d.type) ~ "(" ~ d.id.to!string ~ ", (" ~ convertType(typetable[d.type]) ~ ")" ~ (d.default_.length ? d.default_ : ".init") ~ ")");
+					stat("this.values.put(" ~ d.id.to!string ~ ", new Metadata" ~ camelCaseUpper(d.type) ~ "(" ~ d.id.to!string ~ ", (" ~ convertType(typetable[d.type]) ~ ")" ~ (d.default_.length ? d.default_ : ".init") ~ "))");
 				}
 			}
 			endBlock().nl;
