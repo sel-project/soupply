@@ -617,9 +617,9 @@ class JavaGenerator : CodeGenerator {
 			foreach(d ; info.metadata.data) {
 				if(d.required) {
 					immutable td = convertType(typetable[d.type]);
-					stat("this.add(new Metadata" ~ camelCaseUpper(d.type) ~ "(" ~ d.id.to!string ~ ", " ~ (d.default_.length ?
+					stat("this.add(new Metadata" ~ camelCaseUpper(d.type) ~ "((" ~ ty ~ ")" ~ d.id.to!string ~ ", " ~ (d.default_.length ?
 							"(" ~ td ~ ")" ~ d.default_ :
-							(defaultTypes[0..$-2].canFind(td) ? "0" : (td == "String" ? `""` : "new " ~ td ~ "()"))) ~ "))");
+							(defaultTypes[0..$-2].canFind(td) ? "(" ~ td ~ ")0" : (td == "String" ? `""` : "new " ~ td ~ "()"))) ~ "))");
 				}
 			}
 			endBlock().nl;
@@ -667,7 +667,9 @@ class JavaGenerator : CodeGenerator {
 				stat("MetadataValue value = this.get(" ~ d.id.to!string ~ ")");
 				stat("if(value != null && value instanceof Metadata" ~ camelCaseUpper(d.type) ~ ") return ((Metadata" ~ camelCaseUpper(d.type) ~ ")value).value");
 				if(d.default_.length) stat("else return (" ~ tp ~ ")" ~ d.default_);
-				else if(defaultTypes[0..$-2].canFind(tp)) stat("else return 0");
+				else if(tp == "boolean") stat("else return false");
+				else if(tp == "String") stat("else return \"\"");
+				else if(defaultTypes.canFind(tp)) stat("else return 0");
 				else stat("else return null");
 				endBlock().nl;
 				// setter
