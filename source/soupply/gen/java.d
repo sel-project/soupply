@@ -676,7 +676,7 @@ class JavaGenerator : CodeGenerator {
 				block("public void set" ~ camelCaseUpper(d.name) ~ "(" ~ tp ~ " _value)");
 				stat("MetadataValue value = this.get(" ~ d.id.to!string ~ ")");
 				stat("if(value != null && value instanceof Metadata" ~ camelCaseUpper(d.type) ~ ") ((Metadata" ~ camelCaseUpper(d.type) ~ ")value).value = _value");
-				stat("else this.add(new Metadata" ~ camelCaseUpper(d.type) ~ "(" ~ d.id.to!string ~ ", _value))");
+				stat("else this.add(new Metadata" ~ camelCaseUpper(d.type) ~ "((" ~ ty ~ ")" ~ d.id.to!string ~ ", _value))");
 				endBlock().nl;
 			}
 			endBlock();
