@@ -96,7 +96,7 @@ abstract class Generator {
 				foreach(ref ign ; ignore) ign = ign.strip;
 				foreach(file ; dirEntries("gen/" ~ path, SpanMode.breadth)) {
 					immutable f = file[5 + path.length..$].replace(`\`, `/`);
-					if(file.isFile && file.indexOf("/.git/") == -1 && !all!(a => f.indexOf(a) != -1)(ignore)) { // !ignore.canFind(file[5 + path.length..$].replace(`\`, `/`))) {
+					if(file.isFile && file.indexOf("/.git/") == -1 && all!(a => f.indexOf(a) == -1)(ignore)) { // !ignore.canFind(file[5 + path.length..$].replace(`\`, `/`))) {
 						ret[file[path.length + 5..$]] = md5Of(_read(file));
 					}
 				}
