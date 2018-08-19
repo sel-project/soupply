@@ -24,7 +24,7 @@ module soupply.generator;
 
 import core.atomic : atomicOp;
 
-import std.algorithm : canFind;
+import std.algorithm : canFind, all;
 import std.array : Appender;
 import std.ascii : newline;
 import std.concurrency : spawnLinked, receiveOnly, LinkTerminated;
@@ -95,7 +95,8 @@ abstract class Generator {
 				if(exists("public/" ~ path ~ "/.diffignore")) ignore = split(cast(string)_read("public/" ~ path ~ "/.diffignore"), "\n");
 				foreach(ref ign ; ignore) ign = ign.strip;
 				foreach(file ; dirEntries("gen/" ~ path, SpanMode.breadth)) {
-					if(file.isFile && file.indexOf("/.git/") == -1 && !ignore.canFind(file[5 + path.length..$].replace(`\`, `/`))) {
+					immutable f = file[5 + path.length..$].replace(`\`, `/`);
+					if(file.isFile && file.indexOf("/.git/") == -1 && !all!(a => f.indexOf(a) != -1)(ignore)) { // !ignore.canFind(file[5 + path.length..$].replace(`\`, `/`))) {
 						ret[file[path.length + 5..$]] = md5Of(_read(file));
 					}
 				}

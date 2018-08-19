@@ -483,14 +483,14 @@ class DGenerator : CodeGenerator {
 			// metadata
 			immutable _length = info.metadata.length != "";
 			immutable _length_e = info.metadata.length.startsWith("var") ? "var" : defaultEndianness;
-			block("struct Metadata").nl;
+			block("class Metadata").nl;
 			stat("MetadataValue[" ~ _id ~ "] values").nl;
 
 			// constructor (init required values)
 			block("this()");
 			foreach(d ; info.metadata.data) {
 				if(d.required) {
-					stat("this.values[" ~ d.id.to!string ~ "] = new Metadata" ~ camelCaseUpper(d.type) ~ "((" ~ convertType(typetable[d.type]) ~ ")" ~ (d.default_.length ? "(" ~ d.default_ ~ ")" : ".init") ~ ")");
+					stat("this.values[" ~ d.id.to!string ~ "] = new Metadata" ~ camelCaseUpper(d.type) ~ "(" ~ (d.default_.length ? convertType(typetable[d.type]) ~ "(" ~ d.default_ ~ ")" : "(" ~ convertType(typetable[d.type]) ~ ").init") ~ ")");
 				}
 			}
 			endBlock().nl;
