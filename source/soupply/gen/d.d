@@ -189,7 +189,7 @@ class DGenerator : CodeGenerator {
 
 			immutable extends = "PacketImpl!(Endian." ~ defaultEndianness ~ ", " ~ info.protocol.id ~ ", " ~ info.protocol.arrayLength ~ ")";
 
-			addImport("packetmaker").nl;
+			addImport("xpacket").nl;
 			if(info.protocol.padding) {
 				addImportLib("util", "Pad").nl;
 				stat("alias " ~ base ~ " = Pad!(" ~ info.protocol.padding.to!string ~ ", " ~ extends ~ ")");
@@ -233,7 +233,7 @@ class DGenerator : CodeGenerator {
 			}
 
 			// bytes
-			if(field.type == "bytes") ret ~= "@Bytes";
+			if(field.type == "bytes") ret ~= "@NoLength";
 
 			// uuid
 			//if(field.type == "uuid") ret ~= "@Custom!CustomUUID";
@@ -304,8 +304,8 @@ class DGenerator : CodeGenerator {
 		auto types = make(game, "types");
 		with(types) {
 			stat("static import std.conv");
-			addImport("packetmaker");
-			addImport("packetmaker.maker", "EndianType", "writeLength", "readLength").nl;
+			addImport("xpacket").nl;
+			addImport("xserial.serial", "EndianType", "serializeLength", "deserializeLength").nl;
 			addImport("xbuffer.memory", "xalloc", "xfree").nl;
 			addImportLib("util");
 			addImportLib(game ~ ".metadata").nl;
@@ -325,16 +325,16 @@ class DGenerator : CodeGenerator {
 					stat("Container _container").nl;
 					stat("alias _container this").nl;
 					// encoding
-					block("void encodeBody(Buffer buffer)");
+					block("void serialize(Buffer buffer)");
 					stat("Buffer _buffer = xalloc!Buffer(Container.sizeof + 4)");
 					stat("_container.encodeBody(_buffer)");
-					stat("writeLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer, _buffer.data!ubyte.length)");
+					stat("serializeLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer, _buffer.data!ubyte.length)");
 					stat("buffer.writeData(_buffer.data!ubyte)");
 					stat("xfree(_buffer)");
 					endBlock().nl;
 					// decoding
-					block("void decodeBody(Buffer buffer)");
-					stat("Buffer _buffer = xalloc!Buffer(cast(ubyte[])buffer.readData(readLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer)))");
+					block("void deserialize(Buffer buffer)");
+					stat("Buffer _buffer = xalloc!Buffer(cast(ubyte[])buffer.readData(deserializeLength!(" ~ convertEndian(info.protocol.arrayLength) ~ ")(buffer)))");
 					stat("_container.decodeBody(_buffer)");
 					stat("xfree(_buffer)");
 					endBlock().nl;
@@ -356,7 +356,7 @@ class DGenerator : CodeGenerator {
 			with(s) {
 				stat("static import std.conv");
 				addImportStd("typetuple", "TypeTuple");
-				addImport("packetmaker").nl;
+				addImport("xpacket").nl;
 				addImportLib("util");
 				addImportLib(game ~ ".metadata", "Metadata");
 				addImportLib(game ~ ".packet", base).nl;
@@ -374,7 +374,7 @@ class DGenerator : CodeGenerator {
 					// static decoding
 					block("public static typeof(this) fromBuffer(ubyte[] buffer)");
 					stat(camelCaseUpper(packet.name) ~ " ret = new " ~ camelCaseUpper(packet.name) ~ "()");
-					stat("ret.autoDecode(buffer)");
+					stat("ret.decode(buffer)");
 					stat("return ret");
 					endBlock().nl;
 					// to string
@@ -417,9 +417,9 @@ class DGenerator : CodeGenerator {
 						foreach(field, value; test["fields"].object) {
 							stat("packet." ~ convertName(field) ~ " = " ~ convertValue(value));
 						}
-						stat("auto result = packet.autoEncode()");
+						stat("auto result = packet.encode()");
 						stat("assert(result == " ~ result ~ ", `" ~ loc ~ " expected " ~ result ~ " but got ` ~ result.to!string)").nl;
-						stat("packet.autoDecode(" ~ result ~ ")");
+						stat("packet.decode(" ~ result ~ ")");
 						foreach(field, value; test["fields"].object) {
 							stat("assert(packet." ~ convertName(field) ~ " == " ~ convertValue(value) ~ ", `" ~ loc ~ "." ~ field.replace("_", "-") ~ " expected " ~ value.toString() ~ " but got ` ~ packet." ~ convertName(field) ~ ".to!string)");
 						}
@@ -441,8 +441,8 @@ class DGenerator : CodeGenerator {
 		auto metadata = make(game, "metadata");
 		with(metadata) {
 
-			addImport("packetmaker");
-			addImport("packetmaker.maker", "EndianType", "writeLength", "writeImpl", "readLength", "readImpl").nl;
+			addImport("xpacket").nl;
+			addImport("xserial.serial", "EndianType", "serializeLength", "serializeNumber", "deserializeLength", "deserializeNumber").nl;
 			//addImport("xbuffer.memory", "xmalloc", "xrealloc", "xalloc", "xfree").nl;
 			addImportLib("util").nl;
 			stat("static import " ~ SOFTWARE ~ "." ~ game ~ ".types").nl;
@@ -496,25 +496,25 @@ class DGenerator : CodeGenerator {
 			endBlock().nl;
 
 			// encode
-			block("void encodeBody(Buffer buffer)");
-			if(_length) stat("writeLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(buffer, values.length)");
+			block("void serialize(Buffer buffer)");
+			if(_length) stat("serializeLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(buffer, values.length)");
 			block("foreach(id, value; values)");
-			stat("writeImpl!(" ~ convertEndian(info.metadata.id) ~ ")(buffer, id)");
+			stat("serializeNumber!(" ~ convertEndian(info.metadata.id) ~ ")(buffer, id)");
 			stat("value.encodeBody(buffer)");
 			endBlock();
 			if(!_length) stat("buffer.write(ubyte(" ~ info.metadata.suffix ~ "))");
 			endBlock().nl;
 
 			// decode
-			block("void decodeBody(Buffer buffer)");
+			block("void deserialize(Buffer buffer)");
 			if(_length) {
-				block("foreach(i ; 0..readLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(buffer))");
-				stat(_id ~ " id = readImpl!(" ~ convertEndian(info.metadata.id) ~ ")(buffer)");
+				block("foreach(i ; 0..deserializeLength!(EndianType." ~ _length_e ~ ", " ~ convertType(info.metadata.length) ~ ")(buffer))");
+				stat(_id ~ " id = deserializeNumber!(" ~ convertEndian(info.metadata.id) ~ ")(buffer)");
 			} else {
 				stat(_id ~ " id");
 				block("while((id = buffer.read!ubyte()) != " ~ info.metadata.suffix ~ ")");
 			}
-			block("switch(readImpl!(" ~ convertEndian(info.metadata.type) ~ ")(buffer))");
+			block("switch(deserializeNumber!(" ~ convertEndian(info.metadata.type) ~ ")(buffer))");
 			foreach(type ; info.metadata.types) {
 				line("case " ~ type.id.to!string ~ ":").add_indent();
 				stat("auto value = new Metadata" ~ type.name.camelCaseUpper ~ "()");

@@ -25,8 +25,7 @@ module soupply.util;
 import std.string : split, join;
 import std.uuid : _UUID = UUID;
 
-import packetmaker.attributes : Exclude;
-import packetmaker.packet : Packet;
+import xpacket : Packet, Exclude;
 
 import xbuffer.buffer : Buffer;
 
@@ -36,17 +35,22 @@ template Pad(size_t padding, T:Packet) {
 
 	class Pad : T {
 	
-		override void encode(Buffer buffer) {
+		override ubyte[] encode(Buffer buffer) {
 			encodeId(buffer);
 			buffer.writeData(__padding);
 			encodeBody(buffer);
+			return buffer.data!ubyte;
 		}
+		
+		alias encode = typeof(super).encode;
 		
 		override void decode(Buffer buffer) {
 			decodeId(buffer);
 			buffer.readData(padding);
 			decodeBody(buffer);
 		}
+		
+		alias decode = typeof(super).decode;
 	
 	}
 
@@ -77,11 +81,11 @@ struct UUID {
 
 	_UUID uuid;
 	
-	void encodeBody(Buffer buffer) {
+	void serialize(Buffer buffer) {
 		buffer.writeData(uuid.data);
 	}
 	
-	void decodeBody(Buffer buffer) {
+	void deserialize(Buffer buffer) {
 		ubyte[16] data = cast(ubyte[])buffer.readData(16);
 		uuid = _UUID(data);
 	}
