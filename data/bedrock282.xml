@@ -4,13 +4,11 @@
 
 	<software>Minecraft (Bedrock Engine)</software>
 
-	<protocol>274</protocol>
+	<protocol>282</protocol>
 	
-	<released>2018/7/10</released>
+	<released>2018/8/28</released>
 	
-	<from>1.5.0</from>
-
-	<to>1.5.3</to>
+	<from>1.6.0</from>
 
 	<description>
 		Protocol used in Minecraft: Pocket Edition and variants. The network part of the protocol is managed by RakNet.
@@ -23,7 +21,7 @@
 		Everything written in the documentation has been tested on [selery](https://github.com/sel-project/selery). The types and the packets without documentation haven't been tested yet or it's not clear what their purpose in the game is.
 	</description>
 
-	<encoding id="varuint" arraylength="varuint" endianness="little-endian" padding="2">
+	<encoding id="varuint" arraylength="varuint" endianness="little-endian">
 
 		<alias name="entity-id" type="varlong" />
 
@@ -152,7 +150,7 @@
 
 			<packet name="login" id="1" clientbound="false" serverbound="true">
 				First MCPE packet sent after the establishment of the connection through raknet. It contains informations about the player.
-				<field name="protocol" type="uint" endianness="big-endian" default="274">
+				<field name="protocol" type="uint" endianness="big-endian" default="282">
 					Version of the protocol used by the player.
 				</field>
 				<field name="body" typename="login-body" type="login-body" prelength="">
@@ -374,6 +372,11 @@
 				<field name="is-trial" type="bool" />
 				<field name="current-tick" type="ulong" />
 				<field name="enchantment-seed" type="varint" />
+				<field name="runtime-id-table" typename="runtime-id" type="runtime-id[]">
+					<field name="name" type="string" />
+					<field name="data" type="ushort" />
+				</field>
+				<field name="multiplayer-correlation-id" type="string" />
 			</packet>
 
 			<packet name="add-player" id="12" clientbound="true" serverbound="false">
@@ -401,6 +404,7 @@
 				<field name="?" type="varuint" />
 				<field name="?" type="long" />
 				<field name="links" type="link[]" />
+				<field name="device-id" type="string" />
 			</packet>
 
 			<packet name="add-entity" id="13" clientbound="true" serverbound="false">
@@ -1735,8 +1739,34 @@
 				<field name="z-rot" type="byte" when="(flags&32)!=0" />
 			</packet>
 
-			<packet name="set-local-player-as-initialized" id="112" clientbound="true" serverbound="false">
+			<packet name="set-scoreboard-identity" id="112" clientbound="true" serverbound="false">
+				<field name="type" type="ubyte">
+					<constant name="register" value="0" />
+					<constant name="clear" value="1" />
+				</field>
+				<field name="register-entries" typename="register-entry" type="register-entry[]" when="type==0">
+					<field name="scoreboard-id" type="varlong" />
+					<field name="uuid" type="uuid" />
+				</field>
+				<field name="clear-entries" type="varlong[]" when="type==1" />
+			</packet>
+
+			<packet name="set-local-player-as-initialized" id="113" clientbound="true" serverbound="false">
 				<field name="entity-runtime-id" type="runtime-id" />
+			</packet>
+
+			<packet name="update-soft-enum" id="114" clientbound="true" serverbound="false">
+				<field name="name" type="string" />
+				<field name="values" type="string[]" />
+				<field name="type" type="ubyte">
+					<constant name="add" value="0" />
+					<constant name="remove" value="1" />
+					<constant name="set" value="2" />
+				</field>
+			</packet>
+
+			<packet name="network-stack-latency" id="115" clientbound="true" serverbound="true">
+				<field name="timestamp" type="long" />
 			</packet>
 
 		</section>
