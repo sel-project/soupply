@@ -371,7 +371,7 @@ class JavascriptGenerator : CodeGenerator {
 					nl;
 				}
 				endBlock().nl;
-				if(node) stat("export { " ~ camelCaseUpper(section.name) ~ " }");
+				if(node) stat("module.export = " ~ camelCaseUpper(section.name));
 				save(info.file);
 			}
 		}

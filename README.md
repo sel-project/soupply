@@ -13,3 +13,4 @@ Documentation for the provided protocols is available at the [project's website]
 
 - [D (dub)](https://github.com/soupply/d)
 - [Java (maven)](https://github.com/soupply/java)
+- [Node JS (npm)](https://github.com/soupply/node-js)
