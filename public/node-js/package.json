@@ -1,0 +1,6 @@
+{
+	"name": "{{name}}",
+	"description": "{{description}}",
+	"version": "{{version}}",
+	"author": "sel-project"
+}
